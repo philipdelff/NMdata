@@ -1,0 +1,85 @@
+---
+title: "NMscanData"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{get-started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r,setup}
+library(NMdata)
+```
+
+# Introduction
+Getting data from R to Nonmem and back is tedious and can be time
+consuming. The way data is exported from Nonmem means that a few
+tables may have to be combined, and then some variables may still be
+missing (like character variables which may be in the input data
+file). Most modellers develop some habits over time to avoid some
+issues. But still, it may be time demanding even for experienced
+modellers to pick up a model developed by someone else or by
+themselves earlier in their career just because they need to
+understand what data exported and how.
+
+This is even more frustrating when taking into account that the
+variability in data is at very few levels that never change. These are 
+- population (model run) level (like study name or TVCL representing clearance for a typical subject)
+- subject-level like covariates, individual parameter estimates or between-subject variable random effects.
+- occasion-level like between-occasion variable random effects or parameters
+- row-level which is everything that varies within the levels above. That is time, concentrations, doses, time-varying covariates etc.
+
+All analysis of the data are performed at one of these levels, because they are the levels of variability in PK/PD models. Hence, what the modeller will do after running a model in nonmem is to collect and break down the data in one or more of these levels, depending on what analysis is needed.
+
+The NMscanData does this based on both output and input data, and it
+does so (almost) only based on information available in the .lst
+file. It is based on the increadible data.table package and is
+generally very fast, even for very large datasets.
+
+# Get started
+All you have to do is point to a lst file (or however you name the output file):
+
+```{r}
+res1 <- NMscanData("run1.lst")
+names(res1)
+lapply(res1,dim)
+```
+
+The lst file was scanned for output tables, and they were all read
+(including interpreting the possible firstonly option). The input data
+has been used based on the DATA and INPUT sections of the control
+stream. Then it analyses what varies withing the levels mentioned in
+the introduction. Variables that do not vary at all are included at
+pop level, those that do not vary within (any) subject ID, are put at
+id-level etc. Everything is included at row level.
+
+A little bit of information is needed to do this, and that is namely
+what variables that represent the different levels. NMscanData will
+assume that row counter is called ROW, subject identifier ID, and
+occasion identifier OCC. They can all be changed by arguments. Also,
+even combinations of columns can be used to represent the levels
+above. Use col.occ=c('PART','OCC') if OCC is nested in study parts
+etc.
+
+## The row identifier
+The row identifier is not needed for the function to run. If not
+existing, it does however mean that NMscanData cannot make use of the
+input data file. If you want to be able to use input data, always make
+sure to have a row identifier in your dataset, and make sure to export
+it in at least one table in nonmem. Future versions of this package
+may include features to try to make use of the input file anyway, but
+it will never as good as if you include a row counter in both input
+and output data. If you do not have one in an old model run, consider
+if a combination of columns can make it up for one, like
+c("ID","EVID","TIME"). No general solution exist here, you need to
+analyse the data to find out.
+
+## How the input data is read
+
