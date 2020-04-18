@@ -3,7 +3,9 @@ Nonmem provides a flexible toolbox for PK and PK/PD modeling. However,
 creating the datasets and reading the data resulting from running
 Nonmem can be tedious. Especially because all modelers seem to do
 things a little differently. The frustrating fact is that we always
-want the same. This package automates this process and can save you a
+want the same - all data output from Nonmem with additional columns in
+input data added, and then possibly broken down to the possible levels
+of variability. This package automates this process and can save you a
 lot of time. 
 
 This package provides tools for creating data for Nonmem, and for

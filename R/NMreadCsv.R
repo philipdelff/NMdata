@@ -6,9 +6,11 @@
 ##' @param ... passed to read.csv
 ##' @details This is just a shortcut to read.csv so you don't have to remember
 ##'     how to read the data that was exported for nonmem.
-##' @importFrom utils read.csv
+##' @importFrom data.table fread
 ##' @family Nonmem
 ##' @export
-NMreadCsv <- function(file,na.strings=".",header=TRUE,stringsAsFactors=FALSE,...){
-    read.csv(file=file,na.strings=na.strings,header=header,stringsAsFactors=stringsAsFactors,...)
+NMreadCsv <- function(file,na.strings=".",header=TRUE,stringsAsFactors=FALSE,as.dt=TRUE,...){
+    ## read.csv(file=file,na.strings=na.strings,header=header,stringsAsFactors=stringsAsFactors,...)
+    dt <- fread(file=file,na.strings=na.strings,header=header,stringsAsFactors=stringsAsFactors,...)
+    if(as.dt) return(dt) else return(as.data.frame(dt))
 }
