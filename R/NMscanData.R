@@ -289,7 +289,7 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
         message("Recovering input data that were not part of analysis. This is experimental.")
         data.recover <- data.input[!get(col.row)%in%tab.row[,get(col.row)]]
         ## data.input[get(col.row)%in%tab.row[,get(col.row)]]
-        data.recover <- data.input[,nmout:=FALSE]
+        data.recover[,nmout:=FALSE]
         tab.row <- rbind(tab.row,data.recover,fill=T)
         setkeyv(tab.row,col.row)
 
