@@ -18,7 +18,7 @@
 ##' @family Nonmem
 ##' @export
 
-NMtransInput <- function(file,useRDS=TRUE,dir.data,quiet=FALSE,debug=F){
+NMtransInput <- function(file,useRDS=TRUE,dir.data,quiet=FALSE,as.dt=TRUE,debug=F){
 
     if(debug) browser()
     
@@ -29,6 +29,7 @@ NMtransInput <- function(file,useRDS=TRUE,dir.data,quiet=FALSE,debug=F){
     
     lines <- NMgetSection(file,section="INPUT",keepName=F)
 
+## get rid of redundant spaces
     line <- gsub(" +"," ",paste(lines,collapse=" "))
     line <- sub("^ ","",line)
     line <- sub(" $","",line)
@@ -87,6 +88,12 @@ NMtransInput <- function(file,useRDS=TRUE,dir.data,quiet=FALSE,debug=F){
     cnames.input <- colnames(data.input)
     cnames.input[1:length(nms)] <- nms
     colnames(data.input) <- cnames.input
-    data.input
+
+
+    if(as.dt) {
+        as.data.table(data.input)
+    } else {
+        as.data.frame(data.input)
+    }
 
 }

@@ -84,7 +84,7 @@
 
 ### end todo 
 
-NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC",structure="full",use.input=T,recoverRows=FALSE,add.name="model",name,dir.data,quiet=FALSE,useRDS=TRUE,as.dt=TRUE,debug=FALSE){
+NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC",structure="full",use.input=TRUE,recoverRows=FALSE,add.name="model",name,dir.data,quiet=FALSE,useRDS=TRUE,as.dt=TRUE,mergeByFilters=FALSE,debug=FALSE){
 
     if(debug) browser()
 
@@ -149,9 +149,11 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
     if(overview.tables[,sum(full.length)]==0) {
         stop("No full-length tables found. This is currently not supported (but should be, sorry).")
     }
-    if(!overview.tables[,sum(has.row)]) {
-        warning("col.row not found in any full-length (not firstonly) output tables. Input data cannot be used. See argument col.row.")
-        use.input <- FALSE
+    if(!mergeByFilters){
+        if(!overview.tables[,sum(has.row)]) {
+            warning("col.row not found in any full-length (not firstonly) output tables. Input data cannot be used. See argument col.row.")
+            use.input <- FALSE
+        }
     }
     tab.row <- NULL
     ##    if(sum(overview.tables$full.length&overview.tables$has.row)){
@@ -213,37 +215,53 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
     }
     if(use.input){
         if(!quiet) message("Searching for input data.")
-        data.input <- as.data.table(NMtransInput(file,quiet=quiet,useRDS=useRDS,debug=F))
+        data.input <- as.data.table(NMtransInput(file,quiet=quiet,useRDS=useRDS,as.dt=TRUE,debug=F))
         cnames.input <- colnames(data.input)
 
-        if(col.row%in%cnames.input) {
-            if(data.input[,any(duplicated(get(col.row)))]){
-                stop("use.input is TRUE, but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input is TRUE.")
+        if(mergeByFilters){
+            message("Merging input and output by translation of the filtering statemnts in the Nonmem controls stream is experimental, and only IGNORE statements are considered. It is highly recommended to use a row identifier in both input and output data if possible. See col.row and mergeByFilters arguments.")
+            
+            data.input.filter <- NMtransFilters(data.input,file=file)
+            if(nrow(data.input.filter)!=nrow(tab.row)) {
+                
+                stop("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted by this experimental implementation of the feature. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or merge manually.")
             }
+            tab.row <- cbind(
+                tab.row,
+                data.input.filter[,!colnames(data.input.filter)%in%colnames(tab.row),with=F]
+            )
         } else {
-            warning("use.input is TRUE, but col.row not found in _input_ data. Only output data used.")
-            use.input <- FALSE
-        }
-        
-
-        if(col.row%in%colnames(tab.row)) {
-            if( tab.row[,any(duplicated(get(col.row)))]){
-                stop("use.input is TRUE, but col.row has duplicate values in _output_ data. col.row must be a unique row identifier. It is unique in input data, so how did rows get repeated in output data? Has input data been edited since the model was run?")
+            
+### merging by col.row
+            ## Has this check already been done?
+            if(col.row%in%cnames.input) {
+                if(data.input[,any(duplicated(get(col.row)))]){
+                    stop("use.input is TRUE, but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input is TRUE.")
+                }
+            } else {
+                warning("use.input is TRUE, but col.row not found in _input_ data. Only output data used.")
+                use.input <- FALSE
             }
-        } else {
-            warning("use.input is TRUE, but col.row not found in _output_ data. Only output data used.")
-            use.input <- FALSE
-        }
-        
+            
+            if(col.row%in%colnames(tab.row)) {
+                if( tab.row[,any(duplicated(get(col.row)))]){
+                    stop("use.input is TRUE, but col.row has duplicate values in _output_ data. col.row must be a unique row identifier. It is unique in input data, so how did rows get repeated in output data? Has input data been edited since the model was run?")
+                }
+            } else {
+                warning("use.input is TRUE, but col.row not found in _output_ data. Only output data used.")
+                use.input <- FALSE
+            }
+            
 
-        if(use.input){
+            if(use.input){
 
-            ## tab.row.1 <- copy(tab.row)
-            ## tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=T)
-            tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=T)
+                ## tab.row.1 <- copy(tab.row)
+                ## tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=T)
+                tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=T)
+                
+            }
             
         }
-        
     }
 
     
@@ -286,7 +304,7 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 
     if(use.input&&recoverRows){
         setkeyv(data.input,col.row)
-        message("Recovering input data that were not part of analysis. This is experimental.")
+        message("Recovering input data that were not part of analysis. This is experimental. This only affects the \"row\" dataset.")
         data.recover <- data.input[!get(col.row)%in%tab.row[,get(col.row)]]
         ## data.input[get(col.row)%in%tab.row[,get(col.row)]]
         data.recover[,nmout:=FALSE]
