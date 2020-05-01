@@ -220,6 +220,10 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 
         if(mergeByFilters){
             message("Merging input and output by translation of the filtering statemnts in the Nonmem controls stream is experimental, and only IGNORE statements are considered. It is highly recommended to use a row identifier in both input and output data if possible. See col.row and mergeByFilters arguments.")
+
+            if(recoverRows) {
+                stop("For now, you cannot combine mergeByFilters and recoverRows.")
+            }
             
             data.input.filter <- NMtransFilters(data.input,file=file)
             if(nrow(data.input.filter)!=nrow(tab.row)) {
@@ -230,6 +234,7 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
                 tab.row,
                 data.input.filter[,!colnames(data.input.filter)%in%colnames(tab.row),with=F]
             )
+            
         } else {
             
 ### merging by col.row

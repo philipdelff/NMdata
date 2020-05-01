@@ -50,10 +50,10 @@ NMorderColumns - Order columns in dataset for use in Nonmem.
 
 NMwriteData - Write dataset (with creation info documentation) for use in Nonmem (and R)
 
-** read Nonmem results
+** Read Nonmem results
 NMscanData - automatically find Nonmem input and output tables and organize data
 
-metadata functions for documentation of column contents is under development.
+metadata functions for documentation of column contents are under development.
 
 ** Edit nonmem runs
 NMgetSection - extract sections of Nonmem control streams
