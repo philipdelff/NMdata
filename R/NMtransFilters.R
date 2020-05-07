@@ -1,5 +1,15 @@
-## input: nonmem $DATA as text
-## output an R subset expression to evaluate in data.table
+##' @param data An input data object. Could be read with NMreadCsv or
+##'     NMtransInput.
+##' @param file Path to mod/lst file. Only one of file, text, or lines to be
+##'     given. See ?NMgetSection for understanding when to use, file, text, or
+##'     lines.
+##' @param text The mod/lst as characters.
+##' @param lines The mod/lst as character, line by line.
+##' @family Nonmem
+
+## At least for now, don't export. This is still very experimental, and it is a
+## function only being used by NMscanData at this point.
+
 
 NMtransFilters <- function(data,file,text,lines,debug=FALSE){
     if(debug) browser()
@@ -17,6 +27,7 @@ NMtransFilters <- function(data,file,text,lines,debug=FALSE){
         lines <- strsplit(text,split=linesep)[[1]]
     }
 
+    ## If these are not NULL, it can make trouble in NMgetSection.
     file <- NULL
     text <- NULL
     

@@ -22,10 +22,7 @@ using the function dsInfo.
 \seealso{
 objInfo
 
-Other DataWrangling: \code{\link{NMaddColumns}},
-  \code{\link{NMorderColumns}}, \code{\link{NMscanData}},
-  \code{\link{findCovs}}, \code{\link{findVars}},
-  \code{\link{mergeCheck}}, \code{\link{objInfo}},
-  \code{\link{tmpcol}}
+Other DataGen: \code{\link{flagsAssign}},
+  \code{\link{flagsCount}}, \code{\link{objInfo}}
 }
-\concept{DataWrangling}
+\concept{DataGen}

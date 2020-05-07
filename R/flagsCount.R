@@ -25,6 +25,7 @@
 ##'     discarded by earlier flags.
 ##' @import data.table
 ##' @importFrom utils write.csv
+##' @family DataGen
 ##' @export
 
 

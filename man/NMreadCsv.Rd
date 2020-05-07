@@ -5,7 +5,7 @@
 \title{read csv data that is written to be read by nonmem}
 \usage{
 NMreadCsv(file, na.strings = ".", header = TRUE,
-  stringsAsFactors = FALSE, ...)
+  stringsAsFactors = FALSE, as.dt = TRUE, ...)
 }
 \arguments{
 \item{file}{The file to read. Must be pure text.}
@@ -28,7 +28,7 @@ This is just a shortcut to read.csv so you don't have to remember
 \seealso{
 Other Nonmem: \code{\link{NMextractText}},
   \code{\link{NMgetSection}}, \code{\link{NMreadTab}},
-  \code{\link{NMreplacePart}}, \code{\link{NMscanTables}},
+  \code{\link{NMscanTables}}, \code{\link{NMtransFilters}},
   \code{\link{NMtransInput}}, \code{\link{NMundoReplace}},
   \code{\link{NMwriteData}}
 }

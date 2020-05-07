@@ -28,7 +28,6 @@ generate a name for a new data column that is not already in use.
 Other DataWrangling: \code{\link{NMaddColumns}},
   \code{\link{NMorderColumns}}, \code{\link{NMscanData}},
   \code{\link{findCovs}}, \code{\link{findVars}},
-  \code{\link{mergeCheck}}, \code{\link{objInfo}},
-  \code{\link{stampObj}}
+  \code{\link{mergeCheck}}
 }
 \concept{DataWrangling}

@@ -34,3 +34,8 @@ The dataset with flags added. See parameter flags.return as well.
 The aim with this function is to take a (say PK) dataset and a pre-specified
 table of flags, assign the flags automatically.
 }
+\seealso{
+Other DataGen: \code{\link{flagsCount}},
+  \code{\link{objInfo}}, \code{\link{stampObj}}
+}
+\concept{DataGen}

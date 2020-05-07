@@ -45,3 +45,8 @@ Notice number of subjects in N.discarded mode can be
     due to this flag. The majority of the samples can have been
     discarded by earlier flags.
 }
+\seealso{
+Other DataGen: \code{\link{flagsAssign}},
+  \code{\link{objInfo}}, \code{\link{stampObj}}
+}
+\concept{DataGen}

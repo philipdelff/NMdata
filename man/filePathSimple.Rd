@@ -17,4 +17,7 @@ Used to tidy up paths. Passes arguments to
     path format, i.e. paths that can be compared by simple string
     comparisson.
 }
+\seealso{
+Other FileSystem: \code{\link{NMdata_filepath}}
+}
 \concept{FileSystem}

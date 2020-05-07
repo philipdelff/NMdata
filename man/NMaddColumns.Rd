@@ -29,7 +29,6 @@ df.races <- data.frame(RACE=c(1,3.1),
 Other DataWrangling: \code{\link{NMorderColumns}},
   \code{\link{NMscanData}}, \code{\link{findCovs}},
   \code{\link{findVars}}, \code{\link{mergeCheck}},
-  \code{\link{objInfo}}, \code{\link{stampObj}},
   \code{\link{tmpcol}}
 }
 \concept{DataWrangling}

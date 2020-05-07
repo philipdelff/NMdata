@@ -15,10 +15,7 @@ Get stamped info about object
 \seealso{
 stampObj
 
-Other DataWrangling: \code{\link{NMaddColumns}},
-  \code{\link{NMorderColumns}}, \code{\link{NMscanData}},
-  \code{\link{findCovs}}, \code{\link{findVars}},
-  \code{\link{mergeCheck}}, \code{\link{stampObj}},
-  \code{\link{tmpcol}}
+Other DataGen: \code{\link{flagsAssign}},
+  \code{\link{flagsCount}}, \code{\link{stampObj}}
 }
-\concept{DataWrangling}
+\concept{DataGen}

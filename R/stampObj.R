@@ -9,7 +9,7 @@
 ##' @param ... other named metadata elements to add to the dataset. Example:
 ##'     Description="PK data for ph1 trials in project".
 ##' @seealso objInfo
-##' @family DataWrangling
+##' @family DataGen
 ##' @export
 
 

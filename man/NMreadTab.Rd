@@ -24,7 +24,7 @@ Read a table file from NONMEM
 \seealso{
 Other Nonmem: \code{\link{NMextractText}},
   \code{\link{NMgetSection}}, \code{\link{NMreadCsv}},
-  \code{\link{NMreplacePart}}, \code{\link{NMscanTables}},
+  \code{\link{NMscanTables}}, \code{\link{NMtransFilters}},
   \code{\link{NMtransInput}}, \code{\link{NMundoReplace}},
   \code{\link{NMwriteData}}
 }

@@ -42,7 +42,6 @@ Besides merging and checking rows, mergeCheck makes sure the order
 Other DataWrangling: \code{\link{NMaddColumns}},
   \code{\link{NMorderColumns}}, \code{\link{NMscanData}},
   \code{\link{findCovs}}, \code{\link{findVars}},
-  \code{\link{objInfo}}, \code{\link{stampObj}},
   \code{\link{tmpcol}}
 }
 \concept{DataWrangling}

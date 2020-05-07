@@ -23,7 +23,6 @@ Extract columns that vary within values of other columns in a data.frame
 Other DataWrangling: \code{\link{NMaddColumns}},
   \code{\link{NMorderColumns}}, \code{\link{NMscanData}},
   \code{\link{findCovs}}, \code{\link{mergeCheck}},
-  \code{\link{objInfo}}, \code{\link{stampObj}},
   \code{\link{tmpcol}}
 }
 \concept{DataWrangling}

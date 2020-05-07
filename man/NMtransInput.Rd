@@ -4,7 +4,8 @@
 \alias{NMtransInput}
 \title{read input data and translate names according to the $INPUT section}
 \usage{
-NMtransInput(file, useRDS = TRUE, dir.data, quiet = FALSE, debug = F)
+NMtransInput(file, useRDS = TRUE, dir.data, quiet = FALSE,
+  as.dt = TRUE, debug = F)
 }
 \arguments{
 \item{file}{a .lst or a .mod. No matter which you provide, the .mod is
@@ -32,8 +33,8 @@ Based on a nonmem run, this function finds the input data and
 \seealso{
 Other Nonmem: \code{\link{NMextractText}},
   \code{\link{NMgetSection}}, \code{\link{NMreadCsv}},
-  \code{\link{NMreadTab}}, \code{\link{NMreplacePart}},
-  \code{\link{NMscanTables}}, \code{\link{NMundoReplace}},
-  \code{\link{NMwriteData}}
+  \code{\link{NMreadTab}}, \code{\link{NMscanTables}},
+  \code{\link{NMtransFilters}},
+  \code{\link{NMundoReplace}}, \code{\link{NMwriteData}}
 }
 \concept{Nonmem}

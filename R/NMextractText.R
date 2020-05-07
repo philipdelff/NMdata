@@ -50,7 +50,7 @@
 ##' @family Nonmem
 ##' @examples
 ##' NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
-##'
+##' @export
 
 
 NMextractText <- function(file, lines, text, section, char.section,char.end=char.section, return="text", keepEmpty=FALSE, keepName=TRUE, keepComments=TRUE, asOne=TRUE, simplify=TRUE, cleanSpaces=FALSE, type="mod", linesep="\n", debug=F){

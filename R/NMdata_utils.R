@@ -2,6 +2,7 @@
 ##' @param ... parameters to pass to system.file
 ##' @details
 ##' a light wrapper around system.file
+##' @family FileSystem
 ##' @export
 NMdata_filepath <- function(...) {
   system.file(..., package = "NMdata")

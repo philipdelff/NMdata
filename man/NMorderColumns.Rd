@@ -60,7 +60,6 @@ This function will change the order of columns but it
 Other DataWrangling: \code{\link{NMaddColumns}},
   \code{\link{NMscanData}}, \code{\link{findCovs}},
   \code{\link{findVars}}, \code{\link{mergeCheck}},
-  \code{\link{objInfo}}, \code{\link{stampObj}},
   \code{\link{tmpcol}}
 }
 \concept{DataWrangling}

@@ -32,7 +32,6 @@ findCovs(dat,cols.id=c())
 Other DataWrangling: \code{\link{NMaddColumns}},
   \code{\link{NMorderColumns}}, \code{\link{NMscanData}},
   \code{\link{findVars}}, \code{\link{mergeCheck}},
-  \code{\link{objInfo}}, \code{\link{stampObj}},
   \code{\link{tmpcol}}
 }
 \concept{DataWrangling}

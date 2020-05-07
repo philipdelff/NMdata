@@ -7,9 +7,9 @@
 ##' @param ... additional arguments passed to file.path().
 ##' @param debug start by running browser()?
 ##' @family FileSystem
-##' @export
 
- 
+### This function is exported from pmxtricks. It is included in NMdata not to
+### depend on pmxtricks. However, please align.
 
 filePathSimple <- function(...,debug=F){
     if(debug) browser()
