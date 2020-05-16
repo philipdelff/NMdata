@@ -1,3 +1,4 @@
+##' Translate filters in Nonmem and apply to data
 ##' @param data An input data object. Could be read with NMreadCsv or
 ##'     NMtransInput.
 ##' @param file Path to mod/lst file. Only one of file, text, or lines to be
