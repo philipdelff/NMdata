@@ -46,8 +46,8 @@ generally very fast, even for very large datasets.
 # Get started
 All you have to do is point to a lst file (or however you name the output file):
 
-```{r}
-res1 <- NMscanData("run1.lst")
+```{r,eval=FALSE}
+res1 <- NMscanData(NMdata_filepath("examples/nonmem/run001.lst"))
 names(res1)
 lapply(res1,dim)
 ```

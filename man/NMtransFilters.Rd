@@ -17,6 +17,8 @@ lines.}
 \item{text}{The mod/lst as characters.}
 
 \item{lines}{The mod/lst as character, line by line.}
+
+\item{debug}{start by running browser()?}
 }
 \description{
 Translate filters in Nonmem and apply to data

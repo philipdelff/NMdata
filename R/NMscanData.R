@@ -43,6 +43,10 @@
 ##'     use.
 ##' @param as.dt The default is to return data in data.tables. If data.frames
 ##'     are wanted, use as.dt=FALSE.
+##' @param mergeByFilters This is experimental. If TRUE, the IGNORE filters in
+##'     the nonmem control stream are attempted applied and then input and
+##'     output data simply cbinded. This is not recommended (use a row
+##'     identifier instead), but sometimes it is your only option. 
 ##' @param debug start by running browser()?
 ##'
 ##' @details This function makes it very easy to collect the data from

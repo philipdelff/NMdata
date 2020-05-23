@@ -23,6 +23,9 @@ output file, use dir.data to tell in which directory to find the data file.}
 \item{quiet}{Default is to inform a little, but TRUE is useful for
 non-interactive stuff.}
 
+\item{as.dt}{Return a data.table? data.table is default, if not a data.frame
+is returned.}
+
 \item{debug}{start by running browser()?}
 }
 \description{

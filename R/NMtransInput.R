@@ -14,6 +14,8 @@
 ##'     output file, use dir.data to tell in which directory to find the data file.
 ##' @param quiet Default is to inform a little, but TRUE is useful for
 ##'     non-interactive stuff.
+##' @param as.dt Return a data.table? data.table is default, if not a data.frame
+##'     is returned.
 ##' @param debug start by running browser()?
 ##' @family Nonmem
 ##' @export

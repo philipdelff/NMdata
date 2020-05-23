@@ -16,14 +16,17 @@ NMreadCsv(file, na.strings = ".", header = TRUE,
 
 \item{stringsAsFactors}{See read.table.}
 
+\item{as.dt}{Return a data.table? data.table is default, if not a data.frame
+is returned.}
+
 \item{...}{passed to read.csv}
 }
 \description{
 read csv data that is written to be read by nonmem
 }
 \details{
-This is just a shortcut to read.csv so you don't have to remember
-    how to read the data that was exported for nonmem.
+This is just a shortcut to fread so you don't have to remember how
+    to read the data that was exported for nonmem.
 }
 \seealso{
 Other Nonmem: \code{\link{NMextractText}},

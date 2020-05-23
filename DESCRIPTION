@@ -1,7 +1,7 @@
 Package: NMdata
 Type: Package
 Title: Prepare data for and get data from Nonmem
-Version: 0.0.1.904
+Version: 0.0.2
 Author: Philip Delff <philip@delff.dk>
 Maintainer: Philip Delff <philip@delff.dk>
 Description: Highly efficient tools to automatically retrieve data from Nonmem. And for easy preparation of fully documented Nonmem datasets.
@@ -9,5 +9,6 @@ License: MIT + file LICENSE
 RoxygenNote: 6.1.1
 Depends: R (>= 3.2.4)
 Imports: data.table
-Suggests: testthat
+Suggests: testthat, knitr
+VignetteBuilder: knitr
 Encoding: UTF-8

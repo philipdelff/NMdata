@@ -68,6 +68,11 @@ NMwriteData will create this by default too.}
 \item{as.dt}{The default is to return data in data.tables. If data.frames
 are wanted, use as.dt=FALSE.}
 
+\item{mergeByFilters}{This is experimental. If TRUE, the IGNORE filters in
+the nonmem control stream are attempted applied and then input and
+output data simply cbinded. This is not recommended (use a row
+identifier instead), but sometimes it is your only option.}
+
 \item{debug}{start by running browser()?}
 }
 \description{
