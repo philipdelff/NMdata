@@ -1,7 +1,13 @@
 * NMdata todo
+** Design 
+*** TODO For a version 0.2.0, omit the extra variability levels
+just provide functions to get them
 ** Function improvements
 *** NMextractText
 **** TODO reduce lines and text to one argument
 The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued.
+*** NMtransInput
+**** TODO Names of variables must be taken from lst, not mod
+mod should only be used for path to dataset.
