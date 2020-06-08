@@ -37,7 +37,7 @@
 ##' @param dir.data The data directory can only be read from the control stream
 ##'     (.mod) and not from the output file (.lst). So if you only have the
 ##'     output file, use dir.data to tell in which directory to find the data
-##'     file.
+##'     file. If dir.data is provided, the .mod file is not used at all.
 ##' @param quiet The default is to give some information along the way on what
 ##'     data is found. But consider setting this to TRUE for non-interactive
 ##'     use.
@@ -106,8 +106,8 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
 
-    
-###{ process arguments 
+#### Section start: Process arguments  ####
+
     file <- filePathSimple(file)
     if(!file.exists(file)) stop(paste0("Model file ",file," does not exist."),call. = F)
     dir <- dirname(file)
@@ -125,8 +125,11 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
     } else {
         include.model <- FALSE
     }
+
+    ## for easier passing of the argument
+    if(missing(dir.data)) dir.data <- NULL
     
-###}
+###  Section end: Process arguments 
 
 
 ###{ read all output tables and merge to max one firstonly and max one row
@@ -212,7 +215,7 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 ###{ handle input data
     if(use.input) {
         file.mod <- sub("\\.lst","\\.mod",file)
-        if(!file.exists(file.mod)&&missing(dir.data)){
+        if(!file.exists(file.mod)&&is.null(dir.data)){
             warning("control stream (.mod) not found next to .lst file. If you don't have a .mod file, see the dir.data argument. Input data not used.")
             use.input <- FALSE
         }

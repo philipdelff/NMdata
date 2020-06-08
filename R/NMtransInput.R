@@ -3,15 +3,19 @@
 ##' @description Based on a nonmem run, this function finds the input data and
 ##'     reads it. But it reads it like the nonmem run by applying DROP arguments
 ##'     and alternative naming of columns in the nonmem run.
-##' @param file a .lst or a .mod. No matter which you provide, the .mod is
-##'     required and is the only one to be read.
+##' @param file a .lst or a .mod. If dir.data is missing, the .mod is required
+##'     to exist next to the .lst file. This is because the .lst does not
+##'     contain the path to the data file. The .mod file is only used for
+##'     finding the data file. How to interpret the datafile is read from the
+##'     .lst file.
 ##' @param useRDS If an rds file is found with the exact same name (except for
 ##'     .rds instead of say .csv) as the text file mentioned in the Nonmem
 ##'     control stream, should this be used instead? The default is yes, and
 ##'     NMwriteData will create this by default too.
 ##' @param dir.data The data directory can only be read from the control stream
 ##'     (.mod) and not from the output file (.lst). So if you only have the
-##'     output file, use dir.data to tell in which directory to find the data file.
+##'     output file, use dir.data to tell in which directory to find the data
+##'     file. If dir.data is provided, the .mod file is not used at all.
 ##' @param quiet Default is to inform a little, but TRUE is useful for
 ##'     non-interactive stuff.
 ##' @param as.dt Return a data.table? data.table is default, if not a data.frame
@@ -25,13 +29,16 @@ NMtransInput <- function(file,useRDS=TRUE,dir.data,quiet=FALSE,as.dt=TRUE,debug=
     if(debug) browser()
     
 ### the lst file only contains the name of the data file, not the path to it. So we need to find the .mod instead.
-    if(missing(dir.data)){
-        if(grepl("\\.lst$",file)) file <- sub("\\.lst$","\\.mod",file)
+    file.find.data <- file
+
+    if(missing(dir.data)) dir.data <- NULL
+    if(is.null(dir.data)){
+        file.find.data <- sub("\\.lst$","\\.mod",file)
     }
     
     lines <- NMgetSection(file,section="INPUT",keepName=F)
 
-## get rid of redundant spaces
+    ## get rid of redundant spaces
     line <- gsub(" +"," ",paste(lines,collapse=" "))
     line <- sub("^ ","",line)
     line <- sub(" $","",line)
@@ -53,13 +60,13 @@ NMtransInput <- function(file,useRDS=TRUE,dir.data,quiet=FALSE,as.dt=TRUE,debug=
 ### containing the data. Since it is to be used in a FORTRAN OPEN statement,
 ### this name may not include embedded commas, semi-colons, parentheses, or
 ### spaces.
-    lines.data <- NMgetSection(file,section="DATA",keepName=F,keepComments=F,keepEmpty=F)
+    lines.data <- NMgetSection(file.find.data,section="DATA",keepName=F,keepComments=F,keepEmpty=F)
 
     ## pick $DATA and the next string
     lines.data2 <- paste(lines.data,collapse=" ")
     path.data.input <- sub(" *([^ ]+) +.*","\\1",lines.data2)
 
-    if(missing(dir.data)){
+    if(is.null(dir.data)){
         pathIsAbs <- function(path) grepl("^/",path)
         if(pathIsAbs(path.data.input)){
 ### assuming we are on windows

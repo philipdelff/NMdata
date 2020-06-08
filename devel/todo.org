@@ -2,6 +2,8 @@
 ** Design 
 *** TODO For a version 0.2.0, omit the extra variability levels
 just provide functions to get them
+*** TODO Allow for say input.txt/output.txt
+**** NMtransInput
 ** Function improvements
 *** NMextractText
 **** TODO reduce lines and text to one argument
@@ -9,5 +11,7 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued.
 *** NMtransInput
-**** TODO Names of variables must be taken from lst, not mod
+**** DONE Names of variables must be taken from lst, not mod
+     CLOSED: [2020-06-06 Sat 23:43]
 mod should only be used for path to dataset.
+**** TODO Add support for absolute paths
