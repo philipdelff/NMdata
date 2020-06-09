@@ -55,7 +55,10 @@ pk[ID==1]
 indprofs <- ggIndProfs(pk,amt="AMT")
 ggwrite(indprofs,file="indprofs.pdf",onefile=T)
 
+
+pk <- pk[order(ID,TIME,CMT)]
 pk <- pk[DOSE>0]
+pk[,ROW:=1:nrow(pk)]
 pk <- NMorderColumns(pk)
 
 dim(pk)
