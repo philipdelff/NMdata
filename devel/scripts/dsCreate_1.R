@@ -64,3 +64,10 @@ pk <- NMorderColumns(pk)
 dim(pk)
 
 NMwriteData(pk,file="../../inst/examples/data/xgxr1.csv")
+
+
+## read res
+library(devtools)
+load_all("c:/Users/kctw748/working_copies/NMdata")
+res1 <- NMscanData("../../inst/examples/nonmem/xgxr001.lst")
+res1
