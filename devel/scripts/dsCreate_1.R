@@ -5,20 +5,21 @@ library(ggplot2)
 
 ### what is pmxtricks used for?
 ## we need to ensure a specific version of pmxtricks is used. 0.0.7 is a candidate
+
 library(pmxtricks)
 
+## library(remotes)
+## install_github("philipdelff/NMdata")
 library(NMdata)
 
 pkpd <- as.data.table(case1_pkpd)
 
-pk <- pkpd[CMT == 2] 
+pk <- pkpd[CMT %in% 1:2] 
 
 pk <- pk[CYCLE==1]
 
 pk <- pk[,!c("IPRED")]
 pk[,trtact := factor(TRTACT, levels = unique(TRTACT))]
-
-ggplot(pk,aes(TIME))
 
 
 ggplot(data = pk, aes(x     = NOMTIME,
@@ -47,4 +48,16 @@ setnames(pk,
          )
 
 
-NM
+pk
+pk[,table(CMT,EVID)]
+
+pk[ID==1]
+indprofs <- ggIndProfs(pk,amt="AMT")
+ggwrite(indprofs,file="indprofs.pdf",onefile=T)
+
+pk <- pk[DOSE>0]
+pk <- NMorderColumns(pk)
+
+dim(pk)
+
+NMwriteData(pk,file="../../inst/examples/data/xgxr1.csv")

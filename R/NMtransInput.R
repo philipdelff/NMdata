@@ -24,7 +24,7 @@
 ##' @family Nonmem
 ##' @export
 
-NMtransInput <- function(file,useRDS=TRUE,dir.data,quiet=FALSE,as.dt=TRUE,debug=F){
+NMtransInput <- function(file,useRDS=TRUE,dir.data,quiet=FALSE,as.dt=TRUE,debug=F) {
 
     if(debug) browser()
     
@@ -32,7 +32,7 @@ NMtransInput <- function(file,useRDS=TRUE,dir.data,quiet=FALSE,as.dt=TRUE,debug=
     file.find.data <- file
 
     if(missing(dir.data)) dir.data <- NULL
-    if(is.null(dir.data)){
+    if(is.null(dir.data)) {
         file.find.data <- sub("\\.lst$","\\.mod",file)
     }
     
