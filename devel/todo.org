@@ -14,4 +14,5 @@ issued.
 **** DONE Names of variables must be taken from lst, not mod
      CLOSED: [2020-06-06 Sat 23:43]
 mod should only be used for path to dataset.
-**** TODO Add support for absolute paths
+**** DONE Add support for absolute paths
+     CLOSED: [2020-06-09 Tue 23:22]

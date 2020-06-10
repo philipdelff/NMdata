@@ -9,6 +9,7 @@ test_that("basic",{
     ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
     res1 <- NMgetSection(file=file.lst,section="DATA")
+    ## res1 <- NMgetSection(file=file.lst,section="DATA",debug=T)
 
     expect_equal_to_reference(res1,fileRef)
 })

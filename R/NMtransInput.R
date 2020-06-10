@@ -1,26 +1,34 @@
 ##' read input data and translate names according to the $INPUT section
 ##' 
-##' @description Based on a nonmem run, this function finds the input data and
-##'     reads it. But it reads it like the nonmem run by applying DROP arguments
-##'     and alternative naming of columns in the nonmem run.
-##' @param file a .lst or a .mod. If dir.data is missing, the .mod is required
-##'     to exist next to the .lst file. This is because the .lst does not
-##'     contain the path to the data file. The .mod file is only used for
-##'     finding the data file. How to interpret the datafile is read from the
-##'     .lst file.
-##' @param useRDS If an rds file is found with the exact same name (except for
-##'     .rds instead of say .csv) as the text file mentioned in the Nonmem
-##'     control stream, should this be used instead? The default is yes, and
-##'     NMwriteData will create this by default too.
-##' @param dir.data The data directory can only be read from the control stream
-##'     (.mod) and not from the output file (.lst). So if you only have the
-##'     output file, use dir.data to tell in which directory to find the data
-##'     file. If dir.data is provided, the .mod file is not used at all.
+##' @description Based on a nonmem run, this function finds the input
+##'     data and reads it. But it reads it like the nonmem run by
+##'     applying DROP arguments and alternative naming of columns in
+##'     the nonmem run.
+##' @param file a .lst or a .mod. If dir.data is missing, the .mod is
+##'     required to exist next to the .lst file. This is because the
+##'     .lst does not contain the path to the data file. The .mod file
+##'     is only used for finding the data file. How to interpret the
+##'     datafile is read from the .lst file.
+##' @param useRDS If an rds file is found with the exact same name
+##'     (except for .rds instead of say .csv) as the text file
+##'     mentioned in the Nonmem control stream, should this be used
+##'     instead? The default is yes, and NMwriteData will create this
+##'     by default too.
+##' @param dir.data The data directory can only be read from the
+##'     control stream (.mod) and not from the output file (.lst). So
+##'     if you only have the output file, use dir.data to tell in
+##'     which directory to find the data file. If dir.data is
+##'     provided, the .mod file is not used at all.
 ##' @param quiet Default is to inform a little, but TRUE is useful for
 ##'     non-interactive stuff.
-##' @param as.dt Return a data.table? data.table is default, if not a data.frame
-##'     is returned.
+##' @param as.dt Return a data.table? data.table is default, if not a
+##'     data.frame is returned.
 ##' @param debug start by running browser()?
+##' @details The line containing whom the license is issued to cannot
+##'     be retrieved. Special characters like accents and the
+##'     registerred trademark (R) sign are likely to cause trouble if
+##'     locales are changed (say from a linux system running Nonmem to
+##'     a Windows or Mac running R), so this line is discarded.
 ##' @family Nonmem
 ##' @export
 
@@ -66,13 +74,10 @@ NMtransInput <- function(file,useRDS=TRUE,dir.data,quiet=FALSE,as.dt=TRUE,debug=
     lines.data2 <- paste(lines.data,collapse=" ")
     path.data.input <- sub(" *([^ ]+) +.*","\\1",lines.data2)
 
-    if(is.null(dir.data)){
-        pathIsAbs <- function(path) grepl("^/",path)
-        if(pathIsAbs(path.data.input)){
-### assuming we are on windows
-            stop("absolute paths not supported")
-        } else {
-            path.data.input <- file.path(dirname(file),path.data.input)
+    if(is.null(dir.data)) {
+        pathIsAbs <- function(path) grepl("(^/|^[a-z]:/)",path,perl = TRUE)
+        if(!pathIsAbs(path.data.input)) {
+            path.data.input <- filePathSimple(dirname(file),path.data.input)
         }
     } else {
         path.data.input <- filePathSimple(dir.data,basename(path.data.input))

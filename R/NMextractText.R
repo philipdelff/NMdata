@@ -77,6 +77,9 @@ NMextractText <- function(file, lines, text, section, char.section,char.end=char
     if(is.null(type)||is.na(type)||grepl("^ *$",type)){
         type <- "all"
     }
+
+    ## This line can give problems because of possible special characters in company names or the registerred trademark character. We are not using it anyway.
+    lines <- lines[!grepl("^ *License Registered to:",lines,useBytes=T)]
     lines <- switch(type,
                     mod={
                         lines[1:(min(c(length(lines),grep("NM-TRAN MESSAGES|WARNINGS AND ERRORS \\(IF ANY\\) FOR PROBLEM",lines)-1)))]
