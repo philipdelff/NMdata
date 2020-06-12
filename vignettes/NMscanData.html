@@ -307,7 +307,27 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(NMdata)</a></code></pre></div>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>Getting data from R to Nonmem and back is tedious and can be time consuming. The way data is exported from Nonmem means that a few tables may have to be combined, and then some variables may still be missing (like character variables which may be in the input data file). Most modellers develop some habits over time to avoid some issues. But still, it may be time demanding even for experienced modellers to pick up a model developed by someone else or by themselves earlier in their career just because they need to understand what data exported and how.</p>
+<p>Getting data from R to Nonmem and back is tedious and can be time consuming. The way data is exported from Nonmem means that a few tables may have to be combined, and then some variables may still be missing (like character variables which may be in the input data file). Most modellers develop some habits over time to avoid some issues. But still, it may be time demanding even for experienced modellers to pick up a model developed by someone else or by themselves earlier in their career just because they need to understand what data exported and how. This vignette focuses on how NMdata provides a general solution for what needs to be trivial: get a dataset out of a Nonmem run.</p>
+<p>Try NMscanData on any dataset:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">res1 &lt;-<span class="st"> </span><span class="kw">NMscanData</span>(<span class="kw">NMdata_filepath</span>(<span class="st">&quot;examples/nonmem/xgxr001.lst&quot;</span>))</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co">#&gt; Scanning for output tables.</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="co">#&gt; Read 1 table(s).</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="co">#&gt; Searching for input data.</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="co">#&gt; found rds input file. This will be used.</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="kw">names</span>(res1)</a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="co">#&gt; [1] &quot;pop&quot; &quot;row&quot; &quot;id&quot;  &quot;occ&quot;</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="kw">lapply</span>(res1,dim)</a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="co">#&gt; $pop</span></a>
+<a class="sourceLine" id="cb2-10" title="10"><span class="co">#&gt; [1]  1 10</span></a>
+<a class="sourceLine" id="cb2-11" title="11"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-12" title="12"><span class="co">#&gt; $row</span></a>
+<a class="sourceLine" id="cb2-13" title="13"><span class="co">#&gt; [1] 1500   33</span></a>
+<a class="sourceLine" id="cb2-14" title="14"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-15" title="15"><span class="co">#&gt; $id</span></a>
+<a class="sourceLine" id="cb2-16" title="16"><span class="co">#&gt; [1] 150  19</span></a>
+<a class="sourceLine" id="cb2-17" title="17"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-18" title="18"><span class="co">#&gt; $occ</span></a>
+<a class="sourceLine" id="cb2-19" title="19"><span class="co">#&gt; NULL</span></a></code></pre></div>
 <p>This is even more frustrating when taking into account that the variability in data is at very few levels that never change. These are - population (model run) level (like study name or TVCL representing clearance for a typical subject) - subject-level like covariates, individual parameter estimates or between-subject variable random effects. - occasion-level like between-occasion variable random effects or parameters - row-level which is everything that varies within the levels above. That is time, concentrations, doses, time-varying covariates etc.</p>
 <p>All analysis of the data are performed at one of these levels, because they are the levels of variability in PK/PD models. Hence, what the modeller will do after running a model in nonmem is to collect and break down the data in one or more of these levels, depending on what analysis is needed.</p>
 <p>The NMscanData does this based on both output and input data, and it does so (almost) only based on information available in the .lst file. It is based on the increadible data.table package and is generally very fast, even for very large datasets.</p>
@@ -315,9 +335,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="get-started" class="section level1">
 <h1>Get started</h1>
 <p>All you have to do is point to a lst file (or however you name the output file):</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">res1 &lt;-<span class="st"> </span><span class="kw">NMscanData</span>(<span class="kw">NMdata_filepath</span>(<span class="st">&quot;examples/nonmem/run001.lst&quot;</span>))</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="kw">names</span>(res1)</a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="kw">lapply</span>(res1,dim)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">res1 &lt;-<span class="st"> </span><span class="kw">NMscanData</span>(<span class="kw">NMdata_filepath</span>(<span class="st">&quot;examples/nonmem/run001.lst&quot;</span>))</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">names</span>(res1)</a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="kw">lapply</span>(res1,dim)</a></code></pre></div>
 <p>The lst file was scanned for output tables, and they were all read (including interpreting the possible firstonly option). The input data has been used based on the DATA and INPUT sections of the control stream. Then it analyses what varies withing the levels mentioned in the introduction. Variables that do not vary at all are included at pop level, those that do not vary within (any) subject ID, are put at id-level etc. Everything is included at row level.</p>
 <p>A little bit of information is needed to do this, and that is namely what variables that represent the different levels. NMscanData will assume that row counter is called ROW, subject identifier ID, and occasion identifier OCC. They can all be changed by arguments. Also, even combinations of columns can be used to represent the levels above. Use col.occ=c(‘PART’,‘OCC’) if OCC is nested in study parts etc.</p>
 <div id="the-row-identifier" class="section level2">

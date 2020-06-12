@@ -15,6 +15,8 @@
 
 NMtransFilters <- function(data,file,text,lines,debug=FALSE){
     if(debug) browser()
+
+    stop("Translation of filters in nonmem control stream is not implemented. In order to make use of input data, you must include the same row counter in input and output data. At least for now.")
     
     ## get mod/lst text in lines format
     if(sum(c(!missing(file)&&!is.null(file),
@@ -38,22 +40,26 @@ NMtransFilters <- function(data,file,text,lines,debug=FALSE){
 
     text3 <- sub(";.*$","",text2)
 
-    ## the single-chacter ones line @ or C
-    ign.sc <- regmatches(text3, gregexpr("IGNORE *= *[^ (+]",text3))
+    ## check if IGNORE or ACCEPT are found. If both found, it is an error. 
+    
+    ## the single-chacter ones line @ or C. Here = is mandatory.
+    ign.sc <- regmatches(text3, gregexpr("IGN(?:ORE)* *= *[^ (+]",text3))
     ign.sc <- do.call(c,ign.sc)
     
-    ## expression-style ones
+    ### expression-style ones
+    ## this is not correct. 1. A comma-separated list of expressions can be inside the ()s. 2. Expressions can be nested. 1. has to be handles, 2 can be detected and give an error - too complex to interpret.
     ign.expr <-
-        regmatches(text3, gregexpr("IGNORE *= *\\([^)]*\\)",text3))
+        regmatches(text3, gregexpr("IGN(?:ORE) *=* *\\([^)]*\\)",text3))
     ign.expr <- do.call(c,ign.expr)
 
 ## translating single-charaters
     name.c1 <- colnames(data)[1]
-    scs <- sub("IGNORE=(.+)","\\1",ign.sc)
+    scs <- sub("IGN(?:ORE) *=* *(.+)","\\1",ign.sc)
     expressions <- c()
     if(length(scs)&&grepl("@",scs)) {
+        ### NM manual: @ means first non-blank is a-z or A-Z.
         ## expressions <- c(expressions,paste0("!grepl(\"^[A-Z]|^[a-z]\",",name.c1,")"))
-        expressions <- c(expressions,paste0("!grepl(\"^[A-Za-z]\",",name.c1,")"))
+        expressions <- c(expressions,paste0("!grepl(\"^ *[A-Za-z]\",",name.c1,")"))
         scs <- scs[!grepl("@",scs)]
     }
     

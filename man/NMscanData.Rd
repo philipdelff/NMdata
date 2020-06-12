@@ -54,7 +54,7 @@ not supplied, the name will be taken from the control stream file name.}
 \item{dir.data}{The data directory can only be read from the control stream
 (.mod) and not from the output file (.lst). So if you only have the
 output file, use dir.data to tell in which directory to find the data
-file.}
+file. If dir.data is provided, the .mod file is not used at all.}
 
 \item{quiet}{The default is to give some information along the way on what
 data is found. But consider setting this to TRUE for non-interactive

@@ -186,11 +186,12 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
     tabs.firstonly <- which(overview.tables$firstonly)
     tab.firstonly <- NULL
     if(length(tabs.firstonly)){
-        tab.firstonly <- data.table(col.id=data[[tabs.firstonly[1]]][,col.id,with=FALSE])
+        tab.firstonly <- data.table(col.id=data[[tabs.firstonly[1]]][,get(col.id)])
+        setnames(tab.firstonly,"col.id",col.id)
         ## setnames(all.row,old="col.id",new=col.id)
         for(I in tabs.firstonly){
             ## mergeCheck?
-            tab.firstonly <- merge(all.firstonly,data[[I]][,c(col.id,setdiff(names(data[[I]]),names(all.firstonly)))],by=col.id)
+            tab.firstonly <- merge(tab.firstonly,data[[I]][,c(col.id,setdiff(names(data[[I]]),names(tab.firstonly))),with=F],by=col.id)
         }
     }
 
@@ -222,7 +223,7 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
     }
     if(use.input){
         if(!quiet) message("Searching for input data.")
-        data.input <- as.data.table(NMtransInput(file,quiet=quiet,useRDS=useRDS,as.dt=TRUE,debug=F))
+        data.input <- NMtransInput(file,quiet=quiet,useRDS=useRDS,applyFilters=mergeByFilters,as.dt=TRUE,debug=F)
         cnames.input <- colnames(data.input)
 
         if(mergeByFilters){
@@ -232,7 +233,7 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
                 stop("For now, you cannot combine mergeByFilters and recoverRows.")
             }
             
-            data.input.filter <- NMtransFilters(data.input,file=file)
+      
             if(nrow(data.input.filter)!=nrow(tab.row)) {
                 
                 stop("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted by this experimental implementation of the feature. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or merge manually.")

@@ -12,3 +12,28 @@ test_that("basic",{
 
     expect_equal_to_reference(res1,fileRef)
 })
+
+
+test_that("Modifications to column names in $INPUT",{
+
+    fileRef <- "testReference/NMscanData2.rds"
+
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr002.lst")
+
+    res <- NMscanData(file=file.lst)
+
+    expect_equal_to_reference(res,fileRef)
+})
+
+
+test_that("Multiple output table formats",{
+
+    fileRef <- "testReference/NMscanData3.rds"
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr003.lst")
+
+    ## res <- NMscanData(file=file.lst,debug=T)
+    res <- NMscanData(file=file.lst)
+
+    expect_equal_to_reference(res,fileRef)
+})
+

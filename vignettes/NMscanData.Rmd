@@ -27,21 +27,23 @@ file). Most modellers develop some habits over time to avoid some
 issues. But still, it may be time demanding even for experienced
 modellers to pick up a model developed by someone else or by
 themselves earlier in their career just because they need to
-understand what data exported and how.
+understand what data exported and how. This vignette focuses on how NMdata provides a general solution for what needs to be trivial: get a dataset out of a Nonmem run.
 
-This is even more frustrating when taking into account that the
-variability in data is at very few levels that never change. These are 
+Try NMscanData on any dataset:
+```{r,eval=TRUE}
+res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
+names(res1)
+lapply(res1,dim)
+```
+
+These four returned datasets represent the following variability levels:
 - population (model run) level (like study name or TVCL representing clearance for a typical subject)
 - subject-level like covariates, individual parameter estimates or between-subject variable random effects.
 - occasion-level like between-occasion variable random effects or parameters
 - row-level which is everything that varies within the levels above. That is time, concentrations, doses, time-varying covariates etc.
 
-All analysis of the data are performed at one of these levels, because they are the levels of variability in PK/PD models. Hence, what the modeller will do after running a model in nonmem is to collect and break down the data in one or more of these levels, depending on what analysis is needed.
+In future versions of NMdata, only the row-level dataset will be returned. Let's see how to derive other levels of variability from the returned data.
 
-The NMscanData does this based on both output and input data, and it
-does so (almost) only based on information available in the .lst
-file. It is based on the increadible data.table package and is
-generally very fast, even for very large datasets.
 
 # Get started
 All you have to do is point to a lst file (or however you name the output file):

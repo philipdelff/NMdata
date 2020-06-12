@@ -32,7 +32,7 @@
 ##' @family Nonmem
 ##' @export
 
-NMtransInput <- function(file,useRDS=TRUE,dir.data,quiet=FALSE,as.dt=TRUE,debug=F) {
+NMtransInput <- function(file,useRDS=TRUE,dir.data,applyFilters=FALSE,quiet=FALSE,as.dt=TRUE,debug=F) {
 
     if(debug) browser()
     
@@ -43,8 +43,13 @@ NMtransInput <- function(file,useRDS=TRUE,dir.data,quiet=FALSE,as.dt=TRUE,debug=
     if(is.null(dir.data)) {
         file.find.data <- sub("\\.lst$","\\.mod",file)
     }
-    
+
+## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    
     lines <- NMgetSection(file,section="INPUT",keepName=F)
+    if(is.null(lines)) {
+        lines <- NMgetSection(file,section="INFILE",keepName=F)
+    }
+    if(is.null(lines)) {stop("Could not find $INPUT or $INFILE section in control stream. Cannot interpret data. Is file really the path to a valid nonmem control stream?")}
 
     ## get rid of redundant spaces
     line <- gsub(" +"," ",paste(lines,collapse=" "))
@@ -97,7 +102,11 @@ NMtransInput <- function(file,useRDS=TRUE,dir.data,quiet=FALSE,as.dt=TRUE,debug=
             ##        use.input <- FALSE
         }
     }
-    
+
+### filters must be applied here according to NM manual IV-1
+    if(applyFilters){
+        data.input <- NMtransFilters(data.input,file=file)
+    }
 
     cnames.input <- colnames(data.input)
     cnames.input[1:length(nms)] <- nms
