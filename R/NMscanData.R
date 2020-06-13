@@ -234,13 +234,13 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
             }
             
       
-            if(nrow(data.input.filter)!=nrow(tab.row)) {
+            if(nrow(data.input)!=nrow(tab.row)) {
                 
                 stop("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted by this experimental implementation of the feature. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or merge manually.")
             }
             tab.row <- cbind(
                 tab.row,
-                data.input.filter[,!colnames(data.input.filter)%in%colnames(tab.row),with=F]
+                data.input[,!colnames(data.input)%in%colnames(tab.row),with=F]
             )
             
         } else {
@@ -304,8 +304,10 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
         }
 
         ## tab.id
-        
-        tab.id <- findCovs(all.row,cols.id=c(col.id,col.grp))
+        tab.id <- NULL
+        if(col.id%in%colnames(all.row)){
+            tab.id <- findCovs(all.row,cols.id=c(col.id,col.grp))
+        }
         tab.run <- findCovs(all.row)
 
     } else {

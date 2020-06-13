@@ -37,3 +37,16 @@ test_that("Multiple output table formats",{
     expect_equal_to_reference(res,fileRef)
 })
 
+test_that("Interpret IGNORE statement",{
+
+    fileRef <- "testReference/NMscanData4.rds"
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
+
+    ## res <- NMscanData(file=file.lst,debug=T)
+    res <- NMscanData(file=file.lst,debug=F)
+    res2 <- NMscanData(file=file.lst,mergeByFilters = T, debug=F)
+    
+    
+    expect_equal_to_reference(res,fileRef)
+})
+
