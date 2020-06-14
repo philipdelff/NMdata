@@ -30,8 +30,10 @@ NMcode2R <- function(text){
     text <- gsub("\\.LT\\.","<",x=text)
     text <- gsub("\\.LE\\.","<=",x=text)
     text <- gsub("\\.EQ\\.","==",x=text)
+    text <- gsub("\\.NE\\.","!=",x=text)
     text <- gsub("\\.AND\\.","&&",x=text)
     text <- gsub("\\.OR\\.","||",x=text)
+    text <- gsub("/=","!=",x=text)
     
 ### functions
     text <- gsub("EXP *\\(","exp(",x=text)

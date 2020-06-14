@@ -39,6 +39,16 @@ NMtransFilters <- function(data,file,text,lines,quiet=FALSE,debug=FALSE){
     text2 <- NMgetSection(lines=lines,section="DATA",keepComments=F)
     text3 <- sub(";.*$","",text2)
 
+
+    ## replace the allowed IGN with IGNORE
+    text3 <- gsub("IGN([^O])","IGNORE\\1",text3)
+##### TODO: this is only for ignore. And is allowed to be combined with
+##### accept lists.
+    ## the single-chacter ones line @ or C. Here = is mandatory.
+    conds.sc <- regmatches(text3, gregexpr(paste0("IGNORE"," *= *[^ (+]"),text3))
+    conds.sc <- do.call(c,conds.sc)
+    text3 <- gsub(paste0("IGNORE"," *= *[^ (+]"),"",text3)
+
     ## check if IGNORE or ACCEPT are found. If both found, it is an error. 
     any.accepts <- any(grepl("ACCEPT",text3))
     any.ignores <- any(grepl("IGN",text3))
@@ -46,44 +56,38 @@ NMtransFilters <- function(data,file,text,lines,quiet=FALSE,debug=FALSE){
     if(!any.accepts&&!any.ignores) return(data)
     if(any.accepts&&any.ignores) stop("IGNORE and ACCEPT are not allowed together according to Nonmem documentation.")
 
-    ## If it's ignore, replace the allowed IGN with IGNORE
+    
     if(any.ignores){
-        text3 <- gsub("IGN([^O])","IGNORE\\1",text3)
         type.condition <- "IGNORE"
     } else {
         type.condition <- "ACCEPT"
     }
     
 
-    ##### TODO: this is only for ignore. And is allowed to be combined with
-    ##### accept lists.
-    ## the single-chacter ones line @ or C. Here = is mandatory.
-    conds.sc <- regmatches(text3, gregexpr(paste0(type.condition," *= *[^ (+]"),text3))
-    conds.sc <- do.call(c,conds.sc)
     
 ### expression-style ones
-    ## this is not correct.
+    ## this is not entirely correct.
 ### 1. A comma-separated list of expressions can be inside the ()s.
     ## 2. Expressions can be nested.
-### 1. has to be handled, 2 can be detected and give an error - too complex to interpret.
+### 1. is handled below, 2 should be detected and give an error - too complex to interpret.
     conds.expr <-
         regmatches(text3, gregexpr(paste0(type.condition," *=* *\\([^)]*\\)"),text3))
     conds.expr <- do.call(c,conds.expr)
 
     ## translating single-charaters
     name.c1 <- colnames(data)[1]
-    scs <- sub(paste0(type.condition," *=* *(.+)"),"\\1",conds.sc)
-    expressions <- c()
+    scs <- sub(paste0("IGNORE"," *=* *(.+)"),"\\1",conds.sc)
+    expressions.sc <- c()
     if(length(scs)&&grepl("@",scs)) {
 ### NM manual: @ means first non-blank is a-z or A-Z.
         ## expressions <- c(expressions,paste0("!grepl(\"^[A-Z]|^[a-z]\",",name.c1,")"))
-        expressions <- c(expressions,paste0("grepl(\"^ *[A-Za-z]\",",name.c1,")"))
+        expressions.sc <- c(expressions.sc,paste0("!grepl(\"^ *[A-Za-z]\",",name.c1,")"))
         scs <- scs[!grepl("@",scs)]
     }
     
     if(length(scs)&&grepl("^a-zA-Z",scs)){
         scs2 <- regmatches(scs,regexpr("^[a-zA-Z]",scs))
-        expressions <- c(expressions,paste0("!grepl('^",scs2,"\",",name.c1,")"))
+        expressions.sc <- c(expressions.sc,paste0("!grepl('^",scs2,"\",",name.c1,")"))
         scs <- scs[!grepl("^[a-zA-Z]",scs)]
     }
     if(length(scs)) stop(paste0("Not all single-character IGNORE statements were translated. This is left: ",scs))
@@ -91,16 +95,17 @@ NMtransFilters <- function(data,file,text,lines,quiet=FALSE,debug=FALSE){
     ## translating expression-style ones
     conds.list <- strsplit(gsub(paste0(type.condition," *= *\\((.+)\\)"),"\\1",conds.expr),split=",")
     conds.char <- lapply(conds.list,c)
-    expressions <- c(expressions,paste0("!",
-                                        NMcode2R(
-                                            conds.char
-                                        )
-                                        ))
-
-## remember to negate everything if the type is ignore
-    if(type.condition=="IGNORE") expressions <- paste0("!",expressions)
+    expressions.list <- c(paste0(
+        NMcode2R(
+            conds.char
+        )
+    ))
     
-    expressions.all <- paste(expressions,collapse="&")
+    ## remember to negate everything if the type is ignore
+    if(type.condition=="IGNORE") expressions.list <- paste0("!",expressions.list)
+    
+    expressions.all <- paste(c(expressions.sc,expressions.list),collapse="&")
+    
     if(!quiet) message(paste("Condition to apply:",expressions.all))
     data2 <- as.data.table(data)[eval(parse(text=expressions.all))]
 

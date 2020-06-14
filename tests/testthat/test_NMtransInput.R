@@ -1,4 +1,4 @@
-context("NMtransFilters")
+context("NMtransInput")
 
 test_that("basic",{
     

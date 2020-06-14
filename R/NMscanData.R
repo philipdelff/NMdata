@@ -132,7 +132,8 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 ###  Section end: Process arguments 
 
 
-###{ read all output tables and merge to max one firstonly and max one row
+#### Section start: read all output tables and merge to max one firstonly and max one row ####
+
     if(!quiet) message("Scanning for output tables.")
     tables <- NMscanTables(file,details=T,as.dt=T,quiet=quiet)
     data <- tables$data
@@ -200,20 +201,14 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 
 
 ###### all row tables combined into one
-###}
 
-###{ split tables into row, id, and occ level
-### for each table
-    ## scan for covariates
-    ## scan for occasion variables
-    ## check if col.row is present. If so, look for row-level info
+###  Section end: read all output tables and merge to max one firstonly and max one row
 
-    ## nmout is used to keep track of wether rows are from output data or only
-    ## from input data.
-    tab.row[,nmout:=TRUE]
+
+#### Section start: handle input data ####
 
     
-###{ handle input data
+    tab.row[,nmout:=TRUE]
     if(use.input) {
         file.mod <- sub("\\.lst","\\.mod",file)
         if(!file.exists(file.mod)&&is.null(dir.data)){
@@ -233,7 +228,7 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
                 stop("For now, you cannot combine mergeByFilters and recoverRows.")
             }
             
-      
+            
             if(nrow(data.input)!=nrow(tab.row)) {
                 
                 stop("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted by this experimental implementation of the feature. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or merge manually.")
@@ -276,6 +271,19 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
             
         }
     }
+
+###  Section end: handle input data
+
+    
+###{ split tables into row, id, and occ level
+### for each table
+    ## scan for covariates
+    ## scan for occasion variables
+    ## check if col.row is present. If so, look for row-level info
+
+    ## nmout is used to keep track of wether rows are from output data or only
+    ## from input data.
+
 
     
 ##### TODO: There are certain variables that can only be row specifc: WRES, CWRES, etc.

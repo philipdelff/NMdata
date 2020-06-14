@@ -1,4 +1,4 @@
-$PROBLEM    PK. With ignore statement.
+$PROBLEM    PK. With ignore statement. No ROW in output table.
 $INPUT      ROW ID NOMTIME TIME EVID CMT AMT DV BLQ CYCLE DOSE PART
             PROFDAY PROFTIME STUDY WEIGHTB
 $DATA      xgxr1.csv IGNORE=@ IGNORE=(DOSE.LE.10)
