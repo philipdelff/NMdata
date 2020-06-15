@@ -93,7 +93,7 @@ NMtransFilters <- function(data,file,text,lines,quiet=FALSE,debug=FALSE){
     if(length(scs)) stop(paste0("Not all single-character IGNORE statements were translated. This is left: ",scs))
 
     ## translating expression-style ones
-    conds.list <- strsplit(gsub(paste0(type.condition," *= *\\((.+)\\)"),"\\1",conds.expr),split=",")
+    conds.list <- strsplit(gsub(paste0(type.condition," *= *\\((.+)\\)"),"\\1",conds.expr),split=",")[[1]]
     conds.char <- lapply(conds.list,c)
     expressions.list <- c(paste0(
         NMcode2R(
@@ -103,8 +103,13 @@ NMtransFilters <- function(data,file,text,lines,quiet=FALSE,debug=FALSE){
     
     ## remember to negate everything if the type is ignore
     if(type.condition=="IGNORE") expressions.list <- paste0("!",expressions.list)
-    
-    expressions.all <- paste(c(expressions.sc,expressions.list),collapse="&")
+
+    ## this is correct if both sc and list are present. But will break if one of
+    ## them is missing.
+    expressions.all <- paste(c(
+        paste0(expressions.sc,collapse="&"),
+        paste0("(",paste(expressions.list,collapse="|"),")")
+                              ),collapse="&")
     
     if(!quiet) message(paste("Condition to apply:",expressions.all))
     data2 <- as.data.table(data)[eval(parse(text=expressions.all))]

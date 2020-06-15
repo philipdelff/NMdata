@@ -38,15 +38,33 @@ test_that("Multiple output table formats",{
 })
 
 test_that("Interpret IGNORE statement",{
-
     fileRef <- "testReference/NMscanData4.rds"
     file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
 
     ## res <- NMscanData(file=file.lst,debug=T)
-    res <- NMscanData(file=file.lst,debug=F)
-    res2 <- NMscanData(file=file.lst,mergeByFilters = T, debug=F)
-    
+    ## res <- NMscanData(file=file.lst,debug=F)
+    res <- NMscanData(file=file.lst,mergeByFilters = T, debug=F)
+
+    names(res$row)
     
     expect_equal_to_reference(res,fileRef)
 })
+
+
+
+test_that("Interpret IGNORE statement",{
+    ##    fileRef <- "testReference/NMscanData4.rds"
+    file1.lst <- NMdata_filepath("examples/nonmem/xgxr006.lst")
+    file2.lst <- NMdata_filepath("examples/nonmem/xgxr007.lst")
+
+    NMgetSection(file1.lst,section="PROBLEM")
+    NMgetSection(file2.lst,section="PROBLEM")
+    res1 <- NMscanData(file=file1.lst,mergeByFilters = T, useRDS = F,debug=F)
+    res2 <- NMscanData(file=file2.lst,mergeByFilters = T, debug=F)
+
+    names(res$row)
+    
+    expect_equal_to_reference(res,fileRef)
+})
+
 
