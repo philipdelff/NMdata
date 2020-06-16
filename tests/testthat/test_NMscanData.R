@@ -45,7 +45,7 @@ test_that("Interpret IGNORE statement",{
     ## res <- NMscanData(file=file.lst,debug=F)
     res <- NMscanData(file=file.lst,mergeByFilters = T, debug=F)
 
-    names(res$row)
+    ## names(res$row)
     
     expect_equal_to_reference(res,fileRef)
 })

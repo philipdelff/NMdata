@@ -4,6 +4,10 @@
 just provide functions to get them
 *** TODO Allow for say input.txt/output.txt
 **** NMtransInput
+*** TODO Support for return as tibble or whatever
+Could we use an option, NMdata.return="dplyr::as.tibble" which could then be
+reached and applied from within NMdata? It would have to not create extra
+dependencies.
 ** Function improvements
 *** NMextractText
 **** TODO reduce lines and text to one argument
@@ -29,3 +33,4 @@ According to the manual single = can be used for comparisons. This is not and
 should not be translated by NMcode2R.
 **** DONE $INPT is an alias for $INPUT
      CLOSED: [2020-06-15 Mon 21:09]
+     

@@ -1,4 +1,3 @@
-Wed Jun 10 13:45:26 UTC 2020
 $PROBLEM    PK. Tests of modifications to column names in $INPUT
 ;; One variable is dropped, BBW is a new name.         
 
@@ -64,10 +63,7 @@ NM-TRAN MESSAGES
  IT IS POSSIBLE THAT SOME WARNING MESSAGES WERE SUPPRESSED.
 Note: The following floating-point exceptions are signalling: IEEE_INVALID_FLAG IEEE_DIVIDE_BY_ZERO
 
-License Registered to: AstraZeneca - R
-Expiration Date:    14 AUG 2020
-Current Date:       10 JUN 2020
-Days until program expires :  64
+
 1NONLINEAR MIXED EFFECTS MODEL PROGRAM (NONMEM) VERSION 7.3.0
  ORIGINALLY DEVELOPED BY STUART BEAL, LEWIS SHEINER, AND ALISON BOECKMANN
  CURRENT DEVELOPERS ARE ROBERT BAUER, ICON DEVELOPMENT SOLUTIONS,
@@ -5203,5 +5199,3 @@ Days until program expires :  64
 +        1.50E+03  1.99E-01  2.78E-02  8.71E-01  1.80E-01  7.87E+01  6.57E-02  9.13E-02 -2.56E-02  6.00E-01
  
  #CPUT: Total CPU Time in Seconds,       14.978
-Stop Time:
-Wed Jun 10 13:45:46 UTC 2020
