@@ -7,6 +7,9 @@
 ##' @param text The mod/lst as characters.
 ##' @param lines The mod/lst as character, line by line.
 ##' @param debug start by running browser()?
+##' @details This is not bulletproof. A statement like ACCEPT=(DOSE 10) which in
+##'     Nonmem means the same as ACCEPT==(DOSE==10) will not be correctly
+##'     interpreted. Also, nested conditions are not supported altogether.
 ##' @family Nonmem
 
 ## At least for now, don't export. This is still very experimental, and it is a
@@ -41,11 +44,11 @@ NMtransFilters <- function(data,file,text,lines,quiet=FALSE,debug=FALSE){
 
 
     ## replace the allowed IGN with IGNORE
-    text3 <- gsub("IGN([^O])","IGNORE\\1",text3)
+    ## text3 <- gsub("IGN([^O])","IGNORE\\1",text3)
 ##### TODO: this is only for ignore. And is allowed to be combined with
 ##### accept lists.
     ## the single-chacter ones line @ or C. Here = is mandatory.
-    conds.sc <- regmatches(text3, gregexpr(paste0("IGNORE"," *= *[^ (+]"),text3))
+    conds.sc <- regmatches(text3, gregexpr(paste0("IGN(?:ORE)"," *= *[^ (+]"),text3))
     conds.sc <- do.call(c,conds.sc)
     text3 <- gsub(paste0("IGNORE"," *= *[^ (+]"),"",text3)
 
@@ -73,6 +76,7 @@ NMtransFilters <- function(data,file,text,lines,quiet=FALSE,debug=FALSE){
     conds.expr <-
         regmatches(text3, gregexpr(paste0(type.condition," *=* *\\([^)]*\\)"),text3))
     conds.expr <- do.call(c,conds.expr)
+    ##    conds.expr <- do.call(c,conds.expr)
 
     ## translating single-charaters
     name.c1 <- colnames(data)[1]
@@ -92,29 +96,51 @@ NMtransFilters <- function(data,file,text,lines,quiet=FALSE,debug=FALSE){
     }
     if(length(scs)) stop(paste0("Not all single-character IGNORE statements were translated. This is left: ",scs))
 
+    
+    
     ## translating expression-style ones
-    conds.list <- strsplit(gsub(paste0(type.condition," *= *\\((.+)\\)"),"\\1",conds.expr),split=",")[[1]]
-    conds.char <- lapply(conds.list,c)
+    conds.list <- strsplit(
+        gsub(paste0(type.condition," *= *\\((.+)\\)"),"\\1",conds.expr)
+       ,split=",")
+    conds.char <- do.call(c,conds.list)
+
+
+     
     expressions.list <- c(paste0(
         NMcode2R(
             conds.char
         )
     ))
+
+    ## replace single = with ==
     
+    expressions.list <- sub("^([a-zA-Z]* *)=( *[0-9]+)$","\\1==\\2",expressions.list)
+
+    cond.combine <- "|"
     ## remember to negate everything if the type is ignore
-    if(type.condition=="IGNORE") expressions.list <- paste0("!",expressions.list)
-
-    ## this is correct if both sc and list are present. But will break if one of
-    ## them is missing.
-    expressions.all <- paste(c(
-        paste0(expressions.sc,collapse="&"),
-        paste0("(",paste(expressions.list,collapse="|"),")")
-                              ),collapse="&")
+    if(type.condition=="IGNORE") {
+        expressions.list <- paste0("!",expressions.list)
+        cond.combine <- "&"
+    }
     
-    if(!quiet) message(paste("Condition to apply:",expressions.all))
-    data2 <- as.data.table(data)[eval(parse(text=expressions.all))]
+    ## apply sc first
 
-    data2
+    
+    if(length(expressions.sc)){
+        conditions.all.sc <- paste0(expressions.sc,collapse="&")
+        message(paste("conditions to apply: ",conditions.all.sc))
+        data <- as.data.table(data)[eval(parse(text=conditions.all.sc))]
+    }
+    
+    ## then lists
+    if(length(expressions.list)){
+
+        expressions.all <- paste0("(",paste(expressions.list,collapse=cond.combine),")")
+        message(paste("conditions to apply: ",expressions.all))
+        data <- as.data.table(data)[eval(parse(text=expressions.all))]
+    }
+    
+    data
     
     
 }

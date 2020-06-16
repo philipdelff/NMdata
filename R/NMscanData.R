@@ -169,11 +169,13 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
         ## take row column from the first table in which it appears.
         first.table.with.row <- data[[overview.tables[has.row==TRUE&full.length==TRUE,name[1]]]]
         tab.row <- data.table(col.row=first.table.with.row[,get(col.row)])
+        setnames(tab.row,old="col.row",new=col.row)
     } else {
-        tab.row <- data.table(col.row=1:NrowFull)
+        ## tab.row <- data.table(col.row=1:NrowFull)
+        tab.row <- NULL
     }
     
-    setnames(tab.row,old="col.row",new=col.row)
+
     
     for(I in which(overview.tables[,full.length])){
         dt.to.add <- data[[I]][,setdiff(names(data[[I]]),names(tab.row)),with=F]
@@ -373,11 +375,13 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
                      occ=tab.occ)
     attr(list.out,"columns") <- list.str
     class(list.out)  <- "NMdata"
-    
-    for(I in 1:length(list.out)){
-        if(!is.null(list.out[[I]])){
-            list.out[[I]][,c(add.name):=runname]
-        }}
+
+    if(!is.null(add.name)){
+        for(I in 1:length(list.out)){
+            if(!is.null(list.out[[I]])){
+                list.out[[I]][,c(add.name):=runname]
+            }}
+    }
     if(!as.dt) list.out <- lapply(list.out,as.data.frame)
     
     list.out

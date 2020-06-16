@@ -16,13 +16,16 @@ issued.
 mod should only be used for path to dataset.
 **** DONE Add support for absolute paths
      CLOSED: [2020-06-09 Tue 23:22]
-**** TODO SKIP like DROP
+**** DONE SKIP like DROP
+     CLOSED: [2020-06-15 Mon 21:36]
 **** TODO TIME and related columns
 I still don't really understand the documentation on this, but it doesnt seem
 too hard to implement. It should NOT only be interpreted when the A=B format is used in
 $INPUT. If something is called TIME, it must be checked for format.
 *** NMtransFilters
-**** TODO Replace single = with ==
+**** DONE Replace single = with ==
+     CLOSED: [2020-06-15 Mon 21:05]
 According to the manual single = can be used for comparisons. This is not and
 should not be translated by NMcode2R.
-**** TODO $INPT is an alias for $INPUT
+**** DONE $INPT is an alias for $INPUT
+     CLOSED: [2020-06-15 Mon 21:09]

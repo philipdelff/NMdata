@@ -52,19 +52,35 @@ test_that("Interpret IGNORE statement",{
 
 
 
-test_that("Interpret IGNORE statement",{
+test_that("List of ACCEPT statements and vs separate statements",{
     ##    fileRef <- "testReference/NMscanData4.rds"
     file1.lst <- NMdata_filepath("examples/nonmem/xgxr006.lst")
     file2.lst <- NMdata_filepath("examples/nonmem/xgxr007.lst")
 
     NMgetSection(file1.lst,section="PROBLEM")
     NMgetSection(file2.lst,section="PROBLEM")
-    res1 <- NMscanData(file=file1.lst,mergeByFilters = T, useRDS = F,debug=F)
-    res2 <- NMscanData(file=file2.lst,mergeByFilters = T, debug=F)
+    res1 <- NMscanData(file=file1.lst,mergeByFilters = T,debug=F,add.name=NULL)
+    res2 <- NMscanData(file=file2.lst,mergeByFilters = T, debug=F,add.name=NULL)
 
-    names(res$row)
-    
-    expect_equal_to_reference(res,fileRef)
+    expect_identical(res1,res2)
 })
 
 
+### find out how much can be tested. 
+test_that("merge by filters or not",{
+    ##    fileRef <- "testReference/NMscanData4.rds"
+    file1.lst <- NMdata_filepath("examples/nonmem/xgxr006.lst")
+    file2.lst <- NMdata_filepath("examples/nonmem/xgxr008.lst")
+
+    ## NMgetSection(file1.lst,section="PROBLEM")
+    ## NMgetSection(file2.lst,section="PROBLEM")
+    res1 <- NMscanData(file=file1.lst,mergeByFilters = T,debug=F,add.name=NULL)
+    res2 <- NMscanData(file=file2.lst,mergeByFilters = T, debug=F,add.name=NULL)
+
+    setcolorder(res1$row,colnames(res2$row))
+    
+    lapply(res1,dim)
+    lapply(res2,dim)
+
+    expect_equal(res1,res2)
+})
