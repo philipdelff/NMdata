@@ -84,3 +84,44 @@ test_that("merge by filters or not",{
 
     expect_equal(res1,res2)
 })
+
+
+test_that("basic",{
+
+    fileRef <- "testReference/NMscanData11.rds"
+
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr011.lst")
+    ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+
+    expect_error(
+        NMscanData(file=file.lst)
+    )
+
+})
+
+
+test_that("basic",{
+
+    fileRef <- "testReference/NMscanData12.rds"
+
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr012.lst")
+    ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+
+    expect_error(
+        NMscanData(file=file.lst)
+    )
+})
+
+test_that("basic",{
+
+    fileRef <- "testReference/NMscanData13.rds"
+
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr013.lst")
+    NMgetSection(file.lst,section="PROBLEM")
+    ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+    
+    expect_error(
+        NMscanData(file=file.lst)
+    )
+
+})

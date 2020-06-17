@@ -6,9 +6,10 @@
 ##'     lines.
 ##' @param text The mod/lst as characters.
 ##' @param lines The mod/lst as character, line by line.
+##' @param quiet Don't report information along the way if no warnings or errors. Default is FALSE.
 ##' @param debug start by running browser()?
 ##' @details This is not bulletproof. A statement like ACCEPT=(DOSE 10) which in
-##'     Nonmem means the same as ACCEPT==(DOSE==10) will not be correctly
+##'     Nonmem means the same as ACCEPT=(DOSE==10) will not be correctly
 ##'     interpreted. Also, nested conditions are not supported altogether.
 ##' @family Nonmem
 

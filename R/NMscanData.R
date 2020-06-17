@@ -139,13 +139,8 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
     data <- tables$data
     overview.tables <- tables$meta
 
-#### TODO: check overview.tables. Either they must be firstonly, or they must be full.length.
-    
-    
-#### add has.grp, has.occ, has.id?
     fun.has.row <- function(names) do.call(c,lapply(names,function(name)col.row%in%colnames(data[[name]])))
     overview.tables[,has.row:=fun.has.row(name)]
-######## here
     overview.tables[,maxLength:=nrow==max(nrow)]
     overview.tables[,full.length:=!firstonly&maxLength]
     NrowFull <- overview.tables[full.length==TRUE,unique(nrow)]
@@ -154,12 +149,15 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
     
 ### combine full tables into one
     tabs.full <- which(overview.tables$full.length)
+
     if(overview.tables[,sum(full.length)]==0) {
         stop("No full-length tables found. This is currently not supported (but should be, sorry).")
     }
+
+    ##        
     if(!mergeByFilters){
         if(!overview.tables[,sum(has.row)]) {
-            warning("col.row not found in any full-length (not firstonly) output tables. Input data cannot be used. See argument col.row.")
+            warning("col.row not found in any full-length (not firstonly) output tables. Input data cannot be used. See arguments col.row and mergeByFilters.")
             use.input <- FALSE
         }
     }
@@ -184,7 +182,7 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
         }
     }
 
-
+    
 ### combine firstonly tables into one
     tabs.firstonly <- which(overview.tables$firstonly)
     tab.firstonly <- NULL
@@ -192,10 +190,14 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
         tab.firstonly <- data.table(col.id=data[[tabs.firstonly[1]]][,get(col.id)])
         setnames(tab.firstonly,"col.id",col.id)
         ## setnames(all.row,old="col.id",new=col.id)
+
         for(I in tabs.firstonly){
             ## mergeCheck?
             tab.firstonly <- merge(tab.firstonly,data[[I]][,c(col.id,setdiff(names(data[[I]]),names(tab.firstonly))),with=F],by=col.id)
+
+
         }
+        
     }
 
     ## data2 <- data[-c(tabs.full,tabs.firstonly)]

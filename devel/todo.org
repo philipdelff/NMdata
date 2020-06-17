@@ -33,4 +33,11 @@ According to the manual single = can be used for comparisons. This is not and
 should not be translated by NMcode2R.
 **** DONE $INPT is an alias for $INPUT
      CLOSED: [2020-06-15 Mon 21:09]
-     
+*** NMscanTables
+**** TODO Lastonly does the same as firstonly
+*** NMscanData
+*** TODO check overview.tables 
+Either they must be firstonly, or they must be full.length.
+**** TODO Limitation: tables with EXCLUDE_BY
+**** TODO Limitation: FIRSTLASTONLY
+

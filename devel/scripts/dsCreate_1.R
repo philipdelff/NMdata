@@ -53,7 +53,7 @@ pk[,table(CMT,EVID)]
 
 pk[ID==1]
 indprofs <- ggIndProfs(pk,amt="AMT")
-ggwrite(indprofs,file="indprofs.pdf",onefile=T)
+## ggwrite(indprofs,file="indprofs.pdf",onefile=T)
 
 
 pk <- pk[order(ID,TIME,CMT)]
@@ -65,9 +65,5 @@ dim(pk)
 
 NMwriteData(pk,file="../../inst/examples/data/xgxr1.csv")
 
-
-## read res
-library(devtools)
-load_all("c:/Users/kctw748/working_copies/NMdata")
-res1 <- NMscanData("../../inst/examples/nonmem/xgxr001.lst")
-res1
+## same, but no rds
+NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write.rds=F,debug=F)

@@ -328,9 +328,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb2-17" title="17"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb2-18" title="18"><span class="co">#&gt; $occ</span></a>
 <a class="sourceLine" id="cb2-19" title="19"><span class="co">#&gt; NULL</span></a></code></pre></div>
-<p>This is even more frustrating when taking into account that the variability in data is at very few levels that never change. These are - population (model run) level (like study name or TVCL representing clearance for a typical subject) - subject-level like covariates, individual parameter estimates or between-subject variable random effects. - occasion-level like between-occasion variable random effects or parameters - row-level which is everything that varies within the levels above. That is time, concentrations, doses, time-varying covariates etc.</p>
-<p>All analysis of the data are performed at one of these levels, because they are the levels of variability in PK/PD models. Hence, what the modeller will do after running a model in nonmem is to collect and break down the data in one or more of these levels, depending on what analysis is needed.</p>
-<p>The NMscanData does this based on both output and input data, and it does so (almost) only based on information available in the .lst file. It is based on the increadible data.table package and is generally very fast, even for very large datasets.</p>
+<p>These four returned datasets represent the following variability levels: - population (model run) level (like study name or TVCL representing clearance for a typical subject) - subject-level like covariates, individual parameter estimates or between-subject variable random effects. - occasion-level like between-occasion variable random effects or parameters - row-level which is everything that varies within the levels above. That is time, concentrations, doses, time-varying covariates etc.</p>
+<p>In future versions of NMdata, only the row-level dataset will be returned. Let’s see how to derive other levels of variability from the returned data.</p>
 </div>
 <div id="get-started" class="section level1">
 <h1>Get started</h1>
