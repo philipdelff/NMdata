@@ -6,6 +6,7 @@
 ##'     either empty or ID. But it can also be both say c("ID","DRUG")
 ##'     or c("ID","TRT").
 ##' @param debug start by running browser()?
+##' @details Use this to exclude columns that are constant within cols.id. If cols.id=ID, this could be to get only time-varying covariates.
 ##' @family DataWrangling
 ##' @import data.table
 ##' @export

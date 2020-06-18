@@ -38,6 +38,7 @@ should not be translated by NMcode2R.
 *** NMscanData
 *** TODO check overview.tables 
 Either they must be firstonly, or they must be full.length.
-**** TODO Limitation: tables with EXCLUDE_BY
-**** TODO Limitation: FIRSTLASTONLY
-
+*** TODO Limitation: tables with EXCLUDE_BY
+*** TODO Limitation: FIRSTLASTONLY
+*** TODO Implement recoverRows using mergeByFilters
+*** TODO Add support for col.row of length>1

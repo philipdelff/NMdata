@@ -150,69 +150,43 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 ### combine full tables into one
     tabs.full <- which(overview.tables$full.length)
 
-    if(overview.tables[,sum(full.length)]==0) {
-        stop("No full-length tables found. This is currently not supported (but should be, sorry).")
-    }
+
+    ## if(overview.tables[,sum(full.length)]==0) {
+    ##     stop("No full-length tables found. This is currently not supported (but should be, sorry).")
+    ## }
 
     ##        
     if(!mergeByFilters){
         if(!overview.tables[,sum(has.row)]) {
-            warning("col.row not found in any full-length (not firstonly) output tables. Input data cannot be used. See arguments col.row and mergeByFilters.")
+            message("col.row not found in any full-length (not firstonly) output tables. Input data will not be used. See arguments col.row and mergeByFilters.")
             use.input <- FALSE
         }
     }
+    
     tab.row <- NULL
     ##    if(sum(overview.tables$full.length&overview.tables$has.row)){
-    if(any(overview.tables[,full.length&has.row])){
-        ## take row column from the first table in which it appears.
-        first.table.with.row <- data[[overview.tables[has.row==TRUE&full.length==TRUE,name[1]]]]
-        tab.row <- data.table(col.row=first.table.with.row[,get(col.row)])
-        setnames(tab.row,old="col.row",new=col.row)
-    } else {
-        ## tab.row <- data.table(col.row=1:NrowFull)
-        tab.row <- NULL
-    }
-    
-
-    
-    for(I in which(overview.tables[,full.length])){
-        dt.to.add <- data[[I]][,setdiff(names(data[[I]]),names(tab.row)),with=F]
-        if(ncol(dt.to.add)>0){
-            tab.row <- cbind(tab.row,dt.to.add)
-        }
-    }
-
-    
-### combine firstonly tables into one
-    tabs.firstonly <- which(overview.tables$firstonly)
-    tab.firstonly <- NULL
-    if(length(tabs.firstonly)){
-        tab.firstonly <- data.table(col.id=data[[tabs.firstonly[1]]][,get(col.id)])
-        setnames(tab.firstonly,"col.id",col.id)
-        ## setnames(all.row,old="col.id",new=col.id)
-
-        for(I in tabs.firstonly){
-            ## mergeCheck?
-            tab.firstonly <- merge(tab.firstonly,data[[I]][,c(col.id,setdiff(names(data[[I]]),names(tab.firstonly))),with=F],by=col.id)
-
-
-        }
+    if(any(overview.tables[,full.length])){
         
+        ## there might be a little bit to save by reducing the columns before cbind. 
+        tab.row <- Reduce(cbind,data[which(overview.tables$maxLength)])
+        tab.row <- tab.row[,unique(colnames(tab.row)),with=FALSE]
+
+        tab.row[,nmout:=TRUE]
+    } 
+    
+
+### combine firstonly tables into one
+    tab.firstonly <- NULL
+    if(any(overview.tables$firstonly)){
+        tab.firstonly <- Reduce(cbind,data[which(overview.tables$firstonly)])
+        tab.firstonly <- tab.firstonly[,unique(colnames(tab.row)),with=FALSE]
     }
-
-    ## data2 <- data[-c(tabs.full,tabs.firstonly)]
-    ## data <- c(data2,list(all.row),list(all.firstonly))
-
-
-###### all row tables combined into one
 
 ###  Section end: read all output tables and merge to max one firstonly and max one row
 
 
 #### Section start: handle input data ####
 
-    
-    tab.row[,nmout:=TRUE]
     if(use.input) {
         file.mod <- sub("\\.lst","\\.mod",file)
         if(!file.exists(file.mod)&&is.null(dir.data)){
@@ -226,16 +200,15 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
         cnames.input <- colnames(data.input)
 
         if(mergeByFilters){
-            message("Merging input and output by translation of the filtering statemnts in the Nonmem controls stream is experimental, and only IGNORE statements are considered. It is highly recommended to use a row identifier in both input and output data if possible. See col.row and mergeByFilters arguments.")
+            message("Input data is filtered by translation of the Nonmem controls stream. This works in most cases. However, it is recommended to always use a row identifier in both input and output data if possible. See col.row and mergeByFilters arguments.")
 
             if(recoverRows) {
                 stop("For now, you cannot combine mergeByFilters and recoverRows.")
             }
             
-            
-            if(nrow(data.input)!=nrow(tab.row)) {
-                
-                stop("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted by this experimental implementation of the feature. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or merge manually.")
+            if(!is.null(tab.row)&nrow(data.input)!=nrow(tab.row)) {
+### we have a tab.row and the number of rows doesn't match what's found in input.                
+                stop("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted. For info on what limitations of this function, see ?NMtranFilters. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or manually merge output from NMscanTables() and NMtransInput().")
             }
             tab.row <- cbind(
                 tab.row,
@@ -243,12 +216,14 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
             )
             
         } else {
-            
+            if(is.null(col.row)||is.na(col.row)||(is.character(is.row)&&any(col.row==""))){
+                stop("when use.input=TRUE and mergeByFilters=FALSE, col.row cannot be NULL, NA, or empty.")
+            }
 ### merging by col.row
             ## Has this check already been done?
             if(col.row%in%cnames.input) {
                 if(data.input[,any(duplicated(get(col.row)))]){
-                    stop("use.input is TRUE, but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input is TRUE.")
+                    stop("use.input=TRUE and mergeByFilters=FALSE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and mergeByFilters=FALSE.")
                 }
             } else {
                 warning("use.input is TRUE, but col.row not found in _input_ data. Only output data used.")
@@ -278,57 +253,23 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 
 ###  Section end: handle input data
 
-    
-###{ split tables into row, id, and occ level
-### for each table
-    ## scan for covariates
-    ## scan for occasion variables
-    ## check if col.row is present. If so, look for row-level info
 
-    ## nmout is used to keep track of wether rows are from output data or only
-    ## from input data.
-
-
-    
-##### TODO: There are certain variables that can only be row specifc: WRES, CWRES, etc.
-    if(structure=="full"){
-
-        ## tab.row
-        if(is.null(tab.row)){
-            all.row <- NULL
-            tab.occ <- NULL
-        } else {
-            all.row <- tab.row
-            if(!is.null(tab.firstonly)){
-                all.row <- merge(tab.row,
-                                 tab.firstonly[,c(col.id,setdiff(names(tab.firstonly),names(all.row))),with=FALSE],
-                                 by=col.id)
-                
-            }
-
-            if(col.occ%in%colnames(all.row)){
-
-                tab.occ <- findCovs(all.row,cols.id=c(col.id,col.occ,col.grp),debug=F)
-                
-            } else {
-                tab.occ <- NULL
-            }
+#### Section start: Add firstonly data ####
+    if(!is.null(tab.firstonly)){
+        skip.firstonly <- FALSE
+        if( !all(col.id%in%tab.firstonly) && !all(col.row%in%tab.firstonly)){
+            warning("Firstonly output data found. But the table(s) contains neither col.id nor col.row. Merging is not supported in this case, so the firstonly table(s) will not be used.")
+            skip.firstonly <- TRUE
         }
-
-        ## tab.id
-        tab.id <- NULL
-        if(col.id%in%colnames(all.row)){
-            tab.id <- findCovs(all.row,cols.id=c(col.id,col.grp))
-        }
-        tab.run <- findCovs(all.row)
-
-    } else {
-        stop("only structure=full is implemented.")
+        stop("code missing")
+### here, merge by those of col.row and col.id that are present in both tab.row and tab.firstonly
+        tab.row
     }
 
+### Section end: Add firstonly data
 
 
-
+    
     if(use.input&&recoverRows){
         setkeyv(data.input,col.row)
         message("Recovering input data that were not part of analysis. This is experimental. This only affects the \"row\" dataset.")
@@ -342,49 +283,16 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
         
     }
     
-    ## if(use.input&&reconstructRows){
-    ##     stop("row reconstruction not implemented yet")
-    
-    ##     ## browser()
-    ##     inp.touse <- data.input[setdiff(data.input[,col.row],tab.row[,col.row]),]
-    ##     n.inp.touse <- names(inp.touse)
-    ##     inp.touse$nmout <- FALSE
-    ##     if(col.id%in%n.inp.touse) {
-    ##         ## browser()
-    ##         inp.touse <- merge(inp.touse,tab.id[,c(col.id,col.grp,setdiff(names(tab.id),n.inp.touse))],all.x=T)
-    ##     }
-    ##     if(col.occ%in%n.inp.touse) {
-    ##         inp.touse <- merge(inp.touse,tab.occ[,c(col.id,col.occ,col.grp,setdiff(names(tab.occ),n.inp.touse))],all.x=T)
-    ##     }
-    ##     ##    browser()
-    ##     tab.row <- rbindUnion(tab.row,inp.touse)
-    ##     tab.row <- tab.row[order(tab.row[,col.row]),]
-    ## }
 
     stopifnot(max(table(col.row))==1)
 
-    
-
-    list.str <- list(
-        id=col.id,
-        row=col.row,
-        occ=col.occ,
-        grp=col.grp)
-
-    list.out <- list(pop=tab.run,
-                     row=tab.row,
-                     id=tab.id,
-                     occ=tab.occ)
-    attr(list.out,"columns") <- list.str
-    class(list.out)  <- "NMdata"
+    class(tab.row)  <- "NMdata"
 
     if(!is.null(add.name)){
-        for(I in 1:length(list.out)){
-            if(!is.null(list.out[[I]])){
-                list.out[[I]][,c(add.name):=runname]
-            }}
+        tab.row[,c(add.name):=runname]
     }
-    if(!as.dt) list.out <- lapply(list.out,as.data.frame)
     
-    list.out
+    if(!as.dt) tab.row <- as.data.frame(tab.row)
+    
+    tab.row
 }
