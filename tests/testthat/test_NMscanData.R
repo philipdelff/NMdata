@@ -32,6 +32,7 @@ test_that("Multiple output table formats",{
     file.lst <- NMdata_filepath("examples/nonmem/xgxr003.lst")
 
     ## res <- NMscanData(file=file.lst,debug=T)
+## this doesnt read the firstonly data. BUG.
     res <- NMscanData(file=file.lst)
 
     expect_equal_to_reference(res,fileRef)
