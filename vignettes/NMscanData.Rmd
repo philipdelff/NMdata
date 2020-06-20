@@ -19,7 +19,7 @@ library(NMdata)
 ```
 
 # Introduction
-Getting data from R to Nonmem and back is tedious and can be time
+Getting data from R to Nonmem and back can be tedious and time
 consuming. The way data is exported from Nonmem means that a few
 tables may have to be combined, and then some variables may still be
 missing (like character variables which may be in the input data
@@ -27,13 +27,18 @@ file). Most modellers develop some habits over time to avoid some
 issues. But still, it may be time demanding even for experienced
 modellers to pick up a model developed by someone else or by
 themselves earlier in their career just because they need to
-understand what data exported and how. This vignette focuses on how NMdata provides a general solution for what needs to be trivial: get a dataset out of a Nonmem run.
+understand what data exported and how. This vignette focuses on how
+NMdata provides a very general solution for what needs to be trivial:
+get a dataset out of a Nonmem run. And general means that it will work
+out of the box 
+in as many cases as possible. It will do its best to understand how
+the data can be read and combined, (ideally) regardless of the way the
+model was written.
 
 Try NMscanData on any dataset:
 ```{r,eval=TRUE}
-res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
-names(res1)
-lapply(res1,dim)
+res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr002.lst"))
+head(res1)
 ```
 
 These four returned datasets represent the following variability levels:

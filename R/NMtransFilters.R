@@ -17,7 +17,7 @@
 ## function only being used by NMscanData at this point.
 
 
-NMtransFilters <- function(data,file,text,lines,quiet=FALSE,debug=FALSE){
+NMtransFilters <- function(data,file,text,lines,quiet=FALSE,debug=FALSE) {
     if(debug) browser()
 
     ## stop("Translation of filters in nonmem control stream is not implemented. In order to make use of input data, you must include the same row counter in input and output data. At least for now.")
@@ -61,7 +61,7 @@ NMtransFilters <- function(data,file,text,lines,quiet=FALSE,debug=FALSE){
     if(any.accepts&&any.ignores) stop("IGNORE and ACCEPT are not allowed together according to Nonmem documentation.")
 
     
-    if(any.ignores){
+    if(any.ignores) {
         type.condition <- "IGNORE"
     } else {
         type.condition <- "ACCEPT"
@@ -90,7 +90,7 @@ NMtransFilters <- function(data,file,text,lines,quiet=FALSE,debug=FALSE){
         scs <- scs[!grepl("@",scs)]
     }
     
-    if(length(scs)&&grepl("^a-zA-Z",scs)){
+    if(length(scs)&&grepl("^a-zA-Z",scs)) {
         scs2 <- regmatches(scs,regexpr("^[a-zA-Z]",scs))
         expressions.sc <- c(expressions.sc,paste0("!grepl('^",scs2,"\",",name.c1,")"))
         scs <- scs[!grepl("^[a-zA-Z]",scs)]
@@ -101,7 +101,7 @@ NMtransFilters <- function(data,file,text,lines,quiet=FALSE,debug=FALSE){
     
     ## translating expression-style ones
     conds.list <- strsplit(
-        gsub(paste0(type.condition," *= *\\((.+)\\)"),"\\1",conds.expr)
+        gsub(paste0(type.condition," *=* *\\((.+)\\)"),"\\1",conds.expr)
        ,split=",")
     conds.char <- do.call(c,conds.list)
 
@@ -114,7 +114,6 @@ NMtransFilters <- function(data,file,text,lines,quiet=FALSE,debug=FALSE){
     ))
 
     ## replace single = with ==
-    
     expressions.list <- sub("^([a-zA-Z]* *)=( *[0-9]+)$","\\1==\\2",expressions.list)
 
     cond.combine <- "|"
@@ -127,17 +126,17 @@ NMtransFilters <- function(data,file,text,lines,quiet=FALSE,debug=FALSE){
     ## apply sc first
 
     
-    if(length(expressions.sc)){
+    if(length(expressions.sc)) {
         conditions.all.sc <- paste0(expressions.sc,collapse="&")
-        message(paste("conditions to apply: ",conditions.all.sc))
+##        message(paste("conditions to apply: ",conditions.all.sc))
         data <- as.data.table(data)[eval(parse(text=conditions.all.sc))]
     }
     
     ## then lists
-    if(length(expressions.list)){
+    if(length(expressions.list)) {
 
         expressions.all <- paste0("(",paste(expressions.list,collapse=cond.combine),")")
-        message(paste("conditions to apply: ",expressions.all))
+##         message(paste("conditions to apply: ",expressions.all))
         data <- as.data.table(data)[eval(parse(text=expressions.all))]
     }
     

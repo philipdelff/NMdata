@@ -88,7 +88,7 @@
 
 ### end todo 
 
-NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC",structure="full",use.input=TRUE,recoverRows=FALSE,add.name="model",name,dir.data,quiet=FALSE,useRDS=TRUE,as.dt=TRUE,mergeByFilters=FALSE,debug=FALSE){
+NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC",structure="full",use.input=TRUE,recoverRows=FALSE,add.name="model",name,dir.data,quiet=FALSE,useRDS=TRUE,as.dt=TRUE,mergeByFilters=FALSE,debug=FALSE) {
 
     if(debug) browser()
 
@@ -101,7 +101,6 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
     full.length <- NULL
     all.firstonly <- NULL
     nmout <- NULL
-    tab.out <- NULL
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
@@ -112,8 +111,8 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
     if(!file.exists(file)) stop(paste0("Model file ",file," does not exist."),call. = F)
     dir <- dirname(file)
 
-    if(!is.null(add.name)){
-        if(!is.character(add.name) || length(add.name)!=1 ||  add.name=="" ){
+    if(!is.null(add.name)) {
+        if(!is.character(add.name) || length(add.name)!=1 ||  add.name=="" ) {
             stop("If not NULL, add.name must be a character name of the column to store the run name. The string cannot be empty.")
         }
         if (!missing(name)) {
@@ -185,7 +184,11 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 
 
 #### Section start: handle input data ####
-
+    ## use.input.row means if we will merge row-wise output data onto
+    ## input data. Even if FALSE, we can still merge firstonly data
+    ## onto input dataif no row-wise output exists.
+    
+    ## use.input.row <- use.input
     if(use.input) {
         file.mod <- sub("\\.lst","\\.mod",file)
         if(!file.exists(file.mod)&&is.null(dir.data)) {
@@ -193,8 +196,20 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
             use.input <- FALSE
         }
     }
+
+    ## use.rows means if to use row-data from output tables
+    use.rows <- TRUE
+    if(!any(tables$meta$full.length)) {
+        use.rows <- FALSE
+    }
     
-    if(use.input) {
+    if(use.input&&!any(tables$meta$full.length)) {
+        ## This message is too technical. 
+        ## message("use.input is TRUE and no full-length output tables. If any, firstonly tables will be attempted merged onto input data by col.id.")
+        tab.row <- NMtransInput(file,quiet=quiet,useRDS=useRDS,applyFilters=mergeByFilters,as.dt=TRUE,debug=F)
+    }
+    
+    if(use.input&&any(tables$meta$full.length)) {
         if(!quiet) message("Searching for input data.")
         data.input <- NMtransInput(file,quiet=quiet,useRDS=useRDS,applyFilters=mergeByFilters,as.dt=TRUE,debug=F)
         cnames.input <- colnames(data.input)
@@ -216,6 +231,7 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
             )
             
         } else {
+            ## !mergeByFilters
             if(is.null(col.row)||is.na(col.row)||(is.character(col.row)&&any(col.row==""))) {
                 stop("when use.input=TRUE and mergeByFilters=FALSE, col.row cannot be NULL, NA, or empty.")
             }
@@ -255,17 +271,29 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 
 
 #### Section start: Add firstonly data ####
+    
+
+    skip.firstonly <- FALSE
+    ## The very special case where we don't use input and there is no row-level data.
+    if(!use.input && !use.rows && any(tables$meta$firstonly)) {
+        ##        stop("implement the cbind of fiirstonly and that's it")
+        tab.row <- Reduce(cbind,tables$data[which(overview.tables$firstonly)])
+        tab.row <- tab.row[,unique(colnames(tab.row)),with=FALSE]
+    }
+    
     if(!is.null(tab.firstonly)) {
         
-        skip.firstonly <- FALSE
+
         ## col.id must be in tab.row, or we can't do this
         if(!all(col.id%in%colnames(tab.row))) {
+            
             warning("col.id not found in row-specific input or output data. Firstonly output data will not be used.")
             skip.firstonly <- TRUE
         }
         
         ## remember all(NULL) is TRUE
-        if(!skip.firstonly &&  !all(col.id%in%tab.firstonly) && !all(col.row%in%tab.firstonly)) {
+        if(!skip.firstonly &&  all(!col.id%in%colnames(tab.firstonly)) && all(!col.row%in%colnames(tab.firstonly))) {
+            
             warning("Firstonly output data found. But the table(s) contains neither col.id nor col.row. Merging is not supported in this case, so the firstonly table(s) will not be used.")
             skip.firstonly <- TRUE
         }
@@ -281,12 +309,15 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
         }
         ## if col.id is in both tab.row and tab.firstonly, merge by col.id
         ## this subset is not exactly what we want. We want everything that is not in output row-data. We want it even if in input data. But give a warning if it varies in input.
-        tab.firstonly.merge <- tab.firstonly[,c(col.id,setdiff(colnames(tab.firstonly),colnames(tab.row))),with=F]
-        tab.row <- mergeCheck(tab.row,tab.firstonly.merge,by=col.id)
+        if(!skip.firstonly) {
+            tab.firstonly.merge <- tab.firstonly[,c(col.id,setdiff(colnames(tab.firstonly),colnames(tab.row))),with=F]
+            tab.row <- mergeCheck(tab.row,tab.firstonly.merge,by=col.id)
+        }
     }
 
 ### Section end: Add firstonly data
-
+    
+    if(!use.rows && skip.firstonly) {warning("No output data could be used.")}
 
 #### Section start: Recover rows ####
 
@@ -315,6 +346,8 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 ### not sure this is needed at all any longer
     ## class(tab.row)  <- "NMdata"
 
+    
+    
     if(!is.null(add.name)) {
         
         tab.row[,c(add.name):=runname]
