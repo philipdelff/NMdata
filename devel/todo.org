@@ -61,4 +61,7 @@ should not be translated by NMcode2R.
 If mergeByFilters we can take the sequence of ID in the input
 data. But what if an ID comes back? I think a record is in FIRSTONLY
 whenever ID changes, but test this.
-
+** Nonmem examples
+*** Use FLAG
+rerun xmgr001.mod with IGNORE=(FLAG.NE.0) That would be a nice example
+for the vignette.

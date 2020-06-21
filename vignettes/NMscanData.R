@@ -8,7 +8,7 @@ knitr::opts_chunk$set(
 library(NMdata)
 
 ## ----eval=TRUE-----------------------------------------------------------
-res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr002.lst"))
+res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
 head(res1)
 
 ## ----eval=FALSE----------------------------------------------------------

@@ -55,15 +55,23 @@ pk[ID==1]
 indprofs <- ggIndProfs(pk,amt="AMT")
 ## ggwrite(indprofs,file="indprofs.pdf",onefile=T)
 
+### handle LLOQ and set FLAGS
+dt.flags <- data.table(
+    FLAG=10,
+    flag="Below LLOQ",
+    condition=c("BLQ==1"))
+
+pk <- flagsAssign(pk,dt.flags)
+
 
 pk <- pk[order(ID,TIME,CMT)]
 pk <- pk[DOSE>0]
 pk[,ROW:=1:nrow(pk)]
 pk <- NMorderColumns(pk)
-
+colnames(pk)
 dim(pk)
 
-NMwriteData(pk,file="../../inst/examples/data/xgxr1.csv")
+NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),write.rds=F,debug=F)
 
-## same, but no rds
-NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write.rds=F,debug=F)
+## same, but with rds
+NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write.rds=T,debug=F)
