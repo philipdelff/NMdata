@@ -149,12 +149,7 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 ### combine full tables into one
     tabs.full <- which(overview.tables$full.length)
 
-
-    ## if(overview.tables[,sum(full.length)]==0) {
-    ##     stop("No full-length tables found. This is currently not supported (but should be, sorry).")
-    ## }
-
-    ##        
+    
     if(!mergeByFilters) {
         if(!overview.tables[,sum(has.row)]) {
             message("col.row not found in any full-length (not firstonly) output tables. Input data will not be used. See arguments col.row and mergeByFilters.")
@@ -163,6 +158,8 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
     }
     
     tab.row <- NULL
+    tab.vars <- NULL
+    
     if(any(overview.tables[,full.length])) {
         
         ## there might be a little bit to save by reducing the columns before cbind. 
@@ -170,6 +167,7 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
         tab.row <- tab.row[,unique(colnames(tab.row)),with=FALSE]
 
         tab.row[,nmout:=TRUE]
+        tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="output",tab.type="row"))
     } 
     
 
@@ -207,6 +205,7 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
         ## This message is too technical. 
         ## message("use.input is TRUE and no full-length output tables. If any, firstonly tables will be attempted merged onto input data by col.id.")
         tab.row <- NMtransInput(file,quiet=quiet,useRDS=useRDS,applyFilters=mergeByFilters,as.dt=TRUE,debug=F)
+        tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="input",tab.type="row"))
     }
     
     if(use.input&&any(tables$meta$full.length)) {
@@ -225,10 +224,13 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 ### we have a tab.row and the number of rows doesn't match what's found in input.                
                 stop("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted. For info on what limitations of this function, see ?NMtranFilters. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or manually merge output from NMscanTables() and NMtransInput().")
             }
+
+            tab.vars <- rbind(tab.vars,data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",tab.type="row"))
             tab.row <- cbind(
                 tab.row,
                 data.input[,!colnames(data.input)%in%colnames(tab.row),with=F]
             )
+
             
         } else {
             ## !mergeByFilters
@@ -258,8 +260,9 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 
             if(use.input) {
 
-                ## tab.row.1 <- copy(tab.row)
-                ## tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=T)
+
+                tab.vars <- rbind(tab.vars,
+                                  data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",tab.type="row"))
                 tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=T)
                 
             }
@@ -272,17 +275,20 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 
 #### Section start: Add firstonly data ####
     
-
     skip.firstonly <- FALSE
-    ## The very special case where we don't use input and there is no row-level data.
-    if(!use.input && !use.rows && any(tables$meta$firstonly)) {
-        ##        stop("implement the cbind of fiirstonly and that's it")
-        tab.row <- Reduce(cbind,tables$data[which(overview.tables$firstonly)])
-        tab.row <- tab.row[,unique(colnames(tab.row)),with=FALSE]
-    }
-    
     if(!is.null(tab.firstonly)) {
         
+        
+        ## The very special case where we don't use input and there is no row-level data.
+        if(!use.input && !use.rows) {
+            ##        stop("implement the cbind of fiirstonly and that's it")
+            tab.row <- Reduce(cbind,tables$data[which(overview.tables$firstonly)])
+            tab.row <- tab.row[,unique(colnames(tab.row)),with=FALSE]
+            skip.firstonly <- TRUE
+
+            tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="output",tab.type="firstonly"))
+            
+        }
 
         ## col.id must be in tab.row, or we can't do this
         if(!all(col.id%in%colnames(tab.row))) {
@@ -291,14 +297,15 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
             skip.firstonly <- TRUE
         }
         
-        ## remember all(NULL) is TRUE
+        ## remember all(NULL) is TRUE. So if col.id and/or col.row are
+        ## used, all their values must be in tab.row.
         if(!skip.firstonly &&  all(!col.id%in%colnames(tab.firstonly)) && all(!col.row%in%colnames(tab.firstonly))) {
             
             warning("Firstonly output data found. But the table(s) contains neither col.id nor col.row. Merging is not supported in this case, so the firstonly table(s) will not be used.")
             skip.firstonly <- TRUE
         }
 ### here, merge by those of col.row and col.id that are present in both tab.row and tab.firstonly
-        ## col.id must be in tab.row
+        ## col.id is in tab.row (known from above)
         if(!skip.firstonly && (!all(col.id%in%colnames(tab.row)))) {
             warning("firstonly table is found but col.id is not found in input or all-rows output tables, so the firstonly data cannot be merged. Anyway, how does this make sense, is a firstonly table written for a non-population model?")
             skip.firstonly <- TRUE
@@ -307,11 +314,15 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
         if(!skip.firstonly && !all(col.id%in%colnames(tab.firstonly))) {
             tab.firstonly <- mergeCheck(tab.firstonly[,setdiff(colnames(tab.firstonly),col.id),with=F],tab.row[,c(col.row,col.id),with=F],by=col.row)
         }
-        ## if col.id is in both tab.row and tab.firstonly, merge by col.id
+
+        ## so col.id is in both tab.row and tab.firstonly. merge by col.id
         ## this subset is not exactly what we want. We want everything that is not in output row-data. We want it even if in input data. But give a warning if it varies in input.
         if(!skip.firstonly) {
-            tab.firstonly.merge <- tab.firstonly[,c(col.id,setdiff(colnames(tab.firstonly),colnames(tab.row))),with=F]
+            ## use tab.vars for the subset
+            cols.to.use <- c(col.id,setdiff(colnames(tab.firstonly),tab.vars[source=="output",var]))
+            tab.firstonly.merge <- tab.firstonly[,cols.to.use,with=F]
             tab.row <- mergeCheck(tab.row,tab.firstonly.merge,by=col.id)
+            tab.vars <- rbind(tab.vars,data.table(var=cols.to.use,source="output",tab.type="firstonly"))
         }
     }
 
@@ -343,17 +354,16 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 
 ###  Section end: Recover rows
     
-### not sure this is needed at all any longer
-    ## class(tab.row)  <- "NMdata"
-
-    
-    
     if(!is.null(add.name)) {
         
         tab.row[,c(add.name):=runname]
     }
-    
+
     if(!as.dt) tab.row <- as.data.frame(tab.row)
-    
+
+    attr(tab.row,"vars") <- tab.vars
+    class(tab.row)  <- c("NMdata",class(tab.row))
+
+   
     tab.row
 }

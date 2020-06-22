@@ -66,3 +66,8 @@ whenever ID changes, but test this.
 rerun xmgr001.mod with IGNORE=(FLAG.NE.0) That would be a nice example
 for the vignette.
 *** TODO Update all runs with updated data file
+** Discussion
+*** recoverRows can mean mix of variable interpretations 
+If recoverRows and a variable is changing interpretation from input to
+output, the resulting table will carry two distinct variables
+depending on nmout TRUE or FALSE.
