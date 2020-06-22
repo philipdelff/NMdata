@@ -75,3 +75,6 @@ NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),write
 
 ## same, but with rds
 NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write.rds=T,debug=F)
+
+
+## need to updata nonmem models

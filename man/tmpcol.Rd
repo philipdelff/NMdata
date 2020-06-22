@@ -25,9 +25,8 @@ appended?}
 generate a name for a new data column that is not already in use.
 }
 \seealso{
-Other DataWrangling: \code{\link{NMaddColumns}},
-  \code{\link{NMorderColumns}}, \code{\link{NMscanData}},
-  \code{\link{findCovs}}, \code{\link{findVars}},
-  \code{\link{mergeCheck}}
+Other DataWrangling: \code{\link{NMorderColumns}},
+  \code{\link{NMscanData}}, \code{\link{findCovs}},
+  \code{\link{findVars}}, \code{\link{mergeCheck}}
 }
 \concept{DataWrangling}

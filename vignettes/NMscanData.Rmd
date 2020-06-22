@@ -15,7 +15,10 @@ knitr::opts_chunk$set(
 ```
 
 ```{r,setup}
+## library(devtools)
+## load_all("~/working_copies/NMdata")
 library(NMdata)
+
 library(ggplot2)
 ```
 
@@ -53,8 +56,28 @@ again especially if you didn't write the model by your own standards.
 Try NMscanData on any model:
 ```{r,eval=TRUE}
 res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
+class(res1)
+```
+NMscanData says that it found both input and output data and has sent
+a data.table back. If you are not used to data.table and don't want to
+use them, feel free to convert to another class, or use the
+as.dt=FALSE argument and get a data.frame back. NMdata uses data.table
+under the hood but all functions will work even if you don't. In the
+future, NMdata may be able to return tibbles or other classes as well.
+
+Let's have a quick look at the data we got back. The following is
+again done with data.table but the comments in the code should make it
+clear what happens. 
+
+The data used for the example is a PK single ascending dose data set
+borrowed from the xgxr package, kindly allowed by the xgxr team.
+
+```{r,eval=TRUE}
+## trtact is a character. Make it a factor with levels ordered by numericaldose level.
 res1[,trtact:=reorder(trtact,DOSE)]
+## Derive another data.table with geometric mean pop predictions by treatment and nominal sample time. Only use sample records.
 res1.mean <- res1[EVID==0,.(gmPRED=exp(mean(log(PRED)))),by=.(trtact,NOMTIME)]
+## plot individual observations and geometric mean pop predictions. Split by treatment.
 ggplot(res1[EVID==0])+
 geom_point(aes(TIME,DV))+
 ## stat_summary(aes(x=NOMTIME,y=PRED),fun.y=function(x)exp(mean(log(x))),geom="line")+
@@ -62,36 +85,132 @@ geom_line(aes(NOMTIME,gmPRED),data=res1.mean)+
 scale_y_log10()+
 facet_wrap(~trtact)+
 labs(x="Hours since administration",y="Concentration (ng/mL)")
+
 ```
 
-Contains model predictions, and character, i.e. input and output.
+You see from the plot that the obtained dataset contains both model
+predictions (i.e. from output tables) and a character variable,
+`trtact` (i.e. from input data). NMscanData has read both and combined
+them. 
 
-Notes on the dataset.
+## Subject-level variables
+In a proper PK/PD analysis we need to explore the data at multiple
+variability levels. What we looked at above is at dosing and sampling
+level. NMdata provides very useful functions to extract information at
+other levels of variability. Before extracting the subject-level
+information we will add an individual exposure measure to the
+dataset. We will use the emperical Bayes' estimate of the individual
+maximum concentration. This is derived as the maximum prediction
+across the sample times - it may be better to simulate the model at a
+richer time scale to get better precision.
 
-Covariates
+```{r}
+res1[,Cmax:=max(PRED),by=.(ID)]
+res1.id <- findCovs(res1,cols.id="ID")
+dim(res1.id)
+ggplot(res1.id,aes(WEIGHTB,Cmax/DOSE,colour=trtact))+
+geom_point()
+```
 
+If your model includes occasion variability, you probably also want to
+look at 
+
+```{r}
+## we have no occasion variability in this data
+## res1.id.occ <- findCovs(res1,cols.id=c("ID","OCC"))
+```
+
+Let's use the same function to see the variables that are constant
+across the whole dataset
+
+
+```{r}
+findCovs(res1)
+```
+
+`findCovs` has a counterpart in `findVars` which finds variables that
+do vary within optional columns. Let's take a look at what is in the
+`res1.id` generated above.
+
+```{r}
+dim(res1.id)
+head(res1.id,2)
+```
+
+This is a mix of variables that vary at subject level and varibles
+that are constant across the full dataset. To get only the ones that
+vary within the dataset (i.e. they are truely de facto subject level
+variables), we can do 
+
+```{r}
+res1.id2 <- findVars(res1.id,cols.id="model")
+dim(res1.id2)
+head(res1.id2,2)
+```
+
+Of course, we most often know what covariates or other subject-level
+variables to look at, and we would not search for them after running a
+nonmem model. But in the situation where you are looking at someone
+else's work or you are doing a meta analysis across models where the
+data has been coded slightly differently, these tools indeed come in
+useful.
+
+By the way, the variable called `model` above is a column created by
+NMscanData. You can specify both column name and content as arguments
+in NMscanData, but if you don't it will do it this way, and take the
+model name from the lst file name. In fact, we could have left out the
+cols.id argument in that findVars call because there is only one model
+in the data (only difference would be that `model` wouldn't be in the
+resulting data). But now you know what the model column is.
+
+# More options
 ## Recover rows
 
-## The row identifier
+## The row identifier or interpret Nonmem code
 The row identifier is not needed for NMscanData to run and in most
 cases succesfully and correctly complete all the steps above. However,
 the most robust way is to include a unique row identifier in both
 input and at least one full-length output table.
 
+## Preserve all input data properties
+useRDS
 
+# What should I do for my models to be compatible with NMscanData
+The answer to this should be as close to "nothing" as possible -
+that's more or less the aim of the function. You just have to make
+sure that the information that you need is present in input data and
+output data. No need to output information that is unchanged from
+input, but make sure to output what you need (like IPRED, CWRES, CL,
+ETA1 etc which cannot be found in input). Some of these values can be
+found from other files generated by Nonmem but NMscanData uses only
+input and output data.
 
+# What exactly will NMscanData return?
+So far, the merge has been very straightforward, but in many
+	situations, choices have to be made. Imagine the following scenarios:
+- A variable is present in both input and an output table. Values
+      differ.
+- Two output tables return the same variable but in different resolution.
+- A variable from input data is output in a FIRSTONLY table. It varies
+  within some subjects in the input data.
+  
+The following main principles are followed
+- Output data generally prevails over input data
+- The primary aim is to return the output data
 
-## The building blocks
+# The building blocks
 The lst file was scanned for output tables, and they were all read
 (including interpreting the possible firstonly option). The input data
 has been used based on the DATA and INPUT sections of the control
 stream. 
 
 
+## Read an output table
+NMreadTab
 
-### Read all output data
+## Read all output data
 
-### Input data means the data as used by Nonmem
+## Input data means the data as used by Nonmem
 You may already have thought about this for a while reading this
 vignette. Nonmem doesn't read the variable or column names from the
 input dataset. Names are assigned in the control stream. Moreover,
@@ -100,5 +219,16 @@ ACCEPT conditions. NMdata has functions to interpret this, and to read
 a dataset as interpreted by a nonmem model, point NMtransInput to the
 model.
 
+NMreadCsv
+
+NMtransInput
 
 
+
+# Limitations
+
+input file must exist and not have been modified since model run.
+
+Some filters
+
+Assumes psn-like file names (lst and mod).

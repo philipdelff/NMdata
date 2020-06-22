@@ -62,6 +62,7 @@ If mergeByFilters we can take the sequence of ID in the input
 data. But what if an ID comes back? I think a record is in FIRSTONLY
 whenever ID changes, but test this.
 ** Nonmem examples
-*** Use FLAG
+*** TODO Use FLAG
 rerun xmgr001.mod with IGNORE=(FLAG.NE.0) That would be a nice example
 for the vignette.
+*** TODO Update all runs with updated data file

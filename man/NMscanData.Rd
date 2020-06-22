@@ -91,9 +91,8 @@ This function makes it very easy to collect the data from
 }
 }
 \seealso{
-Other DataWrangling: \code{\link{NMaddColumns}},
-  \code{\link{NMorderColumns}}, \code{\link{findCovs}},
-  \code{\link{findVars}}, \code{\link{mergeCheck}},
-  \code{\link{tmpcol}}
+Other DataWrangling: \code{\link{NMorderColumns}},
+  \code{\link{findCovs}}, \code{\link{findVars}},
+  \code{\link{mergeCheck}}, \code{\link{tmpcol}}
 }
 \concept{DataWrangling}
