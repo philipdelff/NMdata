@@ -44,7 +44,7 @@ NMtransInput <- function(file,useRDS=TRUE,dir.data,applyFilters=FALSE,quiet=FALS
         file.find.data <- sub("\\.lst$","\\.mod",file)
     }
 
-## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    
+    ## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    
     lines <- NMgetSection(file,section="INPUT",keepName=F)
     if(is.null(lines)) {
         lines <- NMgetSection(file,section="INPT",keepName=F)
@@ -116,6 +116,27 @@ NMtransInput <- function(file,useRDS=TRUE,dir.data,applyFilters=FALSE,quiet=FALS
     cnames.input[1:length(nms)] <- nms
     colnames(data.input) <- cnames.input
 
+    ## check for unique column names
+    
+    
+    if(any(duplicated(cnames.input))) {
+        if(any(duplicated(nms))){
+            warning(paste("Duplicated variable names declared in nonmem $INPUT section. Only first will be used:",paste(nms[duplicated(nms)],collapse=", ")))
+        }
+        nms2 <- cnames.input[-(1:length(nms))]
+        if(length(nms2)&&any(duplicated(nms2))){
+            warning(paste("Duplicated variable names detected in input data not processed by Nonmem. Only first will be used:",paste(nms2[duplicated(nms2)],collapse=", ")))
+        }
+        nms.cross <- c(unique(nms),unique(nms2))
+        if(any(duplicated(nms.cross))){
+            warning(paste("The same variable names are found in input variables as read by nonmem and the rest of input data file. Please look at column names in input data and the $INPUT section in nonmem control stream. Only the first occurrence of the columns will be used:",paste(unique(nms.cross[duplicated(nms.cross)]),collapse=", ")))
+        }
+
+#### Reduce to unique column names
+        
+        data.input <- data.input[,unique(cnames.input),with=F]
+        
+    }
 
     if(as.dt) {
         as.data.table(data.input)

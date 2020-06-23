@@ -1,6 +1,6 @@
-## library(devtools)
-## load_all("~/working_copies/NMdata")
-## setwd("~/working_copies/NMdata/tests/testthat")
+library(devtools)
+load_all("~/working_copies/NMdata")
+setwd("~/working_copies/NMdata/tests/testthat")
 
 context("NMscanData")
 
@@ -103,26 +103,28 @@ test_that("Only a firstonly without ID but with ROW",{
     res1 <- NMscanData(file=file.lst,debug=F)
     expect_equal_to_reference(res1,fileRef)
     
-
 })
 
 
-### BUG. This should give an error. use.input is TRUE but the output table cannot be merged onto it.
-## test_that("Only a firstonly, no ID, no ROW",{
-## ### use.input is TRUE but mergeByFilters is FALSE. This should give a warning because input cannot be used.
-    
-##     ## this one only outputs a firstonly that cannot be merged onto
-##     ## input. use.input=T so input data should be returned.
-    
-##     fileRef <- "testReference/NMscanData12.rds"
 
-##     file.lst <- NMdata_filepath("examples/nonmem/xgxr012.lst")
-##     ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+test_that("Only a firstonly, no ID, no ROW",{
+### use.input is TRUE but mergeByFilters is FALSE. This should give an error because input cannot be used even though it is requested
 
-##     ##    expect_error(
-##     res1 <- NMscanData(file=file.lst,debug=F)
-##     ##    )
-## })
+    ## this one only outputs a firstonly that cannot be merged onto
+    ## input. use.input=T so input data should be returned.
+
+    fileRef <- "testReference/NMscanData12.rds"
+
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr012.lst")
+    ## NMgetSection(file.lst,section="DATA")
+    ## NMgetSection(file.lst,section="PROBLEM")
+    ## NMgetSection(file.lst,section="TABLE")
+    
+    load_all("~/working_copies/NMdata")
+    expect_error(
+        res1 <- NMscanData(file=file.lst,debug=F)
+    )
+})
 
 
 test_that("FO and row-level output. No ID, no row.",{
@@ -134,7 +136,9 @@ test_that("FO and row-level output. No ID, no row.",{
     ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
     
     ## tabs <- NMscanTables(file=file.lst)
-    res1 <- expect_warning(NMscanData(file=file.lst))
+    res1 <- expect_warning(
+        NMscanData(file=file.lst)
+    )
     
     expect_equal_to_reference(
         res1,fileRef
@@ -150,7 +154,9 @@ test_that("FO and row-level output. No ID, no row. mergeByFilters=T",{
     NMgetSection(file.lst,section="PROBLEM")
     
     ## tabs <- NMscanTables(file=file.lst)
-    res1 <- expect_warning(NMscanData(file=file.lst,mergeByFilters=T))
+    res1 <- expect_warning(
+        NMscanData(file=file.lst,mergeByFilters=T)
+    )
     
     expect_equal_to_reference(
         res1,fileRef
@@ -160,21 +166,19 @@ test_that("FO and row-level output. No ID, no row. mergeByFilters=T",{
 
 
 
-#### BUG
-## test_that("Only a firstonly without ID but with ROW",{
-## ### This works but shouldnt. mergeByFilters is TRUE, but ROW is used to recover firstonly data.
+test_that("Only a firstonly without ID but with ROW",{
+### mergeByFilters is TRUE, so ROW is used to recover firstonly data.
 
-##     fileRef <- "testReference/NMscanData15.rds"
+    fileRef <- "testReference/NMscanData15.rds"
 
-##     file.lst <- NMdata_filepath("examples/nonmem/xgxr011.lst")
-##     ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr011.lst")
+    NMgetSection(file.lst,section="DATA")
+    NMgetSection(file.lst,section="TABLE")
 
-##     ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
-##     ## tabs <- NMscanTables(file.lst)
-##     ## tabs
+    ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
+    ## tabs <- NMscanTables(file.lst)
+    ## tabs
 
-##     expect_error(
-##         NMscanData(file=file.lst,mergeByFilters=T)
-##     )
+    res1 <- NMscanData(file=file.lst,mergeByFilters=T)
 
-## })
+})
