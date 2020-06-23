@@ -218,7 +218,7 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
             message("Input data is filtered by translation of the Nonmem controls stream. This works in most cases. However, it is recommended to always use a row identifier in both input and output data if possible. See col.row and mergeByFilters arguments.")
 
             if(recoverRows) {
-                stop("For now, you cannot combine mergeByFilters and recoverRows.")
+                warning("Combining mergeByFilters and recoverRows is experimental at this point.")
             }
             
             if(!is.null(tab.row)&nrow(data.input)!=nrow(tab.row)) {
@@ -345,10 +345,16 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 #### Section start: Recover rows ####
 
     if( use.input && recoverRows ) {
+        
         skip.recover <- FALSE
         if(!col.row%in%colnames(tab.row) || !col.row%in%colnames(data.input)) {
             warning("recoverRows is TRUE but this is only implemented when using a row identifier. Please see argument col.row.")
             skip.recover <- TRUE
+
+            ##:ess-bp-start::conditional@:##
+browser(expr={TRUE})##:ess-bp-end:##
+        stop("Implementation not quite done yet.")    
+            data.recover <- NMtransInput(file,quiet=quiet,useRDS=useRDS,applyFilters=mergeByFilters,invert=T,as.dt=TRUE,debug=F)
         }
         
         if(!skip.recover) {

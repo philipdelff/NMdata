@@ -32,7 +32,7 @@
 
 ## implement NULL,  RECORDS or at least say it's not done, use col.row instead.
 
-NMtransInput <- function(file,useRDS=TRUE,dir.data,applyFilters=FALSE,quiet=FALSE,as.dt=TRUE,debug=F) {
+NMtransInput <- function(file,useRDS=TRUE,dir.data,applyFilters=FALSE,quiet=FALSE,invert=FALSE,as.dt=TRUE,debug=F) {
 
     if(debug) browser()
     
@@ -109,7 +109,7 @@ NMtransInput <- function(file,useRDS=TRUE,dir.data,applyFilters=FALSE,quiet=FALS
 
 ### filters must be applied here according to NM manual IV-1
     if(applyFilters){
-        data.input <- NMtransFilters(data.input,file=file,quiet=quiet)
+        data.input <- NMtransFilters(data.input,file=file,invert=invert,quiet=quiet)
     }
 
     cnames.input <- colnames(data.input)
