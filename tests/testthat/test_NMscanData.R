@@ -120,7 +120,6 @@ test_that("Only a firstonly, no ID, no ROW",{
     ## NMgetSection(file.lst,section="PROBLEM")
     ## NMgetSection(file.lst,section="TABLE")
     
-    load_all("~/working_copies/NMdata")
     expect_error(
         res1 <- NMscanData(file=file.lst,debug=F)
     )
@@ -182,3 +181,25 @@ test_that("Only a firstonly without ID but with ROW",{
     res1 <- NMscanData(file=file.lst,mergeByFilters=T)
 
 })
+
+
+### recoverRows without a row identifier
+
+test_that("recoverRows without a row identifier",{
+### mergeByFilters is TRUE, so ROW is used to recover firstonly data.
+
+    fileRef <- "testReference/NMscanData16.rds"
+
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
+    NMgetSection(file.lst,section="DATA")
+    NMgetSection(file.lst,section="TABLE")
+
+    ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
+    ## tabs <- NMscanTables(file.lst)
+    ## tabs
+
+    res1 <- NMscanData(file=file.lst,mergeByFilters=T,recoverRows = T)
+    dim(res1)
+    res1[,table(nmout,DOSE)]
+})
+

@@ -203,9 +203,8 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
     }
     
     if(use.input&&!any(tables$meta$full.length)) {
-        ## This message is too technical. 
-        ## message("use.input is TRUE and no full-length output tables. If any, firstonly tables will be attempted merged onto input data by col.id.")
         tab.row <- NMtransInput(file,quiet=quiet,useRDS=useRDS,applyFilters=mergeByFilters,as.dt=TRUE,debug=F)
+        tab.row[,nmout:=FALSE]
         tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="input",tab.type="row"))
     }
     
@@ -217,10 +216,6 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
         if(mergeByFilters) {
             message("Input data is filtered by translation of the Nonmem controls stream. This works in most cases. However, it is recommended to always use a row identifier in both input and output data if possible. See col.row and mergeByFilters arguments.")
 
-            if(recoverRows) {
-                warning("Combining mergeByFilters and recoverRows is experimental at this point.")
-            }
-            
             if(!is.null(tab.row)&nrow(data.input)!=nrow(tab.row)) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.                
                 stop("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted. For info on what limitations of this function, see ?NMtranFilters. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or manually merge output from NMscanTables() and NMtransInput().")
@@ -347,27 +342,14 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
     if( use.input && recoverRows ) {
         
         skip.recover <- FALSE
-        if(!col.row%in%colnames(tab.row) || !col.row%in%colnames(data.input)) {
-            warning("recoverRows is TRUE but this is only implemented when using a row identifier. Please see argument col.row.")
-            skip.recover <- TRUE
-
-            ##:ess-bp-start::conditional@:##
-browser(expr={TRUE})##:ess-bp-end:##
-        stop("Implementation not quite done yet.")    
+        if(mergeByFilters) {
             data.recover <- NMtransInput(file,quiet=quiet,useRDS=useRDS,applyFilters=mergeByFilters,invert=T,as.dt=TRUE,debug=F)
-        }
-        
-        if(!skip.recover) {
-            setkeyv(data.input,col.row)
-            message("Recovering input data that were not part of analysis. This is experimental. ")
+        } else {
             data.recover <- data.input[!get(col.row)%in%tab.row[,get(col.row)]]
             ## data.input[get(col.row)%in%tab.row[,get(col.row)]]
-            data.recover[,nmout:=FALSE]
-            tab.row <- rbind(tab.row,data.recover,fill=T)
-            setkeyv(tab.row,col.row)
-
-            ## TODO: if not quite, tell user how much was added.
         }
+        data.recover[,nmout:=FALSE]
+        tab.row <- rbind(tab.row,data.recover,fill=T)
     }
 
 ###  Section end: Recover rows

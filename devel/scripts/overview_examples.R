@@ -7,3 +7,10 @@ l.tabs <- lapply(lsts,
 names(l.tabs) <- basename(lsts)
 
 l.tabs
+
+l.prob <- lapply(lsts,
+   NMgetSection,section="PROBLEM"
+   )
+names(l.prob) <- basename(lsts)
+
+l.prob
