@@ -1,6 +1,7 @@
 * NMdata todo
 ** Design
-*** TODO For a version 0.2.0, omit the extra variability levels
+*** DONE For a version 0.2.0, omit the extra variability levels
+    CLOSED: [2020-06-23 Tue 20:51]
 just provide functions to get them
 *** TODO Allow for say input.txt/output.txt
 **** NMtransInput
@@ -42,7 +43,8 @@ should not be translated by NMcode2R.
  Either they must be firstonly, or they must be full.length.
 **** TODO Limitation: tables with EXCLUDE_BY
 **** TODO Limitation: FIRSTLASTONLY
-**** TODO Implement recoverRows using mergeByFilters
+**** DONE Implement recoverRows using mergeByFilters
+     CLOSED: [2020-06-23 Tue 20:52]
 **** TODO Add support for col.row of length>1
 **** TODO Consistent behaviour when missing data fields
 ***** use.input (default)
@@ -56,7 +58,8 @@ should not be translated by NMcode2R.
 **** Firstonly (FO) data can only be used if ID is both input and FO table
  We can implement taking the sequence of IDs from input and restore
  ID's from that
-**** TODO Summary of what tables were used and how.
+**** TODO Improve summary of what tables were used and how.
+Right now it only says if input or output. Table name would be helpful.
 **** TODO Support for no ID, no ROW in firstonly tables
 If mergeByFilters we can take the sequence of ID in the input
 data. But what if an ID comes back? I think a record is in FIRSTONLY

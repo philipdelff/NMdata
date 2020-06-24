@@ -50,18 +50,9 @@
 ##' @param debug start by running browser()?
 ##'
 ##' @details This function makes it very easy to collect the data from
-##'     a Nonmem run. Only, you have to make sure to include a row
-##'     counter in your input data files and your output tables. It
-##'     reorganizes the data into four different levels:
-##' \itemize{
-##'   \item pop
-##'   \item id
-##'   \item occ
-##'   \item row
-##' }
+##'     a Nonmem run. 
 ##' @family DataWrangling
 ##' @import data.table
-##' @import stats
 ##' @export
 
 
@@ -74,21 +65,11 @@
 ### todo
 ## No longer sure this is an issue with the new data combination method: check if variables are consistent within ROW: ID (others?) This is fatal and will happen when using long ID's and non-matching format when writing tables from Nonmem.
 
-## bug: skip input data if not found.
-
-## exit if no tables are found
-
-## use default values for col.grp and col.occ. Use if present.
-
-## TODO: check overview.tables. Either they must be firstonly, or they must be full.length.
-
-## TODO: col.row can only be used if found in both input and at least one output table.
-
 ## TODO: There are certain variables that can only be row specifc: WRES, CWRES, etc.
 
 ### end todo 
 
-NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC",structure="full",use.input=TRUE,recoverRows=FALSE,add.name="model",name,dir.data,quiet=FALSE,useRDS=TRUE,as.dt=TRUE,mergeByFilters=FALSE,debug=FALSE) {
+NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC",structure="full",use.input=TRUE,recoverRows=FALSE,add.name="model",name,dir.data,quiet=FALSE,useRDS=TRUE,as.dt=TRUE,mergeByFilters=FALSE,NMtabCount=FALSE,debug=FALSE) {
 
     if(debug) browser()
 
@@ -134,7 +115,7 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 #### Section start: read all output tables and merge to max one firstonly and max one row ####
 
     if(!quiet) message("Scanning for output tables.")
-    tables <- NMscanTables(file,details=T,as.dt=T,quiet=quiet)
+    tables <- NMscanTables(file,details=T,as.dt=T,NMtabCount=NMtabCount,quiet=quiet)
     data <- tables$data
     overview.tables <- tables$meta
 

@@ -4,21 +4,26 @@
 \alias{NMtransFilters}
 \title{Translate filters in Nonmem and apply to data}
 \usage{
-NMtransFilters(data, file, text, lines, quiet = FALSE, debug = FALSE)
+NMtransFilters(data, file, text, lines, invert = FALSE, quiet = FALSE,
+  debug = FALSE)
 }
 \arguments{
 \item{data}{An input data object. Could be read with NMreadCsv or
 NMtransInput.}
 
-\item{file}{Path to mod/lst file. Only one of file, text, or lines to be
-given. See ?NMgetSection for understanding when to use, file, text, or
-lines.}
+\item{file}{Path to mod/lst file. Only one of file, text, or lines
+to be given. See ?NMgetSection for understanding when to use,
+file, text, or lines.}
 
 \item{text}{The mod/lst as characters.}
 
 \item{lines}{The mod/lst as character, line by line.}
 
-\item{quiet}{Don't report information along the way if no warnings or errors. Default is FALSE.}
+\item{invert}{Invert the filters? This means read what Nonmem
+would disregard, and disregard what Nonmem would read.}
+
+\item{quiet}{Don't report information along the way if no warnings
+or errors. Default is FALSE.}
 
 \item{debug}{start by running browser()?}
 }
@@ -26,9 +31,10 @@ lines.}
 Translate filters in Nonmem and apply to data
 }
 \details{
-This is not bulletproof. A statement like ACCEPT=(DOSE 10) which in
-    Nonmem means the same as ACCEPT=(DOSE==10) will not be correctly
-    interpreted. Also, nested conditions are not supported altogether.
+This is not bulletproof. A statement like ACCEPT=(DOSE
+    10) which in Nonmem means the same as ACCEPT=(DOSE==10) will
+    not be correctly interpreted. Also, nested conditions are not
+    supported altogether.
 }
 \seealso{
 Other Nonmem: \code{\link{NMextractText}},

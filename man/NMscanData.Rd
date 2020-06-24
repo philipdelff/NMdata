@@ -8,7 +8,7 @@ NMscanData(file, col.id = "ID", col.row = "ROW", col.grp = NULL,
   col.occ = "OCC", structure = "full", use.input = TRUE,
   recoverRows = FALSE, add.name = "model", name, dir.data,
   quiet = FALSE, useRDS = TRUE, as.dt = TRUE,
-  mergeByFilters = FALSE, debug = FALSE)
+  mergeByFilters = FALSE, NMtabCount = FALSE, debug = FALSE)
 }
 \arguments{
 \item{file}{A nonmem control stream or output file from nonmem (.mod or

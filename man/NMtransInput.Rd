@@ -5,7 +5,7 @@
 \title{read input data and translate names according to the $INPUT section}
 \usage{
 NMtransInput(file, useRDS = TRUE, dir.data, applyFilters = FALSE,
-  quiet = FALSE, as.dt = TRUE, debug = F)
+  quiet = FALSE, invert = FALSE, as.dt = TRUE, debug = F)
 }
 \arguments{
 \item{file}{a .lst or a .mod. If dir.data is missing, the .mod is required

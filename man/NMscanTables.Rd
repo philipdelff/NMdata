@@ -5,7 +5,7 @@
 \title{read all output data tables in nonmem run}
 \usage{
 NMscanTables(file, details = F, as.dt = TRUE, quiet = FALSE,
-  debug = FALSE)
+  NMtabCount = TRUE, debug = FALSE)
 }
 \arguments{
 \item{file}{the nonmem file to read (normally .mod or .lst)}
