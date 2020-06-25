@@ -10,11 +10,6 @@
 ##'     covariate. Please make sure that the (within-subject varying) grouping
 ##'     variable is not returned in an output table with firstonly option for
 ##'     now. For now, this may return unintended merges.
-##' @param col.occ The name of a non-mandatory occasion variable (say "OCC").
-##' @param structure Either "full" or something else. If full, all variables
-##'     that can be represented will be included at all levels. If not, only
-##'     row-level data will be included in $row, only occasion-level data in
-##'     $occ, etc.
 ##' @param use.input Merge with columns in input data? Using this, you don't
 ##'     have to worry about remembering including all relevant variables in the
 ##'     output tables.
@@ -69,7 +64,7 @@
 
 ### end todo 
 
-NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC",structure="full",use.input=TRUE,recoverRows=FALSE,add.name="model",name,dir.data,quiet=FALSE,useRDS=TRUE,as.dt=TRUE,mergeByFilters=FALSE,NMtabCount=FALSE,debug=FALSE) {
+NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,use.input=TRUE,recoverRows=FALSE,add.name="model",name,file.mod=NULL,dir.data,quiet=FALSE,useRDS=TRUE,as.dt=TRUE,mergeByFilters=FALSE,NMtabCount=FALSE,debug=FALSE) {
 
     if(debug) browser()
 
@@ -108,6 +103,10 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
 
     ## for easier passing of the argument
     if(missing(dir.data)) dir.data <- NULL
+
+    if(is.null(dir.data)&&!is.null(file.mod)){
+        stop("Only use one of dir.data and file.mod. The aim is to find the input data file, so either give the directory (dir.data) in which it is, and the filename will be taken from the lst file, or help finding the .mod file using the file.mod argument. Using both is redundant.")
+    }
     
 ###  Section end: Process arguments 
 
@@ -169,12 +168,20 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
     ## onto input dataif no row-wise output exists.
     
     ## use.input.row <- use.input
-    if(use.input) {
-        file.mod <- sub("\\.lst","\\.mod",file)
-        if(!file.exists(file.mod)&&is.null(dir.data)) {
-            warning("control stream (.mod) not found next to .lst file. If you don't have a .mod file, see the dir.data argument. Input data not used.")
-            use.input <- FALSE
+
+    if(use.input&&is.null(dir.data)) {
+        if(is.null(file.mod)){
+            path.file <- sub("\\.lst","\\.mod",file)
         }
+        if(is.function(file.mod)) {
+            path.file.mod <- file.mod(file)
+        } else {
+            path.file.mod <- file.mod
+        }
+
+        if(!file.exists(file.mod)) {
+            warning("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument. Input data not used.")
+            use.input <- FALSE }
     }
 
     ## use.rows means if to use row-data from output tables
@@ -184,14 +191,14 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,col.occ="OCC"
     }
     
     if(use.input&&!any(tables$meta$full.length)) {
-        tab.row <- NMtransInput(file,quiet=quiet,useRDS=useRDS,applyFilters=mergeByFilters,as.dt=TRUE,debug=F)
+        tab.row <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,useRDS=useRDS,applyFilters=mergeByFilters,as.dt=TRUE,debug=F)
         tab.row[,nmout:=FALSE]
         tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="input",tab.type="row"))
     }
     
     if(use.input&&any(tables$meta$full.length)) {
         if(!quiet) message("Searching for input data.")
-        data.input <- NMtransInput(file,quiet=quiet,useRDS=useRDS,applyFilters=mergeByFilters,as.dt=TRUE,debug=F)
+        data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,useRDS=useRDS,applyFilters=mergeByFilters,as.dt=TRUE,debug=F)
         cnames.input <- colnames(data.input)
 
         if(mergeByFilters) {
