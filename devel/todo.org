@@ -29,6 +29,8 @@ mod should only be used for path to dataset.
 I still don't really understand the documentation on this, but it doesnt seem
 too hard to implement. It should NOT only be interpreted when the A=B format is used in
 $INPUT. If something is called TIME, it must be checked for format.
+**** TODO .mod files should be accepted as the file argument. 
+Maybe file can be missing/NULL if file.mod is given. 
 *** NMtransFilters
 **** DONE Replace single = with ==
      CLOSED: [2020-06-15 Mon 21:05]

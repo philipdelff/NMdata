@@ -32,17 +32,30 @@
 
 ## implement NULL,  RECORDS or at least say it's not done, use col.row instead.
 
-NMtransInput <- function(file,useRDS=TRUE,dir.data,applyFilters=FALSE,quiet=FALSE,invert=FALSE,as.dt=TRUE,debug=F) {
+NMtransInput <- function(file,useRDS=TRUE,file.mod=NULL,dir.data=NULL,applyFilters=FALSE,quiet=FALSE,invert=FALSE,as.dt=TRUE,debug=F) {
 
     if(debug) browser()
     
 ### the lst file only contains the name of the data file, not the path to it. So we need to find the .mod instead.
-    file.find.data <- file
 
-    if(missing(dir.data)) dir.data <- NULL
+    if(missing(file)) file <- NULL
+    file.find.data <- file
     if(is.null(dir.data)) {
-        file.find.data <- sub("\\.lst$","\\.mod",file)
+        if(is.null(file.mod)){
+            file.mod <- sub("\\.lst","\\.mod",file)
+        }
+        if(is.function(file.mod)) {
+            path.file.mod <- file.mod(file)
+        } else {
+            path.file.mod <- file.mod
+        }
+
+        if(!file.exists(path.file.mod)) {
+            warning("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument. Input data not used.")
+        }
+        file.find.data <- path.file.mod
     }
+
 
     ## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    
     lines <- NMgetSection(file,section="INPUT",keepName=F)
