@@ -19,10 +19,14 @@ or c("ID","TRT").}
 \description{
 Extract columns that vary within values of other columns in a data.frame
 }
+\details{
+Use this to exclude columns that are constant within
+    cols.id. If cols.id=ID, this could be to get only time-varying
+    covariates.
+}
 \seealso{
-Other DataWrangling: \code{\link{NMaddColumns}},
-  \code{\link{NMorderColumns}}, \code{\link{NMscanData}},
-  \code{\link{findCovs}}, \code{\link{mergeCheck}},
-  \code{\link{tmpcol}}
+Other DataWrangling: \code{\link{NMorderColumns}},
+  \code{\link{NMscanData}}, \code{\link{findCovs}},
+  \code{\link{mergeCheck}}, \code{\link{tmpcol}}
 }
 \concept{DataWrangling}

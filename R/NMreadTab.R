@@ -2,6 +2,7 @@
 ##'
 ##' @param file path to NONMEM table file
 ##' @param silent logical stating whether or not information is printed.
+##' @param NMtabCount 
 ##' @param debug Start by calling browser()?
 ##' @param ... Arguments passed to fread.
 ##' @return Nonmem table as df.
@@ -10,7 +11,7 @@
 ##' @export
 
 
-NMreadTab <- function(file,silent=F,...,debug=F) {
+NMreadTab <- function(file,silent=F,NMtabCount=TRUE,...,debug=F) {
 
     if(debug) browser()
 
@@ -36,10 +37,12 @@ NMreadTab <- function(file,silent=F,...,debug=F) {
     if(!silent){
         message("Adding table numbers to data")
     }
-    ## find table numbers
-    dt1[grep("^TABLE +NO\\. +[0-9]+ *$",as.character(get(cnames[1])),invert=F,perl=T),TABLE:=get(cnames[1])]
-    dt1[,TABLENO:=cumsum(!is.na(TABLE))+1]
-    dt1[,TABLE:=NULL]
+    if(NMtabCount){
+        ## find table numbers
+        dt1[grep("^TABLE +NO\\. +[0-9]+ *$",as.character(get(cnames[1])),invert=F,perl=T),TABLE:=get(cnames[1])]
+        dt1[,TABLENO:=cumsum(!is.na(TABLE))+1]
+        dt1[,TABLE:=NULL]
+    }
     if(!silent){
         message("getting rid of non-data rows")
     }

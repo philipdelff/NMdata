@@ -6,6 +6,9 @@
 ##'     either empty or ID. But it can also be both say c("ID","DRUG")
 ##'     or c("ID","TRT").
 ##' @param debug start by running browser()?
+##' @details Use this to exclude columns that are constant within
+##'     cols.id. If cols.id=ID, this could be to get only time-varying
+##'     covariates.
 ##' @family DataWrangling
 ##' @import data.table
 ##' @export
@@ -20,7 +23,10 @@ findVars <- function(data,cols.id=NULL,debug=F){
     }
     
     was.data.table <- T
-    if(!is.data.table(data)){
+
+    if(is.data.table(data)){
+        data <- copy(data)
+    } else {
         was.data.table <- F
         data <- as.data.table(data)
     }

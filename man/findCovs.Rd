@@ -29,9 +29,8 @@ findCovs(dat,cols.id=c())
 }
 }
 \seealso{
-Other DataWrangling: \code{\link{NMaddColumns}},
-  \code{\link{NMorderColumns}}, \code{\link{NMscanData}},
-  \code{\link{findVars}}, \code{\link{mergeCheck}},
-  \code{\link{tmpcol}}
+Other DataWrangling: \code{\link{NMorderColumns}},
+  \code{\link{NMscanData}}, \code{\link{findVars}},
+  \code{\link{mergeCheck}}, \code{\link{tmpcol}}
 }
 \concept{DataWrangling}

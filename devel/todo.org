@@ -1,6 +1,7 @@
 * NMdata todo
-** Design 
-*** TODO For a version 0.2.0, omit the extra variability levels
+** Design
+*** DONE For a version 0.2.0, omit the extra variability levels
+    CLOSED: [2020-06-23 Tue 20:51]
 just provide functions to get them
 *** TODO Allow for say input.txt/output.txt
 **** NMtransInput
@@ -8,6 +9,8 @@ just provide functions to get them
 Could we use an option, NMdata.return="dplyr::as.tibble" which could then be
 reached and applied from within NMdata? It would have to not create extra
 dependencies.
+** New functions
+*** TODO summary.NMdata
 ** Function improvements
 *** NMextractText
 **** TODO reduce lines and text to one argument
@@ -36,8 +39,38 @@ should not be translated by NMcode2R.
 *** NMscanTables
 **** TODO Lastonly does the same as firstonly
 *** NMscanData
-*** TODO check overview.tables 
-Either they must be firstonly, or they must be full.length.
+**** TODO check overview.tables 
+ Either they must be firstonly, or they must be full.length.
 **** TODO Limitation: tables with EXCLUDE_BY
 **** TODO Limitation: FIRSTLASTONLY
-
+**** DONE Implement recoverRows using mergeByFilters
+     CLOSED: [2020-06-23 Tue 20:52]
+**** TODO Add support for col.row of length>1
+**** TODO Consistent behaviour when missing data fields
+***** use.input (default)
+****** Means that output data will be merged onto input data
+****** If input data is missing or merge not possible, give warning
+****** if only firstonly data available, do the merge if possible
+***** mergeByFilters (defult in future?)
+**** Only allowed if use.input=TRUE
+**** Means that we will translate NM filters and cbind rather than using a row identifier.
+**** If the filters go wrong, give error
+**** Firstonly (FO) data can only be used if ID is both input and FO table
+ We can implement taking the sequence of IDs from input and restore
+ ID's from that
+**** TODO Improve summary of what tables were used and how.
+Right now it only says if input or output. Table name would be helpful.
+**** TODO Support for no ID, no ROW in firstonly tables
+If mergeByFilters we can take the sequence of ID in the input
+data. But what if an ID comes back? I think a record is in FIRSTONLY
+whenever ID changes, but test this.
+** Nonmem examples
+*** TODO Use FLAG
+rerun xmgr001.mod with IGNORE=(FLAG.NE.0) That would be a nice example
+for the vignette.
+*** TODO Update all runs with updated data file
+** Discussion
+*** recoverRows can mean mix of variable interpretations 
+If recoverRows and a variable is changing interpretation from input to
+output, the resulting table will carry two distinct variables
+depending on nmout TRUE or FALSE.

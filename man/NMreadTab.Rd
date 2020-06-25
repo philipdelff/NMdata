@@ -4,12 +4,14 @@
 \alias{NMreadTab}
 \title{Read a table file from NONMEM}
 \usage{
-NMreadTab(file, silent = F, ..., debug = F)
+NMreadTab(file, silent = F, NMtabCount = TRUE, ..., debug = F)
 }
 \arguments{
 \item{file}{path to NONMEM table file}
 
 \item{silent}{logical stating whether or not information is printed.}
+
+\item{NMtabCount}{}
 
 \item{...}{Arguments passed to fread.}
 
