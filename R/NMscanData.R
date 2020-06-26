@@ -64,7 +64,7 @@
 
 ### end todo 
 
-NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,use.input=TRUE,recoverRows=FALSE,add.name="model",name,file.mod=NULL,dir.data,quiet=FALSE,useRDS=TRUE,as.dt=TRUE,mergeByFilters=FALSE,NMtabCount=FALSE,debug=FALSE) {
+NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,use.input=TRUE,recoverRows=FALSE,add.name="model",name,file.mod,dir.data,quiet=FALSE,useRDS=TRUE,as.dt=TRUE,mergeByFilters=FALSE,NMtabCount=FALSE,debug=FALSE) {
 
     if(debug) browser()
 
@@ -103,8 +103,9 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,use.input=TRU
 
     ## for easier passing of the argument
     if(missing(dir.data)) dir.data <- NULL
+    if(missing(file.mod)) file.mod <- NULL
 
-    if(is.null(dir.data)&&!is.null(file.mod)){
+    if(!is.null(dir.data)&&!is.null(file.mod)){
         stop("Only use one of dir.data and file.mod. The aim is to find the input data file, so either give the directory (dir.data) in which it is, and the filename will be taken from the lst file, or help finding the .mod file using the file.mod argument. Using both is redundant.")
     }
     
@@ -171,7 +172,7 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,use.input=TRU
 
     if(use.input&&is.null(dir.data)) {
         if(is.null(file.mod)){
-            path.file <- sub("\\.lst","\\.mod",file)
+            file.mod <- sub("\\.lst","\\.mod",file)
         }
         if(is.function(file.mod)) {
             path.file.mod <- file.mod(file)

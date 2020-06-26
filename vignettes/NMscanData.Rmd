@@ -15,8 +15,10 @@ knitr::opts_chunk$set(
 ```
 
 ```{r,setup}
+## .libPaths("~/R/x86_64-pc-linux-gnu-library/3.5/")
 ## library(devtools)
 ## load_all("~/working_copies/NMdata")
+
 library(NMdata)
 
 library(ggplot2)
@@ -82,7 +84,7 @@ geom_point(aes(TIME,DV))+
 ## stat_summary(aes(x=NOMTIME,y=PRED),fun.y=function(x)exp(mean(log(x))),geom="line")+
 geom_line(aes(NOMTIME,gmPRED),data=res1.mean)+
 scale_y_log10()+
-facet_wrap(~trtact)+
+facet_wrap(~trtact,scales="free_y")+
 labs(x="Hours since administration",y="Concentration (ng/mL)")
 
 ```
@@ -164,6 +166,7 @@ resulting data). But now you know what the model column is.
 
 # More options
 ## Recover rows
+
 
 ## The row identifier or interpret Nonmem code
 The row identifier is not needed for NMscanData to run and in most
