@@ -11,7 +11,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
-)
+,fig.width=7)
 ```
 
 ```{r,setup}
@@ -167,7 +167,7 @@ cols.id argument in that findVars call because there is only one model
 in the data (only difference would be that `model` wouldn't be in the
 resulting data). But now you know what the model column is.
 
-# More options
+# More options and features
 ## Recover rows
 You may have wondered why there is so little data on the small doses
 in the plot of observations and geometric mean population predictions
@@ -227,13 +227,15 @@ Since the character representation of treatment was already prepared,
 it would be natural to encode the factor levels already at that
 point. In order to preserve such information, we can use R's native
 rds format. If the argument useRDS is TRUE, NMscanData will look for
-an rds file next to the text file the nonmem run is using with the
-exact same name as the text file except the extension must be .rds
-rather than say ".csv" (for nonmem and NMscanData, the extension of
-the delimited text file doesn't matter). If it finds the rds file,
-this will be used instead. No checks are done of whether the contents
-are similar in any way to the delimited text file which is ignored in
-this case.
+an rds file next to the input data file (which is a delimited text
+file) the exact same name as the text file except the extension must
+be .rds rather than say ".csv" (for nonmem and NMscanData, the
+extension of the delimited text file doesn't matter). If it finds the
+rds file, this will be used instead. No checks are done of whether the
+contents are similar in any way to the delimited text file which is
+ignored in this case. 
+
+
 
 # What should I do for my models to be compatible with NMscanData
 The answer to this should be as close to "nothing" as possible -

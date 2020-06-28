@@ -2,7 +2,7 @@
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
-)
+,fig.width=7)
 
 ## ----setup---------------------------------------------------------------
 ## .libPaths("~/R/x86_64-pc-linux-gnu-library/3.5/")

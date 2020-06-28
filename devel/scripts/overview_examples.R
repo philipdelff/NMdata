@@ -14,3 +14,20 @@ l.prob <- lapply(lsts,
 names(l.prob) <- basename(lsts)
 
 l.prob
+
+
+l.all <- lapply(lsts,
+                function(lst){
+                    list(
+                        NMgetSection(lst,section="PROBLEM")
+                       ,NMgetSection(lst,section="DATA")
+                       ,NMgetSection(lst,section="TABLE")
+                    )
+                }
+   )
+names(l.all) <- basename(lsts)
+
+l.all
+
+
+
