@@ -5,9 +5,8 @@
 \title{automatically find Nonmem tables and organize data}
 \usage{
 NMscanData(file, col.id = "ID", col.row = "ROW", col.grp = NULL,
-  col.occ = "OCC", structure = "full", use.input = TRUE,
-  recoverRows = FALSE, add.name = "model", name, dir.data,
-  quiet = FALSE, useRDS = TRUE, as.dt = TRUE,
+  use.input = TRUE, recoverRows = FALSE, add.name = "model", name,
+  file.mod, dir.data, quiet = FALSE, useRDS = TRUE, as.dt = TRUE,
   mergeByFilters = FALSE, NMtabCount = FALSE, debug = FALSE)
 }
 \arguments{
@@ -24,13 +23,6 @@ col.grp. Should only be needed for cross-over - if not grp is a
 covariate. Please make sure that the (within-subject varying) grouping
 variable is not returned in an output table with firstonly option for
 now. For now, this may return unintended merges.}
-
-\item{col.occ}{The name of a non-mandatory occasion variable (say "OCC").}
-
-\item{structure}{Either "full" or something else. If full, all variables
-that can be represented will be included at all levels. If not, only
-row-level data will be included in $row, only occasion-level data in
-$occ, etc.}
 
 \item{use.input}{Merge with columns in input data? Using this, you don't
 have to worry about remembering including all relevant variables in the
@@ -80,15 +72,7 @@ automatically find Nonmem tables and organize data
 }
 \details{
 This function makes it very easy to collect the data from
-    a Nonmem run. Only, you have to make sure to include a row
-    counter in your input data files and your output tables. It
-    reorganizes the data into four different levels:
-\itemize{
-  \item pop
-  \item id
-  \item occ
-  \item row
-}
+    a Nonmem run.
 }
 \seealso{
 Other DataWrangling: \code{\link{NMorderColumns}},

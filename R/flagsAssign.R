@@ -129,7 +129,7 @@ NID <- NULL
 ### FLAG==0 cannot be customized. If not in table, put in table. Return the
 ### table as well. Maybe a reduced table containing only used FLAGS
     if(!0%in%tab.flags[,"FLAG"]) {tab.flags <- rbind(
-                                      data.frame(FLAG=0,flag="Keep in analysis",condition=NA_character_),
+                                      data.frame(FLAG=0,flag="Analysis set",condition=NA_character_),
                                       tab.flags,
                                       fill=T)
     }

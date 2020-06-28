@@ -51,7 +51,8 @@ In brevity, the most important steps are
   
 It should not be to hard to do. But with the large degree of
 flexibility Nonmem offer, there are a lot of caveats to be aware of,
-again especially if you didn't write the model by your own standards.
+again especially if the model wasn't written by your own (current)
+standards.
 
 # Get started
 Try NMscanData on any model:
@@ -60,11 +61,13 @@ res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
 class(res1)
 ```
 NMscanData says that it found both input and output data and has sent
-a data.table back. If you are not used to data.table and don't want to
-use them, feel free to convert to another class, or use the
-as.dt=FALSE argument and get a data.frame back. NMdata uses data.table
-under the hood but all functions will work even if you don't. In the
-future, NMdata may be able to return tibbles or other classes as well.
+a data.table back. The `NMdata` class allows for keeping additional
+information in the object, but notice that it is also a data.table. If
+you are not used to data.table and don't want to use them, feel free
+to convert to another class, or use the as.dt=FALSE argument and get a
+data.frame back. NMdata uses data.table under the hood but all
+functions will work even if you don't. In the future, NMdata may be
+able to return tibbles or other classes as well.
 
 Let's have a quick look at the data we got back. The following is
 again done with data.table but the comments in the code should make it
@@ -106,7 +109,7 @@ across the sample times - it may be better to simulate the model at a
 richer time scale to get better precision.
 
 ```{r}
-res1[,Cmax:=max(PRED),by=.(ID)]
+res1[,Cmax:=max(IPRED),by=.(ID)]
 res1.id <- findCovs(res1,cols.id="ID")
 dim(res1.id)
 ggplot(res1.id,aes(WEIGHTB,Cmax/DOSE,colour=trtact))+
@@ -166,7 +169,43 @@ resulting data). But now you know what the model column is.
 
 # More options
 ## Recover rows
+You may have wondered why there is so little data on the small doses
+in the plot of observations and geometric mean population predictions
+above. The reason is that observations below the lower limit of
+quantification have been disregarded. For this and many other reasons,
+it is very common to use `ACCEPT` and `IGNORE` statements in the
+`$INPUT` section of nonmem control streams. NMscanData can include
+this data in the returned data object as well. Let's redo the plot
+above taking advantage of this option:
 
+```{r}
+res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),recoverRows=TRUE)
+res1[,trtact:=reorder(trtact,DOSE)]
+## Derive another data.table with geometric mean pop predictions by treatment and nominal sample time. Only use sample records.
+res1.mean <- res1[EVID==0&nmout==TRUE,.(gmPRED=exp(mean(log(PRED)))),by=.(trtact,NOMTIME)]
+## plot individual observations and geometric mean pop predictions. Split by treatment.
+ggplot(res1[EVID==0])+
+geom_point(aes(TIME,DV,colour=flag))+
+## stat_summary(aes(x=NOMTIME,y=PRED),fun.y=function(x)exp(mean(log(x))),geom="line")+
+geom_line(aes(NOMTIME,gmPRED),data=res1.mean)+
+scale_y_log10()+
+facet_wrap(~trtact,scales="free_y")+
+labs(x="Hours since administration",y="Concentration (ng/mL)")
+```
+
+Notice, one thing changed when calculating the population geometric
+means by nominal time and dose. We included `nmout==TRUE`. `nmout` is
+a boolean column created by NMscanData expressing whether the rows
+were in the output data (`nmout==TRUE`) or they were recovered from
+the input data. `PRED` is obviously not calculated for data rows
+neglected by Nonmem, so we want to keep those out of the
+calculation. Let's see how many were recovered 
+```{r}
+## this is just a long-format representation of
+## with(res1,table(nmout,flag)) using data.table.
+res1[,.N,by=.(nmout,flag)]
+```
+So 905 were part of the analysis. 
 
 ## The row identifier or interpret Nonmem code
 The row identifier is not needed for NMscanData to run and in most
