@@ -350,9 +350,10 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",col.grp=NULL,use.input=TRU
 
     if(!as.dt) tab.row <- as.data.frame(tab.row)
 
-    attr(tab.row,"vars") <- tab.vars
-    class(tab.row)  <- c("NMdata",class(tab.row))
-
+    ## attr(tab.row,"vars") <- tab.vars
+    setattr(tab.row,"vars",tab.vars)
+    ## class(tab.row)  <- c("NMdata",class(tab.row))
+    setattr(tab.row,"class",c("NMdata",class(tab.row)))
     
     tab.row
 }

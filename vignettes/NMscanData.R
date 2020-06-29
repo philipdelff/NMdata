@@ -51,20 +51,18 @@ dim(res1.id)
 head(res1.id,2)
 
 ## ------------------------------------------------------------------------
-res1.id2 <- findVars(res1.id,cols.id="model")
+res1.id2 <- findVars(res1.id)
 dim(res1.id2)
 head(res1.id2,2)
 
 ## ------------------------------------------------------------------------
-res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),recoverRows=TRUE)
-res1[,trtact:=reorder(trtact,DOSE)]
+res2 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),recoverRows=TRUE)
 ## Derive another data.table with geometric mean pop predictions by treatment and nominal sample time. Only use sample records.
-res1.mean <- res1[EVID==0&nmout==TRUE,.(gmPRED=exp(mean(log(PRED)))),by=.(trtact,NOMTIME)]
+res2.mean <- res2[EVID==0&nmout==TRUE,.(gmPRED=exp(mean(log(PRED)))),by=.(trtact,NOMTIME)]
 ## plot individual observations and geometric mean pop predictions. Split by treatment.
-ggplot(res1[EVID==0])+
+ggplot(res2[EVID==0])+
 geom_point(aes(TIME,DV,colour=flag))+
-## stat_summary(aes(x=NOMTIME,y=PRED),fun.y=function(x)exp(mean(log(x))),geom="line")+
-geom_line(aes(NOMTIME,gmPRED),data=res1.mean)+
+geom_line(aes(NOMTIME,gmPRED),data=res2.mean)+
 scale_y_log10()+
 facet_wrap(~trtact,scales="free_y")+
 labs(x="Hours since administration",y="Concentration (ng/mL)")
@@ -73,4 +71,8 @@ labs(x="Hours since administration",y="Concentration (ng/mL)")
 ## this is just a long-format representation of
 ## with(res1,table(nmout,flag)) using data.table.
 res1[,.N,by=.(nmout,flag)]
+
+## ----eval=FALSE----------------------------------------------------------
+#  out2in <- function(file) file.path(dirname(file),"input.txt")
+#  res <- NMscanData("path/to/output.txt",file.mod=out2in)
 

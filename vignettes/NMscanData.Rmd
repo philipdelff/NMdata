@@ -143,29 +143,24 @@ head(res1.id,2)
 
 This is a mix of variables that vary at subject level and varibles
 that are constant across the full dataset. To get only the ones that
-vary within the dataset (i.e. they are truely de facto subject level
+vary within the dataset (i.e. they are truely subject-level
 variables), we can do 
 
 ```{r}
-res1.id2 <- findVars(res1.id,cols.id="model")
+res1.id2 <- findVars(res1.id)
 dim(res1.id2)
 head(res1.id2,2)
 ```
 
+`findVars` supports the cols.id argument too. So you can use
+`findVars(res1,cols.id="ID")` for find variables that are non-constant
+within ID. `cols.id` can be of arbitrary length.
+
 Of course, we most often know what covariates or other subject-level
 variables to look at, and we would not search for them after running a
 nonmem model. But in the situation where you are looking at someone
-else's work or you are doing a meta analysis across models where the
-data has been coded slightly differently, these tools indeed come in
-useful.
+else's work or you are doing a meta analysis across models where the data has been coded slightly differently, these tools indeed come in useful. Also, remember that if a variable is returned by these functions, you know that they fullfill the variability requirement. We know that variables in `res1.id` above non-varying within ID, meaning that no ID has more than one value of the variable. `NA` counts as any other value, so if a value is returned for subject in res1.id, this subject does not have NA's in `res1`.
 
-By the way, the variable called `model` above is a column created by
-NMscanData. You can specify both column name and content as arguments
-in NMscanData, but if you don't it will do it this way, and take the
-model name from the lst file name. In fact, we could have left out the
-cols.id argument in that findVars call because there is only one model
-in the data (only difference would be that `model` wouldn't be in the
-resulting data). But now you know what the model column is.
 
 # More options and features
 ## Recover rows
@@ -179,21 +174,20 @@ this data in the returned data object as well. Let's redo the plot
 above taking advantage of this option:
 
 ```{r}
-res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),recoverRows=TRUE)
-res1[,trtact:=reorder(trtact,DOSE)]
+res2 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),recoverRows=TRUE)
 ## Derive another data.table with geometric mean pop predictions by treatment and nominal sample time. Only use sample records.
-res1.mean <- res1[EVID==0&nmout==TRUE,.(gmPRED=exp(mean(log(PRED)))),by=.(trtact,NOMTIME)]
+res2.mean <- res2[EVID==0&nmout==TRUE,.(gmPRED=exp(mean(log(PRED)))),by=.(trtact,NOMTIME)]
 ## plot individual observations and geometric mean pop predictions. Split by treatment.
-ggplot(res1[EVID==0])+
+ggplot(res2[EVID==0])+
 geom_point(aes(TIME,DV,colour=flag))+
-## stat_summary(aes(x=NOMTIME,y=PRED),fun.y=function(x)exp(mean(log(x))),geom="line")+
-geom_line(aes(NOMTIME,gmPRED),data=res1.mean)+
+geom_line(aes(NOMTIME,gmPRED),data=res2.mean)+
 scale_y_log10()+
 facet_wrap(~trtact,scales="free_y")+
 labs(x="Hours since administration",y="Concentration (ng/mL)")
 ```
 
-Notice, one thing changed when calculating the population geometric
+A couple of details are different compared to when we read `res1`. For
+now, notice one thing changed when calculating the population geometric
 means by nominal time and dose. We included `nmout==TRUE`. `nmout` is
 a boolean column created by NMscanData expressing whether the rows
 were in the output data (`nmout==TRUE`) or they were recovered from
@@ -206,6 +200,26 @@ calculation. Let's see how many were recovered
 res1[,.N,by=.(nmout,flag)]
 ```
 So 905 were part of the analysis. 
+
+## Combine multiple models
+You may have noticed a column called `model` in some of the output
+above. NMscanData by default adds this column for convenience when
+working with multiple models at a time. You can specify both column
+name and content as arguments in NMscanData, but if you don't it will
+call it `model` and take the model name from the lst file name (say, `xgxr001`).  In
+following we use this to compare population predictions from two
+different models. We read them again just to show the use of the
+argument to name the models ourselves.
+
+```{r}
+## notice fill is an option to rbind with data.table
+res.mult <- rbind(res1,res2,fill=T)
+res.mult.mean <- res.mult[EVID==0&nmout==TRUE,.(gmPRED=exp(mean(log(PRED)))),by=.(model,trtact,NOMTIME)]
+
+ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+geom_line()+facet_wrap(~trtact)
+```
+
+
 
 ## The row identifier or interpret Nonmem code
 The row identifier is not needed for NMscanData to run and in most
@@ -235,17 +249,26 @@ rds file, this will be used instead. No checks are done of whether the
 contents are similar in any way to the delimited text file which is
 ignored in this case. 
 
+Return to the example above creating the dataset `dat2`. Notice the message from NMscanData that an rds file was found. This is why we could sort the plots correctly on the dose level with reordering the factor levels first. There are three advantages of using rds files
 
+- All attributes are kept. This includes column classes and factor levels.
+- Reading speed may be improved (NMdata uses `fread` from `data.table` which is extremely fast for delimited files so in many cases this difference can be small).
+- File sizes are greatly reduced from text to rds. This can be a big advantage if you are transfering files or reading over a network connection. NMdata is generally very fast (thanks to `data.table`) so file access (I/O) is likely to be the main bottleneck.
+
+
+## Custom naming of input and output control streams
+By default, NMscanData expects a psn-style naming of input and output control streams. This means the if the input control stream is called model.mod, the returned control stream is called model.lst. If you use a different setup, you can use the `file.mod` argument. Do one of the following if needed:
+- Explicitly give the path to the input control stream or
+- Pass a function that translates from the output control stream to the input. Example if the input is called `input.txt` and the output is called `output.txt`:
+
+```{r,eval=FALSE}
+out2in <- function(file) file.path(dirname(file),"input.txt")
+res <- NMscanData("path/to/output.txt",file.mod=out2in)
+```
 
 # What should I do for my models to be compatible with NMscanData
 The answer to this should be as close to "nothing" as possible -
-that's more or less the aim of the function. You just have to make
-sure that the information that you need is present in input data and
-output data. No need to output information that is unchanged from
-input, but make sure to output what you need (like IPRED, CWRES, CL,
-ETA1 etc which cannot be found in input). Some of these values can be
-found from other files generated by Nonmem but notice: NMscanData uses only
-input and output data.
+that's more or less the aim of the function. You just have to make sure that the information that you need is present in input data and output data. No need to output information that is unchanged from input, but make sure to output what you need (like IPRED, CWRES, CL, ETA1 etc which cannot be found in input). Some of these values can be found from other files generated by Nonmem but notice: NMscanData uses only input and output data.
 
 It is recommended to always use a unique row identifier in both input and
 output data. This is the most robust way to merge back with input
@@ -271,6 +294,7 @@ The following main principles are followed
   cannot be meaningfully combined (very rare), output will be
   returned.
   
+If you write Nonmem datasets with the `NMdata::NMwriteData`, you can get an rds file automatically. Creating datasets are out of the scope of this vignette, though.
 
 # The building blocks
 The lst file was scanned for output tables, and they were all read
@@ -283,6 +307,7 @@ stream.
 NMreadTab
 
 ## Read all output data
+NMscanTables
 
 ## Input data means the data as used by Nonmem
 You may already have thought about this for a while reading this
@@ -305,4 +330,4 @@ input file must exist and not have been modified since model run.
 
 Some filters
 
-Assumes psn-like file names (lst and mod).
+firstlastonly
