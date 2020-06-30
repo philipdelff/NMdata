@@ -6,7 +6,9 @@ tasks.
 
 ** How to Install
 library(remotes)
+
 install_github("philipdelff/NMdata")
+
 library(NMdata)
 
 ** Automated and general reader of Nonmem output data

@@ -3,7 +3,8 @@
 *** DONE For a version 0.2.0, omit the extra variability levels
     CLOSED: [2020-06-23 Tue 20:51]
 just provide functions to get them
-*** TODO Allow for say input.txt/output.txt
+*** DONE Allow for say input.txt/output.txt
+    CLOSED: [2020-06-29 Mon 21:28]
 **** NMtransInput
 *** TODO Support for return as tibble or whatever
 Could we use an option, NMdata.return="dplyr::as.tibble" which could then be
@@ -67,12 +68,13 @@ If mergeByFilters we can take the sequence of ID in the input
 data. But what if an ID comes back? I think a record is in FIRSTONLY
 whenever ID changes, but test this.
 ** Nonmem examples
-*** TODO Use FLAG
+*** DONE Use FLAG
+    CLOSED: [2020-06-29 Mon 21:28]
 rerun xmgr001.mod with IGNORE=(FLAG.NE.0) That would be a nice example
 for the vignette.
 *** TODO Update all runs with updated data file
 ** Discussion
-*** recoverRows can mean mix of variable interpretations 
+*** recoverRows can mean mix of variable interpretations
 If recoverRows and a variable is changing interpretation from input to
 output, the resulting table will carry two distinct variables
 depending on nmout TRUE or FALSE.
