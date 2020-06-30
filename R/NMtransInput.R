@@ -1,32 +1,46 @@
 ##' read input data and translate names according to the $INPUT section
 ##' 
-##' @description Based on a nonmem run, this function finds the input data and
-##'     reads it. But it reads it like the nonmem run by applying DROP arguments
-##'     and alternative naming of columns in the nonmem run.
-##' @param file a .lst or a .mod. If dir.data is missing, the .mod is required
-##'     to exist next to the .lst file. This is because the .lst does not
-##'     contain the path to the data file. The .mod file is only used for
-##'     finding the data file. How to interpret the datafile is read from the
-##'     .lst file.
-##' @param useRDS If an rds file is found with the exact same name (except for
-##'     .rds instead of say .csv) as the text file mentioned in the Nonmem
-##'     control stream, should this be used instead? The default is yes, and
-##'     NMwriteData will create this by default too.
-##' @param dir.data The data directory can only be read from the control stream
-##'     (.mod) and not from the output file (.lst). So if you only have the
-##'     output file, use dir.data to tell in which directory to find the data
-##'     file. If dir.data is provided, the .mod file is not used at all.
+##' @description Based on a nonmem run, this function finds the input
+##'     data and reads it. But it reads it like the nonmem run by
+##'     applying DROP arguments and alternative naming of columns in
+##'     the nonmem run.
+##' @param file a .lst or a .mod. If dir.data is missing, the .mod is
+##'     required to exist next to the .lst file. This is because the
+##'     .lst does not contain the path to the data file. The .mod file
+##'     is only used for finding the data file. How to interpret the
+##'     datafile is read from the .lst file.
+##' @param file.mod The input control stream. Default is to look for
+##'     \"file\" with extension changed to .mod (PSN style). You can
+##'     also supply the path to the file, or you can provide a
+##'     function that translates the output file path to the input
+##'     file path. See dir.data too.
+##' @param dir.data The data directory can only be read from the
+##'     control stream (.mod) and not from the output file (.lst). So
+##'     if you only have the output file, use dir.data to tell in
+##'     which directory to find the data file. If dir.data is
+##'     provided, the .mod file is not used at all.
+##' @param useRDS If an rds file is found with the exact same name
+##'     (except for .rds instead of say .csv) as the text file
+##'     mentioned in the Nonmem control stream, should this be used
+##'     instead? The default is yes, and NMwriteData will create this
+##'     by default too.
+##' @param applyFilters Set to TRUE if you want IGNORE and ACCEPT
+##'     statements in the nonmem control streams to be applied before
+##'     returning the data.
 ##' @param quiet Default is to inform a little, but TRUE is useful for
 ##'     non-interactive stuff.
-##' @param as.dt Return a data.table? data.table is default, if not a data.frame
-##'     is returned.
+##' @param as.dt Return a data.table? data.table is default, if not a
+##'     data.frame is returned.
+##' @param invert If TRUE, the data rows that are dismissed by the
+##'     Nonmem data filters (ACCEPT and IGNORE) will be returned.
 ##' @param debug start by running browser()?
-##' @details The line containing whom the license is issued to cannot be
-##'     retrieved. Special characters like accents and the registerred trademark
-##'     (R) sign are likely to cause trouble if locales are changed (say from a
-##'     linux system running Nonmem to a Windows or Mac running R), so this line
-##'     is discarded. Columns that are dropped (using DROP or SKIP in $INPUT) in
-##'     the model will be included in the output. 
+##' @details The line containing whom the license is issued to cannot
+##'     be retrieved. Special characters like accents and the
+##'     registerred trademark (R) sign are likely to cause trouble if
+##'     locales are changed (say from a linux system running Nonmem to
+##'     a Windows or Mac running R), so this line is
+##'     discarded. Columns that are dropped (using DROP or SKIP in
+##'     $INPUT) in the model will be included in the output.
 ##' @family Nonmem
 ##' @export
 
@@ -112,7 +126,7 @@ NMtransInput <- function(file,useRDS=TRUE,file.mod=NULL,dir.data=NULL,applyFilte
         data.input <- readRDS(path.data.input)
     } else {
         if(file.exists(path.data.input)){
-            if(!quiet) message("Found input data file. Reading with NMreadCsv")
+            if(!quiet) message("Found delimited text input data file.")
             data.input <- NMreadCsv(path.data.input)
         } else {
             stop(paste("Input data file not found. Was expecting to find",path.data.input))

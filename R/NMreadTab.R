@@ -1,8 +1,12 @@
 ##' Read a table file from NONMEM 
 ##'
 ##' @param file path to NONMEM table file
-##' @param silent logical stating whether or not information is printed.
-##' @param NMtabCount 
+##' @param silent logical stating whether or not information is
+##'     printed.
+##' @param NMtabCount Nonmem includes a counter of tables in the
+##'     written data files. These are often not useful. However, if
+##'     NMtabCount is TRUE (default), this will be carried forward and
+##'     added as a column called TABLENO.
 ##' @param debug Start by calling browser()?
 ##' @param ... Arguments passed to fread.
 ##' @return Nonmem table as df.

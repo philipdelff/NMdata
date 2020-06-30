@@ -19,6 +19,11 @@ list. I'd say, enable if doing programming.}
 data is found. But consider setting this to TRUE for non-interactive
 use.}
 
+\item{NMtabCount}{Nonmem includes a counter of tables in the
+written data files. These are often not useful. However, if
+NMtabCount is TRUE (default), this will be carried forward and
+added as a column called TABLENO.}
+
 \item{debug}{Start by calling browser()?}
 }
 \value{

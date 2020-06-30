@@ -5,6 +5,10 @@
 ##' @param quiet The default is to give some information along the way on what
 ##'     data is found. But consider setting this to TRUE for non-interactive
 ##'     use.
+##' @param NMtabCount Nonmem includes a counter of tables in the
+##'     written data files. These are often not useful. However, if
+##'     NMtabCount is TRUE (default), this will be carried forward and
+##'     added as a column called TABLENO.
 ##' @param as.dt return data.tables? Tables will not be keyed.
 ##' @param debug Start by calling browser()?
 ##' @return A list of all the tables as data.frames. If details=TRUE, this is in
@@ -55,7 +59,7 @@ NMscanTables <- function(file,details=F,as.dt=TRUE,quiet=FALSE,NMtabCount=TRUE,d
     }
 
     if(!quiet){
-        message(paste0("Read ",nrow(meta)," table(s)."))
+        message(paste0("Read ",nrow(meta)," output table(s)."))
     }
 
     names(tables) <- meta$name

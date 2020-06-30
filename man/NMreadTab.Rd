@@ -9,9 +9,13 @@ NMreadTab(file, silent = F, NMtabCount = TRUE, ..., debug = F)
 \arguments{
 \item{file}{path to NONMEM table file}
 
-\item{silent}{logical stating whether or not information is printed.}
+\item{silent}{logical stating whether or not information is
+printed.}
 
-\item{NMtabCount}{}
+\item{NMtabCount}{Nonmem includes a counter of tables in the
+written data files. These are often not useful. However, if
+NMtabCount is TRUE (default), this will be carried forward and
+added as a column called TABLENO.}
 
 \item{...}{Arguments passed to fread.}
 

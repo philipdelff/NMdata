@@ -4,66 +4,79 @@
 \alias{NMscanData}
 \title{automatically find Nonmem tables and organize data}
 \usage{
-NMscanData(file, col.id = "ID", col.row = "ROW", col.grp = NULL,
-  use.input = TRUE, recoverRows = FALSE, add.name = "model", name,
-  file.mod, dir.data, quiet = FALSE, useRDS = TRUE, as.dt = TRUE,
+NMscanData(file, col.id = "ID", col.row = "ROW", use.input = TRUE,
+  recoverRows = FALSE, add.name = "model", name, file.mod, dir.data,
+  quiet = FALSE, useRDS = TRUE, as.dt = TRUE,
   mergeByFilters = FALSE, NMtabCount = FALSE, debug = FALSE)
 }
 \arguments{
-\item{file}{A nonmem control stream or output file from nonmem (.mod or
-.lst)}
+\item{file}{A nonmem control stream or output file from nonmem
+(.mod or .lst)}
 
-\item{col.id}{The name of the subject ID variable, default is "ID".}
+\item{col.id}{The name of the subject ID variable, default is
+"ID".}
 
-\item{col.row}{A column that is unique for each row. Such a column is needed
-for this function to work well.}
+\item{col.row}{A column that is unique for each row. Such a column
+is needed for this function to work well.}
 
-\item{col.grp}{If present, ID and OCC level info is grouped by
-col.grp. Should only be needed for cross-over - if not grp is a
-covariate. Please make sure that the (within-subject varying) grouping
-variable is not returned in an output table with firstonly option for
-now. For now, this may return unintended merges.}
+\item{use.input}{Merge with columns in input data? Using this, you
+don't have to worry about remembering including all relevant
+variables in the output tables.}
 
-\item{use.input}{Merge with columns in input data? Using this, you don't
-have to worry about remembering including all relevant variables in the
-output tables.}
+\item{recoverRows}{Include rows from input data files that do not
+exist in output tables? This will be added to the $row dataset
+only, and $run, $id, and $occ datasets are created before this
+is taken into account. A column called nmout will be TRUE when
+the row was found in output tables, and FALSE when not. This
+is still experimental. More testing is needed.}
 
-\item{recoverRows}{Include rows from input data files that do not exist in
-output tables? This will be added to the $row dataset only, and $run,
-$id, and $occ datasets are created before this is taken into account. A
-column called nmout will be TRUE when the row was found in output
-tables, and FALSE when not. This is still experimental. More testing is
-needed.}
+\item{add.name}{If a character string, a column of this name will
+be included in all tables containing the model name. The
+default is to store this in a column called "model". See
+argument "name" as well. Set to NULL if not wanted.}
 
-\item{add.name}{If a character string, a column of this name will be
-included in all tables containing the model name. The default is to
-store this in a column called "model". See argument "name" as well. Set
-to NULL if not wanted.}
+\item{name}{The model name to be stored if add.name is not
+NULL. If name is not supplied, the name will be taken from the
+control stream file name.}
 
-\item{name}{The model name to be stored if add.name is not NULL. If name is
-not supplied, the name will be taken from the control stream file name.}
+\item{file.mod}{The input control stream. Default is to look for
+\"file\" with extension changed to .mod (PSN style). You can
+also supply the path to the file, or you can provide a
+function that translates the output file path to the input
+file path. See dir.data too.}
 
-\item{dir.data}{The data directory can only be read from the control stream
-(.mod) and not from the output file (.lst). So if you only have the
-output file, use dir.data to tell in which directory to find the data
-file. If dir.data is provided, the .mod file is not used at all.}
+\item{dir.data}{The data directory can only be read from the
+control stream (.mod) and not from the output file (.lst). So
+if you only have the output file, use dir.data to tell in
+which directory to find the data file. If dir.data is
+provided, the .mod file is not used at all.}
 
-\item{quiet}{The default is to give some information along the way on what
-data is found. But consider setting this to TRUE for non-interactive
-use.}
+\item{quiet}{The default is to give some information along the way
+on what data is found. But consider setting this to TRUE for
+non-interactive use.}
 
-\item{useRDS}{If an rds file is found with the exact same name (except for
-.rds instead of say .csv) as the input data file mentioned in the Nonmem
-control stream, should this be used instead? The default is yes, and
-NMwriteData will create this by default too.}
+\item{useRDS}{If an rds file is found with the exact same name
+(except for .rds instead of say .csv) as the input data file
+mentioned in the Nonmem control stream, should this be used
+instead? The default is yes, and NMwriteData will create this
+by default too.}
 
-\item{as.dt}{The default is to return data in data.tables. If data.frames
-are wanted, use as.dt=FALSE.}
+\item{as.dt}{The default is to return data in data.tables. If
+data.frames are wanted, use as.dt=FALSE.}
 
-\item{mergeByFilters}{This is experimental. If TRUE, the IGNORE filters in
-the nonmem control stream are attempted applied and then input and
-output data simply cbinded. This is not recommended (use a row
-identifier instead), but sometimes it is your only option.}
+\item{mergeByFilters}{This is experimental. If TRUE, the IGNORE
+filters in the nonmem control stream are attempted applied and
+then input and output data simply cbinded. This is not
+recommended (use a row identifier instead), but sometimes it
+is your only option.}
+
+\item{NMtabCount}{Nonmem includes a counter of tables in the
+written data files. These are often not useful. Especially for
+NMscanData output it can be meaningless because multiple
+tables can be combined so this information is not unique
+across those source tables. However, if NMtabCount is TRUE
+(not default), this will be carried forward and added as a
+column called TABLENO.}
 
 \item{debug}{start by running browser()?}
 }

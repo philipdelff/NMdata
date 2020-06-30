@@ -4,13 +4,12 @@ knitr::opts_chunk$set(
   comment = "#>"
 ,fig.width=7)
 
+## ----eval=FALSE,include=FALSE--------------------------------------------
+#  ## library(devtools)
+#  ## load_all("~/working_copies/NMdata")
+
 ## ----setup---------------------------------------------------------------
-## .libPaths("~/R/x86_64-pc-linux-gnu-library/3.5/")
-## library(devtools)
-## load_all("~/working_copies/NMdata")
-
 library(NMdata)
-
 library(ggplot2)
 
 ## ----eval=TRUE-----------------------------------------------------------
@@ -71,6 +70,17 @@ labs(x="Hours since administration",y="Concentration (ng/mL)")
 ## this is just a long-format representation of
 ## with(res1,table(nmout,flag)) using data.table.
 res1[,.N,by=.(nmout,flag)]
+
+## ------------------------------------------------------------------------
+## notice fill is an option to rbind with data.table
+res1.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
+res2.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),name="single-compartment")
+res.mult <- rbind(res1.m,res2.m,fill=T)
+res.mult.mean <- res.mult[EVID==0&nmout==TRUE,.(gmPRED=exp(mean(log(PRED)))),by=.(model,trtact,NOMTIME)]
+
+ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+geom_line()+
+scale_y_log10()+
+facet_wrap(~trtact,scales="free_y")
 
 ## ----eval=FALSE----------------------------------------------------------
 #  out2in <- function(file) file.path(dirname(file),"input.txt")

@@ -1,5 +1,5 @@
 ---
-title: "NMscanData"
+title: "Automated and general reader of Nonmem output data"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{get-started}
@@ -14,13 +14,13 @@ knitr::opts_chunk$set(
 ,fig.width=7)
 ```
 
-```{r,setup}
-## .libPaths("~/R/x86_64-pc-linux-gnu-library/3.5/")
+```{r,eval=FALSE,include=FALSE}
 ## library(devtools)
 ## load_all("~/working_copies/NMdata")
+```
 
+```{r,setup}
 library(NMdata)
-
 library(ggplot2)
 ```
 
@@ -209,23 +209,37 @@ name and content as arguments in NMscanData, but if you don't it will
 call it `model` and take the model name from the lst file name (say, `xgxr001`).  In
 following we use this to compare population predictions from two
 different models. We read them again just to show the use of the
-argument to name the models ourselves.
+argument to name the models ourselves. 
 
 ```{r}
 ## notice fill is an option to rbind with data.table
-res.mult <- rbind(res1,res2,fill=T)
+res1.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
+res2.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),name="single-compartment")
+res.mult <- rbind(res1.m,res2.m,fill=T)
 res.mult.mean <- res.mult[EVID==0&nmout==TRUE,.(gmPRED=exp(mean(log(PRED)))),by=.(model,trtact,NOMTIME)]
 
-ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+geom_line()+facet_wrap(~trtact)
+ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+geom_line()+
+scale_y_log10()+
+facet_wrap(~trtact,scales="free_y")
 ```
 
 
 
 ## The row identifier or interpret Nonmem code
-The row identifier is not needed for NMscanData to run and in most
+A unique row identifier is not needed for NMscanData to run and in most
 cases succesfully and correctly complete all the steps above. However,
-the most robust way is to include a unique row identifier in both
-input and at least one full-length output table.
+the most robust way to use NMscanData is to include a unique row identifier in both
+input and at least one full-length output table. Then tell NMscanData
+to use the row identifier using the `col.row` argument. The advantage
+is that less nonmem code has to be interpreted for this
+method. However, notice that no checks are being done if the row
+identifier has been modified during the nonmem run. If you tell
+NMscanData that the column called `ROW` is a to be used as the row
+identifier, and ROW is being modified in say `$PK` before being output
+in an output table, this will mess up the result. But if you keep the
+good practice of including a unique row identifier in your dataset,
+the advice is to include it in at least one output table and tell
+NMscanData to use it by the argument `col.row`.
 
 ## Preserve all input data properties
 In the code above when plotting the population predictions together
@@ -249,15 +263,27 @@ rds file, this will be used instead. No checks are done of whether the
 contents are similar in any way to the delimited text file which is
 ignored in this case. 
 
-Return to the example above creating the dataset `dat2`. Notice the message from NMscanData that an rds file was found. This is why we could sort the plots correctly on the dose level with reordering the factor levels first. There are three advantages of using rds files
+Return to the example above creating the dataset `dat2`. Notice the
+message from NMscanData that an rds file was found. This is why we
+could sort the plots correctly on the dose level with reordering the
+factor levels first. There are three advantages of using rds files
 
 - All attributes are kept. This includes column classes and factor levels.
-- Reading speed may be improved (NMdata uses `fread` from `data.table` which is extremely fast for delimited files so in many cases this difference can be small).
-- File sizes are greatly reduced from text to rds. This can be a big advantage if you are transfering files or reading over a network connection. NMdata is generally very fast (thanks to `data.table`) so file access (I/O) is likely to be the main bottleneck.
+- Reading speed may be improved (NMdata uses `fread` from `data.table`
+  which is extremely fast for delimited files so in many cases this
+  difference can be small).
+- File sizes are greatly reduced from text to rds. This can be a big
+  advantage if you are transfering files or reading over a network
+  connection. NMdata is generally very fast (thanks to `data.table`)
+  so file access (I/O) is likely to be the main bottleneck.
 
 
 ## Custom naming of input and output control streams
-By default, NMscanData expects a psn-style naming of input and output control streams. This means the if the input control stream is called model.mod, the returned control stream is called model.lst. If you use a different setup, you can use the `file.mod` argument. Do one of the following if needed:
+By default, NMscanData expects a psn-style naming of input and output
+control streams. This means the if the input control stream is called
+model.mod, the returned control stream is called model.lst. If you use
+a different setup, you can use the `file.mod` argument. Do one of the
+following if needed:
 - Explicitly give the path to the input control stream or
 - Pass a function that translates from the output control stream to the input. Example if the input is called `input.txt` and the output is called `output.txt`:
 

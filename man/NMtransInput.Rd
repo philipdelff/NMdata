@@ -9,42 +9,59 @@ NMtransInput(file, useRDS = TRUE, file.mod = NULL, dir.data = NULL,
   as.dt = TRUE, debug = F)
 }
 \arguments{
-\item{file}{a .lst or a .mod. If dir.data is missing, the .mod is required
-to exist next to the .lst file. This is because the .lst does not
-contain the path to the data file. The .mod file is only used for
-finding the data file. How to interpret the datafile is read from the
-.lst file.}
+\item{file}{a .lst or a .mod. If dir.data is missing, the .mod is
+required to exist next to the .lst file. This is because the
+.lst does not contain the path to the data file. The .mod file
+is only used for finding the data file. How to interpret the
+datafile is read from the .lst file.}
 
-\item{useRDS}{If an rds file is found with the exact same name (except for
-.rds instead of say .csv) as the text file mentioned in the Nonmem
-control stream, should this be used instead? The default is yes, and
-NMwriteData will create this by default too.}
+\item{useRDS}{If an rds file is found with the exact same name
+(except for .rds instead of say .csv) as the text file
+mentioned in the Nonmem control stream, should this be used
+instead? The default is yes, and NMwriteData will create this
+by default too.}
 
-\item{dir.data}{The data directory can only be read from the control stream
-(.mod) and not from the output file (.lst). So if you only have the
-output file, use dir.data to tell in which directory to find the data
-file. If dir.data is provided, the .mod file is not used at all.}
+\item{file.mod}{The input control stream. Default is to look for
+\"file\" with extension changed to .mod (PSN style). You can
+also supply the path to the file, or you can provide a
+function that translates the output file path to the input
+file path. See dir.data too.}
+
+\item{dir.data}{The data directory can only be read from the
+control stream (.mod) and not from the output file (.lst). So
+if you only have the output file, use dir.data to tell in
+which directory to find the data file. If dir.data is
+provided, the .mod file is not used at all.}
+
+\item{applyFilters}{Set to TRUE if you want IGNORE and ACCEPT
+statements in the nonmem control streams to be applied before
+returning the data.}
 
 \item{quiet}{Default is to inform a little, but TRUE is useful for
 non-interactive stuff.}
 
-\item{as.dt}{Return a data.table? data.table is default, if not a data.frame
-is returned.}
+\item{invert}{If TRUE, the data rows that are dismissed by the
+Nonmem data filters (ACCEPT and IGNORE) will be returned.}
+
+\item{as.dt}{Return a data.table? data.table is default, if not a
+data.frame is returned.}
 
 \item{debug}{start by running browser()?}
 }
 \description{
-Based on a nonmem run, this function finds the input data and
-    reads it. But it reads it like the nonmem run by applying DROP arguments
-    and alternative naming of columns in the nonmem run.
+Based on a nonmem run, this function finds the input
+    data and reads it. But it reads it like the nonmem run by
+    applying DROP arguments and alternative naming of columns in
+    the nonmem run.
 }
 \details{
-The line containing whom the license is issued to cannot be
-    retrieved. Special characters like accents and the registerred trademark
-    (R) sign are likely to cause trouble if locales are changed (say from a
-    linux system running Nonmem to a Windows or Mac running R), so this line
-    is discarded. Columns that are dropped (using DROP or SKIP in $INPUT) in
-    the model will be included in the output.
+The line containing whom the license is issued to cannot
+    be retrieved. Special characters like accents and the
+    registerred trademark (R) sign are likely to cause trouble if
+    locales are changed (say from a linux system running Nonmem to
+    a Windows or Mac running R), so this line is
+    discarded. Columns that are dropped (using DROP or SKIP in
+    $INPUT) in the model will be included in the output.
 }
 \seealso{
 Other Nonmem: \code{\link{NMextractText}},
