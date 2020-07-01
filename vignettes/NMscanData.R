@@ -8,7 +8,7 @@ knitr::opts_chunk$set(
 #  ## library(devtools)
 #  ## load_all("~/working_copies/NMdata")
 
-## ----setup---------------------------------------------------------------
+## ----setup,include=F-----------------------------------------------------
 library(NMdata)
 library(ggplot2)
 

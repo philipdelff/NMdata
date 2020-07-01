@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 ## load_all("~/working_copies/NMdata")
 ```
 
-```{r,setup}
+```{r,setup,include=F}
 library(NMdata)
 library(ggplot2)
 ```
