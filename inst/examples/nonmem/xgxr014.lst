@@ -272,7 +272,7 @@ NM-TRAN MESSAGES
  TOTAL EFFECTIVE ETAS (NIND*NETA):                           393
   
  #TERE:
- Elapsed estimation  time in seconds:     3.07
+ Elapsed estimation  time in seconds:     3.09
  Elapsed postprocess time in seconds:     0.03
 1
  
@@ -385,5 +385,4 @@ NM-TRAN MESSAGES
 +        0.00E+00  2.00E-02
  
  Elapsed finaloutput time in seconds:     0.02
- #CPUT: Total CPU Time in Seconds,        3.146
-
+ #CPUT: Total CPU Time in Seconds,        3.161

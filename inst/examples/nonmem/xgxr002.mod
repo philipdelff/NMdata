@@ -2,7 +2,7 @@ $PROBLEM PK. Tests of modifications to column names in $INPUT
 
 ;; One variable is dropped, BBW is a new name.         
 ;| Variables 15/20 |;
-$INPUT ROW ID NOMTIME TIME EVID CMT AMT DV BLQ CYCLE DOSE FLAG PART PROFDAY PROFTIME STUDY WEIGHTB
+$INPUT ROW ID NOMTIME TIME EVID CMT AMT DV BLQ CYCLE=DROP DOSE FLAG PART PROFDAY PROFTIME STUDY BBW
 
 $DATA     ../data/xgxr1.csv IGNORE=@
 
