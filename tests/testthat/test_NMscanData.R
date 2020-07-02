@@ -13,8 +13,9 @@ test_that("basic",{
     ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
     res1 <- NMscanData(file=file.lst)
-
-    expect_equal_to_reference(res1,fileRef)
+    ## dim(res1)
+    
+    expect_equal_to_reference(res1,fileRef,version=2)
 })
 
 
@@ -26,7 +27,7 @@ test_that("Modifications to column names in $INPUT",{
 
     res <- NMscanData(file=file.lst)
 
-    expect_equal_to_reference(res,fileRef)
+    expect_equal_to_reference(res,fileRef,version=2)
 })
 
 
@@ -38,7 +39,7 @@ test_that("Multiple output table formats",{
     ## res <- NMscanData(file=file.lst,debug=T)
     res <- NMscanData(file=file.lst,debug=F)
 
-    expect_equal_to_reference(res,fileRef)
+    expect_equal_to_reference(res,fileRef,version=2)
 })
 
 test_that("Interpret IGNORE statement",{
@@ -52,7 +53,7 @@ test_that("Interpret IGNORE statement",{
 
     ## names(res$row)
     
-    expect_equal_to_reference(res,fileRef)
+    expect_equal_to_reference(res,fileRef,version=2)
 })
 
 
@@ -83,7 +84,14 @@ test_that("merge by filters or not",{
     res2 <- NMscanData(file=file2.lst,mergeByFilters = T, debug=F,add.name=NULL)
 
     setcolorder(res1,colnames(res2))
-    
+
+    ## the var tables are different because ROW is input in one,
+    ## output in the other. This is as expected.
+
+    ## cbind(attr(res1,"var"),attr(res2,"var"))
+    setattr(res1,"vars",NULL)
+    setattr(res2,"vars",NULL)
+
     expect_equal(res1,res2)
 })
 
@@ -101,7 +109,7 @@ test_that("Only a firstonly without ID but with ROW",{
     ## tabs
     
     res1 <- NMscanData(file=file.lst,debug=F)
-    expect_equal_to_reference(res1,fileRef)
+    expect_equal_to_reference(res1,fileRef,version=2)
     
 })
 
@@ -140,7 +148,7 @@ test_that("FO and row-level output. No ID, no row.",{
     )
     
     expect_equal_to_reference(
-        res1,fileRef
+        res1,fileRef,version=2
     )
 
 })
@@ -158,7 +166,7 @@ test_that("FO and row-level output. No ID, no row. mergeByFilters=T",{
     )
     
     expect_equal_to_reference(
-        res1,fileRef
+        res1,fileRef,version=2
     )
 
 })
@@ -174,12 +182,15 @@ test_that("Only a firstonly without ID but with ROW",{
     NMgetSection(file.lst,section="DATA")
     NMgetSection(file.lst,section="TABLE")
 
-    ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
+### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
     res1 <- NMscanData(file=file.lst,mergeByFilters=T)
-
+    expect_equal_to_reference(
+        res1,fileRef,version=2
+    )
+    
 })
 
 
@@ -194,12 +205,17 @@ test_that("recoverRows without a row identifier",{
     NMgetSection(file.lst,section="DATA")
     NMgetSection(file.lst,section="TABLE")
 
-    ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
+### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
     res1 <- NMscanData(file=file.lst,mergeByFilters=T,recoverRows = T)
     dim(res1)
     res1[,table(nmout,DOSE)]
+
+    expect_equal_to_reference(
+        res1,fileRef,version=2
+    )
+    
 })
 

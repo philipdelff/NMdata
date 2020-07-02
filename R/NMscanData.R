@@ -278,7 +278,7 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",use.input=TRUE,recoverRows
     if(!is.null(tab.firstonly)) {
 
         ## If we use input or row-level output, we will not use DV from firstonly
-        if(use.input || use.rows){
+        if( (use.input || use.rows) && "DV"%in%colnames(tab.firstonly)){
             tab.firstonly[,DV:=NULL]
         }
         
@@ -286,7 +286,7 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",use.input=TRUE,recoverRows
         ## col.id must be in tab.row, or we can't do this
         if(!is.null(tab.row)&&!all(col.id%in%colnames(tab.row))) {
             
-            warning("col.id not found in row-specific input or output data. Firstonly output data will not be used.")
+            warning("col.id not found in row-specific input or output data. Firstonly output data cannot be combined with other data.")
             skip.firstonly <- TRUE
         }
         

@@ -1,4 +1,6 @@
 # NEWS
+## 0.0.4
+
 ## 0.0.2
 This release contains bugfixes and experimental support for merging nonmem input and output data without a row identifier. 
 

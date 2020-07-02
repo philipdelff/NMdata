@@ -79,12 +79,13 @@ NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write
 
 ## need to updata nonmem models
 ### $INPUT is independent of xgxr1 or xgxr2
-lapply(
-    list.files(
-        NMdata_filepath("examples/nonmem")
-       ,pattern=".*\\.mod$"
-       ,full.names=TRUE
-    ),
-    NMreplacePart,section="INPUT",
-    newlines="$INPUT ROW ID NOMTIME TIME EVID CMT AMT DV BLQ CYCLE DOSE FLAG PART PROFDAY PROFTIME STUDY WEIGHTB"
-)
+### need to be modified. Some examples (xgxr002 and more?) have modified $INPUT for DROP and renaming.
+## lapply(
+##     list.files(
+##         NMdata_filepath("examples/nonmem")
+##        ,pattern=".*\\.mod$"
+##        ,full.names=TRUE
+##     ),
+##     NMreplacePart,section="INPUT",
+##     newlines="$INPUT ROW ID NOMTIME TIME EVID CMT AMT DV BLQ CYCLE DOSE FLAG PART PROFDAY PROFTIME STUDY WEIGHTB"
+## )

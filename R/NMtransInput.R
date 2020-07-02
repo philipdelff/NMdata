@@ -121,12 +121,12 @@ NMtransInput <- function(file,useRDS=TRUE,file.mod=NULL,dir.data=NULL,applyFilte
 
     path.data.input.rds <- sub("^(.+)\\..+$","\\1.rds",path.data.input)
     if(useRDS && file.exists(path.data.input.rds)){
-        if(!quiet) message("found rds input file. This will be used.")
+        if(!quiet) message("Read rds input data file.")
         path.data.input <- path.data.input.rds
         data.input <- readRDS(path.data.input)
     } else {
         if(file.exists(path.data.input)){
-            if(!quiet) message("Found delimited text input data file.")
+            if(!quiet) message("Read delimited text input data file.")
             data.input <- NMreadCsv(path.data.input)
         } else {
             stop(paste("Input data file not found. Was expecting to find",path.data.input))

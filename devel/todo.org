@@ -67,6 +67,8 @@ Right now it only says if input or output. Table name would be helpful.
 If mergeByFilters we can take the sequence of ID in the input
 data. But what if an ID comes back? I think a record is in FIRSTONLY
 whenever ID changes, but test this.
+**** TODO source for nmout must be internal
+in var table 
 ** Nonmem examples
 *** DONE Use FLAG
     CLOSED: [2020-06-29 Mon 21:28]
