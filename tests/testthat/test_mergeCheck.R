@@ -11,14 +11,14 @@ test_that("basic",{
 
     mc1 <- mergeCheck(df1,df2,by="y")
     
-    expect_equal_to_reference(mc1,fileRef)
+    expect_equal_to_reference(mc1,fileRef,version=2)
 })
 
 
 test_that("increasing number of rows",{
 
-    fileRef <- "testReference/mergeCheck2.rds"
-
+    ##     fileRef <- "testReference/mergeCheck2.rds"
+    
     df1 <- data.frame(x = 1:10,
                       y=letters[1:10])
     df2 <- data.frame(y=c("a",letters[1:11]),
@@ -29,7 +29,7 @@ test_that("increasing number of rows",{
 })
 
 test_that("a dt and a df",{
-    library(data.table)
+    ## library(data.table)
     
     fileRef <- "testReference/mergeCheck3.rds"
 
@@ -41,12 +41,12 @@ test_that("a dt and a df",{
 ### notice, this is a left join
     res3 <- mergeCheck(dt1,df2,by="y")
     
-    expect_equal_to_reference(res3,fileRef)
+    expect_equal_to_reference(res3,fileRef,version=2)
     
 })
 
 test_that("a df and a dt",{
-    library(data.table)
+    ## library(data.table)
     
     fileRef <- "testReference/mergeCheck4.rds"
 
@@ -58,14 +58,14 @@ test_that("a df and a dt",{
 
     res4 <- mergeCheck(df2,dt1,by="y",all.x=T)
     
-    expect_equal_to_reference(res4,fileRef)
+    expect_equal_to_reference(res4,fileRef,version=2)
     
 })
 
 test_that("duplicate column name",{
-    library(data.table)
+    ## library(data.table)
     
-    fileRef <- "testReference/mergeCheck5.rds"
+    ## fileRef <- "testReference/mergeCheck5.rds"
 
     dt1 <- data.table(x = 1:10,
                       y=letters[1:10])

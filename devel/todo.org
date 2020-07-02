@@ -43,7 +43,7 @@ should not be translated by NMcode2R.
 **** TODO Lastonly does the same as firstonly
 *** NMscanData
 **** TODO check overview.tables 
- Either they must be firstonly, or they must be full.length.
+Either they must be firstonly, or they must be full.length.
 **** TODO Limitation: tables with EXCLUDE_BY
 **** TODO Limitation: FIRSTLASTONLY
 **** DONE Implement recoverRows using mergeByFilters
@@ -55,26 +55,29 @@ should not be translated by NMcode2R.
 ****** If input data is missing or merge not possible, give warning
 ****** if only firstonly data available, do the merge if possible
 ***** mergeByFilters (defult in future?)
-**** Only allowed if use.input=TRUE
-**** Means that we will translate NM filters and cbind rather than using a row identifier.
-**** If the filters go wrong, give error
-**** Firstonly (FO) data can only be used if ID is both input and FO table
- We can implement taking the sequence of IDs from input and restore
- ID's from that
+***** Only allowed if use.input=TRUE
+***** Means that we will translate NM filters and cbind rather than using a row identifier.
+***** If the filters go wrong, give error
+***** Firstonly (FO) data can only be used if ID is both input and FO table
+  We can implement taking the sequence of IDs from input and restore
+  ID's from that
 **** TODO Improve summary of what tables were used and how.
 Right now it only says if input or output. Table name would be helpful.
 **** TODO Support for no ID, no ROW in firstonly tables
 If mergeByFilters we can take the sequence of ID in the input
 data. But what if an ID comes back? I think a record is in FIRSTONLY
 whenever ID changes, but test this.
-**** TODO source for nmout must be internal
+**** TODO source for nmout and model must be internal
 in var table 
+*** NMwriteData
+**** TODO Check if character variables contain commas. This will cause trouble when writing csv.
 ** Nonmem examples
 *** DONE Use FLAG
     CLOSED: [2020-06-29 Mon 21:28]
 rerun xmgr001.mod with IGNORE=(FLAG.NE.0) That would be a nice example
 for the vignette.
-*** TODO Update all runs with updated data file
+*** DONE Update all runs with updated data file
+    CLOSED: [2020-07-02 Thu 09:28]
 ** Discussion
 *** recoverRows can mean mix of variable interpretations
 If recoverRows and a variable is changing interpretation from input to

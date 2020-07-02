@@ -6,7 +6,7 @@
 \usage{
 NMwriteData(data, file, write.csv = TRUE, write.RData = F,
   write.rds = write.csv, force.row = FALSE, script, args.stamp,
-  debug = FALSE)
+  args.rds, debug = FALSE)
 }
 \arguments{
 \item{data}{The dataset to write to Nonmem.}
@@ -15,15 +15,21 @@ NMwriteData(data, file, write.csv = TRUE, write.RData = F,
 
 \item{write.csv}{Write to csv file?}
 
-\item{write.RData}{In case you want to save to .RData object. Not recommended. Use write.rds instead.}
+\item{write.RData}{In case you want to save to .RData object. Not
+recommended. Use write.rds instead.}
 
 \item{write.rds}{write an rds file?}
 
-\item{force.row}{Ensure that data contains a ROW column counting the rows in the dataset, and add one if none exists. Defaults to FALSE (default is not editing the dataset at all).}
+\item{force.row}{Ensure that data contains a ROW column counting
+the rows in the dataset, and add one if none exists. Defaults
+to FALSE (default is not editing the dataset at all).}
 
-\item{script}{If provided, the object will be stamped with this script name before saved to rds.}
+\item{script}{If provided, the object will be stamped with this
+script name before saved to rds.}
 
-\item{args.stamp}{A list of arguments to be passed to stamp.}
+\item{args.stamp}{A list of arguments to be passed to stampObj.}
+
+\item{args.rds}{A list of arguments to be passed to saveRDS.}
 
 \item{debug}{Start by running browser()?}
 }
@@ -32,6 +38,12 @@ Instead of trying to remember the arguments to pass to write.csv, use this
 wrapper. It does much more. It tells you what to write in $DATA and $INPUT
 in nonmem, and it exports a rds file as well which is highly preferable for
 use in R.
+}
+\details{
+When writing csv files, the file will be
+    comma-separated. Because Nonmem does not support quoted
+    fields, you must avoid commas in character fields. At the
+    moment, no check for this is being done.
 }
 \seealso{
 Other Nonmem: \code{\link{NMextractText}},

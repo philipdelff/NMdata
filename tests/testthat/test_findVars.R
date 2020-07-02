@@ -10,7 +10,7 @@ test_that("basic",{
     v1 <- findVars(dt1)
     v2 <- findVars(dt2)
 
-    expect_equal_to_reference(v1,fileRef)
+    expect_equal_to_reference(v1,fileRef,version=2)
     expect_equal(v1,v2)
 
 })
@@ -29,6 +29,6 @@ test_that("basic",{
     ## not a and c. OK
     ##    r2
 
-    expect_equal_to_reference(list(r1,r2),fileRef)
+    expect_equal_to_reference(list(r1,r2),fileRef,version=2)
 
 })

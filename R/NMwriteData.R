@@ -8,13 +8,21 @@
 ##' @param data The dataset to write to Nonmem.
 ##' @param file The file to write to.
 ##' @param write.csv Write to csv file?
-##' @param write.RData In case you want to save to .RData object. Not recommended. Use write.rds instead.
+##' @param write.RData In case you want to save to .RData object. Not
+##'     recommended. Use write.rds instead.
 ##' @param write.rds write an rds file?
-##' @param force.row Ensure that data contains a ROW column counting the rows in the dataset, and add one if none exists. Defaults to FALSE (default is not editing the dataset at all).
-##' @param script If provided, the object will be stamped with this script name before saved to rds.
-##' @param args.stamp A list of arguments to be passed to stamp.
+##' @param force.row Ensure that data contains a ROW column counting
+##'     the rows in the dataset, and add one if none exists. Defaults
+##'     to FALSE (default is not editing the dataset at all).
+##' @param script If provided, the object will be stamped with this
+##'     script name before saved to rds.
+##' @param args.stamp A list of arguments to be passed to stampObj.
+##' @param args.rds A list of arguments to be passed to saveRDS.
 ##' @param debug Start by running browser()?
-##'
+##' @details When writing csv files, the file will be
+##'     comma-separated. Because Nonmem does not support quoted
+##'     fields, you must avoid commas in character fields. At the
+##'     moment, no check for this is being done.
 ##' @family Nonmem
 ##' @export
 
@@ -31,14 +39,22 @@
 ### end todo
 
 
-NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,write.rds=write.csv,force.row=FALSE,script,args.stamp,debug=FALSE){
+NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,write.rds=write.csv,force.row=FALSE,script,args.stamp,args.rds,debug=FALSE){
     if(debug) browser()
     stopifnot(is.data.frame(data))
     ## data.out <- as.data.frame(data)
+
+
+#### Section start: Process arguments ####
+
+### stamp arguments
     doStamp <- TRUE
     if(missing(args.stamp)) {
         args.stamp <- list()
-        doStamp <- FALSE
+    } else {
+        if(!is.list(args.stamp)){
+            stop("args.stamp must be a list of arguments.")
+        }
     }
     if(missing(script)){
         doStamp <- FALSE
@@ -47,13 +63,21 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,write.rds=write.c
         doStamp <- TRUE
     }
 
-### these features have been dropped. Usually NMwriteData saves an rds as well
-### which will contain all data to carry forward. Hence, dropping columns belong
-### before calling NMwriteDate. NMwriteData writes data, that's all.
-    
-    ## if(!is.null(drop)) data <- data[,-which(names(data)%in%drop),drop=FALSE]
-    ## if(drop.lowercase) data <- data[,which(toupper(names(data))==names(data))]
+### rds arguments
+    if(!missing(args.rds) && !write.rds ){
+        warning("args.rds supplied, but write.rds is FALSE. rds file will not be written.")
+    }
+    if(missing(args.rds)) {
+        args.rds <- list()
+    } else {
+        if(!is.list(args.rds)){
+            stop("args.rds must be a list of arguments.")
+        }
+    }
 
+###  Section end: Process arguments
+
+    
     ## we must not quote. ID is often a character. If quoted, nonmem will not be
     ## able to read. So avoid commas in strings. Maybe look for commas and
     ## report error if found?
@@ -108,8 +132,8 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,write.rds=write.c
         
         if(doStamp) data <- do.call(stampObj,append(list(data=data,writtenTo=file.rds),args.stamp))
 
-
-        saveRDS(data,file=file.rds)
+        do.call(saveRDS,append(list(object=data,file=file.rds),args.rds))
+        
         written <- TRUE
     }
     if(written){
