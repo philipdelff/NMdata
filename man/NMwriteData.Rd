@@ -49,7 +49,6 @@ When writing csv files, the file will be
 Other Nonmem: \code{\link{NMextractText}},
   \code{\link{NMgetSection}}, \code{\link{NMreadCsv}},
   \code{\link{NMreadTab}}, \code{\link{NMscanTables}},
-  \code{\link{NMtransFilters}}, \code{\link{NMtransInput}},
-  \code{\link{NMundoReplace}}
+  \code{\link{NMtransFilters}}, \code{\link{NMtransInput}}
 }
 \concept{Nonmem}

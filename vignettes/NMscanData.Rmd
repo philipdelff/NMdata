@@ -24,14 +24,14 @@ library(NMdata)
 library(ggplot2)
 ```
 
-# Introduction
+## Introduction
 Getting data from R to Nonmem and back can be tedious and time
 consuming. The way data is exported from Nonmem means that a few
 tables may have to be combined, and then some variables may still be
 missing (like character variables which may be in the input data
 file). Most modellers develop some habits over time to avoid some
 issues. But still, it may be time demanding even for experienced
-modellers to pick up a model developed by someone else or by
+modelers to pick up a model developed by someone else or by
 themselves earlier in their career just because they need to
 understand what data exported and how. This vignette focuses on how
 NMdata provides a very general solution for what needs to be trivial:
@@ -54,7 +54,7 @@ flexibility Nonmem offer, there are a lot of caveats to be aware of,
 again especially if the model wasn't written by your own (current)
 standards.
 
-# Get started
+## Get started
 Try NMscanData on any model:
 ```{r,eval=TRUE}
 res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
@@ -97,7 +97,7 @@ predictions (i.e. from output tables) and a character variable,
 `trtact` (i.e. from input data). NMscanData has read both and combined
 them. 
 
-## Subject-level variables
+### Subject-level variables
 In a proper PK/PD analysis we need to explore the data at multiple
 variability levels. What we looked at above is at dosing and sampling
 level. NMdata provides very useful functions to extract information at
@@ -162,8 +162,8 @@ nonmem model. But in the situation where you are looking at someone
 else's work or you are doing a meta analysis across models where the data has been coded slightly differently, these tools indeed come in useful. Also, remember that if a variable is returned by these functions, you know that they fullfill the variability requirement. We know that variables in `res1.id` above non-varying within ID, meaning that no ID has more than one value of the variable. `NA` counts as any other value, so if a value is returned for subject in res1.id, this subject does not have NA's in `res1`.
 
 
-# More options and features
-## Recover rows
+## More options and features
+### Recover rows
 You may have wondered why there is so little data on the small doses
 in the plot of observations and geometric mean population predictions
 above. The reason is that observations below the lower limit of
@@ -201,7 +201,7 @@ res1[,.N,by=.(nmout,flag)]
 ```
 So 905 were part of the analysis. 
 
-## Combine multiple models
+### Combine multiple models
 You may have noticed a column called `model` in some of the output
 above. NMscanData by default adds this column for convenience when
 working with multiple models at a time. You can specify both column
@@ -225,7 +225,7 @@ facet_wrap(~trtact,scales="free_y")
 
 
 
-## The row identifier or interpret Nonmem code
+### The row identifier or interpret Nonmem code
 A unique row identifier is not needed for NMscanData to run and in most
 cases succesfully and correctly complete all the steps above. However,
 the most robust way to use NMscanData is to include a unique row identifier in both
@@ -241,7 +241,7 @@ good practice of including a unique row identifier in your dataset,
 the advice is to include it in at least one output table and tell
 NMscanData to use it by the argument `col.row`.
 
-## Preserve all input data properties
+### Preserve all input data properties
 In the code above when plotting the population predictions together
 with individual observations above, we saw that character variables
 (the treatment as dose with unit) was read from the input data file
@@ -277,8 +277,10 @@ factor levels first. There are three advantages of using rds files
   connection. NMdata is generally very fast (thanks to `data.table`)
   so file access (I/O) is likely to be the main bottleneck.
 
+If you write Nonmem datasets with the `NMdata::NMwriteData`, you can get an rds file automatically. Creating datasets are out of the scope of this vignette, though.
 
-## Custom naming of input and output control streams
+
+### Custom naming of input and output control streams
 By default, NMscanData expects a psn-style naming of input and output
 control streams. This means the if the input control stream is called
 model.mod, the returned control stream is called model.lst. If you use
@@ -292,9 +294,53 @@ out2in <- function(file) file.path(dirname(file),"input.txt")
 res <- NMscanData("path/to/output.txt",file.mod=out2in)
 ```
 
-# What should I do for my models to be compatible with NMscanData
+## What exactly will NMscanData return?
+So far, the merge has been very straightforward, but in many
+	situations, choices have to be made. 
+  
+The following main principles are followed
+- Output data prevails over input data
+- Row-specific output data is preferred over firstonly tables
+- Output tables are prioritized by their order of apperance
+- Input data is as defined in the $INPUT section in Nonmem. This
+  includes renaming of columns, and columns that are dropped in Nonmem
+  (DROP or SKIP) are disregarded. Columns that are not read by Nonmem
+  are named as in the input data file.
+- If rows are being recovered from input data (the `recoverRows`
+  argument), no information from output is not merged onto these rows
+- The primary aim is to return the output data. If input and output
+  cannot be meaningfully combined (very rare), output will be
+  returned.
+  
+
+## The building blocks
+The lst file was scanned for output tables, and they were all read
+(including interpreting the possible firstonly option). The input data
+has been used based on the DATA and INPUT sections of the control
+stream. The key steps in this process are available as independent
+functions. 
+
+- NMreadTab: Read an Nonmem output table based on the path to the output
+  table file.
+
+- NMscanTables: Read all output data files defined in a Nonmem
+  run. Return a list of tables (as data.frames or data.tables).
+
+- NMtransInput: Read input data based on a nonmem file. Data will be
+  processed and named like the Nonmem model. ACCEPT and IGNORE filters
+  can be applied as well. There are a few limitations to this
+  functionality at this point. 
+
+
+## What should I do for my models to be compatible with NMscanData?
 The answer to this should be as close to "nothing" as possible -
-that's more or less the aim of the function. You just have to make sure that the information that you need is present in input data and output data. No need to output information that is unchanged from input, but make sure to output what you need (like IPRED, CWRES, CL, ETA1 etc which cannot be found in input). Some of these values can be found from other files generated by Nonmem but notice: NMscanData uses only input and output data.
+that's more or less the aim of the function. You just have to make
+sure that the information that you need is present in input data and
+output data. No need to output information that is unchanged from
+input, but make sure to output what you need (like IPRED, CWRES, CL,
+ETA1 etc which cannot be found in input). Some of these values can be
+found from other files generated by Nonmem but notice: NMscanData uses
+only input and output data.
 
 It is recommended to always use a unique row identifier in both input and
 output data. This is the most robust way to merge back with input
@@ -302,58 +348,26 @@ data. In firstonly tables, include the subject ID. Again, everything
 will most likely work even if you don't, I personally don't like
 relying on "most likely" when I can just as well have robustness.
 
-# What exactly will NMscanData return?
-So far, the merge has been very straightforward, but in many
-	situations, choices have to be made. Imagine the following scenarios:
-- A variable is present in both input and an output table. Values
-      differ.
-- Two output tables return the same variable but in different resolution.
-- A variable from input data is output in a FIRSTONLY table. It varies
-  within some subjects in the input data.
-  
-The following main principles are followed
-- Output data prevails over input data
-- Row-specific output data is preferred over firstonly tables
-- If rows are being recovered from input data, no information from
-  output is not merged onto these rows.
-- The primary aim is to return the output data. If input and output
-  cannot be meaningfully combined (very rare), output will be
-  returned.
-  
-If you write Nonmem datasets with the `NMdata::NMwriteData`, you can get an rds file automatically. Creating datasets are out of the scope of this vignette, though.
 
-# The building blocks
-The lst file was scanned for output tables, and they were all read
-(including interpreting the possible firstonly option). The input data
-has been used based on the DATA and INPUT sections of the control
-stream. 
+## Limitations
+### Input file must exist and be unmodified since model run
+If merging with input data, the input data must be available as was
+when the model was run. If you want to avoid this potential issue,
+Nonmem can be run in a wrapper script that either copies the input
+data, or runs NMscanData and saves the output in a compressed file
+format (like rds or zip).
+
+### Not all data filter statements implemented
+Nested ACCEPT and IGNORE statements are not supported at this
+point. The resulting number of rows after applying filters is checked
+against row-level output table dimensions (if any available). In other
+words, you have to be unlucky to run into trouble. But it is alway
+recommended to use a unique row identifier in both input and output
+tables in order to avoid relying on interpretation of Nonmem code.
 
 
-## Read an output table
-NMreadTab
-
-## Read all output data
-NMscanTables
-
-## Input data means the data as used by Nonmem
-You may already have thought about this for a while reading this
-vignette. Nonmem doesn't read the variable or column names from the
-input dataset. Names are assigned in the control stream. Moreover,
-some columns may be dropped, and rows can be filtered using IGNORE and
-ACCEPT conditions. NMdata has functions to interpret this, and to read
-a dataset as interpreted by a nonmem model, point NMtransInput to the
-model.
-
-NMreadCsv
-
-NMtransInput
-
-
-
-# Limitations
-
-input file must exist and not have been modified since model run.
-
-Some filters
-
-firstlastonly
+### LASTONLY and FIRSTLASTONLY not supported
+The `FIRSTLASTONLY` option in `$TABLE` results in two rows per
+subject. For now, this cannot be merged with input. `LASTONLY` will
+soon be supported. At the moment, there are no checks for these
+cases. 

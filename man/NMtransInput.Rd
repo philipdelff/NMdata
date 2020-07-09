@@ -67,7 +67,6 @@ The line containing whom the license is issued to cannot
 Other Nonmem: \code{\link{NMextractText}},
   \code{\link{NMgetSection}}, \code{\link{NMreadCsv}},
   \code{\link{NMreadTab}}, \code{\link{NMscanTables}},
-  \code{\link{NMtransFilters}},
-  \code{\link{NMundoReplace}}, \code{\link{NMwriteData}}
+  \code{\link{NMtransFilters}}, \code{\link{NMwriteData}}
 }
 \concept{Nonmem}

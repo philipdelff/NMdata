@@ -40,7 +40,6 @@ This is not bulletproof. A statement like ACCEPT=(DOSE
 Other Nonmem: \code{\link{NMextractText}},
   \code{\link{NMgetSection}}, \code{\link{NMreadCsv}},
   \code{\link{NMreadTab}}, \code{\link{NMscanTables}},
-  \code{\link{NMtransInput}}, \code{\link{NMundoReplace}},
-  \code{\link{NMwriteData}}
+  \code{\link{NMtransInput}}, \code{\link{NMwriteData}}
 }
 \concept{Nonmem}

@@ -66,7 +66,6 @@ NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 Other Nonmem: \code{\link{NMextractText}},
   \code{\link{NMreadCsv}}, \code{\link{NMreadTab}},
   \code{\link{NMscanTables}}, \code{\link{NMtransFilters}},
-  \code{\link{NMtransInput}}, \code{\link{NMundoReplace}},
-  \code{\link{NMwriteData}}
+  \code{\link{NMtransInput}}, \code{\link{NMwriteData}}
 }
 \concept{Nonmem}

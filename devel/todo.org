@@ -10,6 +10,8 @@ just provide functions to get them
 Could we use an option, NMdata.return="dplyr::as.tibble" which could then be
 reached and applied from within NMdata? It would have to not create extra
 dependencies.
+*** TODO Where does NMcode2R belong?
+It is needed in NMdata but should it be exported from NMdata?
 ** New functions
 *** TODO summary.NMdata
 ** Function improvements
