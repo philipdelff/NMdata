@@ -32,8 +32,8 @@ mod should only be used for path to dataset.
 I still don't really understand the documentation on this, but it doesnt seem
 too hard to implement. It should NOT only be interpreted when the A=B format is used in
 $INPUT. If something is called TIME, it must be checked for format.
-**** TODO .mod files should be accepted as the file argument. 
-Maybe file can be missing/NULL if file.mod is given. 
+**** TODO .mod files should be accepted as the file argument
+     Maybe file can be missing/NULL if file.mod is given.
 *** NMtransFilters
 **** DONE Replace single = with ==
      CLOSED: [2020-06-15 Mon 21:05]
@@ -42,12 +42,12 @@ should not be translated by NMcode2R.
 **** DONE $INPT is an alias for $INPUT
      CLOSED: [2020-06-15 Mon 21:09]
 *** NMscanTables
-**** TODO Lastonly does the same as firstonly
+**** TODO [#A] Lastonly does the same as firstonly
 *** NMscanData
 **** TODO check overview.tables 
 Either they must be firstonly, or they must be full.length.
 **** TODO Limitation: tables with EXCLUDE_BY
-**** TODO Limitation: FIRSTLASTONLY
+**** TODO [#A] Limitation: FIRSTLASTONLY
 **** DONE Implement recoverRows using mergeByFilters
      CLOSED: [2020-06-23 Tue 20:52]
 **** TODO Add support for col.row of length>1
@@ -69,10 +69,12 @@ Right now it only says if input or output. Table name would be helpful.
 If mergeByFilters we can take the sequence of ID in the input
 data. But what if an ID comes back? I think a record is in FIRSTONLY
 whenever ID changes, but test this.
-**** TODO source for nmout and model must be internal
+**** TODO [#A] source for nmout and model must be internal
 in var table 
 *** NMwriteData
-**** TODO Check if character variables contain commas. This will cause trouble when writing csv.
+**** TODO Check if character variables contain commas. 
+This will cause trouble when writing csv
+**** TODO The Nonmem instructions should not include characters
 ** Nonmem examples
 *** DONE Use FLAG
     CLOSED: [2020-06-29 Mon 21:28]

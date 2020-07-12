@@ -33,41 +33,46 @@ NMscanTables <- function(file,details=F,as.dt=TRUE,quiet=FALSE,NMtabCount=TRUE,d
     
     lines.table <- NMgetSection(file,section="TABLE",keepName=F,keepComments=F,keepEmpty=F,asOne=F,simplify=F)
 
-
+    
     tab.files <- lapply(lines.table,function(x) {
-        tab <- data.frame(file=filePathSimple(dir,extract.info(x,"FILE"))
+        tab <- data.table(file=filePathSimple(dir,extract.info(x,"FILE"))
                          ,name=extract.info(x,"FILE")
                          ,firstonly=any(grepl("FIRSTONLY|FIRSTRECORDONLY|FIRSTRECONLY",x))
+                         ,lastonly=any(grepl("LASTONLY",x))
+                         ,firstlastonly=any(grepl("FIRSTLASTONLY",x))
                          ,format=extract.info(x,"FORMAT",default=" ")
                          ,stringsAsFactors=F)
-        tab <- within(tab,{sep=ifelse(grepl(",",tab$format),","," ")})
         tab
     })
 
-    ## if(!all(tab.files$sep=",")) stop("Not all tables are comma separated. Only comma separated tables are supported right now.")
-    
-    meta <- do.call(rbind,tab.files)
-    meta$nrow <- NA_real_
-    meta$ncol <- NA_real_
+    meta <- rbindlist(tab.files)
+    meta[,`:=`(sep=ifelse(grepl(",",format),","," ")
+              ,nrow=NA_real_
+              ,ncol=NA_real_
+               )]
+
+    meta.tabs.strange <- meta[firstonly+lastonly+firstlastonly>1]
+    if(nrow(meta.tabs.strange)){
+        warning("Table(s) seems to have more than one of the firstonly, lastonly and firstlastonly options. Does this make sense? Look at table(s): ",pastes(meta.tabs.strange[,name],collapse=", "))
+    }
+
     tables <- list()
     for(I in 1:nrow(meta)){
-        if(!file.exists(meta[I,"file"])) stop(paste0("NMscanTables: File not found: ",meta[I,'file'],". Did you copy the lst file but forgot table file?"))
-        tables[[I]] <- NMreadTab(meta[I,"file"],silent=T,NMtabCount=NMtabCount,showProgress=FALSE)
+        if(!file.exists(meta[I,file])) stop(paste0("NMscanTables: File not found: ",meta[I,file],". Did you copy the lst file but forgot table file?"))
+        tables[[I]] <- NMreadTab(meta[I,file],silent=T,NMtabCount=NMtabCount,showProgress=FALSE)
         dim.tmp <- dim(tables[[I]])
-        meta[I,"nrow"] <- dim.tmp[1]
-        meta[I,"ncol"] <- dim.tmp[2]
+        meta[I,nrow:=dim.tmp[1]]
+        meta[I,ncol:=dim.tmp[2]]
     }
 
     if(!quiet){
         message(paste0("Read ",nrow(meta)," output table(s)."))
     }
 
-    names(tables) <- meta$name
+    names(tables) <- meta[,name]
     if(!as.dt) {
         tables <- lapply(tables,as.data.frame)
         meta <- as.data.frame(meta)
-    } else {
-        meta <- as.data.table(meta)
     }
     
     if(details){

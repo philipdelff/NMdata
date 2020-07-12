@@ -129,7 +129,9 @@ test_that("Only a firstonly, no ID, no ROW",{
     ## NMgetSection(file.lst,section="TABLE")
     
     expect_error(
-        res1 <- NMscanData(file=file.lst,debug=F)
+        expect_warning(
+            res1 <- NMscanData(file=file.lst,debug=F)
+        )
     )
 })
 
