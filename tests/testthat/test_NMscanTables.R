@@ -14,3 +14,15 @@ test_that("Multiple output table formats",{
 
     expect_equal_to_reference(res,fileRef,version=2)
 })
+
+
+test_that("Details table",{
+    fileRef <- "testReference/NMscanTables2.rds"
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr003.lst")
+### this will make trouble because meta data table contains absolute
+### paths which is machine dependent. So removin path.
+    res <- NMscanTables(file=file.lst,details=T,debug=F)
+    res$meta[,file:=basename(file)]
+    ## res$meta
+    expect_equal_to_reference(res,fileRef,version=2)
+})

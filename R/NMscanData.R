@@ -87,7 +87,6 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",use.input=TRUE,recoverRows
     type <- NULL
     maxLength <- NULL
     full.length <- NULL
-    all.firstonly <- NULL
     nmout <- NULL
     DV <- NULL
     var <- NULL
@@ -136,7 +135,8 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",use.input=TRUE,recoverRows
     fun.has.row <- function(names) do.call(c,lapply(names,function(name)col.row%in%colnames(data[[name]])))
     overview.tables[,has.row:=fun.has.row(name)]
     overview.tables[,maxLength:=nrow==max(nrow)]
-    overview.tables[,full.length:=!firstonly&maxLength]
+    overview.tables[,idlevel:=firstonly|lastonly]
+    overview.tables[,full.length:=!idlevel&maxLength]
     NrowFull <- overview.tables[full.length==TRUE,unique(nrow)]
 
     ## browser()
@@ -167,19 +167,19 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",use.input=TRUE,recoverRows
     } 
     
 
-### combine firstonly tables into one
-    tab.firstonly <- NULL
-    if(any(overview.tables$firstonly)) {
-        tab.firstonly <- Reduce(cbind,data[which(overview.tables$firstonly)])
-        tab.firstonly <- tab.firstonly[,unique(colnames(tab.firstonly)),with=FALSE]
+### combine idlevel tables into one
+    tab.idlevel <- NULL
+    if(any(overview.tables$idlevel)) {
+        tab.idlevel <- Reduce(cbind,data[which(overview.tables$idlevel)])
+        tab.idlevel <- tab.idlevel[,unique(colnames(tab.idlevel)),with=FALSE]
     }
 
-###  Section end: read all output tables and merge to max one firstonly and max one row
+###  Section end: read all output tables and merge to max one idlevel and max one row
 
 
 #### Section start: handle input data ####
     ## use.input.row means if we will merge row-wise output data onto
-    ## input data. Even if FALSE, we can still merge firstonly data
+    ## input data. Even if FALSE, we can still merge idlevel data
     ## onto input dataif no row-wise output exists.
     
     ## use.input.row <- use.input
@@ -272,73 +272,73 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",use.input=TRUE,recoverRows
 ###  Section end: handle input data
 
 
-#### Section start: Add firstonly data ####
+#### Section start: Add idlevel data ####
     
-    skip.firstonly <- FALSE
-    if(!is.null(tab.firstonly)) {
+    skip.idlevel <- FALSE
+    if(!is.null(tab.idlevel)) {
 
-        ## If we use input or row-level output, we will not use DV from firstonly
-        if( (use.input || use.rows) && "DV"%in%colnames(tab.firstonly)){
-            tab.firstonly[,DV:=NULL]
+        ## If we use input or row-level output, we will not use DV from idlevel
+        if( (use.input || use.rows) && "DV"%in%colnames(tab.idlevel)){
+            tab.idlevel[,DV:=NULL]
         }
         
         
         ## col.id must be in tab.row, or we can't do this
         if(!is.null(tab.row)&&!all(col.id%in%colnames(tab.row))) {
             
-            warning("col.id not found in row-specific input or output data. Firstonly output data cannot be combined with other data.")
-            skip.firstonly <- TRUE
+            warning("col.id not found in row-specific input or output data. Idlevel output data cannot be combined with other data.")
+            skip.idlevel <- TRUE
         }
         
         ## remember all(NULL) is TRUE. So if col.id and/or col.row are
         ## used, all their values must be in tab.row.
         
-        if(!skip.firstonly && !is.null(tab.row) && all(!col.id%in%colnames(tab.firstonly)) && all(!col.row%in%colnames(tab.firstonly))) {
+        if(!skip.idlevel && !is.null(tab.row) && all(!col.id%in%colnames(tab.idlevel)) && all(!col.row%in%colnames(tab.idlevel))) {
             
-            warning("Firstonly output data found. But the table(s) contains neither col.id nor col.row. Merging is not supported in this case, so the firstonly table(s) will not be used.")
-            skip.firstonly <- TRUE
+            warning("Idlevel output data found. But the table(s) contains neither col.id nor col.row. Merging is not supported in this case, so the idlevel table(s) will not be used.")
+            skip.idlevel <- TRUE
         }
-### here, merge by those of col.row and col.id that are present in both tab.row and tab.firstonly
+### here, merge by those of col.row and col.id that are present in both tab.row and tab.idlevel
         ## col.id is in tab.row (known from above)
-        if(!skip.firstonly && !is.null(tab.row) && (!all(col.id%in%colnames(tab.row)))) {
-            warning("firstonly table is found but col.id is not found in input or all-rows output tables, so the firstonly data cannot be merged. Anyway, how does this make sense, is a firstonly table written for a non-population model?")
-            skip.firstonly <- TRUE
+        if(!skip.idlevel && !is.null(tab.row) && (!all(col.id%in%colnames(tab.row)))) {
+            warning("idlevel table is found but col.id is not found in input or all-rows output tables, so the idlevel data cannot be merged. Anyway, how does this make sense, is a idlevel table written for a non-population model?")
+            skip.idlevel <- TRUE
         }
         
-        ## if col.id is not in tab.firstonly but col.row is, get col.id and discard row.
-        if(!skip.firstonly && !is.null(tab.row) && !all(col.id%in%colnames(tab.firstonly))) {
+        ## if col.id is not in tab.idlevel but col.row is, get col.id and discard row.
+        if(!skip.idlevel && !is.null(tab.row) && !all(col.id%in%colnames(tab.idlevel))) {
             
-            tab.firstonly <- mergeCheck(tab.firstonly[,setdiff(colnames(tab.firstonly),col.id),with=F],tab.row[,c(col.row,col.id),with=F],by=col.row)
-            tab.firstonly[,(col.row):=NULL]
+            tab.idlevel <- mergeCheck(tab.idlevel[,setdiff(colnames(tab.idlevel),col.id),with=F],tab.row[,c(col.row,col.id),with=F],by=col.row)
+            tab.idlevel[,(col.row):=NULL]
         }
 
-        ## so col.id is in both tab.row and tab.firstonly. merge by col.id
+        ## so col.id is in both tab.row and tab.idlevel. merge by col.id
         ## We want everything that is not in output row-data. We want it even if in input data. But give a warning if it varies in input.
-        if(!skip.firstonly) {
+        if(!skip.idlevel) {
             ## The very special case where we don't use input and
             ## there is no row-level data.
             if(!use.input && !use.rows) {
-                ##  cbind of firstonly and that's it")
-                tab.row <- Reduce(cbind,tables$data[which(overview.tables$firstonly)])
+                ##  cbind of idlevel and that's it")
+                tab.row <- Reduce(cbind,tables$data[which(overview.tables$idlevel)])
                 tab.row <- tab.row[,unique(colnames(tab.row)),with=FALSE]
-                skip.firstonly <- FALSE
+                skip.idlevel <- FALSE
 
-                tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="output",tab.type="firstonly"))
+                tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="output",tab.type="idlevel"))
                 
             } else {
                 
                 ## use tab.vars for the subset
-                cols.to.use <- unique(c(col.id,setdiff(colnames(tab.firstonly),tab.vars[source=="output",var])))
-                tab.firstonly.merge <- tab.firstonly[,cols.to.use,with=F]
-                tab.row <- mergeCheck(tab.row,tab.firstonly.merge,by=col.id)
-                tab.vars <- rbind(tab.vars,data.table(var=cols.to.use,source="output",tab.type="firstonly"))
+                cols.to.use <- unique(c(col.id,setdiff(colnames(tab.idlevel),tab.vars[source=="output",var])))
+                tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=F]
+                tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id)
+                tab.vars <- rbind(tab.vars,data.table(var=cols.to.use,source="output",tab.type="idlevel"))
             }
         }
     }
 
-### Section end: Add firstonly data
+### Section end: Add idlevel data
     
-    if(!use.rows && skip.firstonly) {stop("No output data could be used. If enabled, try disabling use.input.")}
+    if(!use.rows && skip.idlevel) {stop("No output data could be used. If enabled, try disabling use.input.")}
 
 #### Section start: Recover rows ####
 
