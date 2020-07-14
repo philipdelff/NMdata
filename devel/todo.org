@@ -42,12 +42,14 @@ should not be translated by NMcode2R.
 **** DONE $INPT is an alias for $INPUT
      CLOSED: [2020-06-15 Mon 21:09]
 *** NMscanTables
-**** TODO [#A] Lastonly does the same as firstonly
+**** DONE Lastonly does the same as firstonly
+     CLOSED: [2020-07-13 Mon 19:37]
 *** NMscanData
 **** TODO check overview.tables 
 Either they must be firstonly, or they must be full.length.
 **** TODO Limitation: tables with EXCLUDE_BY
-**** TODO [#A] Limitation: FIRSTLASTONLY
+**** DONE Limitation: FIRSTLASTONLY
+     CLOSED: [2020-07-13 Mon 19:37]
 **** DONE Implement recoverRows using mergeByFilters
      CLOSED: [2020-06-23 Tue 20:52]
 **** TODO Add support for col.row of length>1

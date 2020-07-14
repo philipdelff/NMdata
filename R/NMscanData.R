@@ -129,9 +129,18 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",use.input=TRUE,recoverRows
 
     ## if(!quiet) message("Scanning for output tables.")
     tables <- NMscanTables(file,details=T,as.dt=T,NMtabCount=NMtabCount,quiet=quiet)
+
+    rows.flo <- tables$meta[firstlastonly==TRUE]
+    if(rows.flo[,.N]>0) {
+        warning("One or more output tables with FIRSTLASTONLY option detected. This is not supported, and the table will be disregarded. Use a combination of NMscanTables, NMtransInput, and merge manually.")
+        k <- tables$meta[,which(firstlastonly==TRUE)]
+        tables$data <- tables$data[-k]
+        tables$meta <- tables$meta[-k]
+    }
     data <- tables$data
     overview.tables <- tables$meta
 
+    
     fun.has.row <- function(names) do.call(c,lapply(names,function(name)col.row%in%colnames(data[[name]])))
     overview.tables[,has.row:=fun.has.row(name)]
     overview.tables[,maxLength:=nrow==max(nrow)]
@@ -164,6 +173,8 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",use.input=TRUE,recoverRows
 
         tab.row[,nmout:=TRUE]
         tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="output",tab.type="row"))
+        tab.vars[var=="nmout",source:="NMscanData"]
+        tab.vars[var=="nmout",tab.type:=NA_character_]
     } 
     
 
@@ -356,13 +367,20 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",use.input=TRUE,recoverRows
     }
 
 ###  Section end: Recover rows
-    
     if(!is.null(add.name)) {
         
         tab.row[,c(add.name):=runname]
+        
+        tab.vars <- rbind(tab.vars,
+                          data.table(var=add.name,source="NMscanData"),
+                          fill=T)
     }
 
-    if(!as.dt) tab.row <- as.data.frame(tab.row)
+    setorder(tab.vars,var)
+    if(!as.dt) {
+        tab.row <- as.data.frame(tab.row)
+        tab.vars <- as.data.frame(tab.vars)
+    }
 
     ## attr(tab.row,"vars") <- tab.vars
     setattr(tab.row,"vars",tab.vars)
