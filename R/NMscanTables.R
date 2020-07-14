@@ -19,6 +19,17 @@
 ##' @export
 NMscanTables <- function(file,details=F,as.dt=TRUE,quiet=FALSE,NMtabCount=TRUE,debug=FALSE){
     if(debug) browser()
+
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks #### ####
+
+    firstlastonly <- NULL
+    firstonly <- NULL
+    lastonly <- NULL
+    name <- NULL
+    pastes <- NULL
+
+###  Section end: Dummy variables, only not to get NOTE's in pacakge checks ####
+
     
     dir <- dirname(file)
     extract.info <- function(x,NAME,default){

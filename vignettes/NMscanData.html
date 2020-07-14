@@ -206,7 +206,7 @@ res1[,.N,by=.(nmout,flag)]
 <h3>Combine multiple models</h3>
 <p>You may have noticed a column called <code>model</code> in some of the output above. NMscanData by default adds this column for convenience when working with multiple models at a time. You can specify both column name and content as arguments in NMscanData, but if you don’t it will call it <code>model</code> and take the model name from the lst file name (say, <code>xgxr001</code>). In following we use this to compare population predictions from two different models. We read them again just to show the use of the argument to name the models ourselves.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## notice fill is an option to rbind with data.table
-res1.m &lt;-<span class="st"> </span><span class="kw">NMscanData</span>(<span class="kw">NMdata_filepath</span>(<span class="st">&quot;examples/nonmem/xgxr001.lst&quot;</span>))
+res1.m &lt;-<span class="st"> </span><span class="kw">NMscanData</span>(<span class="kw">NMdata_filepath</span>(<span class="st">&quot;examples/nonmem/xgxr001.lst&quot;</span>),<span class="dt">debug=</span>F)
 <span class="co">#&gt; Read 1 output table(s).</span>
 <span class="co">#&gt; Read delimited text input data file.</span>
 res2.m &lt;-<span class="st"> </span><span class="kw">NMscanData</span>(<span class="kw">NMdata_filepath</span>(<span class="st">&quot;examples/nonmem/xgxr014.lst&quot;</span>),<span class="dt">name=</span><span class="st">&quot;single-compartment&quot;</span>)
@@ -271,6 +271,10 @@ res &lt;-<span class="st"> </span><span class="kw">NMscanData</span>(<span class
 <div id="not-all-data-filter-statements-implemented" class="section level3">
 <h3>Not all data filter statements implemented</h3>
 <p>Nested ACCEPT and IGNORE statements are not supported at this point. The resulting number of rows after applying filters is checked against row-level output table dimensions (if any available). In other words, you have to be unlucky to run into trouble. But it is alway recommended to use a unique row identifier in both input and output tables in order to avoid relying on interpretation of Nonmem code.</p>
+</div>
+<div id="character-time-variables-not-interpreted" class="section level3">
+<h3>Character time variables not interpreted</h3>
+<p>Nonmem supports a clocktime input format for TIME. Based on a day counter and a character (“00:00”) clock format, Nonmem can calculate the individual time since first record. This behaviour is not mimicked by NMscanData, and the only ways to get TIME in this case are to either include it in an output TABLE or to code the translation yourself after calling NMscanData. Of course, this is on the todo list.</p>
 </div>
 <div id="lastonly-and-firstlastonly-not-supported" class="section level3">
 <h3>LASTONLY and FIRSTLASTONLY not supported</h3>

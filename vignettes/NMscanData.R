@@ -73,7 +73,7 @@ res1[,.N,by=.(nmout,flag)]
 
 ## ------------------------------------------------------------------------
 ## notice fill is an option to rbind with data.table
-res1.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
+res1.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),debug=F)
 res2.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),name="single-compartment")
 res.mult <- rbind(res1.m,res2.m,fill=T)
 res.mult.mean <- res.mult[EVID==0&nmout==TRUE,.(gmPRED=exp(mean(log(PRED)))),by=.(model,trtact,NOMTIME)]

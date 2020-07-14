@@ -376,6 +376,6 @@ list.
 
 ### LASTONLY and FIRSTLASTONLY not supported
 The `FIRSTLASTONLY` option in `$TABLE` results in two rows per
-subject. For now, this cannot be merged with input. `LASTONLY` will
-soon be supported. At the moment, there are no checks for these
-cases. 
+subject. For now, this cannot be merged with input, and these tables
+are disregarded with a warning (you can read them with
+`NMscanTables`). `LASTONLY` is treated like `FIRSTONLY`.

@@ -1,6 +1,6 @@
-library(devtools)
-load_all("~/working_copies/NMdata")
-setwd("~/working_copies/NMdata/tests/testthat")
+## library(devtools)
+## load_all("~/working_copies/NMdata")
+## setwd("~/working_copies/NMdata/tests/testthat")
 
 context("NMscanTables")
 

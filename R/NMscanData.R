@@ -76,7 +76,7 @@
 
 ### end todo 
 
-NMscanData <- function(file,col.id="ID",col.row="ROW",use.input=TRUE,recoverRows=FALSE,add.name="model",name,file.mod,dir.data,quiet=FALSE,useRDS=TRUE,as.dt=TRUE,mergeByFilters=FALSE,NMtabCount=FALSE,debug=FALSE) {
+NMscanData <- function(file,col.row="ROW",mergeByFilters=FALSE,use.input=TRUE,recoverRows=FALSE,add.name="model",name,file.mod,dir.data,quiet=FALSE,useRDS=TRUE,as.dt=TRUE,col.id="ID",NMtabCount=FALSE,debug=FALSE) {
 
     if(debug) browser()
 
@@ -90,7 +90,11 @@ NMscanData <- function(file,col.id="ID",col.row="ROW",use.input=TRUE,recoverRows
     nmout <- NULL
     DV <- NULL
     var <- NULL
-    
+    firstlastonly <- NULL
+    idlevel <- NULL
+    lastonly <- NULL
+    tab.type <- NULL
+
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
 

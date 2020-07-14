@@ -1,6 +1,8 @@
 # NEWS
 ## 0.0.5
-NMscanTables keeps track of LASTONLY and FIRSTLASTONLY. 
+NMscanTables keeps track of LASTONLY and FIRSTLASTONLY. LASTONLY are
+now treated like FIRSTONLY while FIRSTLASTONLY tables are disregarded
+(with a warning).
 
 ## 0.0.4
 The most obvious change since 0.0.3 is that only one data.table is

@@ -4,20 +4,23 @@
 \alias{NMscanData}
 \title{automatically find Nonmem tables and organize data}
 \usage{
-NMscanData(file, col.id = "ID", col.row = "ROW", use.input = TRUE,
-  recoverRows = FALSE, add.name = "model", name, file.mod, dir.data,
-  quiet = FALSE, useRDS = TRUE, as.dt = TRUE,
-  mergeByFilters = FALSE, NMtabCount = FALSE, debug = FALSE)
+NMscanData(file, col.row = "ROW", mergeByFilters = FALSE,
+  use.input = TRUE, recoverRows = FALSE, add.name = "model", name,
+  file.mod, dir.data, quiet = FALSE, useRDS = TRUE, as.dt = TRUE,
+  col.id = "ID", NMtabCount = FALSE, debug = FALSE)
 }
 \arguments{
 \item{file}{A nonmem control stream or output file from nonmem
 (.mod or .lst)}
 
-\item{col.id}{The name of the subject ID variable, default is
-"ID".}
-
 \item{col.row}{A column that is unique for each row. Such a column
 is needed for this function to work well.}
+
+\item{mergeByFilters}{This is experimental. If TRUE, the IGNORE
+filters in the nonmem control stream are attempted applied and
+then input and output data simply cbinded. This is not
+recommended (use a row identifier instead), but sometimes it
+is your only option.}
 
 \item{use.input}{Merge with columns in input data? Using this, you
 don't have to worry about remembering including all relevant
@@ -64,11 +67,8 @@ by default too.}
 \item{as.dt}{The default is to return data in data.tables. If
 data.frames are wanted, use as.dt=FALSE.}
 
-\item{mergeByFilters}{This is experimental. If TRUE, the IGNORE
-filters in the nonmem control stream are attempted applied and
-then input and output data simply cbinded. This is not
-recommended (use a row identifier instead), but sometimes it
-is your only option.}
+\item{col.id}{The name of the subject ID variable, default is
+"ID".}
 
 \item{NMtabCount}{Nonmem includes a counter of tables in the
 written data files. These are often not useful. Especially for
