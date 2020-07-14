@@ -76,6 +76,8 @@
 
 ### end todo 
 
+## when col.row and mergeByFilters are missing, do mergeByFilters but look for a row identifier. Explain and tell user to provide col.row or mergeByFilters to get less messages.
+
 NMscanData <- function(file,col.row="ROW",mergeByFilters=FALSE,use.input=TRUE,recoverRows=FALSE,add.name="model",name,file.mod,dir.data,quiet=FALSE,useRDS=TRUE,as.dt=TRUE,col.id="ID",NMtabCount=FALSE,debug=FALSE) {
 
     if(debug) browser()
