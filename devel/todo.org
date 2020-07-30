@@ -71,12 +71,17 @@ Right now it only says if input or output. Table name would be helpful.
 If mergeByFilters we can take the sequence of ID in the input
 data. But what if an ID comes back? I think a record is in FIRSTONLY
 whenever ID changes, but test this.
-**** TODO [#A] source for nmout and model must be internal
+**** DONE source for nmout and model must be internal
+     CLOSED: [2020-07-18 Sat 23:13]
 in var table 
 *** NMwriteData
 **** TODO Check if character variables contain commas. 
 This will cause trouble when writing csv
 **** TODO The Nonmem instructions should not include characters
+**** TODO Check if ID has been corrupted by output format
+No longer sure this is an issue with the new data combination method: check if variables are consistent within ROW: ID (others?) This is fatal and will happen when using long ID's and non-matching format when writing tables from Nonmem.
+**** TODO There are certain variables that can only be row specifc
+WRES, CWRES, etc.
 ** Nonmem examples
 *** DONE Use FLAG
     CLOSED: [2020-06-29 Mon 21:28]

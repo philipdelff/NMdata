@@ -95,7 +95,9 @@ test_that("merge by filters or not",{
     expect_equal(res1,res2)
 })
 
-
+## right now, we get complaints because missing use.input is
+## interpreted as use.input=TRUE. But maybe here, missing should mean
+## that we skip input in this case.
 test_that("Only a firstonly without ID but with ROW",{
 ### This should work because ROW is in firstonly table.
     
@@ -108,7 +110,7 @@ test_that("Only a firstonly without ID but with ROW",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
     
-    res1 <- NMscanData(file=file.lst,debug=F)
+    res1 <- NMscanData(file=file.lst,col.row="ROW",debug=F)
     expect_equal_to_reference(res1,fileRef,version=2)
     
 })

@@ -69,16 +69,9 @@
 #### end change log
 
 
-### todo
-## No longer sure this is an issue with the new data combination method: check if variables are consistent within ROW: ID (others?) This is fatal and will happen when using long ID's and non-matching format when writing tables from Nonmem.
-
-## TODO: There are certain variables that can only be row specifc: WRES, CWRES, etc.
-
-### end todo 
-
 ## when col.row and mergeByFilters are missing, do mergeByFilters but look for a row identifier. Explain and tell user to provide col.row or mergeByFilters to get less messages.
 
-NMscanData <- function(file,col.row="ROW",mergeByFilters=FALSE,use.input=TRUE,recoverRows=FALSE,add.name="model",name,file.mod,dir.data,quiet=FALSE,useRDS=TRUE,as.dt=TRUE,col.id="ID",NMtabCount=FALSE,debug=FALSE) {
+NMscanData <- function(file,col.row,mergeByFilters,use.input=TRUE,recoverRows=FALSE,add.name="model",name,file.mod,dir.data,quiet=FALSE,useRDS=TRUE,as.dt=TRUE,col.id="ID",NMtabCount=FALSE,debug=FALSE) {
 
     if(debug) browser()
 
@@ -105,6 +98,37 @@ NMscanData <- function(file,col.row="ROW",mergeByFilters=FALSE,use.input=TRUE,re
     file <- filePathSimple(file)
     if(!file.exists(file)) stop(paste0("Model file ",file," does not exist."),call. = F)
     dir <- dirname(file)
+
+    if(!missing(mergeByFilters)){
+        if(!is.logical(mergeByFilters)){
+            stop("If supplied, mergeByFilters must be logical.")
+        }
+    }
+    
+    ## method is not specified
+    search.for.col.row <- FALSE
+    if(use.input && missing(col.row) && missing(mergeByFilters)){
+        mergeByFilters <- TRUE
+        search.for.col.row <- TRUE
+    }
+    
+    if(missing(col.row)||is.na(col.row)||(is.character(col.row)&&any(col.row==""))) {
+        col.row <- NULL
+    }
+
+    
+    ## both methods specified
+    if(!is.null(col.row) && !mergeByFilters){
+        stop("col.row is specified, and mergeByFilters is TRUE. You have to use only one of the two methods.")
+    }
+
+    ## if mergeByFilters is still missing, col.row is not NULL, or use.input is FALSE
+    if(use.input && missing(mergeByFilters)) mergeByFilters <- FALSE
+
+    if(!use.input && (mergeByFilters||!is.null(col.row)) ){
+        stop("mergeByFilters must not be TRUE and col.row must not be supplied when use.input is FALSE.")
+    }
+    
 
     if(!is.null(add.name)) {
         if(!is.character(add.name) || length(add.name)!=1 ||  add.name=="" ) {
@@ -233,6 +257,25 @@ NMscanData <- function(file,col.row="ROW",mergeByFilters=FALSE,use.input=TRUE,re
         data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,useRDS=useRDS,applyFilters=mergeByFilters,as.dt=TRUE,debug=F)
         cnames.input <- colnames(data.input)
 
+        ## if no method is specified, search for possible col.row to help the user
+        if(search.for.col.row){
+            
+            data.input.all <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=TRUE,useRDS=useRDS,applyFilters=FALSE,as.dt=TRUE,debug=F)
+            cols.row.input <- colnames(data.input.all)[data.input.all[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
+
+            cols.row.output <- colnames(tab.row)[tab.row[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
+
+            cols.row.both <- intersect(cols.row.input,cols.row.output)
+            if(length(cols.row.both)){
+                message(paste("col.row not supplied, and input will be merged onto output data. However, column(s) were identified as unique identifiers, present in both input and output data. If one of these is not modified by the Nonmem run, consider using this in col.row for a more robust merge of input and output data. Candidate columns:",paste(cols.row.both,collapse=", ")))
+            } else if(cols.row.input) {
+                message(paste("col.row not supplied, and input will be merged onto output data. However, column(s) were identified as unique identifiers, present in input data. If one of these is not modified by the Nonmem run, consider adding it to an (row-level) output table and using this in col.row for a more robust merge of input and output data. Candidate columns:",paste(cols.row.input,collapse=", ")))
+            }
+        } else {
+            message("col.row not supplied, and input will be merged onto output data. If possible, consider adding a unique row identifier to input and include it in an (row-level) output table.")
+        }
+        message("To get rid of this information, please specify either col.row (recommended method) or mergeByFilters.")
+        
         if(mergeByFilters) {
             message("Input data is filtered by translation of the Nonmem controls stream. This works in most cases. However, it is recommended to always use a row identifier in both input and output data if possible. See col.row and mergeByFilters arguments.")
 
@@ -250,7 +293,7 @@ NMscanData <- function(file,col.row="ROW",mergeByFilters=FALSE,use.input=TRUE,re
             
         } else {
             ## !mergeByFilters
-            if(is.null(col.row)||is.na(col.row)||(is.character(col.row)&&any(col.row==""))) {
+            if(is.null(col.row)) {
                 stop("when use.input=TRUE and mergeByFilters=FALSE, col.row cannot be NULL, NA, or empty.")
             }
 ### merging by col.row
