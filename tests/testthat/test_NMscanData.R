@@ -49,7 +49,7 @@ test_that("Interpret IGNORE statement",{
     ## res <- NMscanData(file=file.lst,debug=T)
     ## res <- NMscanData(file=file.lst,debug=F)
 
-    res <- NMscanData(file=file.lst,mergeByFilters = T, debug=F)
+    res <- NMscanData(file=file.lst,merge.by.filters = T, debug=F)
 
     ## names(res$row)
     

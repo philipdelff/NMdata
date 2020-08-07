@@ -19,7 +19,7 @@
 ##'     if you only have the output file, use dir.data to tell in
 ##'     which directory to find the data file. If dir.data is
 ##'     provided, the .mod file is not used at all.
-##' @param useRDS If an rds file is found with the exact same name
+##' @param use.rds If an rds file is found with the exact same name
 ##'     (except for .rds instead of say .csv) as the text file
 ##'     mentioned in the Nonmem control stream, should this be used
 ##'     instead? The default is yes, and NMwriteData will create this
@@ -46,7 +46,7 @@
 
 ## implement NULL,  RECORDS or at least say it's not done, use col.row instead.
 
-NMtransInput <- function(file,useRDS=TRUE,file.mod=NULL,dir.data=NULL,applyFilters=FALSE,quiet=FALSE,invert=FALSE,as.dt=TRUE,debug=F) {
+NMtransInput <- function(file,use.rds=TRUE,file.mod=NULL,dir.data=NULL,applyFilters=FALSE,quiet=FALSE,invert=FALSE,as.dt=TRUE,debug=F) {
 
     if(debug) browser()
     
@@ -120,7 +120,7 @@ NMtransInput <- function(file,useRDS=TRUE,file.mod=NULL,dir.data=NULL,applyFilte
     }
 
     path.data.input.rds <- sub("^(.+)\\..+$","\\1.rds",path.data.input)
-    if(useRDS && file.exists(path.data.input.rds)){
+    if(use.rds && file.exists(path.data.input.rds)){
         if(!quiet) message("Read rds input data file.")
         path.data.input <- path.data.input.rds
         data.input <- readRDS(path.data.input)

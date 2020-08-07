@@ -58,26 +58,26 @@ if( missing(merge.by.filters) && missing(col.row)){
 
 
 ### method specified
-## merge.by.filters specified - col.row can be NULL too
-} else if(merge.by.filters && missing(col.row) ){
+    ## merge.by.filters specified - col.row can be NULL too
+} else if(merge.by.filters && (missing(col.row) || is.null(col.row))){
     merge.by.filters <- TRUE
-} else if(!merge.by.filters && missing(col.row) ){
+} else if(!merge.by.filters && (missing(col.row) || is.null(col.row))){
     use.input <- FALSE
-## col.row specified
-} else if(missing(merge.by.filters) && !is.null(col.row) ){
+    ## col.row specified
+} else if(missing(merge.by.filters) && !missing(col.row) && !is.null(col.row) ){
     merge.by.row <- TRUE
     ## merge.by.filters and col.row specified
-} else if(!merge.by.filters && !is.null(col.row) ){
+} else if(!merge.by.filters && !missing(col.row) && !is.null(col.row) ){
     merge.by.row <- TRUE
 
 ### redundant specification
-} else if(merge.by.filters && !is.null(col.row) ){
+} else if(merge.by.filters && !missing(col.row) && !is.null(col.row) ){
     stop("merge.by.filters cannot be TRUE and col.row non-NULL at the same time.")
 } else {
     stop("A non-recognized combination of merge.by.filters and col.row. Please see the documenation of those two arguments.")
 }
 
-if(merge.by.filters && merge.by.row) {stop("This is a bug.")}
+if(merge.by.filters && merge.by.row) {stop("This is a bug. Please report.")}
 
 ### now code must use search.col.row, merge.by.filters and merge.by.row
 

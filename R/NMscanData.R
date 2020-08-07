@@ -14,7 +14,7 @@
 ##' @param use.input Merge with columns in input data? Using this, you
 ##'     don't have to worry about remembering including all relevant
 ##'     variables in the output tables.
-##' @param recoverRows Include rows from input data files that do not
+##' @param recover.rows Include rows from input data files that do not
 ##'     exist in output tables? This will be added to the $row dataset
 ##'     only, and $run, $id, and $occ datasets are created before this
 ##'     is taken into account. A column called nmout will be TRUE when
@@ -27,7 +27,7 @@
 ##' @param name The model name to be stored if add.name is not
 ##'     NULL. If name is not supplied, the name will be taken from the
 ##'     control stream file name.
-##' @param useRDS If an rds file is found with the exact same name
+##' @param use.rds If an rds file is found with the exact same name
 ##'     (except for .rds instead of say .csv) as the input data file
 ##'     mentioned in the Nonmem control stream, should this be used
 ##'     instead? The default is yes, and NMwriteData will create this
@@ -42,16 +42,16 @@
 ##'     non-interactive use.
 ##' @param as.dt The default is to return data in data.tables. If
 ##'     data.frames are wanted, use as.dt=FALSE.
-##' @param mergeByFilters This is experimental. If TRUE, the IGNORE
-##'     filters in the nonmem control stream are attempted applied and
-##'     then input and output data simply cbinded. This is not
-##'     recommended (use a row identifier instead), but sometimes it
-##'     is your only option.
-##' @param NMtabCount Nonmem includes a counter of tables in the
+##' @param merge.by.filters Default is to merge by filters if col.row
+##'     is either missing or NULL. However, explicitly specifying
+##'     merge.by.filters is recommended if that is the wanted
+##'     behaviour. If not, NMscanData will search for potential
+##'     columns to merge by and report. See col.row as well.
+##' @param tab.count Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. Especially for
 ##'     NMscanData output it can be meaningless because multiple
 ##'     tables can be combined so this information is not unique
-##'     across those source tables. However, if NMtabCount is TRUE
+##'     across those source tables. However, if tab.count is TRUE
 ##'     (not default), this will be carried forward and added as a
 ##'     column called TABLENO.
 ##' @param debug start by running browser()?
@@ -69,9 +69,9 @@
 #### end change log
 
 
-## when col.row and mergeByFilters are missing, do mergeByFilters but look for a row identifier. Explain and tell user to provide col.row or mergeByFilters to get less messages.
+## when col.row and merge.by.filters are missing, do merge.by.filters but look for a row identifier. Explain and tell user to provide col.row or merge.by.filters to get less messages.
 
-NMscanData <- function(file,col.row,mergeByFilters,use.input=TRUE,recoverRows=FALSE,add.name="model",name,file.mod,dir.data,quiet=FALSE,useRDS=TRUE,as.dt=TRUE,col.id="ID",NMtabCount=FALSE,debug=FALSE) {
+NMscanData <- function(file,col.row,merge.by.filters,use.input=TRUE,recover.rows=FALSE,add.name="model",name,file.mod,dir.data,quiet=FALSE,use.rds=TRUE,as.dt=TRUE,col.id="ID",tab.count=FALSE,debug=FALSE) {
 
     if(debug) browser()
 
@@ -99,37 +99,67 @@ NMscanData <- function(file,col.row,mergeByFilters,use.input=TRUE,recoverRows=FA
     if(!file.exists(file)) stop(paste0("Model file ",file," does not exist."),call. = F)
     dir <- dirname(file)
 
-    if(!missing(mergeByFilters)){
-        if(!is.logical(mergeByFilters)){
-            stop("If supplied, mergeByFilters must be logical.")
-        }
+    if(!missing(merge.by.filters) && !is.logical(merge.by.filters)){
+        stop("If supplied, merge.by.filters must be logical.")
     }
-    
-    ## method is not specified
-    search.for.col.row <- FALSE
-    if(use.input && missing(col.row) && missing(mergeByFilters)){
-        mergeByFilters <- TRUE
-        search.for.col.row <- TRUE
+
+    ## for easier passing of the argument
+    if(missing(dir.data)) dir.data <- NULL
+    if(missing(file.mod)) file.mod <- NULL
+
+    if(!is.null(dir.data)&&!is.null(file.mod)){
+        stop("Only use one of dir.data and file.mod. The aim is to find the input data file, so either give the directory (dir.data) in which it is, and the filename will be taken from the lst file, or help finding the .mod file using the file.mod argument. Using both is redundant.")
     }
+
     
-    if(missing(col.row)||is.na(col.row)||(is.character(col.row)&&any(col.row==""))) {
+### merge.by.filters and col.row - specification of merging method
+    use.input <- TRUE
+    search.col.row <- FALSE
+    do.merge.by.filters <- FALSE
+    merge.by.row <- FALSE
+
+### method not specified
+    ## simplest function call - default
+    if( missing(merge.by.filters) && missing(col.row) ){
+        do.merge.by.filters <- TRUE
+        search.col.row <- TRUE
+        col.row <- NULL
+    } else if(missing(merge.by.filters) && !missing(col.row) && is.null(col.row) ){
+        do.merge.by.filters <- TRUE
+
+
+### method specified
+        ## merge.by.filters specified - col.row can be NULL too
+    } else if(merge.by.filters && (missing(col.row) || is.null(col.row))){
+        do.merge.by.filters <- TRUE
+    } else if(!merge.by.filters && (missing(col.row) || is.null(col.row))){
+        use.input <- FALSE
+        ## col.row specified
+    } else if(missing(merge.by.filters) && !missing(col.row) && !is.null(col.row) ){
+        merge.by.row <- TRUE
+        ## merge.by.filters and col.row specified
+    } else if(!merge.by.filters && !missing(col.row) && !is.null(col.row) ){
+        merge.by.row <- TRUE
+
+### redundant specification
+    } else if(merge.by.filters && !missing(col.row) && !is.null(col.row) ){
+        stop("merge.by.filters cannot be TRUE and col.row non-NULL at the same time.")
+    } else {
+        stop("A non-recognized combination of merge.by.filters and col.row. Please see the documenation of those two arguments.")
+    }
+
+    merge.by.filters <- do.merge.by.filters
+    rm(do.merge.by.filters)
+    if(merge.by.filters && merge.by.row) {stop("This is a bug. Please report.")}
+
+### merging method found
+### now code must use search.col.row, merge.by.filters and merge.by.row
+    
+    if(missing(col.row)||(!is.null(col.row)&&is.na(col.row))||(is.character(col.row)&&any(col.row==""))) {
         col.row <- NULL
     }
 
     
-    ## both methods specified
-    if(!is.null(col.row) && !mergeByFilters){
-        stop("col.row is specified, and mergeByFilters is TRUE. You have to use only one of the two methods.")
-    }
-
-    ## if mergeByFilters is still missing, col.row is not NULL, or use.input is FALSE
-    if(use.input && missing(mergeByFilters)) mergeByFilters <- FALSE
-
-    if(!use.input && (mergeByFilters||!is.null(col.row)) ){
-        stop("mergeByFilters must not be TRUE and col.row must not be supplied when use.input is FALSE.")
-    }
-    
-
     if(!is.null(add.name)) {
         if(!is.character(add.name) || length(add.name)!=1 ||  add.name=="" ) {
             stop("If not NULL, add.name must be a character name of the column to store the run name. The string cannot be empty.")
@@ -144,21 +174,13 @@ NMscanData <- function(file,col.row,mergeByFilters,use.input=TRUE,recoverRows=FA
         include.model <- FALSE
     }
 
-    ## for easier passing of the argument
-    if(missing(dir.data)) dir.data <- NULL
-    if(missing(file.mod)) file.mod <- NULL
-
-    if(!is.null(dir.data)&&!is.null(file.mod)){
-        stop("Only use one of dir.data and file.mod. The aim is to find the input data file, so either give the directory (dir.data) in which it is, and the filename will be taken from the lst file, or help finding the .mod file using the file.mod argument. Using both is redundant.")
-    }
-    
 ###  Section end: Process arguments 
 
 
 #### Section start: read all output tables and merge to max one firstonly and max one row ####
 
     ## if(!quiet) message("Scanning for output tables.")
-    tables <- NMscanTables(file,details=T,as.dt=T,NMtabCount=NMtabCount,quiet=quiet)
+    tables <- NMscanTables(file,details=T,as.dt=T,tab.count=tab.count,quiet=quiet)
 
     rows.flo <- tables$meta[firstlastonly==TRUE]
     if(rows.flo[,.N]>0) {
@@ -184,11 +206,12 @@ NMscanData <- function(file,col.row,mergeByFilters,use.input=TRUE,recoverRows=FA
     tabs.full <- which(overview.tables$full.length)
 
     
-    if(use.input && !mergeByFilters) {
+    if(use.input && merge.by.row) {
         
         if(any(overview.tables[,full.length])&&!overview.tables[,sum(has.row)]) {
-            warning("col.row not found in any full-length (not firstonly) output tables. Input data will not be used. See arguments col.row and mergeByFilters.")
-            use.input <- FALSE
+            ## warning("col.row not found in any full-length (not firstonly) output tables. Input data will not be used. See arguments col.row and merge.by.filters.")
+            ## use.input <- FALSE
+            stop("col.row not found in any full-length (not firstonly) output tables. Correct or disable.")
         }
     }
     
@@ -225,7 +248,7 @@ NMscanData <- function(file,col.row,mergeByFilters,use.input=TRUE,recoverRows=FA
     
     ## use.input.row <- use.input
 
-    if(use.input&&is.null(dir.data)) {
+    if(use.input && is.null(dir.data)) {
         if(is.null(file.mod)){
             file.mod <- sub("\\.lst","\\.mod",file)
         }
@@ -247,20 +270,20 @@ NMscanData <- function(file,col.row,mergeByFilters,use.input=TRUE,recoverRows=FA
     }
     
     if(use.input&&!any(tables$meta$full.length)) {
-        tab.row <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,useRDS=useRDS,applyFilters=mergeByFilters,as.dt=TRUE,debug=F)
+        tab.row <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=merge.by.filters,as.dt=TRUE,debug=F)
         tab.row[,nmout:=FALSE]
         tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="input",tab.type="row"))
     }
     
     if(use.input&&any(tables$meta$full.length)) {
         ## if(!quiet) message("Searching for input data.")
-        data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,useRDS=useRDS,applyFilters=mergeByFilters,as.dt=TRUE,debug=F)
+        data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=merge.by.filters,as.dt=TRUE,debug=F)
         cnames.input <- colnames(data.input)
 
         ## if no method is specified, search for possible col.row to help the user
-        if(search.for.col.row){
+        if(search.col.row){
             
-            data.input.all <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=TRUE,useRDS=useRDS,applyFilters=FALSE,as.dt=TRUE,debug=F)
+            data.input.all <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=TRUE,use.rds=use.rds,applyFilters=FALSE,as.dt=TRUE,debug=F)
             cols.row.input <- colnames(data.input.all)[data.input.all[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 
             cols.row.output <- colnames(tab.row)[tab.row[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
@@ -274,10 +297,10 @@ NMscanData <- function(file,col.row,mergeByFilters,use.input=TRUE,recoverRows=FA
         } else {
             message("col.row not supplied, and input will be merged onto output data. If possible, consider adding a unique row identifier to input and include it in an (row-level) output table.")
         }
-        message("To get rid of this information, please specify either col.row (recommended method) or mergeByFilters.")
+        message("To get rid of this information, please specify either col.row (recommended method) or merge.by.filters.")
         
-        if(mergeByFilters) {
-            message("Input data is filtered by translation of the Nonmem controls stream. This works in most cases. However, it is recommended to always use a row identifier in both input and output data if possible. See col.row and mergeByFilters arguments.")
+        if(merge.by.filters) {
+            message("Input data is filtered by translation of the Nonmem controls stream. This works in most cases. However, it is recommended to always use a row identifier in both input and output data if possible. See col.row and merge.by.filters arguments.")
 
             if(!is.null(tab.row)&nrow(data.input)!=nrow(tab.row)) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.                
@@ -292,15 +315,15 @@ NMscanData <- function(file,col.row,mergeByFilters,use.input=TRUE,recoverRows=FA
 
             
         } else {
-            ## !mergeByFilters
+            ## !merge.by.filters
             if(is.null(col.row)) {
-                stop("when use.input=TRUE and mergeByFilters=FALSE, col.row cannot be NULL, NA, or empty.")
+                stop("when use.input=TRUE and merge.by.filters=FALSE, col.row cannot be NULL, NA, or empty.")
             }
 ### merging by col.row
             ## Has this check already been done?
             if(col.row%in%cnames.input) {
                 if(data.input[,any(duplicated(get(col.row)))]) {
-                    stop("use.input=TRUE and mergeByFilters=FALSE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and mergeByFilters=FALSE.")
+                    stop("use.input=TRUE and merge.by.filters=FALSE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and merge.by.filters=FALSE.")
                 }
             } else {
                 warning("use.input is TRUE, but col.row not found in _input_ data. Only output data used.")
@@ -402,11 +425,11 @@ NMscanData <- function(file,col.row,mergeByFilters,use.input=TRUE,recoverRows=FA
 
 #### Section start: Recover rows ####
 
-    if( use.input && recoverRows ) {
+    if( use.input && recover.rows ) {
         
         skip.recover <- FALSE
-        if(mergeByFilters) {
-            data.recover <- NMtransInput(file,quiet=quiet,useRDS=useRDS,applyFilters=mergeByFilters,invert=T,as.dt=TRUE,debug=F)
+        if(merge.by.filters) {
+            data.recover <- NMtransInput(file,quiet=quiet,use.rds=use.rds,applyFilters=merge.by.filters,invert=T,as.dt=TRUE,debug=F)
         } else {
             data.recover <- data.input[!get(col.row)%in%tab.row[,get(col.row)]]
             ## data.input[get(col.row)%in%tab.row[,get(col.row)]]

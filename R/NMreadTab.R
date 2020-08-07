@@ -3,9 +3,9 @@
 ##' @param file path to NONMEM table file
 ##' @param silent logical stating whether or not information is
 ##'     printed.
-##' @param NMtabCount Nonmem includes a counter of tables in the
+##' @param tab.count Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. However, if
-##'     NMtabCount is TRUE (default), this will be carried forward and
+##'     tab.count is TRUE (default), this will be carried forward and
 ##'     added as a column called TABLENO.
 ##' @param debug Start by calling browser()?
 ##' @param ... Arguments passed to fread.
@@ -15,7 +15,7 @@
 ##' @export
 
 
-NMreadTab <- function(file,silent=F,NMtabCount=TRUE,...,debug=F) {
+NMreadTab <- function(file,silent=F,tab.count=TRUE,...,debug=F) {
 
     if(debug) browser()
 
@@ -41,7 +41,7 @@ NMreadTab <- function(file,silent=F,NMtabCount=TRUE,...,debug=F) {
     if(!silent){
         message("Adding table numbers to data")
     }
-    if(NMtabCount){
+    if(tab.count){
         ## find table numbers
         dt1[grep("^TABLE +NO\\. +[0-9]+ *$",as.character(get(cnames[1])),invert=F,perl=T),TABLE:=get(cnames[1])]
         dt1[,TABLENO:=cumsum(!is.na(TABLE))+1]

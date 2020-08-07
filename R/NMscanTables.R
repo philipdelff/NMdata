@@ -5,9 +5,9 @@
 ##' @param quiet The default is to give some information along the way on what
 ##'     data is found. But consider setting this to TRUE for non-interactive
 ##'     use.
-##' @param NMtabCount Nonmem includes a counter of tables in the
+##' @param tab.count Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. However, if
-##'     NMtabCount is TRUE (default), this will be carried forward and
+##'     tab.count is TRUE (default), this will be carried forward and
 ##'     added as a column called TABLENO.
 ##' @param as.dt return data.tables? Tables will not be keyed.
 ##' @param debug Start by calling browser()?
@@ -17,7 +17,7 @@
 ##' @family Nonmem
 ##' @import data.table
 ##' @export
-NMscanTables <- function(file,details=F,as.dt=TRUE,quiet=FALSE,NMtabCount=TRUE,debug=FALSE){
+NMscanTables <- function(file,details=F,as.dt=TRUE,quiet=FALSE,tab.count=TRUE,debug=FALSE){
     if(debug) browser()
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks #### ####
@@ -70,7 +70,7 @@ NMscanTables <- function(file,details=F,as.dt=TRUE,quiet=FALSE,NMtabCount=TRUE,d
     tables <- list()
     for(I in 1:nrow(meta)){
         if(!file.exists(meta[I,file])) stop(paste0("NMscanTables: File not found: ",meta[I,file],". Did you copy the lst file but forgot table file?"))
-        tables[[I]] <- NMreadTab(meta[I,file],silent=T,NMtabCount=NMtabCount,showProgress=FALSE)
+        tables[[I]] <- NMreadTab(meta[I,file],silent=T,tab.count=tab.count,showProgress=FALSE)
         dim.tmp <- dim(tables[[I]])
         meta[I,nrow:=dim.tmp[1]]
         meta[I,ncol:=dim.tmp[2]]
