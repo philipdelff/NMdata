@@ -76,10 +76,30 @@ NMscanTables <- function(file,details=F,as.dt=TRUE,quiet=FALSE,tab.count=TRUE,de
         meta[I,ncol:=dim.tmp[2]]
     }
 
+    meta[,idlevel:=firstonly|lastonly]
+    
     if(!quiet){
-        message(paste0("Read ",nrow(meta)," output table(s)."))
-    }
+        msg <- paste0("Number of output tables read: ",meta[,.N])
+        NIDL <- meta[idlevel==TRUE&firstlastonly==FALSE,.N]
+        NFLO <- meta[idlevel==FALSE&firstlastonly==TRUE,.N]
+        mNIDL <- NULL
+        if(NIDL>0) mNIDL <- paste0(NIDL, " idlevel")
+        mNFLO <- NULL
+        if(NFLO>0) mNFLO <- paste0(NFLO, " FIRSTLASTONLY")
+        msg.extra <- paste0(c(mNIDL,mNFLO),collapse=" and ")
+        if(nchar(msg.extra)) {
+            msg <- paste0(msg," (",msg.extra,").")
+        } else {
+            msg <- paste0(msg,".")
+        }
+        
+        ## message(paste0("Read ",nrow(meta)," output table(s)."))
+        ## message(paste0("Number of output tables read: ",meta[,.N], " (",NFO," idlevel and ",NFLO," FIRSTLASTONLY)"))
+        message(msg)
+        
 
+    }
+    
     names(tables) <- meta[,name]
     if(!as.dt) {
         tables <- lapply(tables,as.data.frame)

@@ -113,44 +113,48 @@ NMscanData <- function(file,col.row,merge.by.filters,use.input=TRUE,recover.rows
 
     
 ### merge.by.filters and col.row - specification of merging method
-    use.input <- TRUE
+    ## use.input <- TRUE
     search.col.row <- FALSE
     do.merge.by.filters <- FALSE
     merge.by.row <- FALSE
 
+    if(use.input){
 ### method not specified
-    ## simplest function call - default
-    if( missing(merge.by.filters) && missing(col.row) ){
-        do.merge.by.filters <- TRUE
-        search.col.row <- TRUE
-        col.row <- NULL
-    } else if(missing(merge.by.filters) && !missing(col.row) && is.null(col.row) ){
-        do.merge.by.filters <- TRUE
+        ## simplest function call - default
+        if( missing(merge.by.filters) && missing(col.row) ){
+            do.merge.by.filters <- TRUE
+            search.col.row <- TRUE
+            col.row <- NULL
+        } else if(missing(merge.by.filters) && !missing(col.row) && is.null(col.row) ){
+            do.merge.by.filters <- TRUE
 
 
 ### method specified
-        ## merge.by.filters specified - col.row can be NULL too
-    } else if(merge.by.filters && (missing(col.row) || is.null(col.row))){
-        do.merge.by.filters <- TRUE
-    } else if(!merge.by.filters && (missing(col.row) || is.null(col.row))){
-        use.input <- FALSE
-        ## col.row specified
-    } else if(missing(merge.by.filters) && !missing(col.row) && !is.null(col.row) ){
-        merge.by.row <- TRUE
-        ## merge.by.filters and col.row specified
-    } else if(!merge.by.filters && !missing(col.row) && !is.null(col.row) ){
-        merge.by.row <- TRUE
+            ## merge.by.filters specified - col.row can be NULL too
+        } else if(!missing(merge.by.filters) && merge.by.filters && (missing(col.row) || is.null(col.row))){
+            do.merge.by.filters <- TRUE
+        } else if(!missing(merge.by.filters) && !merge.by.filters && (missing(col.row) || is.null(col.row))){
+            use.input <- FALSE
+            ## col.row specified
+        } else if(missing(merge.by.filters) && !missing(col.row) && !is.null(col.row) ){
+            merge.by.row <- TRUE
+            ## merge.by.filters and col.row specified
+        } else if(!merge.by.filters && !missing(col.row) && !is.null(col.row) ){
+            merge.by.row <- TRUE
 
 ### redundant specification
-    } else if(merge.by.filters && !missing(col.row) && !is.null(col.row) ){
-        stop("merge.by.filters cannot be TRUE and col.row non-NULL at the same time.")
-    } else {
-        stop("A non-recognized combination of merge.by.filters and col.row. Please see the documenation of those two arguments.")
-    }
+        } else if(merge.by.filters && !missing(col.row) && !is.null(col.row) ){
+            stop("merge.by.filters cannot be TRUE and col.row non-NULL at the same time.")
+        } else {
+            stop("A non-recognized combination of merge.by.filters and col.row. Please see the documenation of those two arguments.")
+        }
 
-    merge.by.filters <- do.merge.by.filters
-    rm(do.merge.by.filters)
-    if(merge.by.filters && merge.by.row) {stop("This is a bug. Please report.")}
+        merge.by.filters <- do.merge.by.filters
+        rm(do.merge.by.filters)
+        if(merge.by.filters && merge.by.row) {
+            stop("This is a bug. Please report.")
+        }
+    }
 
 ### merging method found
 ### now code must use search.col.row, merge.by.filters and merge.by.row
@@ -196,7 +200,6 @@ NMscanData <- function(file,col.row,merge.by.filters,use.input=TRUE,recover.rows
     fun.has.row <- function(names) do.call(c,lapply(names,function(name)col.row%in%colnames(data[[name]])))
     overview.tables[,has.row:=fun.has.row(name)]
     overview.tables[,maxLength:=nrow==max(nrow)]
-    overview.tables[,idlevel:=firstonly|lastonly]
     overview.tables[,full.length:=!idlevel&maxLength]
     NrowFull <- overview.tables[full.length==TRUE,unique(nrow)]
 
@@ -291,13 +294,13 @@ NMscanData <- function(file,col.row,merge.by.filters,use.input=TRUE,recover.rows
             cols.row.both <- intersect(cols.row.input,cols.row.output)
             if(length(cols.row.both)){
                 message(paste("col.row not supplied, and input will be merged onto output data. However, column(s) were identified as unique identifiers, present in both input and output data. If one of these is not modified by the Nonmem run, consider using this in col.row for a more robust merge of input and output data. Candidate columns:",paste(cols.row.both,collapse=", ")))
-            } else if(cols.row.input) {
+            } else if(length(cols.row.input)) {
                 message(paste("col.row not supplied, and input will be merged onto output data. However, column(s) were identified as unique identifiers, present in input data. If one of these is not modified by the Nonmem run, consider adding it to an (row-level) output table and using this in col.row for a more robust merge of input and output data. Candidate columns:",paste(cols.row.input,collapse=", ")))
             }
-        } else {
-            message("col.row not supplied, and input will be merged onto output data. If possible, consider adding a unique row identifier to input and include it in an (row-level) output table.")
-        }
-        message("To get rid of this information, please specify either col.row (recommended method) or merge.by.filters.")
+            message("To get rid of this information, please specify either col.row (recommended method) or merge.by.filters.")
+        } ## else {
+        ## message("col.row not supplied, and input will be merged onto output data. If possible, consider adding a unique row identifier to input and include it in an (row-level) output table.")
+        ## }
         
         if(merge.by.filters) {
             message("Input data is filtered by translation of the Nonmem controls stream. This works in most cases. However, it is recommended to always use a row identifier in both input and output data if possible. See col.row and merge.by.filters arguments.")
