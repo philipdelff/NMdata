@@ -1,10 +1,10 @@
 Package: NMdata
 Type: Package
 Title: Prepare data for and get data from Nonmem
-Version: 0.0.4
+Version: 0.0.4.1
 Author: Philip Delff <philip@delff.dk>
 Maintainer: Philip Delff <philip@delff.dk>
-Description: Highly efficient tools to automatically retrieve data from Nonmem. And for easy preparation of fully documented Nonmem datasets.
+Description: Efficient tools to automatically retrieve data from Nonmem. And for easy preparation of fully documented Nonmem datasets.
 License: MIT + file LICENSE
 RoxygenNote: 6.1.1
 Roxygen: list(roclets=c("collate", "namespace", "rd", "vignette"))

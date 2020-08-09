@@ -61,7 +61,7 @@ mergeCheck <- function(df1,df2,by,debug=F,...){
         reorder <- F
     }
     
-    df3 <- merge(df1,df2,by=by,...)
+    df3 <- merge(df1,df2,by=by,sort=FALSE,...)
     if(reorder){
         rows.disappeared <- !(all(df1[,get(rowcol)]%in%df3[,get(rowcol)]))
         if(rows.disappeared) cat("Rows disappeared during merge.\n")

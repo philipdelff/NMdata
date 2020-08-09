@@ -42,18 +42,25 @@
 ##'     non-interactive use.
 ##' @param as.dt The default is to return data in data.tables. If
 ##'     data.frames are wanted, use as.dt=FALSE.
-##' @param merge.by.filters Default is to merge by filters if col.row
-##'     is either missing or NULL. However, explicitly specifying
-##'     merge.by.filters is recommended if that is the wanted
-##'     behaviour. If not, NMscanData will search for potential
-##'     columns to merge by and report. See col.row as well.
+##' @param cbind.by.filters If TRUE, Nonmem data filtering is
+##'     interpreted from lst file (restrictions apply), and after an
+##'     imitated selection of rows, data columns will be appended to
+##'     output data. This method relies on interpretation of Nonmem
+##'     code, and it will not work in advanced use of IGNORE and
+##'     ACCEPT statements in $INPUT. Consider using col.row instead,
+##'     if possible. Default is TRUE if col.row is either missing or
+##'     NULL. However, explicitly specifying cbind.by.filters is
+##'     recommended if that is the intended behaviour. If not,
+##'     NMscanData will search for potential columns to merge by and
+##'     print information about it. See col.row (recommended method)
+##'     as well.
 ##' @param tab.count Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. Especially for
 ##'     NMscanData output it can be meaningless because multiple
 ##'     tables can be combined so this information is not unique
-##'     across those source tables. However, if tab.count is TRUE
-##'     (not default), this will be carried forward and added as a
-##'     column called TABLENO.
+##'     across those source tables. However, if tab.count is TRUE (not
+##'     default), this will be carried forward and added as a column
+##'     called TABLENO.
 ##' @param debug start by running browser()?
 ##'
 ##' @details This function makes it very easy to collect the data from
@@ -69,9 +76,9 @@
 #### end change log
 
 
-## when col.row and merge.by.filters are missing, do merge.by.filters but look for a row identifier. Explain and tell user to provide col.row or merge.by.filters to get less messages.
+## when col.row and cbind.by.filters are missing, do cbind.by.filters but look for a row identifier. Explain and tell user to provide col.row or cbind.by.filters to get less messages.
 
-NMscanData <- function(file,col.row,merge.by.filters,use.input=TRUE,recover.rows=FALSE,add.name="model",name,file.mod,dir.data,quiet=FALSE,use.rds=TRUE,as.dt=TRUE,col.id="ID",tab.count=FALSE,debug=FALSE) {
+NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,recover.rows=FALSE,add.name="model",name,file.mod,dir.data,quiet=FALSE,use.rds=TRUE,as.dt=TRUE,col.id="ID",tab.count=FALSE,debug=FALSE) {
 
     if(debug) browser()
 
@@ -99,8 +106,8 @@ NMscanData <- function(file,col.row,merge.by.filters,use.input=TRUE,recover.rows
     if(!file.exists(file)) stop(paste0("Model file ",file," does not exist."),call. = F)
     dir <- dirname(file)
 
-    if(!missing(merge.by.filters) && !is.logical(merge.by.filters)){
-        stop("If supplied, merge.by.filters must be logical.")
+    if(!missing(cbind.by.filters) && !is.logical(cbind.by.filters)){
+        stop("If supplied, cbind.by.filters must be logical.")
     }
 
     ## for easier passing of the argument
@@ -112,52 +119,52 @@ NMscanData <- function(file,col.row,merge.by.filters,use.input=TRUE,recover.rows
     }
 
     
-### merge.by.filters and col.row - specification of merging method
+### cbind.by.filters and col.row - specification of merging method
     ## use.input <- TRUE
     search.col.row <- FALSE
-    do.merge.by.filters <- FALSE
+    do.cbind.by.filters <- FALSE
     merge.by.row <- FALSE
 
     if(use.input){
 ### method not specified
         ## simplest function call - default
-        if( missing(merge.by.filters) && missing(col.row) ){
-            do.merge.by.filters <- TRUE
+        if( missing(cbind.by.filters) && missing(col.row) ){
+            do.cbind.by.filters <- TRUE
             search.col.row <- TRUE
             col.row <- NULL
-        } else if(missing(merge.by.filters) && !missing(col.row) && is.null(col.row) ){
-            do.merge.by.filters <- TRUE
+        } else if(missing(cbind.by.filters) && !missing(col.row) && is.null(col.row) ){
+            do.cbind.by.filters <- TRUE
 
 
 ### method specified
-            ## merge.by.filters specified - col.row can be NULL too
-        } else if(!missing(merge.by.filters) && merge.by.filters && (missing(col.row) || is.null(col.row))){
-            do.merge.by.filters <- TRUE
-        } else if(!missing(merge.by.filters) && !merge.by.filters && (missing(col.row) || is.null(col.row))){
+            ## cbind.by.filters specified - col.row can be NULL too
+        } else if(!missing(cbind.by.filters) && cbind.by.filters && (missing(col.row) || is.null(col.row))){
+            do.cbind.by.filters <- TRUE
+        } else if(!missing(cbind.by.filters) && !cbind.by.filters && (missing(col.row) || is.null(col.row))){
             use.input <- FALSE
             ## col.row specified
-        } else if(missing(merge.by.filters) && !missing(col.row) && !is.null(col.row) ){
+        } else if(missing(cbind.by.filters) && !missing(col.row) && !is.null(col.row) ){
             merge.by.row <- TRUE
-            ## merge.by.filters and col.row specified
-        } else if(!merge.by.filters && !missing(col.row) && !is.null(col.row) ){
+            ## cbind.by.filters and col.row specified
+        } else if(!cbind.by.filters && !missing(col.row) && !is.null(col.row) ){
             merge.by.row <- TRUE
 
 ### redundant specification
-        } else if(merge.by.filters && !missing(col.row) && !is.null(col.row) ){
-            stop("merge.by.filters cannot be TRUE and col.row non-NULL at the same time.")
+        } else if(cbind.by.filters && !missing(col.row) && !is.null(col.row) ){
+            stop("cbind.by.filters cannot be TRUE and col.row non-NULL at the same time.")
         } else {
-            stop("A non-recognized combination of merge.by.filters and col.row. Please see the documenation of those two arguments.")
+            stop("A non-recognized combination of cbind.by.filters and col.row. Please see the documenation of those two arguments.")
         }
 
-        merge.by.filters <- do.merge.by.filters
-        rm(do.merge.by.filters)
-        if(merge.by.filters && merge.by.row) {
+        cbind.by.filters <- do.cbind.by.filters
+        rm(do.cbind.by.filters)
+        if(cbind.by.filters && merge.by.row) {
             stop("This is a bug. Please report.")
         }
     }
 
 ### merging method found
-### now code must use search.col.row, merge.by.filters and merge.by.row
+### now code must use search.col.row, cbind.by.filters and merge.by.row
     
     if(missing(col.row)||(!is.null(col.row)&&is.na(col.row))||(is.character(col.row)&&any(col.row==""))) {
         col.row <- NULL
@@ -212,7 +219,7 @@ NMscanData <- function(file,col.row,merge.by.filters,use.input=TRUE,recover.rows
     if(use.input && merge.by.row) {
         
         if(any(overview.tables[,full.length])&&!overview.tables[,sum(has.row)]) {
-            ## warning("col.row not found in any full-length (not firstonly) output tables. Input data will not be used. See arguments col.row and merge.by.filters.")
+            ## warning("col.row not found in any full-length (not firstonly) output tables. Input data will not be used. See arguments col.row and cbind.by.filters.")
             ## use.input <- FALSE
             stop("col.row not found in any full-length (not firstonly) output tables. Correct or disable.")
         }
@@ -273,14 +280,14 @@ NMscanData <- function(file,col.row,merge.by.filters,use.input=TRUE,recover.rows
     }
     
     if(use.input&&!any(tables$meta$full.length)) {
-        tab.row <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=merge.by.filters,as.dt=TRUE,debug=F)
+        tab.row <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,as.dt=TRUE,debug=F)
         tab.row[,nmout:=FALSE]
         tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="input",tab.type="row"))
     }
     
     if(use.input&&any(tables$meta$full.length)) {
         ## if(!quiet) message("Searching for input data.")
-        data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=merge.by.filters,as.dt=TRUE,debug=F)
+        data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,as.dt=TRUE,debug=F)
         cnames.input <- colnames(data.input)
 
         ## if no method is specified, search for possible col.row to help the user
@@ -293,17 +300,17 @@ NMscanData <- function(file,col.row,merge.by.filters,use.input=TRUE,recover.rows
 
             cols.row.both <- intersect(cols.row.input,cols.row.output)
             if(length(cols.row.both)){
-                message(paste("col.row not supplied, and input will be merged onto output data. However, column(s) were identified as unique identifiers, present in both input and output data. If one of these is not modified by the Nonmem run, consider using this in col.row for a more robust merge of input and output data. Candidate columns:",paste(cols.row.both,collapse=", ")))
+                message(paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in both input and output data. If this column or one of these columns is not modified by the Nonmem run, consider using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.both,collapse=", ")))
             } else if(length(cols.row.input)) {
-                message(paste("col.row not supplied, and input will be merged onto output data. However, column(s) were identified as unique identifiers, present in input data. If one of these is not modified by the Nonmem run, consider adding it to an (row-level) output table and using this in col.row for a more robust merge of input and output data. Candidate columns:",paste(cols.row.input,collapse=", ")))
-            }
-            message("To get rid of this information, please specify either col.row (recommended method) or merge.by.filters.")
+                message(paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in input data. If this column or one of these columns is not modified by the Nonmem run, consider adding it to a row-level output table and using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.input,collapse=", ")))
+            } else {paste("\nInput data columns will be appended to output data. However, it is recommended to use a unique row identifier (typically a counter but only required to be unique for each row) for a robust merge of input and output data. See argument col.row.")}
+            message("To skip this check, please specify either col.row (recommended) or cbind.by.filters.")
         } ## else {
         ## message("col.row not supplied, and input will be merged onto output data. If possible, consider adding a unique row identifier to input and include it in an (row-level) output table.")
         ## }
         
-        if(merge.by.filters) {
-            message("Input data is filtered by translation of the Nonmem controls stream. This works in most cases. However, it is recommended to always use a row identifier in both input and output data if possible. See col.row and merge.by.filters arguments.")
+        if(cbind.by.filters) {
+            ## message("Input data is filtered by translation of the Nonmem controls stream. This works in most cases. However, it is recommended to always use a row identifier in both input and output data if possible. See col.row and cbind.by.filters arguments.")
 
             if(!is.null(tab.row)&nrow(data.input)!=nrow(tab.row)) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.                
@@ -318,15 +325,15 @@ NMscanData <- function(file,col.row,merge.by.filters,use.input=TRUE,recover.rows
 
             
         } else {
-            ## !merge.by.filters
+            ## !cbind.by.filters
             if(is.null(col.row)) {
-                stop("when use.input=TRUE and merge.by.filters=FALSE, col.row cannot be NULL, NA, or empty.")
+                stop("when use.input=TRUE and cbind.by.filters=FALSE, col.row cannot be NULL, NA, or empty.")
             }
 ### merging by col.row
             ## Has this check already been done?
             if(col.row%in%cnames.input) {
                 if(data.input[,any(duplicated(get(col.row)))]) {
-                    stop("use.input=TRUE and merge.by.filters=FALSE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and merge.by.filters=FALSE.")
+                    stop("use.input=TRUE and cbind.by.filters=FALSE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and cbind.by.filters=FALSE.")
                 }
             } else {
                 warning("use.input is TRUE, but col.row not found in _input_ data. Only output data used.")
@@ -431,8 +438,8 @@ NMscanData <- function(file,col.row,merge.by.filters,use.input=TRUE,recover.rows
     if( use.input && recover.rows ) {
         
         skip.recover <- FALSE
-        if(merge.by.filters) {
-            data.recover <- NMtransInput(file,quiet=quiet,use.rds=use.rds,applyFilters=merge.by.filters,invert=T,as.dt=TRUE,debug=F)
+        if(cbind.by.filters) {
+            data.recover <- NMtransInput(file,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,invert=T,as.dt=TRUE,debug=F)
         } else {
             data.recover <- data.input[!get(col.row)%in%tab.row[,get(col.row)]]
             ## data.input[get(col.row)%in%tab.row[,get(col.row)]]

@@ -57,17 +57,28 @@ standards.
 ## Get started
 Try NMscanData on any model:
 ```{r,eval=TRUE}
-res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
-class(res1)
+res0 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
+class(res0)
 ```
-NMscanData says that it found both input and output data and has sent
-a data.table back. The `NMdata` class allows for keeping additional
-information in the object, but notice that it is also a data.table. If
+NMscanData has read and combined input and output data and returned
+a data.table. The `NMdata` class allows for keeping additional
+information in the object, but it can be treated as a data.table. If
 you are not used to data.table and don't want to use them, feel free
-to convert to another class, or use the as.dt=FALSE argument and get a
+to convert to another class, or use the `as.dt=FALSE` argument and get a
 data.frame back. NMdata uses data.table under the hood but all
 functions will work even if you don't. In the future, NMdata may be
 able to return tibbles or other classes as well.
+
+NMscanData writes a little information about what has been read. We
+are being recommended merging by a unique row identifier. The default
+of interpreting Nonmem code is not recommended. It is the default
+because it does not rely on assumptions about the input
+data. 
+
+```{r,eval=TRUE}
+res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),col.row="ROW")
+all.equal(res0,res1)
+```
 
 Let's have a quick look at the data we got back. The following is
 again done with data.table but the comments in the code should make it
