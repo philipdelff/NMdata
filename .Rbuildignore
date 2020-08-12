@@ -7,3 +7,5 @@
 \\.Rhistory
 \\.\\.Rcheck
 \\.git
+^doc$
+^Meta$
