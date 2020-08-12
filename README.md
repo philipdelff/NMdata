@@ -5,24 +5,27 @@ Nonmem can be tedious. This package provides useful tools for these
 tasks. 
 
 ## How to Install
+```
 library(remotes)
-
-install_github("philipdelff/NMdata")
-
+install_github("philipdelff/NMdata",build_vignettes=TRUE)
 library(NMdata)
+```
 
 ## Automated and general reader of Nonmem output data
 Reading the resulting data from Nonmem can require quite a bit of
 manual steps. Especially because all modelers seem to do
 things a little differently. The frustrating fact is that we always
 want the same - all data output from Nonmem with additional columns in
-input data added, and then possibly broken down to the possible levels
+input data added, and then possibly broken down to the different levels
 of variability. This package automates this process and can save you a
 lot of time. 
 
 Take a look at this vignette for more info on the Nonmem data reader
 (once NMdata is loaded):
+
+```
 vignette("NMscanData")
+``` 
 
 On the data-generation side, functionality is provided for
 documentation of the datasets while generating them. For reading the
