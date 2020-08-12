@@ -9,8 +9,9 @@
 ##'     file path. See dir.data too.
 ##' @param col.id The name of the subject ID variable, default is
 ##'     "ID".
-##' @param col.row A column that is unique for each row. Such a column
-##'     is needed for this function to work well.
+##' @param col.row A column with a unique value for each row. Such a
+##'     column is recommended to use if possible. See cbind.by.filters
+##'     and details as well.
 ##' @param use.input Merge with columns in input data? Using this, you
 ##'     don't have to worry about remembering including all relevant
 ##'     variables in the output tables.
@@ -64,7 +65,19 @@
 ##' @param debug start by running browser()?
 ##'
 ##' @details This function makes it very easy to collect the data from
-##'     a Nonmem run. 
+##'     a Nonmem run.
+##'
+##' A useful feature of this function is that it can automatically
+##' combine "input" data (the data read by nonmem in $INPUT or
+##' $INFILE) with "output" data (tables written by nonmem in
+##' $TABLE). There are two implemented methods for doing so. One (the
+##' default but not recommended) relies on interpretation of filter
+##' (IGNORE and ACCEPT) statements in $INPUT. This will work in most
+##' cases, and checks for consistency with Nonmem results. However,
+##' the recommended method is using a unique row identifier in both
+##' input data and at least one output data file (not a FIRSTONLY or
+##' LASTONLY table). Supply the name of this column using the col.row
+##' argument.
 ##' @family DataWrangling
 ##' @import data.table
 ##' @export
