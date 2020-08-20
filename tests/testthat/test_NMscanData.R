@@ -49,7 +49,7 @@ test_that("Interpret IGNORE statement",{
     ## res <- NMscanData(file=file.lst,debug=T)
     ## res <- NMscanData(file=file.lst,debug=F)
 
-    res <- NMscanData(file=file.lst,mergeByFilters = T, debug=F)
+    res <- NMscanData(file=file.lst,cbind.by.filters = T, debug=F)
 
     ## names(res$row)
     
@@ -65,8 +65,8 @@ test_that("List of ACCEPT statements and vs separate statements",{
 
     NMgetSection(file1.lst,section="PROBLEM")
     NMgetSection(file2.lst,section="PROBLEM")
-    res1 <- NMscanData(file=file1.lst,mergeByFilters = T,debug=F,add.name=NULL)
-    res2 <- NMscanData(file=file2.lst,mergeByFilters = T, debug=F,add.name=NULL)
+    res1 <- NMscanData(file=file1.lst,cbind.by.filters = T,debug=F,add.name=NULL)
+    res2 <- NMscanData(file=file2.lst,cbind.by.filters = T, debug=F,add.name=NULL)
 
     expect_identical(res1,res2)
 })
@@ -80,8 +80,8 @@ test_that("merge by filters or not",{
 
     ## NMgetSection(file1.lst,section="PROBLEM")
     ## NMgetSection(file2.lst,section="PROBLEM")
-    res1 <- NMscanData(file=file1.lst,mergeByFilters = T,debug=F,add.name=NULL)
-    res2 <- NMscanData(file=file2.lst,mergeByFilters = T, debug=F,add.name=NULL)
+    res1 <- NMscanData(file=file1.lst,cbind.by.filters = T,debug=F,add.name=NULL)
+    res2 <- NMscanData(file=file2.lst,cbind.by.filters = T, debug=F,add.name=NULL)
 
     setcolorder(res1,colnames(res2))
 
@@ -95,7 +95,9 @@ test_that("merge by filters or not",{
     expect_equal(res1,res2)
 })
 
-
+## right now, we get complaints because missing use.input is
+## interpreted as use.input=TRUE. But maybe here, missing should mean
+## that we skip input in this case.
 test_that("Only a firstonly without ID but with ROW",{
 ### This should work because ROW is in firstonly table.
     
@@ -108,7 +110,7 @@ test_that("Only a firstonly without ID but with ROW",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
     
-    res1 <- NMscanData(file=file.lst,debug=F)
+    res1 <- NMscanData(file=file.lst,col.row="ROW",debug=F)
     expect_equal_to_reference(res1,fileRef,version=2)
     
 })
@@ -116,7 +118,7 @@ test_that("Only a firstonly without ID but with ROW",{
 
 
 test_that("Only a firstonly, no ID, no ROW",{
-### use.input is TRUE but mergeByFilters is FALSE. This should give an error because input cannot be used even though it is requested
+### use.input is TRUE but cbind.by.filters is FALSE. This should give an error because input cannot be used even though it is requested
 
     ## this one only outputs a firstonly that cannot be merged onto
     ## input. use.input=T so input data should be returned.
@@ -137,13 +139,14 @@ test_that("Only a firstonly, no ID, no ROW",{
 
 
 test_that("FO and row-level output. No ID, no row.",{
-    ## row-level output returned because mergeByFilters=F, and firstonly is without ID and row. Warning that firstonly is dropped. Correct. 
+    
+    ## row-level output returned because cbind.by.filters=F, and firstonly is without ID and row. Warning that firstonly is dropped. Correct. 
     fileRef <- "testReference/NMscanData13.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr013.lst")
     NMgetSection(file.lst,section="PROBLEM")
     ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
-    
+
     ## tabs <- NMscanTables(file=file.lst)
     res1 <- expect_warning(
         NMscanData(file=file.lst)
@@ -155,8 +158,8 @@ test_that("FO and row-level output. No ID, no row.",{
 
 })
 
-test_that("FO and row-level output. No ID, no row. mergeByFilters=T",{
-    ## row-level output+input returned because mergeByFilters=T, and firstonly is without ID and row. Correct. 
+test_that("FO and row-level output. No ID, no row. cbind.by.filters=T",{
+    ## row-level output+input returned because cbind.by.filters=T, and firstonly is without ID and row. Correct. 
     fileRef <- "testReference/NMscanData14.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr013.lst")
@@ -164,7 +167,7 @@ test_that("FO and row-level output. No ID, no row. mergeByFilters=T",{
     
     ## tabs <- NMscanTables(file=file.lst)
     res1 <- expect_warning(
-        NMscanData(file=file.lst,mergeByFilters=T)
+        NMscanData(file=file.lst,cbind.by.filters=T)
     )
     
     expect_equal_to_reference(
@@ -176,7 +179,7 @@ test_that("FO and row-level output. No ID, no row. mergeByFilters=T",{
 
 
 test_that("Only a firstonly without ID but with ROW",{
-### mergeByFilters is TRUE, so ROW is used to recover firstonly data.
+### cbind.by.filters is TRUE, so ROW is used to recover firstonly data.
 
     fileRef <- "testReference/NMscanData15.rds"
 
@@ -188,18 +191,37 @@ test_that("Only a firstonly without ID but with ROW",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-    res1 <- NMscanData(file=file.lst,mergeByFilters=T)
+    res1 <- expect_error(
+        expect_warning(
+    NMscanData(file=file.lst,cbind.by.filters=T)
+    ))
+    
+})
+
+test_that("Only a firstonly without ID but with ROW. Using col.row.",{
+### cbind.by.filters is TRUE, so ROW is used to recover firstonly data.
+
+    fileRef <- "testReference/NMscanData15b.rds"
+
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr011.lst")
+    NMgetSection(file.lst,section="DATA")
+    NMgetSection(file.lst,section="TABLE")
+
+### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
+    ## tabs <- NMscanTables(file.lst)
+    ## tabs
+
+    res1 <- NMscanData(file=file.lst,col.row="ROW")
     expect_equal_to_reference(
         res1,fileRef,version=2
     )
     
 })
 
-
 ### recoverRows without a row identifier
 
 test_that("recoverRows without a row identifier",{
-### mergeByFilters is TRUE, so ROW is used to recover firstonly data.
+### cbind.by.filters is TRUE, so ROW is used to recover firstonly data.
 
     fileRef <- "testReference/NMscanData16.rds"
 
@@ -211,7 +233,7 @@ test_that("recoverRows without a row identifier",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-    res1 <- NMscanData(file=file.lst,mergeByFilters=T,recoverRows = T)
+    res1 <- NMscanData(file=file.lst,cbind.by.filters=T,recover.rows = T)
     dim(res1)
     res1[,table(nmout,DOSE)]
 

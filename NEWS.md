@@ -1,5 +1,12 @@
 # NEWS
 ## 0.0.5
+This release introduces a consistent default NMscanData behavior that
+will work in most cases and provide the user with information on how
+to use a more robust approach to merging input and output data.
+
+Naming of a few arguments to NMscanData has been changed from
+camelCase to lower.case for consistency. 
+
 NMscanTables keeps track of LASTONLY and FIRSTLASTONLY. LASTONLY are
 now treated like FIRSTONLY while FIRSTLASTONLY tables are disregarded
 (with a warning).
