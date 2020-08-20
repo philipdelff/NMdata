@@ -4,29 +4,37 @@
 \alias{NMscanData}
 \title{automatically find Nonmem tables and organize data}
 \usage{
-NMscanData(file, col.row = "ROW", mergeByFilters = FALSE,
-  use.input = TRUE, recoverRows = FALSE, add.name = "model", name,
-  file.mod, dir.data, quiet = FALSE, useRDS = TRUE, as.dt = TRUE,
-  col.id = "ID", NMtabCount = FALSE, debug = FALSE)
+NMscanData(file, col.row, cbind.by.filters, use.input = TRUE,
+  recover.rows = FALSE, add.name = "model", name, file.mod, dir.data,
+  quiet = FALSE, use.rds = TRUE, as.dt = TRUE, col.id = "ID",
+  tab.count = FALSE, debug = FALSE)
 }
 \arguments{
 \item{file}{A nonmem control stream or output file from nonmem
 (.mod or .lst)}
 
-\item{col.row}{A column that is unique for each row. Such a column
-is needed for this function to work well.}
+\item{col.row}{A column with a unique value for each row. Such a
+column is recommended to use if possible. See cbind.by.filters
+and details as well.}
 
-\item{mergeByFilters}{This is experimental. If TRUE, the IGNORE
-filters in the nonmem control stream are attempted applied and
-then input and output data simply cbinded. This is not
-recommended (use a row identifier instead), but sometimes it
-is your only option.}
+\item{cbind.by.filters}{If TRUE, Nonmem data filtering is
+interpreted from lst file (restrictions apply), and after an
+imitated selection of rows, data columns will be appended to
+output data. This method relies on interpretation of Nonmem
+code, and it will not work in advanced use of IGNORE and
+ACCEPT statements in $INPUT. Consider using col.row instead,
+if possible. Default is TRUE if col.row is either missing or
+NULL. However, explicitly specifying cbind.by.filters is
+recommended if that is the intended behaviour. If not,
+NMscanData will search for potential columns to merge by and
+print information about it. See col.row (recommended method)
+as well.}
 
 \item{use.input}{Merge with columns in input data? Using this, you
 don't have to worry about remembering including all relevant
 variables in the output tables.}
 
-\item{recoverRows}{Include rows from input data files that do not
+\item{recover.rows}{Include rows from input data files that do not
 exist in output tables? This will be added to the $row dataset
 only, and $run, $id, and $occ datasets are created before this
 is taken into account. A column called nmout will be TRUE when
@@ -58,7 +66,7 @@ provided, the .mod file is not used at all.}
 on what data is found. But consider setting this to TRUE for
 non-interactive use.}
 
-\item{useRDS}{If an rds file is found with the exact same name
+\item{use.rds}{If an rds file is found with the exact same name
 (except for .rds instead of say .csv) as the input data file
 mentioned in the Nonmem control stream, should this be used
 instead? The default is yes, and NMwriteData will create this
@@ -70,13 +78,13 @@ data.frames are wanted, use as.dt=FALSE.}
 \item{col.id}{The name of the subject ID variable, default is
 "ID".}
 
-\item{NMtabCount}{Nonmem includes a counter of tables in the
+\item{tab.count}{Nonmem includes a counter of tables in the
 written data files. These are often not useful. Especially for
 NMscanData output it can be meaningless because multiple
 tables can be combined so this information is not unique
-across those source tables. However, if NMtabCount is TRUE
-(not default), this will be carried forward and added as a
-column called TABLENO.}
+across those source tables. However, if tab.count is TRUE (not
+default), this will be carried forward and added as a column
+called TABLENO.}
 
 \item{debug}{start by running browser()?}
 }
@@ -86,6 +94,18 @@ automatically find Nonmem tables and organize data
 \details{
 This function makes it very easy to collect the data from
     a Nonmem run.
+
+A useful feature of this function is that it can automatically
+combine "input" data (the data read by nonmem in $INPUT or
+$INFILE) with "output" data (tables written by nonmem in
+$TABLE). There are two implemented methods for doing so. One (the
+default but not recommended) relies on interpretation of filter
+(IGNORE and ACCEPT) statements in $INPUT. This will work in most
+cases, and checks for consistency with Nonmem results. However,
+the recommended method is using a unique row identifier in both
+input data and at least one output data file (not a FIRSTONLY or
+LASTONLY table). Supply the name of this column using the col.row
+argument.
 }
 \seealso{
 Other DataWrangling: \code{\link{NMorderColumns}},

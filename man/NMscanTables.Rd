@@ -5,7 +5,7 @@
 \title{read all output data tables in nonmem run}
 \usage{
 NMscanTables(file, details = F, as.dt = TRUE, quiet = FALSE,
-  NMtabCount = TRUE, debug = FALSE)
+  tab.count = TRUE, debug = FALSE)
 }
 \arguments{
 \item{file}{the nonmem file to read (normally .mod or .lst)}
@@ -19,9 +19,9 @@ list. I'd say, enable if doing programming.}
 data is found. But consider setting this to TRUE for non-interactive
 use.}
 
-\item{NMtabCount}{Nonmem includes a counter of tables in the
+\item{tab.count}{Nonmem includes a counter of tables in the
 written data files. These are often not useful. However, if
-NMtabCount is TRUE (default), this will be carried forward and
+tab.count is TRUE (default), this will be carried forward and
 added as a column called TABLENO.}
 
 \item{debug}{Start by calling browser()?}

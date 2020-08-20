@@ -4,7 +4,7 @@
 \alias{NMtransInput}
 \title{read input data and translate names according to the $INPUT section}
 \usage{
-NMtransInput(file, useRDS = TRUE, file.mod = NULL, dir.data = NULL,
+NMtransInput(file, use.rds = TRUE, file.mod = NULL, dir.data = NULL,
   applyFilters = FALSE, quiet = FALSE, invert = FALSE,
   as.dt = TRUE, debug = F)
 }
@@ -15,7 +15,7 @@ required to exist next to the .lst file. This is because the
 is only used for finding the data file. How to interpret the
 datafile is read from the .lst file.}
 
-\item{useRDS}{If an rds file is found with the exact same name
+\item{use.rds}{If an rds file is found with the exact same name
 (except for .rds instead of say .csv) as the text file
 mentioned in the Nonmem control stream, should this be used
 instead? The default is yes, and NMwriteData will create this
