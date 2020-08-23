@@ -28,8 +28,6 @@
 
 ### Todo
 
-## support for data.table?
-
 ## The printed message should not contain lowercase names
 
 ## print out all dropped variables. Not warning. Warning if standard variable?
