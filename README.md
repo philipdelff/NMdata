@@ -20,8 +20,10 @@ input data added, and then possibly broken down to the different levels
 of variability. This package automates this process and can save you a
 lot of time. 
 
-Take a look at this vignette for more info on the Nonmem data reader
-(once NMdata is loaded):
+Take a look at [this
+vignette](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
+for more info on the Nonmem data reader. Once NMdata is installed, you
+can of course access the vignette from within R:
 
 ```
 vignette("NMscanData")
