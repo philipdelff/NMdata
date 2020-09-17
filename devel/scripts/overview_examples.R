@@ -1,3 +1,7 @@
+
+
+#### Section start: A list with an overview of certain sections from different models ####
+
 library(NMdata)
 
 lsts <- list.files(NMdata_filepath("examples/nonmem"),pattern="\\.lst$",full.names=T)
@@ -29,5 +33,7 @@ names(l.all) <- basename(lsts)
 
 l.all
 
+
+###  Section end: A list with an overview of certain sections from different models
 
 

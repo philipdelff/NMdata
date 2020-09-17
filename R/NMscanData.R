@@ -203,7 +203,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,recover.rows
 
 #### Section start: read all output tables and merge to max one firstonly and max one row ####
 
-    ## if(!quiet) message("Scanning for output tables.")
+    ## if(!quiet) messageWrap("Scanning for output tables.")
     tables <- NMscanTables(file,details=T,as.dt=T,tab.count=tab.count,quiet=quiet)
 
     rows.flo <- tables$meta[firstlastonly==TRUE]
@@ -299,7 +299,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,recover.rows
     }
     
     if(use.input&&any(tables$meta$full.length)) {
-        ## if(!quiet) message("Searching for input data.")
+        ## if(!quiet) messageWrap("Searching for input data.")
         data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,as.dt=TRUE,debug=F)
         cnames.input <- colnames(data.input)
 
@@ -313,17 +313,17 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,recover.rows
 
             cols.row.both <- intersect(cols.row.input,cols.row.output)
             if(length(cols.row.both)){
-                message(paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in both input and output data. If this column or one of these columns is not modified by the Nonmem run, consider using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.both,collapse=", ")))
+                messageWrap(paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in both input and output data. If this column or one of these columns is not modified by the Nonmem run, consider using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.both,collapse=", ")))
             } else if(length(cols.row.input)) {
-                message(paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in input data. If this column or one of these columns is not modified by the Nonmem run, consider adding it to a row-level output table and using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.input,collapse=", ")))
+                messageWrap(paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in input data. If this column or one of these columns is not modified by the Nonmem run, consider adding it to a row-level output table and using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.input,collapse=", ")))
             } else {paste("\nInput data columns will be appended to output data. However, it is recommended to use a unique row identifier (typically a counter but only required to be unique for each row) for a robust merge of input and output data. See argument col.row.")}
-            message("To skip this check, please specify either col.row (recommended) or cbind.by.filters.")
+            messageWrap("To skip this check, please specify either col.row (recommended) or cbind.by.filters.")
         } ## else {
-        ## message("col.row not supplied, and input will be merged onto output data. If possible, consider adding a unique row identifier to input and include it in an (row-level) output table.")
+        ## messageWrap("col.row not supplied, and input will be merged onto output data. If possible, consider adding a unique row identifier to input and include it in an (row-level) output table.")
         ## }
         
         if(cbind.by.filters) {
-            ## message("Input data is filtered by translation of the Nonmem controls stream. This works in most cases. However, it is recommended to always use a row identifier in both input and output data if possible. See col.row and cbind.by.filters arguments.")
+            ## messageWrap("Input data is filtered by translation of the Nonmem controls stream. This works in most cases. However, it is recommended to always use a row identifier in both input and output data if possible. See col.row and cbind.by.filters arguments.")
 
             if(!is.null(tab.row)&nrow(data.input)!=nrow(tab.row)) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.                

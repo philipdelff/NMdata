@@ -1,3 +1,4 @@
+
 ##' Tidy paths
 ##'
 ##' @description Used to tidy up paths. Passes arguments to

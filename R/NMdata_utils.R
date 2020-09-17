@@ -7,3 +7,12 @@
 NMdata_filepath <- function(...) {
   system.file(..., package = "NMdata")
 }
+
+##' Pretty wrapping of lines in NMdata vignettes
+##' @param ... parameters to pass to strwrap
+##' @param prefix Passed to strwrap. Default is " ". 
+##' @param initial Passed to strwrap. Default is an empty string.
+##' @param width Passed to strwrap. Default is 80.
+messageWrap <- function(..., prefix = "\n", initial = "", width=85){
+  message(strwrap(..., prefix = prefix, initial = initial, width=width))
+}

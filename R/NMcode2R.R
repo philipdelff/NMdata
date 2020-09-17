@@ -4,15 +4,13 @@
 ##' @details You probably want to run this on text obtained by using
 ##'     the NMgetSection function.
 ##' @family Simulation
-##' @export
+
+### This function is exported from pmxtricks. It is included in NMdata not to
+### depend on pmxtricks. However, please align.
 
 
 NMcode2R <- function(text){
 
-    ## browser()
-### not there yet.
-    ## preceed by begin of line, (, { or whitespace
-    ## followed by end of line, (, { or whitespace
     require.word <- function(string) paste0("(^| *)",string,"( *|\\(|$)")
     fix.word <- function(string) paste0("\\1",string,"\\2")
     

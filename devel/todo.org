@@ -94,3 +94,6 @@ for the vignette.
 If recoverRows and a variable is changing interpretation from input to
 output, the resulting table will carry two distinct variables
 depending on nmout TRUE or FALSE.
+** Prepare first CRAN release
+*** TODO Get overview of functionality contents
+*** TODO Remove all debug arguments
