@@ -408,14 +408,18 @@ error. But it is alway recommended to use a unique row identifier in
 both input and output tables in order to avoid relying on
 interpretation of Nonmem code.
 
+The RECORDS and NULL options in $DATA are not implemented. If using
+RECORDS, please use the `col.row` option to merge by a unique row
+identifier.
+
 ### Character time variables not interpreted
-Nonmem supports a clocktime input format for TIME. Based on a day
-counter and a character ("00:00") clock format, Nonmem can calculate
-the individual time since first record. This behaviour is not mimicked
-by NMscanData, and the only ways to get TIME in this case are to
-either include it in an output TABLE or to code the translation
-yourself after calling NMscanData. Of course, this is on the todo
-list.
+Nonmem supports a clocktime input format for a column called TIME in
+input data. Based on a day counter and a character ("00:00") clock
+format, Nonmem can calculate the individual time since first
+record. This behaviour is not mimicked by NMscanData, and the only
+ways to get TIME in this case are to either include it in an output
+TABLE or to code the translation yourself after calling NMscanData. Of
+course, this is on the todo list.
 
 ### FIRSTLASTONLY not supported
 The `FIRSTLASTONLY` option in `$TABLE` results in two rows per

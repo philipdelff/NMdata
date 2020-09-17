@@ -13,6 +13,6 @@ NMdata_filepath <- function(...) {
 ##' @param prefix Passed to strwrap. Default is " ". 
 ##' @param initial Passed to strwrap. Default is an empty string.
 ##' @param width Passed to strwrap. Default is 80.
-messageWrap <- function(..., prefix = "\n", initial = "", width=85){
-  message(strwrap(..., prefix = prefix, initial = initial, width=width))
+messageWrap <- function(..., fun.msg=message, prefix = "\n", initial = "", width=85){
+    fun.msg(strwrap(..., prefix = prefix, initial = initial, width=width))
 }

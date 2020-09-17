@@ -4,16 +4,20 @@
 ##'     data and reads it. But it reads it like the nonmem run by
 ##'     applying DROP arguments and alternative naming of columns in
 ##'     the nonmem run.
-##' @param file a .lst or a .mod. If dir.data is missing, the .mod is
-##'     required to exist next to the .lst file. This is because the
-##'     .lst does not contain the path to the data file. The .mod file
-##'     is only used for finding the data file. How to interpret the
-##'     datafile is read from the .lst file.
+##' @param file a .lst (output) or a .mod (input) control stream
+##'     file. The filename does not need to end in .lst. It is
+##'     recommended to use the output control stream because it
+##'     reflects the model as it was run rather than how it is planned
+##'     for next run.
 ##' @param file.mod The input control stream. Default is to look for
 ##'     \"file\" with extension changed to .mod (PSN style). You can
 ##'     also supply the path to the file, or you can provide a
 ##'     function that translates the output file path to the input
-##'     file path. See dir.data too.
+##'     file path. If dir.data is missing, the input control stream is
+##'     needed. This is because the .lst does not contain the path to
+##'     the data file. The .mod file is only used for finding the data
+##'     file. How to interpret the datafile is read from the .lst
+##'     file. See dir.data too.
 ##' @param dir.data The data directory can only be read from the
 ##'     control stream (.mod) and not from the output file (.lst). So
 ##'     if you only have the output file, use dir.data to tell in
@@ -43,8 +47,6 @@
 ##'     $INPUT) in the model will be included in the output.
 ##' @family Nonmem
 ##' @export
-
-## implement NULL,  RECORDS or at least say it's not done, use col.row instead.
 
 NMtransInput <- function(file,use.rds=TRUE,file.mod=NULL,dir.data=NULL,applyFilters=FALSE,quiet=FALSE,invert=FALSE,as.dt=TRUE,debug=F) {
 

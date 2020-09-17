@@ -81,6 +81,7 @@
 <div id="how-to-install" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-to-install" class="anchor"></a>How to Install</h2>
+<p>NMdata is aimed at CRAN release in near future. Meanwhile, installing from Github is easy:</p>
 <pre><code><a href="https://remotes.r-lib.org">library(remotes)
 install_github("philipdelff/NMdata",build_vignettes=TRUE)
 library(NMdata)</a></code></pre>
@@ -92,11 +93,6 @@ library(NMdata)</a></code></pre>
 <p>Take a look at <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html">this vignette</a> for more info on the Nonmem data reader. Once NMdata is installed, you can of course access the vignette from within R:</p>
 <pre><code><a href="articles/NMscanData.html">vignette("NMscanData")</a></code></pre>
 <p>No more having to look at the .lst to see which tables to read. No more having to read multiple tables to get all the variables. No more having to merge with input data to get variables that were not exported with nonmem. This and much more is done automatically.</p>
-</div>
-<div id="a-new-package---stable-functionality" class="section level2">
-<h2 class="hasAnchor">
-<a href="#a-new-package---stable-functionality" class="anchor"></a>A new package - stable functionality</h2>
-<p>NMdata is a release of functionality that used to be part of another package. The code has been extensively developed and tested. In fact, NMdata has been separated because it is mature for release. NMdata is aimed at CRAN release in near future.</p>
 </div>
 <div id="hightlights" class="section level2">
 <h2 class="hasAnchor">
@@ -140,16 +136,16 @@ library(NMdata)</a></code></pre>
 <a href="#nmtransinput" class="anchor"></a>NMtransInput</h4>
 <p>Read input data as seen by Nonmem (e.g. by naming columns as specified in $INPUT and taking DROP statements and others into account).</p>
 </div>
-</div>
-</div>
-<div id="nmreadcsv" class="section level2">
-<h2 class="hasAnchor">
-<a href="#nmreadcsv" class="anchor"></a>NMreadCsv</h2>
+<div id="nmreadcsv" class="section level4">
+<h4 class="hasAnchor">
+<a href="#nmreadcsv" class="anchor"></a>NMreadCsv</h4>
 <p>Shortcut to read input datasets created for Nonmem.</p>
 </div>
-<div id="nmreadtab" class="section level2">
-<h2 class="hasAnchor">
-<a href="#nmreadtab" class="anchor"></a>NMreadTab</h2>
+<div id="nmreadtab" class="section level4">
+<h4 class="hasAnchor">
+<a href="#nmreadtab" class="anchor"></a>NMreadTab</h4>
+</div>
+</div>
 <div id="handy-data-wrangling-tools" class="section level3">
 <h3 class="hasAnchor">
 <a href="#handy-data-wrangling-tools" class="anchor"></a>Handy data wrangling tools</h3>

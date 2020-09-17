@@ -5,6 +5,9 @@ Nonmem can be tedious. This package provides useful tools for these
 trivial tasks so we can spend more time on the actual analysis. 
 
 ## How to Install
+NMdata is aimed at CRAN release in near future. Meanwhile, installing from Github
+is easy:
+
 ```
 library(remotes)
 install_github("philipdelff/NMdata",build_vignettes=TRUE)
@@ -34,11 +37,6 @@ tables to get all the variables. No more having to merge with input
 data to get variables that were not exported with nonmem. This and
 much more is done automatically.
 
-## A new package - stable functionality
-NMdata is a release of functionality that used to be part of another
-package. The code has been extensively developed and tested. In fact,
-NMdata has been separated because it is mature for release. NMdata is
-aimed at CRAN release in near future.
 
 ## Hightlights
 These are the steps that this package especially helps with. 
@@ -69,10 +67,10 @@ Read input data as seen by Nonmem (e.g. by naming
 columns as specified in $INPUT and taking DROP statements and others
 into account).
 
-## NMreadCsv
+#### NMreadCsv
 Shortcut to read input datasets created for Nonmem.
 
-## NMreadTab
+#### NMreadTab
 
 ### Handy data wrangling tools
 #### findCovs 

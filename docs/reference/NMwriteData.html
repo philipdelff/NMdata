@@ -133,9 +133,18 @@ in nonmem, and it exports a rds file as well which is highly preferable for
 use in R.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>NMwriteData</span>(<span class='kw'>data</span>, <span class='kw'>file</span>, write.csv = <span class='fl'>TRUE</span>, write.RData = <span class='kw'>F</span>,
-  write.rds = <span class='kw'>write.csv</span>, force.row = <span class='fl'>FALSE</span>, <span class='kw'>script</span>, <span class='kw'>args.stamp</span>,
-  <span class='kw'>args.rds</span>, debug = <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>NMwriteData</span>(
+  <span class='kw'>data</span>,
+  <span class='kw'>file</span>,
+  write.csv = <span class='fl'>TRUE</span>,
+  write.RData = <span class='kw'>F</span>,
+  write.rds = <span class='kw'>write.csv</span>,
+  force.row = <span class='fl'>FALSE</span>,
+  <span class='kw'>script</span>,
+  <span class='kw'>args.stamp</span>,
+  <span class='kw'>args.rds</span>,
+  debug = <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -194,10 +203,14 @@ script name before saved to rds.</p></td>
     moment, no check for this is being done.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Nonmem: <code><a href='NMextractText.html'>NMextractText</a></code>,
-  <code><a href='NMgetSection.html'>NMgetSection</a></code>, <code><a href='NMreadCsv.html'>NMreadCsv</a></code>,
-  <code><a href='NMreadTab.html'>NMreadTab</a></code>, <code><a href='NMscanTables.html'>NMscanTables</a></code>,
-  <code><a href='NMtransFilters.html'>NMtransFilters</a></code>, <code><a href='NMtransInput.html'>NMtransInput</a></code></p></div>
+    <div class='dont-index'><p>Other Nonmem: 
+<code><a href='NMextractText.html'>NMextractText</a>()</code>,
+<code><a href='NMgetSection.html'>NMgetSection</a>()</code>,
+<code><a href='NMreadCsv.html'>NMreadCsv</a>()</code>,
+<code><a href='NMreadTab.html'>NMreadTab</a>()</code>,
+<code><a href='NMscanTables.html'>NMscanTables</a>()</code>,
+<code><a href='NMtransFilters.html'>NMtransFilters</a>()</code>,
+<code><a href='NMtransInput.html'>NMtransInput</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

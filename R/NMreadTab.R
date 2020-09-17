@@ -9,7 +9,7 @@
 ##'
 ##' @param file path to NONMEM table file
 ##' @param silent logical stating whether or not information is
-##'     printed.
+##'     printed about what is being done.
 ##' @param tab.count Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. However, if
 ##'     tab.count is TRUE (default), this will be carried forward and
@@ -18,7 +18,7 @@
 ##'     data.frame is returned.
 ##' @param debug Start by calling browser()?
 ##' @param ... Arguments passed to fread.
-##' @return Nonmem table as df.
+##' @return The Nonmem table data.
 ##' @details The actual reading of data is based on
 ##'     data.table::fread. Generally, the function is fast thanks to
 ##'     data.table.
@@ -27,7 +27,7 @@
 ##' @export
 
 
-NMreadTab <- function(file,silent=F,tab.count=TRUE,as.dt=T,...,debug=F) {
+NMreadTab <- function(file,silent=TRUE,tab.count=TRUE,as.dt=T,...,debug=F) {
 
     if(debug) browser()
 

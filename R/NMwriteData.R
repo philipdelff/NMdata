@@ -6,7 +6,9 @@
 ##' use in R. 
 ##'
 ##' @param data The dataset to write to Nonmem.
-##' @param file The file to write to.
+##' @param file The file to write to. The extension (everything after
+##'     and including last ".") is dropped. csv, rds and other
+##'     standard file name extensions are added.
 ##' @param write.csv Write to csv file?
 ##' @param write.RData In case you want to save to .RData object. Not
 ##'     recommended. Use write.rds instead.
@@ -28,7 +30,7 @@
 
 ### Todo
 
-## The printed message should not contain lowercase names
+## The printed message should not contain columns that cannot be interpreted as numeric
 
 ## print out all dropped variables. Not warning. Warning if standard variable?
 
@@ -127,11 +129,8 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,write.rds=write.c
         ## translate
         if(!grepl("\\..+$",file)) stop("filename could not be translated to .rds. Choose a .csv file name.")
         file.rds <- transFileName(file,"rds")
-        
         if(doStamp) data <- do.call(stampObj,append(list(data=data,writtenTo=file.rds),args.stamp))
-
         do.call(saveRDS,append(list(object=data,file=file.rds),args.rds))
-        
         written <- TRUE
     }
     if(written){

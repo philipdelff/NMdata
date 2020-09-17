@@ -2,8 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
+Meta
 NMdata.Rproj
 doc
-Meta
-
 docs
+vignettes/NMscanData.pdf
+vignettes/NMscanData.html

@@ -42,8 +42,13 @@ NMscanTables <- function(file,details=F,as.dt=TRUE,quiet=FALSE,tab.count=TRUE,de
         info
     }
     
-    lines.table <- NMgetSection(file,section="TABLE",keepName=F,keepComments=F,keepEmpty=F,asOne=F,simplify=F)
-
+    lines.table <- NMgetSection(file,section="TABLE",keepName=F,
+                                keepComments=F,keepEmpty=F,asOne=F,
+                                simplify=F)
+    if(length(lines.table)==0) {
+        messageWrap("No TABLE sections found in control stream. Please inspect the control stream.",
+                    fun.msg=stop)
+    }
     
     tab.files <- lapply(lines.table,function(x) {
         tab <- data.table(file=filePathSimple(dir,extract.info(x,"FILE"))
