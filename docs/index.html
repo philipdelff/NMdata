@@ -89,7 +89,7 @@ library(NMdata)</a></code></pre>
 <h2 class="hasAnchor">
 <a href="#automated-and-general-reader-of-nonmem-output-data" class="anchor"></a>Automated and general reader of Nonmem output data</h2>
 <p>Reading the resulting data from Nonmem can require quite a bit of manual steps. Especially because all modelers seem to do things a little differently. The frustrating fact is that we always want the same - all data output from Nonmem with additional columns in input data added, and then possibly broken down to the different levels of variability. This package automates this process and can save you a lot of time.</p>
-<p>Take a look at this vignette for more info on the Nonmem data reader (once NMdata is loaded):</p>
+<p>Take a look at <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html">this vignette</a> for more info on the Nonmem data reader. Once NMdata is installed, you can of course access the vignette from within R:</p>
 <pre><code><a href="articles/NMscanData.html">vignette("NMscanData")</a></code></pre>
 <p>On the data-generation side, functionality is provided for documentation of the datasets while generating them. For reading the data resulting from the Nonmem runs, the package includes a function to efficiently read all of this data and combine it with the input data into a standardized representation. No more having to look at the .lst to see which tables to read. No more having to read multiple tables to get all the variables. No more having to merge with input data to get variables that were not exported with nonmem. This and much more is done automatically.</p>
 </div>
