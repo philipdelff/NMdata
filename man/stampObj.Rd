@@ -22,7 +22,9 @@ using the function dsInfo.
 \seealso{
 objInfo
 
-Other DataGen: \code{\link{flagsAssign}},
-  \code{\link{flagsCount}}, \code{\link{objInfo}}
+Other DataGen: 
+\code{\link{flagsAssign}()},
+\code{\link{flagsCount}()},
+\code{\link{objInfo}()}
 }
 \concept{DataGen}

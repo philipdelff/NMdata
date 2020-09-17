@@ -6,7 +6,7 @@ Author: Philip Delff <philip@delff.dk>
 Maintainer: Philip Delff <philip@delff.dk>
 Description: Efficient tools to automatically retrieve data from Nonmem. And for easy preparation of fully documented Nonmem datasets.
 License: MIT + file LICENSE
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 Roxygen: list(roclets=c("collate", "namespace", "rd", "vignette"))
 Depends: R (>= 3.0.0)
 Imports: data.table

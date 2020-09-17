@@ -4,8 +4,14 @@
 \alias{NMreadCsv}
 \title{read csv data that is written to be read by nonmem}
 \usage{
-NMreadCsv(file, na.strings = ".", header = TRUE,
-  stringsAsFactors = FALSE, as.dt = TRUE, ...)
+NMreadCsv(
+  file,
+  na.strings = ".",
+  header = TRUE,
+  stringsAsFactors = FALSE,
+  as.dt = TRUE,
+  ...
+)
 }
 \arguments{
 \item{file}{The file to read. Must be pure text.}
@@ -29,9 +35,13 @@ This is just a shortcut to fread so you don't have to remember how
     to read the data that was exported for nonmem.
 }
 \seealso{
-Other Nonmem: \code{\link{NMextractText}},
-  \code{\link{NMgetSection}}, \code{\link{NMreadTab}},
-  \code{\link{NMscanTables}}, \code{\link{NMtransFilters}},
-  \code{\link{NMtransInput}}, \code{\link{NMwriteData}}
+Other Nonmem: 
+\code{\link{NMextractText}()},
+\code{\link{NMgetSection}()},
+\code{\link{NMreadTab}()},
+\code{\link{NMscanTables}()},
+\code{\link{NMtransFilters}()},
+\code{\link{NMtransInput}()},
+\code{\link{NMwriteData}()}
 }
 \concept{Nonmem}

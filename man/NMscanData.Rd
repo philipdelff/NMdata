@@ -4,10 +4,23 @@
 \alias{NMscanData}
 \title{automatically find Nonmem tables and organize data}
 \usage{
-NMscanData(file, col.row, cbind.by.filters, use.input = TRUE,
-  recover.rows = FALSE, add.name = "model", name, file.mod, dir.data,
-  quiet = FALSE, use.rds = TRUE, as.dt = TRUE, col.id = "ID",
-  tab.count = FALSE, debug = FALSE)
+NMscanData(
+  file,
+  col.row,
+  cbind.by.filters,
+  use.input = TRUE,
+  recover.rows = FALSE,
+  add.name = "model",
+  name,
+  file.mod,
+  dir.data,
+  quiet = FALSE,
+  use.rds = TRUE,
+  as.dt = TRUE,
+  col.id = "ID",
+  tab.count = FALSE,
+  debug = FALSE
+)
 }
 \arguments{
 \item{file}{A nonmem control stream or output file from nonmem
@@ -108,8 +121,11 @@ LASTONLY table). Supply the name of this column using the col.row
 argument.
 }
 \seealso{
-Other DataWrangling: \code{\link{NMorderColumns}},
-  \code{\link{findCovs}}, \code{\link{findVars}},
-  \code{\link{mergeCheck}}, \code{\link{tmpcol}}
+Other DataWrangling: 
+\code{\link{NMorderColumns}()},
+\code{\link{findCovs}()},
+\code{\link{findVars}()},
+\code{\link{mergeCheck}()},
+\code{\link{tmpcol}()}
 }
 \concept{DataWrangling}

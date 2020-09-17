@@ -4,9 +4,17 @@
 \alias{NMtransInput}
 \title{read input data and translate names according to the $INPUT section}
 \usage{
-NMtransInput(file, use.rds = TRUE, file.mod = NULL, dir.data = NULL,
-  applyFilters = FALSE, quiet = FALSE, invert = FALSE,
-  as.dt = TRUE, debug = F)
+NMtransInput(
+  file,
+  use.rds = TRUE,
+  file.mod = NULL,
+  dir.data = NULL,
+  applyFilters = FALSE,
+  quiet = FALSE,
+  invert = FALSE,
+  as.dt = TRUE,
+  debug = F
+)
 }
 \arguments{
 \item{file}{a .lst or a .mod. If dir.data is missing, the .mod is
@@ -64,9 +72,13 @@ The line containing whom the license is issued to cannot
     $INPUT) in the model will be included in the output.
 }
 \seealso{
-Other Nonmem: \code{\link{NMextractText}},
-  \code{\link{NMgetSection}}, \code{\link{NMreadCsv}},
-  \code{\link{NMreadTab}}, \code{\link{NMscanTables}},
-  \code{\link{NMtransFilters}}, \code{\link{NMwriteData}}
+Other Nonmem: 
+\code{\link{NMextractText}()},
+\code{\link{NMgetSection}()},
+\code{\link{NMreadCsv}()},
+\code{\link{NMreadTab}()},
+\code{\link{NMscanTables}()},
+\code{\link{NMtransFilters}()},
+\code{\link{NMwriteData}()}
 }
 \concept{Nonmem}

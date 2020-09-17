@@ -4,8 +4,15 @@
 \alias{NMtransFilters}
 \title{Translate filters in Nonmem and apply to data}
 \usage{
-NMtransFilters(data, file, text, lines, invert = FALSE, quiet = FALSE,
-  debug = FALSE)
+NMtransFilters(
+  data,
+  file,
+  text,
+  lines,
+  invert = FALSE,
+  quiet = FALSE,
+  debug = FALSE
+)
 }
 \arguments{
 \item{data}{An input data object. Could be read with NMreadCsv or
@@ -37,9 +44,13 @@ This is not bulletproof. A statement like ACCEPT=(DOSE
     supported altogether.
 }
 \seealso{
-Other Nonmem: \code{\link{NMextractText}},
-  \code{\link{NMgetSection}}, \code{\link{NMreadCsv}},
-  \code{\link{NMreadTab}}, \code{\link{NMscanTables}},
-  \code{\link{NMtransInput}}, \code{\link{NMwriteData}}
+Other Nonmem: 
+\code{\link{NMextractText}()},
+\code{\link{NMgetSection}()},
+\code{\link{NMreadCsv}()},
+\code{\link{NMreadTab}()},
+\code{\link{NMscanTables}()},
+\code{\link{NMtransInput}()},
+\code{\link{NMwriteData}()}
 }
 \concept{Nonmem}

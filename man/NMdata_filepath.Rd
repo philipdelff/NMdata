@@ -16,6 +16,7 @@ get a file or dir from a the NMdata package
 a light wrapper around system.file
 }
 \seealso{
-Other FileSystem: \code{\link{filePathSimple}}
+Other FileSystem: 
+\code{\link{filePathSimple}()}
 }
 \concept{FileSystem}

@@ -4,9 +4,18 @@
 \alias{NMwriteData}
 \title{Write dataset for use in Nonmem (and R)}
 \usage{
-NMwriteData(data, file, write.csv = TRUE, write.RData = F,
-  write.rds = write.csv, force.row = FALSE, script, args.stamp,
-  args.rds, debug = FALSE)
+NMwriteData(
+  data,
+  file,
+  write.csv = TRUE,
+  write.RData = F,
+  write.rds = write.csv,
+  force.row = FALSE,
+  script,
+  args.stamp,
+  args.rds,
+  debug = FALSE
+)
 }
 \arguments{
 \item{data}{The dataset to write to Nonmem.}
@@ -46,9 +55,13 @@ When writing csv files, the file will be
     moment, no check for this is being done.
 }
 \seealso{
-Other Nonmem: \code{\link{NMextractText}},
-  \code{\link{NMgetSection}}, \code{\link{NMreadCsv}},
-  \code{\link{NMreadTab}}, \code{\link{NMscanTables}},
-  \code{\link{NMtransFilters}}, \code{\link{NMtransInput}}
+Other Nonmem: 
+\code{\link{NMextractText}()},
+\code{\link{NMgetSection}()},
+\code{\link{NMreadCsv}()},
+\code{\link{NMreadTab}()},
+\code{\link{NMscanTables}()},
+\code{\link{NMtransFilters}()},
+\code{\link{NMtransInput}()}
 }
 \concept{Nonmem}

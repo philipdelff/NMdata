@@ -4,8 +4,15 @@
 \alias{flagsAssign}
 \title{Assign exclusion flags to a dataset based on specified table}
 \usage{
-flagsAssign(data, tab.flags, return.all = F, LLOQ = NULL,
-  col.id = "ID", col.dv = "DV", debug = F)
+flagsAssign(
+  data,
+  tab.flags,
+  return.all = F,
+  LLOQ = NULL,
+  col.id = "ID",
+  col.dv = "DV",
+  debug = F
+)
 }
 \arguments{
 \item{data}{The dataset to assign flags to.}
@@ -35,7 +42,9 @@ The aim with this function is to take a (say PK) dataset and a pre-specified
 table of flags, assign the flags automatically.
 }
 \seealso{
-Other DataGen: \code{\link{flagsCount}},
-  \code{\link{objInfo}}, \code{\link{stampObj}}
+Other DataGen: 
+\code{\link{flagsCount}()},
+\code{\link{objInfo}()},
+\code{\link{stampObj}()}
 }
 \concept{DataGen}

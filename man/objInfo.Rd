@@ -15,7 +15,9 @@ Get stamped info about object
 \seealso{
 stampObj
 
-Other DataGen: \code{\link{flagsAssign}},
-  \code{\link{flagsCount}}, \code{\link{stampObj}}
+Other DataGen: 
+\code{\link{flagsAssign}()},
+\code{\link{flagsCount}()},
+\code{\link{stampObj}()}
 }
 \concept{DataGen}

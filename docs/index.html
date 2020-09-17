@@ -77,7 +77,7 @@
 <div id="nmdata" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#nmdata" class="anchor"></a>NMdata</h1></div>
-<p>Nonmem provides a flexible toolbox for PK and PK/PD modeling. However, creating the datasets and reading the data resulting from running Nonmem can be tedious. This package provides useful tools for these tasks.</p>
+<p>Nonmem provides a flexible toolbox for PK and PK/PD modeling. However, creating the datasets and reading the data resulting from running Nonmem can be tedious. This package provides useful tools for these trivial tasks so we can spend more time on the actual analysis.</p>
 <div id="how-to-install" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-to-install" class="anchor"></a>How to Install</h2>
@@ -88,43 +88,87 @@ library(NMdata)</a></code></pre>
 <div id="automated-and-general-reader-of-nonmem-output-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#automated-and-general-reader-of-nonmem-output-data" class="anchor"></a>Automated and general reader of Nonmem output data</h2>
-<p>Reading the resulting data from Nonmem can require quite a bit of manual steps. Especially because all modelers seem to do things a little differently. The frustrating fact is that we always want the same - all data output from Nonmem with additional columns in input data added, and then possibly broken down to the different levels of variability. This package automates this process and can save you a lot of time.</p>
+<p>Reading the resulting data from Nonmem can require quite a bit of manual steps. Especially because all modelers seem to do things a little differently. The frustrating fact is that we always want the same - all data output from Nonmem combined with additional columns in input data, and then possibly broken down to the different levels of variability. This package automates this process and can save you a lot of time.</p>
 <p>Take a look at <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html">this vignette</a> for more info on the Nonmem data reader. Once NMdata is installed, you can of course access the vignette from within R:</p>
 <pre><code><a href="articles/NMscanData.html">vignette("NMscanData")</a></code></pre>
-<p>On the data-generation side, functionality is provided for documentation of the datasets while generating them. For reading the data resulting from the Nonmem runs, the package includes a function to efficiently read all of this data and combine it with the input data into a standardized representation. No more having to look at the .lst to see which tables to read. No more having to read multiple tables to get all the variables. No more having to merge with input data to get variables that were not exported with nonmem. This and much more is done automatically.</p>
+<p>No more having to look at the .lst to see which tables to read. No more having to read multiple tables to get all the variables. No more having to merge with input data to get variables that were not exported with nonmem. This and much more is done automatically.</p>
 </div>
 <div id="a-new-package---stable-functionality" class="section level2">
 <h2 class="hasAnchor">
 <a href="#a-new-package---stable-functionality" class="anchor"></a>A new package - stable functionality</h2>
-<p>NMdata is a release of functionality that used to be part of the pmxtricks package. The code has been extensively developed and tested. In fact, the NMdata has been separated from pmxtricks because it is more mature than some of the other functionality in that package. There is still improvement to be done, indeed. But the functionality already implemented is quite stable and aimed at CRAN release in near future.</p>
+<p>NMdata is a release of functionality that used to be part of another package. The code has been extensively developed and tested. In fact, NMdata has been separated because it is mature for release. NMdata is aimed at CRAN release in near future.</p>
 </div>
-<div id="create-data-export-to-nonmem" class="section level2">
+<div id="hightlights" class="section level2">
 <h2 class="hasAnchor">
-<a href="#create-data-export-to-nonmem" class="anchor"></a>Create data, export to Nonmem</h2>
-<p>These are the steps that this package especially helps with. Here are some hightlights:</p>
-<p>flagsAssign - Assign exclusion flags to a dataset based on specified table</p>
-<p>flagsCount - Create an overview of number of retained and discarded datapoints.</p>
-<p>NMorderColumns - Order columns in dataset for use in Nonmem.</p>
-<p>NMwriteData - Write dataset (with creation info documentation) for use in Nonmem (and R)</p>
+<a href="#hightlights" class="anchor"></a>Hightlights</h2>
+<p>These are the steps that this package especially helps with.</p>
+<div id="create-data-export-to-nonmem" class="section level3">
+<h3 class="hasAnchor">
+<a href="#create-data-export-to-nonmem" class="anchor"></a>Create data, export to Nonmem</h3>
+<p>On the data-generation side, functionality is provided for documentation of the datasets while generating them.</p>
+<div id="flagsassign" class="section level4">
+<h4 class="hasAnchor">
+<a href="#flagsassign" class="anchor"></a>flagsAssign</h4>
+<p>Assign exclusion flags to a dataset based on specified table.</p>
 </div>
-<div id="read-nonmem-results" class="section level2">
-<h2 class="hasAnchor">
-<a href="#read-nonmem-results" class="anchor"></a>Read Nonmem results</h2>
-<p>NMscanData - automatically find Nonmem input and output tables and organize data</p>
-<p>metadata functions for documentation of column contents are under development.</p>
+<div id="flagscount" class="section level4">
+<h4 class="hasAnchor">
+<a href="#flagscount" class="anchor"></a>flagsCount</h4>
+<p>Create an overview of number of retained and discarded datapoints.</p>
 </div>
-<div id="edit-nonmem-runs" class="section level2">
-<h2 class="hasAnchor">
-<a href="#edit-nonmem-runs" class="anchor"></a>Edit nonmem runs</h2>
-<p>NMgetSection - extract sections of Nonmem control streams</p>
-<p>NMreplacePart - replace ($)sections of a nonmem control stream</p>
+<div id="nmordercolumns---order-columns-in-dataset-for-use-in-nonmem" class="section level4">
+<h4 class="hasAnchor">
+<a href="#nmordercolumns---order-columns-in-dataset-for-use-in-nonmem" class="anchor"></a>NMorderColumns - Order columns in dataset for use in Nonmem.</h4>
 </div>
-<div id="handy-data-wrangling-tools" class="section level2">
+<div id="nmwritedata" class="section level4">
+<h4 class="hasAnchor">
+<a href="#nmwritedata" class="anchor"></a>NMwriteData</h4>
+<p>Write documented dataset for use in Nonmem (and R).</p>
+</div>
+</div>
+<div id="read-nonmem-results" class="section level3">
+<h3 class="hasAnchor">
+<a href="#read-nonmem-results" class="anchor"></a>Read Nonmem results</h3>
+<p>(See <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html">vignette</a>)</p>
+<div id="nmscandata" class="section level4">
+<h4 class="hasAnchor">
+<a href="#nmscandata" class="anchor"></a>NMscanData</h4>
+<p>Automatically find Nonmem input and output tables and organize data.</p>
+</div>
+<div id="nmtransinput" class="section level4">
+<h4 class="hasAnchor">
+<a href="#nmtransinput" class="anchor"></a>NMtransInput</h4>
+<p>Read input data as seen by Nonmem (e.g. by naming columns as specified in $INPUT and taking DROP statements and others into account).</p>
+</div>
+</div>
+</div>
+<div id="nmreadcsv" class="section level2">
 <h2 class="hasAnchor">
-<a href="#handy-data-wrangling-tools" class="anchor"></a>Handy data wrangling tools</h2>
-<p>findCovs - Extract columns that do not vary within variables in a data.frame</p>
-<p>findVars - Extract columns that vary within values of other columns in a data.frame</p>
-<p>mergeCheck - Merge, order, and check resulting rows and columns.</p>
+<a href="#nmreadcsv" class="anchor"></a>NMreadCsv</h2>
+<p>Shortcut to read input datasets created for Nonmem.</p>
+</div>
+<div id="nmreadtab" class="section level2">
+<h2 class="hasAnchor">
+<a href="#nmreadtab" class="anchor"></a>NMreadTab</h2>
+<div id="handy-data-wrangling-tools" class="section level3">
+<h3 class="hasAnchor">
+<a href="#handy-data-wrangling-tools" class="anchor"></a>Handy data wrangling tools</h3>
+<div id="findcovs" class="section level4">
+<h4 class="hasAnchor">
+<a href="#findcovs" class="anchor"></a>findCovs</h4>
+<p>Extract columns that do not vary within variables in a data.frame.</p>
+</div>
+<div id="findvars" class="section level4">
+<h4 class="hasAnchor">
+<a href="#findvars" class="anchor"></a>findVars</h4>
+<p>Extract columns that vary within values of other columns in a data.frame.</p>
+</div>
+<div id="mergecheck" class="section level4">
+<h4 class="hasAnchor">
+<a href="#mergecheck" class="anchor"></a>mergeCheck</h4>
+<p>Merge, order, and check resulting rows and columns.</p>
+</div>
+</div>
 </div>
 </div>
   </div>

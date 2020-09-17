@@ -4,8 +4,16 @@
 \alias{NMorderColumns}
 \title{Order columns in dataset for use in Nonmem.}
 \usage{
-NMorderColumns(data, first, last, lower.last = T, chars.last = T,
-  nomtime = "NOMTIME", row = "ROW", debug = F)
+NMorderColumns(
+  data,
+  first,
+  last,
+  lower.last = T,
+  chars.last = T,
+  nomtime = "NOMTIME",
+  row = "ROW",
+  debug = F
+)
 }
 \arguments{
 \item{data}{The dataset which columns to reorder.}
@@ -57,8 +65,11 @@ This function will change the order of columns but it
     will never edit values in any columns.
 }
 \seealso{
-Other DataWrangling: \code{\link{NMscanData}},
-  \code{\link{findCovs}}, \code{\link{findVars}},
-  \code{\link{mergeCheck}}, \code{\link{tmpcol}}
+Other DataWrangling: 
+\code{\link{NMscanData}()},
+\code{\link{findCovs}()},
+\code{\link{findVars}()},
+\code{\link{mergeCheck}()},
+\code{\link{tmpcol}()}
 }
 \concept{DataWrangling}

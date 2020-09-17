@@ -18,6 +18,7 @@ Used to tidy up paths. Passes arguments to
     comparisson.
 }
 \seealso{
-Other FileSystem: \code{\link{NMdata_filepath}}
+Other FileSystem: 
+\code{\link{NMdata_filepath}()}
 }
 \concept{FileSystem}

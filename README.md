@@ -2,7 +2,7 @@
 Nonmem provides a flexible toolbox for PK and PK/PD modeling. However,
 creating the datasets and reading the data resulting from running
 Nonmem can be tedious. This package provides useful tools for these
-tasks. 
+trivial tasks so we can spend more time on the actual analysis. 
 
 ## How to Install
 ```
@@ -15,13 +15,12 @@ library(NMdata)
 Reading the resulting data from Nonmem can require quite a bit of
 manual steps. Especially because all modelers seem to do
 things a little differently. The frustrating fact is that we always
-want the same - all data output from Nonmem with additional columns in
-input data added, and then possibly broken down to the different levels
+want the same - all data output from Nonmem combined with additional columns in
+input data, and then possibly broken down to the different levels
 of variability. This package automates this process and can save you a
 lot of time. 
 
-Take a look at [this
-vignette](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
+Take a look at [this vignette](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
 for more info on the Nonmem data reader. Once NMdata is installed, you
 can of course access the vignette from within R:
 
@@ -29,49 +28,58 @@ can of course access the vignette from within R:
 vignette("NMscanData")
 ``` 
 
-On the data-generation side, functionality is provided for
-documentation of the datasets while generating them. For reading the
-data resulting from the Nonmem runs, the package includes a function
-to efficiently read all of this data and combine it with the input
-data into a standardized representation. No more having to look at the
+No more having to look at the
 .lst to see which tables to read. No more having to read multiple
 tables to get all the variables. No more having to merge with input
 data to get variables that were not exported with nonmem. This and
 much more is done automatically.
 
 ## A new package - stable functionality
-NMdata is a release of functionality that used to be part of the
-pmxtricks package. The code has been extensively developed and
-tested. In fact, the NMdata has been separated from pmxtricks because
-it is more mature than some of the other functionality in that
-package. There is still improvement to be done, indeed. But the
-functionality already implemented is quite stable and aimed at CRAN
-release in near future.
+NMdata is a release of functionality that used to be part of another
+package. The code has been extensively developed and tested. In fact,
+NMdata has been separated because it is mature for release. NMdata is
+aimed at CRAN release in near future.
 
-## Create data, export to Nonmem
-These are the steps that this package especially helps with. Here are some hightlights:
+## Hightlights
+These are the steps that this package especially helps with. 
 
-flagsAssign - Assign exclusion flags to a dataset based on specified table
+### Create data, export to Nonmem
+On the data-generation side, functionality is provided for
+documentation of the datasets while generating them. 
 
-flagsCount - Create an overview of number of retained and discarded datapoints.
+#### flagsAssign
+Assign exclusion flags to a dataset based on specified table.
 
-NMorderColumns - Order columns in dataset for use in Nonmem.
+#### flagsCount
+Create an overview of number of retained and discarded datapoints.
 
-NMwriteData - Write dataset (with creation info documentation) for use in Nonmem (and R)
+#### NMorderColumns - Order columns in dataset for use in Nonmem.
 
-## Read Nonmem results
-NMscanData - automatically find Nonmem input and output tables and organize data
+#### NMwriteData
+Write documented dataset for use in Nonmem (and R).
 
-metadata functions for documentation of column contents are under development.
+### Read Nonmem results
+(See [vignette](https://philipdelff.github.io/NMdata/articles/NMscanData.html))
+#### NMscanData 
+Automatically find Nonmem input and output tables and
+organize data.
 
-## Edit nonmem runs
-NMgetSection - extract sections of Nonmem control streams
+#### NMtransInput 
+Read input data as seen by Nonmem (e.g. by naming
+columns as specified in $INPUT and taking DROP statements and others
+into account).
 
-NMreplacePart - replace ($)sections of a nonmem control stream
+## NMreadCsv
+Shortcut to read input datasets created for Nonmem.
 
-## Handy data wrangling tools
-findCovs - Extract columns that do not vary within variables in a data.frame
+## NMreadTab
 
-findVars - Extract columns that vary within values of other columns in a data.frame
+### Handy data wrangling tools
+#### findCovs 
+Extract columns that do not vary within variables in a data.frame.
 
-mergeCheck - Merge, order, and check resulting rows and columns.
+#### findVars 
+Extract columns that vary within values of other columns in a data.frame.
+
+#### mergeCheck
+Merge, order, and check resulting rows and columns.

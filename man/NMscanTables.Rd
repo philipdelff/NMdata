@@ -4,8 +4,14 @@
 \alias{NMscanTables}
 \title{read all output data tables in nonmem run}
 \usage{
-NMscanTables(file, details = F, as.dt = TRUE, quiet = FALSE,
-  tab.count = TRUE, debug = FALSE)
+NMscanTables(
+  file,
+  details = F,
+  as.dt = TRUE,
+  quiet = FALSE,
+  tab.count = TRUE,
+  debug = FALSE
+)
 }
 \arguments{
 \item{file}{the nonmem file to read (normally .mod or .lst)}
@@ -35,9 +41,13 @@ A list of all the tables as data.frames. If details=TRUE, this is in
 read all output data tables in nonmem run
 }
 \seealso{
-Other Nonmem: \code{\link{NMextractText}},
-  \code{\link{NMgetSection}}, \code{\link{NMreadCsv}},
-  \code{\link{NMreadTab}}, \code{\link{NMtransFilters}},
-  \code{\link{NMtransInput}}, \code{\link{NMwriteData}}
+Other Nonmem: 
+\code{\link{NMextractText}()},
+\code{\link{NMgetSection}()},
+\code{\link{NMreadCsv}()},
+\code{\link{NMreadTab}()},
+\code{\link{NMtransFilters}()},
+\code{\link{NMtransInput}()},
+\code{\link{NMwriteData}()}
 }
 \concept{Nonmem}
