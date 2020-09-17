@@ -17,11 +17,11 @@ NMtransInput(
 )
 }
 \arguments{
-\item{file}{a .lst or a .mod. If dir.data is missing, the .mod is
-required to exist next to the .lst file. This is because the
-.lst does not contain the path to the data file. The .mod file
-is only used for finding the data file. How to interpret the
-datafile is read from the .lst file.}
+\item{file}{a .lst (output) or a .mod (input) control stream
+file. The filename does not need to end in .lst. It is
+recommended to use the output control stream because it
+reflects the model as it was run rather than how it is planned
+for next run.}
 
 \item{use.rds}{If an rds file is found with the exact same name
 (except for .rds instead of say .csv) as the text file
@@ -33,7 +33,11 @@ by default too.}
 \"file\" with extension changed to .mod (PSN style). You can
 also supply the path to the file, or you can provide a
 function that translates the output file path to the input
-file path. See dir.data too.}
+file path. If dir.data is missing, the input control stream is
+needed. This is because the .lst does not contain the path to
+the data file. The .mod file is only used for finding the data
+file. How to interpret the datafile is read from the .lst
+file. See dir.data too.}
 
 \item{dir.data}{The data directory can only be read from the
 control stream (.mod) and not from the output file (.lst). So

@@ -4,7 +4,7 @@
 \alias{messageWrap}
 \title{Pretty wrapping of lines in NMdata vignettes}
 \usage{
-messageWrap(..., prefix = "\\n", initial = "", width = 85)
+messageWrap(..., fun.msg = message, prefix = "\\n", initial = "", width = 85)
 }
 \arguments{
 \item{...}{parameters to pass to strwrap}

@@ -4,13 +4,13 @@
 \alias{NMreadTab}
 \title{Read an output table file from NONMEM}
 \usage{
-NMreadTab(file, silent = F, tab.count = TRUE, as.dt = T, ..., debug = F)
+NMreadTab(file, silent = TRUE, tab.count = TRUE, as.dt = T, ..., debug = F)
 }
 \arguments{
 \item{file}{path to NONMEM table file}
 
 \item{silent}{logical stating whether or not information is
-printed.}
+printed about what is being done.}
 
 \item{tab.count}{Nonmem includes a counter of tables in the
 written data files. These are often not useful. However, if

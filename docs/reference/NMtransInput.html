@@ -150,11 +150,11 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>file</th>
-      <td><p>a .lst or a .mod. If dir.data is missing, the .mod is
-required to exist next to the .lst file. This is because the
-.lst does not contain the path to the data file. The .mod file
-is only used for finding the data file. How to interpret the
-datafile is read from the .lst file.</p></td>
+      <td><p>a .lst (output) or a .mod (input) control stream
+file. The filename does not need to end in .lst. It is
+recommended to use the output control stream because it
+reflects the model as it was run rather than how it is planned
+for next run.</p></td>
     </tr>
     <tr>
       <th>use.rds</th>
@@ -170,7 +170,11 @@ by default too.</p></td>
 \"file\" with extension changed to .mod (PSN style). You can
 also supply the path to the file, or you can provide a
 function that translates the output file path to the input
-file path. See dir.data too.</p></td>
+file path. If dir.data is missing, the input control stream is
+needed. This is because the .lst does not contain the path to
+the data file. The .mod file is only used for finding the data
+file. How to interpret the datafile is read from the .lst
+file. See dir.data too.</p></td>
     </tr>
     <tr>
       <th>dir.data</th>

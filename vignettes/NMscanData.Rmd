@@ -2,7 +2,7 @@
 title: "Automated and general reader of Nonmem data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{get-started}
+  %\VignetteIndexEntry{Automated and general reader of Nonmem data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 header-includes:

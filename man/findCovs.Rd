@@ -19,14 +19,11 @@ can also be both say c("ID","DRUG") or c("ID","TRT").}
 Extract columns that do not vary within variables in a data.frame
 }
 \examples{
-\dontrun{
-dat <- NMreadTab("TABLE_OUTPUT.txt")
+dat <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
 ### very common use
 findCovs(dat,cols.id="ID")
-###  an ID column is not needed.
-findCovs(dat,cols.id=c())
-### need a new data.frame to test for length(cols.id)>1
-}
+### Without an ID column we get non-varying columns
+findCovs(dat)
 }
 \seealso{
 Other DataWrangling: 

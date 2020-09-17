@@ -20,7 +20,9 @@ NMwriteData(
 \arguments{
 \item{data}{The dataset to write to Nonmem.}
 
-\item{file}{The file to write to.}
+\item{file}{The file to write to. The extension (everything after
+and including last ".") is dropped. csv, rds and other
+standard file name extensions are added.}
 
 \item{write.csv}{Write to csv file?}
 
