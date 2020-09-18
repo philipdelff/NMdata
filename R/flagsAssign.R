@@ -56,13 +56,13 @@ flagsAssign <- function(data,tab.flags,return.all=F,LLOQ=NULL,col.id="ID",col.dv
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
-..col.id <- NULL
-FLAG <- NULL
-condition <- NULL
-condition.used <- NULL
-Nmatched <- NULL
-Nobs <- NULL
-NID <- NULL
+    ..col.id <- NULL
+    FLAG <- NULL
+    condition <- NULL
+    condition.used <- NULL
+    Nmatched <- NULL
+    Nobs <- NULL
+    NID <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
@@ -110,7 +110,7 @@ NID <- NULL
 ####### END Check tab.flags ####
 
     ## make sure tab.flags and data are data.tables
-        tab.flags <- as.data.table(tab.flags)
+    tab.flags <- as.data.table(tab.flags)
     
     
 ####################### CHECKS END ######################
@@ -129,7 +129,7 @@ NID <- NULL
 ### FLAG==0 cannot be customized. If not in table, put in table. Return the
 ### table as well. Maybe a reduced table containing only used FLAGS
     if(!0%in%tab.flags[,"FLAG"]) {tab.flags <- rbind(
-                                      data.frame(FLAG=0,flag="Analysis set",condition=NA_character_),
+                                      data.table(FLAG=0,flag="Analysis set",condition=NA_character_),
                                       tab.flags,
                                       fill=T)
     }

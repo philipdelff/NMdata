@@ -12,6 +12,9 @@ library(pmxtricks)
 ## install_github("philipdelff/NMdata")
 library(NMdata)
 
+## library(devtools)
+## load_all("c:/Users/delff/working_copies/NMdata")
+
 pkpd <- as.data.table(case1_pkpd)
 
 pk <- pkpd[CMT %in% 1:2] 
@@ -61,7 +64,7 @@ dt.flags <- data.table(
     flag="Below LLOQ",
     condition=c("BLQ==1"))
 
-pk <- flagsAssign(pk,dt.flags)
+pk <- flagsAssign(pk,dt.flags,debug=F)
 
 
 pk <- pk[order(ID,TIME,CMT)]

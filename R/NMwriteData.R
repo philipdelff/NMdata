@@ -1,9 +1,10 @@
 ##' Write dataset for use in Nonmem (and R)
 ##'
-##' Instead of trying to remember the arguments to pass to write.csv, use this
-##' wrapper. It does much more. It tells you what to write in $DATA and $INPUT
-##' in nonmem, and it exports a rds file as well which is highly preferable for
-##' use in R. 
+##' Instead of trying to remember the arguments to pass to write.csv,
+##' use this wrapper. It tells you what to write in $DATA and $INPUT
+##' in nonmem, and it exports an rds file as well which is highly
+##' preferable for use in R. It never edits the data before writing
+##' the datafile.
 ##'
 ##' @param data The dataset to write to Nonmem.
 ##' @param file The file to write to. The extension (everything after
@@ -25,18 +26,14 @@
 ##'     comma-separated. Because Nonmem does not support quoted
 ##'     fields, you must avoid commas in character fields. At the
 ##'     moment, no check for this is being done.
+##'
+##' The user is provided with text to use in Nonmem. This lists names
+##' of the data columns. Once a column is reached that Nonmem will not
+##' be able to read as a numeric, the list is stopped.
+##' 
 ##' @family Nonmem
 ##' @export
 
-### Todo
-
-## The printed message should not contain columns that cannot be interpreted as numeric
-
-## print out all dropped variables. Not warning. Warning if standard variable?
-
-## Check that file ends in either csv or txt
-
-### end todo
 
 
 NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,write.rds=write.csv,force.row=FALSE,script,args.stamp,args.rds,debug=FALSE){
@@ -77,18 +74,6 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,write.rds=write.c
 
 ###  Section end: Process arguments
 
-    
-    ## we must not quote. ID is often a character. If quoted, nonmem will not be
-    ## able to read. So avoid commas in strings. Maybe look for commas and
-    ## report error if found?
-    quote <- FALSE
-
-    ## only report numerics to user. But this is not good enough. Only report
-    ## until first character. Moreover, it's not this easy. Variables may be
-    ## character but still be interpretable as numeric. Often ID is like this.
-    
-    ## col.is.num <- sapply(data,is.numeric)
-    ## stopifnot(any(col.is.num))
 
 ### this function is used to replace .csv or whatever ending is used to .rds, .RData etc. file is path, ext is extension without ., e.g. "rds".
     transFileName <- function(file,ext){
@@ -97,12 +82,43 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,write.rds=write.c
     }
 
     
+    ## we must not quote. ID is often a character. If quoted, nonmem
+    ## will not be able to read. So avoid commas in strings.
+    quote <- FALSE
+
+    ## only report numerics to user. But this is not good enough. Only report
+    ## until first character. Moreover, it's not this easy. Variables may be
+    ## character but still be interpretable as numeric. Often ID is like this.
+### we use data.table. Remember to transform back and forth.
+    data.dt <- copy(as.data.table(data))
+    
+    ## OK if numeric, or all but "" interprets as numeric
+    as.num.ok <- data.dt[,lapply(.SD,function(x)
+        is.numeric(x) ||
+        suppressWarnings(!any(is.na(as.numeric(as.character(x)[as.character(x)!=""])))))]
+    ## Allow TIME even if non-numeric. 
+    if("TIME"%in%colnames(data.dt) &&
+       as.num.ok[,TIME==FALSE]) {
+        as.num.ok[,TIME:=TRUE]
+        }
+    
+    dt.num.ok <- data.table(
+        col=colnames(as.num.ok),
+        numeric.ok=as.logical(as.num.ok[1])
+    )
+    dt.num.ok[,name.nm:=toupper(col)]
+    ## if any repetetions, give warning, and add numbers
+    dt.num.ok[,occ.cum:=as.numeric(ave(as.character(name.nm),name.nm,FUN=seq_along))]
+    dt.num.ok[occ.cum>1,name.nm:=paste0(name.nm,occ.cum)]
+
+    ## this still doesn't take DROP's into account
+    colnames.nm <- dt.num.ok[cumsum(!numeric.ok)<1,name.nm]
+
+    
     cat("Nonmem data file:",file,"\n")
     cat("For NonMem:\n")
-    cat("$INPUT",paste(colnames(data),collapse=" "),"\n")
-    ##    cat("$DATA", sub(pattern="^E:/",replacement="/project/",file,ignore.case=TRUE))
+    cat("$INPUT",paste(colnames.nm,collapse=" "),"\n")
     cat("$DATA", file)
-    ## if(!quote) cat(" IGN=@")
     cat(" IGN=@")
     if("FLAG"%in%colnames(data)) cat(" IGNORE=(FLAG.NE.0)")
     cat("\n")

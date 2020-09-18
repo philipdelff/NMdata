@@ -89,7 +89,16 @@ in var table
 *** NMwriteData
 **** TODO Check if character variables contain commas
 This will cause trouble when writing csv
-**** TODO The Nonmem instructions should not include characters
+**** DONE The Nonmem instructions should not include character variables
+     CLOSED: [2020-09-17 Thu 22:13]
+**** TODO Include an argument to do =DROP
+This will only affect the instructions to pass into Nonmem. If =DROP
+is on a character variable, subsequent numerics can still be used in
+Nonmem.
+**** TODO print out dropped variables? 
+Not warning. Warning if standard variable?
+*** flagsAssign
+**** TODO Improve messages at each FLAG coding
 ** Nonmem examples
 *** DONE Use FLAG
     CLOSED: [2020-06-29 Mon 21:28]
