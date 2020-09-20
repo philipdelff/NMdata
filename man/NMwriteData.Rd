@@ -14,6 +14,9 @@ NMwriteData(
   script,
   args.stamp,
   args.rds,
+  nmdrop,
+  nmdir.data,
+  col.flag = "FLAG",
   debug = FALSE
 )
 }
@@ -42,19 +45,43 @@ script name before saved to rds.}
 
 \item{args.rds}{A list of arguments to be passed to saveRDS.}
 
+\item{nmdrop}{Columns to drop in Nonmem $DATA. This has two
+implications. One being that the proposed $DATA indicased
+=DROP after the given column names. The other that in case it
+is a non-numeric column, succeeding columns can still be
+included.}
+
+\item{nmdir.data}{For the $DATA text proposal only. The path to
+the input datafile to be used in the Nonmem $DATA
+section. Often, a relative path to the actual Nonmem run is
+wanted here.}
+
+\item{col.flag}{Name of a numeric column with zero value for rows
+to include in Nonmem run, non-zero for rows to skip. The
+argument is only used for the $DATA. To skip this feature, use
+col.flag=NULL.}
+
 \item{debug}{Start by running browser()?}
 }
+\value{
+Text for inclusion in Nonmem control stream, invisibly.
+}
 \description{
-Instead of trying to remember the arguments to pass to write.csv, use this
-wrapper. It does much more. It tells you what to write in $DATA and $INPUT
-in nonmem, and it exports a rds file as well which is highly preferable for
-use in R.
+Instead of trying to remember the arguments to pass to write.csv,
+use this wrapper. It tells you what to write in $DATA and $INPUT
+in nonmem, and it exports an rds file as well which is highly
+preferable for use in R. It never edits the data before writing
+the datafile.
 }
 \details{
 When writing csv files, the file will be
     comma-separated. Because Nonmem does not support quoted
     fields, you must avoid commas in character fields. At the
     moment, no check for this is being done.
+
+The user is provided with text to use in Nonmem. This lists names
+of the data columns. Once a column is reached that Nonmem will not
+be able to read as a numeric and column is not in nmdrop, the list is stopped.
 }
 \seealso{
 Other Nonmem: 

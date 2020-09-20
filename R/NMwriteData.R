@@ -21,7 +21,21 @@
 ##'     script name before saved to rds.
 ##' @param args.stamp A list of arguments to be passed to stampObj.
 ##' @param args.rds A list of arguments to be passed to saveRDS.
+##' @param col.flag Name of a numeric column with zero value for rows
+##'     to include in Nonmem run, non-zero for rows to skip. The
+##'     argument is only used for the $DATA. To skip this feature, use
+##'     col.flag=NULL.
+##' @param nmdrop Columns to drop in Nonmem $DATA. This has two
+##'     implications. One being that the proposed $DATA indicased
+##'     =DROP after the given column names. The other that in case it
+##'     is a non-numeric column, succeeding columns can still be
+##'     included.
+##' @param nmdir.data For the $DATA text proposal only. The path to
+##'     the input datafile to be used in the Nonmem $DATA
+##'     section. Often, a relative path to the actual Nonmem run is
+##'     wanted here.
 ##' @param debug Start by running browser()?
+##' @return Text for inclusion in Nonmem control stream, invisibly.
 ##' @details When writing csv files, the file will be
 ##'     comma-separated. Because Nonmem does not support quoted
 ##'     fields, you must avoid commas in character fields. At the
@@ -29,18 +43,22 @@
 ##'
 ##' The user is provided with text to use in Nonmem. This lists names
 ##' of the data columns. Once a column is reached that Nonmem will not
-##' be able to read as a numeric, the list is stopped.
+##' be able to read as a numeric and column is not in nmdrop, the list is stopped.
 ##' 
 ##' @family Nonmem
 ##' @export
 
 
 
-NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,write.rds=write.csv,force.row=FALSE,script,args.stamp,args.rds,debug=FALSE){
-    if(debug) browser()
-    stopifnot(is.data.frame(data))
-    ## data.out <- as.data.frame(data)
+NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,
+                        write.rds=write.csv,force.row=FALSE,script,
+                        args.stamp,args.rds,nmdrop,nmdir.data,
+                        col.flag="FLAG",debug=FALSE){
 
+    if(debug) browser()
+
+    stopifnot(is.data.frame(data)) ## data.out <- as.data.frame(data)
+    
 
 #### Section start: Process arguments ####
 
@@ -59,7 +77,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,write.rds=write.c
         args.stamp$script <- script
         doStamp <- TRUE
     }
-
+    
 ### rds arguments
     if(!missing(args.rds) && !write.rds ){
         warning("args.rds supplied, but write.rds is FALSE. rds file will not be written.")
@@ -72,25 +90,45 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,write.rds=write.c
         }
     }
 
+    if(missing(nmdrop)) {
+        nmdrop <- NULL
+    } else {
+        if(!is.null(nmdrop) && !is.character(nmdrop) ) {
+            stop("If supplied, nmdrop must be of type character.")
+        }
+        if(any(is.na(nmdrop)|nmdrop=="")){
+            stop("nmdrop cannot contain empty strings and NA's.")
+        }
+    }
+    
 ###  Section end: Process arguments
 
 
-### this function is used to replace .csv or whatever ending is used to .rds, .RData etc. file is path, ext is extension without ., e.g. "rds".
+### this function is used to replace .csv or whatever ending is used
+### to .rds, .RData etc. file is path, ext is extension without .,
+### e.g. "rds".
     transFileName <- function(file,ext){
         file.new <- sub("\\.[^\\.]+$",paste0(".",ext),file)
         file.new
     }
-
+    
     
     ## we must not quote. ID is often a character. If quoted, nonmem
     ## will not be able to read. So avoid commas in strings.
     quote <- FALSE
-
+    
     ## only report numerics to user. But this is not good enough. Only report
     ## until first character. Moreover, it's not this easy. Variables may be
     ## character but still be interpretable as numeric. Often ID is like this.
 ### we use data.table. Remember to transform back and forth.
     data.dt <- copy(as.data.table(data))
+
+    ## Check if character variables contain commas
+    ## This would cause trouble when writing csv
+    
+    
+    has.no.comma <- data.dt[,lapply(.SD,function(x){is.numeric(x)||!any(grepl(",",as.character(x)))})]
+
     
     ## OK if numeric, or all but "" interprets as numeric
     as.num.ok <- data.dt[,lapply(.SD,function(x)
@@ -100,29 +138,79 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,write.rds=write.c
     if("TIME"%in%colnames(data.dt) &&
        as.num.ok[,TIME==FALSE]) {
         as.num.ok[,TIME:=TRUE]
-        }
+    }
     
     dt.num.ok <- data.table(
-        col=colnames(as.num.ok),
-        numeric.ok=as.logical(as.num.ok[1])
+        col=colnames(as.num.ok)
+       ,numeric.ok=as.logical(as.num.ok[1])
+       ,comma.ok=as.logical(has.no.comma[1])
     )
     dt.num.ok[,name.nm:=toupper(col)]
-    ## if any repetetions, give warning, and add numbers
-    dt.num.ok[,occ.cum:=as.numeric(ave(as.character(name.nm),name.nm,FUN=seq_along))]
-    dt.num.ok[occ.cum>1,name.nm:=paste0(name.nm,occ.cum)]
 
-    ## this still doesn't take DROP's into account
-    colnames.nm <- dt.num.ok[cumsum(!numeric.ok)<1,name.nm]
+    if(dt.num.ok[,any(!comma.ok)]){
+        messageWrap(paste("You must avoid commas in data values. They will curropt the csv file, so get rid of them before saving data. Comma found in column(s):",paste(dt.num.ok[comma.ok==FALSE,col],sep=", ")),
+                    fun.msg=stop)
+    }
 
     
-    cat("Nonmem data file:",file,"\n")
-    cat("For NonMem:\n")
-    cat("$INPUT",paste(colnames.nm,collapse=" "),"\n")
-    cat("$DATA", file)
-    cat(" IGN=@")
-    if("FLAG"%in%colnames(data)) cat(" IGNORE=(FLAG.NE.0)")
-    cat("\n")
+    ## if any repetetions, give warning, and add numbers
+    
+### this is input column names. 
+    if(dt.num.ok[,any(duplicated(col))]) {
+        warning(paste("Duplicated column name(s) in data:",
+                      paste0(dt.num.ok[duplicated(col),unique(col)],collapse=", ")
+                      ))
+    }
 
+
+    ## apply DROP
+    dt.num.ok[,drop:=FALSE]
+    if(!is.null(nmdrop)){
+        dt.num.ok[col%in%nmdrop,name.nm:=paste0(name.nm,"=DROP")]
+        dt.num.ok[col%in%nmdrop,drop:=TRUE]
+        drops.not.used <- nmdrop[!nmdrop%in%dt.num.ok[,col]]
+        if(length(drops.not.used)){
+            warning("Elements in nmdrop not found as columns in data:",paste(drops.not.used,collapse=", "))
+        }
+    }
+
+    dt.num.ok[,include:=cumsum(!numeric.ok&!drop)<1]
+
+    dt.num.ok[include==TRUE,occ.cum:=1:.N,by=name.nm]
+    if(dt.num.ok[,any(occ.cum>1)]) {
+        warning(paste("Duplicated column name(s) in data after transforming to upper case for Nonmem:\n",
+                      paste0(dt.num.ok[occ.cum>1,unique(name.nm)],collapse=", "),"\n",
+                      "Names have been numbered in $INPUT proposal."
+                      ))
+    }
+    dt.num.ok[occ.cum>1,name.nm:=paste0(name.nm,occ.cum)]
+
+    colnames.nm <- dt.num.ok[include==TRUE,name.nm]
+
+    nmfile <- file
+    if(!missing(nmdir.data)){
+        nmfile <- file.path(nmdir.data,basename(nmdir.data))
+    }
+
+    text.nm <- c(
+        strwrap(
+            paste0("$INPUT ",paste(colnames.nm,collapse=" "))
+        )
+       ,paste0("$DATA ", nmfile)
+       ,paste0("IGN=@")
+    )
+    if(!is.null(col.flag)&&col.flag%in%colnames.nm){
+        text.nm <- c(text.nm,
+                     paste0("IGNORE=(",col.flag,".NE.0)")
+                     )
+    }
+
+    message(
+        paste0("Nonmem data file:",file,"\n",
+               "For NonMem:\n",
+               paste(text.nm,collapse="\n")
+               ))
+    
     written <- FALSE
     if(write.csv){
         opt.orig <- options(scipen=15)
@@ -150,10 +238,10 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,write.rds=write.c
         written <- TRUE
     }
     if(written){
-        cat("Data file(s) written.\n")
+        cat("\nData file(s) written.\n")
     } else {
-        cat("Data returned but not written to file(s).\n")
+        cat("\nData returned but not written to file(s).\n")
     }
-    invisible(data)
-}
+    invisible(text.nm)
 
+}

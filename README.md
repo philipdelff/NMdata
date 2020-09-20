@@ -10,7 +10,7 @@ is easy:
 
 ```
 library(remotes)
-install_github("philipdelff/NMdata",build_vignettes=TRUE)
+install_github("philipdelff/NMdata")
 library(NMdata)
 ```
 

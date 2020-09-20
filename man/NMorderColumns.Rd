@@ -51,14 +51,15 @@ the dataset.}
 \item{debug}{Start by calling browser()?}
 }
 \description{
-Order the columns in a data.frame for easy export to Nonmem. Standard
-columns like "ROW", "ID", "NTIM", etc. will be first by default, then other
-capital case named columns, then lowercase named columns (one or more
-lowercase letter means that column is sorted as lowercase). Except for
-columns mentioned in "first" and "last" arguments, columns are sorted
-alphabetically (after by case). In short, priority is 1: Case, first/last,
-alphabetical. This means that last="BW" will put body weight as last of
-capital, but before lowercase columns.
+Order the columns in a data.frame for easy export to
+Nonmem. Standard columns like "ROW", "ID", "NTIM", etc. will be
+first by default, then other capital case named columns, then
+lowercase named columns (one or more lowercase letter means that
+column is sorted as lowercase). Except for columns mentioned in
+"first" and "last" arguments, columns are sorted alphabetically
+(after by case). In short, priority is 1: Case, first/last,
+alphabetical. This means that last="BW" will put body weight as
+last of capital, but before lowercase columns.
 }
 \details{
 This function will change the order of columns but it
