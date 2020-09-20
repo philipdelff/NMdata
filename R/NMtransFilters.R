@@ -10,7 +10,6 @@
 ##'     would disregard, and disregard what Nonmem would read.
 ##' @param quiet Don't report information along the way if no warnings
 ##'     or errors. Default is FALSE.
-##' @param debug start by running browser()?
 ##' @details This is not bulletproof. A statement like ACCEPT=(DOSE
 ##'     10) which in Nonmem means the same as ACCEPT=(DOSE==10) will
 ##'     not be correctly interpreted. Also, nested conditions are not
@@ -21,8 +20,7 @@
 ## function only being used by NMscanData at this point.
 
 
-NMtransFilters <- function(data,file,text,lines,invert=FALSE,quiet=FALSE,debug=FALSE) {
-    if(debug) browser()
+NMtransFilters <- function(data,file,text,lines,invert=FALSE,quiet=FALSE) {
 
     ## stop("Translation of filters in nonmem control stream is not implemented. In order to make use of input data, you must include the same row counter in input and output data. At least for now.")
     

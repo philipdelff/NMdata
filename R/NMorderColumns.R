@@ -35,7 +35,6 @@
 ##'     given, it will put the column quite far left.
 ##' @param row A row counter column. This will be the first column in
 ##'     the dataset.
-##' @param debug Start by calling browser()?
 ##' @details This function will change the order of columns but it
 ##'     will never edit values in any columns.
 ##' @family DataWrangling
@@ -44,8 +43,8 @@
 
 
 NMorderColumns <- function(data,first,last,lower.last=T,chars.last=T,
-                           nomtime="NOMTIME",row="ROW",debug=F){
-    if(debug) browser()
+                           nomtime="NOMTIME",row="ROW"){
+
     first1 <- c(row,"ID",nomtime,"TIME","EVID","CMT","AMT","RATE",
                 "DV","MDV")
     if(!missing(first)){

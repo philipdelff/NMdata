@@ -14,45 +14,13 @@
 ##'     datasets. Likely to change.
 ##' @param col.id The name of the subject ID column. Default is "ID".
 ##' @param col.dv The name of the data value column. Default is "DV".
-##' @param debug Start by calling browser()?
 ##' @return The dataset with flags added. See parameter flags.return as well.
 ##' @import data.table
 ##' @family DataGen
 ##' @export
 
 
-####### TODO #######
-
-
-## Per default, should not overwrite already assigned FLAG. User may
-## have hardcoded some flags already.
-
-## check that all PKdata$FLAG have a value matching tab.flags$FLAG. Then merge
-## on the flag values.
-
-## Check that tab.flags contain a numeric called FLAG and a character/factor
-## called flag.
-
-## Check that FLAG, flag, and condition contain unique values
-
-## Add an increasing variable to PKdata so we can arrange the observations
-## exactly as they were to begin with.
-
-## arrange back to original order
-
-## This function must handle NA ID's and maybe FAS as well.
-
-## If EVID is present, only treat EVID==0. Or maybe better group by EVID.
-
-#### End TODO ########
-
-
-
-##### removed argument: fas.ids=NULL
-
-flagsAssign <- function(data,tab.flags,return.all=F,LLOQ=NULL,col.id="ID",col.dv="DV",debug=F){
-    if(debug) browser()
-    
+flagsAssign <- function(data,tab.flags,return.all=F,LLOQ=NULL,col.id="ID",col.dv="DV"){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 

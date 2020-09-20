@@ -34,7 +34,6 @@
 ##'     the input datafile to be used in the Nonmem $DATA
 ##'     section. Often, a relative path to the actual Nonmem run is
 ##'     wanted here.
-##' @param debug Start by running browser()?
 ##' @return Text for inclusion in Nonmem control stream, invisibly.
 ##' @details When writing csv files, the file will be
 ##'     comma-separated. Because Nonmem does not support quoted
@@ -53,9 +52,7 @@
 NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,
                         write.rds=write.csv,force.row=FALSE,script,
                         args.stamp,args.rds,nmdrop,nmdir.data,
-                        col.flag="FLAG",debug=FALSE){
-
-    if(debug) browser()
+                        col.flag="FLAG"){
 
     stopifnot(is.data.frame(data)) ## data.out <- as.data.frame(data)
     

@@ -112,6 +112,27 @@ Not warning. Warning if standard variable?
 **** TODO Polish
 *** flagsAssign
 **** TODO Improve messages at each FLAG coding
+**** TODO Old todo list
+## Per default, should not overwrite already assigned FLAG. User may
+## have hardcoded some flags already.
+
+## check that all PKdata$FLAG have a value matching tab.flags$FLAG. Then merge
+## on the flag values.
+
+## Check that tab.flags contain a numeric called FLAG and a character/factor
+## called flag.
+
+## Check that FLAG, flag, and condition contain unique values
+
+## Add an increasing variable to PKdata so we can arrange the observations
+## exactly as they were to begin with.
+
+## arrange back to original order
+
+## This function must handle NA ID's and maybe FAS as well.
+
+## If EVID is present, only treat EVID==0. Or maybe better group by EVID.
+
 ** Nonmem examples
 *** DONE Use FLAG
     CLOSED: [2020-06-29 Mon 21:28]

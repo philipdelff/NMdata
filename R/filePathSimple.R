@@ -1,19 +1,16 @@
-
-##' Tidy paths
+##' Clean and standardize file system paths
 ##'
 ##' @description Used to tidy up paths. Passes arguments to
 ##'     file.path(). The function is intended to return a canonical
 ##'     path format, i.e. paths that can be compared by simple string
 ##'     comparisson.
 ##' @param ... additional arguments passed to file.path().
-##' @param debug start by running browser()?
 ##' @family FileSystem
 
 ### This function is exported from pmxtricks. It is included in NMdata not to
 ### depend on pmxtricks. However, please align.
 
-filePathSimple <- function(...,debug=F){
-    if(debug) browser()
+filePathSimple <- function(...){
     
     fpath <- file.path(...)
     ## get rid of heading and tailing white spaces

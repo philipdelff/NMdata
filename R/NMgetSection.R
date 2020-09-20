@@ -32,7 +32,6 @@
 ##' @param cleanSpaces If TRUE, leading and trailing are removed, and
 ##'     multiplied succeeding white spaces are reduced to single white
 ##'     spaces.
-##' @param debug Start by calling browser()?
 ##' @param ... Additional arguments passed to NMextractText
 ##' @family Nonmem
 ##' @examples
@@ -41,7 +40,7 @@
 ##' @export
 
 
-NMgetSection <- function(file=NULL, lines=NULL, text=NULL, section, return="text", keepEmpty=FALSE, keepName=TRUE, keepComments=TRUE, asOne=TRUE, simplify=TRUE, cleanSpaces=FALSE, debug=F, ...){
+NMgetSection <- function(file=NULL, lines=NULL, text=NULL, section, return="text", keepEmpty=FALSE, keepName=TRUE, keepComments=TRUE, asOne=TRUE, simplify=TRUE, cleanSpaces=FALSE, ...){
 
     NMextractText(file=file, lines=lines, text=text, section=section,
                   ## this wrapper is especially made for "$" sections
@@ -55,7 +54,6 @@ NMgetSection <- function(file=NULL, lines=NULL, text=NULL, section, return="text
                   cleanSpaces=cleanSpaces,
                   ## we only consider the model definition, not results.
                   type="mod",
-                  debug=debug,
                   ...)
     
 }

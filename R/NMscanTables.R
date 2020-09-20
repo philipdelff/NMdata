@@ -10,15 +10,13 @@
 ##'     tab.count is TRUE (default), this will be carried forward and
 ##'     added as a column called TABLENO.
 ##' @param as.dt return data.tables? Tables will not be keyed.
-##' @param debug Start by calling browser()?
 ##' @return A list of all the tables as data.frames. If details=TRUE, this is in
 ##'     one element, called data, and meta is another element. If not, only the
 ##'     element corresponding to data is returned.
 ##' @family Nonmem
 ##' @import data.table
 ##' @export
-NMscanTables <- function(file,details=F,as.dt=TRUE,quiet=FALSE,tab.count=TRUE,debug=FALSE){
-    if(debug) browser()
+NMscanTables <- function(file,details=F,as.dt=TRUE,quiet=FALSE,tab.count=TRUE){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks #### ####
 

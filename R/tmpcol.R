@@ -9,6 +9,7 @@
 ##'     appended?
 ##' @family DataWrangling
 ##' @export
+
 tmpcol <- function(data,names=NULL,base="atmpcol999",max.it=100,prefer.plain=TRUE){
     stopifnot(xor(missing(data),is.null(names)))
 

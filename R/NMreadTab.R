@@ -16,7 +16,6 @@
 ##'     added as a column called TABLENO.
 ##' @param as.dt Return a data.table? data.table is default, if not a
 ##'     data.frame is returned.
-##' @param debug Start by calling browser()?
 ##' @param ... Arguments passed to fread.
 ##' @return The Nonmem table data.
 ##' @details The actual reading of data is based on
@@ -27,10 +26,7 @@
 ##' @export
 
 
-NMreadTab <- function(file,silent=TRUE,tab.count=TRUE,as.dt=T,...,debug=F) {
-
-    if(debug) browser()
-
+NMreadTab <- function(file,silent=TRUE,tab.count=TRUE,as.dt=T,...) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 

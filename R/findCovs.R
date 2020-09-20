@@ -4,7 +4,6 @@
 ##' @param cols.id covariates will be searched for in combinations of values in
 ##'     these columns. Often cols.id will be either empty or ID. But it
 ##'     can also be both say c("ID","DRUG") or c("ID","TRT").
-##' @param debug start by running browser()?
 ##' @family DataWrangling
 ##' @import data.table
 ##' @export
@@ -18,8 +17,8 @@
 
 
 
-findCovs <- function(data,cols.id=NULL,debug=F){
-    if(debug) browser()
+findCovs <- function(data,cols.id=NULL){
+
     ## check arguments
     if(!is.data.frame(data)){
         stop("data must be a data.frame (or data.table)")

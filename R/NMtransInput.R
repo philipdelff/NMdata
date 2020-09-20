@@ -37,7 +37,6 @@
 ##'     data.frame is returned.
 ##' @param invert If TRUE, the data rows that are dismissed by the
 ##'     Nonmem data filters (ACCEPT and IGNORE) will be returned.
-##' @param debug start by running browser()?
 ##' @details The line containing whom the license is issued to cannot
 ##'     be retrieved. Special characters like accents and the
 ##'     registerred trademark (R) sign are likely to cause trouble if
@@ -48,10 +47,8 @@
 ##' @family Nonmem
 ##' @export
 
-NMtransInput <- function(file,use.rds=TRUE,file.mod=NULL,dir.data=NULL,applyFilters=FALSE,quiet=FALSE,invert=FALSE,as.dt=TRUE,debug=F) {
+NMtransInput <- function(file,use.rds=TRUE,file.mod=NULL,dir.data=NULL,applyFilters=FALSE,quiet=FALSE,invert=FALSE,as.dt=TRUE) {
 
-    if(debug) browser()
-    
 ### the lst file only contains the name of the data file, not the path to it. So we need to find the .mod instead.
 
     if(missing(file)) file <- NULL

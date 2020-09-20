@@ -44,7 +44,6 @@
 ##'     considered.
 ##' @param linesep If using the text argument, use linesep to indicate
 ##'     how lines should be separated.
-##' @param debug Start by calling browser()?
 ##' @details This function is planned to get a more general name and
 ##'     then be called by NMgetSection.
 ##' @family Nonmem
@@ -53,9 +52,7 @@
 ##' @export
 
 
-NMextractText <- function(file, lines, text, section, char.section,char.end=char.section, return="text", keepEmpty=FALSE, keepName=TRUE, keepComments=TRUE, asOne=TRUE, simplify=TRUE, cleanSpaces=FALSE, type="mod", linesep="\n", debug=F){
-
-    if(debug) browser()
+NMextractText <- function(file, lines, text, section, char.section,char.end=char.section, return="text", keepEmpty=FALSE, keepName=TRUE, keepComments=TRUE, asOne=TRUE, simplify=TRUE, cleanSpaces=FALSE, type="mod", linesep="\n"){
 
     if(sum(c(!missing(file)&&!is.null(file),
            !missing(lines)&&!is.null(lines),

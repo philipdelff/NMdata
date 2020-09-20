@@ -10,7 +10,6 @@
 ##' @param df2 A data.frame that will be merged onto df1.
 ##' @param by The column(s) to merge by. Character string (vector). Must be
 ##'     supplied.
-##' @param debug Start by calling browser()?
 ##' @param ... additional arguments passed to merge. If all is among them, an
 ##'     error will be returned.
 ##' @details Besides merging and checking rows, mergeCheck makes sure the order
@@ -25,8 +24,7 @@
 ##' @return a data.frame resulting from merging df1 and df2
 ##' @export
 
-mergeCheck <- function(df1,df2,by,debug=F,...){
-    if(debug) browser()
+mergeCheck <- function(df1,df2,by,...){
     
     name.df1 <- deparse(substitute(df1))
     name.df2 <- deparse(substitute(df2))

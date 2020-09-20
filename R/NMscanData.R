@@ -62,7 +62,6 @@
 ##'     across those source tables. However, if tab.count is TRUE (not
 ##'     default), this will be carried forward and added as a column
 ##'     called TABLENO.
-##' @param debug start by running browser()?
 ##'
 ##' @details This function makes it very easy to collect the data from
 ##'     a Nonmem run.
@@ -91,9 +90,7 @@
 
 ## when col.row and cbind.by.filters are missing, do cbind.by.filters but look for a row identifier. Explain and tell user to provide col.row or cbind.by.filters to get less messages.
 
-NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,recover.rows=FALSE,add.name="model",name,file.mod,dir.data,quiet=FALSE,use.rds=TRUE,as.dt=TRUE,col.id="ID",tab.count=FALSE,debug=FALSE) {
-
-    if(debug) browser()
+NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,recover.rows=FALSE,add.name="model",name,file.mod,dir.data,quiet=FALSE,use.rds=TRUE,as.dt=TRUE,col.id="ID",tab.count=FALSE) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -293,20 +290,20 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,recover.rows
     }
     
     if(use.input&&!any(tables$meta$full.length)) {
-        tab.row <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,as.dt=TRUE,debug=F)
+        tab.row <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,as.dt=TRUE)
         tab.row[,nmout:=FALSE]
         tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="input",tab.type="row"))
     }
     
     if(use.input&&any(tables$meta$full.length)) {
         ## if(!quiet) messageWrap("Searching for input data.")
-        data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,as.dt=TRUE,debug=F)
+        data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,as.dt=TRUE)
         cnames.input <- colnames(data.input)
 
         ## if no method is specified, search for possible col.row to help the user
         if(search.col.row){
             
-            data.input.all <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=TRUE,use.rds=use.rds,applyFilters=FALSE,as.dt=TRUE,debug=F)
+            data.input.all <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=TRUE,use.rds=use.rds,applyFilters=FALSE,as.dt=TRUE)
             cols.row.input <- colnames(data.input.all)[data.input.all[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 
             cols.row.output <- colnames(tab.row)[tab.row[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
@@ -452,7 +449,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,recover.rows
         
         skip.recover <- FALSE
         if(cbind.by.filters) {
-            data.recover <- NMtransInput(file,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,invert=T,as.dt=TRUE,debug=F)
+            data.recover <- NMtransInput(file,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,invert=T,as.dt=TRUE)
         } else {
             data.recover <- data.input[!get(col.row)%in%tab.row[,get(col.row)]]
             ## data.input[get(col.row)%in%tab.row[,get(col.row)]]

@@ -11,7 +11,6 @@
 ##' @param by An optional column to group the counting by. This could
 ##'     be "STUDY", "DRUG", "EVID", or a combination of multiple
 ##'     columns.
-##' @param debug Start by calling browser()?
 ##' @return A summary table with number of discarded and retained
 ##'     subjects and observations when applying each condition in the
 ##'     flag table. "discarded" means that the reduction of number of
@@ -29,9 +28,7 @@
 ##' @export
 
 
-flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL,debug=F){
-
-    if(debug) browser()
+flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 

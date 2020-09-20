@@ -5,7 +5,6 @@
 ##'     combinations of values in these columns. Often cols.id will be
 ##'     either empty or ID. But it can also be both say c("ID","DRUG")
 ##'     or c("ID","TRT").
-##' @param debug start by running browser()?
 ##' @details Use this to exclude columns that are constant within
 ##'     cols.id. If cols.id=ID, this could be to get only time-varying
 ##'     covariates.
@@ -15,8 +14,8 @@
 
 
 
-findVars <- function(data,cols.id=NULL,debug=F){
-    if(debug) browser()
+findVars <- function(data,cols.id=NULL){
+
     ## check arguments
     if(!is.data.frame(data)){
         stop("data must be a data.frame (or data.table)")
