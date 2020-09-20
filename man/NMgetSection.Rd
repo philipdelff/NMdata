@@ -16,7 +16,6 @@ NMgetSection(
   asOne = TRUE,
   simplify = TRUE,
   cleanSpaces = FALSE,
-  debug = F,
   ...
 )
 }
@@ -59,8 +58,6 @@ probably want FALSE.}
 \item{cleanSpaces}{If TRUE, leading and trailing are removed, and
 multiplied succeeding white spaces are reduced to single white
 spaces.}
-
-\item{debug}{Start by calling browser()?}
 
 \item{...}{Additional arguments passed to NMextractText}
 }

@@ -4,7 +4,7 @@
 \alias{flagsCount}
 \title{Create an overview of number of retained and discarded datapoints.}
 \usage{
-flagsCount(data, tab.flags, file, col.id = "ID", by = NULL, debug = F)
+flagsCount(data, tab.flags, file, col.id = "ID", by = NULL)
 }
 \arguments{
 \item{data}{The dataset including both FLAG and flag columns.}
@@ -23,8 +23,6 @@ is "ID".}
 \item{by}{An optional column to group the counting by. This could
 be "STUDY", "DRUG", "EVID", or a combination of multiple
 columns.}
-
-\item{debug}{Start by calling browser()?}
 }
 \value{
 A summary table with number of discarded and retained

@@ -18,8 +18,7 @@ NMscanData(
   use.rds = TRUE,
   as.dt = TRUE,
   col.id = "ID",
-  tab.count = FALSE,
-  debug = FALSE
+  tab.count = FALSE
 )
 }
 \arguments{
@@ -98,8 +97,6 @@ tables can be combined so this information is not unique
 across those source tables. However, if tab.count is TRUE (not
 default), this will be carried forward and added as a column
 called TABLENO.}
-
-\item{debug}{start by running browser()?}
 }
 \description{
 automatically find Nonmem tables and organize data

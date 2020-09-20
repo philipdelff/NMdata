@@ -4,7 +4,7 @@
 \alias{NMreadTab}
 \title{Read an output table file from NONMEM}
 \usage{
-NMreadTab(file, silent = TRUE, tab.count = TRUE, as.dt = T, ..., debug = F)
+NMreadTab(file, silent = TRUE, tab.count = TRUE, as.dt = T, ...)
 }
 \arguments{
 \item{file}{path to NONMEM table file}
@@ -21,8 +21,6 @@ added as a column called TABLENO.}
 data.frame is returned.}
 
 \item{...}{Arguments passed to fread.}
-
-\item{debug}{Start by calling browser()?}
 }
 \value{
 The Nonmem table data.

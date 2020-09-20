@@ -16,8 +16,7 @@ NMwriteData(
   args.rds,
   nmdrop,
   nmdir.data,
-  col.flag = "FLAG",
-  debug = FALSE
+  col.flag = "FLAG"
 )
 }
 \arguments{
@@ -60,8 +59,6 @@ wanted here.}
 to include in Nonmem run, non-zero for rows to skip. The
 argument is only used for the $DATA. To skip this feature, use
 col.flag=NULL.}
-
-\item{debug}{Start by running browser()?}
 }
 \value{
 Text for inclusion in Nonmem control stream, invisibly.

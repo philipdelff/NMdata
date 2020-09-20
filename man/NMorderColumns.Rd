@@ -11,8 +11,7 @@ NMorderColumns(
   lower.last = T,
   chars.last = T,
   nomtime = "NOMTIME",
-  row = "ROW",
-  debug = F
+  row = "ROW"
 )
 }
 \arguments{
@@ -47,8 +46,6 @@ given, it will put the column quite far left.}
 
 \item{row}{A row counter column. This will be the first column in
 the dataset.}
-
-\item{debug}{Start by calling browser()?}
 }
 \description{
 Order the columns in a data.frame for easy export to

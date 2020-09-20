@@ -2,14 +2,12 @@
 % Please edit documentation in R/filePathSimple.R
 \name{filePathSimple}
 \alias{filePathSimple}
-\title{Tidy paths}
+\title{Clean and standardize file system paths}
 \usage{
-filePathSimple(..., debug = F)
+filePathSimple(...)
 }
 \arguments{
 \item{...}{additional arguments passed to file.path().}
-
-\item{debug}{start by running browser()?}
 }
 \description{
 Used to tidy up paths. Passes arguments to

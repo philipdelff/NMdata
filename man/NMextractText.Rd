@@ -19,8 +19,7 @@ NMextractText(
   simplify = TRUE,
   cleanSpaces = FALSE,
   type = "mod",
-  linesep = "\\n",
-  debug = F
+  linesep = "\\n"
 )
 }
 \arguments{
@@ -78,8 +77,6 @@ considered.}
 
 \item{linesep}{If using the text argument, use linesep to indicate
 how lines should be separated.}
-
-\item{debug}{Start by calling browser()?}
 }
 \description{
 If you want to extract input sections like $PROBLEM, $DATA etc,

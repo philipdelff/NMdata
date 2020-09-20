@@ -4,7 +4,7 @@
 \alias{findVars}
 \title{Extract columns that vary within values of other columns in a data.frame}
 \usage{
-findVars(data, cols.id = NULL, debug = F)
+findVars(data, cols.id = NULL)
 }
 \arguments{
 \item{data}{data.frame in which to look for covariates}
@@ -13,8 +13,6 @@ findVars(data, cols.id = NULL, debug = F)
 combinations of values in these columns. Often cols.id will be
 either empty or ID. But it can also be both say c("ID","DRUG")
 or c("ID","TRT").}
-
-\item{debug}{start by running browser()?}
 }
 \description{
 Extract columns that vary within values of other columns in a data.frame

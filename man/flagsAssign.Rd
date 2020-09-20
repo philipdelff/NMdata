@@ -10,8 +10,7 @@ flagsAssign(
   return.all = F,
   LLOQ = NULL,
   col.id = "ID",
-  col.dv = "DV",
-  debug = F
+  col.dv = "DV"
 )
 }
 \arguments{
@@ -31,8 +30,6 @@ datasets. Likely to change.}
 \item{col.id}{The name of the subject ID column. Default is "ID".}
 
 \item{col.dv}{The name of the data value column. Default is "DV".}
-
-\item{debug}{Start by calling browser()?}
 }
 \value{
 The dataset with flags added. See parameter flags.return as well.

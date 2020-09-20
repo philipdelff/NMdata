@@ -174,7 +174,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,
     dt.num.ok[,include:=cumsum(!numeric.ok&!drop)<1]
 
     dt.num.ok[include==TRUE,occ.cum:=1:.N,by=name.nm]
-    if(dt.num.ok[,any(occ.cum>1)]) {
+    if(dt.num.ok[occ.cum>1,.N]>0) {
         warning(paste("Duplicated column name(s) in data after transforming to upper case for Nonmem:\n",
                       paste0(dt.num.ok[occ.cum>1,unique(name.nm)],collapse=", "),"\n",
                       "Names have been numbered in $INPUT proposal."

@@ -4,14 +4,7 @@
 \alias{NMscanTables}
 \title{read all output data tables in nonmem run}
 \usage{
-NMscanTables(
-  file,
-  details = F,
-  as.dt = TRUE,
-  quiet = FALSE,
-  tab.count = TRUE,
-  debug = FALSE
-)
+NMscanTables(file, details = F, as.dt = TRUE, quiet = FALSE, tab.count = TRUE)
 }
 \arguments{
 \item{file}{the nonmem file to read (normally .mod or .lst)}
@@ -29,8 +22,6 @@ use.}
 written data files. These are often not useful. However, if
 tab.count is TRUE (default), this will be carried forward and
 added as a column called TABLENO.}
-
-\item{debug}{Start by calling browser()?}
 }
 \value{
 A list of all the tables as data.frames. If details=TRUE, this is in

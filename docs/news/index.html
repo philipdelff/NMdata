@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.2</span>
       </span>
     </div>
 
@@ -121,6 +121,34 @@
       
     </div>
 
+    <div id="nmdata-006" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.6">
+<a href="#nmdata-006" class="anchor"></a>NMdata 0.0.6</h1>
+<p>NMwriteData improved with checks of column names and automated generation of $INPUT and $DATA Nonmem sections.</p>
+<p>Documentation has been upgraded with a pkgdown site.</p>
+</div>
+    <div id="nmdata-005" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.5">
+<a href="#nmdata-005" class="anchor"></a>NMdata 0.0.5</h1>
+<p>This release introduces a consistent default NMscanData behavior that will work in most cases and provide the user with information on how to use a more robust approach to merging input and output data.</p>
+<p>Naming of a few arguments to NMscanData has been changed from camelCase to lower.case for consistency.</p>
+<p>NMscanTables keeps track of LASTONLY and FIRSTLASTONLY. LASTONLY are now treated like FIRSTONLY while FIRSTLASTONLY tables are disregarded (with a warning).</p>
+</div>
+    <div id="nmdata-004" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.4">
+<a href="#nmdata-004" class="anchor"></a>NMdata 0.0.4</h1>
+<p>The most obvious change since 0.0.3 is that only one data.table is being returned from NMscanData. This is what used to be the <code>row</code> element in the returned objects previously. The main reason for this change is that it makes it easier for users to postprocess only one dataset before splitting into different levels of variability. The small cost is that the user will have to run findCovs, or findVars to get the desired level of variability. These functions are however very simple to use and very fast to run.</p>
+<p>This release features numerous improvements to especially the NMscanData function. The work is mainly focused around use without a row identifier. Even without a row identifier, NMscanData should now work for the vast majority of models, including merging with input and recovering rows.</p>
+<p>An attribute called <code>vars</code> has been added to the NMdata objects coming out of NMscanData. It features a table of the columns in the returned object and information about where they originate from. More work is still to be done on this, but hopefully it is useful already.</p>
+<p>NMwriteData: Added support for passing arguments to saveRDS.</p>
+<p>Last but far from least is a new vignette on using NMscanData. Check it out with vignette(“NMscanData”).</p>
+</div>
+    <div id="nmdata-002" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.2">
+<a href="#nmdata-002" class="anchor"></a>NMdata 0.0.2</h1>
+<p>This release contains bugfixes and experimental support for merging nonmem input and output data without a row identifier.</p>
+<p>A clearer cut has been made between the pmxtricks package (version 0.0.10) and NMdata. The packages should not overlap in exported functionality, and they do not depend on each other.</p>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

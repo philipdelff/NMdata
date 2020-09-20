@@ -40,10 +40,11 @@
 
 
 <meta property="og:title" content="Write dataset for use in Nonmem (and R) — NMwriteData" />
-<meta property="og:description" content="Instead of trying to remember the arguments to pass to write.csv, use this
-wrapper. It does much more. It tells you what to write in $DATA and $INPUT
-in nonmem, and it exports a rds file as well which is highly preferable for
-use in R." />
+<meta property="og:description" content="Instead of trying to remember the arguments to pass to write.csv,
+use this wrapper. It tells you what to write in $DATA and $INPUT
+in nonmem, and it exports an rds file as well which is highly
+preferable for use in R. It never edits the data before writing
+the datafile." />
 
 
 
@@ -75,7 +76,7 @@ use in R." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.2</span>
       </span>
     </div>
 
@@ -127,10 +128,11 @@ use in R." />
     </div>
 
     <div class="ref-description">
-    <p>Instead of trying to remember the arguments to pass to write.csv, use this
-wrapper. It does much more. It tells you what to write in $DATA and $INPUT
-in nonmem, and it exports a rds file as well which is highly preferable for
-use in R.</p>
+    <p>Instead of trying to remember the arguments to pass to write.csv,
+use this wrapper. It tells you what to write in $DATA and $INPUT
+in nonmem, and it exports an rds file as well which is highly
+preferable for use in R. It never edits the data before writing
+the datafile.</p>
     </div>
 
     <pre class="usage"><span class='fu'>NMwriteData</span>(
@@ -143,7 +145,9 @@ use in R.</p>
   <span class='kw'>script</span>,
   <span class='kw'>args.stamp</span>,
   <span class='kw'>args.rds</span>,
-  debug = <span class='fl'>FALSE</span>
+  <span class='kw'>nmdrop</span>,
+  <span class='kw'>nmdir.data</span>,
+  col.flag = <span class='st'>"FLAG"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -192,17 +196,41 @@ script name before saved to rds.</p></td>
       <td><p>A list of arguments to be passed to saveRDS.</p></td>
     </tr>
     <tr>
-      <th>debug</th>
-      <td><p>Start by running browser()?</p></td>
+      <th>nmdrop</th>
+      <td><p>Columns to drop in Nonmem $DATA. This has two
+implications. One being that the proposed $DATA indicased
+=DROP after the given column names. The other that in case it
+is a non-numeric column, succeeding columns can still be
+included.</p></td>
+    </tr>
+    <tr>
+      <th>nmdir.data</th>
+      <td><p>For the $DATA text proposal only. The path to
+the input datafile to be used in the Nonmem $DATA
+section. Often, a relative path to the actual Nonmem run is
+wanted here.</p></td>
+    </tr>
+    <tr>
+      <th>col.flag</th>
+      <td><p>Name of a numeric column with zero value for rows
+to include in Nonmem run, non-zero for rows to skip. The
+argument is only used for the $DATA. To skip this feature, use
+col.flag=NULL.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Text for inclusion in Nonmem control stream, invisibly.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>When writing csv files, the file will be
     comma-separated. Because Nonmem does not support quoted
     fields, you must avoid commas in character fields. At the
     moment, no check for this is being done.</p>
+<p>The user is provided with text to use in Nonmem. This lists names
+of the data columns. Once a column is reached that Nonmem will not
+be able to read as a numeric and column is not in nmdrop, the list is stopped.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Nonmem: 

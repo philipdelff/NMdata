@@ -8,7 +8,7 @@ test_that("basic",{
 
     fileRef <- "testReference/NMtransInput.rds"
     file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
-    res1 <- NMtransInput(file=file.lst,applyFilters = T,debug=F)
+    res1 <- NMtransInput(file=file.lst,applyFilters = T)
 
     expect_equal_to_reference(res1,fileRef,version=2)
 })

@@ -4,15 +4,7 @@
 \alias{NMtransFilters}
 \title{Translate filters in Nonmem and apply to data}
 \usage{
-NMtransFilters(
-  data,
-  file,
-  text,
-  lines,
-  invert = FALSE,
-  quiet = FALSE,
-  debug = FALSE
-)
+NMtransFilters(data, file, text, lines, invert = FALSE, quiet = FALSE)
 }
 \arguments{
 \item{data}{An input data object. Could be read with NMreadCsv or
@@ -31,8 +23,6 @@ would disregard, and disregard what Nonmem would read.}
 
 \item{quiet}{Don't report information along the way if no warnings
 or errors. Default is FALSE.}
-
-\item{debug}{start by running browser()?}
 }
 \description{
 Translate filters in Nonmem and apply to data

@@ -4,7 +4,7 @@
 \alias{mergeCheck}
 \title{Merge, order, and check resulting rows and columns.}
 \usage{
-mergeCheck(df1, df2, by, debug = F, ...)
+mergeCheck(df1, df2, by, ...)
 }
 \arguments{
 \item{df1}{A data.fram with the number of rows must should be obtained from
@@ -14,8 +14,6 @@ the merge. The resulting data.frame will be ordered like df1.}
 
 \item{by}{The column(s) to merge by. Character string (vector). Must be
 supplied.}
-
-\item{debug}{Start by calling browser()?}
 
 \item{...}{additional arguments passed to merge. If all is among them, an
 error will be returned.}

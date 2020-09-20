@@ -11,8 +11,8 @@ test_that("basic",{
 
     expect_equal_to_reference(
         NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),
-                    write.rds=F,write.csv=F),
-        fileRef)
+                    write.rds=F,write.csv=F)
+       ,fileRef)
 
 
     ## not allowed
@@ -26,11 +26,12 @@ test_that("basic",{
 test_that("Dropping a column in Nonmem",{
 
     fileRef <- "testReference/NMwriteData_2.rds"
+    pk <- readRDS(file=file.path(NMdata_filepath(),"examples/data/xgxr2.rds"))
     expect_equal_to_reference(
         NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),
                     write.rds=F,write.csv=F,
-                    nmdrop="PART"),
-        fileRef)
+                    nmdrop="PART")
+       ,fileRef)
 
     ## dropping a character column
     pk[,CYCLE:=as.character(CYCLE)]

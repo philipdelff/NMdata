@@ -12,8 +12,7 @@ NMtransInput(
   applyFilters = FALSE,
   quiet = FALSE,
   invert = FALSE,
-  as.dt = TRUE,
-  debug = F
+  as.dt = TRUE
 )
 }
 \arguments{
@@ -57,8 +56,6 @@ Nonmem data filters (ACCEPT and IGNORE) will be returned.}
 
 \item{as.dt}{Return a data.table? data.table is default, if not a
 data.frame is returned.}
-
-\item{debug}{start by running browser()?}
 }
 \description{
 Based on a nonmem run, this function finds the input

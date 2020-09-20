@@ -148,8 +148,12 @@ depending on nmout TRUE or FALSE.
 ** Prepare first CRAN release
 *** DONE Get overview of functionality contents
     CLOSED: [2020-09-17 Thu 16:06]
-*** TODO Remove all debug arguments
+*** DONE Remove all debug arguments
+    CLOSED: [2020-09-20 Sun 15:31]
 *** DONE Polish NMwriteData
     CLOSED: [2020-09-20 Sun 13:52]
 *** TODO Polish NMordercolumns
 *** TODO Support for tibbles
+*** TODO Improve flagsAssign messages at each FLAG coding
+*** TODO Read through all documentation
+*** TODO Function family dataRead for NMscanData and others

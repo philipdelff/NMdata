@@ -36,8 +36,8 @@ test_that("Multiple output table formats",{
     fileRef <- "testReference/NMscanData3.rds"
     file.lst <- NMdata_filepath("examples/nonmem/xgxr003.lst")
 
-    ## res <- NMscanData(file=file.lst,debug=T)
-    res <- NMscanData(file=file.lst,debug=F)
+    ## res <- NMscanData(file=file.lst)
+    res <- NMscanData(file=file.lst)
 
     expect_equal_to_reference(res,fileRef,version=2)
 })
@@ -46,10 +46,10 @@ test_that("Interpret IGNORE statement",{
     fileRef <- "testReference/NMscanData4.rds"
     file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
 
-    ## res <- NMscanData(file=file.lst,debug=T)
-    ## res <- NMscanData(file=file.lst,debug=F)
+    ## res <- NMscanData(file=file.lst)
+    ## res <- NMscanData(file=file.lst)
 
-    res <- NMscanData(file=file.lst,cbind.by.filters = T, debug=F)
+    res <- NMscanData(file=file.lst,cbind.by.filters = T)
 
     ## names(res$row)
     
@@ -65,8 +65,8 @@ test_that("List of ACCEPT statements and vs separate statements",{
 
     NMgetSection(file1.lst,section="PROBLEM")
     NMgetSection(file2.lst,section="PROBLEM")
-    res1 <- NMscanData(file=file1.lst,cbind.by.filters = T,debug=F,add.name=NULL)
-    res2 <- NMscanData(file=file2.lst,cbind.by.filters = T, debug=F,add.name=NULL)
+    res1 <- NMscanData(file=file1.lst,cbind.by.filters = T,add.name=NULL)
+    res2 <- NMscanData(file=file2.lst,cbind.by.filters = T,add.name=NULL)
 
     expect_identical(res1,res2)
 })
@@ -80,8 +80,8 @@ test_that("merge by filters or not",{
 
     ## NMgetSection(file1.lst,section="PROBLEM")
     ## NMgetSection(file2.lst,section="PROBLEM")
-    res1 <- NMscanData(file=file1.lst,cbind.by.filters = T,debug=F,add.name=NULL)
-    res2 <- NMscanData(file=file2.lst,cbind.by.filters = T, debug=F,add.name=NULL)
+    res1 <- NMscanData(file=file1.lst,cbind.by.filters = T,add.name=NULL)
+    res2 <- NMscanData(file=file2.lst,cbind.by.filters = T,add.name=NULL)
 
     setcolorder(res1,colnames(res2))
 
@@ -110,7 +110,7 @@ test_that("Only a firstonly without ID but with ROW",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
     
-    res1 <- NMscanData(file=file.lst,col.row="ROW",debug=F)
+    res1 <- NMscanData(file=file.lst,col.row="ROW")
     expect_equal_to_reference(res1,fileRef,version=2)
     
 })
@@ -132,7 +132,7 @@ test_that("Only a firstonly, no ID, no ROW",{
     
     expect_error(
         expect_warning(
-            res1 <- NMscanData(file=file.lst,debug=F)
+            res1 <- NMscanData(file=file.lst)
         )
     )
 })

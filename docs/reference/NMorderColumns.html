@@ -40,14 +40,15 @@
 
 
 <meta property="og:title" content="Order columns in dataset for use in Nonmem. — NMorderColumns" />
-<meta property="og:description" content="Order the columns in a data.frame for easy export to Nonmem. Standard
-columns like &quot;ROW&quot;, &quot;ID&quot;, &quot;NTIM&quot;, etc. will be first by default, then other
-capital case named columns, then lowercase named columns (one or more
-lowercase letter means that column is sorted as lowercase). Except for
-columns mentioned in &quot;first&quot; and &quot;last&quot; arguments, columns are sorted
-alphabetically (after by case). In short, priority is 1: Case, first/last,
-alphabetical. This means that last=&quot;BW&quot; will put body weight as last of
-capital, but before lowercase columns." />
+<meta property="og:description" content="Order the columns in a data.frame for easy export to
+Nonmem. Standard columns like &quot;ROW&quot;, &quot;ID&quot;, &quot;NTIM&quot;, etc. will be
+first by default, then other capital case named columns, then
+lowercase named columns (one or more lowercase letter means that
+column is sorted as lowercase). Except for columns mentioned in
+&quot;first&quot; and &quot;last&quot; arguments, columns are sorted alphabetically
+(after by case). In short, priority is 1: Case, first/last,
+alphabetical. This means that last=&quot;BW&quot; will put body weight as
+last of capital, but before lowercase columns." />
 
 
 
@@ -79,7 +80,7 @@ capital, but before lowercase columns." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.2</span>
       </span>
     </div>
 
@@ -131,14 +132,15 @@ capital, but before lowercase columns." />
     </div>
 
     <div class="ref-description">
-    <p>Order the columns in a data.frame for easy export to Nonmem. Standard
-columns like "ROW", "ID", "NTIM", etc. will be first by default, then other
-capital case named columns, then lowercase named columns (one or more
-lowercase letter means that column is sorted as lowercase). Except for
-columns mentioned in "first" and "last" arguments, columns are sorted
-alphabetically (after by case). In short, priority is 1: Case, first/last,
-alphabetical. This means that last="BW" will put body weight as last of
-capital, but before lowercase columns.</p>
+    <p>Order the columns in a data.frame for easy export to
+Nonmem. Standard columns like "ROW", "ID", "NTIM", etc. will be
+first by default, then other capital case named columns, then
+lowercase named columns (one or more lowercase letter means that
+column is sorted as lowercase). Except for columns mentioned in
+"first" and "last" arguments, columns are sorted alphabetically
+(after by case). In short, priority is 1: Case, first/last,
+alphabetical. This means that last="BW" will put body weight as
+last of capital, but before lowercase columns.</p>
     </div>
 
     <pre class="usage"><span class='fu'>NMorderColumns</span>(
@@ -148,8 +150,7 @@ capital, but before lowercase columns.</p>
   lower.last = <span class='kw'>T</span>,
   chars.last = <span class='kw'>T</span>,
   nomtime = <span class='st'>"NOMTIME"</span>,
-  row = <span class='st'>"ROW"</span>,
-  debug = <span class='kw'>F</span>
+  row = <span class='st'>"ROW"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -200,10 +201,6 @@ given, it will put the column quite far left.</p></td>
       <th>row</th>
       <td><p>A row counter column. This will be the first column in
 the dataset.</p></td>
-    </tr>
-    <tr>
-      <th>debug</th>
-      <td><p>Start by calling browser()?</p></td>
     </tr>
     </table>
 
