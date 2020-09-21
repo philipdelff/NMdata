@@ -253,10 +253,6 @@ test_that("use as.fun to get a data.frame",{
     NMgetSection(file.lst,section="DATA")
     NMgetSection(file.lst,section="TABLE")
 
-### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
-    ## tabs <- NMscanTables(file.lst)
-    ## tabs
-
     res1 <- NMscanData(file=file.lst,cbind.by.filters=T,recover.rows = T,as.fun=as.data.frame)
     dim(res1)
     class(res1)

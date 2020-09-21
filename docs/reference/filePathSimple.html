@@ -43,7 +43,8 @@
 <meta property="og:description" content="Used to tidy up paths. Passes arguments to
     file.path(). The function is intended to return a canonical
     path format, i.e. paths that can be compared by simple string
-    comparisson." />
+    comparisson. Redundant /'s removed. normalizePath is used to
+    possibly shorten path." />
 
 
 
@@ -75,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.3</span>
       </span>
     </div>
 
@@ -130,7 +131,8 @@
     <p>Used to tidy up paths. Passes arguments to
     file.path(). The function is intended to return a canonical
     path format, i.e. paths that can be compared by simple string
-    comparisson.</p>
+    comparisson. Redundant /'s removed. normalizePath is used to
+    possibly shorten path.</p>
     </div>
 
     <pre class="usage"><span class='fu'>filePathSimple</span>(<span class='kw'>...</span>)</pre>
@@ -144,6 +146,9 @@
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A (character) file path</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other FileSystem: 

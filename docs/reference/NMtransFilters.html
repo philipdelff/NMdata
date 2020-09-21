@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.3</span>
       </span>
     </div>
 
@@ -127,7 +127,15 @@
     <p>Translate filters in Nonmem and apply to data</p>
     </div>
 
-    <pre class="usage"><span class='fu'>NMtransFilters</span>(<span class='kw'>data</span>, <span class='kw'>file</span>, <span class='kw'>text</span>, <span class='kw'>lines</span>, invert = <span class='fl'>FALSE</span>, quiet = <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>NMtransFilters</span>(
+  <span class='kw'>data</span>,
+  <span class='kw'>file</span>,
+  <span class='kw'>text</span>,
+  <span class='kw'>lines</span>,
+  invert = <span class='fl'>FALSE</span>,
+  as.fun = <span class='kw'>NULL</span>,
+  quiet = <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -155,6 +163,12 @@ file, text, or lines.</p></td>
       <th>invert</th>
       <td><p>Invert the filters? This means read what Nonmem
 would disregard, and disregard what Nonmem would read.</p></td>
+    </tr>
+    <tr>
+      <th>as.fun</th>
+      <td><p>The default is to return data in data.tables. Pass a
+function in as.fun to convert to something else. If
+data.frames are wanted, use as.fun=as.data.frame.</p></td>
     </tr>
     <tr>
       <th>quiet</th>

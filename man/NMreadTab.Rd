@@ -4,7 +4,7 @@
 \alias{NMreadTab}
 \title{Read an output table file from NONMEM}
 \usage{
-NMreadTab(file, silent = TRUE, tab.count = TRUE, as.dt = T, ...)
+NMreadTab(file, silent = TRUE, tab.count = TRUE, as.fun = NULL, ...)
 }
 \arguments{
 \item{file}{path to NONMEM table file}
@@ -17,8 +17,9 @@ written data files. These are often not useful. However, if
 tab.count is TRUE (default), this will be carried forward and
 added as a column called TABLENO.}
 
-\item{as.dt}{Return a data.table? data.table is default, if not a
-data.frame is returned.}
+\item{as.fun}{The default is to return data in data.tables. Pass a
+function in as.fun to convert to something else. If
+data.frames are wanted, use as.fun=as.data.frame.}
 
 \item{...}{Arguments passed to fread.}
 }

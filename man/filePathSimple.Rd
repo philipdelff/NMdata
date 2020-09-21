@@ -9,11 +9,15 @@ filePathSimple(...)
 \arguments{
 \item{...}{additional arguments passed to file.path().}
 }
+\value{
+A (character) file path
+}
 \description{
 Used to tidy up paths. Passes arguments to
     file.path(). The function is intended to return a canonical
     path format, i.e. paths that can be compared by simple string
-    comparisson.
+    comparisson. Redundant /'s removed. normalizePath is used to
+    possibly shorten path.
 }
 \seealso{
 Other FileSystem: 

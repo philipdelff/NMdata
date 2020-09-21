@@ -78,6 +78,9 @@ considered.}
 \item{linesep}{If using the text argument, use linesep to indicate
 how lines should be separated.}
 }
+\value{
+character vector with extracted lines.
+}
 \description{
 If you want to extract input sections like $PROBLEM, $DATA etc,
 see NMgetSection. This function is more general and can be used to

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.3</span>
       </span>
     </div>
 
@@ -127,7 +127,7 @@
     <p>read all output data tables in nonmem run</p>
     </div>
 
-    <pre class="usage"><span class='fu'>NMscanTables</span>(<span class='kw'>file</span>, details = <span class='kw'>F</span>, as.dt = <span class='fl'>TRUE</span>, quiet = <span class='fl'>FALSE</span>, tab.count = <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>NMscanTables</span>(<span class='kw'>file</span>, details = <span class='kw'>F</span>, as.fun = <span class='kw'>NULL</span>, quiet = <span class='fl'>FALSE</span>, tab.count = <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -138,18 +138,20 @@
     </tr>
     <tr>
       <th>details</th>
-      <td><p>If TRUE, metadata is added to output. In this case, you get a
-list. I'd say, enable if doing programming.</p></td>
+      <td><p>If TRUE, metadata is added to output. In this case,
+you get a list. I'd say, enable if doing programming.</p></td>
     </tr>
     <tr>
-      <th>as.dt</th>
-      <td><p>return data.tables? Tables will not be keyed.</p></td>
+      <th>as.fun</th>
+      <td><p>The default is to return data in data.tables. Pass a
+function in as.fun to convert to something else. If
+data.frames are wanted, use as.fun=as.data.frame.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>The default is to give some information along the way on what
-data is found. But consider setting this to TRUE for non-interactive
-use.</p></td>
+      <td><p>The default is to give some information along the way
+on what data is found. But consider setting this to TRUE for
+non-interactive use.</p></td>
     </tr>
     <tr>
       <th>tab.count</th>
@@ -162,9 +164,10 @@ added as a column called TABLENO.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of all the tables as data.frames. If details=TRUE, this is in
-    one element, called data, and meta is another element. If not, only the
-    element corresponding to data is returned.</p>
+    <p>A list of all the tables as data.frames. If details=TRUE,
+    this is in one element, called data, and meta is another
+    element. If not, only the element corresponding to data is
+    returned.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Nonmem: 

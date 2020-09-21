@@ -77,7 +77,7 @@ table file alone." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.3</span>
       </span>
     </div>
 
@@ -137,7 +137,7 @@ be filtered out. NMreadTab can do this automatically based on the
 table file alone.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>NMreadTab</span>(<span class='kw'>file</span>, silent = <span class='fl'>TRUE</span>, tab.count = <span class='fl'>TRUE</span>, as.dt = <span class='kw'>T</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>NMreadTab</span>(<span class='kw'>file</span>, silent = <span class='fl'>TRUE</span>, tab.count = <span class='fl'>TRUE</span>, as.fun = <span class='kw'>NULL</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,9 +159,10 @@ tab.count is TRUE (default), this will be carried forward and
 added as a column called TABLENO.</p></td>
     </tr>
     <tr>
-      <th>as.dt</th>
-      <td><p>Return a data.table? data.table is default, if not a
-data.frame is returned.</p></td>
+      <th>as.fun</th>
+      <td><p>The default is to return data in data.tables. Pass a
+function in as.fun to convert to something else. If
+data.frames are wanted, use as.fun=as.data.frame.</p></td>
     </tr>
     <tr>
       <th>...</th>

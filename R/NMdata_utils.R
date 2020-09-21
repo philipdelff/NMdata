@@ -5,7 +5,7 @@
 ##' @family FileSystem
 ##' @export
 NMdata_filepath <- function(...) {
-  system.file(..., package = "NMdata")
+    system.file(..., package = "NMdata")
 }
 
 ##' Pretty wrapping of lines in NMdata vignettes
@@ -23,7 +23,10 @@ getAsFun <- function(as.fun){
     if(is.null(as.fun)){
         as.fun <- getOption("NMdata.as.fun")
     }
-    if(!is.function(as.fun)){
+    if(!is.null(as.fun) && !is.function(as.fun)){
         stop("as.fun must be a function")
     }
+
+    as.fun
+
 }

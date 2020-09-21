@@ -10,29 +10,38 @@ flagsAssign(
   return.all = F,
   LLOQ = NULL,
   col.id = "ID",
-  col.dv = "DV"
+  col.dv = "DV",
+  as.fun = NULL
 )
 }
 \arguments{
 \item{data}{The dataset to assign flags to.}
 
-\item{tab.flags}{A data.frame containing at least these named columns: FLAG,
-flag, condition. Condition is disregarded for FLAG==0.}
+\item{tab.flags}{A data.frame containing at least these named
+columns: FLAG, flag, condition. Condition is disregarded for
+FLAG==0.}
 
-\item{return.all}{If TRUE, both the edited dataset and the table of flags
-are returned. If FALSE (default) only the edited dataset is returned.}
+\item{return.all}{If TRUE, both the edited dataset and the table
+of flags are returned. If FALSE (default) only the edited
+dataset is returned.}
 
-\item{LLOQ}{At the moment a list with FLAG, condition, and LLOQ (value). If
-it does not contain "flag", flag will be set to "Value below LLOQ". LLOQ
-can only handle one value of LLOQ. This is insuffiecient for PKPD
-datasets. Likely to change.}
+\item{LLOQ}{At the moment a list with FLAG, condition, and LLOQ
+(value). If it does not contain "flag", flag will be set to
+"Value below LLOQ". LLOQ can only handle one value of
+LLOQ. This is insuffiecient for PKPD datasets. Likely to
+change.}
 
 \item{col.id}{The name of the subject ID column. Default is "ID".}
 
 \item{col.dv}{The name of the data value column. Default is "DV".}
+
+\item{as.fun}{The default is to return data in data.tables. Pass a
+function in as.fun to convert to something else. If
+data.frames are wanted, use as.fun=as.data.frame.}
 }
 \value{
-The dataset with flags added. See parameter flags.return as well.
+The dataset with flags added. See parameter flags.return
+    as well.
 }
 \description{
 The aim with this function is to take a (say PK) dataset and a pre-specified

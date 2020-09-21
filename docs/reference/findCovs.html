@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.3</span>
       </span>
     </div>
 
@@ -127,7 +127,7 @@
     <p>Extract columns that do not vary within variables in a data.frame</p>
     </div>
 
-    <pre class="usage"><span class='fu'>findCovs</span>(<span class='kw'>data</span>, cols.id = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>findCovs</span>(<span class='kw'>data</span>, cols.id = <span class='kw'>NULL</span>, as.fun = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,6 +141,12 @@
       <td><p>covariates will be searched for in combinations of values in
 these columns. Often cols.id will be either empty or ID. But it
 can also be both say c("ID","DRUG") or c("ID","TRT").</p></td>
+    </tr>
+    <tr>
+      <th>as.fun</th>
+      <td><p>The default is to return data in data.tables. Pass a
+function in as.fun to convert to something else. If
+data.frames are wanted, use as.fun=as.data.frame.</p></td>
     </tr>
     </table>
 

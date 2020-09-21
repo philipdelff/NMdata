@@ -9,7 +9,7 @@ NMreadCsv(
   na.strings = ".",
   header = TRUE,
   stringsAsFactors = FALSE,
-  as.dt = TRUE,
+  as.fun = NULL,
   ...
 )
 }
@@ -22,8 +22,9 @@ NMreadCsv(
 
 \item{stringsAsFactors}{See read.table.}
 
-\item{as.dt}{Return a data.table? data.table is default, if not a data.frame
-is returned.}
+\item{as.fun}{The default is to return data in data.tables. Pass a
+function in as.fun to convert to something else. If
+data.frames are wanted, use as.fun=as.data.frame.}
 
 \item{...}{passed to read.csv}
 }
