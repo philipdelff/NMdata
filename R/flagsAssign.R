@@ -4,23 +4,31 @@
 ##' table of flags, assign the flags automatically.
 ##'
 ##' @param data The dataset to assign flags to.
-##' @param tab.flags A data.frame containing at least these named columns: FLAG,
-##'     flag, condition. Condition is disregarded for FLAG==0.
-##' @param return.all If TRUE, both the edited dataset and the table of flags
-##'     are returned. If FALSE (default) only the edited dataset is returned.
-##' @param LLOQ At the moment a list with FLAG, condition, and LLOQ (value). If
-##'     it does not contain "flag", flag will be set to "Value below LLOQ". LLOQ
-##'     can only handle one value of LLOQ. This is insuffiecient for PKPD
-##'     datasets. Likely to change.
+##' @param tab.flags A data.frame containing at least these named
+##'     columns: FLAG, flag, condition. Condition is disregarded for
+##'     FLAG==0.
+##' @param return.all If TRUE, both the edited dataset and the table
+##'     of flags are returned. If FALSE (default) only the edited
+##'     dataset is returned.
+##' @param LLOQ At the moment a list with FLAG, condition, and LLOQ
+##'     (value). If it does not contain "flag", flag will be set to
+##'     "Value below LLOQ". LLOQ can only handle one value of
+##'     LLOQ. This is insuffiecient for PKPD datasets. Likely to
+##'     change.
 ##' @param col.id The name of the subject ID column. Default is "ID".
 ##' @param col.dv The name of the data value column. Default is "DV".
-##' @return The dataset with flags added. See parameter flags.return as well.
+##' @param as.fun The default is to return data in data.tables. Pass a
+##'     function in as.fun to convert to something else. If
+##'     data.frames are wanted, use as.fun=as.data.frame.
+##' @return The dataset with flags added. See parameter flags.return
+##'     as well.
 ##' @import data.table
 ##' @family DataGen
 ##' @export
 
 
-flagsAssign <- function(data,tab.flags,return.all=F,LLOQ=NULL,col.id="ID",col.dv="DV"){
+flagsAssign <- function(data, tab.flags, return.all=F, LLOQ=NULL,
+                        col.id="ID", col.dv="DV", as.fun=NULL){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -41,7 +49,15 @@ flagsAssign <- function(data,tab.flags,return.all=F,LLOQ=NULL,col.id="ID",col.dv
 ####### Check data ######
     if(!is.data.frame(data)){stop("data must be a data.frame")}
     ## make sure data is a data.table
-    data <- as.data.table(data)
+
+    as.fun <- getAsFun(as.fun)
+    
+    was.data.table <- T
+    if(!is.data.table(data)){
+        was.data.table <- F
+        data <- as.data.table(data)
+    }
+
     datacols <- colnames(data)
     if(!col.id%in%datacols) stop("data must contain a column name matching the argument col.id.")
     ## Check NA ids. I think this requires that col.id has length 1
@@ -155,7 +171,16 @@ flagsAssign <- function(data,tab.flags,return.all=F,LLOQ=NULL,col.id="ID",col.dv
 ### arrange back to original order
     setorderv(data,col.row)
     data[,(col.row):=NULL]
+
     
+    if(!was.data.table) {
+        data <- as.data.frame(data)
+        tab.flags <- as.data.frame(tab.flags)
+    }
+    if(!is.null(as.fun)) {
+        data <- as.fun(data)
+        tab.flags <- as.fun(tab.flags)
+    }
     
     if(return.all){
         return(list(data,tab.flags))

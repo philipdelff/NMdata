@@ -41,8 +41,9 @@
 ##' @param quiet The default is to give some information along the way
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use.
-##' @param as.dt The default is to return data in data.tables. If
-##'     data.frames are wanted, use as.dt=FALSE.
+##' @param as.fun The default is to return data in data.tables. Pass a
+##'     function in as.fun to convert to something else. If
+##'     data.frames are wanted, use as.fun=as.data.frame. 
 ##' @param cbind.by.filters If TRUE, Nonmem data filtering is
 ##'     interpreted from lst file (restrictions apply), and after an
 ##'     imitated selection of rows, data columns will be appended to
@@ -90,7 +91,10 @@
 
 ## when col.row and cbind.by.filters are missing, do cbind.by.filters but look for a row identifier. Explain and tell user to provide col.row or cbind.by.filters to get less messages.
 
-NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,recover.rows=FALSE,add.name="model",name,file.mod,dir.data,quiet=FALSE,use.rds=TRUE,as.dt=TRUE,col.id="ID",tab.count=FALSE) {
+NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
+                       recover.rows=FALSE,add.name="model",name,
+                       file.mod,dir.data,quiet=FALSE,use.rds=TRUE,
+                       as.fun=NULL,col.id="ID",tab.count=FALSE) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -195,13 +199,15 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,recover.rows
         include.model <- FALSE
     }
 
+    as.fun <- getAsFun(as.fun)
+    
 ###  Section end: Process arguments 
 
 
 #### Section start: read all output tables and merge to max one firstonly and max one row ####
 
     ## if(!quiet) messageWrap("Scanning for output tables.")
-    tables <- NMscanTables(file,details=T,as.dt=T,tab.count=tab.count,quiet=quiet)
+    tables <- NMscanTables(file,details=T,tab.count=tab.count,quiet=quiet)
 
     rows.flo <- tables$meta[firstlastonly==TRUE]
     if(rows.flo[,.N]>0) {
@@ -290,20 +296,20 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,recover.rows
     }
     
     if(use.input&&!any(tables$meta$full.length)) {
-        tab.row <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,as.dt=TRUE)
+        tab.row <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters)
         tab.row[,nmout:=FALSE]
         tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="input",tab.type="row"))
     }
     
     if(use.input&&any(tables$meta$full.length)) {
         ## if(!quiet) messageWrap("Searching for input data.")
-        data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,as.dt=TRUE)
+        data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters)
         cnames.input <- colnames(data.input)
 
         ## if no method is specified, search for possible col.row to help the user
         if(search.col.row){
             
-            data.input.all <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=TRUE,use.rds=use.rds,applyFilters=FALSE,as.dt=TRUE)
+            data.input.all <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=TRUE,use.rds=use.rds,applyFilters=FALSE)
             cols.row.input <- colnames(data.input.all)[data.input.all[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 
             cols.row.output <- colnames(tab.row)[tab.row[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
@@ -449,7 +455,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,recover.rows
         
         skip.recover <- FALSE
         if(cbind.by.filters) {
-            data.recover <- NMtransInput(file,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,invert=T,as.dt=TRUE)
+            data.recover <- NMtransInput(file,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,invert=T)
         } else {
             data.recover <- data.input[!get(col.row)%in%tab.row[,get(col.row)]]
             ## data.input[get(col.row)%in%tab.row[,get(col.row)]]
@@ -469,9 +475,9 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,recover.rows
     }
 
     setorder(tab.vars,var)
-    if(!as.dt) {
-        tab.row <- as.data.frame(tab.row)
-        tab.vars <- as.data.frame(tab.vars)
+    if(!is.null(as.fun)) {
+        tab.row <- as.fun(tab.row)
+        tab.vars <- as.fun(tab.vars)
     }
 
     ## attr(tab.row,"vars") <- tab.vars

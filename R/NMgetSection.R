@@ -33,6 +33,7 @@
 ##'     multiplied succeeding white spaces are reduced to single white
 ##'     spaces.
 ##' @param ... Additional arguments passed to NMextractText
+##' @return character vector with extracted lines.
 ##' @family Nonmem
 ##' @examples
 ##' NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")

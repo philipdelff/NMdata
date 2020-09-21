@@ -33,8 +33,9 @@
 ##'     returning the data.
 ##' @param quiet Default is to inform a little, but TRUE is useful for
 ##'     non-interactive stuff.
-##' @param as.dt Return a data.table? data.table is default, if not a
-##'     data.frame is returned.
+##' @param as.fun The default is to return data in data.tables. Pass a
+##'     function in as.fun to convert to something else. If
+##'     data.frames are wanted, use as.fun=as.data.frame. 
 ##' @param invert If TRUE, the data rows that are dismissed by the
 ##'     Nonmem data filters (ACCEPT and IGNORE) will be returned.
 ##' @details The line containing whom the license is issued to cannot
@@ -47,8 +48,9 @@
 ##' @family Nonmem
 ##' @export
 
-NMtransInput <- function(file,use.rds=TRUE,file.mod=NULL,dir.data=NULL,applyFilters=FALSE,quiet=FALSE,invert=FALSE,as.dt=TRUE) {
-
+NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
+                         dir.data=NULL, applyFilters=FALSE,
+                         quiet=FALSE, invert=FALSE, as.fun=NULL) {
 ### the lst file only contains the name of the data file, not the path to it. So we need to find the .mod instead.
 
     if(missing(file)) file <- NULL
@@ -69,6 +71,7 @@ NMtransInput <- function(file,use.rds=TRUE,file.mod=NULL,dir.data=NULL,applyFilt
         file.find.data <- path.file.mod
     }
 
+    as.fun <- getAsFun(as.fun)
 
     ## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    
     lines <- NMgetSection(file,section="INPUT",keepName=F)
@@ -164,10 +167,12 @@ NMtransInput <- function(file,use.rds=TRUE,file.mod=NULL,dir.data=NULL,applyFilt
         
     }
 
-    if(as.dt) {
-        as.data.table(data.input)
-    } else {
-        as.data.frame(data.input)
+    if(!is.null(as.fun)) {
+        data.input <- as.fun(data.input)
     }
 
+    return(data.input)
+    
+
+    
 }

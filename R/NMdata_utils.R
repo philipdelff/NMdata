@@ -16,3 +16,14 @@ NMdata_filepath <- function(...) {
 messageWrap <- function(..., fun.msg=message, prefix = "\n", initial = "", width=85){
     fun.msg(strwrap(..., prefix = prefix, initial = initial, width=width))
 }
+
+
+##' Determine as.fun to use based on argument and options
+getAsFun <- function(as.fun){
+    if(is.null(as.fun)){
+        as.fun <- getOption("NMdata.as.fun")
+    }
+    if(!is.function(as.fun)){
+        stop("as.fun must be a function")
+    }
+}

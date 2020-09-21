@@ -10,6 +10,9 @@
 ##' @param df2 A data.frame that will be merged onto df1.
 ##' @param by The column(s) to merge by. Character string (vector). Must be
 ##'     supplied.
+##' @param as.fun The default is to return data in data.tables. Pass a
+##'     function in as.fun to convert to something else. If
+##'     data.frames are wanted, use as.fun=as.data.frame.
 ##' @param ... additional arguments passed to merge. If all is among them, an
 ##'     error will be returned.
 ##' @details Besides merging and checking rows, mergeCheck makes sure the order
@@ -24,13 +27,15 @@
 ##' @return a data.frame resulting from merging df1 and df2
 ##' @export
 
-mergeCheck <- function(df1,df2,by,...){
+mergeCheck <- function(df1,df2,by,as.fun=NULL,...){
     
     name.df1 <- deparse(substitute(df1))
     name.df2 <- deparse(substitute(df2))
     name.df3 <- "merged.df"
     if("all"%in%names(list(...))) stop("option all not supported. mergeCheck is for merges that are intended to result in column additions to df1, that's all.")
 
+    as.fun <- getAsFun(as.fun)
+    
     ## if data is not data.tables, convert to data.tables
     stopifnot(is.data.frame(df1))
     stopifnot(is.data.frame(df2))
@@ -95,7 +100,9 @@ mergeCheck <- function(df1,df2,by,...){
     if(was.df.df1){
         df3 <- as.data.frame(df3)
     }
+    if(!is.null(as.fun)) {
+        df3 <- as.fun(df3)
+    }
 
     df3
-
 }

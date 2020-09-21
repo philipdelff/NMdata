@@ -14,8 +14,9 @@
 ##'     written data files. These are often not useful. However, if
 ##'     tab.count is TRUE (default), this will be carried forward and
 ##'     added as a column called TABLENO.
-##' @param as.dt Return a data.table? data.table is default, if not a
-##'     data.frame is returned.
+##' @param as.fun The default is to return data in data.tables. Pass a
+##'     function in as.fun to convert to something else. If
+##'     data.frames are wanted, use as.fun=as.data.frame. 
 ##' @param ... Arguments passed to fread.
 ##' @return The Nonmem table data.
 ##' @details The actual reading of data is based on
@@ -26,7 +27,7 @@
 ##' @export
 
 
-NMreadTab <- function(file,silent=TRUE,tab.count=TRUE,as.dt=T,...) {
+NMreadTab <- function(file,silent=TRUE,tab.count=TRUE,as.fun=NULL,...) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -40,6 +41,8 @@ NMreadTab <- function(file,silent=TRUE,tab.count=TRUE,as.dt=T,...) {
     if(!is.character(file)) stop("file should be a character string",call.=F)
     if(!file.exists(file)) stop("argument file is not a path to an existing file.",call.=F)
 
+    as.fun <- getAsFun(as.fun)
+    
     if(!silent){
         message("Reading data using fread")
     }
@@ -75,8 +78,8 @@ NMreadTab <- function(file,silent=TRUE,tab.count=TRUE,as.dt=T,...) {
         set(dt1, j=col, value=as.numeric(dt1[[col]]))
     }
 
-    if(!as.dt) {
-        dt1 <- as.data.frame(dt1)
+    if(!is.null(as.fun)) {
+        dt1 <- as.fun(dt1)
     }
     
     return(dt1)

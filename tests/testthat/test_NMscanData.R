@@ -1,6 +1,6 @@
 ## library(devtools)
-## load_all("~/working_copies/NMdata")
-## setwd("~/working_copies/NMdata/tests/testthat")
+## load_all("C:/users/delff/working_copies/NMdata")
+## setwd("C:/users/delff/working_copies/NMdata/tests/testthat")
 
 context("NMscanData")
 
@@ -243,3 +243,53 @@ test_that("recoverRows without a row identifier",{
     
 })
 
+### get a data.frame
+test_that("use as.fun to get a data.frame",{
+### cbind.by.filters is TRUE, so ROW is used to recover firstonly data.
+
+    fileRef <- "testReference/NMscanData17.rds"
+
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
+    NMgetSection(file.lst,section="DATA")
+    NMgetSection(file.lst,section="TABLE")
+
+### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
+    ## tabs <- NMscanTables(file.lst)
+    ## tabs
+
+    res1 <- NMscanData(file=file.lst,cbind.by.filters=T,recover.rows = T,as.fun=as.data.frame)
+    dim(res1)
+    class(res1)
+    with(res1,table(nmout,DOSE))
+
+    expect_equal_to_reference(
+        res1,fileRef,version=2
+    )
+    
+})
+
+
+
+### get a tibble
+test_that("use as.fun to get a tibble",{
+### cbind.by.filters is TRUE, so ROW is used to recover firstonly data.
+
+    fileRef <- "testReference/NMscanData18.rds"
+
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
+    NMgetSection(file.lst,section="DATA")
+    NMgetSection(file.lst,section="TABLE")
+
+### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
+    ## tabs <- NMscanTables(file.lst)
+    ## tabs
+
+    res1 <- NMscanData(file=file.lst,cbind.by.filters=T,recover.rows = T,as.fun=tibble::as_tibble)
+    dim(res1)
+    class(res1)
+    
+    expect_equal_to_reference(
+        res1,fileRef,version=2
+    )
+    
+})
