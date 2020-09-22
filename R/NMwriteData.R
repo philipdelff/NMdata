@@ -56,7 +56,20 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,
 
     stopifnot(is.data.frame(data)) ## data.out <- as.data.frame(data)
     
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
+    TIME <- NULL 
+    name.nm <- NULL
+    comma.ok <- NULL
+    include <- NULL
+    numeric.ok <- NULL
+    occ.cum <- NULL
+
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+
+
+
+    
 #### Section start: Process arguments ####
 
 ### stamp arguments

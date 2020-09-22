@@ -26,14 +26,13 @@ NMscanTables <- function(file,details=F,as.fun=NULL,quiet=FALSE,tab.count=TRUE){
 
     firstlastonly <- NULL
     firstonly <- NULL
+    idlevel <- NULL
     lastonly <- NULL
     name <- NULL
     pastes <- NULL
 
 ###  Section end: Dummy variables, only not to get NOTE's in pacakge checks ####
 
-    as.fun <- getAsFun(as.fun)
-    
     dir <- dirname(file)
     extract.info <- function(x,NAME,default){
         r1 <- regexpr(paste0(NAME," *= *[^ ]*"),x,ignore.case=T)
@@ -110,10 +109,8 @@ NMscanTables <- function(file,details=F,as.fun=NULL,quiet=FALSE,tab.count=TRUE){
     
     names(tables) <- meta[,name]
 
-    if(!is.null(as.fun)) {
-        tables <- lapply(tables,as.fun)
-        meta <- as.fun(meta)
-    }
+    tables <- lapply(tables,runAsFun,as.fun=as.fun)
+    meta <- runAsFun(meta,as.fun=as.fun)
     
     if(details){
         out <- list(data=tables,meta=meta)

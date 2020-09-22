@@ -27,8 +27,6 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
 
     ## stop("Translation of filters in nonmem control stream is not implemented. In order to make use of input data, you must include the same row counter in input and output data. At least for now.")
 
-    as.fun <- getAsFun(as.fun)
-    
     ## get mod/lst text in lines format
     if(sum(c(!missing(file)&&!is.null(file),
              !missing(lines)&&!is.null(lines),
@@ -156,9 +154,7 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
         data <- as.data.table(data)[eval(parse(text=expressions.all))]
     }
 
-    if(!is.null(as.fun)){
-        data <- as.fun(data)
-    }
+    data <- runAsFun(data,as.fun)
 
     data
 }

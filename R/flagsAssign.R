@@ -50,8 +50,6 @@ flagsAssign <- function(data, tab.flags, return.all=F, LLOQ=NULL,
     if(!is.data.frame(data)){stop("data must be a data.frame")}
     ## make sure data is a data.table
 
-    as.fun <- getAsFun(as.fun)
-    
     was.data.table <- T
     if(!is.data.table(data)){
         was.data.table <- F
@@ -177,11 +175,9 @@ flagsAssign <- function(data, tab.flags, return.all=F, LLOQ=NULL,
         data <- as.data.frame(data)
         tab.flags <- as.data.frame(tab.flags)
     }
-    if(!is.null(as.fun)) {
-        data <- as.fun(data)
-        tab.flags <- as.fun(tab.flags)
-    }
-    
+    data <- runAsFun(data,as.fun)
+    tab.flags <- runAsFun(tab.flags,as.fun)
+        
     if(return.all){
         return(list(data,tab.flags))
     } else {

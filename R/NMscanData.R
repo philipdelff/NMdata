@@ -199,8 +199,6 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         include.model <- FALSE
     }
 
-    as.fun <- getAsFun(as.fun)
-    
 ###  Section end: Process arguments 
 
 
@@ -476,10 +474,8 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 
     setorder(tab.vars,var)
     
-    if(!is.null(as.fun)) {
-        tab.row <- as.fun(tab.row)
-        tab.vars <- as.fun(tab.vars)
-    }
+    tab.row <- runAsFun(tab.row,as.fun)
+    tab.vars <- runAsFun(tab.vars,as.fun)
 
     ## attr(tab.row,"vars") <- tab.vars
     setattr(tab.row,"vars",tab.vars)

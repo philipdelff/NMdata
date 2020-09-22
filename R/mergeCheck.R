@@ -34,8 +34,6 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,...){
     name.df3 <- "merged.df"
     if("all"%in%names(list(...))) stop("option all not supported. mergeCheck is for merges that are intended to result in column additions to df1, that's all.")
 
-    as.fun <- getAsFun(as.fun)
-    
     ## if data is not data.tables, convert to data.tables
     stopifnot(is.data.frame(df1))
     stopifnot(is.data.frame(df2))
@@ -100,9 +98,7 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,...){
     if(was.df.df1){
         df3 <- as.data.frame(df3)
     }
-    if(!is.null(as.fun)) {
-        df3 <- as.fun(df3)
-    }
+    df3 <- runAsFun(df3,as.fun)
 
     df3
 }

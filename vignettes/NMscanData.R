@@ -7,8 +7,8 @@ knitr::opts_chunk$set(
 knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 
 ## ----eval=TRUE,include=FALSE--------------------------------------------------
-library(devtools)
-load_all("C:/Users/delff/working_copies/NMdata")
+## library(devtools)
+## load_all("C:/Users/delff/working_copies/NMdata")
 
 ## ----setup,include=F----------------------------------------------------------
 library(NMdata)

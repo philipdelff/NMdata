@@ -71,8 +71,6 @@ NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
         file.find.data <- path.file.mod
     }
 
-    as.fun <- getAsFun(as.fun)
-
     ## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    
     lines <- NMgetSection(file,section="INPUT",keepName=F)
     if(is.null(lines)) {
@@ -167,9 +165,7 @@ NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
         
     }
 
-    if(!is.null(as.fun)) {
-        data.input <- as.fun(data.input)
-    }
+    data.input <- runAsFun(data.input,as.fun)
 
     return(data.input)
     

@@ -4,10 +4,13 @@
 \alias{messageWrap}
 \title{Pretty wrapping of lines in NMdata vignettes}
 \usage{
-messageWrap(..., fun.msg = message, prefix = "\\n", initial = "", width = 85)
+messageWrap(..., fun.msg = message, prefix = "\\n", initial = "", width = 80)
 }
 \arguments{
 \item{...}{parameters to pass to strwrap}
+
+\item{fun.msg}{The function to pass the text through. Typically,
+message, warning, or stop.}
 
 \item{prefix}{Passed to strwrap. Default is " ".}
 

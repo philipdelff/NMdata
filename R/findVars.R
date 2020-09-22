@@ -24,8 +24,6 @@ findVars <- function(data,cols.id=NULL,as.fun=NULL){
         stop("data must be a data.frame (or data.table)")
     }
 
-    as.fun <- getAsFun(as.fun)
-    
     was.data.table <- T
     if(is.data.table(data)){
         data <- copy(data)
@@ -53,7 +51,7 @@ findVars <- function(data,cols.id=NULL,as.fun=NULL){
 
     if(rm.tmp) reduced[,(cols.id):=NULL]
     if(!was.data.table) reduced <- as.data.frame(reduced)
-    if(!is.null(as.fun)) reduced <- as.fun(reduced)
+    reduced <- runAsFun(reduced,as.fun)
 
     reduced
 
