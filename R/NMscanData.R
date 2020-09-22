@@ -129,7 +129,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     if(missing(file.mod)) file.mod <- NULL
 
     if(!is.null(dir.data)&&!is.null(file.mod)){
-        stop("Only use one of dir.data and file.mod. The aim is to find the input data file, so either give the directory (dir.data) in which it is, and the filename will be taken from the lst file, or help finding the .mod file using the file.mod argument. Using both is redundant.")
+        messageWrap("Only use one of dir.data and file.mod. The aim is to find the input data file, so either give the directory (dir.data) in which it is, and the filename will be taken from the lst file, or help finding the .mod file using the file.mod argument. Using both is redundant.",fun.msg=stop)
     }
 
     
@@ -167,7 +167,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         } else if(cbind.by.filters && !missing(col.row) && !is.null(col.row) ){
             stop("cbind.by.filters cannot be TRUE and col.row non-NULL at the same time.")
         } else {
-            stop("A non-recognized combination of cbind.by.filters and col.row. Please see the documenation of those two arguments.")
+            messageWrap("A non-recognized combination of cbind.by.filters and col.row. Please see the documenation of those two arguments.",fun.msg=stop)
         }
 
         cbind.by.filters <- do.cbind.by.filters
@@ -187,7 +187,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     
     if(!is.null(add.name)) {
         if(!is.character(add.name) || length(add.name)!=1 ||  add.name=="" ) {
-            stop("If not NULL, add.name must be a character name of the column to store the run name. The string cannot be empty.")
+            messageWrap("If not NULL, add.name must be a character name of the column to store the run name. The string cannot be empty.",fun.msg=stop)
         }
         if (!missing(name)) {
             runname <- name
@@ -235,7 +235,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         if(any(overview.tables[,full.length])&&!overview.tables[,sum(has.row)]) {
             ## warning("col.row not found in any full-length (not firstonly) output tables. Input data will not be used. See arguments col.row and cbind.by.filters.")
             ## use.input <- FALSE
-            stop("col.row not found in any full-length (not firstonly) output tables. Correct or disable.")
+            messageWrap("col.row not found in any full-length (not firstonly) output tables. Correct or disable.",fun.msg=stop)
         }
     }
     
@@ -317,8 +317,10 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                 messageWrap(paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in both input and output data. If this column or one of these columns is not modified by the Nonmem run, consider using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.both,collapse=", ")))
             } else if(length(cols.row.input)) {
                 messageWrap(paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in input data. If this column or one of these columns is not modified by the Nonmem run, consider adding it to a row-level output table and using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.input,collapse=", ")))
-            } else {paste("\nInput data columns will be appended to output data. However, it is recommended to use a unique row identifier (typically a counter but only required to be unique for each row) for a robust merge of input and output data. See argument col.row.")}
-            messageWrap("To skip this check, please specify either col.row (recommended) or cbind.by.filters.")
+            } else {
+                messageWrap("\nInput data columns will be appended to output data. However, it is recommended to use a unique row identifier (typically a counter but only required to be unique for each row) for a robust merge of input and output data. See argument col.row.")
+            }
+            messageWrap("To skip this check, please specify either col.row (recommended) or cbind.by.filters.",fun.msg=message)
         } ## else {
         ## messageWrap("col.row not supplied, and input will be merged onto output data. If possible, consider adding a unique row identifier to input and include it in an (row-level) output table.")
         ## }
@@ -328,7 +330,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 
             if(!is.null(tab.row)&nrow(data.input)!=nrow(tab.row)) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.                
-                stop("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted. For info on what limitations of this function, see ?NMtranFilters. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or manually merge output from NMscanTables() and NMtransInput().")
+                messageWrap("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted. For info on what limitations of this function, see ?NMtranFilters. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or manually merge output from NMscanTables() and NMtransInput().",fun.msg=stop)
             }
 
             tab.vars <- rbind(tab.vars,data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",tab.type="row"))
@@ -341,13 +343,13 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         } else {
             ## !cbind.by.filters
             if(is.null(col.row)) {
-                stop("when use.input=TRUE and cbind.by.filters=FALSE, col.row cannot be NULL, NA, or empty.")
+                messageWrap("when use.input=TRUE and cbind.by.filters=FALSE, col.row cannot be NULL, NA, or empty.",fun.msg=stop)
             }
 ### merging by col.row
             ## Has this check already been done?
             if(col.row%in%cnames.input) {
                 if(data.input[,any(duplicated(get(col.row)))]) {
-                    stop("use.input=TRUE and cbind.by.filters=FALSE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and cbind.by.filters=FALSE.")
+                    messageWrap("use.input=TRUE and cbind.by.filters=FALSE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and cbind.by.filters=FALSE.",fun.msg=stop)
                 }
             } else {
                 warning("use.input is TRUE, but col.row not found in _input_ data. Only output data used.")
@@ -356,7 +358,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
             
             if(col.row%in%colnames(tab.row)) {
                 if( tab.row[,any(duplicated(get(col.row)))]) {
-                    stop("use.input is TRUE, but col.row has duplicate values in _output_ data. col.row must be a unique row identifier. It is unique in input data, so how did rows get repeated in output data? Has input data been edited since the model was run?")
+                    messageWrap("use.input is TRUE, but col.row has duplicate values in _output_ data. col.row must be a unique row identifier. It is unique in input data, so how did rows get repeated in output data? Has input data been edited since the model was run?",fun.msg=stop)
                 }
             } else {
                 warning("use.input is TRUE, but col.row not found in _output_ data. Only output data used.")
@@ -445,7 +447,9 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 
 ### Section end: Add idlevel data
     
-    if(!use.rows && skip.idlevel) {stop("No output data could be used. If enabled, try disabling use.input.")}
+    if(!use.rows && skip.idlevel) {
+        messageWrap("No output data could be used. If enabled, try disabling use.input.",fun.msg=stop)
+    }
 
 #### Section start: Recover rows ####
 
