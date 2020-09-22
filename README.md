@@ -4,9 +4,13 @@ creating the datasets and reading the data resulting from running
 Nonmem can be tedious. This package provides useful tools for these
 trivial tasks so we can spend more time on the actual analysis. 
 
+The best place to browse information about the package is
+[here](https://philipdelff.github.io/NMdata). All documentation is of
+course included in the package itself too.
+
 ## How to Install
-NMdata is aimed at CRAN release in near future. Meanwhile, installing from Github
-is easy:
+NMdata is aimed at CRAN release in near future. Meanwhile, installing
+from Github is easy:
 
 ```
 library(remotes)
