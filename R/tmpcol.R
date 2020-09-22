@@ -7,6 +7,7 @@
 ##' @param max.it Maximum number of iterations on element name.
 ##' @param prefer.plain I base isn't in use already, use it without a digit
 ##'     appended?
+##' @return A character string
 ##' @family DataWrangling
 ##' @export
 

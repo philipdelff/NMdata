@@ -3,8 +3,10 @@
 ##' @description Used to tidy up paths. Passes arguments to
 ##'     file.path(). The function is intended to return a canonical
 ##'     path format, i.e. paths that can be compared by simple string
-##'     comparisson.
+##'     comparisson. Redundant /'s removed. normalizePath is used to
+##'     possibly shorten path.
 ##' @param ... additional arguments passed to file.path().
+##' @return A (character) file path
 ##' @family FileSystem
 
 ### This function is exported from pmxtricks. It is included in NMdata not to

@@ -4,6 +4,9 @@
 ##' @param cols.id covariates will be searched for in combinations of values in
 ##'     these columns. Often cols.id will be either empty or ID. But it
 ##'     can also be both say c("ID","DRUG") or c("ID","TRT").
+##' @param as.fun The default is to return data in data.tables. Pass a
+##'     function in as.fun to convert to something else. If
+##'     data.frames are wanted, use as.fun=as.data.frame. 
 ##' @family DataWrangling
 ##' @import data.table
 ##' @export
@@ -17,13 +20,13 @@
 
 
 
-findCovs <- function(data,cols.id=NULL){
+findCovs <- function(data,cols.id=NULL,as.fun=NULL){
 
     ## check arguments
     if(!is.data.frame(data)){
         stop("data must be a data.frame (or data.table)")
     }
-    
+
     was.data.table <- T
     if(!is.data.table(data)){
         was.data.table <- F
@@ -48,6 +51,8 @@ findCovs <- function(data,cols.id=NULL){
     }
 
     if(!was.data.table) reduced <- as.data.frame(reduced)
+    reduced <- runAsFun(reduced,as.fun)
+    
     reduced
 
 }

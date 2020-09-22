@@ -4,7 +4,7 @@
 \alias{findCovs}
 \title{Extract columns that do not vary within variables in a data.frame}
 \usage{
-findCovs(data, cols.id = NULL)
+findCovs(data, cols.id = NULL, as.fun = NULL)
 }
 \arguments{
 \item{data}{data.frame in which to look for covariates}
@@ -12,6 +12,10 @@ findCovs(data, cols.id = NULL)
 \item{cols.id}{covariates will be searched for in combinations of values in
 these columns. Often cols.id will be either empty or ID. But it
 can also be both say c("ID","DRUG") or c("ID","TRT").}
+
+\item{as.fun}{The default is to return data in data.tables. Pass a
+function in as.fun to convert to something else. If
+data.frames are wanted, use as.fun=as.data.frame.}
 }
 \description{
 Extract columns that do not vary within variables in a data.frame

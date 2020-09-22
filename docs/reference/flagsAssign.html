@@ -73,7 +73,7 @@ table of flags, assign the flags automatically." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.4</span>
       </span>
     </div>
 
@@ -135,7 +135,8 @@ table of flags, assign the flags automatically.</p>
   return.all = <span class='kw'>F</span>,
   LLOQ = <span class='kw'>NULL</span>,
   col.id = <span class='st'>"ID"</span>,
-  col.dv = <span class='st'>"DV"</span>
+  col.dv = <span class='st'>"DV"</span>,
+  as.fun = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -147,20 +148,23 @@ table of flags, assign the flags automatically.</p>
     </tr>
     <tr>
       <th>tab.flags</th>
-      <td><p>A data.frame containing at least these named columns: FLAG,
-flag, condition. Condition is disregarded for FLAG==0.</p></td>
+      <td><p>A data.frame containing at least these named
+columns: FLAG, flag, condition. Condition is disregarded for
+FLAG==0.</p></td>
     </tr>
     <tr>
       <th>return.all</th>
-      <td><p>If TRUE, both the edited dataset and the table of flags
-are returned. If FALSE (default) only the edited dataset is returned.</p></td>
+      <td><p>If TRUE, both the edited dataset and the table
+of flags are returned. If FALSE (default) only the edited
+dataset is returned.</p></td>
     </tr>
     <tr>
       <th>LLOQ</th>
-      <td><p>At the moment a list with FLAG, condition, and LLOQ (value). If
-it does not contain "flag", flag will be set to "Value below LLOQ". LLOQ
-can only handle one value of LLOQ. This is insuffiecient for PKPD
-datasets. Likely to change.</p></td>
+      <td><p>At the moment a list with FLAG, condition, and LLOQ
+(value). If it does not contain "flag", flag will be set to
+"Value below LLOQ". LLOQ can only handle one value of
+LLOQ. This is insuffiecient for PKPD datasets. Likely to
+change.</p></td>
     </tr>
     <tr>
       <th>col.id</th>
@@ -170,11 +174,18 @@ datasets. Likely to change.</p></td>
       <th>col.dv</th>
       <td><p>The name of the data value column. Default is "DV".</p></td>
     </tr>
+    <tr>
+      <th>as.fun</th>
+      <td><p>The default is to return data in data.tables. Pass a
+function in as.fun to convert to something else. If
+data.frames are wanted, use as.fun=as.data.frame.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The dataset with flags added. See parameter flags.return as well.</p>
+    <p>The dataset with flags added. See parameter flags.return
+    as well.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other DataGen: 

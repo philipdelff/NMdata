@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.4</span>
       </span>
     </div>
 
@@ -132,7 +132,7 @@
   na.strings = <span class='st'>"."</span>,
   header = <span class='fl'>TRUE</span>,
   stringsAsFactors = <span class='fl'>FALSE</span>,
-  as.dt = <span class='fl'>TRUE</span>,
+  as.fun = <span class='kw'>NULL</span>,
   <span class='kw'>...</span>
 )</pre>
 
@@ -156,9 +156,10 @@
       <td><p>See read.table.</p></td>
     </tr>
     <tr>
-      <th>as.dt</th>
-      <td><p>Return a data.table? data.table is default, if not a data.frame
-is returned.</p></td>
+      <th>as.fun</th>
+      <td><p>The default is to return data in data.tables. Pass a
+function in as.fun to convert to something else. If
+data.frames are wanted, use as.fun=as.data.frame.</p></td>
     </tr>
     <tr>
       <th>...</th>

@@ -1,34 +1,38 @@
 ##' read all output data tables in nonmem run
 ##' @param file the nonmem file to read (normally .mod or .lst)
-##' @param details If TRUE, metadata is added to output. In this case, you get a
-##'     list. I'd say, enable if doing programming.
-##' @param quiet The default is to give some information along the way on what
-##'     data is found. But consider setting this to TRUE for non-interactive
-##'     use.
+##' @param details If TRUE, metadata is added to output. In this case,
+##'     you get a list. I'd say, enable if doing programming.
+##' @param quiet The default is to give some information along the way
+##'     on what data is found. But consider setting this to TRUE for
+##'     non-interactive use.
 ##' @param tab.count Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. However, if
 ##'     tab.count is TRUE (default), this will be carried forward and
 ##'     added as a column called TABLENO.
-##' @param as.dt return data.tables? Tables will not be keyed.
-##' @return A list of all the tables as data.frames. If details=TRUE, this is in
-##'     one element, called data, and meta is another element. If not, only the
-##'     element corresponding to data is returned.
+##' @param as.fun The default is to return data in data.tables. Pass a
+##'     function in as.fun to convert to something else. If
+##'     data.frames are wanted, use as.fun=as.data.frame.
+##' @return A list of all the tables as data.frames. If details=TRUE,
+##'     this is in one element, called data, and meta is another
+##'     element. If not, only the element corresponding to data is
+##'     returned.
 ##' @family Nonmem
 ##' @import data.table
 ##' @export
-NMscanTables <- function(file,details=F,as.dt=TRUE,quiet=FALSE,tab.count=TRUE){
+
+NMscanTables <- function(file,details=F,as.fun=NULL,quiet=FALSE,tab.count=TRUE){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks #### ####
 
     firstlastonly <- NULL
     firstonly <- NULL
+    idlevel <- NULL
     lastonly <- NULL
     name <- NULL
     pastes <- NULL
 
 ###  Section end: Dummy variables, only not to get NOTE's in pacakge checks ####
 
-    
     dir <- dirname(file)
     extract.info <- function(x,NAME,default){
         r1 <- regexpr(paste0(NAME," *= *[^ ]*"),x,ignore.case=T)
@@ -104,10 +108,9 @@ NMscanTables <- function(file,details=F,as.dt=TRUE,quiet=FALSE,tab.count=TRUE){
     }
     
     names(tables) <- meta[,name]
-    if(!as.dt) {
-        tables <- lapply(tables,as.data.frame)
-        meta <- as.data.frame(meta)
-    }
+
+    tables <- lapply(tables,runAsFun,as.fun=as.fun)
+    meta <- runAsFun(meta,as.fun=as.fun)
     
     if(details){
         out <- list(data=tables,meta=meta)

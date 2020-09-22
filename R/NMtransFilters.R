@@ -8,6 +8,9 @@
 ##' @param lines The mod/lst as character, line by line.
 ##' @param invert Invert the filters? This means read what Nonmem
 ##'     would disregard, and disregard what Nonmem would read.
+##' @param as.fun The default is to return data in data.tables. Pass a
+##'     function in as.fun to convert to something else. If
+##'     data.frames are wanted, use as.fun=as.data.frame. 
 ##' @param quiet Don't report information along the way if no warnings
 ##'     or errors. Default is FALSE.
 ##' @details This is not bulletproof. A statement like ACCEPT=(DOSE
@@ -20,10 +23,10 @@
 ## function only being used by NMscanData at this point.
 
 
-NMtransFilters <- function(data,file,text,lines,invert=FALSE,quiet=FALSE) {
+NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=FALSE) {
 
     ## stop("Translation of filters in nonmem control stream is not implemented. In order to make use of input data, you must include the same row counter in input and output data. At least for now.")
-    
+
     ## get mod/lst text in lines format
     if(sum(c(!missing(file)&&!is.null(file),
              !missing(lines)&&!is.null(lines),
@@ -150,6 +153,8 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,quiet=FALSE) {
         ##         message(paste("conditions to apply: ",expressions.all))
         data <- as.data.table(data)[eval(parse(text=expressions.all))]
     }
-    
+
+    data <- runAsFun(data,as.fun)
+
     data
 }

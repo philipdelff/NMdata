@@ -26,6 +26,9 @@ string that will ensure that the new element name is not already in use.}
 \item{prefer.plain}{I base isn't in use already, use it without a digit
 appended?}
 }
+\value{
+A character string
+}
 \description{
 generate a name for a new data column that is not already in use.
 }

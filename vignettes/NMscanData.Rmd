@@ -19,8 +19,8 @@ knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 ```
 
 ```{r,eval=TRUE,include=FALSE}
-library(devtools)
-load_all("C:/Users/delff/working_copies/NMdata")
+## library(devtools)
+## load_all("C:/Users/delff/working_copies/NMdata")
 ```
 
 ```{r,setup,include=F}

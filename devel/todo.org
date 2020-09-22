@@ -94,6 +94,7 @@ in var table
 **** DONE Check if character variables contain commas
      CLOSED: [2020-09-19 Sat 09:52]
 This will cause trouble when writing csv
+**** TODO Use fwrite rather than write.csv
 **** TODO Improve support for custom IGNORE/ACCEPT statements
 Support for both ignore and accept? A list?
 **** TODO Returned text should be a list of sections.
@@ -153,7 +154,9 @@ depending on nmout TRUE or FALSE.
 *** DONE Polish NMwriteData
     CLOSED: [2020-09-20 Sun 13:52]
 *** TODO Polish NMordercolumns
+**** What to do with tibbles? Return column names?
 *** TODO Support for tibbles
 *** TODO Improve flagsAssign messages at each FLAG coding
 *** TODO Read through all documentation
-*** TODO Function family dataRead for NMscanData and others
+*** TODO Function family NMdataRead for NMscanData and others
+*** TODO NMtransFilters - read through and clean comments

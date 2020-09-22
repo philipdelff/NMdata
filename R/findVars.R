@@ -5,6 +5,9 @@
 ##'     combinations of values in these columns. Often cols.id will be
 ##'     either empty or ID. But it can also be both say c("ID","DRUG")
 ##'     or c("ID","TRT").
+##' @param as.fun The default is to return data in data.tables. Pass a
+##'     function in as.fun to convert to something else. If
+##'     data.frames are wanted, use as.fun=as.data.frame. 
 ##' @details Use this to exclude columns that are constant within
 ##'     cols.id. If cols.id=ID, this could be to get only time-varying
 ##'     covariates.
@@ -14,15 +17,14 @@
 
 
 
-findVars <- function(data,cols.id=NULL){
+findVars <- function(data,cols.id=NULL,as.fun=NULL){
 
     ## check arguments
     if(!is.data.frame(data)){
         stop("data must be a data.frame (or data.table)")
     }
-    
-    was.data.table <- T
 
+    was.data.table <- T
     if(is.data.table(data)){
         data <- copy(data)
     } else {
@@ -30,6 +32,7 @@ findVars <- function(data,cols.id=NULL){
         data <- as.data.table(data)
     }
 
+    
     ## The way this is done below requires a by column to exist. So if
     ## by is NULL, we make a constant dummy.
     rm.tmp <- FALSE
@@ -48,6 +51,8 @@ findVars <- function(data,cols.id=NULL){
 
     if(rm.tmp) reduced[,(cols.id):=NULL]
     if(!was.data.table) reduced <- as.data.frame(reduced)
+    reduced <- runAsFun(reduced,as.fun)
+
     reduced
 
 }

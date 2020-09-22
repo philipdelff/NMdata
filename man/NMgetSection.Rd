@@ -61,6 +61,9 @@ spaces.}
 
 \item{...}{Additional arguments passed to NMextractText}
 }
+\value{
+character vector with extracted lines.
+}
 \description{
 This is a very commonly used wrapper for the input part of the
 model file. Look NMextractText for more general functionality

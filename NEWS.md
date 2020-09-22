@@ -1,4 +1,10 @@
 # NMdata 0.0.6
+General support for conversion of output to user-specified
+class. Setting the option "NMdata.as.fun" to a conversion function
+such as as.data.frame or tibble::as_tibble it is possible for the user
+to work with their preferred data class. An argument, as.fun, can be
+used for the individual functions too.
+
 NMwriteData improved with checks of column names and automated
 generation of $INPUT and $DATA Nonmem sections.
 	

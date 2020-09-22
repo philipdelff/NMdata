@@ -12,7 +12,7 @@ NMtransInput(
   applyFilters = FALSE,
   quiet = FALSE,
   invert = FALSE,
-  as.dt = TRUE
+  as.fun = NULL
 )
 }
 \arguments{
@@ -54,8 +54,9 @@ non-interactive stuff.}
 \item{invert}{If TRUE, the data rows that are dismissed by the
 Nonmem data filters (ACCEPT and IGNORE) will be returned.}
 
-\item{as.dt}{Return a data.table? data.table is default, if not a
-data.frame is returned.}
+\item{as.fun}{The default is to return data in data.tables. Pass a
+function in as.fun to convert to something else. If
+data.frames are wanted, use as.fun=as.data.frame.}
 }
 \description{
 Based on a nonmem run, this function finds the input

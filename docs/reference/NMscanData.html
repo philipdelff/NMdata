@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.4</span>
       </span>
     </div>
 
@@ -139,7 +139,7 @@
   <span class='kw'>dir.data</span>,
   quiet = <span class='fl'>FALSE</span>,
   use.rds = <span class='fl'>TRUE</span>,
-  as.dt = <span class='fl'>TRUE</span>,
+  as.fun = <span class='kw'>NULL</span>,
   col.id = <span class='st'>"ID"</span>,
   tab.count = <span class='fl'>FALSE</span>
 )</pre>
@@ -232,9 +232,10 @@ instead? The default is yes, and NMwriteData will create this
 by default too.</p></td>
     </tr>
     <tr>
-      <th>as.dt</th>
-      <td><p>The default is to return data in data.tables. If
-data.frames are wanted, use as.dt=FALSE.</p></td>
+      <th>as.fun</th>
+      <td><p>The default is to return data in data.tables. Pass a
+function in as.fun to convert to something else. If
+data.frames are wanted, use as.fun=as.data.frame.</p></td>
     </tr>
     <tr>
       <th>col.id</th>

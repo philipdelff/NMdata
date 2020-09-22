@@ -16,7 +16,7 @@ NMscanData(
   dir.data,
   quiet = FALSE,
   use.rds = TRUE,
-  as.dt = TRUE,
+  as.fun = NULL,
   col.id = "ID",
   tab.count = FALSE
 )
@@ -84,8 +84,9 @@ mentioned in the Nonmem control stream, should this be used
 instead? The default is yes, and NMwriteData will create this
 by default too.}
 
-\item{as.dt}{The default is to return data in data.tables. If
-data.frames are wanted, use as.dt=FALSE.}
+\item{as.fun}{The default is to return data in data.tables. Pass a
+function in as.fun to convert to something else. If
+data.frames are wanted, use as.fun=as.data.frame.}
 
 \item{col.id}{The name of the subject ID variable, default is
 "ID".}

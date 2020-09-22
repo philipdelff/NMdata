@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.4</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@
 
     
     
-<p>Built 2020-09-20 using NMdata 0.0.5.2.</p>
+<p>Built 2020-09-21 using NMdata 0.0.5.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -106,10 +106,8 @@
 <span class="kw">res0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>))
 <span class="co">#&gt; Number of output tables read: 1.</span>
 <span class="co">#&gt; Read delimited text input data file.</span>
-<span class="co">#&gt; Input data columns will be appended to output data. However, column(s) were</span>
-<span class="co">#&gt; identified as unique identifiers, present in both input and output data. If this</span>
-<span class="co">#&gt; column or one of these columns is not modified by the Nonmem run, consider using</span>
-<span class="co">#&gt; this in col.row for a robust merge of input and output data. Candidate columns: ROW</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Input data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in both input and output data. If this column or one of these columns is not modified by the Nonmem run, consider using this in col.row for a robust merge of input and output data. Candidate columns: ROW</span>
 <span class="co">#&gt; To skip this check, please specify either col.row (recommended) or cbind.by.filters.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="kw">res0</span>)
 <span class="co">#&gt; [1] "NMdata"     "data.table" "data.frame"</span>
