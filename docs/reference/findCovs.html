@@ -161,8 +161,12 @@ data.frames are wanted, use as.fun=as.data.frame.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='NMscanData.html'>NMscanData</a></span>(<span class='fu'><a href='NMdata_filepath.html'>NMdata_filepath</a></span>(<span class='st'>"examples/nonmem/xgxr001.lst"</span>))
-</div><div class='output co'>#&gt; <span class='message'>Number of output tables read: 1.</span></div><div class='output co'>#&gt; <span class='message'>Read delimited text input data file.</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Input data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in both input and output data. If this column or one of these columns is not modified by the Nonmem run, consider using this in col.row for a robust merge of input and output data. Candidate columns: ROW</span></div><div class='output co'>#&gt; <span class='message'>To skip this check, please specify either col.row (recommended) or cbind.by.filters.</span></div><div class='input'><span class='co'>### very common use</span>
+</div><div class='output co'>#&gt; <span class='message'>Number of output tables read: 1.</span></div><div class='output co'>#&gt; <span class='message'>Read delimited text input data file.</span></div><div class='output co'>#&gt; <span class='message'>Input data columns will be appended to output data. However, column(s) were</span>
+#&gt; <span class='message'>identified as unique identifiers, present in both input and output data. If</span>
+#&gt; <span class='message'>this column or one of these columns is not modified by the Nonmem run,</span>
+#&gt; <span class='message'>consider using this in col.row for a robust merge of input and output data.</span>
+#&gt; <span class='message'>Candidate columns: ROW</span></div><div class='output co'>#&gt; <span class='message'>To skip this check, please specify either col.row (recommended) or</span>
+#&gt; <span class='message'>cbind.by.filters.</span></div><div class='input'><span class='co'>### very common use</span>
 <span class='fu'>findCovs</span>(<span class='kw'>dat</span>,cols.id=<span class='st'>"ID"</span>)
 </div><div class='output co'>#&gt;       ID    TVKA  TVV2    TVCL    TVV3     TVQ      KA       V2      CL      V3
 #&gt;   1:  31 0.18116 0.042 0.72491 0.17857 8813700 0.18116 0.042000 0.72491 0.17857
