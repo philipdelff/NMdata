@@ -10,6 +10,11 @@ generation of $INPUT and $DATA Nonmem sections.
 	
 Documentation has been upgraded with a pkgdown site.
 
+## Bugfixes
+NMtransInput now supports the case where additional unused column
+names are given in $INPUT than actually found in $DATA. A warning will
+be given.
+
 # NMdata 0.0.5
 This release introduces a consistent default NMscanData behavior that
 will work in most cases and provide the user with information on how

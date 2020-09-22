@@ -66,7 +66,7 @@ NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
         }
 
         if(!file.exists(path.file.mod)) {
-            warning("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument. Input data not used.")
+            messageWrap("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument. Input data not used.",fun.msg=warning)
         }
         file.find.data <- path.file.mod
     }
@@ -85,11 +85,6 @@ NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
 
     nms <- strsplit(line," ")[[1]]
 
-    ## find all equals. drop or rename?
-    ## drop <- grepl("= *DROP",nms)
-### this is if they are not intended to be kept.
-    ## nms <- sub(".*=(.*)","\\1",nms)
-    ## nms[nms=="DROP"] <- paste0("DROP",1:sum(nms=="DROP"))
 ### this is to keep even dropped columns
     nms <- sub("(.*) *= *(DROP|SKIP)","\\1",nms)
     nms <- sub(".*=(.*)","\\1",nms)
@@ -140,6 +135,13 @@ NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
     }
 
     cnames.input <- colnames(data.input)
+    ## More column names can be specified in the nonmem control stream
+    ## than actually found in the input data. We will simply disregard
+    ## them.
+    if(length(nms)>length(cnames.input)){
+        nms <- nms[1:length(cnames.input)]
+        messageWrap("More column names specified in Nonmem $INPUT than found in data file. The additional names have been disregarded.",fun.msg=warning)
+    }
     cnames.input[1:length(nms)] <- nms
     colnames(data.input) <- cnames.input
 
@@ -148,15 +150,15 @@ NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
     
     if(any(duplicated(cnames.input))) {
         if(any(duplicated(nms))){
-            warning(paste("Duplicated variable names declared in nonmem $INPUT section. Only first will be used:",paste(nms[duplicated(nms)],collapse=", ")))
+            messageWrap(paste("Duplicated variable names declared in nonmem $INPUT section. Only first will be used:",paste(nms[duplicated(nms)],collapse=", ")),fun.msg=warning)
         }
         nms2 <- cnames.input[-(1:length(nms))]
         if(length(nms2)&&any(duplicated(nms2))){
-            warning(paste("Duplicated variable names detected in input data not processed by Nonmem. Only first will be used:",paste(nms2[duplicated(nms2)],collapse=", ")))
+            messageWrap(paste("Duplicated variable names detected in input data not processed by Nonmem. Only first will be used:",paste(nms2[duplicated(nms2)],collapse=", ")),fun.msg=warning)
         }
         nms.cross <- c(unique(nms),unique(nms2))
         if(any(duplicated(nms.cross))){
-            warning(paste("The same variable names are found in input variables as read by nonmem and the rest of input data file. Please look at column names in input data and the $INPUT section in nonmem control stream. Only the first occurrence of the columns will be used:",paste(unique(nms.cross[duplicated(nms.cross)]),collapse=", ")))
+            messageWrap(paste("The same variable names are found in input variables as read by nonmem and the rest of input data file. Please look at column names in input data and the $INPUT section in nonmem control stream. Only the first occurrence of the columns will be used:",paste(unique(nms.cross[duplicated(nms.cross)]),collapse=", ")),fun.msg=warning)
         }
 
 #### Reduce to unique column names
