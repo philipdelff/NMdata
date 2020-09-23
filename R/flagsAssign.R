@@ -85,10 +85,10 @@ flagsAssign <- function(data, tab.flags, return.all=F, LLOQ=NULL,
 
     
 ###### Check that FLAG, flag, and condition contain unique values
-
-#### FLAG cannot be negative
-    ## if(any(tab.flags[,"FLAG"]<0)) stop("FLAG contains negative values. Not allowed.")
-
+    any.dups <- tab.flags[,lapply(.SD,function(x)any(duplicated(x))),.SDcols=c("FLAG","flag","condition")][,any(c(FLAG,flag,condition))]
+    if(any.dups){
+        messageWrap("Duplicate values not allowed in tab.flags columns FLAG, flag, and condition.",stop)
+    }
 ####### END Check tab.flags ####
 
     ## make sure tab.flags and data are data.tables
@@ -100,7 +100,6 @@ flagsAssign <- function(data, tab.flags, return.all=F, LLOQ=NULL,
 ### add an increasing variable to data so we can arrange the observations
 ### exactly as they were to begin with.
 #### save order for re-arranging in the end
-    ## TODO: create this column name by making sure it does not exist
     col.row <- tmpcol(data)
     data[,(col.row):=1:.N ]
 #### 
@@ -135,16 +134,18 @@ flagsAssign <- function(data, tab.flags, return.all=F, LLOQ=NULL,
     tab.flags[,Nobs:=NA_real_]
     tab.flags[,NID:=NA_real_]
     for(fn in 1:tab.flags[,.N]){
-        message(paste("Coding FLAG =",tab.flags[fn,FLAG]))
+        
+        messageWrap(
+            paste("Coding FLAG =",tab.flags[fn,FLAG],", flag =",tab.flags[fn,flag])
+           ,fun.msg=message)
         ## find all affected columns
         is.matched <- try(with(data,eval(parse(text=tab.flags[fn,condition.used]))),silent=T)
         if("try-error"%in%class(is.matched)){
-            warning(attr(is.matched,"condition")$message)
+            messageWrap(attr(is.matched,"condition")$message,fun.msg=warning)
             next
         }
         if(any(is.na(is.matched))) stop("Evaluation of criterion returned NA. Missing values in columns used for evaluation?")
         tab.flags[fn,Nmatched:=sum(is.matched)]
-        ## data[with(data,eval(parse(Data="FLAG==0&TIME<=0|NTIM<=0"))),"FLAG"] <- tab.flags[fn,"FLAG"]
         data[is.matched,FLAG:=tab.flags[fn,FLAG]]
         tab.flags[fn,Nobs:=data[FLAG==0,.N]]
         tab.flags[fn,NID:=data[FLAG==0,uniqueN(col.id)]]
@@ -156,13 +157,10 @@ flagsAssign <- function(data, tab.flags, return.all=F, LLOQ=NULL,
 
 ### check that all data$FLAG have a value matching tab.flags$FLAG. Then merge on the flag values.
     if(any(is.na(data[,FLAG]))) {
-        cat("NA's found in FLAG after assigning FLAGS. This should not happen. Bug in flagsAssign?\n")
-        print(subset(data,is.na(FLAG)))
+        ## print(subset(data,is.na(FLAG)))
         stop("NA's found in data$FLAG after assigning FLAGS. Bug in flagsAssign?")
     }
 
-    ##    browser()
-    
     dim0 <- dim(data)
     data <- mergeCheck(data,unique(tab.flags[,c("FLAG","flag")]),all.x=T,by="FLAG")
     stopifnot(all(dim(data)==(dim0+c(0,1))))
@@ -177,7 +175,7 @@ flagsAssign <- function(data, tab.flags, return.all=F, LLOQ=NULL,
     }
     data <- runAsFun(data,as.fun)
     tab.flags <- runAsFun(tab.flags,as.fun)
-        
+    
     if(return.all){
         return(list(data,tab.flags))
     } else {

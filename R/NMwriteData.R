@@ -140,10 +140,16 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,
     has.no.comma <- data.dt[,lapply(.SD,function(x){is.numeric(x)||!any(grepl(",",as.character(x)))})]
 
     
-    ## OK if numeric, or all but "" interprets as numeric
-    as.num.ok <- data.dt[,lapply(.SD,function(x)
-        is.numeric(x) ||
-        suppressWarnings(!any(is.na(as.numeric(as.character(x)[as.character(x)!=""])))))]
+    ## OK if numeric, or all but "" and "NA" interprets as numeric
+    ## as.num.ok <- data.dt[,lapply(.SD,function(x)
+    ##     is.numeric(x) &&
+    ##     !is.timestamp(x)||
+    ##     suppressWarnings(!any(is.na(as.numeric(as.character(x)[!as.character(x)%in%c("","NA")])))))
+    ##     ]
+
+    as.num.ok <- data.dt[,lapply(.SD,NMisNumeric)]
+
+    
     ## Allow TIME even if non-numeric. 
     if("TIME"%in%colnames(data.dt) &&
        as.num.ok[,TIME==FALSE]) {

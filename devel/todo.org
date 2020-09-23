@@ -155,8 +155,16 @@ depending on nmout TRUE or FALSE.
     CLOSED: [2020-09-20 Sun 13:52]
 *** TODO Polish NMordercolumns
 **** What to do with tibbles? Return column names?
-*** TODO Support for tibbles
-*** TODO Improve flagsAssign messages at each FLAG coding
+*** DONE Support for tibbles
+    CLOSED: [2020-09-22 Tue 13:39]
+*** DONE Improve flagsAssign messages at each FLAG coding
+    CLOSED: [2020-09-22 Tue 21:12]
 *** TODO Read through all documentation
 *** TODO Function family NMdataRead for NMscanData and others
-*** TODO NMtransFilters - read through and clean comments
+*** DONE NMtransFilters - read through and clean comments
+    CLOSED: [2020-09-22 Tue 19:28]
+*** DONE messageWrap cites the messages from within
+    CLOSED: [2020-09-22 Tue 19:20]
+    Should be possible to make say a warning seem like it's coming
+    from one level up.
+*** TODO vignette on data set creation

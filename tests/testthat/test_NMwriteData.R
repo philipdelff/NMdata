@@ -37,7 +37,7 @@ test_that("Dropping a column in Nonmem",{
        ,fileRef)
 
     ## dropping a character column
-    pk[,CYCLE:=as.character(CYCLE)]
+    pk[,CYCLE:=paste0(as.character(CYCLE),"a")]
     fileRef <- "testReference/NMwriteData_3.rds"
 
     expect_equal_to_reference(

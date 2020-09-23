@@ -117,7 +117,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 #### Section start: Process arguments  ####
 
     file <- filePathSimple(file)
-    if(!file.exists(file)) stop(paste0("Model file ",file," does not exist."),call. = F)
+    if(!file.exists(file)) messageWrap(paste0("Model file ",file," does not exist."),fun.msg=stop)
     dir <- dirname(file)
 
     if(!missing(cbind.by.filters) && !is.logical(cbind.by.filters)){

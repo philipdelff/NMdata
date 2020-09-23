@@ -64,7 +64,7 @@ dt.flags <- data.table(
     flag="Below LLOQ",
     condition=c("BLQ==1"))
 
-pk <- flagsAssign(pk,dt.flags,debug=F)
+pk <- flagsAssign(pk,dt.flags)
 
 
 pk <- pk[order(ID,TIME,CMT)]
@@ -74,10 +74,10 @@ pk <- NMorderColumns(pk)
 colnames(pk)
 dim(pk)
 
-NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),write.rds=F,debug=F)
+NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),write.rds=F)
 
 ## same, but with rds
-NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write.rds=T,args.rds=list(version=2),debug=F)
+NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write.rds=T,args.rds=list(version=2))
 
 
 ## need to updata nonmem models

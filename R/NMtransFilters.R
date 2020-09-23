@@ -19,21 +19,20 @@
 ##'     supported altogether.
 ##' @family Nonmem
 
-## At least for now, don't export. This is still very experimental, and it is a
-## function only being used by NMscanData at this point.
+## Don't export. This is only being used by NMscanData at this point.
 
 
 NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=FALSE) {
-
-    ## stop("Translation of filters in nonmem control stream is not implemented. In order to make use of input data, you must include the same row counter in input and output data. At least for now.")
 
     ## get mod/lst text in lines format
     if(sum(c(!missing(file)&&!is.null(file),
              !missing(lines)&&!is.null(lines),
              !missing(text)&&!is.null(text)
-             ))!=1) stop("Exactly one of file, lines, or text must be supplied")
+             ))!=1){
+        messageWrap("Exactly one of file, lines, or text must be supplied",fun.msg=stop)
+    }
     if(!missing(file)&&!is.null(file)) {
-        if(!file.exists(file)) stop("When using the file argument, file has to point to an existing file.")
+        if(!file.exists(file)) messageWrap("When using the file argument, file has to point to an existing file.",fun.msg=stop)
         lines <- readLines(file)
     }
     if(!missing(text)&&!is.null(text)) {
@@ -44,15 +43,10 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
     file <- NULL
     text <- NULL
     
-    ## this is not how to handle. Either file or remove comments and only look for IGN and ACCEPT
     text2 <- NMgetSection(lines=lines,section="DATA",keepComments=F)
     text3 <- sub(";.*$","",text2)
 
-
     ## replace the allowed IGN with IGNORE
-    ## text3 <- gsub("IGN([^O])","IGNORE\\1",text3)
-##### TODO: this is only for ignore. And is allowed to be combined with
-##### accept lists.
     ## the single-chacter ones line @ or C. Here = is mandatory.
     conds.sc <- regmatches(text3, gregexpr(paste0("IGN(?:ORE)"," *= *[^ (+]"),text3))
     conds.sc <- do.call(c,conds.sc)
@@ -78,11 +72,10 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
     ## this is not entirely correct.
 ### 1. A comma-separated list of expressions can be inside the ()s.
     ## 2. Expressions can be nested.
-### 1. is handled below, 2 should be detected and give an error - too complex to interpret.
+### 1. is handled below, 2 should be detected and give an error - interpretation not implemented.
     conds.expr <-
         regmatches(text3, gregexpr(paste0(type.condition," *=* *\\([^)]*\\)"),text3))
     conds.expr <- do.call(c,conds.expr)
-    ##    conds.expr <- do.call(c,conds.expr)
 
     ## translating single-charaters
     name.c1 <- colnames(data)[1]
@@ -90,7 +83,6 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
     expressions.sc <- c()
     if(length(scs)&&grepl("@",scs)) {
 ### NM manual: @ means first non-blank is a-z or A-Z.
-        ## expressions <- c(expressions,paste0("!grepl(\"^[A-Z]|^[a-z]\",",name.c1,")"))
         expressions.sc <- c(expressions.sc,paste0("!grepl(\"^ *[A-Za-z]\",",name.c1,")"))
         scs <- scs[!grepl("@",scs)]
     }
@@ -101,16 +93,12 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
         scs <- scs[!grepl("^[a-zA-Z]",scs)]
     }
     if(length(scs)) stop(paste0("Not all single-character IGNORE statements were translated. This is left: ",scs))
-
-    
     
     ## translating expression-style ones
     conds.list <- strsplit(
         gsub(paste0(type.condition," *=* *\\((.+)\\)"),"\\1",conds.expr)
        ,split=",")
     conds.char <- do.call(c,conds.list)
-
-
     
     expressions.list <- c(paste0(
         NMcode2R(
@@ -130,8 +118,6 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
 
     if(length(expressions.sc)) {
         conditions.all.sc <- paste0(expressions.sc,collapse="&")
-        ##        message(paste("conditions to apply: ",conditions.all.sc))
-        
     }
     if(length(expressions.list)) {
 
@@ -149,8 +135,6 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
         data <- as.data.table(data)[eval(parse(text=conditions.all.sc))]
         
         ## then lists
-        
-        ##         message(paste("conditions to apply: ",expressions.all))
         data <- as.data.table(data)[eval(parse(text=expressions.all))]
     }
 
