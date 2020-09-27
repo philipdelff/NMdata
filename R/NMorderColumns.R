@@ -1,15 +1,7 @@
 ##' Order columns in dataset for use in Nonmem.
 ##'
-##' Order the columns in a data.frame for easy export to
-##' Nonmem. Standard columns like "ROW", "ID", "NTIM", etc. will be
-##' first by default, then other capital case named columns, then
-##' lowercase named columns (one or more lowercase letter means that
-##' column is sorted as lowercase). Except for columns mentioned in
-##' "first" and "last" arguments, columns are sorted alphabetically
-##' (after by case). In short, priority is 1: Case, first/last,
-##' alphabetical. This means that last="BW" will put body weight as
-##' last of capital, but before lowercase columns.
-##'
+##' Order data columns for easy export to Nonmem. The order is configurable through multiple arguments. See details.
+##' 
 ##' @param data The dataset which columns to reorder.
 ##' @param first Columns that should come before alphabetic
 ##'     sorting. Default is
@@ -38,89 +30,78 @@
 ##' @param as.fun The default is to return data in data.tables. Pass a
 ##'     function in as.fun to convert to something else. If
 ##'     data.frames are wanted, use as.fun=as.data.frame.
+##' @param by.ref If data is a data.table, the ordering can be
+##'     performed by reference. Please understand, this will write
+##'     directly to the data in your workspace. Only use this if this
+##'     is understood. Whether or not, the function will be very fast.
 ##' @details This function will change the order of columns but it
 ##'     will never edit values in any columns.
+##'
+##' The ordering is by the following steps, each step depending on
+##' corresponding argument.
+##' \itemize{
+##'  \item{"row - "}{Row id}
+##'  \item{"not editable - "}{ID (if a column is called ID)}
+##'  \item{"first - "}{user-specified first columns}
+##'  \item{"last - "}{user-specified last columns}
+##   \item{"chars.last - "}{numeric, or interpretable as numeric}
+##'  \item{"not editable - "}{less often used nonmem names: FLAG, OCC, ROUTE,...}
+##'  \item{"lower.last - "}{lower case in name}
+##' }
+##'
 ##' @family DataWrangling
-##' @importFrom data.table is.data.table
+##' @import data.table 
 ##' @export
 
-### standard nonmem columns
-### user-specified first columns
-### less often used nonmem names: FLAG, OCC, ROUTE,...
 
 NMorderColumns <- function(data,first,last,lower.last=FALSE,
                            chars.last=TRUE, nomtime="NOMTIME",
-                           row="ROW", as.fun=NULL){
+                           row="ROW", by.ref=FALSE, as.fun=NULL){
 
-    first1 <- c(row,"ID",nomtime,"TIME","EVID","CMT","AMT","RATE",
-                "DV","MDV")
-    missing <- setdiff(setdiff(first1,"RATE"),nms)
-    if(length(missing)) warning(paste0("These standard nonmem columns were not found in data:\n",paste(missing,collapse="\n")))
-    
-    if(!missing(first)){
-        first1 <- c(first1,first)
-        ## first2
-        nms <- names(data)
-        first2 <- c("FLAG","OCC","ROUTE","GRP","TRIAL","DRUG","STUDY")
-        first <- c(first1,first2)
+    was.data.frame <- FALSE
+    if(is.data.table(data)&&!by.ref){
+       data <- copy(data) 
     } else {
-        first <- first1
-    }
-    ## others in alphebetically sorted 
-    ## last is if some should be after the alphebetically ordered
-    if(missing(last)){
-        last <- c()
-    }
-    ## Then follows whatever variables contain a lowercase letter
-    nms <- names(data)
-### checks of existense of standard columns
-
-    
-    firstpts <- match(nms,c(first))
-    lastpts <- match(nms,c(last))
-    lowerpts <- rep(NA,length(lastpts))
-    if(lower.last){
-        lowerpts[grep("[a-z]",names(data))] <- 1
-        lowerpts[grep("[\\.]",names(data))] <- 1
-    }
-    notmatched <- rowSums(cbind(firstpts,lastpts),na.rm=TRUE)==0
-    middlepts <- numeric(length(firstpts))
-    middlepts[which(notmatched)[order(nms[notmatched])]] <- 1:sum(notmatched)
-
-    ord <- order(rowSums(cbind(firstpts,middlepts*1E3,lastpts*1E5,lowerpts*1e7),na.rm=TRUE))
-    if(is.data.table(data)){
-        ##  data.out <- data[,nms[ord],with=F]
-        setcolorder(data,nms[ord])
-        data.out <- data
-        was.data.frame <- FALSE
-    } else {
-        data.out <- data[,nms[ord]]
+        data <- as.data.table(data)
         was.data.frame <- TRUE
     }
-
-
+    if(missing(first)) first <- NULL
+    if(missing(last)) last <- NULL
     
-##### chars.last: If columns cannot be converted to numerics, they are very last.
-    if(chars.last){
-        if(was.data.frame) data.out <- as.data.table(data.out)
-        
-        cnames <- colnames(data.out)
-        types <- sapply(data.out,class)
-        ## types
-        ## logicals have to go last, so no testing
-        cols.char <- cnames[!types%in%c("numeric","integer","logical")]
-        ## columns that cannot be converted to numerics
-        dtnums <- data.out[,lapply(.SD,NMisNumeric)]
-        to.penal <- names(dtnums)[!unlist(dtnums)]
+    first1 <- c(row,"ID",nomtime,"TIME","EVID","CMT","AMT","RATE",
+                "DV","MDV")
+    first2 <- c("FLAG","OCC","ROUTE","GRP","TRIAL","DRUG","STUDY")
 
-        if(length(to.penal)){        
-            no.penal <- setdiff(cnames,to.penal)
-            message("The following columns will be last because they could not be converted to numeric:\n",paste(to.penal,collapse=", "))
-            setcolorder(data.out,c(no.penal,to.penal))
-        }
-        if(was.data.frame) {data.out <- as.data.frame(data.out)}
+    nms <- names(data)
+    missing <- setdiff(setdiff(first1,"RATE"),nms)
+    if(length(missing)) warning(paste0("These standard nonmem columns were not found in data:\n",paste(missing,collapse="\n")))
+
+    first <- c(first1,first)
+
+    dt.names <- data.table(name=colnames(data))
+    dt.names[,nfirst:=match(name,first)]
+    dt.names[,nfirst2:=match(name,first2)]
+    dt.names[,nlast:=match(name,last)]
+    dt.names[,islower:=NA_real_]
+    if(lower.last){
+        dt.names[,islower:=grepl("[a-z]",name) ]
+    }
+    ## chars.last: If columns cannot be converted to numerics
+
+    if(chars.last){
+        dt.num.w <- data[,lapply(.SD,NMisNumeric)]
+        dt.num <- data.table(name=colnames(dt.num.w),isnum=as.logical(dt.num.w[1,]))
+        dt.names <- mergeCheck(dt.names,dt.num,by="name")
+    } else {
+        dt.names[,isnum:=TRUE]
     }
 
-    data.out <- runAsFun(data.out,as.fun=as.fun)
-    data.out
+    ## order data by dt.names
+    setorder(dt.names,nfirst,-nlast,-isnum,nfirst2,islower,name,na.last=TRUE)
+    setcolorder(data,dt.names[,name])
+
+    if(was.data.frame) {data <- as.data.frame(data)}
+    data <- runAsFun(data,as.fun=as.fun)
+    if(by.ref) return(invisible(data))
+    data
 }

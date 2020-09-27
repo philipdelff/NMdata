@@ -70,7 +70,7 @@ pk <- flagsAssign(pk,dt.flags)
 pk <- pk[order(ID,TIME,CMT)]
 pk <- pk[DOSE>0]
 pk[,ROW:=1:nrow(pk)]
-pk <- NMorderColumns(pk)
+NMorderColumns(pk,by.ref=TRUE)
 colnames(pk)
 dim(pk)
 

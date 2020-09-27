@@ -8,10 +8,12 @@ NMorderColumns(
   data,
   first,
   last,
-  lower.last = T,
-  chars.last = T,
+  lower.last = FALSE,
+  chars.last = TRUE,
   nomtime = "NOMTIME",
-  row = "ROW"
+  row = "ROW",
+  by.ref = FALSE,
+  as.fun = NULL
 )
 }
 \arguments{
@@ -46,6 +48,10 @@ given, it will put the column quite far left.}
 
 \item{row}{A row counter column. This will be the first column in
 the dataset.}
+
+\item{as.fun}{The default is to return data in data.tables. Pass a
+function in as.fun to convert to something else. If
+data.frames are wanted, use as.fun=as.data.frame.}
 }
 \description{
 Order the columns in a data.frame for easy export to
@@ -61,6 +67,22 @@ last of capital, but before lowercase columns.
 \details{
 This function will change the order of columns but it
     will never edit values in any columns.
+
+The ordering is by the following steps, each step depending on
+corresponding argument.
+
+
+\itemize{
+ \item{"-"}{standard nonmem columns}
+ \item{"first"}{user-specified first columns}
+}
+
+standard nonmem columns
+user-specified first columns
+user-specified last columns
+numeric, or interpretable as numeric
+less often used nonmem names: FLAG, OCC, ROUTE,...
+lower case
 }
 \seealso{
 Other DataWrangling: 
