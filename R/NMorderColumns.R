@@ -35,24 +35,32 @@
 ##'     given, it will put the column quite far left.
 ##' @param row A row counter column. This will be the first column in
 ##'     the dataset.
+##' @param as.fun The default is to return data in data.tables. Pass a
+##'     function in as.fun to convert to something else. If
+##'     data.frames are wanted, use as.fun=as.data.frame.
 ##' @details This function will change the order of columns but it
 ##'     will never edit values in any columns.
 ##' @family DataWrangling
 ##' @importFrom data.table is.data.table
 ##' @export
 
+### standard nonmem columns
+### user-specified first columns
+### less often used nonmem names: FLAG, OCC, ROUTE,...
 
-NMorderColumns <- function(data,first,last,lower.last=T,chars.last=T,
-                           nomtime="NOMTIME",row="ROW"){
+NMorderColumns <- function(data,first,last,lower.last=FALSE,
+                           chars.last=TRUE, nomtime="NOMTIME",
+                           row="ROW", as.fun=NULL){
 
     first1 <- c(row,"ID",nomtime,"TIME","EVID","CMT","AMT","RATE",
                 "DV","MDV")
+    missing <- setdiff(setdiff(first1,"RATE"),nms)
+    if(length(missing)) warning(paste0("These standard nonmem columns were not found in data:\n",paste(missing,collapse="\n")))
+    
     if(!missing(first)){
         first1 <- c(first1,first)
         ## first2
         nms <- names(data)
-        missing <- setdiff(setdiff(first1,"RATE"),nms)
-        if(length(missing)) warning(paste0("These standard nonmem columns were not found in data:\n",paste(missing,collapse="\n")))
         first2 <- c("FLAG","OCC","ROUTE","GRP","TRIAL","DRUG","STUDY")
         first <- c(first1,first2)
     } else {
@@ -67,6 +75,7 @@ NMorderColumns <- function(data,first,last,lower.last=T,chars.last=T,
     nms <- names(data)
 ### checks of existense of standard columns
 
+    
     firstpts <- match(nms,c(first))
     lastpts <- match(nms,c(last))
     lowerpts <- rep(NA,length(lastpts))
@@ -89,38 +98,29 @@ NMorderColumns <- function(data,first,last,lower.last=T,chars.last=T,
         was.data.frame <- TRUE
     }
 
-### there is no is.POSIXct function available in base R. There is one in lubridate, but not to depend on that, we do a simple one here
-    is.timestamp <- function(x){
-        inherits(x, "POSIXct") ||
-            inherits(x, "POSIXlt") ||
-            inherits(x, "POSIXt")  ||
-            inherits(x, "Date")
-        }
+
     
 ##### chars.last: If columns cannot be converted to numerics, they are very last.
     if(chars.last){
         if(was.data.frame) data.out <- as.data.table(data.out)
-        
         
         cnames <- colnames(data.out)
         types <- sapply(data.out,class)
         ## types
         ## logicals have to go last, so no testing
         cols.char <- cnames[!types%in%c("numeric","integer","logical")]
-        ## cols.char
-        suppressWarnings({
-            if.penal <- data.out[,lapply(.SD,function(x)any(is.na(as.numeric(as.character(x[!is.na(x)]))))||is.timestamp(x)),.SDcols=cols.char]
-        })
-        to.penal <- names(if.penal)[unlist(if.penal)]
-        to.penal <- c(to.penal,cnames[types=="logical"])
+        ## columns that cannot be converted to numerics
+        dtnums <- data.out[,lapply(.SD,NMisNumeric)]
+        to.penal <- names(dtnums)[!unlist(dtnums)]
+
         if(length(to.penal)){        
             no.penal <- setdiff(cnames,to.penal)
             message("The following columns will be last because they could not be converted to numeric:\n",paste(to.penal,collapse=", "))
             setcolorder(data.out,c(no.penal,to.penal))
         }
         if(was.data.frame) {data.out <- as.data.frame(data.out)}
-        
     }
-    
+
+    data.out <- runAsFun(data.out,as.fun=as.fun)
     data.out
 }
