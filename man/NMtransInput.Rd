@@ -74,13 +74,10 @@ The line containing whom the license is issued to cannot
     $INPUT) in the model will be included in the output.
 }
 \seealso{
-Other Nonmem: 
-\code{\link{NMextractText}()},
-\code{\link{NMgetSection}()},
+Other DataRead: 
 \code{\link{NMreadCsv}()},
 \code{\link{NMreadTab}()},
-\code{\link{NMscanTables}()},
-\code{\link{NMtransFilters}()},
-\code{\link{NMwriteData}()}
+\code{\link{NMscanData}()},
+\code{\link{NMscanTables}()}
 }
-\concept{Nonmem}
+\concept{DataRead}

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.6</span>
       </span>
     </div>
 
@@ -94,6 +94,12 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/DataCreate.html">Data creation tools (New)</a>
+    </li>
+    <li>
+      <a href="../articles/NMdata-FAQ.html">NMdata FAQ</a>
+    </li>
     <li>
       <a href="../articles/NMscanData.html">Automated and general reader of Nonmem data</a>
     </li>
@@ -152,21 +158,20 @@ data.frames are wanted, use as.fun=as.data.frame.</p></td>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other DataWrangling: 
+    <div class='dont-index'><p>Other DataCreate: 
 <code><a href='NMorderColumns.html'>NMorderColumns</a>()</code>,
-<code><a href='NMscanData.html'>NMscanData</a>()</code>,
 <code><a href='findVars.html'>findVars</a>()</code>,
 <code><a href='mergeCheck.html'>mergeCheck</a>()</code>,
 <code><a href='tmpcol.html'>tmpcol</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='NMscanData.html'>NMscanData</a></span>(<span class='fu'><a href='NMdata_filepath.html'>NMdata_filepath</a></span>(<span class='st'>"examples/nonmem/xgxr001.lst"</span>))
-</div><div class='output co'>#&gt; <span class='message'>Number of output tables read: 1.</span></div><div class='output co'>#&gt; <span class='message'>Read delimited text input data file.</span></div><div class='output co'>#&gt; <span class='message'>Input data columns will be appended to output data. However, column(s) were</span>
-#&gt; <span class='message'>identified as unique identifiers, present in both input and output data. If</span>
-#&gt; <span class='message'>this column or one of these columns is not modified by the Nonmem run,</span>
-#&gt; <span class='message'>consider using this in col.row for a robust merge of input and output data.</span>
-#&gt; <span class='message'>Candidate columns: ROW</span></div><div class='output co'>#&gt; <span class='message'>To skip this check, please specify either col.row (recommended) or</span>
-#&gt; <span class='message'>cbind.by.filters.</span></div><div class='input'><span class='co'>### very common use</span>
+</div><div class='output co'>#&gt; <span class='message'>Number of output tables read: 1.</span></div><div class='output co'>#&gt; <span class='message'>Read delimited text input data file.</span></div><div class='output co'>#&gt; <span class='message'>In NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst")) : Input data</span>
+#&gt; <span class='message'>columns will be appended to output data. However, column(s) were identified as</span>
+#&gt; <span class='message'>unique identifiers, present in both input and output data. If this column or</span>
+#&gt; <span class='message'>one of these columns is not modified by the Nonmem run, consider using this in</span>
+#&gt; <span class='message'>col.row for a robust merge of input and output data. Candidate columns: ROW</span></div><div class='output co'>#&gt; <span class='message'>In NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst")) : To skip this</span>
+#&gt; <span class='message'>check, please specify either col.row (recommended) or cbind.by.filters.</span></div><div class='input'><span class='co'>### very common use</span>
 <span class='fu'>findCovs</span>(<span class='kw'>dat</span>,cols.id=<span class='st'>"ID"</span>)
 </div><div class='output co'>#&gt;       ID    TVKA  TVV2    TVCL    TVV3     TVQ      KA       V2      CL      V3
 #&gt;   1:  31 0.18116 0.042 0.72491 0.17857 8813700 0.18116 0.042000 0.72491 0.17857

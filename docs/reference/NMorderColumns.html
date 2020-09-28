@@ -40,15 +40,9 @@
 
 
 <meta property="og:title" content="Order columns in dataset for use in Nonmem. — NMorderColumns" />
-<meta property="og:description" content="Order the columns in a data.frame for easy export to
-Nonmem. Standard columns like &quot;ROW&quot;, &quot;ID&quot;, &quot;NTIM&quot;, etc. will be
-first by default, then other capital case named columns, then
-lowercase named columns (one or more lowercase letter means that
-column is sorted as lowercase). Except for columns mentioned in
-&quot;first&quot; and &quot;last&quot; arguments, columns are sorted alphabetically
-(after by case). In short, priority is 1: Case, first/last,
-alphabetical. This means that last=&quot;BW&quot; will put body weight as
-last of capital, but before lowercase columns." />
+<meta property="og:description" content="Order data columns for easy export to Nonmem. No data values are
+edited. The order is configurable through multiple arguments. See
+details." />
 
 
 
@@ -80,7 +74,7 @@ last of capital, but before lowercase columns." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.6</span>
       </span>
     </div>
 
@@ -102,6 +96,12 @@ last of capital, but before lowercase columns." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/DataCreate.html">Data creation tools (New)</a>
+    </li>
+    <li>
+      <a href="../articles/NMdata-FAQ.html">NMdata FAQ</a>
+    </li>
     <li>
       <a href="../articles/NMscanData.html">Automated and general reader of Nonmem data</a>
     </li>
@@ -132,25 +132,20 @@ last of capital, but before lowercase columns." />
     </div>
 
     <div class="ref-description">
-    <p>Order the columns in a data.frame for easy export to
-Nonmem. Standard columns like "ROW", "ID", "NTIM", etc. will be
-first by default, then other capital case named columns, then
-lowercase named columns (one or more lowercase letter means that
-column is sorted as lowercase). Except for columns mentioned in
-"first" and "last" arguments, columns are sorted alphabetically
-(after by case). In short, priority is 1: Case, first/last,
-alphabetical. This means that last="BW" will put body weight as
-last of capital, but before lowercase columns.</p>
+    <p>Order data columns for easy export to Nonmem. No data values are
+edited. The order is configurable through multiple arguments. See
+details.</p>
     </div>
 
     <pre class="usage"><span class='fu'>NMorderColumns</span>(
   <span class='kw'>data</span>,
   <span class='kw'>first</span>,
   <span class='kw'>last</span>,
-  lower.last = <span class='kw'>T</span>,
-  chars.last = <span class='kw'>T</span>,
+  lower.last = <span class='fl'>FALSE</span>,
+  chars.last = <span class='fl'>TRUE</span>,
   nomtime = <span class='st'>"NOMTIME"</span>,
-  row = <span class='st'>"ROW"</span>
+  row = <span class='st'>"ROW"</span>,
+  as.fun = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -162,20 +157,19 @@ last of capital, but before lowercase columns.</p>
     </tr>
     <tr>
       <th>first</th>
-      <td><p>Columns that should come before alphabetic
-sorting. Default is
-c("ROW","ID","NTIM","TIME","EVID","CMT","AMT","RATE","DV","MDV","FLAG","OCC","ROUTE","GRP","TRIAL")</p></td>
+      <td><p>Columns that should come almost first. See details.</p></td>
     </tr>
     <tr>
       <th>last</th>
-      <td><p>Columns to sort after alphabetic ordering. Default is
-none.</p></td>
+      <td><p>Columns to move to back of dataset. If you work with a
+large dataset, and some columns are irrelevant for the Nonmem
+runs, you can use this argument.</p></td>
     </tr>
     <tr>
       <th>lower.last</th>
       <td><p>Should columns which names contain lowercase
-characters be moved toward the end? Some people use a standard
-of lowercase variables (say "race") being character
+characters be moved towards the back? Some people use a
+standard of lowercase variables (say "race") being character
 representations ("asian", "caucasian", etc.) variables and the
 uppercase (1,2,...) being the numeric representation for
 Nonmem.</p></td>
@@ -184,23 +178,33 @@ Nonmem.</p></td>
       <th>chars.last</th>
       <td><p>Should columns which cannot be converted to
 numeric be put towards the end? A column can be a character or
-a factor in R, but still be valied in Nonmem. So rather than
-only looking at the column class, the columns are attempted
-converted to numeric. Notice, it will attempted to be
-converted to numeric to test wheather Nonmem will be able to
-make sense of it, but the values in the resulting dataset will
-be untouched. No values will be edited. If TRUE, logicals will
-always be put last.</p></td>
+a factor in R, but still be valid in Nonmem (often the case
+for ID which can only contain numeric digits but really is a
+character or factor). So rather than only looking at the
+column class, the columns are attempted converted to
+numeric. Notice, it will attempted to be converted to numeric
+to test whether Nonmem will be able to make sense of it, but
+the values in the resulting dataset will be untouched. No
+values will be edited. If TRUE, logicals will always be put
+last. NA's must be NA or ".".</p></td>
     </tr>
     <tr>
       <th>nomtime</th>
       <td><p>The name of the column containing nominal time. If
-given, it will put the column quite far left.</p></td>
+given, it will put the column quite far left, just after row
+counter and ID.</p></td>
     </tr>
     <tr>
       <th>row</th>
       <td><p>A row counter column. This will be the first column in
-the dataset.</p></td>
+the dataset. Technically, you can use it for whatever column
+you want first.</p></td>
+    </tr>
+    <tr>
+      <th>as.fun</th>
+      <td><p>The default is to return data in a data.table. Pass
+a function in as.fun to convert to something else. If
+data.frames are wanted, use as.fun=as.data.frame.</p></td>
     </tr>
     </table>
 
@@ -208,10 +212,23 @@ the dataset.</p></td>
 
     <p>This function will change the order of columns but it
     will never edit values in any columns.</p>
+<p>The ordering is by the following steps, each step depending on
+corresponding argument. Not</p><ul>
+<li><p>"row - "Row id if argument row is non-NULL</p></li>
+<li><p>"not editable - "ID (if a column is called ID)</p></li>
+<li><p>"nomtime - "Nominal time.</p></li>
+<li><p>"first - "user-specified first columns</p></li>
+<li><p>"not editable - "Standard Nonmem columns: TIME, EVID, CMT, AMT, RATE, DV, MDV</p></li>
+<li><p>"last - "user-specified last columns</p></li>
+<li><p>"chars.last - "numeric, or interpretable as numeric</p></li>
+<li><p>"not editable - "less often used nonmem names: FLAG, OCC, ROUTE, GRP, TRIAL, DRUG, STUDY</p></li>
+<li><p>"lower.last - "lower case in name</p></li>
+<li><p>"not editable - "Alphabetic/numeric sorting</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other DataWrangling: 
-<code><a href='NMscanData.html'>NMscanData</a>()</code>,
+    <div class='dont-index'><p>Other DataCreate: 
 <code><a href='findCovs.html'>findCovs</a>()</code>,
 <code><a href='findVars.html'>findVars</a>()</code>,
 <code><a href='mergeCheck.html'>mergeCheck</a>()</code>,

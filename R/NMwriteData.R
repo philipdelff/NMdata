@@ -49,12 +49,11 @@
 
 
 
-NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,
+NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
                         write.rds=write.csv,force.row=FALSE,script,
                         args.stamp,args.rds,nmdrop,nmdir.data,
                         col.flag="FLAG"){
 
-    stopifnot(is.data.frame(data)) ## data.out <- as.data.frame(data)
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -67,11 +66,17 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
-
-
     
 #### Section start: Process arguments ####
 
+    stopifnot(is.data.frame(data)) ## data.out <- as.data.frame(data)
+    if(missing(file)) file <- NULL
+    if(is.null(file)) {
+        write.csv=FALSE
+        write.RData=FALSE
+        write.rds=FALSE
+    }
+    
 ### stamp arguments
     doStamp <- TRUE
     if(missing(args.stamp)) {
@@ -203,7 +208,9 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,
 
     colnames.nm <- dt.num.ok[include==TRUE,name.nm]
 
+    
     nmfile <- file
+
     if(!missing(nmdir.data)){
         nmfile <- file.path(nmdir.data,basename(nmdir.data))
     }
@@ -232,6 +239,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=F,
         opt.orig <- options(scipen=15)
         file.csv <- transFileName(file,"csv")
         write.csv(data,na=".",quote=quote,row.names=FALSE,file=file.csv)
+        ## fwrite(data,na=".",quote=quote,row.names=FALSE,file=file.csv)
         options(opt.orig)
         written <- TRUE
     }

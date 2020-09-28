@@ -96,11 +96,7 @@ NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 \seealso{
 Other Nonmem: 
 \code{\link{NMgetSection}()},
-\code{\link{NMreadCsv}()},
-\code{\link{NMreadTab}()},
-\code{\link{NMscanTables}()},
 \code{\link{NMtransFilters}()},
-\code{\link{NMtransInput}()},
 \code{\link{NMwriteData}()}
 }
 \concept{Nonmem}

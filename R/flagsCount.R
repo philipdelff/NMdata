@@ -29,7 +29,7 @@
 
 
 flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL){
-
+    
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     FLAG <- NULL
@@ -42,7 +42,6 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL){
     . <- function()NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
-
     
     if(missing(file)) file <- NULL
 
@@ -56,6 +55,21 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL){
         tab.flags.was.data.frame <- TRUE
     }
 
+### if 0 and Inf are not in tab.flags, insert them
+    if(!0%in%tab.flags[,FLAG]){
+        tab.flags <- rbind(tab.flags,
+                           data.table(FLAG=0,flag="Analysis set")
+                          ,fill=TRUE
+                           )
+    }
+    ## if(!Inf%in%tab.flags[,FLAG]){
+    ##     tab.flags <- rbind(tab.flags,
+    ##                        data.table(FLAG=-Inf,flag="All data")
+    ##                       ,fill=TRUE
+    ##                        )
+    ## }
+    
+    
     
 ########## Check tab.init missing ########
     ## ##' @param tab.init If you have already counted something and then
@@ -72,7 +86,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL){
     
 ######### END Check tab.init ########
 
-
+    
     
 
     tab.flags.0 <- tab.flags[FLAG==0]
@@ -86,42 +100,56 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL){
     ##    dt.passed <- data[,.(NFlagsPassed=findInterval(FLAG,tab.flags[order(FLAG),FLAG]))]
     data.tmp <- copy(data)
 
+    
+
     allres.l <- lapply(1:tab.flags[,.N],function(I){
-        resI <- data[FLAG>tab.flags[I,FLAG],.(
-                                                N.left=uniqueN(ID),
-                                                Nobs.left=.N)
-                     ,by=by]
+        resI <- data[FLAG==0|FLAG>tab.flags[I,FLAG],.(
+                                                        ##        resI <- data[FLAG>tab.flags[I,FLAG],.(
+                                                        N.left=uniqueN(ID),
+                                                        Nobs.left=.N)
+                    ,by=by]
         resI[,FLAG:=tab.flags[I,FLAG]]
         resI
     })
     allres <- rbindlist(allres.l)
 
-  
+### All data
     allres <- rbind(allres,
-                    data[,.(N.left=uniqueN(ID),
-                            Nobs.left=.N,
-                            FLAG=-Inf),by=by]
+                    data[,.(N.left=uniqueN(ID)
+                            ,Nobs.left=.N
+                            ,FLAG=Inf
+                        ),by=by]
+                   ,fill=TRUE
                     )
 
-    allres <- allres[order(FLAG)]
+    setorder(allres,-FLAG)
     allres[,N.discarded:=c(NA,-diff(N.left)),by=by]
     allres[,Nobs.discarded:=c(NA,-diff(Nobs.left)),by=by]
+
     
-    allres <- rbind(allres,data[FLAG==0,.(FLAG=0,N.left=uniqueN(ID),Nobs.left=.N,N.discarded=NA,Nobs.discarded=NA),by=by],
+    allres <- rbind(allres,
+                    data[FLAG==0,.(FLAG=0,N.left=uniqueN(ID),Nobs.left=.N,N.discarded=NA,Nobs.discarded=NA),by=by],
                     fill=T)
     
-    tab.flags <- rbind(tab.flags,data.table(FLAG=-Inf,flag="All data"),fill=TRUE)
+    ##  tab.flags <- rbind(tab.flags,data.table(FLAG=-Inf,flag="All data"),fill=TRUE)
 ### this is how many N/obs are left after the flags/conditions are applied
-    allres <- merge(allres,rbind(tab.flags.0,tab.flags)[,.(FLAG,flag)],all.x=T)
-    setorderv(allres,c(by,"FLAG"))
+    
+    allres <- mergeCheck(allres,rbind(tab.flags.0,tab.flags)[,.(FLAG,flag)],by="FLAG",all.x=T)
+    allres[FLAG==Inf,flag:="All data"]
+    allres[,notAll:=FLAG!=Inf]
+    allres[,isFinal:=FLAG==0]
+    setorderv(allres,c(by,"notAll","isFinal","FLAG"))
 
     ## tab.flags <- rbind(tab.flags.0,tab.flags,fill=TRUE)
     ## tab.report <- rbind(tab.report,
     ##                     tab.flags[-1,.(Data=paste("After exclusion due to",tolower(flag)),Nobs,NID)]
     ##                     )
 
-    ### select columns to report, depending on argument
-    allres[,FLAG:=NULL]
+### select columns to report, depending on argument
+    allres[,`:=`(FLAG=NULL
+                ,notAll=NULL
+                ,isFinal=NULL)
+                 ]
     
     setcolorder(allres,c(by,"flag","N.left","Nobs.left","N.discarded","Nobs.discarded"))
 

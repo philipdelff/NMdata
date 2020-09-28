@@ -8,8 +8,9 @@
 ##' @param prefer.plain I base isn't in use already, use it without a digit
 ##'     appended?
 ##' @return A character string
-##' @family DataWrangling
-##' @export
+##' @family DataCreate
+
+### export from pmxtricks. It's not a Nonmem or pmx data specific thing.
 
 tmpcol <- function(data,names=NULL,base="atmpcol999",max.it=100,prefer.plain=TRUE){
     stopifnot(xor(missing(data),is.null(names)))

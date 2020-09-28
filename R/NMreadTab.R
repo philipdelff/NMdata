@@ -23,7 +23,7 @@
 ##'     data.table::fread. Generally, the function is fast thanks to
 ##'     data.table.
 ##' @import data.table
-##' @family Nonmem
+##' @family DataRead
 ##' @export
 
 

@@ -22,7 +22,7 @@
 ##'     data.table. If df1 is a data.frame (and not a data.table), it will
 ##'     internally be converted to a data.table, and the resulting data.table
 ##'     will be converted back to a data.frame before returning.
-##' @family DataWrangling
+##' @family DataCreate
 ##' @import data.table
 ##' @return a data.frame resulting from merging df1 and df2
 ##' @export
@@ -65,26 +65,22 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,...){
     df3 <- merge(df1,df2,by=by,sort=FALSE,...)
     if(reorder){
         rows.disappeared <- !(all(df1[,get(rowcol)]%in%df3[,get(rowcol)]))
-        if(rows.disappeared) cat("Rows disappeared during merge.\n")
+        if(rows.disappeared) warning("Rows disappeared during merge.\n")
         rows.created <- !(all(df3[,get(rowcol)]%in%df1[,get(rowcol)]))
-        if(rows.created) cat("New rows appeared during merge.\n")
+        if(rows.created) warning("New rows appeared during merge.\n")
         rows.number.changed <- nrow(df1)!=nrow(df3)
-        if(rows.number.changed) cat("Number of rows changed during merge.\n")
+        if(!rows.disappeared&&!rows.created){
+            if(rows.number.changed) warning("Number of rows changed during merge.\n")
+        }
         
         if(any(c(rows.disappeared,rows.created,rows.number.changed))){
 
-            cat(paste0("nrow(",name.df1,"):"),nrow(df1),"\n")
-            cat(paste0("nrow(",name.df2,"):"),nrow(df2),"\n")
-            cat(paste0("nrow(",name.df3,"):"),nrow(df3),"\n")
+            warning(paste0("\nnrow(",name.df1,"): "),nrow(df1),"\n",
+                    paste0("nrow(",name.df2,"): "),nrow(df2),"\n",
+                    paste0("nrow(",name.df3,"): "),nrow(df3),"\n")
 
             stop("Merge added and/or removed rows.")
         }
-        ## if(nrow(df3)!=nrow(df1)){
-        ##  cat(paste0("nrow(",name.df1,"):"),nrow(df1),"\n")
-        ##  cat(paste0("nrow(",name.df2,"):"),nrow(df2),"\n")
-        ##  cat(paste0("nrow(",name.df3,"):"),nrow(df3),"\n")
-        ##  stop("merge changed dimensions")        
-        ## }
         df3 <- setorderv(df3,rowcol)
         df3[,(rowcol):=NULL]
     }

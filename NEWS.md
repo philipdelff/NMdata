@@ -7,8 +7,14 @@ used for the individual functions too.
 
 NMwriteData improved with checks of column names and automated
 generation of $INPUT and $DATA Nonmem sections.
-	
+
+NMorderColumns simplified, and documentation improved.
+
 Documentation has been upgraded with a pkgdown site.
+
+New vignette on data set creation tools in NMdata.
+
+New FAQ vignette initiated.
 
 ## Bugfixes
 NMtransInput now supports the case where additional unused column

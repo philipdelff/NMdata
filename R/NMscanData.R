@@ -78,7 +78,7 @@
 ##' input data and at least one output data file (not a FIRSTONLY or
 ##' LASTONLY table). Supply the name of this column using the col.row
 ##' argument.
-##' @family DataWrangling
+##' @family DataRead
 ##' @import data.table
 ##' @export
 

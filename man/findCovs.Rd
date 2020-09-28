@@ -28,11 +28,10 @@ findCovs(dat,cols.id="ID")
 findCovs(dat)
 }
 \seealso{
-Other DataWrangling: 
+Other DataCreate: 
 \code{\link{NMorderColumns}()},
-\code{\link{NMscanData}()},
 \code{\link{findVars}()},
 \code{\link{mergeCheck}()},
 \code{\link{tmpcol}()}
 }
-\concept{DataWrangling}
+\concept{DataCreate}

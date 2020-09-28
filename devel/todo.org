@@ -153,14 +153,17 @@ depending on nmout TRUE or FALSE.
     CLOSED: [2020-09-20 Sun 15:31]
 *** DONE Polish NMwriteData
     CLOSED: [2020-09-20 Sun 13:52]
-*** TODO Polish NMordercolumns
-**** What to do with tibbles? Return column names?
+*** DONE Polish NMordercolumns
+    CLOSED: [2020-09-27 Sun 10:04]
 *** DONE Support for tibbles
     CLOSED: [2020-09-22 Tue 13:39]
 *** DONE Improve flagsAssign messages at each FLAG coding
     CLOSED: [2020-09-22 Tue 21:12]
 *** TODO Read through all documentation
-*** TODO Function family NMdataRead for NMscanData and others
+*** DONE Function family DataRead for NMscanData and others
+    CLOSED: [2020-09-27 Sun 10:32]
+*** DONE Rename DataWrangling to DataCreate
+    CLOSED: [2020-09-27 Sun 10:31]
 *** DONE NMtransFilters - read through and clean comments
     CLOSED: [2020-09-22 Tue 19:28]
 *** DONE messageWrap cites the messages from within

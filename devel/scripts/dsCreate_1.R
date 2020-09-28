@@ -65,7 +65,8 @@ dt.flags <- data.table(
     condition=c("BLQ==1"))
 
 pk <- flagsAssign(pk,dt.flags)
-
+tab.count <- flagsCount(pk,dt.flags)
+tab.count
 
 pk <- pk[order(ID,TIME,CMT)]
 pk <- pk[DOSE>0]

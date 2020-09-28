@@ -8,7 +8,7 @@ NMwriteData(
   data,
   file,
   write.csv = TRUE,
-  write.RData = F,
+  write.RData = FALSE,
   write.rds = write.csv,
   force.row = FALSE,
   script,
@@ -84,10 +84,6 @@ be able to read as a numeric and column is not in nmdrop, the list is stopped.
 Other Nonmem: 
 \code{\link{NMextractText}()},
 \code{\link{NMgetSection}()},
-\code{\link{NMreadCsv}()},
-\code{\link{NMreadTab}()},
-\code{\link{NMscanTables}()},
-\code{\link{NMtransFilters}()},
-\code{\link{NMtransInput}()}
+\code{\link{NMtransFilters}()}
 }
 \concept{Nonmem}

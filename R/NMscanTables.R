@@ -16,7 +16,7 @@
 ##'     this is in one element, called data, and meta is another
 ##'     element. If not, only the element corresponding to data is
 ##'     returned.
-##' @family Nonmem
+##' @family DataRead
 ##' @import data.table
 ##' @export
 

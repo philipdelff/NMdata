@@ -119,11 +119,10 @@ LASTONLY table). Supply the name of this column using the col.row
 argument.
 }
 \seealso{
-Other DataWrangling: 
-\code{\link{NMorderColumns}()},
-\code{\link{findCovs}()},
-\code{\link{findVars}()},
-\code{\link{mergeCheck}()},
-\code{\link{tmpcol}()}
+Other DataRead: 
+\code{\link{NMreadCsv}()},
+\code{\link{NMreadTab}()},
+\code{\link{NMscanTables}()},
+\code{\link{NMtransInput}()}
 }
-\concept{DataWrangling}
+\concept{DataRead}

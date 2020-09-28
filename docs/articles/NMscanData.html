@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.6</span>
       </span>
     </div>
 
@@ -54,6 +54,12 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/DataCreate.html">Data creation tools (New)</a>
+    </li>
+    <li>
+      <a href="../articles/NMdata-FAQ.html">NMdata FAQ</a>
+    </li>
+    <li>
       <a href="../articles/NMscanData.html">Automated and general reader of Nonmem data</a>
     </li>
   </ul>
@@ -85,7 +91,7 @@
 
     
     
-<p>Built 2020-09-22 using NMdata 0.0.5.4.</p>
+<p>Built 2020-09-28 using NMdata 0.0.5.6.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -106,13 +112,13 @@
 <span class="kw">res0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>))
 <span class="co">#&gt; Number of output tables read: 1.</span>
 <span class="co">#&gt; Read delimited text input data file.</span>
-<span class="co">#&gt; Input data columns will be appended to output data. However, column(s) were</span>
-<span class="co">#&gt; identified as unique identifiers, present in both input and output data. If</span>
-<span class="co">#&gt; this column or one of these columns is not modified by the Nonmem run,</span>
-<span class="co">#&gt; consider using this in col.row for a robust merge of input and output data.</span>
-<span class="co">#&gt; Candidate columns: ROW</span>
-<span class="co">#&gt; To skip this check, please specify either col.row (recommended) or</span>
-<span class="co">#&gt; cbind.by.filters.</span>
+<span class="co">#&gt; In NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst")) : Input data</span>
+<span class="co">#&gt; columns will be appended to output data. However, column(s) were identified as</span>
+<span class="co">#&gt; unique identifiers, present in both input and output data. If this column or</span>
+<span class="co">#&gt; one of these columns is not modified by the Nonmem run, consider using this in</span>
+<span class="co">#&gt; col.row for a robust merge of input and output data. Candidate columns: ROW</span>
+<span class="co">#&gt; In NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst")) : To skip this</span>
+<span class="co">#&gt; check, please specify either col.row (recommended) or cbind.by.filters.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="kw">res0</span>)
 <span class="co">#&gt; [1] "NMdata"     "data.table" "data.frame"</span>
 </pre></div>

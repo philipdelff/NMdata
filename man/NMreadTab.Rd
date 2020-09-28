@@ -40,13 +40,10 @@ The actual reading of data is based on
     data.table.
 }
 \seealso{
-Other Nonmem: 
-\code{\link{NMextractText}()},
-\code{\link{NMgetSection}()},
+Other DataRead: 
 \code{\link{NMreadCsv}()},
+\code{\link{NMscanData}()},
 \code{\link{NMscanTables}()},
-\code{\link{NMtransFilters}()},
-\code{\link{NMtransInput}()},
-\code{\link{NMwriteData}()}
+\code{\link{NMtransInput}()}
 }
-\concept{Nonmem}
+\concept{DataRead}

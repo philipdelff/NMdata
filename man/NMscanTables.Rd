@@ -35,13 +35,10 @@ A list of all the tables as data.frames. If details=TRUE,
 read all output data tables in nonmem run
 }
 \seealso{
-Other Nonmem: 
-\code{\link{NMextractText}()},
-\code{\link{NMgetSection}()},
+Other DataRead: 
 \code{\link{NMreadCsv}()},
 \code{\link{NMreadTab}()},
-\code{\link{NMtransFilters}()},
-\code{\link{NMtransInput}()},
-\code{\link{NMwriteData}()}
+\code{\link{NMscanData}()},
+\code{\link{NMtransInput}()}
 }
-\concept{Nonmem}
+\concept{DataRead}

@@ -27,11 +27,10 @@ Use this to exclude columns that are constant within
     covariates.
 }
 \seealso{
-Other DataWrangling: 
+Other DataCreate: 
 \code{\link{NMorderColumns}()},
-\code{\link{NMscanData}()},
 \code{\link{findCovs}()},
 \code{\link{mergeCheck}()},
 \code{\link{tmpcol}()}
 }
-\concept{DataWrangling}
+\concept{DataCreate}

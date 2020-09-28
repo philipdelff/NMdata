@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.6</span>
       </span>
     </div>
 
@@ -93,6 +93,12 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/DataCreate.html">Data creation tools (New)</a>
+    </li>
+    <li>
+      <a href="../articles/NMdata-FAQ.html">NMdata FAQ</a>
+    </li>
     <li>
       <a href="../articles/NMscanData.html">Automated and general reader of Nonmem data</a>
     </li>
@@ -126,7 +132,15 @@
 <a href="#nmdata-006" class="anchor"></a>NMdata 0.0.6</h1>
 <p>General support for conversion of output to user-specified class. Setting the option “NMdata.as.fun” to a conversion function such as as.data.frame or tibble::as_tibble it is possible for the user to work with their preferred data class. An argument, as.fun, can be used for the individual functions too.</p>
 <p>NMwriteData improved with checks of column names and automated generation of $INPUT and $DATA Nonmem sections.</p>
+<p>NMorderColumns simplified, and documentation improved.</p>
 <p>Documentation has been upgraded with a pkgdown site.</p>
+<p>New vignette on data set creation tools in NMdata.</p>
+<p>New FAQ vignette initiated.</p>
+<div id="bugfixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bugfixes" class="anchor"></a>Bugfixes</h2>
+<p>NMtransInput now supports the case where additional unused column names are given in $INPUT than actually found in $DATA. A warning will be given.</p>
+</div>
 </div>
     <div id="nmdata-005" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.5">

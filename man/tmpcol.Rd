@@ -33,11 +33,10 @@ A character string
 generate a name for a new data column that is not already in use.
 }
 \seealso{
-Other DataWrangling: 
+Other DataCreate: 
 \code{\link{NMorderColumns}()},
-\code{\link{NMscanData}()},
 \code{\link{findCovs}()},
 \code{\link{findVars}()},
 \code{\link{mergeCheck}()}
 }
-\concept{DataWrangling}
+\concept{DataCreate}

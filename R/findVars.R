@@ -11,7 +11,7 @@
 ##' @details Use this to exclude columns that are constant within
 ##'     cols.id. If cols.id=ID, this could be to get only time-varying
 ##'     covariates.
-##' @family DataWrangling
+##' @family DataCreate
 ##' @import data.table
 ##' @export
 

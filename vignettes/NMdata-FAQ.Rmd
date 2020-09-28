@@ -1,0 +1,50 @@
+---
+title: "NMdata FAQ"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{NMdata FAQ}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+header-includes:
+- \usepackage{ae}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+ ,fig.width=7)
+
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
+```
+
+
+Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
+
+
+DISCLAIMER: This vignette is under development. 
+
+## I want to use a tool from NMdata, but how can I avoid working with data.table?
+Easy. Every function in `NMdata` has an argument called `fun.as`. You
+can provide a function in this argument which will be applied to data
+before returnin it.
+
+```{r,eval=F}
+NMscanData(...,as.fun=as.data.frame)
+```
+
+You can also get a tibble if you work with `tidyverse` tools: 
+
+```{r,eval=F}
+NMscanData(...,as.fun=tibble::as_tibble)
+```
+
+If you want to change the behaviour generally for the session and omit
+the `as.fun` argument, you can do this by this option:
+
+```{r,eval=F}
+options(NMdata.as.fun=tibble::as_tibble)
+```
+
+And all `NMdata` functions (that return data) should now return tibbles.
+

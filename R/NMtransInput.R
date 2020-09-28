@@ -45,7 +45,7 @@
 ##'     a Windows or Mac running R), so this line is
 ##'     discarded. Columns that are dropped (using DROP or SKIP in
 ##'     $INPUT) in the model will be included in the output.
-##' @family Nonmem
+##' @family DataRead
 ##' @export
 
 NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,

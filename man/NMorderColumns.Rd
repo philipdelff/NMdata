@@ -12,84 +12,78 @@ NMorderColumns(
   chars.last = TRUE,
   nomtime = "NOMTIME",
   row = "ROW",
-  by.ref = FALSE,
   as.fun = NULL
 )
 }
 \arguments{
 \item{data}{The dataset which columns to reorder.}
 
-\item{first}{Columns that should come before alphabetic
-sorting. Default is
-c("ROW","ID","NTIM","TIME","EVID","CMT","AMT","RATE","DV","MDV","FLAG","OCC","ROUTE","GRP","TRIAL")}
+\item{first}{Columns that should come almost first. See details.}
 
-\item{last}{Columns to sort after alphabetic ordering. Default is
-none.}
+\item{last}{Columns to move to back of dataset. If you work with a
+large dataset, and some columns are irrelevant for the Nonmem
+runs, you can use this argument.}
 
 \item{lower.last}{Should columns which names contain lowercase
-characters be moved toward the end? Some people use a standard
-of lowercase variables (say "race") being character
+characters be moved towards the back? Some people use a
+standard of lowercase variables (say "race") being character
 representations ("asian", "caucasian", etc.) variables and the
 uppercase (1,2,...) being the numeric representation for
 Nonmem.}
 
 \item{chars.last}{Should columns which cannot be converted to
 numeric be put towards the end? A column can be a character or
-a factor in R, but still be valied in Nonmem. So rather than
-only looking at the column class, the columns are attempted
-converted to numeric. Notice, it will attempted to be
-converted to numeric to test wheather Nonmem will be able to
-make sense of it, but the values in the resulting dataset will
-be untouched. No values will be edited. If TRUE, logicals will
-always be put last.}
+a factor in R, but still be valid in Nonmem (often the case
+for ID which can only contain numeric digits but really is a
+character or factor). So rather than only looking at the
+column class, the columns are attempted converted to
+numeric. Notice, it will attempted to be converted to numeric
+to test whether Nonmem will be able to make sense of it, but
+the values in the resulting dataset will be untouched. No
+values will be edited. If TRUE, logicals will always be put
+last. NA's must be NA or ".".}
 
 \item{nomtime}{The name of the column containing nominal time. If
-given, it will put the column quite far left.}
+given, it will put the column quite far left, just after row
+counter and ID.}
 
 \item{row}{A row counter column. This will be the first column in
-the dataset.}
+the dataset. Technically, you can use it for whatever column
+you want first.}
 
-\item{as.fun}{The default is to return data in data.tables. Pass a
-function in as.fun to convert to something else. If
+\item{as.fun}{The default is to return data in a data.table. Pass
+a function in as.fun to convert to something else. If
 data.frames are wanted, use as.fun=as.data.frame.}
 }
 \description{
-Order the columns in a data.frame for easy export to
-Nonmem. Standard columns like "ROW", "ID", "NTIM", etc. will be
-first by default, then other capital case named columns, then
-lowercase named columns (one or more lowercase letter means that
-column is sorted as lowercase). Except for columns mentioned in
-"first" and "last" arguments, columns are sorted alphabetically
-(after by case). In short, priority is 1: Case, first/last,
-alphabetical. This means that last="BW" will put body weight as
-last of capital, but before lowercase columns.
+Order data columns for easy export to Nonmem. No data values are
+edited. The order is configurable through multiple arguments. See
+details.
 }
 \details{
 This function will change the order of columns but it
     will never edit values in any columns.
 
 The ordering is by the following steps, each step depending on
-corresponding argument.
-
-
+corresponding argument. Not
 \itemize{
- \item{"-"}{standard nonmem columns}
- \item{"first"}{user-specified first columns}
+ \item{"row - "}{Row id if argument row is non-NULL}
+ \item{"not editable - "}{ID (if a column is called ID)}
+ \item{"nomtime - "}{Nominal time.}
+ \item{"first - "}{user-specified first columns}
+ \item{"not editable - "}{Standard Nonmem columns: TIME, EVID, CMT, AMT, RATE, DV, MDV}
+ \item{"last - "}{user-specified last columns}
+ \item{"chars.last - "}{numeric, or interpretable as numeric}
+ \item{"not editable - "}{less often used nonmem names: FLAG, OCC, ROUTE, GRP, TRIAL, DRUG, STUDY}
+ \item{"lower.last - "}{lower case in name}
+ \item{"not editable - "}{Alphabetic/numeric sorting}
 }
-
-standard nonmem columns
-user-specified first columns
-user-specified last columns
-numeric, or interpretable as numeric
-less often used nonmem names: FLAG, OCC, ROUTE,...
-lower case
 }
 \seealso{
-Other DataWrangling: 
-\code{\link{NMscanData}()},
+Other DataCreate: 
 \code{\link{findCovs}()},
 \code{\link{findVars}()},
 \code{\link{mergeCheck}()},
 \code{\link{tmpcol}()}
 }
-\concept{DataWrangling}
+\concept{DataCreate}

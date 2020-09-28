@@ -10,7 +10,7 @@
 ##' @details This is just a shortcut to fread so you don't have to remember how
 ##'     to read the data that was exported for nonmem.
 ##' @importFrom data.table fread
-##' @family Nonmem
+##' @family DataRead
 ##' @export
 
 NMreadCsv <- function(file,na.strings=".",header=TRUE,stringsAsFactors=FALSE,as.fun=NULL,...){

@@ -36,13 +36,10 @@ This is just a shortcut to fread so you don't have to remember how
     to read the data that was exported for nonmem.
 }
 \seealso{
-Other Nonmem: 
-\code{\link{NMextractText}()},
-\code{\link{NMgetSection}()},
+Other DataRead: 
 \code{\link{NMreadTab}()},
+\code{\link{NMscanData}()},
 \code{\link{NMscanTables}()},
-\code{\link{NMtransFilters}()},
-\code{\link{NMtransInput}()},
-\code{\link{NMwriteData}()}
+\code{\link{NMtransInput}()}
 }
-\concept{Nonmem}
+\concept{DataRead}

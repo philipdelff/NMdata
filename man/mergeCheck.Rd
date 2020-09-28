@@ -41,11 +41,10 @@ Besides merging and checking rows, mergeCheck makes sure the order
     will be converted back to a data.frame before returning.
 }
 \seealso{
-Other DataWrangling: 
+Other DataCreate: 
 \code{\link{NMorderColumns}()},
-\code{\link{NMscanData}()},
 \code{\link{findCovs}()},
 \code{\link{findVars}()},
 \code{\link{tmpcol}()}
 }
-\concept{DataWrangling}
+\concept{DataCreate}
