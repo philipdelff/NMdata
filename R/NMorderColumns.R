@@ -62,9 +62,22 @@ NMorderColumns <- function(data,first,last,lower.last=FALSE,
                            chars.last=TRUE, nomtime="NOMTIME",
                            row="ROW", as.fun=NULL){
 
+
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+
+    nfirst <- NULL
+    name <- NULL
+    nfirst2 <- NULL
+    nlast <- NULL
+    islower <- NULL
+    isnum <- NULL
+    
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+
+
     was.data.frame <- FALSE
     if(is.data.table(data)){
-       data <- copy(data) 
+        data <- copy(data) 
     } else {
         data <- as.data.table(data)
         was.data.frame <- TRUE

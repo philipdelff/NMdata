@@ -8,13 +8,21 @@
 ### This function is exported from pmxtricks. It is included in NMdata not to
 ### depend on pmxtricks. However, please align.
 
-
 NMcode2R <- function(text){
 
+    ## browser()
+### not there yet.
+    ## preceed by begin of line, (, { or whitespace
+    ## followed by end of line, (, { or whitespace
     require.word <- function(string) paste0("(^| *)",string,"( *|\\(|$)")
     fix.word <- function(string) paste0("\\1",string,"\\2")
-    
+
+    ## not sure this belongs here
     text <- gsub("\\$PK","",x=text)
+
+    ## tabulators are just a blank
+    text <- gsub("\t"," ",x=text)
+    
     text <- gsub(require.word("ELSEIF"),fix.word("} else if"),x=text)
     text <- gsub(require.word("IF"),fix.word("if"),x=text)
     text <- gsub(require.word("THEN"),fix.word("{"),x=text)
@@ -46,4 +54,3 @@ NMcode2R <- function(text){
     text
     
 }
-

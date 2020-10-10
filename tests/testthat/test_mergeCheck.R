@@ -32,7 +32,7 @@ test_that("increasing number of rows",{
                       stringsAsFactors=FALSE)
 
     expect_error(
-        mergeCheck(df1,df2,by="y")
+        expect_warning(mergeCheck(df1,df2,by="y"))
     )
     
 })

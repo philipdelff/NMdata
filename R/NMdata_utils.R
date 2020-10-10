@@ -25,7 +25,7 @@ messageWrap <- function(..., fun.msg=message, prefix = "\n", initial = "", width
                              ,width=width)
                       )
     if("call."%in%names(formals(fun.msg))){
-        list.args <- append(list.args,call.=FALSE)
+        list.args <- append(list.args,list(call.=FALSE))
     }
     do.call(fun.msg,args=list.args)
 }

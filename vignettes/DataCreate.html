@@ -315,7 +315,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<p>Built 2020-09-28 using NMdata 0.0.5.6.</p>
+<p>Built 2020-10-09 using NMdata 0.0.5.7.</p>
 <p>DISCLAIMER: This vignette is under development.</p>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
@@ -324,7 +324,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="automated-checks-of-merge-results" class="section level2">
 <h2>Automated checks of merge results</h2>
-<p>Merges are a very common source of data creation bugs. As simple as it may seem in the head of the programmer, merges likely leave you with an unexpected number of rows, repeated or omitted rows. Merges are very powerful and flexible, and when preparing a data set, they are as fundamental as anything. However, many merges for dataset creation are of the specific and simple kind where columns are added to an existing dataset. In this situation the rows that come out of the merge are the exact same as in one of the existing datasets. Say we want to add a covariate:</p>
+<p>Merges are a very common source of data creation bugs. As simple as it may seem in the head of the programmer, merges likely leave you with an unexpected number of rows, repeated or omitted rows. Merges are very powerful and flexible, and when preparing a data set, they are fundamental. However, many merges for dataset creation are of the specific and simple kind where columns are added to an existing dataset. In this situation the rows that come out of the merge are the exact same as in one of the existing datasets. Say we want to add a covariate:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="kw">file.path</span>(<span class="kw">NMdata_filepath</span>(), <span class="st">&quot;examples/data/xgxr2.rds&quot;</span>))</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">dim</span>(pk)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   24</span></span>
@@ -332,15 +332,15 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>dt.cov[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(COV, <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>))]</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>dt.cov</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="co">#&gt;     ID COV</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="co">#&gt;  1: 31   4</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="co">#&gt;  2: 32   1</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="co">#&gt;  3: 33   4</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="co">#&gt;  4: 34   2</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="co">#&gt;  5: 35   2</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="co">#&gt;  6: 36   2</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a><span class="co">#&gt;  7: 37   2</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="co">#&gt;  1: 31   1</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="co">#&gt;  2: 32   3</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="co">#&gt;  3: 33   3</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="co">#&gt;  4: 34   5</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="co">#&gt;  5: 35   5</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="co">#&gt;  6: 36   3</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a><span class="co">#&gt;  7: 37   4</span></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a><span class="co">#&gt;  8: 38   4</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a><span class="co">#&gt;  9: 39   2</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a><span class="co">#&gt;  9: 39   3</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a><span class="co">#&gt; 10: 40   4</span></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a>pk2 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>)</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a><span class="kw">dim</span>(pk2)</span>
@@ -349,7 +349,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true"></a>pk3 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>, <span class="dt">all.x =</span> <span class="ot">TRUE</span>)</span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true"></a><span class="kw">dim</span>(pk3)</span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   25</span></span></code></pre></div>
-<p>So when creating pk2 we lost a lot of rows because we forgot the <code>all.x</code> option. And also, just checking the resulting dimensions is not enough.</p>
+<p>So when creating <code>pk2</code> we lost a lot of rows because we forgot the <code>all.x</code> option. And also, just checking the resulting dimensions is not enough.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>dt.cov2 &lt;-<span class="st"> </span>pk[, .(<span class="dt">ID =</span> <span class="kw">unique</span>(ID))]</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>dt.cov2[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(COV, <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">size =</span> .N, <span class="dt">replace =</span> <span class="ot">TRUE</span>))]</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>dt.cov2 &lt;-<span class="st"> </span>dt.cov2[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span><span class="op">:</span>(.N <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))]</span>
@@ -357,7 +357,6 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>pk4 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov2, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>)</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="kw">dim</span>(pk4)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   25</span></span></code></pre></div>
-<p>If you use all.x and check the dimensions, you shoul be OK. Then you just have to reorder the resulting rows if you want to retrieve the order of one of the original data.frames.</p>
 <p>As illustrated by these simple examples, even the simplest merges have to be rigorously checked, no exceptions. The function <code>mergeCheck(x1,x2)</code> ensures that the result has exactly one of each rows from <code>x1</code> and nothing else. We can use <code>...</code> to pass additional arguments to merge.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>pk2 &lt;-<span class="st"> </span><span class="kw">try</span>(<span class="kw">mergeCheck</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>))</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="co">#&gt; Warning in mergeCheck(pk, dt.cov, by = &quot;ID&quot;): Rows disappeared during merge.</span></span>
@@ -371,15 +370,17 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>pk3 &lt;-<span class="st"> </span><span class="kw">mergeCheck</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>, <span class="dt">all.x =</span> <span class="ot">TRUE</span>)</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a><span class="kw">dim</span>(pk3)</span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   25</span></span></code></pre></div>
-<p>The result always has the same order of rows as the x1 argument. There is only one difference from the behaviour of the <code>merge.data.frame</code> function syntax, being that the <code>by</code> argument must always be supplied.</p>
-<p>So you may think that this will limit your merges, and that you need merges for inner and outer joins etc. You are exactly right - <code>mergeCheck</code> is not intended for those merges and does not support them. When that is said, the kind of merges that are supported, are indeed very common. As a fun fact, all merges in the NMdata package are performed with <code>mergeCheck</code>.</p>
+<p>The result always has the same order of rows as the <code>x1</code> argument.</p>
+<p>Another problem that the programmer may not realize during a merge is that column names are shared across <code>x1</code> and <code>x2</code>. This will silently create colmn names like <code>col.x</code> and <code>col.y</code> in the output. <code>mergeCheck</code> will give a warning if that happens.</p>
+<p>There is only one difference from the behaviour of the <code>merge.data.frame</code> function syntax, being that the <code>by</code> argument must always be supplied.</p>
+<p>So you may think that this will limit your merges, and that you need merges for inner and outer joins etc. You are exactly right - <code>mergeCheck</code> is not intended for those merges and does not support them. When that is said, the kind of merges that are supported, are indeed very common. As a fun fact, all merges in the <code>NMdata</code> package are performed with <code>mergeCheck</code>.</p>
 </div>
 <div id="exclusion-flags" class="section level2">
 <h2>Exclusion flags</h2>
-<p>It is good practice not to discard records from a dataset but to flag them and omit them in model estimation. We also need to account for how many data records were discarded due to which criteria. A couple of functons in NMdatra help you do this in a way that is easy to integrate with Nonmem.</p>
+<p>It is good practice not to discard records from a dataset but to flag them and omit them in model estimation. We also need to account for how many data records were discarded due to which criteria. A couple of functons in <code>NMdata</code> help you do this in a way that is easy to integrate with Nonmem.</p>
 <div id="assign-and-count-flags" class="section level3">
 <h3>Assign and count flags</h3>
-<p>For use in Nonmem, the easiest is that inclusion/exclusion is determined by a single column in data - we call that column FLAG. FLAG obviously draws on information from other columns such as TIME, DV, and many others, depending on your dataset and your way of working.</p>
+<p>For use in Nonmem, the easiest is that inclusion/exclusion is determined by a single column in data - we call that column <code>FLAG</code>. <code>FLAG</code> obviously draws on information from other columns such as <code>TIME</code>, <code>DV</code>, and many others, depending on your dataset and your way of working.</p>
 <p>What rows to omit from a dataset can vary from one analysis to another. Hence, the aim with the chosen design is that the inclusion criteria can be changed and applied to overwrite an existing inclusion/exclusion selection.</p>
 <p>The function that applies inclusion/excluasion rules is called <code>flagsAssign</code>, and it takes a dataset and a data.frame with rules as arguments.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="kw">file.path</span>(<span class="kw">NMdata_filepath</span>(), <span class="st">&quot;examples/data/xgxr2.rds&quot;</span>))</span>
@@ -439,7 +440,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;vignettes/DataCreate.Rmd&quot;</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a><span class="co">#&gt; $CreationTime</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2020-09-28 10:29:27 EDT&quot;</span></span></code></pre></div>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2020-10-09 21:20:57 EDT&quot;</span></span></code></pre></div>
 <p>These are very simple functions. But they are simple to use as well, and hopefully they will help you avoid sitting with a data set trying to guess which script generated it so you can do a modification or understand how something was done.</p>
 <p>When using NMwriteData, you don’t have to call stampObj explicitly. Just pass the <code>script</code> argument to <code>NMwriteData</code> and <code>stampObj</code> will be applied automatically.</p>
 </div>

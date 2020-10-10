@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.7</span>
       </span>
     </div>
 
@@ -101,77 +101,15 @@ library(NMdata)</a></code></pre>
 <pre><code><a href="articles/NMscanData.html">vignette("NMscanData")</a></code></pre>
 <p>No more having to look at the .lst to see which tables to read. No more having to read multiple tables to get all the variables. No more having to merge with input data to get variables that were not exported with nonmem. This and much more is done automatically.</p>
 </div>
-<div id="hightlights" class="section level2">
+<div id="create-data-export-to-nonmem" class="section level2">
 <h2 class="hasAnchor">
-<a href="#hightlights" class="anchor"></a>Hightlights</h2>
-<p>These are the steps that this package especially helps with.</p>
-<div id="create-data-export-to-nonmem" class="section level3">
-<h3 class="hasAnchor">
-<a href="#create-data-export-to-nonmem" class="anchor"></a>Create data, export to Nonmem</h3>
-<p>On the data-generation side, functionality is provided for documentation of the datasets while generating them.</p>
-<div id="flagsassign" class="section level4">
-<h4 class="hasAnchor">
-<a href="#flagsassign" class="anchor"></a>flagsAssign</h4>
-<p>Assign exclusion flags to a dataset based on specified table.</p>
+<a href="#create-data-export-to-nonmem" class="anchor"></a>Create data, export to Nonmem</h2>
+<p>On the data-generation side, functionality is provided for documentation of the datasets while generating them. Check out the <a href="https://philipdelff.github.io/NMdata/articles/DataCreate.html">new vignette</a> on the topic. There are functions for automatic checks of (some) data merges, handling of exclusions flags, final preparations for ensuring readability in Nonmem, and ensuring traceability of datasets back to data generation scripts.</p>
 </div>
-<div id="flagscount" class="section level4">
-<h4 class="hasAnchor">
-<a href="#flagscount" class="anchor"></a>flagsCount</h4>
-<p>Create an overview of number of retained and discarded datapoints.</p>
-</div>
-<div id="nmordercolumns---order-columns-in-dataset-for-use-in-nonmem" class="section level4">
-<h4 class="hasAnchor">
-<a href="#nmordercolumns---order-columns-in-dataset-for-use-in-nonmem" class="anchor"></a>NMorderColumns - Order columns in dataset for use in Nonmem.</h4>
-</div>
-<div id="nmwritedata" class="section level4">
-<h4 class="hasAnchor">
-<a href="#nmwritedata" class="anchor"></a>NMwriteData</h4>
-<p>Write documented dataset for use in Nonmem (and R).</p>
-</div>
-</div>
-<div id="read-nonmem-results" class="section level3">
-<h3 class="hasAnchor">
-<a href="#read-nonmem-results" class="anchor"></a>Read Nonmem results</h3>
-<p>(See <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html">vignette</a>)</p>
-<div id="nmscandata" class="section level4">
-<h4 class="hasAnchor">
-<a href="#nmscandata" class="anchor"></a>NMscanData</h4>
-<p>Automatically find Nonmem input and output tables and organize data.</p>
-</div>
-<div id="nmtransinput" class="section level4">
-<h4 class="hasAnchor">
-<a href="#nmtransinput" class="anchor"></a>NMtransInput</h4>
-<p>Read input data as seen by Nonmem (e.g. by naming columns as specified in $INPUT and taking DROP statements and others into account).</p>
-</div>
-<div id="nmreadcsv" class="section level4">
-<h4 class="hasAnchor">
-<a href="#nmreadcsv" class="anchor"></a>NMreadCsv</h4>
-<p>Shortcut to read input datasets created for Nonmem.</p>
-</div>
-<div id="nmreadtab" class="section level4">
-<h4 class="hasAnchor">
-<a href="#nmreadtab" class="anchor"></a>NMreadTab</h4>
-</div>
-</div>
-<div id="handy-data-wrangling-tools" class="section level3">
-<h3 class="hasAnchor">
-<a href="#handy-data-wrangling-tools" class="anchor"></a>Handy data wrangling tools</h3>
-<div id="findcovs" class="section level4">
-<h4 class="hasAnchor">
-<a href="#findcovs" class="anchor"></a>findCovs</h4>
-<p>Extract columns that do not vary within variables in a data.frame.</p>
-</div>
-<div id="findvars" class="section level4">
-<h4 class="hasAnchor">
-<a href="#findvars" class="anchor"></a>findVars</h4>
-<p>Extract columns that vary within values of other columns in a data.frame.</p>
-</div>
-<div id="mergecheck" class="section level4">
-<h4 class="hasAnchor">
-<a href="#mergecheck" class="anchor"></a>mergeCheck</h4>
-<p>Merge, order, and check resulting rows and columns.</p>
-</div>
-</div>
+<div id="feedback" class="section level2">
+<h2 class="hasAnchor">
+<a href="#feedback" class="anchor"></a>Feedback?</h2>
+<p>The best way to request features, report bugs etc. is by the <a href="https://github.com/philipdelff/NMdata">github page</a>.</p>
 </div>
 </div>
   </div>

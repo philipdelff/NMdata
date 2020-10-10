@@ -42,46 +42,18 @@ data to get variables that were not exported with nonmem. This and
 much more is done automatically.
 
 
-## Hightlights
-These are the steps that this package especially helps with. 
 
-### Create data, export to Nonmem
+## Create data, export to Nonmem
 On the data-generation side, functionality is provided for
-documentation of the datasets while generating them. 
+documentation of the datasets while generating them. Check out the
+[new
+vignette](https://philipdelff.github.io/NMdata/articles/DataCreate.html)
+on the topic. There are functions for automatic checks of (some) data
+merges, handling of exclusions flags, final preparations for
+ensuring readability in Nonmem, and ensuring traceability of datasets
+back to data generation scripts. 
 
-#### flagsAssign
-Assign exclusion flags to a dataset based on specified table.
 
-#### flagsCount
-Create an overview of number of retained and discarded datapoints.
-
-#### NMorderColumns - Order columns in dataset for use in Nonmem.
-
-#### NMwriteData
-Write documented dataset for use in Nonmem (and R).
-
-### Read Nonmem results
-(See [vignette](https://philipdelff.github.io/NMdata/articles/NMscanData.html))
-#### NMscanData 
-Automatically find Nonmem input and output tables and
-organize data.
-
-#### NMtransInput 
-Read input data as seen by Nonmem (e.g. by naming
-columns as specified in $INPUT and taking DROP statements and others
-into account).
-
-#### NMreadCsv
-Shortcut to read input datasets created for Nonmem.
-
-#### NMreadTab
-
-### Handy data wrangling tools
-#### findCovs 
-Extract columns that do not vary within variables in a data.frame.
-
-#### findVars 
-Extract columns that vary within values of other columns in a data.frame.
-
-#### mergeCheck
-Merge, order, and check resulting rows and columns.
+## Feedback?
+The best way to request features, report bugs etc. is by the [github
+page](https://github.com/philipdelff/NMdata).

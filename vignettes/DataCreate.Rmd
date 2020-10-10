@@ -53,8 +53,8 @@ from functions in `NMdata`.
 Merges are a very common source of data creation bugs. As simple as it
 may seem in the head of the programmer, merges likely leave you with
 an unexpected number of rows, repeated or omitted rows. Merges are
-very powerful and flexible, and when preparing a data set, they are as
-fundamental as anything. However, many merges for dataset creation are
+very powerful and flexible, and when preparing a data set, they are
+fundamental. However, many merges for dataset creation are
 of the specific and simple kind where columns are added to an existing
 dataset. In this situation the rows that come out of the merge are the
 exact same as in one of the existing datasets. Say we want to add a
@@ -73,7 +73,7 @@ pk3 <- merge(pk,dt.cov,by="ID",all.x=TRUE)
 dim(pk3)
 ```
 
-So when creating pk2 we lost a lot of rows because we forgot the `all.x`
+So when creating `pk2` we lost a lot of rows because we forgot the `all.x`
 option. And also, just checking the resulting dimensions is not enough.
 
 ```{r}
@@ -84,10 +84,6 @@ dt.cov2 <- dt.cov2[c(1,1:(.N-1))]
 pk4 <- merge(pk,dt.cov2,by="ID")
 dim(pk4)
 ```
-
-If you use all.x and check the dimensions, you shoul be OK. Then you
-just have to reorder the resulting rows if you want to retrieve the
-order of one of the original data.frames.
 
 As illustrated by these simple examples, even the simplest merges have
 to be rigorously checked, no exceptions. The function `mergeCheck(x1,x2)`
@@ -101,7 +97,14 @@ pk3 <- mergeCheck(pk,dt.cov,by="ID",all.x=TRUE)
 dim(pk3)
 ```
 
-The result always has the same order of rows as the x1 argument. There
+The result always has the same order of rows as the `x1` argument.
+
+Another problem that the programmer may not realize during a merge is
+that column names are shared across `x1` and `x2`. This will silently create
+colmn names like `col.x` and `col.y` in the output. `mergeCheck` will
+give a warning if that happens.
+
+There
 is only one difference from the behaviour of the `merge.data.frame`
 function syntax, being that the `by` argument must always be supplied.
 
@@ -109,7 +112,7 @@ So you may think that this will limit your merges, and that you need
 merges for inner and outer joins etc. You are exactly right -
 `mergeCheck` is not intended for those merges and does not support
 them. When that is said, the kind of merges that are supported, are
-indeed very common. As a fun fact, all merges in the NMdata package
+indeed very common. As a fun fact, all merges in the `NMdata` package
 are performed with `mergeCheck`. 
 
 
@@ -118,13 +121,13 @@ are performed with `mergeCheck`.
 It is good practice not to discard records from a dataset but to flag
 them and omit them in model estimation. We also need to account for
 how many data records were discarded due to which criteria. A couple
-of functons in NMdatra help you do this in a way that is easy to
+of functons in `NMdata` help you do this in a way that is easy to
 integrate with Nonmem. 
 
 ### Assign and count flags
 For use in Nonmem, the easiest is that inclusion/exclusion is
-determined by a single column in data - we call that column FLAG. FLAG
-obviously draws on information from other columns such as TIME, DV,
+determined by a single column in data - we call that column `FLAG`. `FLAG`
+obviously draws on information from other columns such as `TIME`, `DV`,
 and many others, depending on your dataset and your way of working.
 
 What

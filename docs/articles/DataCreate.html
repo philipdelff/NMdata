@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.7</span>
       </span>
     </div>
 
@@ -91,7 +91,7 @@
 
     
     
-<p>Built 2020-09-28 using NMdata 0.0.5.6.</p>
+<p>Built 2020-10-09 using NMdata 0.0.5.7.</p>
 <p>DISCLAIMER: This vignette is under development.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
@@ -102,7 +102,7 @@
 <div id="automated-checks-of-merge-results" class="section level2">
 <h2 class="hasAnchor">
 <a href="#automated-checks-of-merge-results" class="anchor"></a>Automated checks of merge results</h2>
-<p>Merges are a very common source of data creation bugs. As simple as it may seem in the head of the programmer, merges likely leave you with an unexpected number of rows, repeated or omitted rows. Merges are very powerful and flexible, and when preparing a data set, they are as fundamental as anything. However, many merges for dataset creation are of the specific and simple kind where columns are added to an existing dataset. In this situation the rows that come out of the merge are the exact same as in one of the existing datasets. Say we want to add a covariate:</p>
+<p>Merges are a very common source of data creation bugs. As simple as it may seem in the head of the programmer, merges likely leave you with an unexpected number of rows, repeated or omitted rows. Merges are very powerful and flexible, and when preparing a data set, they are fundamental. However, many merges for dataset creation are of the specific and simple kind where columns are added to an existing dataset. In this situation the rows that come out of the merge are the exact same as in one of the existing datasets. Say we want to add a covariate:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(file = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(), <span class="st">"examples/data/xgxr2.rds"</span>))
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk</span>)
@@ -113,14 +113,14 @@
 <span class="co">#&gt;     ID COV</span>
 <span class="co">#&gt;  1: 31   3</span>
 <span class="co">#&gt;  2: 32   3</span>
-<span class="co">#&gt;  3: 33   5</span>
-<span class="co">#&gt;  4: 34   3</span>
-<span class="co">#&gt;  5: 35   4</span>
+<span class="co">#&gt;  3: 33   2</span>
+<span class="co">#&gt;  4: 34   4</span>
+<span class="co">#&gt;  5: 35   5</span>
 <span class="co">#&gt;  6: 36   5</span>
-<span class="co">#&gt;  7: 37   2</span>
-<span class="co">#&gt;  8: 38   4</span>
-<span class="co">#&gt;  9: 39   2</span>
-<span class="co">#&gt; 10: 40   5</span>
+<span class="co">#&gt;  7: 37   3</span>
+<span class="co">#&gt;  8: 38   2</span>
+<span class="co">#&gt;  9: 39   4</span>
+<span class="co">#&gt; 10: 40   4</span>
 <span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk2</span>)
 <span class="co">#&gt; [1] 100  25</span>
@@ -129,7 +129,7 @@
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk3</span>)
 <span class="co">#&gt; [1] 1500   25</span>
 </pre></div>
-<p>So when creating pk2 we lost a lot of rows because we forgot the <code>all.x</code> option. And also, just checking the resulting dimensions is not enough.</p>
+<p>So when creating <code>pk2</code> we lost a lot of rows because we forgot the <code>all.x</code> option. And also, just checking the resulting dimensions is not enough.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="kw">dt.cov2</span> <span class="op">&lt;-</span> <span class="kw">pk</span>[, <span class="fu">.</span>(ID = <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="kw">ID</span>))]
 <span class="kw">dt.cov2</span>[, <span class="fu">`:=`</span>(<span class="kw">COV</span>, <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, size = <span class="kw">.N</span>, replace = <span class="fl">TRUE</span>))]
@@ -139,7 +139,6 @@
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk4</span>)
 <span class="co">#&gt; [1] 1500   25</span>
 </pre></div>
-<p>If you use all.x and check the dimensions, you shoul be OK. Then you just have to reorder the resulting rows if you want to retrieve the order of one of the original data.frames.</p>
 <p>As illustrated by these simple examples, even the simplest merges have to be rigorously checked, no exceptions. The function <code><a href="../reference/mergeCheck.html">mergeCheck(x1,x2)</a></code> ensures that the result has exactly one of each rows from <code>x1</code> and nothing else. We can use <code>...</code> to pass additional arguments to merge.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/try.html">try</a></span>(<span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>))
@@ -155,17 +154,19 @@
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk3</span>)
 <span class="co">#&gt; [1] 1500   25</span>
 </pre></div>
-<p>The result always has the same order of rows as the x1 argument. There is only one difference from the behaviour of the <code>merge.data.frame</code> function syntax, being that the <code>by</code> argument must always be supplied.</p>
-<p>So you may think that this will limit your merges, and that you need merges for inner and outer joins etc. You are exactly right - <code>mergeCheck</code> is not intended for those merges and does not support them. When that is said, the kind of merges that are supported, are indeed very common. As a fun fact, all merges in the NMdata package are performed with <code>mergeCheck</code>.</p>
+<p>The result always has the same order of rows as the <code>x1</code> argument.</p>
+<p>Another problem that the programmer may not realize during a merge is that column names are shared across <code>x1</code> and <code>x2</code>. This will silently create colmn names like <code>col.x</code> and <code>col.y</code> in the output. <code>mergeCheck</code> will give a warning if that happens.</p>
+<p>There is only one difference from the behaviour of the <code>merge.data.frame</code> function syntax, being that the <code>by</code> argument must always be supplied.</p>
+<p>So you may think that this will limit your merges, and that you need merges for inner and outer joins etc. You are exactly right - <code>mergeCheck</code> is not intended for those merges and does not support them. When that is said, the kind of merges that are supported, are indeed very common. As a fun fact, all merges in the <code>NMdata</code> package are performed with <code>mergeCheck</code>.</p>
 </div>
 <div id="exclusion-flags" class="section level2">
 <h2 class="hasAnchor">
 <a href="#exclusion-flags" class="anchor"></a>Exclusion flags</h2>
-<p>It is good practice not to discard records from a dataset but to flag them and omit them in model estimation. We also need to account for how many data records were discarded due to which criteria. A couple of functons in NMdatra help you do this in a way that is easy to integrate with Nonmem.</p>
+<p>It is good practice not to discard records from a dataset but to flag them and omit them in model estimation. We also need to account for how many data records were discarded due to which criteria. A couple of functons in <code>NMdata</code> help you do this in a way that is easy to integrate with Nonmem.</p>
 <div id="assign-and-count-flags" class="section level3">
 <h3 class="hasAnchor">
 <a href="#assign-and-count-flags" class="anchor"></a>Assign and count flags</h3>
-<p>For use in Nonmem, the easiest is that inclusion/exclusion is determined by a single column in data - we call that column FLAG. FLAG obviously draws on information from other columns such as TIME, DV, and many others, depending on your dataset and your way of working.</p>
+<p>For use in Nonmem, the easiest is that inclusion/exclusion is determined by a single column in data - we call that column <code>FLAG</code>. <code>FLAG</code> obviously draws on information from other columns such as <code>TIME</code>, <code>DV</code>, and many others, depending on your dataset and your way of working.</p>
 <p>What rows to omit from a dataset can vary from one analysis to another. Hence, the aim with the chosen design is that the inclusion criteria can be changed and applied to overwrite an existing inclusion/exclusion selection.</p>
 <p>The function that applies inclusion/excluasion rules is called <code>flagsAssign</code>, and it takes a dataset and a data.frame with rules as arguments.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
@@ -215,6 +216,7 @@
 <div class="sourceCode" id="cb7"><pre class="downlit">
 <span class="fu"><a href="../reference/NMwriteData.html">NMwriteData</a></span>(<span class="kw">pk</span>)
 <span class="co">#&gt; Nonmem data file:</span>
+<span class="co">#&gt; </span>
 <span class="co">#&gt; For NonMem:</span>
 <span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span>
 <span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB EFF0</span>
@@ -238,7 +240,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2020-09-28 10:31:41 EDT"</span>
+<span class="co">#&gt; [1] "2020-10-09 21:54:53 EDT"</span>
 </pre></div>
 <p>These are very simple functions. But they are simple to use as well, and hopefully they will help you avoid sitting with a data set trying to guess which script generated it so you can do a modification or understand how something was done.</p>
 <p>When using NMwriteData, you don’t have to call stampObj explicitly. Just pass the <code>script</code> argument to <code>NMwriteData</code> and <code>stampObj</code> will be applied automatically.</p>

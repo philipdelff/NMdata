@@ -315,17 +315,70 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<p>Built 2020-09-28 using NMdata 0.0.5.6.</p>
-<p>DISCLAIMER: This vignette is under development.</p>
-<div id="i-want-to-use-a-tool-from-nmdata-but-how-can-i-avoid-working-with-data.table" class="section level2">
-<h2>I want to use a tool from NMdata, but how can I avoid working with data.table?</h2>
+<p>Built 2020-10-09 using NMdata 0.0.5.7.</p>
+<div id="general-nmdata-questions" class="section level2">
+<h2>General <code>NMdata</code> questions</h2>
+<div id="how-do-i-install-nmdata" class="section level3">
+<h3>How do I install NMdata?</h3>
+<p>To get the most up to date version of <code>NMdata</code>, do the following from within R:</p>
+<pre eval="FALSE"><code>library(remotes)
+install_github(&quot;philipdelff/NMdata&quot;)
+library(NMdata)</code></pre>
+<p>In a production environment, use a <a href="https://github.com/philipdelff/NMdata/releases">github release</a> To install <code>NMdata 0.0.6</code> release, do</p>
+<pre eval="FALSE"><code>library(remotes)
+install_github(&quot;philipdelff/NMdata@v0.0.6&quot;)
+library(NMdata)</code></pre>
+<p>If you need to archive a script that is dependent on a feature or bug fix which is only in the master branch, request a release.</p>
+</div>
+<div id="what-about-nmdata-dependencies" class="section level3">
+<h3>What about NMdata dependencies?</h3>
+<p><code>NMdata</code> depends on <code>data.table</code> only, and <code>data.table</code> does not have any dependencies. R 3.0 or later is required, that’s all (yes, you can actually run this on pretty old R installations without any difference).</p>
+</div>
+<div id="i-use-another-tool-that-automatically-reads-my-data.-should-i-be-interested-in-nndata" class="section level3">
+<h3>I use another tool that automatically reads my data. Should I be interested in NNdata?</h3>
+<p>The data creation tools in <code>NMdata</code> may still be interesting. If another tool is working well for a project, you may not have any reason to use <code>NMscanData</code> for it. However, a lot of the time those tools have certain requirements to how datasets are constructed and especially how data is exported from Nonmem (<code>$TABLE</code>). If a Nonmem run does not live up to those requirements, and you want to look at the run results, <code>NMscanData</code> will let you do that without you having to “correct” your <code>$TABLE</code> statements and wait for Nonmem to run again.</p>
+<p>Also, in other cases <code>NMscanData</code> can save you a lot of time and frustration even if you have your own routines that makes <code>NMdata</code> unnecessary. If you want to read your old Nonmem runs that were done a little differently, someone else’s work, or you want to quickly read a lot of runs done by different people for a meta analysis, <code>NMscanData</code> can save you a lot of work, time and frustration.</p>
+</div>
+<div id="why-is-nmdata-fast" class="section level3">
+<h3>Why is NMdata fast?</h3>
+<p><code>NMdata</code> is generally fast - all thanks to the incredible <code>data.table</code> package. If you don’t use data.table already, it may even seem really fast. If you are noticing some circumstances where <code>NMdata</code> seems slow, I am very curious to hear about it.</p>
+</div>
+<div id="so-nmdata-uses-data.table.-does-that-mean-variables-are-modified-by-reference" class="section level3">
+<h3>So NMdata uses data.table. Does that mean variables are modified by reference?</h3>
+<p>NMdata will never modify variables in your workspace by reference, so don’t worry. NMdata definitely modify variables by reference internally but this will never affect your workspace. This has a slight performance price, but using <code>NMdata</code> must be easy for R user at all levels of experience. If you don’t understand what this is all about, you’re fine.</p>
+</div>
+<div id="i-want-to-use-a-tool-from-nmdata-but-how-can-i-avoid-working-with-data.table" class="section level3">
+<h3>I want to use a tool from NMdata, but how can I avoid working with data.table?</h3>
 <p>Easy. Every function in <code>NMdata</code> has an argument called <code>fun.as</code>. You can provide a function in this argument which will be applied to data before returnin it.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">NMscanData</span>(..., <span class="dt">as.fun =</span> as.data.frame)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">NMscanData</span>(..., <span class="dt">as.fun =</span> as.data.frame)</span></code></pre></div>
 <p>You can also get a tibble if you work with <code>tidyverse</code> tools:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">NMscanData</span>(..., <span class="dt">as.fun =</span> tibble<span class="op">::</span>as_tibble)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">NMscanData</span>(..., <span class="dt">as.fun =</span> tibble<span class="op">::</span>as_tibble)</span></code></pre></div>
 <p>If you want to change the behaviour generally for the session and omit the <code>as.fun</code> argument, you can do this by this option:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">options</span>(<span class="dt">NMdata.as.fun =</span> tibble<span class="op">::</span>as_tibble)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">options</span>(<span class="dt">NMdata.as.fun =</span> tibble<span class="op">::</span>as_tibble)</span></code></pre></div>
 <p>And all <code>NMdata</code> functions (that return data) should now return tibbles.</p>
+</div>
+<div id="can-i-request-a-feature" class="section level3">
+<h3>Can I request a feature?</h3>
+<p>Please open an issue on <a href="https://github.com/philipdelff/NMdata/issues">github</a>.</p>
+</div>
+<div id="any-plans-on-including-some-plotting-functions" class="section level3">
+<h3>Any plans on including some plotting functions?</h3>
+<p>No. See the question above about dependencies. If NMdata were extended with plotting features, it would become dependent on a number of packages, and backward compatibility would be very dificult to ensure.</p>
+<p>The only way to provide plotting features for output from <code>NMdata</code> functions, would be to launch a separate package. But actually, I rarely need much code to get the plots I want based on the format returned by <code>NMscanData</code> and maybe a call to <code>findCovs</code> or <code>findVars</code>.</p>
+</div>
+</div>
+<div id="questions-specific-to-data-reading-tools" class="section level2">
+<h2>Questions specific to data reading tools</h2>
+<div id="what-is-input-and-output-data" class="section level3">
+<h3>What is “input” and output data?</h3>
+<p>What is referred to as “input data” in <code>NMdata</code> documentation is the datafile read in the <code>$DATA</code> or <code>$INFILE</code>.</p>
+<p>What is referred to as “output data” in the same documentation is the totality of files written by <code>$TABLE</code> statements.</p>
+<p>Notice especially, “output data” does not refer to any of the files automatically written by Nonmem such as <code>.phi</code>, <code>.ext</code>, <code>.cov</code> etc.</p>
+</div>
+<div id="does-nmdata-read-.phi-.ext-.cov-and-other-files-generated-by-nonmem" class="section level3">
+<h3>Does NMdata read .phi, .ext, .cov and other files generated by Nonmem?</h3>
+<p>No. Reading this data is often very useful, but there are other tools out there that do this (e.g. <code>nonmem2R</code>).</p>
+</div>
 </div>
 
 

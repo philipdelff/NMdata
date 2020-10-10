@@ -212,7 +212,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     nmfile <- file
 
     if(!missing(nmdir.data)){
-        nmfile <- file.path(nmdir.data,basename(nmdir.data))
+        nmfile <- file.path(nmdir.data,basename(nmfile))
     }
 
     text.nm <- c(
@@ -229,7 +229,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     }
 
     message(
-        paste0("Nonmem data file:",file,"\n",
+        paste0("Nonmem data file:\n",file,"\n",
                "For NonMem:\n",
                paste(text.nm,collapse="\n")
                ))

@@ -170,4 +170,7 @@ depending on nmout TRUE or FALSE.
     CLOSED: [2020-09-22 Tue 19:20]
     Should be possible to make say a warning seem like it's coming
     from one level up.
-*** TODO vignette on data set creation
+*** DONE vignette on data set creation
+    CLOSED: [2020-10-09 Fri 21:13]
+*** DONE vignette on FAQ
+    CLOSED: [2020-10-09 Fri 21:13]

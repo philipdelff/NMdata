@@ -10,7 +10,7 @@ test_that("basic",{
     pk <- readRDS(file=file.path(NMdata_filepath(),"examples/data/xgxr2.rds"))
     expect_equal_to_reference(
         NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),
-                    write.rds=F,write.csv=F)
+                    write.rds=F,write.csv=F,nmdir.data="/example")
        ,fileRef)
 })
 

@@ -34,6 +34,7 @@ flagsAssign <- function(data, tab.flags, return.all=F, LLOQ=NULL,
 
     ..col.id <- NULL
     FLAG <- NULL
+    flag <- NULL
     condition <- NULL
     condition.used <- NULL
     Nmatched <- NULL
