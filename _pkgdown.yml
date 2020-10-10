@@ -1,0 +1,25 @@
+url: https://philipdelff.github.io/NMdata
+
+navbar:
+  structure:
+    left:  [home, articles, news, reference]
+    right: [github]
+  components:
+    home:
+      icon: fas fa-home fa-lg
+      href: index.html
+    articles:
+      text: Vignettes
+      menu:
+      - text: "Introduction to data.table"
+        href: articles/NMscanData.html
+      - text: "Data creation tools"
+        href: articles/DataCreate.html
+      - text: "FAQ"
+        href: articles/NMdata-FAQ.html
+    news:
+      text: News
+      href: news/index.html
+    reference:
+      text: Manual
+      href: reference/index.html

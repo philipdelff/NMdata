@@ -1,5 +1,5 @@
 ---
-title: "Data creation tools (New)"
+title: "Data creation tools"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Data creation tools (New)}
@@ -33,8 +33,6 @@ library(data.table)
 ```
 Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
-
-DISCLAIMER: This vignette is under development. 
 
 ## Introduction
 Nonmem has quite a number of restrictions on the format of the input

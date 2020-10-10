@@ -15,7 +15,8 @@ knitr::opts_chunk$set(
   comment = "#>"
  ,fig.width=7)
 
-knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
+## this change data.table syntax. I think we can do without.
+## knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 ```
 
 ```{r,eval=TRUE,include=FALSE}
@@ -105,7 +106,8 @@ borrowed from the xgxr package, kindly allowed by the xgxr team.
 ```{r,eval=TRUE}
 ## trtact is a character. Make it a factor with levels ordered by numericaldose level.
 res1[,trtact:=reorder(trtact,DOSE)]
-## Derive another data.table with geometric mean pop predictions by treatment and nominal sample time. Only use sample records.
+## Derive another data.table with geometric mean pop predictions by
+## treatment and nominal sample time. Only use sample records.
 res1.mean <- res1[EVID==0,.(gmPRED=exp(mean(log(PRED)))),by=.(trtact,NOMTIME)]
 ## plot individual observations and geometric mean pop predictions. Split by treatment.
 ggplot(res1[EVID==0])+
@@ -205,12 +207,15 @@ this data in the returned data object as well. Let's redo the plot
 above taking advantage of this option:
 
 ```{r}
-res2 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),col.row="ROW",recover.rows=TRUE)
-## Derive another data.table with geometric mean pop predictions by treatment and nominal sample time. Only use sample records.
+res2 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),
+                   col.row="ROW",recover.rows=TRUE)
+## Derive another data.table with geometric mean pop predictions by
+## treatment and nominal sample time. Only use sample records.
 res2.mean <- res2[EVID==0&nmout==TRUE,
                   .(gmPRED=exp(mean(log(PRED)))),
                   by=.(trtact,NOMTIME)]
-## plot individual observations and geometric mean pop predictions. Split by treatment.
+## plot individual observations and geometric mean pop
+## predictions. Split by treatment.
 ggplot(res2[EVID==0])+
     geom_point(aes(TIME,DV,colour=flag))+
     geom_line(aes(NOMTIME,gmPRED),data=res2.mean)+
@@ -250,10 +255,14 @@ argument to name the models ourselves.
 
 ```{r}
 ## notice fill is an option to rbind with data.table
-res1.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),col.row="ROW")
-res2.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),col.row="ROW",name="single-compartment")
+res1.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),
+                     col.row="ROW")
+res2.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),
+                     col.row="ROW",name="single-compartment")
 res.mult <- rbind(res1.m,res2.m,fill=T)
-res.mult.mean <- res.mult[EVID==0&nmout==TRUE,.(gmPRED=exp(mean(log(PRED)))),by=.(model,trtact,NOMTIME)]
+res.mult.mean <- res.mult[EVID==0&nmout==TRUE,
+                          .(gmPRED=exp(mean(log(PRED)))),
+                          by=.(model,trtact,NOMTIME)]
 
 ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+
     geom_line()+
@@ -264,20 +273,20 @@ ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+
 
 
 ### Use a row identifier or interpret Nonmem code
-A unique row identifier is not needed for NMscanData to run and in most
-cases succesfully and correctly complete all the steps above. However,
-the most robust way to use NMscanData is to include a unique row identifier in both
-input and at least one full-length output table. Then tell NMscanData
-to use the row identifier using the `col.row` argument. The advantage
-is that less nonmem code has to be interpreted for this
-method. However, notice that no checks are being done if the row
-identifier has been modified during the nonmem run. If you tell
-NMscanData that the column called `ROW` is a to be used as the row
-identifier, and ROW is being modified in say `$PK` before being output
-in an output table, this will mess up the result. But if you keep the
-good practice of including a unique row identifier in your dataset,
-the advice is to include it in at least one output table and tell
-NMscanData to use it by the argument `col.row`.
+A unique row identifier is not needed for NMscanData to run and in
+most cases succesfully and correctly complete all the steps
+above. However, the most robust way to use NMscanData is to include a
+unique row identifier in both input and at least one full-length
+output table. Then tell NMscanData to use the row identifier using the
+`col.row` argument. The advantage is that less nonmem code has to be
+interpreted for this method. However, notice that no checks are being
+done if the row identifier has been modified during the nonmem run. If
+you tell NMscanData that the column called `ROW` is a to be used as
+the row identifier, and ROW is being modified in say `$PK` before
+being output in an output table, this will mess up the result. But if
+you keep the good practice of including a unique row identifier in
+your dataset, the advice is to include it in at least one output table
+and tell NMscanData to use it by the argument `col.row`.
 
 ### Preserve all input data properties
 In the code above when plotting the population predictions together
@@ -328,7 +337,9 @@ a different setup, you can use the `file.mod` argument. Do one of the
 following if needed:
 
 * Explicitly give the path to the input control stream or
-* Pass a function that translates from the output control stream to the input. Example if the input is called `input.txt` and the output is called `output.txt`:
+* Pass a function that translates from the output control stream to
+  the input. Example if the input is called `input.txt` and the output
+  is called `output.txt`:
 
 ```{r,eval=FALSE}
 out2in <- function(file) file.path(dirname(file),"input.txt")
@@ -342,7 +353,8 @@ So far, the merge has been very straightforward, but in many
 The following main principles are followed
 
 * Output data prevails over input data
-* Row-specific output data is preferred over ID-level (FIRSTONLY or LASTONLY) tables
+* Row-specific output data is preferred over ID-level (FIRSTONLY or
+  LASTONLY) tables
 * Output tables are prioritized by their order of apperance
 * Input data is as defined in the $INPUT section in Nonmem. This
   includes renaming of columns, and columns that are dropped in Nonmem

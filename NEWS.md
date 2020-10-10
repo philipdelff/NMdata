@@ -14,7 +14,7 @@ Documentation has been upgraded with a pkgdown site.
 
 New vignette on data set creation tools in NMdata.
 
-New FAQ vignette initiated.
+New FAQ vignette.
 
 ## Bugfixes
 NMtransInput now supports the case where additional unused column
