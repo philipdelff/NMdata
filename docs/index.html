@@ -51,7 +51,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/NMscanData.html">Introduction to data.table</a>
+      <a href="articles/NMscanData.html">Automated and general reader of Nonmem data</a>
     </li>
     <li>
       <a href="articles/DataCreate.html">Data creation tools</a>
@@ -68,7 +68,14 @@
   <a href="reference/index.html">Manual</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/philipdelff/NMdata">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -88,16 +95,17 @@
 <div id="how-to-install" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-to-install" class="anchor"></a>How to Install</h2>
-<p>NMdata is aimed at CRAN release in near future. Meanwhile, installing from Github is easy:</p>
+<p><code>NMdata</code> is aimed at CRAN release in near future. Meanwhile, installing from Github is easy:</p>
 <pre><code><a href="https://remotes.r-lib.org">library(remotes)
 install_github("philipdelff/NMdata")
 library(NMdata)</a></code></pre>
+<p>See the <a href="https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html">FAQ</a> for how to install specific releases from Github (ensuring reproducibility).</p>
 </div>
 <div id="automated-and-general-reader-of-nonmem-output-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#automated-and-general-reader-of-nonmem-output-data" class="anchor"></a>Automated and general reader of Nonmem output data</h2>
 <p>Reading the resulting data from Nonmem can require quite a bit of manual steps. Especially because all modelers seem to do things a little differently. The frustrating fact is that we always want the same - all data output from Nonmem combined with additional columns in input data, and then possibly broken down to the different levels of variability. This package automates this process and can save you a lot of time.</p>
-<p>Take a look at <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html">this vignette</a> for more info on the Nonmem data reader. Once NMdata is installed, you can of course access the vignette from within R:</p>
+<p>Take a look at <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html">this vignette</a> for more info on the Nonmem data reader. Once <code>NMdata</code> is installed, you can of course access the vignette from within R:</p>
 <pre><code><a href="articles/NMscanData.html">vignette("NMscanData")</a></code></pre>
 <p>No more having to look at the .lst to see which tables to read. No more having to read multiple tables to get all the variables. No more having to merge with input data to get variables that were not exported with nonmem. This and much more is done automatically.</p>
 </div>

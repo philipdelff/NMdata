@@ -51,7 +51,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/NMscanData.html">Introduction to data.table</a>
+      <a href="../articles/NMscanData.html">Automated and general reader of Nonmem data</a>
     </li>
     <li>
       <a href="../articles/DataCreate.html">Data creation tools</a>
@@ -68,7 +68,14 @@
   <a href="../reference/index.html">Manual</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/philipdelff/NMdata">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -113,12 +120,12 @@
 <span class="co">#&gt;  1: 31   5</span>
 <span class="co">#&gt;  2: 32   3</span>
 <span class="co">#&gt;  3: 33   5</span>
-<span class="co">#&gt;  4: 34   2</span>
-<span class="co">#&gt;  5: 35   3</span>
-<span class="co">#&gt;  6: 36   1</span>
-<span class="co">#&gt;  7: 37   4</span>
-<span class="co">#&gt;  8: 38   3</span>
-<span class="co">#&gt;  9: 39   2</span>
+<span class="co">#&gt;  4: 34   5</span>
+<span class="co">#&gt;  5: 35   5</span>
+<span class="co">#&gt;  6: 36   4</span>
+<span class="co">#&gt;  7: 37   5</span>
+<span class="co">#&gt;  8: 38   1</span>
+<span class="co">#&gt;  9: 39   1</span>
 <span class="co">#&gt; 10: 40   2</span>
 <span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk2</span>)
@@ -239,7 +246,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2020-10-10 11:03:21 EDT"</span>
+<span class="co">#&gt; [1] "2020-10-10 13:05:53 EDT"</span>
 </pre></div>
 <p>These are very simple functions. But they are simple to use as well, and hopefully they will help you avoid sitting with a data set trying to guess which script generated it so you can do a modification or understand how something was done.</p>
 <p>When using NMwriteData, you don’t have to call stampObj explicitly. Just pass the <code>script</code> argument to <code>NMwriteData</code> and <code>stampObj</code> will be applied automatically.</p>

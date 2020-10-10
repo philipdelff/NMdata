@@ -9,7 +9,7 @@ The best place to browse information about the package is
 course included in the package itself too.
 
 ## How to Install
-NMdata is aimed at CRAN release in near future. Meanwhile, installing
+`NMdata` is aimed at CRAN release in near future. Meanwhile, installing
 from Github is easy:
 
 ```
@@ -17,18 +17,22 @@ library(remotes)
 install_github("philipdelff/NMdata")
 library(NMdata)
 ```
+See the
+[FAQ](https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html)
+for how to install specific releases from Github (ensuring reproducibility).
+
 
 ## Automated and general reader of Nonmem output data
 Reading the resulting data from Nonmem can require quite a bit of
-manual steps. Especially because all modelers seem to do
-things a little differently. The frustrating fact is that we always
-want the same - all data output from Nonmem combined with additional columns in
-input data, and then possibly broken down to the different levels
-of variability. This package automates this process and can save you a
-lot of time. 
+manual steps. Especially because all modelers seem to do things a
+little differently. The frustrating fact is that we always want the
+same - all data output from Nonmem combined with additional columns in
+input data, and then possibly broken down to the different levels of
+variability. This package automates this process and can save you a
+lot of time.
 
 Take a look at [this vignette](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
-for more info on the Nonmem data reader. Once NMdata is installed, you
+for more info on the Nonmem data reader. Once `NMdata` is installed, you
 can of course access the vignette from within R:
 
 ```

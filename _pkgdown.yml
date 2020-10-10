@@ -11,7 +11,7 @@ navbar:
     articles:
       text: Vignettes
       menu:
-      - text: "Introduction to data.table"
+      - text: "Automated and general reader of Nonmem data"
         href: articles/NMscanData.html
       - text: "Data creation tools"
         href: articles/DataCreate.html
