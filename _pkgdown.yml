@@ -23,3 +23,6 @@ navbar:
     reference:
       text: Manual
       href: reference/index.html
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/philipdelff/NMdata
