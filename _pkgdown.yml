@@ -2,8 +2,7 @@ url: https://philipdelff.github.io/NMdata
 
 navbar:
   structure:
-    left:  [home, articles, news, reference]
-    right: [github]
+    left:  [home, articles, reference, news, github]
   components:
     home:
       icon: fas fa-home fa-lg
@@ -17,12 +16,12 @@ navbar:
         href: articles/DataCreate.html
       - text: "FAQ"
         href: articles/NMdata-FAQ.html
-    news:
-      text: News
-      href: news/index.html
     reference:
       text: Manual
       href: reference/index.html
+    news:
+      text: News
+      href: news/index.html
     github:
       icon: fab fa-github fa-lg
       href: https://github.com/philipdelff/NMdata

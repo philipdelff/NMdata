@@ -122,7 +122,7 @@ NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
     } else {
         if(file.exists(path.data.input)){
             if(!quiet) message("Read delimited text input data file.")
-            data.input <- NMreadCsv(path.data.input)
+            data.input <- NMreadCsv(path.data.input,as.fun="none")
         } else {
             stop(paste("Input data file not found. Was expecting to find",path.data.input))
             ##        use.input <- FALSE
@@ -131,7 +131,7 @@ NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
 
 ### filters must be applied here according to NM manual IV-1
     if(applyFilters){
-        data.input <- NMtransFilters(data.input,file=file,invert=invert,quiet=quiet)
+        data.input <- NMtransFilters(data.input,file=file,invert=invert,quiet=quiet,as.fun="none")
     }
 
     cnames.input <- colnames(data.input)

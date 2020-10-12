@@ -39,11 +39,14 @@ runAsFun <- function(data,as.fun){
     if(is.null(as.fun)){
         as.fun <- getOption("NMdata.as.fun")
     }
+    if(is.character(as.fun)&&length(as.fun)==1&&as.fun=="none"){
+        return(data)
+    }
     if(is.null(as.fun)){
         return(data)
     }
     if(!is.function(as.fun)){
-        stop("as.fun must be a function")
+        stop("as.fun must be a function or the character string \"none\".")
     }
     as.fun(data)
 }

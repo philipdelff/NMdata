@@ -41,14 +41,14 @@ tables may have to be combined, and then some variables may still be
 missing (like character variables which may be in the input data
 file). Most modellers develop some habits over time to avoid some
 issues. But still, it may be time demanding even for experienced
-modelers to pick up a model developed by someone else or by
-themselves earlier in their career just because they need to
-understand what data exported and how. This vignette focuses on how
-NMdata provides a very general solution for what needs to be trivial:
-get a dataset out of a Nonmem run. And "general" means that it will
-work out of the box in as many cases as possible. It will do its best
-to understand how the data can be read and combined, (ideally)
-regardless of the way the model was written.
+modelers to pick up a model developed by someone else or by themselves
+earlier in their career just because they need to understand what data
+exported and how. This vignette focuses on how NMdata provides a very
+general solution for what needs to be trivial: get a dataset out of a
+Nonmem run, including discarded information from the input data. And
+"general" means that it will work out of the box in as many cases as
+possible. It will do its best to understand how the data can be read
+and combined, (ideally) regardless of the way the model was written.
 
 In brevity, the most important steps are
 
@@ -74,12 +74,14 @@ NMscanData has read and combined input and output data and returned
 a data.table. The `NMdata` class allows for keeping additional
 information in the object, but it can be treated as a data.table. If
 you are not used to data.table and don't want to use them, feel free
-to convert to another class, or use the `as.dt=FALSE` argument and get a
-data.frame back. NMdata uses data.table under the hood but all
-functions will work even if you don't. In the future, NMdata may be
-able to return tibbles or other classes as well.
+to convert to another class, or use the `as.fun=as.data.frame` argument and get a
+`data.frame` back. In fact, you can get any class back (including the
+popular `tibble`). See the [FAQ](https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html) for how to do this, and for how to
+change the general behaviour of `NMdata` functions to return the class
+you prefer. `NMdata` uses `data.table` under the hood but all
+functions will work even if you don't. 
 
-NMscanData writes a little information about what has been read. We
+`NMscanData` writes a little information about what has been read. We
 are being recommended merging by a unique row identifier. The default
 of interpreting Nonmem code is not recommended. It is the default
 because it does not rely on assumptions about the input data. It
