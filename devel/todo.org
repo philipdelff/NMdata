@@ -174,3 +174,12 @@ depending on nmout TRUE or FALSE.
     CLOSED: [2020-10-09 Fri 21:13]
 *** DONE vignette on FAQ
     CLOSED: [2020-10-09 Fri 21:13]
+*** DONE Fix NMscanData messages to be just one.
+    CLOSED: [2020-10-15 Thu 13:09]
+*** TODO Vignettes should mostly use data.frame's.
+*** TODO Release 0.0.6
+*** TODO Release 0.0.7  
+ with only diff from 0.0.6 that it returns data.frames by default
+**** Update vignettes
+**** 
+

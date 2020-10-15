@@ -1,4 +1,4 @@
-# NMdata 0.0.6
+# Since NMdata 0.0.5
 General support for conversion of output to user-specified
 class. Setting the option "NMdata.as.fun" to a conversion function
 such as as.data.frame or tibble::as_tibble it is possible for the user

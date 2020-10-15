@@ -314,19 +314,18 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 
             cols.row.both <- intersect(cols.row.input,cols.row.output)
             if(length(cols.row.both)){
-                messageWrap(paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in both input and output data. If this column or one of these columns is not modified by the Nonmem run, consider using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.both,collapse=", ")))
+                msg0 <- paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in both input and output data. If this column or one of these columns is not modified by the Nonmem run, consider using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.both,collapse=", "))
             } else if(length(cols.row.input)) {
-                messageWrap(paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in input data. If this column or one of these columns is not modified by the Nonmem run, consider adding it to a row-level output table and using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.input,collapse=", ")))
+                msg0 <- paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in input data. If this column or one of these columns is not modified by the Nonmem run, consider adding it to a row-level output table and using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.input,collapse=", "))
             } else {
-                messageWrap("\nInput data columns will be appended to output data. However, it is recommended to use a unique row identifier (typically a counter but only required to be unique for each row) for a robust merge of input and output data. See argument col.row.")
+                msg0 <- "\nInput data columns will be appended to output data. However, it is recommended to use a unique row identifier (typically a counter but only required to be unique for each row) for a robust merge of input and output data. See argument col.row."
             }
-            messageWrap("To skip this check, please specify either col.row (recommended) or cbind.by.filters.",fun.msg=message)
-        } ## else {
-        ## messageWrap("col.row not supplied, and input will be merged onto output data. If possible, consider adding a unique row identifier to input and include it in an (row-level) output table.")
-        ## }
+            msg <- paste0(msg0,"\n",
+                          "To skip this check, please specify either col.row (recommended) or cbind.by.filters.")
+            messageWrap(msg,fun.msg=message)
+        }
         
         if(cbind.by.filters) {
-            ## messageWrap("Input data is filtered by translation of the Nonmem controls stream. This works in most cases. However, it is recommended to always use a row identifier in both input and output data if possible. See col.row and cbind.by.filters arguments.")
 
             if(!is.null(tab.row)&nrow(data.input)!=nrow(tab.row)) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.                
@@ -371,7 +370,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 
                 tab.vars <- rbind(tab.vars,
                                   data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",tab.type="row"))
-                tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=T)
+                tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=T,as.fun="none")
                 
             }
             
@@ -417,7 +416,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         ## if col.id is not in tab.idlevel but col.row is, get col.id and discard row.
         if(!skip.idlevel && !is.null(tab.row) && !all(col.id%in%colnames(tab.idlevel))) {
             
-            tab.idlevel <- mergeCheck(tab.idlevel[,setdiff(colnames(tab.idlevel),col.id),with=F],tab.row[,c(col.row,col.id),with=F],by=col.row)
+            tab.idlevel <- mergeCheck(tab.idlevel[,setdiff(colnames(tab.idlevel),col.id),with=F],tab.row[,c(col.row,col.id),with=F],by=col.row,as.fun="none")
             tab.idlevel[,(col.row):=NULL]
         }
 
@@ -439,7 +438,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                 ## use tab.vars for the subset
                 cols.to.use <- unique(c(col.id,setdiff(colnames(tab.idlevel),tab.vars[source=="output",var])))
                 tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=F]
-                tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id)
+                tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="none")
                 tab.vars <- rbind(tab.vars,data.table(var=cols.to.use,source="output",tab.type="idlevel"))
             }
         }
