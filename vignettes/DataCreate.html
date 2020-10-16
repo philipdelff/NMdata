@@ -12,7 +12,7 @@
 
 
 
-<title>Data creation tools (New)</title>
+<title>Data creation tools</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -311,12 +311,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">Data creation tools (New)</h1>
+<h1 class="title toc-ignore">Data creation tools</h1>
 
 
 
-<p>Built 2020-10-09 using NMdata 0.0.5.7.</p>
-<p>DISCLAIMER: This vignette is under development.</p>
+<p>Built 2020-10-15 using NMdata 0.0.5.7.</p>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>Nonmem has quite a number of restrictions on the format of the input data, and problems with the data set is a very typical for Nonmem not to behave as expected. When this happens, you easily waste a lot time debugging the data. <code>NMdata</code> includes some simple functions to prevent these situations.</p>
@@ -332,15 +331,15 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>dt.cov[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(COV, <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>))]</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>dt.cov</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="co">#&gt;     ID COV</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="co">#&gt;  1: 31   1</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="co">#&gt;  2: 32   3</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="co">#&gt;  3: 33   3</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="co">#&gt;  4: 34   5</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="co">#&gt;  5: 35   5</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="co">#&gt;  6: 36   3</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a><span class="co">#&gt;  7: 37   4</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="co">#&gt;  1: 31   3</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="co">#&gt;  2: 32   4</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="co">#&gt;  3: 33   5</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="co">#&gt;  4: 34   1</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="co">#&gt;  5: 35   1</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="co">#&gt;  6: 36   2</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a><span class="co">#&gt;  7: 37   1</span></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a><span class="co">#&gt;  8: 38   4</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a><span class="co">#&gt;  9: 39   3</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a><span class="co">#&gt;  9: 39   5</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a><span class="co">#&gt; 10: 40   4</span></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a>pk2 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>)</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a><span class="kw">dim</span>(pk2)</span>
@@ -420,14 +419,15 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>For the final step of writing the dataset, <code>NMwriteData</code> is provided. Most importantly, it writes a csv for Nonmem and an rds for R with equal contents, but with the rds including all information (such as factor levels) which cannot be saved in csv (NMscanData will know how to make use of this information once you retrieve the Nonmem results). It also provides a proposal for text to include in the <code>$INPUT</code> and <code>$DATA</code> sections of the Nonmem control streams - for you to copy-paste.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">NMwriteData</span>(pk)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="co">#&gt; Nonmem data file:</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="co">#&gt; For NonMem:</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB EFF0</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a><span class="co">#&gt; $DATA </span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="co">#&gt; IGN=@</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a><span class="co">#&gt; IGNORE=(FLAG.NE.0)</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a><span class="co">#&gt; Data returned but not written to file(s).</span></span></code></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="co">#&gt; For NonMem:</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a><span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB EFF0</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="co">#&gt; $DATA </span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a><span class="co">#&gt; IGN=@</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a><span class="co">#&gt; IGNORE=(FLAG.NE.0)</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a><span class="co">#&gt; Data returned but not written to file(s).</span></span></code></pre></div>
 <p>If a file name had been provided, the data would have been written, and the path to the data file would have been included in the message written back to the user. There are several arguments that will affect the proposed text for the Nonmem run, see <code>?NMwriteData</code>.</p>
 </div>
 </div>
@@ -440,7 +440,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;vignettes/DataCreate.Rmd&quot;</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a><span class="co">#&gt; $CreationTime</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2020-10-09 21:20:57 EDT&quot;</span></span></code></pre></div>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2020-10-15 21:02:12 EDT&quot;</span></span></code></pre></div>
 <p>These are very simple functions. But they are simple to use as well, and hopefully they will help you avoid sitting with a data set trying to guess which script generated it so you can do a modification or understand how something was done.</p>
 <p>When using NMwriteData, you don’t have to call stampObj explicitly. Just pass the <code>script</code> argument to <code>NMwriteData</code> and <code>stampObj</code> will be applied automatically.</p>
 </div>

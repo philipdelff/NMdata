@@ -11,6 +11,7 @@
 ##' @details Use this to exclude columns that are constant within
 ##'     cols.id. If cols.id=ID, this could be to get only time-varying
 ##'     covariates.
+##' @return a data set with as many rows as in data
 ##' @family DataCreate
 ##' @import data.table
 ##' @export

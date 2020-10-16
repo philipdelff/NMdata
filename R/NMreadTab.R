@@ -16,7 +16,8 @@
 ##'     added as a column called TABLENO.
 ##' @param as.fun The default is to return data in data.tables. Pass a
 ##'     function in as.fun to convert to something else. If
-##'     data.frames are wanted, use as.fun=as.data.frame. 
+##'     data.frames are wanted, use as.fun=as.data.frame. See
+##'     ?runAsFun.
 ##' @param ... Arguments passed to fread.
 ##' @return The Nonmem table data.
 ##' @details The actual reading of data is based on

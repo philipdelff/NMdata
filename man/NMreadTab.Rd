@@ -19,7 +19,8 @@ added as a column called TABLENO.}
 
 \item{as.fun}{The default is to return data in data.tables. Pass a
 function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame.}
+data.frames are wanted, use as.fun=as.data.frame. See
+?runAsFun.}
 
 \item{...}{Arguments passed to fread.}
 }

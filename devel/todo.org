@@ -159,7 +159,8 @@ depending on nmout TRUE or FALSE.
     CLOSED: [2020-09-22 Tue 13:39]
 *** DONE Improve flagsAssign messages at each FLAG coding
     CLOSED: [2020-09-22 Tue 21:12]
-*** TODO Read through all documentation
+*** DONE Read through all documentation
+    CLOSED: [2020-10-15 Thu 20:02]
 *** DONE Function family DataRead for NMscanData and others
     CLOSED: [2020-09-27 Sun 10:32]
 *** DONE Rename DataWrangling to DataCreate
@@ -178,8 +179,12 @@ depending on nmout TRUE or FALSE.
     CLOSED: [2020-10-15 Thu 13:09]
 *** TODO Vignettes should mostly use data.frame's.
 *** TODO Release 0.0.6
+**** DONE Look for file.mod option
+     CLOSED: [2020-10-15 Thu 20:50]
 *** TODO Release 0.0.7  
  with only diff from 0.0.6 that it returns data.frames by default
 **** Update vignettes
-**** 
-
+***** DONE NMscanData
+      CLOSED: [2020-10-15 Thu 14:57]
+***** TODO FAQ
+***** TODO DataCreate

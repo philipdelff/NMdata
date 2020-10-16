@@ -1,12 +1,16 @@
-##' Extract columns that do not vary within variables in a data.frame
+##' Extract columns that do not vary within variables in data
 ##'
 ##' @param data data.frame in which to look for covariates
-##' @param cols.id covariates will be searched for in combinations of values in
-##'     these columns. Often cols.id will be either empty or ID. But it
-##'     can also be both say c("ID","DRUG") or c("ID","TRT").
+##' @param cols.id covariates will be searched for in combinations of
+##'     values in these columns. Often cols.id will be either empty or
+##'     ID. But it can also be both say c("ID","DRUG") or
+##'     c("ID","TRT").
 ##' @param as.fun The default is to return data in data.tables. Pass a
 ##'     function in as.fun to convert to something else. If
-##'     data.frames are wanted, use as.fun=as.data.frame. 
+##'     data.frames are wanted, use as.fun=as.data.frame. See
+##'     ?runAsFun.
+##' @return a data set with one observation per combination of values
+##'     of variables listed in cols.id.
 ##' @family DataCreate
 ##' @import data.table
 ##' @export

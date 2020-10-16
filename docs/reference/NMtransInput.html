@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>read input data and translate names according to the $INPUT section — NMtransInput • NMdata</title>
+<title>read input data and translate column names according to the $INPUT section — NMtransInput • NMdata</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,11 @@
 
 
 
-<meta property="og:title" content="read input data and translate names according to the $INPUT section — NMtransInput" />
-<meta property="og:description" content="Based on a nonmem run, this function finds the input
-    data and reads it. But it reads it like the nonmem run by
-    applying DROP arguments and alternative naming of columns in
-    the nonmem run." />
+<meta property="og:title" content="read input data and translate column names according to the $INPUT section — NMtransInput" />
+<meta property="og:description" content="Based on a nonmem run (lst and/or mod file), this
+    function finds the input data and reads it. But it reads it
+    like the nonmem run by applying DROP/SKIP arguments and
+    alternative naming of columns in the nonmem run." />
 
 
 
@@ -133,16 +133,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>read input data and translate names according to the $INPUT section</h1>
+    <h1>read input data and translate column names according to the $INPUT section</h1>
     
     <div class="hidden name"><code>NMtransInput.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Based on a nonmem run, this function finds the input
-    data and reads it. But it reads it like the nonmem run by
-    applying DROP arguments and alternative naming of columns in
-    the nonmem run.</p>
+    <p>Based on a nonmem run (lst and/or mod file), this
+    function finds the input data and reads it. But it reads it
+    like the nonmem run by applying DROP/SKIP arguments and
+    alternative naming of columns in the nonmem run.</p>
     </div>
 
     <pre class="usage"><span class='fu'>NMtransInput</span>(
@@ -165,7 +165,7 @@
 file. The filename does not need to end in .lst. It is
 recommended to use the output control stream because it
 reflects the model as it was run rather than how it is planned
-for next run.</p></td>
+for next run. However, see file.mod and dir.data.</p></td>
     </tr>
     <tr>
       <th>use.rds</th>
@@ -177,7 +177,7 @@ by default too.</p></td>
     </tr>
     <tr>
       <th>file.mod</th>
-      <td><p>The input control stream. Default is to look for
+      <td><p>The input control stream file path. Default is to look for
 \"file\" with extension changed to .mod (PSN style). You can
 also supply the path to the file, or you can provide a
 function that translates the output file path to the input
@@ -197,8 +197,8 @@ provided, the .mod file is not used at all.</p></td>
     </tr>
     <tr>
       <th>applyFilters</th>
-      <td><p>Set to TRUE if you want IGNORE and ACCEPT
-statements in the nonmem control streams to be applied before
+      <td><p>If TRUE (default), IGNORE and ACCEPT
+statements in the nonmem control streams are applied before
 returning the data.</p></td>
     </tr>
     <tr>
@@ -209,13 +209,15 @@ non-interactive stuff.</p></td>
     <tr>
       <th>invert</th>
       <td><p>If TRUE, the data rows that are dismissed by the
-Nonmem data filters (ACCEPT and IGNORE) will be returned.</p></td>
+Nonmem data filters (ACCEPT and IGNORE) and only this will be
+returned. Only used if applyFilters is TRUE.</p></td>
     </tr>
     <tr>
       <th>as.fun</th>
       <td><p>The default is to return data in data.tables. Pass a
 function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame.</p></td>
+data.frames are wanted, use as.fun=as.data.frame. See
+?runAsFun.</p></td>
     </tr>
     </table>
 

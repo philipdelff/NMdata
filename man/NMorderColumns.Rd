@@ -53,7 +53,8 @@ you want first.}
 
 \item{as.fun}{The default is to return data in a data.table. Pass
 a function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame.}
+data.frames are wanted, use as.fun=as.data.frame. See
+?runAsFun.}
 }
 \description{
 Order data columns for easy export to Nonmem. No data values are
@@ -83,7 +84,11 @@ corresponding argument. Not
 Other DataCreate: 
 \code{\link{findCovs}()},
 \code{\link{findVars}()},
+\code{\link{flagsAssign}()},
+\code{\link{flagsCount}()},
 \code{\link{mergeCheck}()},
+\code{\link{objInfo}()},
+\code{\link{stampObj}()},
 \code{\link{tmpcol}()}
 }
 \concept{DataCreate}

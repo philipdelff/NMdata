@@ -17,3 +17,22 @@ Possibly converted data.
 \description{
 Determine as.fun to use based on argument and options
 }
+\details{
+NMdata functions can return objects based on different
+    classes. NMdata is mostly implemented in data.table, and the
+    default for most functions is to return a data.table. However,
+    most functions take an argument as.fun which controls this
+    behaviour. If this argument is not set, the value of
+    getOptions("NMdata.as.fun") decides (control using
+    e.g. options(NMdata.as.fun=as.data.frame)). Notice, this is
+    done before adding the NMdata class. So better use this
+    functionality rather than converting the obtained dataset
+    manually (which will drop the NMdata class)
+
+You can use the following values:
+\itemize{
+ \item{"none"}{Do nothing (i.e. keep data.table).}
+ \item{a function}{Apply the function. You must supply the actual function, not a string representing it. Examples: as.data.frame or tibble::as_tibble. as.data.table won't have any effect since it will be applied to data.tables, so in this case, better use "none".}
+\item{NULL}{Use default (i.e. try getOptions("NMdata.as.fun") and if still NULL, do nothing.)}
+}
+}

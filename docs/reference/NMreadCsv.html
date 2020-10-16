@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="read csv data that is written to be read by nonmem — NMreadCsv" />
-<meta property="og:description" content="read csv data that is written to be read by nonmem" />
+<meta property="og:description" content="This function is especially useful if the csv file was written
+using NMwriteData." />
 
 
 
@@ -136,7 +137,8 @@
     </div>
 
     <div class="ref-description">
-    <p>read csv data that is written to be read by nonmem</p>
+    <p>This function is especially useful if the csv file was written
+using NMwriteData.</p>
     </div>
 
     <pre class="usage"><span class='fu'>NMreadCsv</span>(
@@ -171,7 +173,8 @@
       <th>as.fun</th>
       <td><p>The default is to return data in data.tables. Pass a
 function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame.</p></td>
+data.frames are wanted, use as.fun=as.data.frame. See
+?runAsFun.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -181,11 +184,12 @@ data.frames are wanted, use as.fun=as.data.frame.</p></td>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This is just a shortcut to fread so you don't have to remember how
-    to read the data that was exported for nonmem.</p>
+    <p>This is just a shortcut to fread so you don't have to
+    remember how to read the data that was exported for nonmem.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other DataRead: 
+    <div class='dont-index'><p>NMwriteData</p>
+<p>Other DataRead: 
 <code><a href='NMreadTab.html'>NMreadTab</a>()</code>,
 <code><a href='NMscanData.html'>NMscanData</a>()</code>,
 <code><a href='NMscanTables.html'>NMscanTables</a>()</code>,

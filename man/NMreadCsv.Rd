@@ -24,18 +24,22 @@ NMreadCsv(
 
 \item{as.fun}{The default is to return data in data.tables. Pass a
 function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame.}
+data.frames are wanted, use as.fun=as.data.frame. See
+?runAsFun.}
 
 \item{...}{passed to read.csv}
 }
 \description{
-read csv data that is written to be read by nonmem
+This function is especially useful if the csv file was written
+using NMwriteData.
 }
 \details{
-This is just a shortcut to fread so you don't have to remember how
-    to read the data that was exported for nonmem.
+This is just a shortcut to fread so you don't have to
+    remember how to read the data that was exported for nonmem.
 }
 \seealso{
+NMwriteData
+
 Other DataRead: 
 \code{\link{NMreadTab}()},
 \code{\link{NMscanData}()},

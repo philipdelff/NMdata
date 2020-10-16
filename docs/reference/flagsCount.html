@@ -40,7 +40,9 @@
 
 
 <meta property="og:title" content="Create an overview of number of retained and discarded datapoints. — flagsCount" />
-<meta property="og:description" content="Create an overview of number of retained and discarded datapoints." />
+<meta property="og:description" content="Generate an overview of number of observations disregarded due to
+different reasons. And how many are left after each exclusion
+flag." />
 
 
 
@@ -136,7 +138,9 @@
     </div>
 
     <div class="ref-description">
-    <p>Create an overview of number of retained and discarded datapoints.</p>
+    <p>Generate an overview of number of observations disregarded due to
+different reasons. And how many are left after each exclusion
+flag.</p>
     </div>
 
     <pre class="usage"><span class='fu'>flagsCount</span>(<span class='kw'>data</span>, <span class='kw'>tab.flags</span>, <span class='kw'>file</span>, col.id = <span class='st'>"ID"</span>, by = <span class='kw'>NULL</span>)</pre>
@@ -190,10 +194,15 @@ columns.</p></td>
     discarded by earlier flags.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other DataGen: 
+    <div class='dont-index'><p>Other DataCreate: 
+<code><a href='NMorderColumns.html'>NMorderColumns</a>()</code>,
+<code><a href='findCovs.html'>findCovs</a>()</code>,
+<code><a href='findVars.html'>findVars</a>()</code>,
 <code><a href='flagsAssign.html'>flagsAssign</a>()</code>,
+<code><a href='mergeCheck.html'>mergeCheck</a>()</code>,
 <code><a href='objInfo.html'>objInfo</a>()</code>,
-<code><a href='stampObj.html'>stampObj</a>()</code></p></div>
+<code><a href='stampObj.html'>stampObj</a>()</code>,
+<code><a href='tmpcol.html'>tmpcol</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

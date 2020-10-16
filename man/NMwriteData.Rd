@@ -10,7 +10,6 @@ NMwriteData(
   write.csv = TRUE,
   write.RData = FALSE,
   write.rds = write.csv,
-  force.row = FALSE,
   script,
   args.stamp,
   args.rds,
@@ -20,7 +19,7 @@ NMwriteData(
 )
 }
 \arguments{
-\item{data}{The dataset to write to Nonmem.}
+\item{data}{The dataset to write to file for use in Nonmem.}
 
 \item{file}{The file to write to. The extension (everything after
 and including last ".") is dropped. csv, rds and other
@@ -33,22 +32,18 @@ recommended. Use write.rds instead.}
 
 \item{write.rds}{write an rds file?}
 
-\item{force.row}{Ensure that data contains a ROW column counting
-the rows in the dataset, and add one if none exists. Defaults
-to FALSE (default is not editing the dataset at all).}
-
 \item{script}{If provided, the object will be stamped with this
-script name before saved to rds.}
+script name before saved to rds or Rdata. See ?stampObj.}
 
 \item{args.stamp}{A list of arguments to be passed to stampObj.}
 
 \item{args.rds}{A list of arguments to be passed to saveRDS.}
 
-\item{nmdrop}{Columns to drop in Nonmem $DATA. This has two
-implications. One being that the proposed $DATA indicased
-=DROP after the given column names. The other that in case it
-is a non-numeric column, succeeding columns can still be
-included.}
+\item{nmdrop}{Only used for generation of proposed text for Nonmem
+control stream. Columns to drop in Nonmem $DATA. This has two
+implications. One is that the proposed $DATA indicates =DROP
+after the given column names. The other that in case it is a
+non-numeric column, succeeding columns can still be included.}
 
 \item{nmdir.data}{For the $DATA text proposal only. The path to
 the input datafile to be used in the Nonmem $DATA
@@ -57,8 +52,9 @@ wanted here.}
 
 \item{col.flag}{Name of a numeric column with zero value for rows
 to include in Nonmem run, non-zero for rows to skip. The
-argument is only used for the $DATA. To skip this feature, use
-col.flag=NULL.}
+argument is only used for generating the proposed text to
+paste into the Nonmem control stream. To skip this feature,
+use col.flag=NULL.}
 }
 \value{
 Text for inclusion in Nonmem control stream, invisibly.
@@ -66,15 +62,17 @@ Text for inclusion in Nonmem control stream, invisibly.
 \description{
 Instead of trying to remember the arguments to pass to write.csv,
 use this wrapper. It tells you what to write in $DATA and $INPUT
-in nonmem, and it exports an rds file as well which is highly
-preferable for use in R. It never edits the data before writing
-the datafile.
+in nonmem, and it (additionally) exports an rds or Rdata file as
+well which is highly preferable for use in R. It never edits the
+data before writing the datafile. The filenames for csv, rds
+etc. are derived by replacing the extension to the filename given
+in the file argument.
 }
 \details{
 When writing csv files, the file will be
     comma-separated. Because Nonmem does not support quoted
-    fields, you must avoid commas in character fields. At the
-    moment, no check for this is being done.
+    fields, you must avoid commas in character fields. An error is
+    returned if commas are found in strings.
 
 The user is provided with text to use in Nonmem. This lists names
 of the data columns. Once a column is reached that Nonmem will not

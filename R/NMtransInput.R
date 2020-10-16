@@ -1,15 +1,15 @@
-##' read input data and translate names according to the $INPUT section
+##' read input data and translate column names according to the $INPUT section
 ##' 
-##' @description Based on a nonmem run, this function finds the input
-##'     data and reads it. But it reads it like the nonmem run by
-##'     applying DROP arguments and alternative naming of columns in
-##'     the nonmem run.
+##' @description Based on a nonmem run (lst and/or mod file), this
+##'     function finds the input data and reads it. But it reads it
+##'     like the nonmem run by applying DROP/SKIP arguments and
+##'     alternative naming of columns in the nonmem run.
 ##' @param file a .lst (output) or a .mod (input) control stream
 ##'     file. The filename does not need to end in .lst. It is
 ##'     recommended to use the output control stream because it
 ##'     reflects the model as it was run rather than how it is planned
-##'     for next run.
-##' @param file.mod The input control stream. Default is to look for
+##'     for next run. However, see file.mod and dir.data.
+##' @param file.mod The input control stream file path. Default is to look for
 ##'     \"file\" with extension changed to .mod (PSN style). You can
 ##'     also supply the path to the file, or you can provide a
 ##'     function that translates the output file path to the input
@@ -28,16 +28,18 @@
 ##'     mentioned in the Nonmem control stream, should this be used
 ##'     instead? The default is yes, and NMwriteData will create this
 ##'     by default too.
-##' @param applyFilters Set to TRUE if you want IGNORE and ACCEPT
-##'     statements in the nonmem control streams to be applied before
+##' @param applyFilters If TRUE (default), IGNORE and ACCEPT
+##'     statements in the nonmem control streams are applied before
 ##'     returning the data.
 ##' @param quiet Default is to inform a little, but TRUE is useful for
 ##'     non-interactive stuff.
 ##' @param as.fun The default is to return data in data.tables. Pass a
 ##'     function in as.fun to convert to something else. If
-##'     data.frames are wanted, use as.fun=as.data.frame. 
+##'     data.frames are wanted, use as.fun=as.data.frame. See
+##'     ?runAsFun.
 ##' @param invert If TRUE, the data rows that are dismissed by the
-##'     Nonmem data filters (ACCEPT and IGNORE) will be returned.
+##'     Nonmem data filters (ACCEPT and IGNORE) and only this will be
+##'     returned. Only used if applyFilters is TRUE.
 ##' @details The line containing whom the license is issued to cannot
 ##'     be retrieved. Special characters like accents and the
 ##'     registerred trademark (R) sign are likely to cause trouble if
@@ -55,20 +57,19 @@ NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
 
     if(missing(file)) file <- NULL
     file.find.data <- file
-    if(is.null(dir.data)) {
-        if(is.null(file.mod)){
-            file.mod <- sub("\\.lst","\\.mod",file)
-        }
-        if(is.function(file.mod)) {
-            path.file.mod <- file.mod(file)
-        } else {
-            path.file.mod <- file.mod
-        }
 
-        if(!file.exists(path.file.mod)) {
+    if(!is.null(file.mod) && !is.null(dir.data)) {
+        messageWrap("Both file.mod and dir.data are non-NULL. Not allowed.",
+                    fun.msg=stop)
+    }
+    if(is.null(dir.data)) {
+
+        file.find.data <- getFileMod(file.lst=file,file.mod=file.mod)
+        
+        if(!file.exists(file.find.data)) {
             messageWrap("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument. Input data not used.",fun.msg=warning)
         }
-        file.find.data <- path.file.mod
+
     }
 
     ## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    

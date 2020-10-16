@@ -23,8 +23,8 @@ NMgetSection(
 \item{file}{A file to read from. Normally a .mod or .lst. See
 lines also.}
 
-\item{lines}{Text lines to process. This is an alternative to use
-the file argument.}
+\item{lines}{Text lines to process. This is an alternative to
+using the file argument.}
 
 \item{text}{Use this argument if the text to process is one long
 character string, and indicate the line seperator with the

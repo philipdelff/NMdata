@@ -10,11 +10,14 @@ NMscanTables(file, details = F, as.fun = NULL, quiet = FALSE, tab.count = TRUE)
 \item{file}{the nonmem file to read (normally .mod or .lst)}
 
 \item{details}{If TRUE, metadata is added to output. In this case,
-you get a list. I'd say, enable if doing programming.}
+you get a list. Typically, this is mostly useful if
+programming up functions which behavior must depend on
+properties of the output. See details.}
 
 \item{as.fun}{The default is to return data in data.tables. Pass a
 function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame.}
+data.frames are wanted, use as.fun=as.data.frame. See
+?runAsFun.}
 
 \item{quiet}{The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for

@@ -10,9 +10,6 @@ NMdata_filepath(...)
 \item{...}{parameters to pass to system.file}
 }
 \description{
-get a file or dir from a the NMdata package
-}
-\details{
 a light wrapper around system.file
 }
 \seealso{

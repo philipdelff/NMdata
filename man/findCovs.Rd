@@ -2,23 +2,29 @@
 % Please edit documentation in R/findCovs.R
 \name{findCovs}
 \alias{findCovs}
-\title{Extract columns that do not vary within variables in a data.frame}
+\title{Extract columns that do not vary within variables in data}
 \usage{
 findCovs(data, cols.id = NULL, as.fun = NULL)
 }
 \arguments{
 \item{data}{data.frame in which to look for covariates}
 
-\item{cols.id}{covariates will be searched for in combinations of values in
-these columns. Often cols.id will be either empty or ID. But it
-can also be both say c("ID","DRUG") or c("ID","TRT").}
+\item{cols.id}{covariates will be searched for in combinations of
+values in these columns. Often cols.id will be either empty or
+ID. But it can also be both say c("ID","DRUG") or
+c("ID","TRT").}
 
 \item{as.fun}{The default is to return data in data.tables. Pass a
 function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame.}
+data.frames are wanted, use as.fun=as.data.frame. See
+?runAsFun.}
+}
+\value{
+a data set with one observation per combination of values
+    of variables listed in cols.id.
 }
 \description{
-Extract columns that do not vary within variables in a data.frame
+Extract columns that do not vary within variables in data
 }
 \examples{
 dat <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
@@ -31,7 +37,11 @@ findCovs(dat)
 Other DataCreate: 
 \code{\link{NMorderColumns}()},
 \code{\link{findVars}()},
+\code{\link{flagsAssign}()},
+\code{\link{flagsCount}()},
 \code{\link{mergeCheck}()},
+\code{\link{objInfo}()},
+\code{\link{stampObj}()},
 \code{\link{tmpcol}()}
 }
 \concept{DataCreate}

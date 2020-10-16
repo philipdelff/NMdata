@@ -34,7 +34,8 @@
 ##'     you want first.
 ##' @param as.fun The default is to return data in a data.table. Pass
 ##'     a function in as.fun to convert to something else. If
-##'     data.frames are wanted, use as.fun=as.data.frame.
+##'     data.frames are wanted, use as.fun=as.data.frame. See
+##'     ?runAsFun.
 ##' @details This function will change the order of columns but it
 ##'     will never edit values in any columns.
 ##'

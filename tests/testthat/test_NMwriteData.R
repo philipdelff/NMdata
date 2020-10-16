@@ -33,7 +33,8 @@ test_that("Dropping a column in Nonmem",{
     expect_equal_to_reference(
         NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),
                     write.rds=F,write.csv=F,
-                    nmdrop="PART")
+                    nmdrop="PART",
+                    nmdir.data="/example")
        ,fileRef)
 
     ## dropping a character column
@@ -41,9 +42,10 @@ test_that("Dropping a column in Nonmem",{
     fileRef <- "testReference/NMwriteData_3.rds"
 
     expect_equal_to_reference(
-        NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),
+        NMwriteData(pk,file=NMdata_filepath("examples/data/xgxr1.csv"),
                     write.rds=F,write.csv=F,
-                    nmdrop="CYCLE"),
+                    nmdrop="CYCLE",
+                    nmdir.data="/example"),
         file=fileRef
     )
 

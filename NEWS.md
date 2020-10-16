@@ -1,9 +1,15 @@
-# Since NMdata 0.0.5
+# NMdata 0.0.6
 General support for conversion of output to user-specified
 class. Setting the option "NMdata.as.fun" to a conversion function
 such as as.data.frame or tibble::as_tibble it is possible for the user
 to work with their preferred data class. An argument, as.fun, can be
 used for the individual functions too.
+
+The translation from the output control stream file path (.lst in PSN)
+and the input control stream (.mod in PSN) can now be configured
+through the option "NM.file.mod". Typically, all the models to be
+considered in an anlysis have been run on the same system, so it makes
+most sense to define this behavior once and for all for most users.
 
 NMwriteData improved with checks of column names and automated
 generation of $INPUT and $DATA Nonmem sections.

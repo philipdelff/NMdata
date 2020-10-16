@@ -43,11 +43,9 @@ file). Most modellers develop some habits over time to avoid some
 issues. But still, it may be time demanding even for experienced
 modelers to pick up a model developed by someone else or by themselves
 earlier in their career just because they need to understand what data
-exported and how. 
-
-This vignette focuses on how NMdata provides a very
+exported and how. This vignette focuses on how NMdata provides a very
 general solution for what needs to be trivial: get a dataset out of a
-Nonmem run, including discarded columns and rows from the input data. And
+Nonmem run, including discarded information from the input data. And
 "general" means that it will work out of the box in as many cases as
 possible. It will do its best to understand how the data can be read
 and combined, (ideally) regardless of the way the model was written.
@@ -67,47 +65,28 @@ again especially if the model wasn't written by your own (current)
 standards.
 
 ## Get started
-Just one thing before we try this out. `NMscanData` and other data
-reader functions in `NMdata` return objects of class `data.table` by
-default. We will start by changing this behaviour so we will get
-a `data.frame` back instead. If you prefer `data.table`, skip this
-step. If you prefer the `tibble` class (for dplyr and rest of
-tidyverse), load the `tibble` package and insert `tibble::as_tibble`. 
-
-```{r}
-options(NMdata.as.fun=as.data.frame)
-```
-
-Now try NMscanData on any model:
+Try NMscanData on any model:
 ```{r,eval=TRUE}
-res0 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),
-                   cbind.by.filters=TRUE)
+res0 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
 class(res0)
 ```
-
-
 NMscanData has read and combined input and output data and returned
-a `data.frame`. The `NMdata` class allows for keeping additional
-information in the object, but the object can be treated as a
-`data.frame`. The `cbind.by.filters` means that we want `NMscanData`
-to look at the Nonmem code (the output control stream) to figure out
-what part of the input data was used by Nonmem for the model run (by
-`$IGNORE` and `$ACCEPT` statements in `$DATA`). The same filtering is
-then applied to the input data before adding columns to the output. In
-fact, that argument is not necessary, this is default
-behaviour. However, if we left it out, `NMscanData` would try to
-explain this to you so you make an active choice what to do here. 
+a data.table. The `NMdata` class allows for keeping additional
+information in the object, but it can be treated as a data.table. If
+you are not used to data.table and don't want to use them, use the `as.fun=as.data.frame` argument and get a
+`data.frame` back. In fact, you can get any class back (including the
+popular `tibble`). See the [FAQ](https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html) for how to do this, and for how to
+change the general behaviour of `NMdata` functions to return the class
+you prefer. `NMdata` uses `data.table` under the hood but all
+functions will work even if you don't. 
 
-### Merge output and input data by a unique row identifier
-The default method
+`NMscanData` writes a little information about what has been read. We
+are being recommended merging by a unique row identifier. The default
 of interpreting Nonmem code is not recommended. It is the default
-because it does not rely on assumptions about the input data and hence
-very generic. It
+because it does not rely on assumptions about the input data. It
 happens that this dataset and one of the output tables contain a row
-identifier (a row counter in the column called `ROW`). If we skipped
-the `cbind.by.filters` above, `NMscanData` would figure this out and
-recommend merging by this column. This is what we will now do using
-the `col.row` argument. The following
+identifier (a row counter in the column called `ROW`). Let's follow
+the recommendation and use this column for merging. The following
 checks that we get the same result from the two methods.
 
 ```{r,eval=TRUE}
@@ -118,26 +97,20 @@ All features shown below will work whether you supply `col.row` or
 not. We use `col.row` because it is more robust and always
 recommended. 
 
-Let's have a quick look at the data we got back. The following is done
-with data.table. The comments in the code should make it
-clear what happens if you are not familiar with `data.table`. You can
-do this with `base::tapply`, `stats::aggregate`, a
-combination of `dplyr::group_by` and `dplyr::summarize`, or whatever
-you prefer. 
+Let's have a quick look at the data we got back. The following is
+again done with data.table but the comments in the code should make it
+clear what happens. 
 
+The data used for the example is a PK single ascending dose data set
+borrowed from the xgxr package, kindly allowed by the xgxr team.
 
 ```{r,eval=TRUE}
-## trtact is a character. Make it a factor with levels ordered by
-## numerical dose level.
-res1$trtact <- reorder(res1$trtact,res1$DOSE)
-## We are going to use data.table
-res1.dt <- as.data.table(res1)
+## trtact is a character. Make it a factor with levels ordered by numericaldose level.
+res1[,trtact:=reorder(trtact,DOSE)]
 ## Derive another data.table with geometric mean pop predictions by
 ## treatment and nominal sample time. Only use sample records.
-res1.mean <- res1.dt[EVID==0,.(gmPRED=exp(mean(log(PRED)))),
-                     by=.(trtact,NOMTIME)]
-## plot individual observations and geometric mean pop
-## predictions. Split by treatment.
+res1.mean <- res1[EVID==0,.(gmPRED=exp(mean(log(PRED)))),by=.(trtact,NOMTIME)]
+## plot individual observations and geometric mean pop predictions. Split by treatment.
 ggplot(res1[EVID==0])+
     geom_point(aes(TIME,DV))+
     geom_line(aes(NOMTIME,gmPRED),data=res1.mean,colour="red")+
@@ -146,45 +119,31 @@ ggplot(res1[EVID==0])+
     labs(x="Hours since administration",y="Concentration (ng/mL)")
 ```
 
-We see from the plot that the obtained dataset contains both model
+You see from the plot that the obtained dataset contains both model
 predictions (i.e. from output tables) and a character variable,
 `trtact` (i.e. from input data). NMscanData has read both and combined
-them. The data used for the example is a PK single ascending dose data set
-borrowed from the
-[xgxr](https://cran.r-project.org/web/packages/xgxr/index.html)
-package, kindly allowed by the xgxr team.
-
+them. 
 
 ### Subject-level variables
 In a proper PK/PD analysis we need to explore the data at multiple
 variability levels. What we looked at above is at dosing and sampling
-level (one row per dosing or sampling event). `NMdata` provides very
+level (one row per dosing or sampling event). NMdata provides very
 useful functions to extract information at other levels of
 variability. Before extracting the subject-level information we will
 add an individual exposure measure to the dataset. We will use the
-empirical Bayes' estimate of the individual maximum
+emperical Bayes' estimate of the individual maximum
 concentration. This is derived as the maximum prediction across the
 sample times - it may be better to simulate the model at a richer time
-scale to get better precision. Again, we make use of `data.table` but
-feel free to use what you prefer. `findCovs` - like other `NMdata`
-functions - will work on `data.frame`'s, `tibble`'s and other
-`data.frame`-like classes.
+scale to get better precision.
 
 ```{r}
-## with data.table, create a new column representing ID-level Cmax
-res1.dt[,Cmax:=max(IPRED),by=.(ID)]
-## findCovs picks the columns that do not vary within cols.id. One row
-## per value of cols.id.
+res1[,Cmax:=max(IPRED),by=.(ID)]
 res1.id <- findCovs(res1,cols.id="ID")
 dim(res1.id)
 ggplot(res1.id,aes(WEIGHTB,Cmax/DOSE,colour=trtact))+
     geom_point()+
     labs(x="Bodyweight at baseline (kg)")
 ```
-
-`cols.id` can be longer than one. Include a treatment column to
-support cross-over, a study column for meta analysis, or a model
-column if you are comparing model fits (see below how to do this very easily).
 
 If your model includes occasion variability, you probably also want to
 look at 
@@ -212,9 +171,9 @@ head(res1.id,2)
 ```
 
 `findCovs` has a counterpart in `findVars` which finds variables that
-do vary within constant values of optional `cols.id` columns. To get only the ones that
+do vary within constant values of optional columns. To get only the ones that
 vary within the dataset (i.e. they are truely subject-level
-variables and not say a study number if we only have one study), we can do 
+variables), we can do 
 
 ```{r}
 res1.id2 <- findVars(res1.id)
@@ -223,7 +182,7 @@ head(res1.id2,2)
 ```
 
 `findVars` supports the cols.id argument too. So you can use
-`findVars(res1,cols.id="ID")` to find variables that are non-constant
+`findVars(res1,cols.id="ID")` for find variables that are non-constant
 within (at least one value of) ID. `cols.id` can be of arbitrary length.
 
 Of course, we most often know what covariates or other subject-level
@@ -231,11 +190,10 @@ variables to look at, and we would not search for them after running a
 nonmem model. But in the situation where you are looking at someone
 else's work or you are doing a meta analysis across models where the
 data has been coded slightly differently, these simple tools can be
-very useful. Or if you like writing generic wrapper functions, you may
-find this very handy. Also, remember that if a variable is returned by these
+very useful. Also, remember that if a variable is returned by these
 functions, you know that they fullfill the variability requirement. We
-know that variables in `res1.id` above do not vary within `ID`, meaning
-that no `ID` has more than one value of the variable. `NA` counts as any other value, so if a value is returned for subject in `res1.id`, this subject does not have `NA`'s in `res1`.
+know that variables in `res1.id` above non-varying within ID, meaning
+that no ID has more than one value of the variable. `NA` counts as any other value, so if a value is returned for subject in res1.id, this subject does not have NA's in `res1`.
 
 
 ## More options and features
@@ -247,19 +205,11 @@ quantification have been disregarded. For this and many other reasons,
 it is very common to use `ACCEPT` and `IGNORE` statements in the
 `$INPUT` section of nonmem control streams. NMscanData can include
 this data in the returned data object as well. Let's redo the plot
-above taking advantage of this option. We will use `data.table` for
-the calculations again, so we will reset the `NMdata,as.fun` which we
-set in the beginning to get `data.frame`'s. 
-
-```{r}
-options(NMdata.as.fun=NULL)
-```
+above taking advantage of this option:
 
 ```{r}
 res2 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),
                    col.row="ROW",recover.rows=TRUE)
-## now we have a data.table
-class(res2)
 ## Derive another data.table with geometric mean pop predictions by
 ## treatment and nominal sample time. Only use sample records.
 res2.mean <- res2[EVID==0&nmout==TRUE,
@@ -286,24 +236,23 @@ calculation. Let's see how many were recovered
 ```{r}
 ## this is just a long-format representation of
 ## with(res1,table(nmout,flag)) using data.table.
-res2[,.N,by=.(nmout,flag)]
+res1[,.N,by=.(nmout,flag)]
 ```
-So `res2[nmout==TRUE,.N]` were part of the analysis. 
+So 905 were part of the analysis. 
+
 The `recover.rows` argument can be used independently of whether
 `col.row` is used.
 
 ### Combine multiple models
 You may have noticed a column called `model` in some of the output
-above. `NMscanData` by default adds this column for convenience when
+above. NMscanData by default adds this column for convenience when
 working with multiple models. You can specify both column
-name and content as arguments in `NMscanData`. If you don't, the column
-will be called `model`, and the model name taken from the `lst` file
+name and content as arguments in NMscanData. If you don't, the column
+will be called `model`, and the model name taken from the lst file
 name (say, `xgxr001`).  In the
 following we use this to compare population predictions from two
 different models. We read them again just to show the use of the
-argument to name the models ourselves. Remember, we reset the
-`NMdata.as.fun` option so we are working with `data.table` and we easily
-stack filling in `NA`'s with `rbind` (`rbind.data.table`).
+argument to name the models ourselves. 
 
 ```{r}
 ## notice fill is an option to rbind with data.table
@@ -325,19 +274,20 @@ ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+
 
 
 ### Use a row identifier or interpret Nonmem code
-The most robust way to combine augment output data with input data
-using `NMscanData` is to include a unique row identifier in both input
-and at least one full-length output table. Then tell NMscanData to use
-the row identifier using the `col.row` argument. The advantage is that
-less nonmem code has to be interpreted for this method. However,
-notice that no checks are being done if the row identifier has been
-modified during the nonmem run. If you tell NMscanData that the column
-called `ROW` is a to be used as the row identifier, and `ROW` is being
-modified in say `$PK` before being output in an output table, this
-will mess up the result. But if you keep the good practice of
-including a unique row identifier in your dataset, the advice is to
-include it in at least one output table and tell `NMscanData` to use it
-by the argument `col.row`.
+A unique row identifier is not needed for NMscanData to run and in
+most cases succesfully and correctly complete all the steps
+above. However, the most robust way to use NMscanData is to include a
+unique row identifier in both input and at least one full-length
+output table. Then tell NMscanData to use the row identifier using the
+`col.row` argument. The advantage is that less nonmem code has to be
+interpreted for this method. However, notice that no checks are being
+done if the row identifier has been modified during the nonmem run. If
+you tell NMscanData that the column called `ROW` is a to be used as
+the row identifier, and ROW is being modified in say `$PK` before
+being output in an output table, this will mess up the result. But if
+you keep the good practice of including a unique row identifier in
+your dataset, the advice is to include it in at least one output table
+and tell NMscanData to use it by the argument `col.row`.
 
 ### Preserve all input data properties
 In the code above when plotting the population predictions together
@@ -346,23 +296,23 @@ with individual observations, we saw that character variables
 and was used for splitting the plots. However, in order to sort the
 plots naturally by increasing dose level, we had to run `reorder` on
 the variable. This is because the input data is read from a csv
-file. `NMscanData` will not code any character variables as factors when
+file. NMscanData will not code any character variables as factors when
 reading from text files.
 
 Since the character representation of treatment was already prepared,
 it would be natural to encode the factor levels already at that
 point. In order to preserve such information, we can use R's native
-rds format. If the argument `use.rds` is `TRUE`, `NMscanData` will look for
+rds format. If the argument `use.rds` is `TRUE`, NMscanData will look for
 an rds file next to the input data file (which is a delimited text
 file) the exact same name as the text file except the extension must
-be "`.rds`" rather than say "`.csv`" (for Nonmem and `NMscanData`, the
+be ".rds" rather than say ".csv" (for nonmem and NMscanData, the
 extension of the delimited text file doesn't matter). If it finds the
-`rds` file, this will be used instead. No checks are done of whether the
+rds file, this will be used instead. No checks are done of whether the
 contents are similar in any way to the delimited text file which is
 ignored in this case. 
 
 Return to the example above creating the dataset `dat2`. Notice the
-message from NMscanData that an `rds` file was found. This is why we
+message from NMscanData that an rds file was found. This is why we
 could sort the plots correctly on the dose level with reordering the
 factor levels first. There are three advantages of using rds files
 
@@ -370,21 +320,20 @@ factor levels first. There are three advantages of using rds files
 - Reading speed may be improved (NMdata uses `fread` from `data.table`
   which is extremely fast for delimited files so in many cases this
   difference can be small).
-- File sizes are greatly reduced from text to `rds`. This can be a big
+- File sizes are greatly reduced from text to rds. This can be a big
   advantage if you are transfering files or reading over a network
-  connection. `NMdata` is generally very fast (thanks to `data.table`)
-  so file/network access (I/O) is likely to be the main bottleneck.
+  connection. NMdata is generally very fast (thanks to `data.table`)
+  so file access (I/O) is likely to be the main bottleneck.
 
 If you write Nonmem datasets with the `NMdata::NMwriteData`, you can
-get an `rds` file automatically, exactly where `NMscanData` will look
-for it. Creating datasets using `NMdata` is described in [this
-vignette](https://philipdelff.github.io/NMdata/articles/DataCreate.html).
+get an rds file automatically, exactly where `NMscanData` will look
+for it. Creating datasets are out of the scope of this vignette, though.
 
 
 ### Custom naming of input and output control streams
-By default, `NMscanData` expects a (psn)[https://uupharmacometrics.github.io/PsN/]-style naming of input and output
+By default, NMscanData expects a psn-style naming of input and output
 control streams. This means that if the input control stream is called
-`model.mod`, the returned control stream is called model.lst. If you use
+model.mod, the returned control stream is called model.lst. If you use
 a different setup, you can use the `file.mod` argument. Do one of the
 following if needed:
 
@@ -405,38 +354,35 @@ So far, the merge has been very straightforward, but in many
 The following main principles are followed
 
 * Output data prevails over input data
-* Row-specific output data is preferred over ID-level (`FIRSTONLY` or
-  `LASTONLY`) tables
+* Row-specific output data is preferred over ID-level (FIRSTONLY or
+  LASTONLY) tables
 * Output tables are prioritized by their order of apperance
-* Input data is as defined in the `$INPUT` section in Nonmem. This
+* Input data is as defined in the $INPUT section in Nonmem. This
   includes renaming of columns, and columns that are dropped in Nonmem
-  (`DROP` or `SKIP`) are disregarded. Columns that are not read by Nonmem
+  (DROP or SKIP) are disregarded. Columns that are not read by Nonmem
   are named as in the input data file.
 * If rows are being recovered from input data (the `recover.rows`
-  argument), no information from output is merged onto these rows.
+  argument), no information from output is merged onto these rows
 * The primary aim is to return the output data. If input and output
   cannot be meaningfully combined (very rare), output will be
   returned.
   
 
 ## The building blocks
-Each of the steps involved in reading and combining the data from a
-model run can be done separately. 
-
-The `lst` file was scanned for output tables, and they were all read
-(including interpreting the possible `firstonly` option). The input data
-has been used based on the `$DATA` and `$INPUT` sections of the control
+The lst file was scanned for output tables, and they were all read
+(including interpreting the possible firstonly option). The input data
+has been used based on the DATA and INPUT sections of the control
 stream. The key steps in this process are available as independent
 functions. 
 
-- `NMreadTab`: Read an Nonmem output table based on the path to the output
+- NMreadTab: Read an Nonmem output table based on the path to the output
   table file.
 
-- `NMscanTables`: Read all output data files defined in a Nonmem
+- NMscanTables: Read all output data files defined in a Nonmem
   run. Return a list of tables (as data.frames or data.tables).
 
-- `NMtransInput`: Read input data based on a nonmem file. Data will be
-  processed and named like the Nonmem model. `ACCEPT` and `IGNORE` filters
+- NMtransInput: Read input data based on a nonmem file. Data will be
+  processed and named like the Nonmem model. ACCEPT and IGNORE filters
   can be applied as well. There are a few limitations to this
   functionality at this point. 
 
@@ -446,9 +392,9 @@ The answer to this should be as close to "nothing" as possible -
 that's more or less the aim of the function. You just have to make
 sure that the information that you need is present in input data and
 output data. No need to output information that is unchanged from
-input, but make sure to output what you need (like `IPRED`, `CWRES`, `CL`,
-`ETA1` etc which cannot be found in input). Some of these values can be
-found from other files generated by Nonmem but notice: `NMscanData` uses
+input, but make sure to output what you need (like IPRED, CWRES, CL,
+ETA1 etc which cannot be found in input). Some of these values can be
+found from other files generated by Nonmem but notice: NMscanData uses
 only input and output data.
 
 It is recommended to always use a unique row identifier in both input and
@@ -463,11 +409,11 @@ relying on "most likely" when I can just as well have robustness.
 If merging with input data, the input data must be available as was
 when the model was run. If you want to avoid this potential issue,
 Nonmem can be run in a wrapper script that either copies the input
-data, or runs `NMscanData` and saves the output in a compressed file
-format (like `rds` or `zip`).
+data, or runs NMscanData and saves the output in a compressed file
+format (like rds or zip).
 
 ### Not all data filter statements implemented
-Nested `ACCEPT` and `IGNORE` statements are not supported at this
+Nested ACCEPT and IGNORE statements are not supported at this
 point. The resulting number of rows after applying filters is checked
 against row-level output table dimensions (if any available). In other
 words, you have to be unlucky to run into trouble without an
@@ -475,8 +421,8 @@ error. But it is alway recommended to use a unique row identifier in
 both input and output tables in order to avoid relying on
 interpretation of Nonmem code.
 
-The `RECORDS` and `NULL` options in `$DATA` are not implemented. If using
-`RECORDS`, please use the `col.row` option to merge by a unique row
+The RECORDS and NULL options in $DATA are not implemented. If using
+RECORDS, please use the `col.row` option to merge by a unique row
 identifier.
 
 ### Character time variables not interpreted
@@ -485,8 +431,8 @@ input data. Based on a day counter and a character ("00:00") clock
 format, Nonmem can calculate the individual time since first
 record. This behaviour is not mimicked by NMscanData, and the only
 ways to get TIME in this case are to either include it in an output
-`TABLE` or to code the translation yourself after calling
-`NMscanData`. Of course, this is on the todo list.
+TABLE or to code the translation yourself after calling NMscanData. Of
+course, this is on the todo list.
 
 ### FIRSTLASTONLY not supported
 The `FIRSTLASTONLY` option in `$TABLE` results in two rows per

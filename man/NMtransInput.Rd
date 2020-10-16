@@ -2,7 +2,7 @@
 % Please edit documentation in R/NMtransInput.R
 \name{NMtransInput}
 \alias{NMtransInput}
-\title{read input data and translate names according to the $INPUT section}
+\title{read input data and translate column names according to the $INPUT section}
 \usage{
 NMtransInput(
   file,
@@ -20,7 +20,7 @@ NMtransInput(
 file. The filename does not need to end in .lst. It is
 recommended to use the output control stream because it
 reflects the model as it was run rather than how it is planned
-for next run.}
+for next run. However, see file.mod and dir.data.}
 
 \item{use.rds}{If an rds file is found with the exact same name
 (except for .rds instead of say .csv) as the text file
@@ -28,7 +28,7 @@ mentioned in the Nonmem control stream, should this be used
 instead? The default is yes, and NMwriteData will create this
 by default too.}
 
-\item{file.mod}{The input control stream. Default is to look for
+\item{file.mod}{The input control stream file path. Default is to look for
 \"file\" with extension changed to .mod (PSN style). You can
 also supply the path to the file, or you can provide a
 function that translates the output file path to the input
@@ -44,25 +44,27 @@ if you only have the output file, use dir.data to tell in
 which directory to find the data file. If dir.data is
 provided, the .mod file is not used at all.}
 
-\item{applyFilters}{Set to TRUE if you want IGNORE and ACCEPT
-statements in the nonmem control streams to be applied before
+\item{applyFilters}{If TRUE (default), IGNORE and ACCEPT
+statements in the nonmem control streams are applied before
 returning the data.}
 
 \item{quiet}{Default is to inform a little, but TRUE is useful for
 non-interactive stuff.}
 
 \item{invert}{If TRUE, the data rows that are dismissed by the
-Nonmem data filters (ACCEPT and IGNORE) will be returned.}
+Nonmem data filters (ACCEPT and IGNORE) and only this will be
+returned. Only used if applyFilters is TRUE.}
 
 \item{as.fun}{The default is to return data in data.tables. Pass a
 function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame.}
+data.frames are wanted, use as.fun=as.data.frame. See
+?runAsFun.}
 }
 \description{
-Based on a nonmem run, this function finds the input
-    data and reads it. But it reads it like the nonmem run by
-    applying DROP arguments and alternative naming of columns in
-    the nonmem run.
+Based on a nonmem run (lst and/or mod file), this
+    function finds the input data and reads it. But it reads it
+    like the nonmem run by applying DROP/SKIP arguments and
+    alternative naming of columns in the nonmem run.
 }
 \details{
 The line containing whom the license is issued to cannot

@@ -1,4 +1,9 @@
 ##' Create an overview of number of retained and discarded datapoints.
+##'
+##' Generate an overview of number of observations disregarded due to
+##' different reasons. And how many are left after each exclusion
+##' flag.
+##' 
 ##' @param data The dataset including both FLAG and flag columns.
 ##' @param tab.flags A data.frame containing at least these named
 ##'     columns: FLAG, flag, condition. Condition is disregarded for
@@ -23,8 +28,7 @@
 ##'     due to this flag. The majority of the samples can have been
 ##'     discarded by earlier flags.
 ##' @import data.table
-##' @importFrom utils write.csv
-##' @family DataGen
+##' @family DataCreate
 ##' @export
 
 
@@ -156,7 +160,8 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL){
     setcolorder(allres,c(by,"flag","N.left","Nobs.left","N.discarded","Nobs.discarded"))
 
     if(!is.null(file)){
-        write.csv(allres,file=file,quote=F,row.names=F)
+        ## write.csv(allres,file=file,quote=F,row.names=F)
+        fwrite(allres,file=file,quote=F,row.names=F)
         cat(paste0("Table written to ",file,"\n"))
     }
 

@@ -18,6 +18,9 @@ or c("ID","TRT").}
 function in as.fun to convert to something else. If
 data.frames are wanted, use as.fun=as.data.frame.}
 }
+\value{
+a data set with as many rows as in data
+}
 \description{
 Extract columns that vary within values of other columns in a data.frame
 }
@@ -30,7 +33,11 @@ Use this to exclude columns that are constant within
 Other DataCreate: 
 \code{\link{NMorderColumns}()},
 \code{\link{findCovs}()},
+\code{\link{flagsAssign}()},
+\code{\link{flagsCount}()},
 \code{\link{mergeCheck}()},
+\code{\link{objInfo}()},
+\code{\link{stampObj}()},
 \code{\link{tmpcol}()}
 }
 \concept{DataCreate}

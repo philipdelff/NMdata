@@ -15,16 +15,17 @@ tmpcol(
 \arguments{
 \item{data}{The dataset to find a new element name for}
 
-\item{names}{Character vector of names that must not be matched. Only one of
-data and names can be supplied.}
+\item{names}{Character vector of names that must not be
+matched. Only one of data and names can be supplied.}
 
-\item{base}{The base name of the new element. A number will appended to this
-string that will ensure that the new element name is not already in use.}
+\item{base}{The base name of the new element. A number will
+appended to this string that will ensure that the new element
+name is not already in use.}
 
 \item{max.it}{Maximum number of iterations on element name.}
 
-\item{prefer.plain}{I base isn't in use already, use it without a digit
-appended?}
+\item{prefer.plain}{If base isn't in use already, use it without a
+digit appended?}
 }
 \value{
 A character string
@@ -33,10 +34,16 @@ A character string
 generate a name for a new data column that is not already in use.
 }
 \seealso{
+make.names
+
 Other DataCreate: 
 \code{\link{NMorderColumns}()},
 \code{\link{findCovs}()},
 \code{\link{findVars}()},
-\code{\link{mergeCheck}()}
+\code{\link{flagsAssign}()},
+\code{\link{flagsCount}()},
+\code{\link{mergeCheck}()},
+\code{\link{objInfo}()},
+\code{\link{stampObj}()}
 }
 \concept{DataCreate}

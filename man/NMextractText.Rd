@@ -2,7 +2,7 @@
 % Please edit documentation in R/NMextractText.R
 \name{NMextractText}
 \alias{NMextractText}
-\title{NMgetSection generalized with support for lst results}
+\title{Versatile text extractor from Nonmem (input or output) control streams}
 \usage{
 NMextractText(
   file,
@@ -26,8 +26,8 @@ NMextractText(
 \item{file}{A file to read from. Normally a .mod or .lst. See
 lines and text as well.}
 
-\item{lines}{Text lines to process. This is an alternative to use
-the file and text arguments.}
+\item{lines}{Text lines to process. This is an alternative to
+using the file and text arguments.}
 
 \item{text}{Use this argument if the text to process is one long
 character string, and indicate the line seperator with the
@@ -71,8 +71,8 @@ multiplied succeeding white spaces are reduced to single white
 spaces.}
 
 \item{type}{Either mod, res or NULL. mod is for information that
-is given in .mod (.lst can be used but results section is
-disregarded. If NULL, NA or empty string, everything is
+is given in .mod (.lst file can be used but results section is
+disregarded). If NULL, NA or empty string, everything is
 considered.}
 
 \item{linesep}{If using the text argument, use linesep to indicate

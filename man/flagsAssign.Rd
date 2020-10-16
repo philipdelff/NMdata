@@ -8,7 +8,6 @@ flagsAssign(
   data,
   tab.flags,
   return.all = F,
-  LLOQ = NULL,
   col.id = "ID",
   col.dv = "DV",
   as.fun = NULL
@@ -19,17 +18,12 @@ flagsAssign(
 
 \item{tab.flags}{A data.frame containing at least these named
 columns: FLAG, flag, condition. Condition is disregarded for
-FLAG==0.}
+FLAG==0. FLAG must be numeric and non-negative, flag and
+condition are characters.}
 
 \item{return.all}{If TRUE, both the edited dataset and the table
 of flags are returned. If FALSE (default) only the edited
 dataset is returned.}
-
-\item{LLOQ}{At the moment a list with FLAG, condition, and LLOQ
-(value). If it does not contain "flag", flag will be set to
-"Value below LLOQ". LLOQ can only handle one value of
-LLOQ. This is insuffiecient for PKPD datasets. Likely to
-change.}
 
 \item{col.id}{The name of the subject ID column. Default is "ID".}
 
@@ -44,13 +38,18 @@ The dataset with flags added. See parameter flags.return
     as well.
 }
 \description{
-The aim with this function is to take a (say PK) dataset and a pre-specified
-table of flags, assign the flags automatically.
+The aim with this function is to take a (say PK) dataset and a
+pre-specified table of flags, assign the flags automatically.
 }
 \seealso{
-Other DataGen: 
+Other DataCreate: 
+\code{\link{NMorderColumns}()},
+\code{\link{findCovs}()},
+\code{\link{findVars}()},
 \code{\link{flagsCount}()},
+\code{\link{mergeCheck}()},
 \code{\link{objInfo}()},
-\code{\link{stampObj}()}
+\code{\link{stampObj}()},
+\code{\link{tmpcol}()}
 }
-\concept{DataGen}
+\concept{DataCreate}

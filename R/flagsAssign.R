@@ -1,20 +1,16 @@
 ##' Assign exclusion flags to a dataset based on specified table
 ##'
-##' The aim with this function is to take a (say PK) dataset and a pre-specified
-##' table of flags, assign the flags automatically.
+##' The aim with this function is to take a (say PK) dataset and a
+##' pre-specified table of flags, assign the flags automatically.
 ##'
 ##' @param data The dataset to assign flags to.
 ##' @param tab.flags A data.frame containing at least these named
 ##'     columns: FLAG, flag, condition. Condition is disregarded for
-##'     FLAG==0.
+##'     FLAG==0. FLAG must be numeric and non-negative, flag and
+##'     condition are characters.
 ##' @param return.all If TRUE, both the edited dataset and the table
 ##'     of flags are returned. If FALSE (default) only the edited
 ##'     dataset is returned.
-##' @param LLOQ At the moment a list with FLAG, condition, and LLOQ
-##'     (value). If it does not contain "flag", flag will be set to
-##'     "Value below LLOQ". LLOQ can only handle one value of
-##'     LLOQ. This is insuffiecient for PKPD datasets. Likely to
-##'     change.
 ##' @param col.id The name of the subject ID column. Default is "ID".
 ##' @param col.dv The name of the data value column. Default is "DV".
 ##' @param as.fun The default is to return data in data.tables. Pass a
@@ -23,12 +19,12 @@
 ##' @return The dataset with flags added. See parameter flags.return
 ##'     as well.
 ##' @import data.table
-##' @family DataGen
+##' @family DataCreate
 ##' @export
 
 
-flagsAssign <- function(data, tab.flags, return.all=F, LLOQ=NULL,
-                        col.id="ID", col.dv="DV", as.fun=NULL){
+flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
+                        col.dv="DV", as.fun=NULL){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -68,11 +64,11 @@ flagsAssign <- function(data, tab.flags, return.all=F, LLOQ=NULL,
 ### data can contain a column named FLAG - but it is removed
     if("FLAG"%in%datacols) {
         message("Data contains FLAG already. This is overwritten")
-        data[,"FLAG"] <- NULL
+        data[,FLAG:=NULL]
     }
     if("flag"%in%datacols) {
         message("Data contains flag already. This is overwritten")
-        data[,"flag"] <- NULL
+        data[,flag:=NULL]
     }
     
 ##### End Check data #######
@@ -83,7 +79,13 @@ flagsAssign <- function(data, tab.flags, return.all=F, LLOQ=NULL,
     if(!is.data.frame(tab.flags)||!(all(c("FLAG","flag","condition")%in%colnames(tab.flags)))){
         stop("tab.flags must be a data.frame containing FLAG, flag, and condition.")
     }
+    ## make sure tab.flags and data are data.tables
+    tab.flags <- as.data.table(tab.flags)
 
+    if(!is.numeric(tab.flags[,FLAG])) stop("column FLAG in tab.flags must be numeric and non-negative")
+    if(tab.flags[,any(FLAG<0)]) stop("column FLAG in tab.flags must be non-negative")
+    if(!is.character(tab.flags[,flag])) stop("column flag in tab.flags must be of type character")
+    if(!is.character(tab.flags[,condition])) stop("column expression in tab.flags must be of type character")
     
 ###### Check that FLAG, flag, and condition contain unique values
     any.dups <- tab.flags[,lapply(.SD,function(x)any(duplicated(x))),.SDcols=c("FLAG","flag","condition")][,any(c(FLAG,flag,condition))]
@@ -91,9 +93,6 @@ flagsAssign <- function(data, tab.flags, return.all=F, LLOQ=NULL,
         messageWrap("Duplicate values not allowed in tab.flags columns FLAG, flag, and condition.",stop)
     }
 ####### END Check tab.flags ####
-
-    ## make sure tab.flags and data are data.tables
-    tab.flags <- as.data.table(tab.flags)
     
     
 ####################### CHECKS END ######################

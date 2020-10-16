@@ -42,9 +42,11 @@
 <meta property="og:title" content="Write dataset for use in Nonmem (and R) — NMwriteData" />
 <meta property="og:description" content="Instead of trying to remember the arguments to pass to write.csv,
 use this wrapper. It tells you what to write in $DATA and $INPUT
-in nonmem, and it exports an rds file as well which is highly
-preferable for use in R. It never edits the data before writing
-the datafile." />
+in nonmem, and it (additionally) exports an rds or Rdata file as
+well which is highly preferable for use in R. It never edits the
+data before writing the datafile. The filenames for csv, rds
+etc. are derived by replacing the extension to the filename given
+in the file argument." />
 
 
 
@@ -142,9 +144,11 @@ the datafile." />
     <div class="ref-description">
     <p>Instead of trying to remember the arguments to pass to write.csv,
 use this wrapper. It tells you what to write in $DATA and $INPUT
-in nonmem, and it exports an rds file as well which is highly
-preferable for use in R. It never edits the data before writing
-the datafile.</p>
+in nonmem, and it (additionally) exports an rds or Rdata file as
+well which is highly preferable for use in R. It never edits the
+data before writing the datafile. The filenames for csv, rds
+etc. are derived by replacing the extension to the filename given
+in the file argument.</p>
     </div>
 
     <pre class="usage"><span class='fu'>NMwriteData</span>(
@@ -153,7 +157,6 @@ the datafile.</p>
   write.csv = <span class='fl'>TRUE</span>,
   write.RData = <span class='fl'>FALSE</span>,
   write.rds = <span class='kw'>write.csv</span>,
-  force.row = <span class='fl'>FALSE</span>,
   <span class='kw'>script</span>,
   <span class='kw'>args.stamp</span>,
   <span class='kw'>args.rds</span>,
@@ -167,7 +170,7 @@ the datafile.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>The dataset to write to Nonmem.</p></td>
+      <td><p>The dataset to write to file for use in Nonmem.</p></td>
     </tr>
     <tr>
       <th>file</th>
@@ -189,15 +192,9 @@ recommended. Use write.rds instead.</p></td>
       <td><p>write an rds file?</p></td>
     </tr>
     <tr>
-      <th>force.row</th>
-      <td><p>Ensure that data contains a ROW column counting
-the rows in the dataset, and add one if none exists. Defaults
-to FALSE (default is not editing the dataset at all).</p></td>
-    </tr>
-    <tr>
       <th>script</th>
       <td><p>If provided, the object will be stamped with this
-script name before saved to rds.</p></td>
+script name before saved to rds or Rdata. See ?stampObj.</p></td>
     </tr>
     <tr>
       <th>args.stamp</th>
@@ -209,11 +206,11 @@ script name before saved to rds.</p></td>
     </tr>
     <tr>
       <th>nmdrop</th>
-      <td><p>Columns to drop in Nonmem $DATA. This has two
-implications. One being that the proposed $DATA indicased
-=DROP after the given column names. The other that in case it
-is a non-numeric column, succeeding columns can still be
-included.</p></td>
+      <td><p>Only used for generation of proposed text for Nonmem
+control stream. Columns to drop in Nonmem $DATA. This has two
+implications. One is that the proposed $DATA indicates =DROP
+after the given column names. The other that in case it is a
+non-numeric column, succeeding columns can still be included.</p></td>
     </tr>
     <tr>
       <th>nmdir.data</th>
@@ -226,8 +223,9 @@ wanted here.</p></td>
       <th>col.flag</th>
       <td><p>Name of a numeric column with zero value for rows
 to include in Nonmem run, non-zero for rows to skip. The
-argument is only used for the $DATA. To skip this feature, use
-col.flag=NULL.</p></td>
+argument is only used for generating the proposed text to
+paste into the Nonmem control stream. To skip this feature,
+use col.flag=NULL.</p></td>
     </tr>
     </table>
 
@@ -238,8 +236,8 @@ col.flag=NULL.</p></td>
 
     <p>When writing csv files, the file will be
     comma-separated. Because Nonmem does not support quoted
-    fields, you must avoid commas in character fields. At the
-    moment, no check for this is being done.</p>
+    fields, you must avoid commas in character fields. An error is
+    returned if commas are found in strings.</p>
 <p>The user is provided with text to use in Nonmem. This lists names
 of the data columns. Once a column is reached that Nonmem will not
 be able to read as a numeric and column is not in nmdrop, the list is stopped.</p>

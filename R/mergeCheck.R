@@ -3,7 +3,7 @@
 ##' This function is a useful wrapper for merges where df1 will be extended with
 ##' columns from df2, i.e. all rows in df1 are retained, and no new rows can be
 ##' created. For this very common type of (simple) merges, mergeCheck does the
-##' merge and ensures that exactly this happened. 
+##' merge and ensures that exactly this and nothing else happened. 
 ##'
 ##' @param df1 A data.fram with the number of rows must should be obtained from
 ##'     the merge. The resulting data.frame will be ordered like df1.
@@ -32,7 +32,10 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,...){
     name.df1 <- deparse(substitute(df1))
     name.df2 <- deparse(substitute(df2))
     name.df3 <- "merged.df"
-    if("all"%in%names(list(...))) stop("option all not supported. mergeCheck is for merges that are intended to result in column additions to df1, that's all.")
+    if("all"%in%names(list(...))) {
+        messageWrap("option all not supported. mergeCheck is for merges that are intended to result in column additions to df1, that's all.",
+                    fun.msg=stop)
+    }
 
     ## if data is not data.tables, convert to data.tables
     stopifnot(is.data.frame(df1))

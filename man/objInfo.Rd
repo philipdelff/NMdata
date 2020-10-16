@@ -15,9 +15,14 @@ Get stamped info about object
 \seealso{
 stampObj
 
-Other DataGen: 
+Other DataCreate: 
+\code{\link{NMorderColumns}()},
+\code{\link{findCovs}()},
+\code{\link{findVars}()},
 \code{\link{flagsAssign}()},
 \code{\link{flagsCount}()},
-\code{\link{stampObj}()}
+\code{\link{mergeCheck}()},
+\code{\link{stampObj}()},
+\code{\link{tmpcol}()}
 }
-\concept{DataGen}
+\concept{DataCreate}

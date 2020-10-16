@@ -4,7 +4,8 @@ knitr::opts_chunk$set(
   comment = "#>"
  ,fig.width=7)
 
-knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
+## this change data.table syntax. I think we can do without.
+## knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 
 ## ----eval=TRUE,include=FALSE--------------------------------------------------
 ## library(devtools)
@@ -12,13 +13,18 @@ knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 
 ## ----setup,include=F----------------------------------------------------------
 library(NMdata)
+library(data.table)
 library(ggplot2)
 
 theme_set(theme_bw()+theme(legend.position="bottom"))
 
 
+## -----------------------------------------------------------------------------
+options(NMdata.as.fun=as.data.frame)
+
 ## ----eval=TRUE----------------------------------------------------------------
-res0 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
+res0 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),
+                   cbind.by.filters=TRUE)
 class(res0)
 
 ## ----eval=TRUE----------------------------------------------------------------
@@ -26,12 +32,18 @@ res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),col.row="ROW")
 all.equal(res0,res1)
 
 ## ----eval=TRUE----------------------------------------------------------------
-## trtact is a character. Make it a factor with levels ordered by numericaldose level.
-res1[,trtact:=reorder(trtact,DOSE)]
-## Derive another data.table with geometric mean pop predictions by treatment and nominal sample time. Only use sample records.
-res1.mean <- res1[EVID==0,.(gmPRED=exp(mean(log(PRED)))),by=.(trtact,NOMTIME)]
-## plot individual observations and geometric mean pop predictions. Split by treatment.
-ggplot(res1[EVID==0])+
+## trtact is a character. Make it a factor with levels ordered by
+## numerical dose level.
+res1$trtact <- reorder(res1$trtact,res1$DOSE)
+## We are going to use data.table
+res1.dt <- as.data.table(res1)
+## Derive another data.table with geometric mean pop predictions by
+## treatment and nominal sample time. Only use sample records.
+res1.mean <- res1.dt[EVID==0,.(gmPRED=exp(mean(log(PRED)))),
+                     by=.(trtact,NOMTIME)]
+## plot individual observations and geometric mean pop
+## predictions. Split by treatment.
+ggplot(subset(res1,EVID==0))+
     geom_point(aes(TIME,DV))+
     geom_line(aes(NOMTIME,gmPRED),data=res1.mean,colour="red")+
     scale_y_log10()+
@@ -39,8 +51,11 @@ ggplot(res1[EVID==0])+
     labs(x="Hours since administration",y="Concentration (ng/mL)")
 
 ## -----------------------------------------------------------------------------
-res1[,Cmax:=max(IPRED),by=.(ID)]
-res1.id <- findCovs(res1,cols.id="ID")
+## with data.table, create a new column representing ID-level Cmax
+res1.dt[,Cmax:=max(IPRED),by=.(ID)]
+## findCovs picks the columns that do not vary within cols.id. One row
+## per value of cols.id.
+res1.id <- findCovs(res1.dt,cols.id="ID")
 dim(res1.id)
 ggplot(res1.id,aes(WEIGHTB,Cmax/DOSE,colour=trtact))+
     geom_point()+
@@ -63,12 +78,20 @@ dim(res1.id2)
 head(res1.id2,2)
 
 ## -----------------------------------------------------------------------------
-res2 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),col.row="ROW",recover.rows=TRUE)
-## Derive another data.table with geometric mean pop predictions by treatment and nominal sample time. Only use sample records.
+options(NMdata.as.fun=NULL)
+
+## -----------------------------------------------------------------------------
+res2 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),
+                   col.row="ROW",recover.rows=TRUE)
+## now we have a data.table
+class(res2)
+## Derive another data.table with geometric mean pop predictions by
+## treatment and nominal sample time. Only use sample records.
 res2.mean <- res2[EVID==0&nmout==TRUE,
                   .(gmPRED=exp(mean(log(PRED)))),
                   by=.(trtact,NOMTIME)]
-## plot individual observations and geometric mean pop predictions. Split by treatment.
+## plot individual observations and geometric mean pop
+## predictions. Split by treatment.
 ggplot(res2[EVID==0])+
     geom_point(aes(TIME,DV,colour=flag))+
     geom_line(aes(NOMTIME,gmPRED),data=res2.mean)+
@@ -79,14 +102,18 @@ ggplot(res2[EVID==0])+
 ## -----------------------------------------------------------------------------
 ## this is just a long-format representation of
 ## with(res1,table(nmout,flag)) using data.table.
-res1[,.N,by=.(nmout,flag)]
+res2[,.N,by=.(nmout,flag)]
 
 ## -----------------------------------------------------------------------------
 ## notice fill is an option to rbind with data.table
-res1.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),col.row="ROW")
-res2.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),col.row="ROW",name="single-compartment")
+res1.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),
+                     col.row="ROW")
+res2.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),
+                     col.row="ROW",name="single-compartment")
 res.mult <- rbind(res1.m,res2.m,fill=T)
-res.mult.mean <- res.mult[EVID==0&nmout==TRUE,.(gmPRED=exp(mean(log(PRED)))),by=.(model,trtact,NOMTIME)]
+res.mult.mean <- res.mult[EVID==0&nmout==TRUE,
+                          .(gmPRED=exp(mean(log(PRED)))),
+                          by=.(model,trtact,NOMTIME)]
 
 ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+
     geom_line()+

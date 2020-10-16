@@ -29,7 +29,7 @@ a data.frame resulting from merging df1 and df2
 This function is a useful wrapper for merges where df1 will be extended with
 columns from df2, i.e. all rows in df1 are retained, and no new rows can be
 created. For this very common type of (simple) merges, mergeCheck does the
-merge and ensures that exactly this happened.
+merge and ensures that exactly this and nothing else happened.
 }
 \details{
 Besides merging and checking rows, mergeCheck makes sure the order
@@ -45,6 +45,10 @@ Other DataCreate:
 \code{\link{NMorderColumns}()},
 \code{\link{findCovs}()},
 \code{\link{findVars}()},
+\code{\link{flagsAssign}()},
+\code{\link{flagsCount}()},
+\code{\link{objInfo}()},
+\code{\link{stampObj}()},
 \code{\link{tmpcol}()}
 }
 \concept{DataCreate}

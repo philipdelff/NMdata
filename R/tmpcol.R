@@ -1,13 +1,15 @@
 ##' generate a name for a new data column that is not already in use.
 ##' @param data The dataset to find a new element name for
-##' @param names Character vector of names that must not be matched. Only one of
-##'     data and names can be supplied.
-##' @param base The base name of the new element. A number will appended to this
-##'     string that will ensure that the new element name is not already in use.
+##' @param names Character vector of names that must not be
+##'     matched. Only one of data and names can be supplied.
+##' @param base The base name of the new element. A number will
+##'     appended to this string that will ensure that the new element
+##'     name is not already in use.
 ##' @param max.it Maximum number of iterations on element name.
-##' @param prefer.plain I base isn't in use already, use it without a digit
-##'     appended?
+##' @param prefer.plain If base isn't in use already, use it without a
+##'     digit appended?
 ##' @return A character string
+##' @seealso make.names
 ##' @family DataCreate
 
 ### export from pmxtricks. It's not a Nonmem or pmx data specific thing.

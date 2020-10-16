@@ -2,7 +2,7 @@
 title: "Data creation tools"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data creation tools (New)}
+  %\VignetteIndexEntry{Data creation tools}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 header-includes:

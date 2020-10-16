@@ -2,11 +2,13 @@
 ##'
 ##' Instead of trying to remember the arguments to pass to write.csv,
 ##' use this wrapper. It tells you what to write in $DATA and $INPUT
-##' in nonmem, and it exports an rds file as well which is highly
-##' preferable for use in R. It never edits the data before writing
-##' the datafile.
+##' in nonmem, and it (additionally) exports an rds or Rdata file as
+##' well which is highly preferable for use in R. It never edits the
+##' data before writing the datafile. The filenames for csv, rds
+##' etc. are derived by replacing the extension to the filename given
+##' in the file argument.
 ##'
-##' @param data The dataset to write to Nonmem.
+##' @param data The dataset to write to file for use in Nonmem.
 ##' @param file The file to write to. The extension (everything after
 ##'     and including last ".") is dropped. csv, rds and other
 ##'     standard file name extensions are added.
@@ -14,22 +16,20 @@
 ##' @param write.RData In case you want to save to .RData object. Not
 ##'     recommended. Use write.rds instead.
 ##' @param write.rds write an rds file?
-##' @param force.row Ensure that data contains a ROW column counting
-##'     the rows in the dataset, and add one if none exists. Defaults
-##'     to FALSE (default is not editing the dataset at all).
 ##' @param script If provided, the object will be stamped with this
-##'     script name before saved to rds.
+##'     script name before saved to rds or Rdata. See ?stampObj.
 ##' @param args.stamp A list of arguments to be passed to stampObj.
 ##' @param args.rds A list of arguments to be passed to saveRDS.
 ##' @param col.flag Name of a numeric column with zero value for rows
 ##'     to include in Nonmem run, non-zero for rows to skip. The
-##'     argument is only used for the $DATA. To skip this feature, use
-##'     col.flag=NULL.
-##' @param nmdrop Columns to drop in Nonmem $DATA. This has two
-##'     implications. One being that the proposed $DATA indicased
-##'     =DROP after the given column names. The other that in case it
-##'     is a non-numeric column, succeeding columns can still be
-##'     included.
+##'     argument is only used for generating the proposed text to
+##'     paste into the Nonmem control stream. To skip this feature,
+##'     use col.flag=NULL.
+##' @param nmdrop Only used for generation of proposed text for Nonmem
+##'     control stream. Columns to drop in Nonmem $DATA. This has two
+##'     implications. One is that the proposed $DATA indicates =DROP
+##'     after the given column names. The other that in case it is a
+##'     non-numeric column, succeeding columns can still be included.
 ##' @param nmdir.data For the $DATA text proposal only. The path to
 ##'     the input datafile to be used in the Nonmem $DATA
 ##'     section. Often, a relative path to the actual Nonmem run is
@@ -37,8 +37,8 @@
 ##' @return Text for inclusion in Nonmem control stream, invisibly.
 ##' @details When writing csv files, the file will be
 ##'     comma-separated. Because Nonmem does not support quoted
-##'     fields, you must avoid commas in character fields. At the
-##'     moment, no check for this is being done.
+##'     fields, you must avoid commas in character fields. An error is
+##'     returned if commas are found in strings.
 ##'
 ##' The user is provided with text to use in Nonmem. This lists names
 ##' of the data columns. Once a column is reached that Nonmem will not
@@ -50,9 +50,8 @@
 
 
 NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
-                        write.rds=write.csv,force.row=FALSE,script,
-                        args.stamp,args.rds,nmdrop,nmdir.data,
-                        col.flag="FLAG"){
+                        write.rds=write.csv,script, args.stamp,
+                        args.rds,nmdrop,nmdir.data, col.flag="FLAG"){
 
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####

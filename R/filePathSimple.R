@@ -1,6 +1,6 @@
 ##' Clean and standardize file system paths
 ##'
-##' @description Used to tidy up paths. Passes arguments to
+##' @description Use this to tidy up paths. Combines pieces of a path like
 ##'     file.path(). The function is intended to return a canonical
 ##'     path format, i.e. paths that can be compared by simple string
 ##'     comparisson. Redundant /'s removed. normalizePath is used to

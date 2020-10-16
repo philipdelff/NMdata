@@ -1,4 +1,4 @@
-##' NMgetSection generalized with support for lst results
+##' Versatile text extractor from Nonmem (input or output) control streams 
 ##'
 ##' If you want to extract input sections like $PROBLEM, $DATA etc,
 ##' see NMgetSection. This function is more general and can be used to
@@ -6,8 +6,8 @@
 ##'
 ##' @param file A file to read from. Normally a .mod or .lst. See
 ##'     lines and text as well.
-##' @param lines Text lines to process. This is an alternative to use
-##'     the file and text arguments.
+##' @param lines Text lines to process. This is an alternative to
+##'     using the file and text arguments.
 ##' @param text Use this argument if the text to process is one long
 ##'     character string, and indicate the line seperator with the
 ##'     linesep argument. Use only one of file, lines, and text.
@@ -39,8 +39,8 @@
 ##'     multiplied succeeding white spaces are reduced to single white
 ##'     spaces.
 ##' @param type Either mod, res or NULL. mod is for information that
-##'     is given in .mod (.lst can be used but results section is
-##'     disregarded. If NULL, NA or empty string, everything is
+##'     is given in .mod (.lst file can be used but results section is
+##'     disregarded). If NULL, NA or empty string, everything is
 ##'     considered.
 ##' @param linesep If using the text argument, use linesep to indicate
 ##'     how lines should be separated.

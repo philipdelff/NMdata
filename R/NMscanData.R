@@ -273,17 +273,11 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     ## use.input.row <- use.input
 
     if(use.input && is.null(dir.data)) {
-        if(is.null(file.mod)){
-            file.mod <- sub("\\.lst","\\.mod",file)
-        }
-        if(is.function(file.mod)) {
-            path.file.mod <- file.mod(file)
-        } else {
-            path.file.mod <- file.mod
-        }
+       file.mod <- getFileMod(file.lst=file,file.mod=file.mod)
 
         if(!file.exists(file.mod)) {
-            warning("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument. Input data not used.")
+            messageWrap("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument. Input data not used.",
+                        fun.msg=warning)
             use.input <- FALSE }
     }
 

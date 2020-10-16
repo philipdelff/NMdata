@@ -15,16 +15,21 @@ stampObj(data, script, ...)
 Description="PK data for ph1 trials in project".}
 }
 \description{
-Dataset metadata makes it possible to trace an archived dataset back to the
-code that generated it. The metadata added by stampData can be accessed
-using the function dsInfo.
+Dataset metadata makes it possible to trace an archived dataset
+back to the code that generated it. The metadata added by
+stampData can be accessed using the function dsInfo.
 }
 \seealso{
 objInfo
 
-Other DataGen: 
+Other DataCreate: 
+\code{\link{NMorderColumns}()},
+\code{\link{findCovs}()},
+\code{\link{findVars}()},
 \code{\link{flagsAssign}()},
 \code{\link{flagsCount}()},
-\code{\link{objInfo}()}
+\code{\link{mergeCheck}()},
+\code{\link{objInfo}()},
+\code{\link{tmpcol}()}
 }
-\concept{DataGen}
+\concept{DataCreate}

@@ -1,7 +1,9 @@
 ##' read all output data tables in nonmem run
 ##' @param file the nonmem file to read (normally .mod or .lst)
 ##' @param details If TRUE, metadata is added to output. In this case,
-##'     you get a list. I'd say, enable if doing programming.
+##'     you get a list. Typically, this is mostly useful if
+##'     programming up functions which behavior must depend on
+##'     properties of the output. See details.
 ##' @param quiet The default is to give some information along the way
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use.
@@ -11,7 +13,8 @@
 ##'     added as a column called TABLENO.
 ##' @param as.fun The default is to return data in data.tables. Pass a
 ##'     function in as.fun to convert to something else. If
-##'     data.frames are wanted, use as.fun=as.data.frame.
+##'     data.frames are wanted, use as.fun=as.data.frame. See
+##'     ?runAsFun.
 ##' @return A list of all the tables as data.frames. If details=TRUE,
 ##'     this is in one element, called data, and meta is another
 ##'     element. If not, only the element corresponding to data is

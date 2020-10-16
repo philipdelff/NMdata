@@ -2,7 +2,7 @@
 ##'
 ##' @param data The dataset to receive info about
 ##' @seealso stampObj
-##' @family DataGen
+##' @family DataCreate
 ##' @export
 
 objInfo <- function(data){

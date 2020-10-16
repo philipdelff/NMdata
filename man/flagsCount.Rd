@@ -33,7 +33,9 @@ A summary table with number of discarded and retained
     flag. The default is "both" which will report both.
 }
 \description{
-Create an overview of number of retained and discarded datapoints.
+Generate an overview of number of observations disregarded due to
+different reasons. And how many are left after each exclusion
+flag.
 }
 \details{
 Notice number of subjects in N.discarded mode can be
@@ -43,9 +45,14 @@ Notice number of subjects in N.discarded mode can be
     discarded by earlier flags.
 }
 \seealso{
-Other DataGen: 
+Other DataCreate: 
+\code{\link{NMorderColumns}()},
+\code{\link{findCovs}()},
+\code{\link{findVars}()},
 \code{\link{flagsAssign}()},
+\code{\link{mergeCheck}()},
 \code{\link{objInfo}()},
-\code{\link{stampObj}()}
+\code{\link{stampObj}()},
+\code{\link{tmpcol}()}
 }
-\concept{DataGen}
+\concept{DataCreate}
