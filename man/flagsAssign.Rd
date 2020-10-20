@@ -29,9 +29,11 @@ dataset is returned.}
 
 \item{col.dv}{The name of the data value column. Default is "DV".}
 
-\item{as.fun}{The default is to return data in data.tables. Pass a
-function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame.}
+\item{as.fun}{The default is to return data.tables if input data
+is a data.table, and return a data.frame for all other input
+classes. Pass a function in as.fun to convert to something
+else. If return.all=F, this is applied to data and tab.flags
+independently.}
 }
 \value{
 The dataset with flags added. See parameter flags.return

@@ -1,3 +1,8 @@
+# NMdata 0.0.6.1
+The default class to generate is now data.frame rather than
+data.table. If you want to work with data.tables, do 
+options(NMdata.as.fun="none")
+
 # NMdata 0.0.6
 General support for conversion of output to user-specified
 class. Setting the option "NMdata.as.fun" to a conversion function

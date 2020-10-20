@@ -14,10 +14,10 @@ you get a list. Typically, this is mostly useful if
 programming up functions which behavior must depend on
 properties of the output. See details.}
 
-\item{as.fun}{The default is to return data in data.tables. Pass a
-function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame. See
-?runAsFun.}
+\item{as.fun}{The default is to return data as a data.frame. Pass
+a function (say tibble::as_tibble) in as.fun to convert to
+something else. If data.tables are wanted, use
+as.fun="none". See ?runAsFun.}
 
 \item{quiet}{The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for

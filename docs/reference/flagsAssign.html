@@ -73,7 +73,7 @@ pre-specified table of flags, assign the flags automatically." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.1</span>
       </span>
     </div>
 
@@ -180,9 +180,11 @@ dataset is returned.</p></td>
     </tr>
     <tr>
       <th>as.fun</th>
-      <td><p>The default is to return data in data.tables. Pass a
-function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame.</p></td>
+      <td><p>The default is to return data.tables if input data
+is a data.table, and return a data.frame for all other input
+classes. Pass a function in as.fun to convert to something
+else. If return.all=F, this is applied to data and tab.flags
+independently.</p></td>
     </tr>
     </table>
 

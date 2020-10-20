@@ -7,20 +7,21 @@
 mergeCheck(df1, df2, by, as.fun = NULL, ...)
 }
 \arguments{
-\item{df1}{A data.fram with the number of rows must should be obtained from
-the merge. The resulting data.frame will be ordered like df1.}
+\item{df1}{A data.fram with the number of rows must should be
+obtained from the merge. The resulting data.frame will be
+ordered like df1.}
 
 \item{df2}{A data.frame that will be merged onto df1.}
 
-\item{by}{The column(s) to merge by. Character string (vector). Must be
-supplied.}
+\item{by}{The column(s) to merge by. Character string
+(vector). Must be supplied.}
 
-\item{as.fun}{The default is to return data in data.tables. Pass a
-function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame.}
+\item{as.fun}{The default is to return a data.table if df1 is a
+data.table and return a data.frame in all other cases. Pass a
+function in as.fun to convert to something else.}
 
-\item{...}{additional arguments passed to merge. If all is among them, an
-error will be returned.}
+\item{...}{additional arguments passed to merge. If all is among
+them, an error will be returned.}
 }
 \value{
 a data.frame resulting from merging df1 and df2
@@ -32,13 +33,14 @@ created. For this very common type of (simple) merges, mergeCheck does the
 merge and ensures that exactly this and nothing else happened.
 }
 \details{
-Besides merging and checking rows, mergeCheck makes sure the order
-    in df1 is retained in the resulting data. Also, a warning is given if
-    column names are overlapping, making merge create new column names like
-    col.x and col.y. Merges and other operations are done using
-    data.table. If df1 is a data.frame (and not a data.table), it will
-    internally be converted to a data.table, and the resulting data.table
-    will be converted back to a data.frame before returning.
+Besides merging and checking rows, mergeCheck makes sure
+    the order in df1 is retained in the resulting data. Also, a
+    warning is given if column names are overlapping, making merge
+    create new column names like col.x and col.y. Merges and other
+    operations are done using data.table. If df1 is a data.frame
+    (and not a data.table), it will internally be converted to a
+    data.table, and the resulting data.table will be converted
+    back to a data.frame before returning.
 }
 \seealso{
 Other DataCreate: 

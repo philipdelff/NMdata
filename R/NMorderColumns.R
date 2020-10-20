@@ -32,10 +32,9 @@
 ##' @param row A row counter column. This will be the first column in
 ##'     the dataset. Technically, you can use it for whatever column
 ##'     you want first.
-##' @param as.fun The default is to return data in a data.table. Pass
-##'     a function in as.fun to convert to something else. If
-##'     data.frames are wanted, use as.fun=as.data.frame. See
-##'     ?runAsFun.
+##' @param as.fun The default is to return a data.table if data is a
+##'     data.table and return a data.frame in all other cases. Pass a
+##'     function in as.fun to convert to something else. 
 ##' @details This function will change the order of columns but it
 ##'     will never edit values in any columns.
 ##'
@@ -76,12 +75,12 @@ NMorderColumns <- function(data,first,last,lower.last=FALSE,
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
 
-    was.data.frame <- FALSE
+    was.dt <- FALSE
     if(is.data.table(data)){
         data <- copy(data) 
+        was.dt <- TRUE
     } else {
         data <- as.data.table(data)
-        was.data.frame <- TRUE
     }
     if(missing(first)) first <- NULL
     if(missing(last)) last <- NULL
@@ -118,8 +117,10 @@ NMorderColumns <- function(data,first,last,lower.last=FALSE,
     setorder(dt.names,nfirst,-nlast,-isnum,nfirst2,islower,name,na.last=TRUE)
     setcolorder(data,dt.names[,name])
 
-    if(was.data.frame) {data <- as.data.frame(data)}
-    data <- runAsFun(data,as.fun=as.fun)
+    if(!was.dt || !is.null(as.fun)) {
+        ##        data <- as.data.frame(data)
+        data <- runAsFun(data,as.fun=as.fun)
+    }
 
     data
 }

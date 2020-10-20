@@ -36,23 +36,75 @@ messageWrap <- function(..., fun.msg=message, prefix = "\n", initial = "", width
 ##' @param as.fun A function to apply if not NULL.
 ##' @return Possibly converted data.
 ##' @details NMdata functions can return objects based on different
-##'     classes. NMdata is mostly implemented in data.table, and the
-##'     default for most functions is to return a data.table. However,
-##'     most functions take an argument as.fun which controls this
-##'     behaviour. If this argument is not set, the value of
-##'     getOptions("NMdata.as.fun") decides (control using
-##'     e.g. options(NMdata.as.fun=as.data.frame)). Notice, this is
-##'     done before adding the NMdata class. So better use this
-##'     functionality rather than converting the obtained dataset
-##'     manually (which will drop the NMdata class)
+##'     classes. The general default is to return
+##'     data.frames. However, if you prefer working with with other
+##'     classes (typically data.table or tibble), you can have those
+##'     returned instead. In general this is controlled by the run.as
+##'     arguments to functions and the "NMdata.as.fun" option.
 ##'
-##' You can use the following values:
+##' You can use the following values for run.as (argument) and
+##' NMdata.as.fun (option):
+##' 
 ##' \itemize{
-##'  \item{"none"}{Do nothing (i.e. keep data.table).}
-##'  \item{a function}{Apply the function. You must supply the actual function, not a string representing it. Examples: as.data.frame or tibble::as_tibble. as.data.table won't have any effect since it will be applied to data.tables, so in this case, better use "none".}
-##' \item{NULL}{Use default (i.e. try getOptions("NMdata.as.fun") and if still NULL, do nothing.)}
+##' \item{"none"}{Return a data.table. Yes, a data.table and
+##'  not a data.frame. If you work with data.table, this will give the
+##'  best performance.}
+##' \item{a function}{Apply the function. You
+##'  must supply the actual function, not a string representing
+##'  it. Examples: as.data.frame or tibble::as_tibble. Do not use
+##'  as.data.table - use "none" to get a data.table.}
+##' \item{NULL}{Use default, i.e. try getOptions("NMdata.as.fun") and if still NULL, rely on default behavior.}
 ##' }
 ##' 
+##' It is perfectly possible but not recommended to convert the
+##'     results coming out of NMdata functions for three reasons
+##' 
+##' \itemize{
+##' \item{Convenience}{You would lose the NMdata class which enables a method like summary to work properly.}
+##' \item{Reliability}{You would have to do it every time you have called an NMdata function increasing risk of errors.}
+##' \item{Performance}{can be significantly better using "none".}
+##' } 
+##'
+##' The functions that return table data structures (like a data.frame)
+##'     take an argument as.fun which controls this behaviour. You can
+##'     also control the default behaviour by the NMdata.as.fun
+##'     option. If not NULL (the default value) as.fun always
+##'     overrules getOption("NMdata.run.as").
+##'
+##' For functions that read and process data from the file system
+##' (like NMreadCsv, NMscanData, NMscanTables and many others),
+##' default is data.frame. Default can be overruled using
+##' options(NMdata.run.as=...), and the default behaviour can be
+##' overruled using the run.as argument.
+##' 
+##' For functions that process a data set supplied in an argument (as
+##'     opposed to reading data from the file system), the class of
+##'     the input data makes a difference. This applies to functions
+##'     like mergeCheck, NMorderCols, findCovs, findVars, flagsAssign,
+##'     flagsCount. If a data.table is supplied to these (and as.fun
+##'     is NULL), a data.table will be returned. If not, a data.frame
+##'     is still default, and the default can be configured using
+##'     options(NMdata.run.as=...).
+##'
+##' NMdata heavily uses data.table under the hood, so "none" means
+##' that no conversion is done by the end of the function. Since
+##' NMdata has no other dependencies than data.table, it cannot
+##' convert to other classes unless the user supply the conversion
+##' function. 
+##'
+##' @examples
+##' dat <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
+##' class(dat)
+##' dat <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),as.fun="none")
+##' class(dat)
+##' options(NMdata.run.as="none")
+##' dat <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
+##' class(dat)
+##' library(tibble)
+##' dat <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),as.fun=tibble::as_tibble)
+##' class(dat)
+
+
 runAsFun <- function(data,as.fun){
     if(is.null(as.fun)){
         as.fun <- getOption("NMdata.as.fun")
@@ -61,7 +113,10 @@ runAsFun <- function(data,as.fun){
         return(data)
     }
     if(is.null(as.fun)){
-        return(data)
+        ## default behaviour. Function or "none" not specified in
+        ## argument, nor in option.
+        ## return(data)
+        as.fun <- as.data.frame
     }
     if(!is.function(as.fun)){
         stop("as.fun must be a function or the character string \"none\".")

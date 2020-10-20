@@ -4,6 +4,9 @@
 
 context("NMscanData")
 
+### these tests were all made back when data.table was default
+options(NMdata.as.fun="none")
+
 test_that("basic",{
 
     fileRef <- "testReference/NMscanData1.rds"
@@ -289,3 +292,5 @@ test_that("use as.fun to get a tibble",{
     )
     
 })
+
+options(NMdata.as.fun=NULL)

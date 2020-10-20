@@ -51,10 +51,9 @@ counter and ID.}
 the dataset. Technically, you can use it for whatever column
 you want first.}
 
-\item{as.fun}{The default is to return data in a data.table. Pass
-a function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame. See
-?runAsFun.}
+\item{as.fun}{The default is to return a data.table if data is a
+data.table and return a data.frame in all other cases. Pass a
+function in as.fun to convert to something else.}
 }
 \description{
 Order data columns for easy export to Nonmem. No data values are

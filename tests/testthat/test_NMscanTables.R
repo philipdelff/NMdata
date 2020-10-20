@@ -1,6 +1,6 @@
 ## library(devtools)
-## load_all("~/working_copies/NMdata")
-## setwd("~/working_copies/NMdata/tests/testthat")
+## load_all("NMdata")
+## setwd("NMdata/tests/testthat")
 
 context("NMscanTables")
 
@@ -9,20 +9,29 @@ test_that("Multiple output table formats",{
     fileRef <- "testReference/NMscanTables1.rds"
     file.lst <- NMdata_filepath("examples/nonmem/xgxr003.lst")
 
-    ## res <- NMscanData(file=file.lst)
-    res <- NMscanTables(file=file.lst)
+    res.dt <- NMscanTables(file=file.lst,as.fun="none")
+    expect_equal_to_reference(res.dt,fileRef,version=2)
 
-    expect_equal_to_reference(res,fileRef,version=2)
+    ## test that we have data.tables from using as.fun=none
+    expect_true(all(unlist(lapply(res.dt,is.data.table))))
+
+    ## and if we convert to df, we get exactly the same as when relying on default
+    res.dt.df <- lapply(res.dt,as.data.frame)
+    res.df <- NMscanTables(file=file.lst)
+    expect_equal(res.df,res.dt.df)
+
 })
 
 
 test_that("Details table",{
     fileRef <- "testReference/NMscanTables2.rds"
     file.lst <- NMdata_filepath("examples/nonmem/xgxr003.lst")
+
+    res <- NMscanTables(file=file.lst,details=T,as.fun="none")
 ### this will make trouble because meta data table contains absolute
-### paths which is machine dependent. So removin path.
-    res <- NMscanTables(file=file.lst,details=T)
+### paths which is machine dependent. So removing path.
     res$meta[,file:=basename(file)]
-    ## res$meta
+    ## df approach
+    ## res$meta$file <- basename(res$meta$file)
     expect_equal_to_reference(res,fileRef,version=2)
 })

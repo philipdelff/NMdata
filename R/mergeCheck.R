@@ -5,23 +5,25 @@
 ##' created. For this very common type of (simple) merges, mergeCheck does the
 ##' merge and ensures that exactly this and nothing else happened. 
 ##'
-##' @param df1 A data.fram with the number of rows must should be obtained from
-##'     the merge. The resulting data.frame will be ordered like df1.
+##' @param df1 A data.fram with the number of rows must should be
+##'     obtained from the merge. The resulting data.frame will be
+##'     ordered like df1.
 ##' @param df2 A data.frame that will be merged onto df1.
-##' @param by The column(s) to merge by. Character string (vector). Must be
-##'     supplied.
-##' @param as.fun The default is to return data in data.tables. Pass a
-##'     function in as.fun to convert to something else. If
-##'     data.frames are wanted, use as.fun=as.data.frame.
-##' @param ... additional arguments passed to merge. If all is among them, an
-##'     error will be returned.
-##' @details Besides merging and checking rows, mergeCheck makes sure the order
-##'     in df1 is retained in the resulting data. Also, a warning is given if
-##'     column names are overlapping, making merge create new column names like
-##'     col.x and col.y. Merges and other operations are done using
-##'     data.table. If df1 is a data.frame (and not a data.table), it will
-##'     internally be converted to a data.table, and the resulting data.table
-##'     will be converted back to a data.frame before returning.
+##' @param by The column(s) to merge by. Character string
+##'     (vector). Must be supplied.
+##' @param as.fun The default is to return a data.table if df1 is a
+##'     data.table and return a data.frame in all other cases. Pass a
+##'     function in as.fun to convert to something else. 
+##' @param ... additional arguments passed to merge. If all is among
+##'     them, an error will be returned.
+##' @details Besides merging and checking rows, mergeCheck makes sure
+##'     the order in df1 is retained in the resulting data. Also, a
+##'     warning is given if column names are overlapping, making merge
+##'     create new column names like col.x and col.y. Merges and other
+##'     operations are done using data.table. If df1 is a data.frame
+##'     (and not a data.table), it will internally be converted to a
+##'     data.table, and the resulting data.table will be converted
+##'     back to a data.frame before returning.
 ##' @family DataCreate
 ##' @import data.table
 ##' @return a data.frame resulting from merging df1 and df2
@@ -40,19 +42,18 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,...){
     ## if data is not data.tables, convert to data.tables
     stopifnot(is.data.frame(df1))
     stopifnot(is.data.frame(df2))
-    was.df.df1 <- FALSE
+    df1.was.dt <- TRUE
     if(is.data.table(df1)){
         df1 <- copy(df1)
     } else {
         df1 <- as.data.table(df1)
-        was.df.df1 <- TRUE
+        df1.was.dt <- FALSE
     }
-    was.df.df2 <- FALSE
+    
     if(is.data.table(df2)){
         df2 <- copy(df2)
     } else {
         df2 <- as.data.table(df2)
-        was.df.df2 <- TRUE
     }
 
     rowcol <- tmpcol(names=c(colnames(df1),colnames(df2)))
@@ -94,10 +95,10 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,...){
         warning("Merge created new column names. Not merging by all common columns?")
     }
 
-    if(was.df.df1){
-        df3 <- as.data.frame(df3)
+    if(!df1.was.dt || !is.null(as.fun)){
+        ##        df3 <- as.data.frame(df3)
+        df3 <- runAsFun(df3,as.fun)
     }
-    df3 <- runAsFun(df3,as.fun)
-
+    
     df3
 }

@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.1</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2020-10-16 using NMdata 0.0.6.</p>
+<p>Built 2020-10-19 using NMdata 0.0.6.1.</p>
 <div id="general-nmdata-questions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general-nmdata-questions" class="anchor"></a>General <code>NMdata</code> questions</h2>
@@ -123,12 +123,12 @@ library(NMdata)</a></code></pre>
 <h3 class="hasAnchor">
 <a href="#i-use-another-tool-that-automatically-reads-my-data--should-i-be-interested-in-nndata" class="anchor"></a>I use another tool that automatically reads my data. Should I be interested in NNdata?</h3>
 <p>The data creation tools in <code>NMdata</code> may still be interesting. If another tool is working well for a project, you may not have any reason to use <code>NMscanData</code> for it. However, a lot of the time those tools have certain requirements to how datasets are constructed and especially how data is exported from Nonmem (<code>$TABLE</code>). If a Nonmem run does not live up to those requirements, and you want to look at the run results, <code>NMscanData</code> will let you do that without you having to “correct” your <code>$TABLE</code> statements and wait for Nonmem to run again.</p>
-<p>Also, in other cases <code>NMscanData</code> can save you a lot of time and frustration even if you have your own routines that makes <code>NMdata</code> unnecessary. If you want to read your old Nonmem runs that were done a little differently, someone else’s work, or you want to quickly read a lot of runs done by different people for a meta analysis, <code>NMscanData</code> can save you a lot of work, time and frustration.</p>
+<p>Also, in other cases <code>NMscanData</code> can save you a lot of time and frustration even if you have your own routines that make <code>NMdata</code> unnecessary. If you want to read your old Nonmem runs that were done a little differently, someone else’s work, or you want to quickly read a lot of runs done by different people for a meta analysis, <code>NMscanData</code> can save you a lot of work, time and frustration.</p>
 </div>
 <div id="why-is-nmdata-fast" class="section level3">
 <h3 class="hasAnchor">
 <a href="#why-is-nmdata-fast" class="anchor"></a>Why is NMdata fast?</h3>
-<p><code>NMdata</code> is generally fast - all thanks to the incredible <code>data.table</code> package. If you don’t use data.table already, it may even seem really fast. If you are noticing some circumstances where <code>NMdata</code> seems slow, I am very curious to hear about it.</p>
+<p><code>NMdata</code> is generally fast - all thanks to the incredible <code>data.table</code> package. If you don’t use <code>data.table</code> already, it may even seem extremely fast. If you are noticing some circumstances where <code>NMdata</code> seems slow, I am very curious to hear about it.</p>
 </div>
 <div id="so-nmdata-uses-data-table--does-that-mean-variables-are-modified-by-reference" class="section level3">
 <h3 class="hasAnchor">
@@ -138,7 +138,7 @@ library(NMdata)</a></code></pre>
 <div id="i-want-to-use-a-tool-from-nmdata-but-how-can-i-avoid-working-with-data-table" class="section level3">
 <h3 class="hasAnchor">
 <a href="#i-want-to-use-a-tool-from-nmdata-but-how-can-i-avoid-working-with-data-table" class="anchor"></a>I want to use a tool from NMdata, but how can I avoid working with data.table?</h3>
-<p>Easy. Every function in <code>NMdata</code> has an argument called <code>fun.as</code>. You can provide a function in this argument which will be applied to data before returnin it.</p>
+<p>Easy. Every function in <code>NMdata</code> has an argument called <code>as.fun</code>. You can provide a function in this argument which will be applied to data before returnin it.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="kw">...</span>, as.fun = <span class="kw">as.data.frame</span>)
 </pre></div>

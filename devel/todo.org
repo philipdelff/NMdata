@@ -19,6 +19,10 @@ Conclusion: export from pmxtricks, internal in NMdata.
 *** TODO NMreplacepart
 Instead of the section argument, NMreplacepart must accept newlines as
 a named list.
+*** TODO A function to check data
+**** TODO Find previously used code
+**** TODO Implement more checks
+https://doi.org/10.1208/s12248-012-9387-9
 ** Function improvements
 *** NMextractText
 **** TODO reduce lines and text to one argument
@@ -178,7 +182,8 @@ depending on nmout TRUE or FALSE.
 *** DONE Fix NMscanData messages to be just one.
     CLOSED: [2020-10-15 Thu 13:09]
 *** TODO Vignettes should mostly use data.frame's.
-*** TODO Release 0.0.6
+*** DONE Release 0.0.6
+    CLOSED: [2020-10-18 Sun 11:00]
 **** DONE Look for file.mod option
      CLOSED: [2020-10-15 Thu 20:50]
 *** TODO Release 0.0.7  
@@ -188,3 +193,5 @@ depending on nmout TRUE or FALSE.
       CLOSED: [2020-10-15 Thu 14:57]
 ***** TODO FAQ
 ***** TODO DataCreate
+**** TODO document data objects
+See how it's done in pmxtricks

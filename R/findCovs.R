@@ -5,10 +5,9 @@
 ##'     values in these columns. Often cols.id will be either empty or
 ##'     ID. But it can also be both say c("ID","DRUG") or
 ##'     c("ID","TRT").
-##' @param as.fun The default is to return data in data.tables. Pass a
-##'     function in as.fun to convert to something else. If
-##'     data.frames are wanted, use as.fun=as.data.frame. See
-##'     ?runAsFun.
+##' @param as.fun The default is to return a data.table if data is a
+##'     data.table and return a data.frame in all other cases. Pass a
+##'     function in as.fun to convert to something else. See ?runAsFun.
 ##' @return a data set with one observation per combination of values
 ##'     of variables listed in cols.id.
 ##' @family DataCreate
@@ -54,8 +53,9 @@ findCovs <- function(data,cols.id=NULL,as.fun=NULL){
         reduced <- reduced[order(get(cols.id))]
     }
 
-    if(!was.data.table) reduced <- as.data.frame(reduced)
-    reduced <- runAsFun(reduced,as.fun)
+    if(!was.data.table || !is.null(as.fun) ) {
+        reduced <- runAsFun(reduced,as.fun)
+    }
     
     reduced
 

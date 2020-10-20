@@ -75,7 +75,7 @@ merge and ensures that exactly this and nothing else happened." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.1</span>
       </span>
     </div>
 
@@ -152,8 +152,9 @@ merge and ensures that exactly this and nothing else happened.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>df1</th>
-      <td><p>A data.fram with the number of rows must should be obtained from
-the merge. The resulting data.frame will be ordered like df1.</p></td>
+      <td><p>A data.fram with the number of rows must should be
+obtained from the merge. The resulting data.frame will be
+ordered like df1.</p></td>
     </tr>
     <tr>
       <th>df2</th>
@@ -161,19 +162,19 @@ the merge. The resulting data.frame will be ordered like df1.</p></td>
     </tr>
     <tr>
       <th>by</th>
-      <td><p>The column(s) to merge by. Character string (vector). Must be
-supplied.</p></td>
+      <td><p>The column(s) to merge by. Character string
+(vector). Must be supplied.</p></td>
     </tr>
     <tr>
       <th>as.fun</th>
-      <td><p>The default is to return data in data.tables. Pass a
-function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame.</p></td>
+      <td><p>The default is to return a data.table if df1 is a
+data.table and return a data.frame in all other cases. Pass a
+function in as.fun to convert to something else.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments passed to merge. If all is among them, an
-error will be returned.</p></td>
+      <td><p>additional arguments passed to merge. If all is among
+them, an error will be returned.</p></td>
     </tr>
     </table>
 
@@ -182,13 +183,14 @@ error will be returned.</p></td>
     <p>a data.frame resulting from merging df1 and df2</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Besides merging and checking rows, mergeCheck makes sure the order
-    in df1 is retained in the resulting data. Also, a warning is given if
-    column names are overlapping, making merge create new column names like
-    col.x and col.y. Merges and other operations are done using
-    data.table. If df1 is a data.frame (and not a data.table), it will
-    internally be converted to a data.table, and the resulting data.table
-    will be converted back to a data.frame before returning.</p>
+    <p>Besides merging and checking rows, mergeCheck makes sure
+    the order in df1 is retained in the resulting data. Also, a
+    warning is given if column names are overlapping, making merge
+    create new column names like col.x and col.y. Merges and other
+    operations are done using data.table. If df1 is a data.frame
+    (and not a data.table), it will internally be converted to a
+    data.table, and the resulting data.table will be converted
+    back to a data.frame before returning.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other DataCreate: 

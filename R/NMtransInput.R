@@ -33,10 +33,10 @@
 ##'     returning the data.
 ##' @param quiet Default is to inform a little, but TRUE is useful for
 ##'     non-interactive stuff.
-##' @param as.fun The default is to return data in data.tables. Pass a
-##'     function in as.fun to convert to something else. If
-##'     data.frames are wanted, use as.fun=as.data.frame. See
-##'     ?runAsFun.
+##' @param as.fun The default is to return data as a data.frame. Pass
+##'     a function (say tibble::as_tibble) in as.fun to convert to
+##'     something else. If data.tables are wanted, use
+##'     as.fun="none". See ?runAsFun.
 ##' @param invert If TRUE, the data rows that are dismissed by the
 ##'     Nonmem data filters (ACCEPT and IGNORE) and only this will be
 ##'     returned. Only used if applyFilters is TRUE.

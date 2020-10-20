@@ -74,7 +74,7 @@ details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.1</span>
       </span>
     </div>
 
@@ -208,10 +208,9 @@ you want first.</p></td>
     </tr>
     <tr>
       <th>as.fun</th>
-      <td><p>The default is to return data in a data.table. Pass
-a function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame. See
-?runAsFun.</p></td>
+      <td><p>The default is to return a data.table if data is a
+data.table and return a data.frame in all other cases. Pass a
+function in as.fun to convert to something else.</p></td>
     </tr>
     </table>
 

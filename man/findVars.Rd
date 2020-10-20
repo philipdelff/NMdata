@@ -14,9 +14,9 @@ combinations of values in these columns. Often cols.id will be
 either empty or ID. But it can also be both say c("ID","DRUG")
 or c("ID","TRT").}
 
-\item{as.fun}{The default is to return data in data.tables. Pass a
-function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame.}
+\item{as.fun}{The default is to return a data.table if data is a
+data.table and return a data.frame in all other cases. Pass a
+function in as.fun to convert to something else. See ?runAsFun.}
 }
 \value{
 a data set with as many rows as in data

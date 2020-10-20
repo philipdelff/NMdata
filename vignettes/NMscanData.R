@@ -19,9 +19,6 @@ library(ggplot2)
 theme_set(theme_bw()+theme(legend.position="bottom"))
 
 
-## -----------------------------------------------------------------------------
-options(NMdata.as.fun=as.data.frame)
-
 ## ----eval=TRUE----------------------------------------------------------------
 res0 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),
                    cbind.by.filters=TRUE)
@@ -78,7 +75,7 @@ dim(res1.id2)
 head(res1.id2,2)
 
 ## -----------------------------------------------------------------------------
-options(NMdata.as.fun=NULL)
+options(NMdata.as.fun="none")
 
 ## -----------------------------------------------------------------------------
 res2 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),

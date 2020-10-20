@@ -68,18 +68,7 @@ again especially if the model wasn't written by your own (current)
 standards.
 
 ## Get started
-Just one thing before we try this out. `NMscanData` and other data
-reader functions in `NMdata` return objects of class `data.table` by
-default. We will start by changing this behaviour so we will get
-a `data.frame` back instead. If you prefer `data.table`, skip this
-step. If you prefer the `tibble` class (for dplyr and rest of
-tidyverse), load the `tibble` package and insert `tibble::as_tibble`. 
-
-```{r}
-options(NMdata.as.fun=as.data.frame)
-```
-
-Now try NMscanData on any model:
+Try NMscanData on any model:
 ```{r,eval=TRUE}
 res0 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),
                    cbind.by.filters=TRUE)
@@ -253,7 +242,7 @@ the calculations again, so we will reset the `NMdata,as.fun` which we
 set in the beginning to get `data.frame`'s. 
 
 ```{r}
-options(NMdata.as.fun=NULL)
+options(NMdata.as.fun="none")
 ```
 
 ```{r}

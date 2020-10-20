@@ -84,9 +84,10 @@ mentioned in the Nonmem control stream, should this be used
 instead? The default is yes, and NMwriteData will create this
 by default too.}
 
-\item{as.fun}{The default is to return data in data.tables. Pass a
-function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame.}
+\item{as.fun}{The default is to return data as a data.frame. Pass
+a function (say tibble::as_tibble) in as.fun to convert to
+something else. If data.tables are wanted, use
+as.fun="none". See ?runAsFun.}
 
 \item{col.id}{The name of the subject ID variable, default is
 "ID".}

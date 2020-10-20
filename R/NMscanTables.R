@@ -11,10 +11,10 @@
 ##'     written data files. These are often not useful. However, if
 ##'     tab.count is TRUE (default), this will be carried forward and
 ##'     added as a column called TABLENO.
-##' @param as.fun The default is to return data in data.tables. Pass a
-##'     function in as.fun to convert to something else. If
-##'     data.frames are wanted, use as.fun=as.data.frame. See
-##'     ?runAsFun.
+##' @param as.fun The default is to return data as a data.frame. Pass
+##'     a function (say tibble::as_tibble) in as.fun to convert to
+##'     something else. If data.tables are wanted, use
+##'     as.fun="none". See ?runAsFun.
 ##' @return A list of all the tables as data.frames. If details=TRUE,
 ##'     this is in one element, called data, and meta is another
 ##'     element. If not, only the element corresponding to data is

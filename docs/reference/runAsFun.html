@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.1</span>
       </span>
     </div>
 
@@ -160,22 +160,92 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>NMdata functions can return objects based on different
-    classes. NMdata is mostly implemented in data.table, and the
-    default for most functions is to return a data.table. However,
-    most functions take an argument as.fun which controls this
-    behaviour. If this argument is not set, the value of
-    getOptions("NMdata.as.fun") decides (control using
-    e.g. options(NMdata.as.fun=as.data.frame)). Notice, this is
-    done before adding the NMdata class. So better use this
-    functionality rather than converting the obtained dataset
-    manually (which will drop the NMdata class)</p>
-<p>You can use the following values:</p><ul>
-<li><p>"none"Do nothing (i.e. keep data.table).</p></li>
-<li><p>a functionApply the function. You must supply the actual function, not a string representing it. Examples: as.data.frame or tibble::as_tibble. as.data.table won't have any effect since it will be applied to data.tables, so in this case, better use "none".</p></li>
-<li><p>NULLUse default (i.e. try getOptions("NMdata.as.fun") and if still NULL, do nothing.)</p></li>
+    classes. The general default is to return
+    data.frames. However, if you prefer working with with other
+    classes (typically data.table or tibble), you can have those
+    returned instead. In general this is controlled by the run.as
+    arguments to functions and the "NMdata.as.fun" option.</p>
+<p>You can use the following values for run.as (argument) and
+NMdata.as.fun (option):</p>
+<ul>
+<li><p>"none"Return a data.table. Yes, a data.table and
+ not a data.frame. If you work with data.table, this will give the
+ best performance.</p></li>
+<li><p>a functionApply the function. You
+ must supply the actual function, not a string representing
+ it. Examples: as.data.frame or tibble::as_tibble. Do not use
+ as.data.table - use "none" to get a data.table.</p></li>
+<li><p>NULLUse default, i.e. try getOptions("NMdata.as.fun") and if still NULL, rely on default behavior.</p></li>
 </ul>
 
+<p>It is perfectly possible but not recommended to convert the
+    results coming out of NMdata functions for three reasons</p>
+<ul>
+<li><p>ConvenienceYou would lose the NMdata class which enables a method like summary to work properly.</p></li>
+<li><p>ReliabilityYou would have to do it every time you have called an NMdata function increasing risk of errors.</p></li>
+<li><p>Performancecan be significantly better using "none".</p></li>
+</ul> 
 
+<p>The functions that return table data structures (like a data.frame)
+    take an argument as.fun which controls this behaviour. You can
+    also control the default behaviour by the NMdata.as.fun
+    option. If not NULL (the default value) as.fun always
+    overrules getOption("NMdata.run.as").</p>
+<p>For functions that read and process data from the file system
+(like NMreadCsv, NMscanData, NMscanTables and many others),
+default is data.frame. Default can be overruled using
+options(NMdata.run.as=...), and the default behaviour can be
+overruled using the run.as argument.</p>
+<p>For functions that process a data set supplied in an argument (as
+    opposed to reading data from the file system), the class of
+    the input data makes a difference. This applies to functions
+    like mergeCheck, NMorderCols, findCovs, findVars, flagsAssign,
+    flagsCount. If a data.table is supplied to these (and as.fun
+    is NULL), a data.table will be returned. If not, a data.frame
+    is still default, and the default can be configured using
+    options(NMdata.run.as=...).</p>
+<p>NMdata heavily uses data.table under the hood, so "none" means
+that no conversion is done by the end of the function. Since
+NMdata has no other dependencies than data.table, it cannot
+convert to other classes unless the user supply the conversion
+function.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='NMscanData.html'>NMscanData</a></span>(<span class='fu'><a href='NMdata_filepath.html'>NMdata_filepath</a></span>(<span class='st'>"examples/nonmem/xgxr001.lst"</span>))
+</div><div class='output co'>#&gt; <span class='message'>Number of output tables read: 1.</span></div><div class='output co'>#&gt; <span class='message'>Read delimited text input data file.</span></div><div class='output co'>#&gt; <span class='message'>In NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst")) : Input data</span>
+#&gt; <span class='message'>columns will be appended to output data. However, column(s) were identified as</span>
+#&gt; <span class='message'>unique identifiers, present in both input and output data. If this column or</span>
+#&gt; <span class='message'>one of these columns is not modified by the Nonmem run, consider using this in</span>
+#&gt; <span class='message'>col.row for a robust merge of input and output data. Candidate columns: ROW To</span>
+#&gt; <span class='message'>skip this check, please specify either col.row (recommended) or</span>
+#&gt; <span class='message'>cbind.by.filters.</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='kw'>dat</span>)
+</div><div class='output co'>#&gt; [1] "NMdata"     "data.frame"</div><div class='input'><span class='kw'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='NMscanData.html'>NMscanData</a></span>(<span class='fu'><a href='NMdata_filepath.html'>NMdata_filepath</a></span>(<span class='st'>"examples/nonmem/xgxr001.lst"</span>),as.fun=<span class='st'>"none"</span>)
+</div><div class='output co'>#&gt; <span class='message'>Number of output tables read: 1.</span></div><div class='output co'>#&gt; <span class='message'>Read delimited text input data file.</span></div><div class='output co'>#&gt; <span class='message'>In NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"), as.fun = "none")</span>
+#&gt; <span class='message'>: Input data columns will be appended to output data. However, column(s) were</span>
+#&gt; <span class='message'>identified as unique identifiers, present in both input and output data. If</span>
+#&gt; <span class='message'>this column or one of these columns is not modified by the Nonmem run,</span>
+#&gt; <span class='message'>consider using this in col.row for a robust merge of input and output data.</span>
+#&gt; <span class='message'>Candidate columns: ROW To skip this check, please specify either col.row</span>
+#&gt; <span class='message'>(recommended) or cbind.by.filters.</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='kw'>dat</span>)
+</div><div class='output co'>#&gt; [1] "NMdata"     "data.table" "data.frame"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(NMdata.run.as=<span class='st'>"none"</span>)
+<span class='kw'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='NMscanData.html'>NMscanData</a></span>(<span class='fu'><a href='NMdata_filepath.html'>NMdata_filepath</a></span>(<span class='st'>"examples/nonmem/xgxr001.lst"</span>))
+</div><div class='output co'>#&gt; <span class='message'>Number of output tables read: 1.</span></div><div class='output co'>#&gt; <span class='message'>Read delimited text input data file.</span></div><div class='output co'>#&gt; <span class='message'>In NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst")) : Input data</span>
+#&gt; <span class='message'>columns will be appended to output data. However, column(s) were identified as</span>
+#&gt; <span class='message'>unique identifiers, present in both input and output data. If this column or</span>
+#&gt; <span class='message'>one of these columns is not modified by the Nonmem run, consider using this in</span>
+#&gt; <span class='message'>col.row for a robust merge of input and output data. Candidate columns: ROW To</span>
+#&gt; <span class='message'>skip this check, please specify either col.row (recommended) or</span>
+#&gt; <span class='message'>cbind.by.filters.</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='kw'>dat</span>)
+</div><div class='output co'>#&gt; [1] "NMdata"     "data.frame"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://tibble.tidyverse.org'>tibble</a></span>)
+<span class='kw'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='NMscanData.html'>NMscanData</a></span>(<span class='fu'><a href='NMdata_filepath.html'>NMdata_filepath</a></span>(<span class='st'>"examples/nonmem/xgxr001.lst"</span>),as.fun=<span class='kw'>tibble</span>::<span class='kw'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span>)
+</div><div class='output co'>#&gt; <span class='message'>Number of output tables read: 1.</span></div><div class='output co'>#&gt; <span class='message'>Read delimited text input data file.</span></div><div class='output co'>#&gt; <span class='message'>In NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"), as.fun =</span>
+#&gt; <span class='message'>tibble::as_tibble) : Input data columns will be appended to output data.</span>
+#&gt; <span class='message'>However, column(s) were identified as unique identifiers, present in both</span>
+#&gt; <span class='message'>input and output data. If this column or one of these columns is not modified</span>
+#&gt; <span class='message'>by the Nonmem run, consider using this in col.row for a robust merge of input</span>
+#&gt; <span class='message'>and output data. Candidate columns: ROW To skip this check, please specify</span>
+#&gt; <span class='message'>either col.row (recommended) or cbind.by.filters.</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='kw'>dat</span>)
+</div><div class='output co'>#&gt; [1] "NMdata"     "tbl_df"     "tbl"        "data.frame"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

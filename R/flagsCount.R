@@ -22,6 +22,10 @@
 ##'     observations and subjects resulting from the flag, "retained"
 ##'     means the numbers that are left after application of the
 ##'     flag. The default is "both" which will report both.
+##' @param as.fun The default is to return a data.table if input data
+##'     is a data.table, and return a data.frame for all other input
+##'     classes. Pass a function in as.fun to convert to something
+##'     else. 
 ##' @details Notice number of subjects in N.discarded mode can be
 ##'     misunderstood. If two is reported, it can mean that the
 ##'     remining one observation of these two subjects are discarded
@@ -32,7 +36,7 @@
 ##' @export
 
 
-flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL){
+flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL,as.fun=NULL){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -52,13 +56,19 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL){
     if(missing(file)) file <- NULL
 
     stopifnot(is.data.frame(data))
+    stopifnot(is.data.frame(tab.flags))
+
+    data.was.data.table <- TRUE
     if(!is.data.table(data)) {
         data <- as.data.table(data)
-        data.was.data.frame <- TRUE
+        ##  data.was.data.frame <- TRUE
+        data.was.data.table <- FALSE
     }
+    tab.flags.was.data.table <- TRUE
     if(!is.data.table(tab.flags)) {
         tab.flags <- as.data.table(tab.flags)
-        tab.flags.was.data.frame <- TRUE
+        ##  tab.flags.was.data.frame <- TRUE
+        tab.flags.was.data.table <- FALSE
     }
 
 ### if 0 and Inf are not in tab.flags, insert them
@@ -68,42 +78,14 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL){
                           ,fill=TRUE
                            )
     }
-    ## if(!Inf%in%tab.flags[,FLAG]){
-    ##     tab.flags <- rbind(tab.flags,
-    ##                        data.table(FLAG=-Inf,flag="All data")
-    ##                       ,fill=TRUE
-    ##                        )
-    ## }
-    
-    
-    
-########## Check tab.init missing ########
-    ## ##' @param tab.init If you have already counted something and then
-    ## ##'     reduced data. To be documented.
-    ## if(!missing(tab.init)){
-    ##     if(!is.data.frame(tab.init)) stop("tab.init must be a data.frame")
-    ##     names.tab.init <- colnames(tab.init)
-    ##     ## It should be checked that classes match.
-    ##     if(!all(c("Data","Nobs","NID")%in%names.tab.init)) stop("tab.init must contain columns Data, Nobs, NID.")
-    ##     tab.report <- tab.init
-    ## } else {
-    ##     tab.report <- data.frame(Data="All data",Nobs=nrow(data),NID=data[,uniqueN(get(col.id))])
-    ## }
-    
-######### END Check tab.init ########
 
-    
-    
 
     tab.flags.0 <- tab.flags[FLAG==0]
     tab.flags <- tab.flags[FLAG!=0]
     ## The smaller the number, the earlier the condition is
     ## applied. This must match what flagsAssign does.
     tab.flags <- tab.flags[order(FLAG)]
-    ## tab.flags[,"Nobs"] <- NA_real_
-    ## tab.flags[,"NID"] <- NA_real_
 
-    ##    dt.passed <- data[,.(NFlagsPassed=findInterval(FLAG,tab.flags[order(FLAG),FLAG]))]
     data.tmp <- copy(data)
 
     
@@ -165,6 +147,10 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL){
         cat(paste0("Table written to ",file,"\n"))
     }
 
+    if(!data.was.data.table || !is.null(as.fun) ) {
+        allres <- runAsFun(allres,as.fun)
+    }
+    
     return(allres)
 
 }

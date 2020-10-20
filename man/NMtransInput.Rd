@@ -55,10 +55,10 @@ non-interactive stuff.}
 Nonmem data filters (ACCEPT and IGNORE) and only this will be
 returned. Only used if applyFilters is TRUE.}
 
-\item{as.fun}{The default is to return data in data.tables. Pass a
-function in as.fun to convert to something else. If
-data.frames are wanted, use as.fun=as.data.frame. See
-?runAsFun.}
+\item{as.fun}{The default is to return data as a data.frame. Pass
+a function (say tibble::as_tibble) in as.fun to convert to
+something else. If data.tables are wanted, use
+as.fun="none". See ?runAsFun.}
 }
 \description{
 Based on a nonmem run (lst and/or mod file), this

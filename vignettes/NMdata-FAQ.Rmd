@@ -43,9 +43,8 @@ install_github("philipdelff/NMdata@v0.0.6")
 library(NMdata)
 ```
 
-If you need to archive a 
-script that is dependent on a feature or bug fix which is only in
-the master branch, request a release.
+If you need to archive a script that is dependent on a feature or bug
+fix which is only in the master branch, request a release. 
 
 
 ### What about NMdata dependencies?
@@ -66,7 +65,7 @@ to "correct" your `$TABLE` statements and wait for Nonmem to run
 again. 
 
 Also, in other cases `NMscanData` can save you a lot of time and
-frustration even if you have your own routines that makes `NMdata`
+frustration even if you have your own routines that make `NMdata`
 unnecessary. If you want to read your old Nonmem runs that were done a
 little differently, someone else's work, or you want to quickly read a
 lot of runs done by different people for a meta analysis, `NMscanData`
@@ -75,7 +74,7 @@ can save you a lot of work, time and frustration.
 
 ### Why is NMdata fast?
 `NMdata` is generally fast - all thanks to the incredible `data.table`
-package. If you don't use data.table already, it may even seem really
+package. If you don't use `data.table` already, it may even seem extremely
 fast. If you are noticing some circumstances where `NMdata` seems
 slow, I am very curious to hear about it.
 
@@ -88,7 +87,7 @@ at all levels of experience.  If you don't understand what this is all
 about, you're fine.
 
 ### I want to use a tool from NMdata, but how can I avoid working with data.table?
-Easy. Every function in `NMdata` has an argument called `fun.as`. You
+Easy. Every function in `NMdata` has an argument called `as.fun`. You
 can provide a function in this argument which will be applied to data
 before returnin it.
 

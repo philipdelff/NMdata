@@ -13,9 +13,11 @@
 ##'     dataset is returned.
 ##' @param col.id The name of the subject ID column. Default is "ID".
 ##' @param col.dv The name of the data value column. Default is "DV".
-##' @param as.fun The default is to return data in data.tables. Pass a
-##'     function in as.fun to convert to something else. If
-##'     data.frames are wanted, use as.fun=as.data.frame.
+##' @param as.fun The default is to return data.tables if input data
+##'     is a data.table, and return a data.frame for all other input
+##'     classes. Pass a function in as.fun to convert to something
+##'     else. If return.all=F, this is applied to data and tab.flags
+##'     independently.
 ##' @return The dataset with flags added. See parameter flags.return
 ##'     as well.
 ##' @import data.table
@@ -25,7 +27,7 @@
 
 flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
                         col.dv="DV", as.fun=NULL){
-
+    
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     ..col.id <- NULL
@@ -46,12 +48,14 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
 ####### Check data ######
     if(!is.data.frame(data)){stop("data must be a data.frame")}
     ## make sure data is a data.table
-
-    was.data.table <- T
+    
+    data.was.data.table <- TRUE
     if(!is.data.table(data)){
-        was.data.table <- F
+        data.was.data.table <- FALSE
         data <- as.data.table(data)
     }
+
+    
 
     datacols <- colnames(data)
     if(!col.id%in%datacols) stop("data must contain a column name matching the argument col.id.")
@@ -79,8 +83,13 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
     if(!is.data.frame(tab.flags)||!(all(c("FLAG","flag","condition")%in%colnames(tab.flags)))){
         stop("tab.flags must be a data.frame containing FLAG, flag, and condition.")
     }
+
     ## make sure tab.flags and data are data.tables
-    tab.flags <- as.data.table(tab.flags)
+    tab.flags.was.data.table <- TRUE
+    if(!is.data.table(tab.flags)){
+        tab.flags.was.data.table <- FALSE
+        tab.flags <- as.data.table(tab.flags)
+    }
 
     if(!is.numeric(tab.flags[,FLAG])) stop("column FLAG in tab.flags must be numeric and non-negative")
     if(tab.flags[,any(FLAG<0)]) stop("column FLAG in tab.flags must be non-negative")
@@ -157,7 +166,6 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
 
 ### check that all data$FLAG have a value matching tab.flags$FLAG. Then merge on the flag values.
     if(any(is.na(data[,FLAG]))) {
-        ## print(subset(data,is.na(FLAG)))
         stop("NA's found in data$FLAG after assigning FLAGS. Bug in flagsAssign?")
     }
 
@@ -169,18 +177,19 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
     data[,(col.row):=NULL]
 
     
-    if(!was.data.table) {
-        data <- as.data.frame(data)
-        tab.flags <- as.data.frame(tab.flags)
+    if(!data.was.data.table || !is.null(as.fun) ) {
+        data <- runAsFun(data,as.fun)
+        tab.flags <- runAsFun(tab.flags,as.fun)
     }
-    data <- runAsFun(data,as.fun)
-    tab.flags <- runAsFun(tab.flags,as.fun)
+
     
     if(return.all){
+        if(!tab.flags.was.data.table || !is.null(as.fun) ) {
+            tab.flags <- runAsFun(tab.flags,as.fun)
+        }
         return(list(data,tab.flags))
     } else {
         return(data)
     }
 
 }
-
