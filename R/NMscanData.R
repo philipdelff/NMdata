@@ -110,7 +110,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     firstlastonly <- NULL
     idlevel <- NULL
     lastonly <- NULL
-    tab.type <- NULL
+    level <- NULL
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
@@ -225,8 +225,6 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     overview.tables[,full.length:=!idlevel&maxLength]
     NrowFull <- overview.tables[full.length==TRUE,unique(nrow)]
 
-    ## browser()
-    
 ### combine full tables into one
     tabs.full <- which(overview.tables$full.length)
 
@@ -242,17 +240,40 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     
     tab.row <- NULL
     tab.vars <- NULL
+    dt.vars <- NULL
     
     if(any(overview.tables[,full.length])) {
         
-        ## there might be a little bit to save by reducing the columns before cbind. 
+        ## there might be a little bit to save by reducing the columns before cbind.
         tab.row <- Reduce(cbind,data[which(overview.tables$maxLength)])
-        tab.row <- tab.row[,unique(colnames(tab.row)),with=FALSE]
+### get all names from this and then select unique to get a table with the included variables
+        list.vars <- lapply(data[which(overview.tables$maxLength)],names)
+        list.vars <- lapply(list.vars,as.data.table)
+        list.vars <- lapply(seq_along(list.vars),function(n)list.vars[[n]][,table:=names(list.vars)[n]])
+        dt.vars1 <- rbindlist(list.vars)
+        setnames(dt.vars1,c("V1"),"variable")
+        ## notice the selection of names in dt.vars and tab.row must be identical
+        dt.vars1[,included:=!duplicated(variable)]
+        dt.vars1[,`:=`(source="output",level="row")]
+        
+        tab.row <- tab.row[,!duplicated(colnames(tab.row)),with=FALSE]
 
+        
         tab.row[,nmout:=TRUE]
-        tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="output",tab.type="row"))
+
+        dt.vars <- rbind(dt.vars,dt.vars1)
+        
+        dt.vars <- rbind(dt.vars,
+                         data.table(variable="nmout"
+                                   ,table=NA_character_
+                                   ,included=TRUE 
+                                   ,source="NMscanData"
+                                   ,level="row"
+                                    ))
+        
+        tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="output",level="row"))
         tab.vars[var=="nmout",source:="NMscanData"]
-        tab.vars[var=="nmout",tab.type:=NA_character_]
+        tab.vars[var=="nmout",level:=NA_character_]
     } 
     
 
@@ -261,6 +282,17 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     if(any(overview.tables$idlevel)) {
         tab.idlevel <- Reduce(cbind,data[which(overview.tables$idlevel)])
         tab.idlevel <- tab.idlevel[,unique(colnames(tab.idlevel)),with=FALSE]
+
+### get all names from this and then select unique to get a table with the included variables
+        list.vars.id <- lapply(data[which(overview.tables$idlevel)],names)
+        list.vars.id <- lapply(list.vars.id,as.data.table)
+        list.vars.id <- lapply(seq_along(list.vars.id),function(n)list.vars.id[[n]][,table:=names(list.vars.id)[n]])
+        dt.vars.id1 <- rbindlist(list.vars.id)
+        setnames(dt.vars.id1,c("V1"),"variable")
+        ## notice the selection of names in dt.vars.id and tab.row must be identical
+        ## dt.vars.id1[,included:=!duplicated(variable)]
+        dt.vars.id1[,`:=`(source="output",level="id")]
+
     }
 
 ###  Section end: read all output tables and merge to max one idlevel and max one row
@@ -274,7 +306,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     ## use.input.row <- use.input
 
     if(use.input && is.null(dir.data)) {
-       file.mod <- getFileMod(file.lst=file,file.mod=file.mod)
+        file.mod <- getFileMod(file.lst=file,file.mod=file.mod)
 
         if(!file.exists(file.mod)) {
             messageWrap("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument. Input data not used.",
@@ -287,11 +319,25 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     if(!any(tables$meta$full.length)) {
         use.rows <- FALSE
     }
+
     
     if(use.input&&!any(tables$meta$full.length)) {
+
+        
+        
         tab.row <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,as.fun="none")
+
+        dt.vars <- rbind(dt.vars,
+                         data.table(
+                             variable=colnames(tab.row)
+                            ,table="input"
+                            ,included=TRUE
+                            ,source="input"
+                            ,level="row")
+                         )
+        tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="input",level="row"))
+
         tab.row[,nmout:=FALSE]
-        tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="input",tab.type="row"))
     }
     
     if(use.input&&any(tables$meta$full.length)) {
@@ -327,7 +373,23 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                 messageWrap("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted. For info on what limitations of this function, see ?NMtranFilters. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or manually merge output from NMscanTables() and NMtransInput().",fun.msg=stop)
             }
 
-            tab.vars <- rbind(tab.vars,data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",tab.type="row"))
+            
+            dt.vars1 <- data.table(
+                variable=colnames(data.input)
+               ,table="input"
+               ,source="input"
+               ,level="row")
+
+            dt.vars1[,
+                     included:=!variable%in%colnames(tab.row)
+                     ]
+
+            dt.vars <- rbind(dt.vars,
+                             dt.vars1
+                             )
+            
+            
+            tab.vars <- rbind(tab.vars,data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",level="row"))
             tab.row <- cbind(
                 tab.row,
                 data.input[,!colnames(data.input)%in%colnames(tab.row),with=F]
@@ -362,9 +424,17 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 
             if(use.input) {
                 
-
+                dt.vars1 <- data.table(
+                    variable=setdiff(colnames(data.input),colnames(tab.row))
+                   ,table="input"
+                   ,source="input"
+                   ,level="row"
+                )
+                
+                dt.vars <- rbind(dt.vars,dt.vars1)
                 tab.vars <- rbind(tab.vars,
-                                  data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",tab.type="row"))
+                                  data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",level="row"))
+                
                 tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=T,as.fun="none")
                 
             }
@@ -379,20 +449,15 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     
     skip.idlevel <- FALSE
     if(!is.null(tab.idlevel)) {
-
         ## If we use input or row-level output, we will not use DV from idlevel
         if( (use.input || use.rows) && "DV"%in%colnames(tab.idlevel)){
             tab.idlevel[,DV:=NULL]
         }
-        
-        
         ## col.id must be in tab.row, or we can't do this
         if(!is.null(tab.row)&&!all(col.id%in%colnames(tab.row))) {
-            
             warning("col.id not found in row-specific input or output data. Idlevel output data cannot be combined with other data.")
             skip.idlevel <- TRUE
         }
-        
         ## remember all(NULL) is TRUE. So if col.id and/or col.row are
         ## used, all their values must be in tab.row.
         
@@ -426,7 +491,9 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                 tab.row <- tab.row[,unique(colnames(tab.row)),with=FALSE]
                 skip.idlevel <- FALSE
 
-                tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="output",tab.type="idlevel"))
+                dt.vars.id1[,included:=TRUE]
+                dt.vars <- rbind(dt.vars,dt.vars.id1)
+                tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="output",level="idlevel"))
                 
             } else {
                 
@@ -434,7 +501,14 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                 cols.to.use <- unique(c(col.id,setdiff(colnames(tab.idlevel),tab.vars[source=="output",var])))
                 tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=F]
                 tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="none")
-                tab.vars <- rbind(tab.vars,data.table(var=cols.to.use,source="output",tab.type="idlevel"))
+                
+                dt.vars.id1[,included:=FALSE]
+                dt.vars.id1[variable%in%setdiff(cols.to.use,col.id),included:=TRUE]
+
+                dt.vars <- rbind(dt.vars,dt.vars.id1)
+
+                ## have to avoid an additional col.id here. Or maybe not. We are merging, so col.id comes from both.
+                tab.vars <- rbind(tab.vars,data.table(var=cols.to.use,source="output",level="idlevel"))
             }
         }
     }
@@ -465,6 +539,15 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         
         tab.row[,c(add.name):=runname]
         
+        dt.vars <- rbind(dt.vars,
+                         data.table(variable=add.name
+                                   ,table=NA_character_
+                                   ,included=TRUE 
+                                   ,source="NMscanData"
+                                   ,level="model"
+                                    ))
+
+        
         tab.vars <- rbind(tab.vars,
                           data.table(var=add.name,source="NMscanData"),
                           fill=T)
@@ -476,6 +559,8 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     tab.vars <- runAsFun(tab.vars,as.fun)
 
     setattr(tab.row,"vars",tab.vars)
+    setattr(tab.row,"dt.vars",dt.vars)
+    setattr(tab.row,"tables.ouput",tables$meta)
     setattr(tab.row,"class",c("NMdata",class(tab.row)))
     
     tab.row

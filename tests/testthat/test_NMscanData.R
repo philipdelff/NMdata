@@ -1,6 +1,6 @@
 ## library(devtools)
-## load_all("C:/users/delff/working_copies/NMdata")
-## setwd("C:/users/delff/working_copies/NMdata/tests/testthat")
+## setwd("tests/testthat")
+## load_all("../../NMdata")
 
 context("NMscanData")
 
@@ -58,7 +58,6 @@ test_that("Interpret IGNORE statement",{
     
     expect_equal_to_reference(res,fileRef,version=2)
 })
-
 
 
 test_that("List of ACCEPT statements and vs separate statements",{

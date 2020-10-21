@@ -192,3 +192,47 @@ NMisNumeric <- function(x){
             )
 
 }
+
+
+summary.NMdata <- function(data){
+    
+    s1 <- list(
+        variables=attr(data,"dt.vars")
+       ,tables.output=attr(data,"tables.output")
+    )
+    setattr(s1,"class",c("summary_NMdata",class(s1)))
+
+    (print(s1))
+    invisible(s1)
+    ## s1
+    ## s1
+}
+
+
+print.summary_NMdata <- function(x){
+    if(!"summary_NMdata"%in%class(x)) stop("list does not seem to be of class NMdata")
+    vars <- x$variables
+    vars <- mergeCheck(vars,data.table(included=c(TRUE,FALSE),inc=c("included","not")),by="included")
+    vars
+    vars.sum <- vars[source!="NMscanData"][,.N,by=.(table,inc)]
+    vars.sum1 <- dcast(vars.sum,table~inc,value.var="N")
+    vars.sum1[,print.inc:=paste0(included,"/",sum(c(included,not),na.rm=T)),by=.(table)]
+
+    ##:ess-bp-start::browser@nil:##
+browser(expr=is.null(.ESSBP.[["@19@"]]));##:ess-bp-end:##
+    
+    ## include level
+
+    ## order as treated in NMscanData
+
+
+    #### other info to include
+    ## how many ids (broken down on output vs. input-only)
+
+    ## how many rows in output (broken down on EVID)
+
+    ## if rows recovered, how many (broken down on EVID)
+    
+    print(vars.sum1)
+}
+

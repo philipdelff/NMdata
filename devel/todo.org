@@ -91,6 +91,7 @@ whenever ID changes, but test this.
 check if variables are consistent within ROW: ID (others?) This is
 fatal and will happen when using long ID's and non-matching format
 when writing tables from Nonmem.
+**** TODO When usin input data, ID should never be read from output data
 **** DONE source for nmout and model must be internal
      CLOSED: [2020-07-18 Sat 23:13]
 in var table 
