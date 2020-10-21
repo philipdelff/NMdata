@@ -30,4 +30,7 @@ load_all("../..")
 file.lst <- NMdata_filepath("examples/nonmem/xgxr003.lst")
 res <- NMscanData(file=file.lst,cbind.by.filters = T)
 attributes(res)
-summary.NMdata(res)
+summary(res)
+
+inp <- NMtransInput(file.lst)
+colnames(inp)

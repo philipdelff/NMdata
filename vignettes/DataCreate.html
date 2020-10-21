@@ -315,60 +315,65 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<p>Built 2020-10-15 using NMdata 0.0.5.7.</p>
+<p>Built 2020-10-20 using NMdata 0.0.6.1.</p>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>Nonmem has quite a number of restrictions on the format of the input data, and problems with the data set is a very typical for Nonmem not to behave as expected. When this happens, you easily waste a lot time debugging the data. <code>NMdata</code> includes some simple functions to prevent these situations.</p>
-<p>This vignette uses <code>data.table</code> syntax for the little bit of data manipulation performed. However, you don’t need to use data.table <em>at all</em> to use these tools or any tool in <code>NMdata</code>. See the FAQ for how to completely avoid data.table and get the class you prefer returned from functions in <code>NMdata</code>.</p>
+<p>This vignette uses <code>data.table</code> syntax for the little bit of data manipulation performed. However, you don’t need to use data.table <em>at all</em> to use these tools or any tool in <code>NMdata</code>. The reason why the functions return data.table objects is that the data set is a data.table to begin with</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="kw">file.path</span>(<span class="kw">NMdata_filepath</span>(), <span class="st">&quot;examples/data/xgxr2.rds&quot;</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">class</span>(pk)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;data.table&quot; &quot;data.frame&quot;</span></span></code></pre></div>
+<p>If this was a <code>data.frame</code>, the <code>NMdata</code> functions would keep returning objects of class <code>data.frame</code>.</p>
 </div>
 <div id="automated-checks-of-merge-results" class="section level2">
 <h2>Automated checks of merge results</h2>
 <p>Merges are a very common source of data creation bugs. As simple as it may seem in the head of the programmer, merges likely leave you with an unexpected number of rows, repeated or omitted rows. Merges are very powerful and flexible, and when preparing a data set, they are fundamental. However, many merges for dataset creation are of the specific and simple kind where columns are added to an existing dataset. In this situation the rows that come out of the merge are the exact same as in one of the existing datasets. Say we want to add a covariate:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="kw">file.path</span>(<span class="kw">NMdata_filepath</span>(), <span class="st">&quot;examples/data/xgxr2.rds&quot;</span>))</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">dim</span>(pk)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   24</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>dt.cov &lt;-<span class="st"> </span>pk[, .(<span class="dt">ID =</span> <span class="kw">unique</span>(ID)[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>])]</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>dt.cov[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(COV, <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>))]</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>dt.cov</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="co">#&gt;     ID COV</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="co">#&gt;  1: 31   3</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="co">#&gt;  2: 32   4</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="co">#&gt;  3: 33   5</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="co">#&gt;  4: 34   1</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="co">#&gt;  5: 35   1</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="co">#&gt;  6: 36   2</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a><span class="co">#&gt;  7: 37   1</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a><span class="co">#&gt;  8: 38   4</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a><span class="co">#&gt;  9: 39   5</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a><span class="co">#&gt; 10: 40   4</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a>pk2 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a><span class="kw">dim</span>(pk2)</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true"></a><span class="co">#&gt; [1] 100  25</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true"></a><span class="co">## now as expected</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true"></a>pk3 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>, <span class="dt">all.x =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true"></a><span class="kw">dim</span>(pk3)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   25</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">dim</span>(pk)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   24</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="kw">class</span>(pk)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;data.table&quot; &quot;data.frame&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>dt.cov &lt;-<span class="st"> </span>pk[, .(<span class="dt">ID =</span> <span class="kw">unique</span>(ID)[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>])]</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>dt.cov[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(COV, <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>))]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>dt.cov</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="co">#&gt;     ID COV</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="co">#&gt;  1: 31   4</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="co">#&gt;  2: 32   3</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="co">#&gt;  3: 33   4</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a><span class="co">#&gt;  4: 34   2</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a><span class="co">#&gt;  5: 35   3</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a><span class="co">#&gt;  6: 36   5</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a><span class="co">#&gt;  7: 37   5</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a><span class="co">#&gt;  8: 38   5</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a><span class="co">#&gt;  9: 39   2</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a><span class="co">#&gt; 10: 40   4</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>pk2 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a><span class="kw">dim</span>(pk2)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a><span class="co">#&gt; [1] 100  25</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a><span class="co">## now as expected</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a>pk3 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>, <span class="dt">all.x =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a><span class="kw">dim</span>(pk3)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   25</span></span></code></pre></div>
 <p>So when creating <code>pk2</code> we lost a lot of rows because we forgot the <code>all.x</code> option. And also, just checking the resulting dimensions is not enough.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>dt.cov2 &lt;-<span class="st"> </span>pk[, .(<span class="dt">ID =</span> <span class="kw">unique</span>(ID))]</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>dt.cov2[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(COV, <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">size =</span> .N, <span class="dt">replace =</span> <span class="ot">TRUE</span>))]</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>dt.cov2 &lt;-<span class="st"> </span>dt.cov2[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span><span class="op">:</span>(.N <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))]</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="co"># dt.cov2 &lt;- dt.cov2[c(1:(.N))]</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>pk4 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov2, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="kw">dim</span>(pk4)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   25</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>dt.cov2 &lt;-<span class="st"> </span>pk[, .(<span class="dt">ID =</span> <span class="kw">unique</span>(ID))]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>dt.cov2[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(COV, <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">size =</span> .N, <span class="dt">replace =</span> <span class="ot">TRUE</span>))]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>dt.cov2 &lt;-<span class="st"> </span>dt.cov2[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span><span class="op">:</span>(.N <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="co"># dt.cov2 &lt;- dt.cov2[c(1:(.N))]</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>pk4 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov2, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="kw">dim</span>(pk4)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   25</span></span></code></pre></div>
 <p>As illustrated by these simple examples, even the simplest merges have to be rigorously checked, no exceptions. The function <code>mergeCheck(x1,x2)</code> ensures that the result has exactly one of each rows from <code>x1</code> and nothing else. We can use <code>...</code> to pass additional arguments to merge.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>pk2 &lt;-<span class="st"> </span><span class="kw">try</span>(<span class="kw">mergeCheck</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>))</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="co">#&gt; Warning in mergeCheck(pk, dt.cov, by = &quot;ID&quot;): Rows disappeared during merge.</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="co">#&gt; Warning in mergeCheck(pk, dt.cov, by = &quot;ID&quot;): </span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="co">#&gt; nrow(pk): 1500</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="co">#&gt; nrow(dt.cov): 10</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="co">#&gt; nrow(merged.df): 100</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="co">#&gt; Error in mergeCheck(pk, dt.cov, by = &quot;ID&quot;) : </span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a><span class="co">#&gt;   Merge added and/or removed rows.</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a><span class="co">## now as expected</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>pk3 &lt;-<span class="st"> </span><span class="kw">mergeCheck</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>, <span class="dt">all.x =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a><span class="kw">dim</span>(pk3)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   25</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>pk2 &lt;-<span class="st"> </span><span class="kw">try</span>(<span class="kw">mergeCheck</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="co">#&gt; Warning in mergeCheck(pk, dt.cov, by = &quot;ID&quot;): Rows disappeared during merge.</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="co">#&gt; Warning in mergeCheck(pk, dt.cov, by = &quot;ID&quot;): </span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="co">#&gt; nrow(pk): 1500</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="co">#&gt; nrow(dt.cov): 10</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="co">#&gt; nrow(merged.df): 100</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="co">#&gt; Error in mergeCheck(pk, dt.cov, by = &quot;ID&quot;) : </span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a><span class="co">#&gt;   Merge added and/or removed rows.</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a><span class="co">## now as expected</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>pk3 &lt;-<span class="st"> </span><span class="kw">mergeCheck</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>, <span class="dt">all.x =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a><span class="kw">dim</span>(pk3)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   25</span></span></code></pre></div>
 <p>The result always has the same order of rows as the <code>x1</code> argument.</p>
 <p>Another problem that the programmer may not realize during a merge is that column names are shared across <code>x1</code> and <code>x2</code>. This will silently create colmn names like <code>col.x</code> and <code>col.y</code> in the output. <code>mergeCheck</code> will give a warning if that happens.</p>
 <p>There is only one difference from the behaviour of the <code>merge.data.frame</code> function syntax, being that the <code>by</code> argument must always be supplied.</p>
@@ -382,24 +387,24 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>For use in Nonmem, the easiest is that inclusion/exclusion is determined by a single column in data - we call that column <code>FLAG</code>. <code>FLAG</code> obviously draws on information from other columns such as <code>TIME</code>, <code>DV</code>, and many others, depending on your dataset and your way of working.</p>
 <p>What rows to omit from a dataset can vary from one analysis to another. Hence, the aim with the chosen design is that the inclusion criteria can be changed and applied to overwrite an existing inclusion/exclusion selection.</p>
 <p>The function that applies inclusion/excluasion rules is called <code>flagsAssign</code>, and it takes a dataset and a data.frame with rules as arguments.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="kw">file.path</span>(<span class="kw">NMdata_filepath</span>(), <span class="st">&quot;examples/data/xgxr2.rds&quot;</span>))</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>dt.flags &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="dt">text =</span> <span class="st">&quot;FLAG,flag,condition</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="st">10,Below LLOQ,BLQ==1&quot;</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">flagsAssign</span>(pk, dt.flags)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="co">#&gt; Data contains FLAG already. This is overwritten</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="co">#&gt; Data contains flag already. This is overwritten</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a><span class="co">#&gt; In flagsAssign(pk, dt.flags) : Coding FLAG = 10 , flag = Below LLOQ</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="kw">file.path</span>(<span class="kw">NMdata_filepath</span>(), <span class="st">&quot;examples/data/xgxr2.rds&quot;</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>dt.flags &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="dt">text =</span> <span class="st">&quot;FLAG,flag,condition</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="st">10,Below LLOQ,BLQ==1&quot;</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">flagsAssign</span>(pk, dt.flags)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="co">#&gt; Data contains FLAG already. This is overwritten</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="co">#&gt; Data contains flag already. This is overwritten</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a><span class="co">#&gt; In flagsAssign(pk, dt.flags) : Coding FLAG = 10 , flag = Below LLOQ</span></span></code></pre></div>
 <p>Your first question may be why fread is used to create a data.table (like read.csv to create a data.frame. The reason is that this way, we can write the information line by line. If you have ten lines in the dataset above and do <code>data.frame(FLAG=...,flag=...,condition=...)</code> it gets impossible to read what elements of the three columns that correspond.</p>
 <p><code>flagsAssign</code> applies the conditions sequentially. <code>FLAG=0</code> means that the observation is included in the analysis. You can use any expression that can be evaluated within the data.frame. In this case, BLQ has to exist in <code>pk</code>.</p>
 <p>Actually, the evaluated expressions are slightly different from what is written in the table above. <code>flagsAssign</code> will prepend the condition that <code>FLAG==0</code> in order for the conditions to be sequential. Again, the omission will be attributed to the first condition matched.</p>
 <p>An overview of the number of observations disregarded due to the different conditions is then obtained using <code>flagsCount</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>tab.count &lt;-<span class="st"> </span><span class="kw">flagsCount</span>(<span class="dt">data =</span> pk, <span class="dt">tab.flags =</span> dt.flags)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="kw">print</span>(tab.count)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="co">#&gt;            flag N.left Nobs.left N.discarded Nobs.discarded</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="co">#&gt; 1:     All data    150      1500          NA             NA</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="co">#&gt; 2:   Below LLOQ    150       905           0            595</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="co">#&gt; 3: Analysis set    150       905          NA             NA</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>tab.count &lt;-<span class="st"> </span><span class="kw">flagsCount</span>(<span class="dt">data =</span> pk, <span class="dt">tab.flags =</span> dt.flags)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">print</span>(tab.count)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="co">#&gt;            flag N.left Nobs.left N.discarded Nobs.discarded</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="co">#&gt; 1:     All data    150      1500          NA             NA</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="co">#&gt; 2:   Below LLOQ    150       905           0            595</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="co">#&gt; 3: Analysis set    150       905          NA             NA</span></span></code></pre></div>
 <p><code>flagsCount</code> includes an option to save the the table right away.</p>
 </div>
 </div>
@@ -410,37 +415,37 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h3>Automated ordering of columns</h3>
 <p>The order of columns in Nonmem is important for two reasons. One is that a character in a variable read into Nonmem will make the run fail. The other is that there are restrictions on the number of variables you can read into Nonmem, depending on the version. <code>NMcolOrders</code> tries to put the used columns first, and other or maybe even unusable columns in the back of the dataset. It does so by a mix of recognition or column names and analysis of the column contents.</p>
 <p>Columns that cannot be converted to numeric are put in the back, while column bearing standard Nonmem variable names like ID, TIME, EVID etc. will be pulled up front. You can of course add column names to prioritize to front (<code>first</code>) or back (<code>last</code>). See <code>?NMorderColumns</code> for more options.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">NMorderColumns</span>(pk)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="co">#&gt; Warning in NMorderColumns(pk): These standard nonmem columns were not found in data:</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="co">#&gt; MDV</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">NMorderColumns</span>(pk)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="co">#&gt; Warning in NMorderColumns(pk): These standard nonmem columns were not found in data:</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="co">#&gt; MDV</span></span></code></pre></div>
 </div>
 <div id="writing-data-to-files" class="section level3">
 <h3>Writing data to files</h3>
 <p>For the final step of writing the dataset, <code>NMwriteData</code> is provided. Most importantly, it writes a csv for Nonmem and an rds for R with equal contents, but with the rds including all information (such as factor levels) which cannot be saved in csv (NMscanData will know how to make use of this information once you retrieve the Nonmem results). It also provides a proposal for text to include in the <code>$INPUT</code> and <code>$DATA</code> sections of the Nonmem control streams - for you to copy-paste.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">NMwriteData</span>(pk)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="co">#&gt; Nonmem data file:</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="co">#&gt; For NonMem:</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a><span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB EFF0</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="co">#&gt; $DATA </span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a><span class="co">#&gt; IGN=@</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a><span class="co">#&gt; IGNORE=(FLAG.NE.0)</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a><span class="co">#&gt; Data returned but not written to file(s).</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">NMwriteData</span>(pk)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="co">#&gt; Nonmem data file:</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="co">#&gt; For NonMem:</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a><span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a><span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB EFF0</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a><span class="co">#&gt; $DATA </span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a><span class="co">#&gt; IGN=@</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a><span class="co">#&gt; IGNORE=(FLAG.NE.0)</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a><span class="co">#&gt; Data returned but not written to file(s).</span></span></code></pre></div>
 <p>If a file name had been provided, the data would have been written, and the path to the data file would have been included in the message written back to the user. There are several arguments that will affect the proposed text for the Nonmem run, see <code>?NMwriteData</code>.</p>
 </div>
 </div>
 <div id="stamp-objects-for-traceability" class="section level2">
 <h2>Stamp objects for traceability</h2>
 <p>The last couple of functions that will be introduced here are used for tracing datasets to data creation scripts, including time stamps and other information you want to include with the data set.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">stampObj</span>(pk, <span class="dt">script =</span> <span class="st">&quot;vignettes/DataCreate.Rmd&quot;</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="kw">objInfo</span>(pk)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="co">#&gt; $DataCreateScript</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;vignettes/DataCreate.Rmd&quot;</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a><span class="co">#&gt; $CreationTime</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2020-10-15 21:02:12 EDT&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">stampObj</span>(pk, <span class="dt">script =</span> <span class="st">&quot;vignettes/DataCreate.Rmd&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="kw">objInfo</span>(pk)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="co">#&gt; $DataCreateScript</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;vignettes/DataCreate.Rmd&quot;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a><span class="co">#&gt; $CreationTime</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2020-10-20 22:51:43 EDT&quot;</span></span></code></pre></div>
 <p>These are very simple functions. But they are simple to use as well, and hopefully they will help you avoid sitting with a data set trying to guess which script generated it so you can do a modification or understand how something was done.</p>
 <p>When using NMwriteData, you don’t have to call stampObj explicitly. Just pass the <code>script</code> argument to <code>NMwriteData</code> and <code>stampObj</code> will be applied automatically.</p>
 </div>

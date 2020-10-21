@@ -193,7 +193,7 @@ NMisNumeric <- function(x){
 
 }
 
-
+##' @export
 summary.NMdata <- function(data){
     
     s1 <- list(
@@ -208,31 +208,36 @@ summary.NMdata <- function(data){
     ## s1
 }
 
-
+##' @export
 print.summary_NMdata <- function(x){
     if(!"summary_NMdata"%in%class(x)) stop("list does not seem to be of class NMdata")
     vars <- x$variables
+    tabs.out <- copy(x$tables.output)
     vars <- mergeCheck(vars,data.table(included=c(TRUE,FALSE),inc=c("included","not")),by="included")
     vars
     vars.sum <- vars[source!="NMscanData"][,.N,by=.(table,inc)]
     vars.sum1 <- dcast(vars.sum,table~inc,value.var="N")
     vars.sum1[,print.inc:=paste0(included,"/",sum(c(included,not),na.rm=T)),by=.(table)]
 
-    ##:ess-bp-start::browser@nil:##
-browser(expr=is.null(.ESSBP.[["@19@"]]));##:ess-bp-end:##
     
     ## include level
-
+    tabs.out[,tabn:=1:.N]
+    vars.sum2 <- mergeCheck(vars.sum1,tabs.out[,.(table=name,idlevel,tabn)],by="table",all.x=T)
+    vars.sum2[,level:="row"]
+    vars.sum2[idlevel==TRUE,level:="ID"]
     ## order as treated in NMscanData
+    setorder(vars.sum2,tabn,na.last=TRUE)
 
-
-    #### other info to include
+    vars.sum2[,`:=`(tabn=NULL,idlevel=NULL,included=NULL,not=NULL)]
+    print(vars.sum2)
+    
+#### other info to include
     ## how many ids (broken down on output vs. input-only)
 
     ## how many rows in output (broken down on EVID)
 
     ## if rows recovered, how many (broken down on EVID)
-    
-    print(vars.sum1)
+
+
 }
 

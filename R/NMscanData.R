@@ -560,7 +560,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 
     setattr(tab.row,"vars",tab.vars)
     setattr(tab.row,"dt.vars",dt.vars)
-    setattr(tab.row,"tables.ouput",tables$meta)
+    setattr(tab.row,"tables.output",tables$meta)
     setattr(tab.row,"class",c("NMdata",class(tab.row)))
     
     tab.row
