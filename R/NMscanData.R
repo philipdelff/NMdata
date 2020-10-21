@@ -494,6 +494,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                 dt.vars.id1[,included:=TRUE]
                 dt.vars <- rbind(dt.vars,dt.vars.id1)
                 tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="output",level="idlevel"))
+                tab.row[,nmout:=TRUE]
                 
             } else {
                 
@@ -558,8 +559,19 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     tab.row <- runAsFun(tab.row,as.fun)
     tab.vars <- runAsFun(tab.vars,as.fun)
 
-    setattr(tab.row,"vars",tab.vars)
-    setattr(tab.row,"dt.vars",dt.vars)
+### more meta information needed.
+    ## call?
+    ## time of NMscanData call
+    ## name of model
+    ## path to lst
+    ## file info on lst
+    ## if available: path to input data
+    ## if available: file info for input data
+    ## was input used?
+    ## was input recovered?
+    
+    ##    setattr(tab.row,"vars",tab.vars)
+    setattr(tab.row,"variables",dt.vars)
     setattr(tab.row,"tables.output",tables$meta)
     setattr(tab.row,"class",c("NMdata",class(tab.row)))
     

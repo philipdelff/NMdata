@@ -195,9 +195,13 @@ NMisNumeric <- function(x){
 
 ##' @export
 summary.NMdata <- function(data){
+
+    if(!is.data.table(data)) data <- as.data.table(data)
+## derive how many subjects. Need to 
+    data[,uniqueN(ID),by="nmout"]
     
     s1 <- list(
-        variables=attr(data,"dt.vars")
+        variables=attr(data,"variables")
        ,tables.output=attr(data,"tables.output")
     )
     setattr(s1,"class",c("summary_NMdata",class(s1)))
@@ -229,9 +233,14 @@ print.summary_NMdata <- function(x){
     setorder(vars.sum2,tabn,na.last=TRUE)
 
     vars.sum2[,`:=`(tabn=NULL,idlevel=NULL,included=NULL,not=NULL)]
-    print(vars.sum2)
+    setnames(vars.sum2,"print.inc","total/used")
+
+    cat("Overview of used tables, number of columns in tables, and their detail level:\n")
+    print(vars.sum2,row.names=F)
+
     
-#### other info to include
+#### other info to include. See summary function.
+
     ## how many ids (broken down on output vs. input-only)
 
     ## how many rows in output (broken down on EVID)
