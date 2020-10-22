@@ -136,7 +136,9 @@ runAsFun <- function(data,as.fun){
 ##'     appending .mod, it will find the input control stream.}
 ##' \item{path}{file.mod="path/to/input/control/strem"}
 ##' \item{translation function}{file.path can be a function that takes the lst path as argument and returns the input control stream path.}
-##' \item{set option}{If you use a function, you may want to set this as default behaviour. Say your output control stream is always called input.txt and located in the same dir as the output control stream, you can use (NMdata.file.mod=function(file) file.path(dirname(file),"input.txt"))}
+##' \item{set option}{If you use a function, you may want to set this as default behaviour. Say your output control stream is always called input.txt and located in the same dir as the output control stream, you can use
+##' options(NMdata.file.mod=function(file) file.path(dirname(file),"input.txt"))
+##' }
 ##' }
 ##'
 ##' Notice, if the argument dir.data is used in NMscanData or
@@ -149,7 +151,7 @@ getFileMod <- function(file.lst,file.mod=NULL){
         if(!is.null(file.mod) && !is.function(file.mod)) {
             messageWrap("When file.mod is specified by getOption(\"NMdata.file.mod\"), it has to be a function.",
                         fun.msg=stop)
-            }
+        }
     }
     if(is.null(file.mod)){
         return(sub("\\.lst","\\.mod",file.lst))
@@ -189,6 +191,89 @@ NMisNumeric <- function(x){
      !is.timestamp(x)) &&
         (is.numeric(x) ||
          suppressWarnings(!any(is.na(as.numeric(as.character(x)[!as.character(x)%in%c(".","NA")]))))
-            )
+        )
 
 }
+
+##' @export
+summary.NMdata <- function(data){
+    if(!"NMdata"%in%class(data)) stop("data does not seem to be of class NMdata.")
+    if(!is.data.table(data)) data <- as.data.table(data)
+    ## derive how many subjects. Need to 
+    
+    s1 <- attr(data,"meta")
+    s1$N.ids <- data[,.(N.ids=uniqueN(ID)),by="nmout"]
+    s1$N.rows <- data[,.(N.rows=.N),by="nmout"]
+    s1$N.evids <- NA
+    if("EVID"%in%colnames(data)){
+        s1$N.evids <- data[,.N,by=.(nmout,EVID)]
+    }
+    
+    setattr(s1,"class",c("summary_NMdata",class(s1)))
+
+    s1
+    ## s1
+    ## s1
+}
+
+##' @export
+print.summary_NMdata <- function(x){
+    if(!"summary_NMdata"%in%class(x)) stop("list does not seem to be of class NMdata")
+    vars <- x$variables
+    tabs.out <- copy(x$tables.output)
+    vars <- mergeCheck(vars,data.table(included=c(TRUE,FALSE),inc=c("included","not")),by="included")
+    vars
+    vars.sum <- vars[source!="NMscanData"][,.N,by=.(table,inc)]
+    vars.sum1 <- dcast(vars.sum,table~inc,value.var="N")
+    vars.sum1[,print.inc:=paste0(included,"/",sum(c(included,not),na.rm=T)),by=.(table)]
+
+    
+    ## include level
+    tabs.out[,tabn:=1:.N]
+    vars.sum2 <- mergeCheck(vars.sum1,tabs.out[,.(table=name,idlevel,tabn)],by="table",all.x=T)
+    vars.sum2[,level:="row"]
+    vars.sum2[idlevel==TRUE,level:="ID"]
+    ## order as treated in NMscanData
+    setorder(vars.sum2,tabn,na.last=TRUE)
+
+    vars.sum2[,`:=`(tabn=NULL,idlevel=NULL,included=NULL,not=NULL)]
+    setnames(vars.sum2,"print.inc","used/total")
+
+
+    
+
+    #### other info to include. 
+    dt.nmout <- data.table(nmout=c(TRUE,FALSE),NMOUT=c("From output tables","From input data only"))
+
+    ## how many ids (broken down on output vs. input-only)
+    n1 <- merge(x$N.rows,x$N.ids,by="nmout")
+    n2 <- melt(n1,id.vars="nmout",variable.name="N")
+    n3 <- mergeCheck(n2,dt.nmout,by="nmout",all.x=TRUE)
+    n4 <- dcast(n3,N~NMOUT,value.var="value")
+    
+    
+    ## how many rows in output (broken down on EVID)
+
+    ## if rows recovered, how many (broken down on EVID)
+    evids1 <- mergeCheck(x$N.evid,dt.nmout,by="nmout",all.x=TRUE)
+    
+    evids2 <- dcast(evids1,EVID~NMOUT,value.var="N")
+
+
+    ## model name
+    cat("Model: ",x$model,"\n")
+    
+    cat("\nTables, number of columns in tables, and their detail level:\n")
+    print(vars.sum2,row.names=FALSE)
+
+    cat("\nNumbers of ID's and rows in data\n")
+    print(n4,row.names=FALSE)
+
+    cat("\nDistribution of rows on event types\n")
+    print(evids2,row.names=FALSE)
+    
+
+
+
+}
+

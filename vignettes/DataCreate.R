@@ -20,7 +20,11 @@ library(data.table)
 
 ## -----------------------------------------------------------------------------
 pk <- readRDS(file=file.path(NMdata_filepath(),"examples/data/xgxr2.rds"))
+class(pk)
+
+## -----------------------------------------------------------------------------
 dim(pk)
+class(pk)
 dt.cov <- pk[,.(ID=unique(ID)[1:10])]
 dt.cov[,COV:=sample(1:5,size=10,replace=TRUE)]
 dt.cov

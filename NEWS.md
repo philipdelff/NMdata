@@ -1,3 +1,12 @@
+# NMdata 0.0.6.2
+A summary function is provided for NMdata objects. There is a print
+function for the summary too. This is printet automatically by NMdata
+unless quiet=TRUE.
+
+A lot of meta information has been added in an attribute to NMdata
+objects. This will help the user to understand and automatically
+document what has been read.
+
 # NMdata 0.0.6.1
 The default class to generate is now data.frame rather than
 data.table. If you want to work with data.tables, do 
