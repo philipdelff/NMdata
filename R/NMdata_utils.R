@@ -218,9 +218,9 @@ summary.NMdata <- function(data){
         data.table(NMOUT="From output tables",N.ids=N.ids.nmout)
        ,
         data.table(NMOUT="From input data only",N.ids=sum(
-        ! data[nmout==FALSE,unique(ID)] %in% data[nmout==TRUE,unique(ID)]
-        )
-        )
+                                                    ! data[nmout==FALSE,unique(ID)] %in% data[nmout==TRUE,unique(ID)]
+                                                )
+                   )
     )
     s1$N.ids1 <- NULL
 
@@ -268,12 +268,12 @@ print.summary_NMdata <- function(x){
 
     
 
-    #### other info to include. 
+#### other info to include. 
     dt.nmout <- data.table(nmout=c(TRUE,FALSE),NMOUT=c("From output tables","From input data only"))
 
     ## how many ids (broken down on output vs. input-only)
     
-    #n1 <- merge(x$N.rows,x$N.ids,by="nmout")
+                                        #n1 <- merge(x$N.rows,x$N.ids,by="nmout")
     n2 <- melt(x$N.rows,id.vars="nmout",variable.name="N")
     n3 <- mergeCheck(n2,dt.nmout,by="nmout",all.x=TRUE)
     n4 <- dcast(n3,N~NMOUT,value.var="value")
@@ -289,13 +289,7 @@ print.summary_NMdata <- function(x){
     ##     })]
     n5[is.na(n5)] <- 0
     
-    ## how many rows in output (broken down on EVID)
 
-    ## if rows recovered, how many (broken down on EVID)
-    evids1 <- mergeCheck(x$N.evid,dt.nmout,by="nmout",all.x=TRUE)
-    
-    evids2 <- dcast(evids1,EVID~NMOUT,value.var="N")
-    evids2[is.na(evids2)] <- 0
 
     ## model name
     cat("Model: ",x$model,"\n")
@@ -306,11 +300,20 @@ print.summary_NMdata <- function(x){
     cat("\nNumbers of ID's and rows in data\n")
     print(n5,row.names=FALSE)
 
-    cat("\nDistribution of rows on event types\n")
-    print(evids2,row.names=FALSE)
-    
+    if(!is.na(x$N.evids)){
+        ## how many rows in output (broken down on EVID)
 
+        ## if rows recovered, how many (broken down on EVID)
+        evids1 <- mergeCheck(x$N.evids,dt.nmout,by="nmout",all.x=TRUE)
+        
+        evids2 <- dcast(evids1,EVID~NMOUT,value.var="N")
+        evids2[is.na(evids2)] <- 0
+        
+        cat("\nDistribution of rows on event types\n")
+        print(evids2,row.names=FALSE)
+    }        
 
+    return(invisible(NULL))
 
 }
 
