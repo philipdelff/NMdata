@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.2</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2020-10-21 using NMdata 0.0.6.1.</p>
+<p>Built 2020-10-21 using NMdata 0.0.6.2.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -118,8 +118,22 @@
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="kw">res0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>),
                    cbind.by.filters=<span class="fl">TRUE</span>)
-<span class="co">#&gt; Number of output tables read: 1.</span>
-<span class="co">#&gt; Read delimited text input data file.</span>
+<span class="co">#&gt; Model:  xgxr001 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Tables, number of columns in tables, and their detail level:</span>
+<span class="co">#&gt;            table used/total level</span>
+<span class="co">#&gt;  xgxr001_res.txt      16/16   row</span>
+<span class="co">#&gt;            input      22/22   row</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Numbers of ID's and rows in data</span>
+<span class="co">#&gt;       N From output tables</span>
+<span class="co">#&gt;  N.rows                905</span>
+<span class="co">#&gt;   N.ids                150</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Distribution of rows on event types</span>
+<span class="co">#&gt;  EVID From output tables</span>
+<span class="co">#&gt;     0                755</span>
+<span class="co">#&gt;     1                150</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="kw">res0</span>)
 <span class="co">#&gt; [1] "NMdata"     "data.frame"</span>
 </pre></div>
@@ -129,10 +143,8 @@
 <a href="#merge-output-and-input-data-by-a-unique-row-identifier" class="anchor"></a>Merge output and input data by a unique row identifier</h3>
 <p>The default method of interpreting Nonmem code is not recommended. It is the default because it does not rely on assumptions about the input data and hence very generic. It happens that this dataset and one of the output tables contain a row identifier (a row counter in the column called <code>ROW</code>). If we skipped the <code>cbind.by.filters</code> above, <code>NMscanData</code> would figure this out and recommend merging by this column. This is what we will now do using the <code>col.row</code> argument. The following checks that we get the same result from the two methods.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>),col.row=<span class="st">"ROW"</span>)
-<span class="co">#&gt; Number of output tables read: 1.</span>
-<span class="co">#&gt; Read delimited text input data file.</span>
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="kw">res0</span>,<span class="kw">res1</span>)
+<span class="kw">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>),col.row=<span class="st">"ROW"</span>,quiet=<span class="fl">TRUE</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="kw">res0</span>,<span class="kw">res1</span>,check.attributes=<span class="fl">FALSE</span>)
 <span class="co">#&gt; [1] TRUE</span>
 </pre></div>
 <p>All features shown below will work whether you supply <code>col.row</code> or not. We use <code>col.row</code> because it is more robust and always recommended.</p>
@@ -232,8 +244,22 @@
 <div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="kw">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>),
                    col.row=<span class="st">"ROW"</span>,recover.rows=<span class="fl">TRUE</span>)
-<span class="co">#&gt; Number of output tables read: 1.</span>
-<span class="co">#&gt; Read rds input data file.</span>
+<span class="co">#&gt; Model:  xgxr014 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Tables, number of columns in tables, and their detail level:</span>
+<span class="co">#&gt;            table used/total level</span>
+<span class="co">#&gt;  xgxr014_res.txt      12/12   row</span>
+<span class="co">#&gt;            input      22/22   row</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Numbers of ID's and rows in data</span>
+<span class="co">#&gt;       N From input data only From output tables</span>
+<span class="co">#&gt;  N.rows                  595                905</span>
+<span class="co">#&gt;   N.ids                  119                150</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Distribution of rows on event types</span>
+<span class="co">#&gt;  EVID From input data only From output tables</span>
+<span class="co">#&gt;     0                  595                755</span>
+<span class="co">#&gt;     1                   NA                150</span>
 <span class="co">## now we have a data.table</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="kw">res2</span>)
 <span class="co">#&gt; [1] "NMdata"     "data.table" "data.frame"</span>
@@ -271,12 +297,40 @@
 <span class="co">## notice fill is an option to rbind with data.table</span>
 <span class="kw">res1.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>),
                      col.row=<span class="st">"ROW"</span>)
-<span class="co">#&gt; Number of output tables read: 1.</span>
-<span class="co">#&gt; Read delimited text input data file.</span>
+<span class="co">#&gt; Model:  xgxr001 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Tables, number of columns in tables, and their detail level:</span>
+<span class="co">#&gt;            table used/total level</span>
+<span class="co">#&gt;  xgxr001_res.txt      16/16   row</span>
+<span class="co">#&gt;            input      22/22   row</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Numbers of ID's and rows in data</span>
+<span class="co">#&gt;       N From output tables</span>
+<span class="co">#&gt;  N.rows                905</span>
+<span class="co">#&gt;   N.ids                150</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Distribution of rows on event types</span>
+<span class="co">#&gt;  EVID From output tables</span>
+<span class="co">#&gt;     0                755</span>
+<span class="co">#&gt;     1                150</span>
 <span class="kw">res2.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>),
                      col.row=<span class="st">"ROW"</span>,name=<span class="st">"single-compartment"</span>)
-<span class="co">#&gt; Number of output tables read: 1.</span>
-<span class="co">#&gt; Read rds input data file.</span>
+<span class="co">#&gt; Model:  single-compartment </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Tables, number of columns in tables, and their detail level:</span>
+<span class="co">#&gt;            table used/total level</span>
+<span class="co">#&gt;  xgxr014_res.txt      12/12   row</span>
+<span class="co">#&gt;            input      22/22   row</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Numbers of ID's and rows in data</span>
+<span class="co">#&gt;       N From output tables</span>
+<span class="co">#&gt;  N.rows                905</span>
+<span class="co">#&gt;   N.ids                150</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Distribution of rows on event types</span>
+<span class="co">#&gt;  EVID From output tables</span>
+<span class="co">#&gt;     0                755</span>
+<span class="co">#&gt;     1                150</span>
 <span class="kw">res.mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="kw">res1.m</span>,<span class="kw">res2.m</span>,fill=<span class="kw">T</span>)
 <span class="kw">res.mult.mean</span> <span class="op">&lt;-</span> <span class="kw">res.mult</span>[<span class="kw">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">&amp;</span><span class="kw">nmout</span><span class="op">==</span><span class="fl">TRUE</span>,
                           <span class="fu">.</span>(gmPRED=<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="kw">PRED</span>)))),

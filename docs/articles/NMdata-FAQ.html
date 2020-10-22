@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.2</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2020-10-21 using NMdata 0.0.6.1.</p>
+<p>Built 2020-10-21 using NMdata 0.0.6.2.</p>
 <div id="general-nmdata-questions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general-nmdata-questions" class="anchor"></a>General <code>NMdata</code> questions</h2>
@@ -135,22 +135,27 @@ library(NMdata)</a></code></pre>
 <a href="#so-nmdata-uses-data-table--does-that-mean-variables-are-modified-by-reference" class="anchor"></a>So NMdata uses data.table. Does that mean variables are modified by reference?</h3>
 <p>NMdata will never modify variables in your workspace by reference, so don’t worry. NMdata definitely modify variables by reference internally but this will never affect your workspace. This has a slight performance price, but using <code>NMdata</code> must be easy for R user at all levels of experience. If you don’t understand what this is all about, you’re fine.</p>
 </div>
-<div id="i-want-to-use-a-tool-from-nmdata-but-how-can-i-avoid-working-with-data-table" class="section level3">
+<div id="i-want-to-use-a-tool-from-nmdata-but-how-does-it-integrate-with-dplyr-or-data-table" class="section level3">
 <h3 class="hasAnchor">
-<a href="#i-want-to-use-a-tool-from-nmdata-but-how-can-i-avoid-working-with-data-table" class="anchor"></a>I want to use a tool from NMdata, but how can I avoid working with data.table?</h3>
-<p>Easy. Every function in <code>NMdata</code> has an argument called <code>as.fun</code>. You can provide a function in this argument which will be applied to data before returnin it.</p>
+<a href="#i-want-to-use-a-tool-from-nmdata-but-how-does-it-integrate-with-dplyr-or-data-table" class="anchor"></a>I want to use a tool from NMdata, but how does it integrate with dplyr or data.table?</h3>
+<p>Every function in <code>NMdata</code> has an argument called <code>as.fun</code>. You can provide a function in this argument which will be applied to data before returnin it.</p>
+<p>You can get a tibble if you work with <code>dplyr</code>/<code>tidyverse</code> tools:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="kw">...</span>, as.fun = <span class="kw">as.data.frame</span>)
-</pre></div>
-<p>You can also get a tibble if you work with <code>tidyverse</code> tools:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="kw">...</span>, as.fun = <span class="kw">tibble</span>::<span class="kw"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span>)
 </pre></div>
+<p>Under the hood, NMdata is implemented in <code>data.table</code>, and in fact the default is to convert to <code>data.frame</code> before returning the output. So if you want <code>data.table</code>, use <code>"none"</code> to avoid the conversion</p>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="kw">...</span>, as.fun = <span class="st">"none"</span>)
+</pre></div>
+<p>Using <code>as.fun=as.data.table</code> wold work but is not recommended, because that would do an unnecessary deep copy of data.</p>
 <p>If you want to change the behaviour generally for the session and omit the <code>as.fun</code> argument, you can do this by this option:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="co">## for tibbles</span>
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(NMdata.as.fun = <span class="kw">tibble</span>::<span class="kw"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span>)
+<span class="co">## for data.table</span>
+<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(NMdata.as.fun = <span class="st">"none"</span>)
 </pre></div>
-<p>And all <code>NMdata</code> functions (that return data) should now return tibbles.</p>
+<p>And all <code>NMdata</code> functions (that return data) should now return tibbles or data.tables. If you use <code>options</code> to control this, for reproducibility please do so explecitly in your code and not in your <code>.Rprofile</code> or similar.</p>
 </div>
 <div id="can-i-request-a-feature" class="section level3">
 <h3 class="hasAnchor">
@@ -167,11 +172,24 @@ library(NMdata)</a></code></pre>
 <div id="questions-specific-to-data-reading-tools" class="section level2">
 <h2 class="hasAnchor">
 <a href="#questions-specific-to-data-reading-tools" class="anchor"></a>Questions specific to data reading tools</h2>
+<div id="what-if-i-dont-use-psn-and-my-control-stream-files-are-named-differently" class="section level3">
+<h3 class="hasAnchor">
+<a href="#what-if-i-dont-use-psn-and-my-control-stream-files-are-named-differently" class="anchor"></a>What if I don’t use PSN, and my control stream files are named differently?</h3>
+<p><code>NMscanData</code> needs the path to the output control stream (technically, the input control stream will work too, but this is not recommended). It has no requirement to the naming of the output control stream. In order to find the input data, it needs the input control stream as well, and it will automatically find it based on the output control stream path and an assumed naming convention based on PSN (which is that the output control stream is called .lst and the input control stream is located next to it called .mod). This naming convention can easily be configured using the <code>NMdata.file.mod</code> option.</p>
+<p>Another commonly used file structure is to have each run in a separate folder. Say the output control stream input control stream is always located next to the output control stream, you can use</p>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(NMdata.file.mod = <span class="fu">function</span>(<span class="kw">file</span>) <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span>(<span class="kw">file</span>), 
+    <span class="st">"input.txt"</span>))
+</pre></div>
+<p>Then <code>NMscanData</code> will automatically find the input control stream when you supply the path to the output control stream in the <code>file</code> argument.</p>
+</div>
 <div id="what-is-input-and-output-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#what-is-input-and-output-data" class="anchor"></a>What is “input” and output data?</h3>
-<p>What is referred to as “input data” in <code>NMdata</code> documentation is the datafile read in the <code>$DATA</code> or <code>$INFILE</code>.</p>
-<p>What is referred to as “output data” in the same documentation is the totality of files written by <code>$TABLE</code> statements.</p>
+<ul>
+<li>What is referred to as “input data” in <code>NMdata</code> documentation is the datafile read in the <code>$DATA</code> or <code>$INFILE</code>.</li>
+<li>What is referred to as “output data” in the same documentation is the totality of files written by <code>$TABLE</code> statements.</li>
+</ul>
 <p>Notice especially, “output data” does not refer to any of the files automatically written by Nonmem such as <code>.phi</code>, <code>.ext</code>, <code>.cov</code> etc.</p>
 </div>
 <div id="does-nmdata-read--phi--ext--cov-and-other-files-generated-by-nonmem" class="section level3">

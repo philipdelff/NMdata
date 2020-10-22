@@ -101,8 +101,8 @@ the `col.row` argument. The following
 checks that we get the same result from the two methods.
 
 ```{r,eval=TRUE}
-res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),col.row="ROW")
-all.equal(res0,res1)
+res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),col.row="ROW",quiet=TRUE)
+all.equal(res0,res1,check.attributes=FALSE)
 ```
 All features shown below will work whether you supply `col.row` or
 not. We use `col.row` because it is more robust and always

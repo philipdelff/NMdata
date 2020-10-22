@@ -428,12 +428,16 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
             if(use.input) {
                 
                 dt.vars1 <- data.table(
-                    variable=setdiff(colnames(data.input),colnames(tab.row))
+                    variable=colnames(data.input)
                    ,table="input"
                    ,source="input"
                    ,level="row"
                 )
                 
+                dt.vars1[,
+                         included:=variable%in%setdiff(colnames(data.input),colnames(tab.row))
+                         ]
+
                 dt.vars <- rbind(dt.vars,dt.vars1)
                 ## tab.vars <- rbind(tab.vars,
                 ## data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",level="row"))

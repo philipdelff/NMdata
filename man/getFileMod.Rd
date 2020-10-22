@@ -26,7 +26,9 @@ NMdata needs the input control stream to find the path to
     appending .mod, it will find the input control stream.}
 \item{path}{file.mod="path/to/input/control/strem"}
 \item{translation function}{file.path can be a function that takes the lst path as argument and returns the input control stream path.}
-\item{set option}{If you use a function, you may want to set this as default behaviour. Say your output control stream is always called input.txt and located in the same dir as the output control stream, you can use (NMdata.file.mod=function(file) file.path(dirname(file),"input.txt"))}
+\item{set option}{If you use a function, you may want to set this as default behaviour. Say your output control stream is always called input.txt and located in the same dir as the output control stream, you can use
+options(NMdata.file.mod=function(file) file.path(dirname(file),"input.txt"))
+}
 }
 
 Notice, if the argument dir.data is used in NMscanData or
