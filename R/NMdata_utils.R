@@ -195,14 +195,35 @@ NMisNumeric <- function(x){
 
 }
 
+
+##' @details The subjects are counted conditioned on the nmout
+##'     column. If only id-level output tables are present, there are
+##'     no nmout=TRUE rows. This means that in this case it will
+##'     report that no IDs are found in output. The correct statement
+##'     is that records are found for zero subjects in output tables.
 ##' @export
 summary.NMdata <- function(data){
+    
+
     if(!"NMdata"%in%class(data)) stop("data does not seem to be of class NMdata.")
     if(!is.data.table(data)) data <- as.data.table(data)
     ## derive how many subjects. Need to 
     
     s1 <- attr(data,"meta")
-    s1$N.ids <- data[,.(N.ids=uniqueN(ID)),by="nmout"]
+    s1$N.ids1 <- data[,.(N.ids=uniqueN(ID)),by="nmout"]
+
+    N.ids.nmout <- s1$N.ids1[nmout==TRUE,N.ids]
+    if(length(N.ids.nmout)==0) N.ids.nmout <- 0
+    s1$N.ids <- rbind(
+        data.table(NMOUT="From output tables",N.ids=N.ids.nmout)
+       ,
+        data.table(NMOUT="From input data only",N.ids=sum(
+        ! data[nmout==FALSE,unique(ID)] %in% data[nmout==TRUE,unique(ID)]
+        )
+        )
+    )
+    s1$N.ids1 <- NULL
+
     s1$N.rows <- data[,.(N.rows=.N),by="nmout"]
     s1$N.evids <- NA
     if("EVID"%in%colnames(data)){
@@ -218,11 +239,14 @@ summary.NMdata <- function(data){
 
 ##' @export
 print.summary_NMdata <- function(x){
+    
     if(!"summary_NMdata"%in%class(x)) stop("list does not seem to be of class NMdata")
     vars <- x$variables
     tabs.out <- copy(x$tables.output)
     vars <- mergeCheck(vars,data.table(included=c(TRUE,FALSE),
-                                       inc=factor(c("included","not"),levels=c("included","not"))),by="included")
+                                       ## inc=factor(c("included","not"),levels=c("included","not"))),
+                                       inc=c("included","not")),
+                       by="included")
 
     vars.sum <- vars[source!="NMscanData"][,.N,by=.(table,inc)]
     vars.sum1 <- dcast(vars.sum,table~inc,value.var="N")
@@ -248,11 +272,22 @@ print.summary_NMdata <- function(x){
     dt.nmout <- data.table(nmout=c(TRUE,FALSE),NMOUT=c("From output tables","From input data only"))
 
     ## how many ids (broken down on output vs. input-only)
-    n1 <- merge(x$N.rows,x$N.ids,by="nmout")
-    n2 <- melt(n1,id.vars="nmout",variable.name="N")
+    
+    #n1 <- merge(x$N.rows,x$N.ids,by="nmout")
+    n2 <- melt(x$N.rows,id.vars="nmout",variable.name="N")
     n3 <- mergeCheck(n2,dt.nmout,by="nmout",all.x=TRUE)
     n4 <- dcast(n3,N~NMOUT,value.var="value")
+
+    N.ids <- dcast(x$N.ids,.~NMOUT,value.var="N.ids")
+    N.ids[,N:="N.ids"]
+    N.ids[,.:=NULL]
     
+    n5 <- rbind(n4,N.ids,fill=T)
+    ## n5 <- n5[,lapply(.SD,function(x){
+    ##     x[is.na(x)] <- 0
+    ##     x
+    ##     })]
+    n5[is.na(n5)] <- 0
     
     ## how many rows in output (broken down on EVID)
 
@@ -260,7 +295,7 @@ print.summary_NMdata <- function(x){
     evids1 <- mergeCheck(x$N.evid,dt.nmout,by="nmout",all.x=TRUE)
     
     evids2 <- dcast(evids1,EVID~NMOUT,value.var="N")
-
+    evids2[is.na(evids2)] <- 0
 
     ## model name
     cat("Model: ",x$model,"\n")
@@ -269,7 +304,7 @@ print.summary_NMdata <- function(x){
     print(vars.sum2,row.names=FALSE)
 
     cat("\nNumbers of ID's and rows in data\n")
-    print(n4,row.names=FALSE)
+    print(n5,row.names=FALSE)
 
     cat("\nDistribution of rows on event types\n")
     print(evids2,row.names=FALSE)

@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2020-10-21 using NMdata 0.0.6.2.</p>
+<p>Built 2020-10-22 using NMdata 0.0.6.2.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -126,9 +126,9 @@
 <span class="co">#&gt;            input      22/22   row</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Numbers of ID's and rows in data</span>
-<span class="co">#&gt;       N From output tables</span>
-<span class="co">#&gt;  N.rows                905</span>
-<span class="co">#&gt;   N.ids                150</span>
+<span class="co">#&gt;       N From output tables From input data only</span>
+<span class="co">#&gt;  N.rows                905                    0</span>
+<span class="co">#&gt;   N.ids                150                    0</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Distribution of rows on event types</span>
 <span class="co">#&gt;  EVID From output tables</span>
@@ -254,12 +254,12 @@
 <span class="co">#&gt; Numbers of ID's and rows in data</span>
 <span class="co">#&gt;       N From input data only From output tables</span>
 <span class="co">#&gt;  N.rows                  595                905</span>
-<span class="co">#&gt;   N.ids                  119                150</span>
+<span class="co">#&gt;   N.ids                    0                150</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Distribution of rows on event types</span>
 <span class="co">#&gt;  EVID From input data only From output tables</span>
 <span class="co">#&gt;     0                  595                755</span>
-<span class="co">#&gt;     1                   NA                150</span>
+<span class="co">#&gt;     1                    0                150</span>
 <span class="co">## now we have a data.table</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="kw">res2</span>)
 <span class="co">#&gt; [1] "NMdata"     "data.table" "data.frame"</span>
@@ -296,41 +296,11 @@
 <div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="co">## notice fill is an option to rbind with data.table</span>
 <span class="kw">res1.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>),
-                     col.row=<span class="st">"ROW"</span>)
-<span class="co">#&gt; Model:  xgxr001 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Tables, number of columns in tables, and their detail level:</span>
-<span class="co">#&gt;            table used/total level</span>
-<span class="co">#&gt;  xgxr001_res.txt      16/16   row</span>
-<span class="co">#&gt;            input      22/22   row</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Numbers of ID's and rows in data</span>
-<span class="co">#&gt;       N From output tables</span>
-<span class="co">#&gt;  N.rows                905</span>
-<span class="co">#&gt;   N.ids                150</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Distribution of rows on event types</span>
-<span class="co">#&gt;  EVID From output tables</span>
-<span class="co">#&gt;     0                755</span>
-<span class="co">#&gt;     1                150</span>
+                     col.row=<span class="st">"ROW"</span>,
+                     quiet=<span class="fl">TRUE</span>)
 <span class="kw">res2.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>),
-                     col.row=<span class="st">"ROW"</span>,name=<span class="st">"single-compartment"</span>)
-<span class="co">#&gt; Model:  single-compartment </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Tables, number of columns in tables, and their detail level:</span>
-<span class="co">#&gt;            table used/total level</span>
-<span class="co">#&gt;  xgxr014_res.txt      12/12   row</span>
-<span class="co">#&gt;            input      22/22   row</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Numbers of ID's and rows in data</span>
-<span class="co">#&gt;       N From output tables</span>
-<span class="co">#&gt;  N.rows                905</span>
-<span class="co">#&gt;   N.ids                150</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Distribution of rows on event types</span>
-<span class="co">#&gt;  EVID From output tables</span>
-<span class="co">#&gt;     0                755</span>
-<span class="co">#&gt;     1                150</span>
+                     col.row=<span class="st">"ROW"</span>,name=<span class="st">"single-compartment"</span>,
+                     quiet=<span class="fl">TRUE</span>)
 <span class="kw">res.mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="kw">res1.m</span>,<span class="kw">res2.m</span>,fill=<span class="kw">T</span>)
 <span class="kw">res.mult.mean</span> <span class="op">&lt;-</span> <span class="kw">res.mult</span>[<span class="kw">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">&amp;</span><span class="kw">nmout</span><span class="op">==</span><span class="fl">TRUE</span>,
                           <span class="fu">.</span>(gmPRED=<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="kw">PRED</span>)))),

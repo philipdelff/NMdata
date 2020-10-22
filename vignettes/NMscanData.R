@@ -25,8 +25,8 @@ res0 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),
 class(res0)
 
 ## ----eval=TRUE----------------------------------------------------------------
-res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),col.row="ROW")
-all.equal(res0,res1)
+res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),col.row="ROW",quiet=TRUE)
+all.equal(res0,res1,check.attributes=FALSE)
 
 ## ----eval=TRUE----------------------------------------------------------------
 ## trtact is a character. Make it a factor with levels ordered by
@@ -104,9 +104,11 @@ res2[,.N,by=.(nmout,flag)]
 ## -----------------------------------------------------------------------------
 ## notice fill is an option to rbind with data.table
 res1.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),
-                     col.row="ROW")
+                     col.row="ROW",
+                     quiet=TRUE)
 res2.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),
-                     col.row="ROW",name="single-compartment")
+                     col.row="ROW",name="single-compartment",
+                     quiet=TRUE)
 res.mult <- rbind(res1.m,res2.m,fill=T)
 res.mult.mean <- res.mult[EVID==0&nmout==TRUE,
                           .(gmPRED=exp(mean(log(PRED)))),

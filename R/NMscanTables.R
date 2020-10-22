@@ -85,8 +85,9 @@ NMscanTables <- function(file,details=F,as.fun=NULL,quiet=FALSE,tab.count=TRUE){
         meta[I,nrow:=dim.tmp[1]]
         meta[I,ncol:=dim.tmp[2]]
     }
-
+    
     meta[,idlevel:=firstonly|lastonly]
+    meta[,file.mtime:=file.mtime(file)]
     
     if(!quiet){
         msg <- paste0("Number of output tables read: ",meta[,.N])

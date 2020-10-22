@@ -27,7 +27,7 @@ tabs <- NMscanTables(file=file.lst)
 
 
 
-
+library(devtools)
 load_all("..")
 file.lst <- NMdata_filepath("examples/nonmem/xgxr003.lst")
 res <- NMscanData(file=file.lst,cbind.by.filters = T)
