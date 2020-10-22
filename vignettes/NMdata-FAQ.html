@@ -315,7 +315,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<p>Built 2020-10-15 using NMdata 0.0.5.7.</p>
+<p>Built 2020-10-20 using NMdata 0.0.6.1.</p>
 <div id="general-nmdata-questions" class="section level2">
 <h2>General <code>NMdata</code> questions</h2>
 <div id="how-do-i-install-nmdata" class="section level3">
@@ -337,11 +337,11 @@ library(NMdata)</code></pre>
 <div id="i-use-another-tool-that-automatically-reads-my-data.-should-i-be-interested-in-nndata" class="section level3">
 <h3>I use another tool that automatically reads my data. Should I be interested in NNdata?</h3>
 <p>The data creation tools in <code>NMdata</code> may still be interesting. If another tool is working well for a project, you may not have any reason to use <code>NMscanData</code> for it. However, a lot of the time those tools have certain requirements to how datasets are constructed and especially how data is exported from Nonmem (<code>$TABLE</code>). If a Nonmem run does not live up to those requirements, and you want to look at the run results, <code>NMscanData</code> will let you do that without you having to “correct” your <code>$TABLE</code> statements and wait for Nonmem to run again.</p>
-<p>Also, in other cases <code>NMscanData</code> can save you a lot of time and frustration even if you have your own routines that makes <code>NMdata</code> unnecessary. If you want to read your old Nonmem runs that were done a little differently, someone else’s work, or you want to quickly read a lot of runs done by different people for a meta analysis, <code>NMscanData</code> can save you a lot of work, time and frustration.</p>
+<p>Also, in other cases <code>NMscanData</code> can save you a lot of time and frustration even if you have your own routines that make <code>NMdata</code> unnecessary. If you want to read your old Nonmem runs that were done a little differently, someone else’s work, or you want to quickly read a lot of runs done by different people for a meta analysis, <code>NMscanData</code> can save you a lot of work, time and frustration.</p>
 </div>
 <div id="why-is-nmdata-fast" class="section level3">
 <h3>Why is NMdata fast?</h3>
-<p><code>NMdata</code> is generally fast - all thanks to the incredible <code>data.table</code> package. If you don’t use data.table already, it may even seem really fast. If you are noticing some circumstances where <code>NMdata</code> seems slow, I am very curious to hear about it.</p>
+<p><code>NMdata</code> is generally fast - all thanks to the incredible <code>data.table</code> package. If you don’t use <code>data.table</code> already, it may even seem extremely fast. If you are noticing some circumstances where <code>NMdata</code> seems slow, I am very curious to hear about it.</p>
 </div>
 <div id="so-nmdata-uses-data.table.-does-that-mean-variables-are-modified-by-reference" class="section level3">
 <h3>So NMdata uses data.table. Does that mean variables are modified by reference?</h3>
@@ -349,7 +349,7 @@ library(NMdata)</code></pre>
 </div>
 <div id="i-want-to-use-a-tool-from-nmdata-but-how-can-i-avoid-working-with-data.table" class="section level3">
 <h3>I want to use a tool from NMdata, but how can I avoid working with data.table?</h3>
-<p>Easy. Every function in <code>NMdata</code> has an argument called <code>fun.as</code>. You can provide a function in this argument which will be applied to data before returnin it.</p>
+<p>Easy. Every function in <code>NMdata</code> has an argument called <code>as.fun</code>. You can provide a function in this argument which will be applied to data before returnin it.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">NMscanData</span>(..., <span class="dt">as.fun =</span> as.data.frame)</span></code></pre></div>
 <p>You can also get a tibble if you work with <code>tidyverse</code> tools:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">NMscanData</span>(..., <span class="dt">as.fun =</span> tibble<span class="op">::</span>as_tibble)</span></code></pre></div>

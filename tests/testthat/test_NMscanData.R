@@ -1,12 +1,17 @@
 ## library(devtools)
-## load_all("C:/users/delff/working_copies/NMdata")
-## setwd("C:/users/delff/working_copies/NMdata/tests/testthat")
+## setwd("tests/testthat")
+## load_all("../../")
 
 context("NMscanData")
 
-### these tests were all made back when data.table was default
-options(NMdata.as.fun="none")
 
+fix.time <- function(x){
+    meta.x <- attr(x,"meta")
+    meta.x$time.call <- as.POSIXct("2020-02-01 00:01:01",tz="UTC")
+    setattr(x,"meta",meta.x)
+}
+
+### these tests were all made back when data.table was default
 test_that("basic",{
 
     fileRef <- "testReference/NMscanData1.rds"
@@ -17,6 +22,8 @@ test_that("basic",{
 
     res1 <- NMscanData(file=file.lst)
     ## dim(res1)
+
+    fix.time(res1)
     
     expect_equal_to_reference(res1,fileRef,version=2)
 })
@@ -29,7 +36,8 @@ test_that("Modifications to column names in $INPUT",{
     file.lst <- NMdata_filepath("examples/nonmem/xgxr002.lst")
 
     res <- NMscanData(file=file.lst)
-
+    fix.time(res)
+    
     expect_equal_to_reference(res,fileRef,version=2)
 })
 
@@ -41,7 +49,8 @@ test_that("Multiple output table formats",{
 
     ## res <- NMscanData(file=file.lst)
     res <- NMscanData(file=file.lst)
-
+    fix.time(res)
+    
     expect_equal_to_reference(res,fileRef,version=2)
 })
 
@@ -53,12 +62,11 @@ test_that("Interpret IGNORE statement",{
     ## res <- NMscanData(file=file.lst)
 
     res <- NMscanData(file=file.lst,cbind.by.filters = T)
-
+    fix.time(res)
     ## names(res$row)
     
     expect_equal_to_reference(res,fileRef,version=2)
 })
-
 
 
 test_that("List of ACCEPT statements and vs separate statements",{
@@ -70,7 +78,8 @@ test_that("List of ACCEPT statements and vs separate statements",{
     NMgetSection(file2.lst,section="PROBLEM")
     res1 <- NMscanData(file=file1.lst,cbind.by.filters = T,add.name=NULL)
     res2 <- NMscanData(file=file2.lst,cbind.by.filters = T,add.name=NULL)
-
+    setattr(res1,"meta",NULL)
+    setattr(res2,"meta",NULL)
     expect_identical(res1,res2)
 })
 
@@ -92,8 +101,8 @@ test_that("merge by filters or not",{
     ## output in the other. This is as expected.
 
     ## cbind(attr(res1,"var"),attr(res2,"var"))
-    setattr(res1,"vars",NULL)
-    setattr(res2,"vars",NULL)
+    setattr(res1,"meta",NULL)
+    setattr(res2,"meta",NULL)
 
     expect_equal(res1,res2)
 })
@@ -114,6 +123,7 @@ test_that("Only a firstonly without ID but with ROW",{
     ## tabs
     
     res1 <- NMscanData(file=file.lst,col.row="ROW")
+    fix.time(res1)
     expect_equal_to_reference(res1,fileRef,version=2)
     
 })
@@ -154,7 +164,7 @@ test_that("FO and row-level output. No ID, no row.",{
     res1 <- expect_warning(
         NMscanData(file=file.lst)
     )
-    
+    fix.time(res1)
     expect_equal_to_reference(
         res1,fileRef,version=2
     )
@@ -172,6 +182,7 @@ test_that("FO and row-level output. No ID, no row. cbind.by.filters=T",{
     res1 <- expect_warning(
         NMscanData(file=file.lst,cbind.by.filters=T)
     )
+    fix.time(res1)
     
     expect_equal_to_reference(
         res1,fileRef,version=2
@@ -215,6 +226,7 @@ test_that("Only a firstonly without ID but with ROW. Using col.row.",{
     ## tabs
 
     res1 <- NMscanData(file=file.lst,col.row="ROW")
+    fix.time(res1)
     expect_equal_to_reference(
         res1,fileRef,version=2
     )
@@ -236,10 +248,11 @@ test_that("recoverRows without a row identifier",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-    res1 <- NMscanData(file=file.lst,cbind.by.filters=T,recover.rows = T)
+    res1 <- NMscanData(file=file.lst,cbind.by.filters=T,recover.rows = T,as.fun="none")
     dim(res1)
     res1[,table(nmout,DOSE)]
-
+    fix.time(res1)
+    
     expect_equal_to_reference(
         res1,fileRef,version=2
     )
@@ -261,6 +274,7 @@ test_that("use as.fun to get a data.frame",{
     class(res1)
     with(res1,table(nmout,DOSE))
 
+    fix.time(res1)
     expect_equal_to_reference(
         res1,fileRef,version=2
     )
@@ -286,11 +300,11 @@ test_that("use as.fun to get a tibble",{
     res1 <- NMscanData(file=file.lst,cbind.by.filters=T,recover.rows = T,as.fun=tibble::as_tibble)
     dim(res1)
     class(res1)
-    
+
+    fix.time(res1)
     expect_equal_to_reference(
         res1,fileRef,version=2
     )
     
 })
 
-options(NMdata.as.fun=NULL)
