@@ -86,29 +86,43 @@ slight performance price, but using `NMdata` must be easy for R user
 at all levels of experience.  If you don't understand what this is all
 about, you're fine.
 
-### I want to use a tool from NMdata, but how can I avoid working with data.table?
-Easy. Every function in `NMdata` has an argument called `as.fun`. You
+### I want to use a tool from NMdata, but how does it integrate with dplyr or data.table?
+Every function in `NMdata` has an argument called `as.fun`. You
 can provide a function in this argument which will be applied to data
 before returnin it.
 
-```{r,eval=F}
-NMscanData(...,as.fun=as.data.frame)
-```
-
-You can also get a tibble if you work with `tidyverse` tools: 
+You can get a tibble if you work with `dplyr`/`tidyverse` tools: 
 
 ```{r,eval=F}
 NMscanData(...,as.fun=tibble::as_tibble)
 ```
 
+Under the hood, NMdata is implemented in `data.table`, and in fact the
+default is to convert to `data.frame` before returning the output. So
+if you want `data.table`, use `"none"` to avoid the conversion
+
+```{r,eval=F}
+NMscanData(...,as.fun="none")
+```
+
+Using `as.fun=as.data.table` wold work but is not recommended, because
+that would do an unnecessary deep copy of data.
+
 If you want to change the behaviour generally for the session and omit
 the `as.fun` argument, you can do this by this option:
 
 ```{r,eval=F}
+## for tibbles
 options(NMdata.as.fun=tibble::as_tibble)
+## for data.table
+options(NMdata.as.fun="none")
 ```
 
-And all `NMdata` functions (that return data) should now return tibbles.
+And all `NMdata` functions (that return data) should now return
+tibbles or data.tables. If you use `options` to control this, for
+reproducibility please
+do so explecitly in your code and not in your `.Rprofile` or
+similar. 
 
 ### Can I request a feature?
 Please open an issue on [github](https://github.com/philipdelff/NMdata/issues).
@@ -126,11 +140,34 @@ returned by `NMscanData` and maybe a call to `findCovs` or `findVars`.
 
 
 ## Questions specific to data reading tools 
-### What is "input" and output data?
-What is referred to as "input data" in `NMdata` documentation is the
-datafile read in the `$DATA` or `$INFILE`. 
+### What if I don't use PSN, and my control stream files are named differently?
+`NMscanData` needs the path to the output control stream (technically, the
+input control stream will work too, but this is not recommended). It has no requirement to the naming of the
+output control stream. In order to find the input data, it needs the
+input control stream as well, and it will automatically find it based
+on the output control stream path and an assumed naming convention
+based on PSN (which is that the output control stream is called .lst
+and the input control stream is located next to it called .mod). 
+This naming convention can easily be configured using the
+`NMdata.file.mod` option. 
 
-What is referred to as "output data" in the same documentation is the
+Another commonly used file structure is to have each run in a separate
+folder. Say the output control stream input control stream is always
+located next to the output control stream, you can use
+
+```{r,eval=FALSE}
+options(NMdata.file.mod=function(file) file.path(dirname(file),"input.txt"))
+```
+
+Then `NMscanData` will automatically find the input control stream
+when you supply the path to the output control stream in the `file`
+argument.
+
+
+### What is "input" and output data?
+- What is referred to as "input data" in `NMdata` documentation is the
+datafile read in the `$DATA` or `$INFILE`. 
+- What is referred to as "output data" in the same documentation is the
 totality of files written by `$TABLE` statements. 
 
 Notice especially, "output data" does not refer to any of the files

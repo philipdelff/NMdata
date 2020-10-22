@@ -116,12 +116,15 @@ NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
     }
 
     path.data.input.rds <- sub("^(.+)\\..+$","\\1.rds",path.data.input)
+    type.file <- NA_character_
     if(use.rds && file.exists(path.data.input.rds)){
+        type.file <- "rds"
         if(!quiet) message("Read rds input data file.")
         path.data.input <- path.data.input.rds
         data.input <- readRDS(path.data.input)
     } else {
         if(file.exists(path.data.input)){
+            type.file <- "delimited"
             if(!quiet) message("Read delimited text input data file.")
             data.input <- NMreadCsv(path.data.input,as.fun="none")
         } else {
@@ -169,9 +172,9 @@ NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
     }
 
     data.input <- runAsFun(data.input,as.fun)
+    setattr(data.input,"type.file",type.file)
+    setattr(data.input,"file",path.data.input)
+    setattr(data.input,"mtime.file",file.info(path.data.input)$mtime)
 
     return(data.input)
-    
-
-    
 }

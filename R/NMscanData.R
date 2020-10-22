@@ -6,7 +6,8 @@
 ##'     \"file\" with extension changed to .mod (PSN style). You can
 ##'     also supply the path to the file, or you can provide a
 ##'     function that translates the output file path to the input
-##'     file path. See dir.data too.
+##'     file path. The default behavior is controlled by the
+##'     "NMdata.file.mod" option. See dir.data too.
 ##' @param col.id The name of the subject ID variable, default is
 ##'     "ID".
 ##' @param col.row A column with a unique value for each row. Such a
@@ -185,16 +186,17 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         col.row <- NULL
     }
 
-    
+    if (missing(name)) {
+        runname <- sub("\\.lst$","",basename(sub(" $","",file)))        
+    } else {
+        runname <- name
+    }
+
     if(!is.null(add.name)) {
         if(!is.character(add.name) || length(add.name)!=1 ||  add.name=="" ) {
             messageWrap("If not NULL, add.name must be a character name of the column to store the run name. The string cannot be empty.",fun.msg=stop)
         }
-        if (!missing(name)) {
-            runname <- name
-        } else {
-            runname <- sub("\\.lst$","",basename(sub(" $","",file)))
-        }
+
         include.model <- TRUE
     } else {
         include.model <- FALSE
@@ -206,7 +208,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 #### Section start: read all output tables and merge to max one firstonly and max one row ####
 
     ## if(!quiet) messageWrap("Scanning for output tables.")
-    tables <- NMscanTables(file,details=T,tab.count=tab.count,quiet=quiet,as.fun="none")
+    tables <- NMscanTables(file,details=T,tab.count=tab.count,quiet=TRUE,as.fun="none")
 
     rows.flo <- tables$meta[firstlastonly==TRUE]
     if(rows.flo[,.N]>0) {
@@ -239,7 +241,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     }
     
     tab.row <- NULL
-    tab.vars <- NULL
+    ##    tab.vars <- NULL
     dt.vars <- NULL
     
     if(any(overview.tables[,full.length])) {
@@ -271,9 +273,9 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                                    ,level="row"
                                     ))
         
-        tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="output",level="row"))
-        tab.vars[var=="nmout",source:="NMscanData"]
-        tab.vars[var=="nmout",level:=NA_character_]
+        ## tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="output",level="row"))
+        ## tab.vars[var=="nmout",source:="NMscanData"]
+        ## tab.vars[var=="nmout",level:=NA_character_]
     } 
     
 
@@ -322,10 +324,11 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 
     
     if(use.input&&!any(tables$meta$full.length)) {
-
-        
-        
-        tab.row <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,as.fun="none")
+        data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=TRUE,use.rds=use.rds,applyFilters=cbind.by.filters,as.fun="none")
+        tab.row <- copy(data.input)
+        setattr(tab.row,"file",NULL)
+        setattr(tab.row,"type.file",NULL)
+        setattr(tab.row,"mtime.file",NULL)
 
         dt.vars <- rbind(dt.vars,
                          data.table(
@@ -335,14 +338,14 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                             ,source="input"
                             ,level="row")
                          )
-        tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="input",level="row"))
+        ## tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="input",level="row"))
 
         tab.row[,nmout:=FALSE]
     }
     
     if(use.input&&any(tables$meta$full.length)) {
         ## if(!quiet) messageWrap("Searching for input data.")
-        data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,as.fun="none")
+        data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=TRUE,use.rds=use.rds,applyFilters=cbind.by.filters,as.fun="none")
         cnames.input <- colnames(data.input)
 
         ## if no method is specified, search for possible col.row to help the user
@@ -389,7 +392,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                              )
             
             
-            tab.vars <- rbind(tab.vars,data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",level="row"))
+            ## tab.vars <- rbind(tab.vars,data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",level="row"))
             tab.row <- cbind(
                 tab.row,
                 data.input[,!colnames(data.input)%in%colnames(tab.row),with=F]
@@ -432,8 +435,8 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                 )
                 
                 dt.vars <- rbind(dt.vars,dt.vars1)
-                tab.vars <- rbind(tab.vars,
-                                  data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",level="row"))
+                ## tab.vars <- rbind(tab.vars,
+                ## data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",level="row"))
                 
                 tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=T,as.fun="none")
                 
@@ -493,13 +496,13 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 
                 dt.vars.id1[,included:=TRUE]
                 dt.vars <- rbind(dt.vars,dt.vars.id1)
-                tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="output",level="idlevel"))
+                ## tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="output",level="idlevel"))
                 tab.row[,nmout:=TRUE]
                 
             } else {
                 
                 ## use tab.vars for the subset
-                cols.to.use <- unique(c(col.id,setdiff(colnames(tab.idlevel),tab.vars[source=="output",var])))
+                cols.to.use <- unique(c(col.id,setdiff(colnames(tab.idlevel),dt.vars[source=="output",variable])))
                 tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=F]
                 tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="none")
                 
@@ -509,7 +512,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                 dt.vars <- rbind(dt.vars,dt.vars.id1)
 
                 ## have to avoid an additional col.id here. Or maybe not. We are merging, so col.id comes from both.
-                tab.vars <- rbind(tab.vars,data.table(var=cols.to.use,source="output",level="idlevel"))
+                ## tab.vars <- rbind(tab.vars,data.table(var=cols.to.use,source="output",level="idlevel"))
             }
         }
     }
@@ -526,7 +529,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         
         skip.recover <- FALSE
         if(cbind.by.filters) {
-            data.recover <- NMtransInput(file,quiet=quiet,use.rds=use.rds,applyFilters=cbind.by.filters,invert=T,as.fun="none")
+            data.recover <- NMtransInput(file,quiet=TRUE,use.rds=use.rds,applyFilters=cbind.by.filters,invert=T,as.fun="none")
         } else {
             data.recover <- data.input[!get(col.row)%in%tab.row[,get(col.row)]]
             ## data.input[get(col.row)%in%tab.row[,get(col.row)]]
@@ -549,31 +552,53 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                                     ))
 
         
-        tab.vars <- rbind(tab.vars,
-                          data.table(var=add.name,source="NMscanData"),
-                          fill=T)
+        ## tab.vars <- rbind(tab.vars,
+        ##                   data.table(var=add.name,source="NMscanData"),
+        ##                   fill=T)
     }
 
-    setorder(tab.vars,var)
+    ## setorder(tab.vars,var)
     
     tab.row <- runAsFun(tab.row,as.fun)
-    tab.vars <- runAsFun(tab.vars,as.fun)
+    ##    tab.vars <- runAsFun(tab.vars,as.fun)
 
+    
 ### more meta information needed.
-    ## call?
-    ## time of NMscanData call
-    ## name of model
-    ## path to lst
-    ## file info on lst
-    ## if available: path to input data
+    meta <- list(
+        ## call
+        call=deparse(sys.call()),
+        ## time of NMscanData call
+        time.call=Sys.time(),
+        ## name of model
+        model=runname,
+        ## path to lst
+        file.lst=file,
+        ## file info on lst
+        mtime.lst=file.info(file)$mtime,
+        ## was input used?
+        input.used=use.input,
+        ## was input recovered?
+        rows.recovered=recover.rows,
+        ## if available: path to input data
+        file.input=NA_character_,
+        ## if available: mtime of input data
+        mtime.input=NA_character_,
+        variables=dt.vars,
+        tables.output=tables$meta
+    )
+
+
+    if(use.input) meta$file.input <- attr(data.input,"file")
     ## if available: file info for input data
-    ## was input used?
-    ## was input recovered?
+    if(use.input) meta$mtime.input <- attr(data.input,"mtime.file")
+
+    setattr(tab.row,"meta",meta)
     
-    ##    setattr(tab.row,"vars",tab.vars)
-    setattr(tab.row,"variables",dt.vars)
-    setattr(tab.row,"tables.output",tables$meta)
     setattr(tab.row,"class",c("NMdata",class(tab.row)))
-    
+
+    if(!quiet){
+        print(summary(tab.row))
+    }
+
     tab.row
 }
