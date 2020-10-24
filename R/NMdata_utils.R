@@ -206,6 +206,15 @@ summary.NMdata <- function(data){
     
 
     if(!"NMdata"%in%class(data)) stop("data does not seem to be of class NMdata.")
+
+    ## I need to look more into this. Some operations (merge?) drop
+    ## many attributes but not the NMdata class. If that has happened,
+    ## we ave nothing to use the class for.
+    if(!"meta"%in%names(attributes(data))) {
+        setattr(data,"class",setdiff(attr(data,"class"),"NMdata"))
+        return(summary(data))
+    }
+    
     if(!is.data.table(data)) data <- as.data.table(data)
     ## derive how many subjects. Need to 
     
@@ -315,5 +324,34 @@ print.summary_NMdata <- function(x){
 
     return(invisible(NULL))
 
+}
+
+is.NMdata <- function(x){
+    inherits(x,"NMdata")
+}
+
+merge.NMdata <- function(x,...){
+    setattr(x,"class",setdiff(class(x),"NMdata"))
+    merge(x,...)
+}
+
+t.NMdata <- function(x,...){
+    setattr(x,"class",setdiff(class(x),"NMdata"))
+    t(x,...)
+}
+
+dimnames.NMdata <- function(x,...){
+    setattr(x,"class",setdiff(class(x),"NMdata"))
+    dimnames(x,...)
+}
+
+rbind.NMdata <- function(x,...){
+    setattr(x,"class",setdiff(class(x),"NMdata"))
+    rbind(x,...)
+}
+
+cbind.NMdata <- function(x,...){
+    setattr(x,"class",setdiff(class(x),"NMdata"))
+    cbind(x,...)
 }
 

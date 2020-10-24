@@ -1,23 +1,23 @@
 ##' read input data and translate column names according to the $INPUT section
 ##' 
 ##' @description Based on a nonmem run (lst and/or mod file), this
-##'     function finds the input data and reads it. But it reads it
+##'     function finds the input data and reads it. It reads the data
 ##'     like the nonmem run by applying DROP/SKIP arguments and
-##'     alternative naming of columns in the nonmem run.
+##'     alternative naming of columns in the nonmem run. 
 ##' @param file a .lst (output) or a .mod (input) control stream
 ##'     file. The filename does not need to end in .lst. It is
 ##'     recommended to use the output control stream because it
 ##'     reflects the model as it was run rather than how it is planned
 ##'     for next run. However, see file.mod and dir.data.
-##' @param file.mod The input control stream file path. Default is to look for
-##'     \"file\" with extension changed to .mod (PSN style). You can
-##'     also supply the path to the file, or you can provide a
-##'     function that translates the output file path to the input
-##'     file path. If dir.data is missing, the input control stream is
-##'     needed. This is because the .lst does not contain the path to
-##'     the data file. The .mod file is only used for finding the data
-##'     file. How to interpret the datafile is read from the .lst
-##'     file. See dir.data too.
+##' @param file.mod The input control stream file path. Default is to
+##'     look for \"file\" with extension changed to .mod (PSN
+##'     style). You can also supply the path to the file, or you can
+##'     provide a function that translates the output file path to the
+##'     input file path. If dir.data is missing, the input control
+##'     stream is needed. This is because the .lst does not contain
+##'     the path to the data file. The .mod file is only used for
+##'     finding the data file. How to interpret the datafile is read
+##'     from the .lst file. See dir.data too.
 ##' @param dir.data The data directory can only be read from the
 ##'     control stream (.mod) and not from the output file (.lst). So
 ##'     if you only have the output file, use dir.data to tell in

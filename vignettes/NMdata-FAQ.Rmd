@@ -141,15 +141,16 @@ returned by `NMscanData` and maybe a call to `findCovs` or `findVars`.
 
 ## Questions specific to data reading tools 
 ### What if I don't use PSN, and my control stream files are named differently?
-`NMscanData` needs the path to the output control stream (technically, the
-input control stream will work too, but this is not recommended). It has no requirement to the naming of the
-output control stream. In order to find the input data, it needs the
-input control stream as well, and it will automatically find it based
-on the output control stream path and an assumed naming convention
-based on PSN (which is that the output control stream is called .lst
-and the input control stream is located next to it called .mod). 
-This naming convention can easily be configured using the
-`NMdata.file.mod` option. 
+`NMscanData` needs the path to the output control stream (technically,
+the input control stream will work too, but this is not
+recommended). It has no requirement to the naming of the output
+control stream. In order to find the input data, it needs the input
+control stream as well, and it will automatically find it based on the
+output control stream path and an assumed naming convention based on
+PSN (which is that the output control stream is called .lst and the
+input control stream is located next to it called .mod).  This naming
+convention can easily be configured using the `NMdata.file.mod`
+option.
 
 Another commonly used file structure is to have each run in a separate
 folder. Say the output control stream input control stream is always
@@ -162,6 +163,15 @@ options(NMdata.file.mod=function(file) file.path(dirname(file),"input.txt"))
 Then `NMscanData` will automatically find the input control stream
 when you supply the path to the output control stream in the `file`
 argument.
+
+If the name of the directory is the model name, you can do the
+following as well:
+
+```{r,eval=FALSE}
+options(NMdata.modelname=function(file) basename(dirname(normalizePath(file))))
+```
+This will take the model name (used in `model` column in the returned
+data and in summaries) from the name of the directory.
 
 
 ### What is "input" and output data?

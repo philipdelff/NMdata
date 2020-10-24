@@ -26,9 +26,13 @@
 ##'     be included in all tables containing the model name. The
 ##'     default is to store this in a column called "model". See
 ##'     argument "name" as well. Set to NULL if not wanted.
-##' @param name The model name to be stored if add.name is not
-##'     NULL. If name is not supplied, the name will be taken from the
-##'     control stream file name.
+##' @param modelname The model name to be stored if add.name is not
+##'     NULL and not set by options(NMdata.modelname=...). If not
+##'     supplied, the name will be taken from the control stream file
+##'     name by omitting the directory/path and deleting the .lst
+##'     extension. If using the NMdata.modelname option, please submit
+##'     a function taking file as argument and returning the modelname
+##'     (by extracting it from file name or path).
 ##' @param use.rds If an rds file is found with the exact same name
 ##'     (except for .rds instead of say .csv) as the input data file
 ##'     mentioned in the Nonmem control stream, should this be used
@@ -94,7 +98,7 @@
 ## when col.row and cbind.by.filters are missing, do cbind.by.filters but look for a row identifier. Explain and tell user to provide col.row or cbind.by.filters to get less messages.
 
 NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
-                       recover.rows=FALSE,add.name="model",name,
+                       recover.rows=FALSE,add.name="model",modelname,
                        file.mod,dir.data,quiet=FALSE,use.rds=TRUE,
                        as.fun=NULL,col.id="ID",tab.count=FALSE) {
 
@@ -181,15 +185,30 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 
 ### merging method found
 ### now code must use search.col.row, cbind.by.filters and merge.by.row
-    
+
     if(missing(col.row)||(!is.null(col.row)&&is.na(col.row))||(is.character(col.row)&&any(col.row==""))) {
         col.row <- NULL
     }
 
-    if (missing(name)) {
-        runname <- sub("\\.lst$","",basename(sub(" $","",file)))        
+    modelname.by.option <- FALSE
+    if(missing(modelname)) {
+        modelname <- getOption("NMdata.modelname")
+        modelname.by.option <- TRUE
+    }
+    if(!is.null(modelname) && !is.function (modelname) && !(is.character(file)&&length(file)==1)) {
+        stoptext <- "If provided, modelname must be either a function or a character of length 1."
+        if(modelname.by.option) {
+            stoptext <- paste0(stoptext,"modelname was taken from getOption(\"NMdata.modelname\"). ",stoptext)
+        }
+        messageWrap(stoptext,fun.msg=stop)
+    }
+    if(is.null(modelname)) {
+        modelname <- function(file) sub("\\.lst$","",basename(sub(" $","",file)))
+    } 
+    if(is.function(modelname)){
+        runname <- modelname(file)
     } else {
-        runname <- name
+        runname <- modelname
     }
 
     if(!is.null(add.name)) {
@@ -591,7 +610,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         tables.output=tables$meta
     )
 
-
+    
     if(use.input) meta$file.input <- attr(data.input,"file")
     ## if available: file info for input data
     if(use.input) meta$mtime.input <- attr(data.input,"mtime.file")

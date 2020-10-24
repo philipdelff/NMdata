@@ -7,6 +7,11 @@ A lot of meta information has been added in an attribute to NMdata
 objects. This will help the user to understand and automatically
 document what has been read.
 
+The argument to NMscanData previously called name has been renamed to
+modelname and generalized to take a function that derives the name
+from the file path. Also an general option "NMdata.modelname" has been
+added, so the default behavior can be configured.
+
 # NMdata 0.0.6.1
 The default class to generate is now data.frame rather than
 data.table. If you want to work with data.tables, do 
