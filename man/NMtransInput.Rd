@@ -28,15 +28,15 @@ mentioned in the Nonmem control stream, should this be used
 instead? The default is yes, and NMwriteData will create this
 by default too.}
 
-\item{file.mod}{The input control stream file path. Default is to look for
-\"file\" with extension changed to .mod (PSN style). You can
-also supply the path to the file, or you can provide a
-function that translates the output file path to the input
-file path. If dir.data is missing, the input control stream is
-needed. This is because the .lst does not contain the path to
-the data file. The .mod file is only used for finding the data
-file. How to interpret the datafile is read from the .lst
-file. See dir.data too.}
+\item{file.mod}{The input control stream file path. Default is to
+look for \"file\" with extension changed to .mod (PSN
+style). You can also supply the path to the file, or you can
+provide a function that translates the output file path to the
+input file path. If dir.data is missing, the input control
+stream is needed. This is because the .lst does not contain
+the path to the data file. The .mod file is only used for
+finding the data file. How to interpret the datafile is read
+from the .lst file. See dir.data too.}
 
 \item{dir.data}{The data directory can only be read from the
 control stream (.mod) and not from the output file (.lst). So
@@ -62,7 +62,7 @@ as.fun="none". See ?runAsFun.}
 }
 \description{
 Based on a nonmem run (lst and/or mod file), this
-    function finds the input data and reads it. But it reads it
+    function finds the input data and reads it. It reads the data
     like the nonmem run by applying DROP/SKIP arguments and
     alternative naming of columns in the nonmem run.
 }

@@ -315,7 +315,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<p>Built 2020-10-20 using NMdata 0.0.6.1.</p>
+<p>Built 2020-10-26 using NMdata 0.0.6.2.</p>
 <div id="general-nmdata-questions" class="section level2">
 <h2>General <code>NMdata</code> questions</h2>
 <div id="how-do-i-install-nmdata" class="section level3">
@@ -324,9 +324,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <pre eval="FALSE"><code>library(remotes)
 install_github(&quot;philipdelff/NMdata&quot;)
 library(NMdata)</code></pre>
-<p>In a production environment, use a <a href="https://github.com/philipdelff/NMdata/releases">github release</a> To install <code>NMdata 0.0.6</code> release, do</p>
+<p>In a production environment, use a <a href="https://github.com/philipdelff/NMdata/releases">github release</a> To install <code>NMdata 0.0.6.1</code> release, do</p>
 <pre eval="FALSE"><code>library(remotes)
-install_github(&quot;philipdelff/NMdata@v0.0.6&quot;)
+install_github(&quot;philipdelff/NMdata@v0.0.6.1&quot;)
 library(NMdata)</code></pre>
 <p>If you need to archive a script that is dependent on a feature or bug fix which is only in the master branch, request a release.</p>
 </div>
@@ -334,10 +334,16 @@ library(NMdata)</code></pre>
 <h3>What about NMdata dependencies?</h3>
 <p><code>NMdata</code> depends on <code>data.table</code> only, and <code>data.table</code> does not have any dependencies. R 3.0 or later is required, that’s all (yes, you can actually run this on pretty old R installations without any difference).</p>
 </div>
+<div id="why-one-more-tool-for-interacting-with-nonmem-from-r" class="section level3">
+<h3>Why one more tool for interacting with Nonmem from R?</h3>
+<p>Other tools exist for reading data from Nonmem. However, <code>NMdata</code> aims at assuming as little as possible about how you work while still doing (and checking) as much as possible for you. Tools in <code>NMdata</code> do not assume you use other tools in <code>NMdata</code>. If you like just one function in <code>NMdata</code> and want to integrate that in your workflow without bothering about the rest, that is perfectly possible. <code>NMdata</code> aims at being able to integrate with anything else and still do the job.</p>
+<p>While many other tools available provide plotting functions, <code>NMdata</code> focuses on getting the data ready for smooth Nonmem experience (by checking as much as possible first), get the resulting data out of Nonmem and a little processing.</p>
+<p>If you are building tools that process data from Nonmem, you may find very valuable tools here. I have not seen as generic and flexible a Nonmem data reader elsewhere.</p>
+</div>
 <div id="i-use-another-tool-that-automatically-reads-my-data.-should-i-be-interested-in-nndata" class="section level3">
 <h3>I use another tool that automatically reads my data. Should I be interested in NNdata?</h3>
-<p>The data creation tools in <code>NMdata</code> may still be interesting. If another tool is working well for a project, you may not have any reason to use <code>NMscanData</code> for it. However, a lot of the time those tools have certain requirements to how datasets are constructed and especially how data is exported from Nonmem (<code>$TABLE</code>). If a Nonmem run does not live up to those requirements, and you want to look at the run results, <code>NMscanData</code> will let you do that without you having to “correct” your <code>$TABLE</code> statements and wait for Nonmem to run again.</p>
-<p>Also, in other cases <code>NMscanData</code> can save you a lot of time and frustration even if you have your own routines that make <code>NMdata</code> unnecessary. If you want to read your old Nonmem runs that were done a little differently, someone else’s work, or you want to quickly read a lot of runs done by different people for a meta analysis, <code>NMscanData</code> can save you a lot of work, time and frustration.</p>
+<p>The data creation tools in <code>NMdata</code> may still be interesting. If another tool is working well for a project, you may not have any reason to use <code>NMscanData</code> (the Nonmem data reader in <code>NMdata</code>) for it. However, a lot of the time those tools have certain requirements to how datasets are constructed and especially how data is exported from Nonmem (<code>$TABLE</code>). If a Nonmem run does not live up to those requirements, and you want to look at the run results, <code>NMscanData</code> will let you do that without you having to “correct” your <code>$TABLE</code> statements and wait for Nonmem to run again.</p>
+<p>Also, in other cases <code>NMscanData</code> can save you a lot of time and frustration even if you have your own routines that make <code>NMdata</code> unnecessary. If you want to read your old Nonmem runs that were done a little differently, someone else’s work, or you want to quickly read a lot of runs done by different people for a meta analysis, <code>NMscanData</code> can save you a lot of work, time and frustration. And a meta analysis of a large number of models implemented by different people over the years? That’s a candy store for <code>NMscanData</code>. Here, <code>NMdata</code> can save you many hours of frustration.</p>
 </div>
 <div id="why-is-nmdata-fast" class="section level3">
 <h3>Why is NMdata fast?</h3>
@@ -345,17 +351,22 @@ library(NMdata)</code></pre>
 </div>
 <div id="so-nmdata-uses-data.table.-does-that-mean-variables-are-modified-by-reference" class="section level3">
 <h3>So NMdata uses data.table. Does that mean variables are modified by reference?</h3>
-<p>NMdata will never modify variables in your workspace by reference, so don’t worry. NMdata definitely modify variables by reference internally but this will never affect your workspace. This has a slight performance price, but using <code>NMdata</code> must be easy for R user at all levels of experience. If you don’t understand what this is all about, you’re fine.</p>
+<p>NMdata does not modify variables in your workspace by reference, so don’t worry. NMdata definitely modify variables by reference internally but this will never affect your workspace. This has a slight performance price, but using <code>NMdata</code> must be easy for R user at all levels of experience. If you don’t understand what this is all about, you’re fine.</p>
 </div>
-<div id="i-want-to-use-a-tool-from-nmdata-but-how-can-i-avoid-working-with-data.table" class="section level3">
-<h3>I want to use a tool from NMdata, but how can I avoid working with data.table?</h3>
-<p>Easy. Every function in <code>NMdata</code> has an argument called <code>as.fun</code>. You can provide a function in this argument which will be applied to data before returnin it.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">NMscanData</span>(..., <span class="dt">as.fun =</span> as.data.frame)</span></code></pre></div>
-<p>You can also get a tibble if you work with <code>tidyverse</code> tools:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">NMscanData</span>(..., <span class="dt">as.fun =</span> tibble<span class="op">::</span>as_tibble)</span></code></pre></div>
+<div id="i-want-to-use-a-tool-from-nmdata-but-how-does-it-integrate-with-dplyr-or-data.table" class="section level3">
+<h3>I want to use a tool from NMdata, but how does it integrate with dplyr or data.table?</h3>
+<p>Every function in <code>NMdata</code> has an argument called <code>as.fun</code>. You can provide a function in this argument which will be applied to data before returnin it.</p>
+<p>You can get a tibble if you work with <code>dplyr</code>/<code>tidyverse</code> tools:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">NMscanData</span>(..., <span class="dt">as.fun =</span> tibble<span class="op">::</span>as_tibble)</span></code></pre></div>
+<p>Under the hood, NMdata is implemented in <code>data.table</code>, and in fact the default is to convert to <code>data.frame</code> before returning the output. So if you want <code>data.table</code>, use <code>&quot;none&quot;</code> to avoid the conversion</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">NMscanData</span>(..., <span class="dt">as.fun =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<p>Using <code>as.fun=as.data.table</code> wold work but is not recommended, because that would do an unnecessary deep copy of data.</p>
 <p>If you want to change the behaviour generally for the session and omit the <code>as.fun</code> argument, you can do this by this option:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">options</span>(<span class="dt">NMdata.as.fun =</span> tibble<span class="op">::</span>as_tibble)</span></code></pre></div>
-<p>And all <code>NMdata</code> functions (that return data) should now return tibbles.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co">## for tibbles</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="kw">options</span>(<span class="dt">NMdata.as.fun =</span> tibble<span class="op">::</span>as_tibble)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="co">## for data.table</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="kw">options</span>(<span class="dt">NMdata.as.fun =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<p>And all <code>NMdata</code> functions (that return data) should now return tibbles or data.tables. If you use <code>options</code> to control this, for reproducibility please do so explecitly in your code and not in your <code>.Rprofile</code> or similar.</p>
 </div>
 <div id="can-i-request-a-feature" class="section level3">
 <h3>Can I request a feature?</h3>
@@ -363,16 +374,28 @@ library(NMdata)</code></pre>
 </div>
 <div id="any-plans-on-including-some-plotting-functions" class="section level3">
 <h3>Any plans on including some plotting functions?</h3>
-<p>No. See the question above about dependencies. If NMdata were extended with plotting features, it would become dependent on a number of packages, and backward compatibility would be very dificult to ensure.</p>
-<p>The only way to provide plotting features for output from <code>NMdata</code> functions, would be to launch a separate package. But actually, I rarely need much code to get the plots I want based on the format returned by <code>NMscanData</code> and maybe a call to <code>findCovs</code> or <code>findVars</code>.</p>
+<p>No. See the question above about dependencies. If <code>NMdata</code> were extended with plotting features, it would become dependent on a number of packages, and backward compatibility would be very dificult to ensure.</p>
+<p>The only way to provide plotting features for output from <code>NMdata</code> functions, would be to launch a separate package. I rarely need much code to get the plots I want based on the format returned by <code>NMscanData</code> and maybe a call to <code>findCovs</code> or <code>findVars</code>.</p>
 </div>
 </div>
 <div id="questions-specific-to-data-reading-tools" class="section level2">
 <h2>Questions specific to data reading tools</h2>
+<div id="what-if-i-dont-use-psn-and-my-control-stream-files-are-named-differently" class="section level3">
+<h3>What if I don’t use PSN, and my control stream files are named differently?</h3>
+<p><code>NMscanData</code> needs the path to the output control stream (technically, the input control stream will work too, but this is not recommended). It has no requirement to the naming of the output control stream. In order to find the input data, it needs the input control stream as well, and it will automatically find it based on the output control stream path and an assumed naming convention based on PSN (which is that the output control stream file name ends in <code>.lst</code> and the input control stream is located next to it ending in <code>.mod</code>). This naming convention can easily be configured using the <code>NMdata.file.mod</code> option.</p>
+<p>Another commonly used file structure is to have each run in a separate folder carrying the model name/number. Say the input control stream is always called <code>input.txt</code> and located next to the output control stream called <code>output.txt</code>, you can use</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">options</span>(<span class="dt">NMdata.file.mod =</span> <span class="cf">function</span>(file) <span class="kw">file.path</span>(<span class="kw">dirname</span>(file), </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    <span class="st">&quot;input.txt&quot;</span>))</span></code></pre></div>
+<p><code>NMscanData</code> reads the name of the model and adds it to a column in the returned data. If the name of the directory is the model name, you can do the following as well:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">options</span>(<span class="dt">NMdata.modelname =</span> <span class="cf">function</span>(file) <span class="kw">basename</span>(<span class="kw">dirname</span>(<span class="kw">normalizePath</span>(file))))</span></code></pre></div>
+<p>Feel free to modify the function to omit parts of the string or add to it.</p>
+</div>
 <div id="what-is-input-and-output-data" class="section level3">
 <h3>What is “input” and output data?</h3>
-<p>What is referred to as “input data” in <code>NMdata</code> documentation is the datafile read in the <code>$DATA</code> or <code>$INFILE</code>.</p>
-<p>What is referred to as “output data” in the same documentation is the totality of files written by <code>$TABLE</code> statements.</p>
+<ul>
+<li>What is referred to as “input data” in <code>NMdata</code> documentation is the datafile read in the <code>$DATA</code> or <code>$INFILE</code>.</li>
+<li>What is referred to as “output data” in the same documentation is the totality of files written by <code>$TABLE</code> statements.</li>
+</ul>
 <p>Notice especially, “output data” does not refer to any of the files automatically written by Nonmem such as <code>.phi</code>, <code>.ext</code>, <code>.cov</code> etc.</p>
 </div>
 <div id="does-nmdata-read-.phi-.ext-.cov-and-other-files-generated-by-nonmem" class="section level3">

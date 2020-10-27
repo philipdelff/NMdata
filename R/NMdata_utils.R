@@ -195,14 +195,14 @@ NMisNumeric <- function(x){
 
 }
 
-
+##' print method for NMdata objects
 ##' @details The subjects are counted conditioned on the nmout
 ##'     column. If only id-level output tables are present, there are
 ##'     no nmout=TRUE rows. This means that in this case it will
 ##'     report that no IDs are found in output. The correct statement
 ##'     is that records are found for zero subjects in output tables.
 ##' @export
-summary.NMdata <- function(data){
+summary.NMdata <- function(data,...){
     
 
     if(!"NMdata"%in%class(data)) stop("data does not seem to be of class NMdata.")
@@ -212,7 +212,7 @@ summary.NMdata <- function(data){
     ## we ave nothing to use the class for.
     if(!"meta"%in%names(attributes(data))) {
         setattr(data,"class",setdiff(attr(data,"class"),"NMdata"))
-        return(summary(data))
+        return(summary(data,...))
     }
     
     if(!is.data.table(data)) data <- as.data.table(data)
@@ -247,7 +247,7 @@ summary.NMdata <- function(data){
 }
 
 ##' @export
-print.summary_NMdata <- function(x){
+print.summary_NMdata <- function(x,...){
     
     if(!"summary_NMdata"%in%class(x)) stop("list does not seem to be of class NMdata")
     vars <- x$variables
@@ -307,9 +307,10 @@ print.summary_NMdata <- function(x){
     print(vars.sum2,row.names=FALSE)
 
     cat("\nNumbers of ID's and rows in data\n")
-    print(n5,row.names=FALSE)
+    print(n5,row.names=FALSE,...)
 
-    if(!is.na(x$N.evids)){
+    
+    if(any(!is.na(x$N.evids))){
         ## how many rows in output (broken down on EVID)
 
         ## if rows recovered, how many (broken down on EVID)
@@ -355,3 +356,7 @@ cbind.NMdata <- function(x,...){
     cbind(x,...)
 }
 
+unNMdata <- function(x){
+    setattr(x,"class",setdiff(class(x),"NMdata"))
+    setattr(x,"meta",NULL)
+}

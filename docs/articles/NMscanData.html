@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2020-10-22 using NMdata 0.0.6.2.</p>
+<p>Built 2020-10-26 using NMdata 0.0.6.2.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -299,7 +299,7 @@
                      col.row=<span class="st">"ROW"</span>,
                      quiet=<span class="fl">TRUE</span>)
 <span class="kw">res2.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>),
-                     col.row=<span class="st">"ROW"</span>,name=<span class="st">"single-compartment"</span>,
+                     col.row=<span class="st">"ROW"</span>,modelname=<span class="st">"single-compartment"</span>,
                      quiet=<span class="fl">TRUE</span>)
 <span class="kw">res.mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="kw">res1.m</span>,<span class="kw">res2.m</span>,fill=<span class="kw">T</span>)
 <span class="kw">res.mult.mean</span> <span class="op">&lt;-</span> <span class="kw">res.mult</span>[<span class="kw">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">&amp;</span><span class="kw">nmout</span><span class="op">==</span><span class="fl">TRUE</span>,
@@ -348,16 +348,28 @@
 <div id="what-exactly-will-nmscandata-return" class="section level2">
 <h2 class="hasAnchor">
 <a href="#what-exactly-will-nmscandata-return" class="anchor"></a>What exactly will NMscanData return?</h2>
-<p>So far, the merge has been very straightforward, but in many situations, choices have to be made.</p>
-<p>The following main principles are followed</p>
+<p>So far, the merge has been very straightforward, but in many situations, choices are made by <code>NMscanData</code>.</p>
+<p>The following main principles are followed:</p>
 <ul>
 <li>Output data prevails over input data</li>
 <li>Row-specific output data is preferred over ID-level (<code>FIRSTONLY</code> or <code>LASTONLY</code>) tables</li>
 <li>Output tables are prioritized by their order of apperance</li>
-<li>Input data is as defined in the <code>$INPUT</code> section in Nonmem. This includes renaming of columns, and columns that are dropped in Nonmem (<code>DROP</code> or <code>SKIP</code>) are disregarded. Columns that are not read by Nonmem are named as in the input data file.</li>
+<li>Input data is as defined in the <code>$INPUT</code> section in Nonmem. This includes renaming of columns while columns that are dropped in Nonmem (<code>DROP</code> or <code>SKIP</code>) are included by <code>NMscanData</code>. Columns that are not included in <code>$INPUT</code> are named as in the input data file.</li>
 <li>If rows are being recovered from input data (the <code>recover.rows</code> argument), no information from output is merged onto these rows.</li>
 <li>The primary aim is to return the output data. If input and output cannot be meaningfully combined (very rare), output will be returned.</li>
 </ul>
+<p>Notice that the summary text printed to the <code>R</code> terminal by <code>NMscanData</code> tells how many columns are included from the available tables. Also, within the resulting object, you can find a detailed table of all variables available, and whether they are included or not.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span>(<span class="kw">res1.m</span>)<span class="op">$</span><span class="kw">meta</span><span class="op">$</span><span class="kw">variables</span>,topn=<span class="fl">3</span>)
+<span class="co">#&gt;     variable           table included     source level</span>
+<span class="co">#&gt;  1:      ROW xgxr001_res.txt     TRUE     output   row</span>
+<span class="co">#&gt;  2:     TVKA xgxr001_res.txt     TRUE     output   row</span>
+<span class="co">#&gt;  3:     TVV2 xgxr001_res.txt     TRUE     output   row</span>
+<span class="co">#&gt; ---                                                   </span>
+<span class="co">#&gt; 40:     flag           input     TRUE      input   row</span>
+<span class="co">#&gt; 41:   trtact           input     TRUE      input   row</span>
+<span class="co">#&gt; 42:    model            &lt;NA&gt;     TRUE NMscanData model</span>
+</pre></div>
 </div>
 <div id="the-building-blocks" class="section level2">
 <h2 class="hasAnchor">
@@ -367,7 +379,7 @@
 <ul>
 <li><p><code>NMreadTab</code>: Read an Nonmem output table based on the path to the output table file.</p></li>
 <li><p><code>NMscanTables</code>: Read all output data files defined in a Nonmem run. Return a list of tables (as data.frames or data.tables).</p></li>
-<li><p><code>NMtransInput</code>: Read input data based on a nonmem file. Data will be processed and named like the Nonmem model. <code>ACCEPT</code> and <code>IGNORE</code> filters can be applied as well. There are a few limitations to this functionality at this point.</p></li>
+<li><p><code>NMtransInput</code>: Read input data based on a nonmem file. Data will be processed and named like the Nonmem model. <code>ACCEPT</code> and <code>IGNORE</code> filters can be applied as well. There are a few limitations to this functionality at this point. More about them below.</p></li>
 </ul>
 </div>
 <div id="what-should-i-do-for-my-models-to-be-compatible-with-nmscandata" class="section level2">
@@ -379,6 +391,7 @@
 <div id="limitations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#limitations" class="anchor"></a>Limitations</h2>
+<p>Even if there are a few limitations to what models <code>NMscanData</code> can handle, there is a good chance you will never run into any of them, as they are mostly quite rare. If you do, reach out to me, and we’ll figure it out.</p>
 <div id="input-file-must-exist-and-be-unmodified-since-model-run" class="section level3">
 <h3 class="hasAnchor">
 <a href="#input-file-must-exist-and-be-unmodified-since-model-run" class="anchor"></a>Input file must exist and be unmodified since model run</h3>

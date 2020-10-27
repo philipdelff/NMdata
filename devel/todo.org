@@ -189,8 +189,9 @@ depending on nmout TRUE or FALSE.
     CLOSED: [2020-10-18 Sun 11:00]
 **** DONE Look for file.mod option
      CLOSED: [2020-10-15 Thu 20:50]
-*** TODO Release 0.0.7  
+**** TODO Release 0.0.6.1
  with only diff from 0.0.6 that it returns data.frames by default
+*** TODO Release 0.0.7
 **** Update vignettes
 ***** DONE NMscanData
       CLOSED: [2020-10-15 Thu 14:57]

@@ -386,6 +386,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
             msg <- paste0(msg0,"\n",
                           "To skip this check, please specify either col.row (recommended) or cbind.by.filters.")
             messageWrap(msg,fun.msg=message)
+            cat("\n")
         }
         
         if(cbind.by.filters) {

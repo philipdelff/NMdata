@@ -308,3 +308,34 @@ test_that("use as.fun to get a tibble",{
     
 })
 
+
+## test the dir structure with input.txt/output.txt 
+## load_all("../../")
+test_that("dir structure with input.txt/output.txt",{
+
+    options(NMdata.as.fun="none")
+    
+    options(NMdata.file.mod=function(file) file.path(dirname(file),"input.txt"))
+    options(NMdata.modelname=function(file) basename(dirname(normalizePath(file))))
+
+    ## fileRef <- "testReference/NMscanData18.rds"
+    filedir.lst <- NMdata_filepath("examples/nonmem/xgxr001dir/output.txt")
+    res1dir <- NMscanData(filedir.lst)
+    expect_equal(attr(res1dir,"meta")$model,"xgxr001dir")
+    umod <- unique(res1dir[,model])
+    expect_equal(length(umod),1)
+    expect_equal(umod,"xgxr001dir")
+
+    
+    options(NMdata.file.mod=NULL)
+    options(NMdata.modelname=NULL)
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
+    res1 <- NMscanData(file=file.lst)
+
+    unNMdata(res1)
+    unNMdata(res1dir)
+    expect_equal(res1[,!("model")],res1dir[,!("model")])
+
+    options(NMdata.as.fun=NULL)
+    
+})

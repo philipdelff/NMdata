@@ -301,7 +301,7 @@ res1.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),
                      col.row="ROW",
                      quiet=TRUE)
 res2.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),
-                     col.row="ROW",name="single-compartment",
+                     col.row="ROW",modelname="single-compartment",
                      quiet=TRUE)
 res.mult <- rbind(res1.m,res2.m,fill=T)
 res.mult.mean <- res.mult[EVID==0&nmout==TRUE,
@@ -392,24 +392,33 @@ res <- NMscanData("path/to/output.txt",file.mod=out2in)
 
 ## What exactly will NMscanData return?
 So far, the merge has been very straightforward, but in many
-	situations, choices have to be made. 
+	situations, choices are made by `NMscanData`. 
   
-The following main principles are followed
+The following main principles are followed:
 
 * Output data prevails over input data
 * Row-specific output data is preferred over ID-level (`FIRSTONLY` or
   `LASTONLY`) tables
 * Output tables are prioritized by their order of apperance
 * Input data is as defined in the `$INPUT` section in Nonmem. This
-  includes renaming of columns, and columns that are dropped in Nonmem
-  (`DROP` or `SKIP`) are disregarded. Columns that are not read by Nonmem
-  are named as in the input data file.
+  includes renaming of columns while columns that are dropped in
+  Nonmem (`DROP` or `SKIP`) are included by `NMscanData`. Columns that
+  are not included in `$INPUT` are named as in the input data file.
 * If rows are being recovered from input data (the `recover.rows`
   argument), no information from output is merged onto these rows.
 * The primary aim is to return the output data. If input and output
   cannot be meaningfully combined (very rare), output will be
   returned.
   
+Notice that the summary text printed to the `R` terminal by
+`NMscanData` tells how many columns are included from the available
+tables. Also, within the resulting object, you can find a detailed
+table of all variables available, and whether they are included or
+not.
+
+```{r}
+print(attributes(res1.m)$meta$variables,topn=3)
+```
 
 ## The building blocks
 Each of the steps involved in reading and combining the data from a
@@ -430,7 +439,7 @@ functions.
 - `NMtransInput`: Read input data based on a nonmem file. Data will be
   processed and named like the Nonmem model. `ACCEPT` and `IGNORE` filters
   can be applied as well. There are a few limitations to this
-  functionality at this point. 
+  functionality at this point. More about them below.
 
 
 ## What should I do for my models to be compatible with NMscanData?
@@ -451,6 +460,11 @@ relying on "most likely" when I can just as well have robustness.
 
 
 ## Limitations
+Even if there are a few limitations to what models `NMscanData` can
+handle, there is a good chance you will never run into any of them, as
+they are mostly quite rare. If you do, reach out to me, and we'll
+figure it out.
+
 ### Input file must exist and be unmodified since model run
 If merging with input data, the input data must be available as was
 when the model was run. If you want to avoid this potential issue,
@@ -485,4 +499,4 @@ The `FIRSTLASTONLY` option in `$TABLE` results in two rows per
 subject. For now, this cannot be merged with input, and these tables
 are disregarded with a warning (you can read them with
 `NMscanTables`). `LASTONLY` is treated like `FIRSTONLY`, i.e. as
-ID-level information if not available elsewhere.
+ID-level information if not available elsewhere. 

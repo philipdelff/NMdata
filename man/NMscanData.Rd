@@ -11,7 +11,7 @@ NMscanData(
   use.input = TRUE,
   recover.rows = FALSE,
   add.name = "model",
-  name,
+  modelname,
   file.mod,
   dir.data,
   quiet = FALSE,
@@ -58,9 +58,13 @@ be included in all tables containing the model name. The
 default is to store this in a column called "model". See
 argument "name" as well. Set to NULL if not wanted.}
 
-\item{name}{The model name to be stored if add.name is not
-NULL. If name is not supplied, the name will be taken from the
-control stream file name.}
+\item{modelname}{The model name to be stored if add.name is not
+NULL and not set by options(NMdata.modelname=...). If not
+supplied, the name will be taken from the control stream file
+name by omitting the directory/path and deleting the .lst
+extension. If using the NMdata.modelname option, please submit
+a function taking file as argument and returning the modelname
+(by extracting it from file name or path).}
 
 \item{file.mod}{The input control stream. Default is to look for
 \"file\" with extension changed to .mod (PSN style). You can

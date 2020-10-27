@@ -53,23 +53,46 @@ any dependencies. R 3.0 or later is required, that's all (yes, you can
 actually run this on pretty old R installations without any
 difference).
 
+### Why one more tool for interacting with Nonmem from R?
+Other tools exist for reading data from Nonmem. However, `NMdata` aims at
+ assuming as little as possible
+about how you work while still doing (and checking) as much as
+ possible for you. 
+Tools in `NMdata` do not assume you use other tools in `NMdata`. If
+you like just one function in `NMdata` and want to integrate that in
+your workflow without bothering about the rest, that is
+perfectly possible. `NMdata` aims at being able to integrate with
+anything else and still do the job. 
+
+While many other tools available provide plotting functions, `NMdata`
+focuses on getting the data ready for smooth Nonmem experience (by
+checking as much as possible first), get the resulting data out of
+Nonmem and a little processing. 
+
+If you are building tools that process data from Nonmem, you may find
+very valuable tools here. I have not seen as generic and flexible a
+Nonmem data reader elsewhere.
+
 ### I use another tool that automatically reads my data. Should I be interested in NNdata?
 The data creation tools in `NMdata` may still be interesting. If
 another tool is working well for a project, you may not have any
-reason to use `NMscanData` for it. However, a lot of the time those
-tools have certain requirements to how datasets are constructed and
-especially how data is exported from Nonmem (`$TABLE`). If a Nonmem
-run does not live up to those requirements, and you want to look at
-the run results, `NMscanData` will let you do that without you having
-to "correct" your `$TABLE` statements and wait for Nonmem to run
-again. 
+reason to use `NMscanData` (the Nonmem data reader in `NMdata`) for
+it. However, a lot of the time those tools have certain requirements
+to how datasets are constructed and especially how data is exported
+from Nonmem (`$TABLE`). If a Nonmem run does not live up to those
+requirements, and you want to look at the run results, `NMscanData`
+will let you do that without you having to "correct" your `$TABLE`
+statements and wait for Nonmem to run again.
 
 Also, in other cases `NMscanData` can save you a lot of time and
 frustration even if you have your own routines that make `NMdata`
 unnecessary. If you want to read your old Nonmem runs that were done a
 little differently, someone else's work, or you want to quickly read a
 lot of runs done by different people for a meta analysis, `NMscanData`
-can save you a lot of work, time and frustration.
+can save you a lot of work, time and frustration. And a meta analysis
+of a large number of models implemented by different people over the
+years? That's a candy store for `NMscanData`. Here, `NMdata` can save
+you many hours of frustration.
 
 
 ### Why is NMdata fast?
@@ -79,7 +102,7 @@ fast. If you are noticing some circumstances where `NMdata` seems
 slow, I am very curious to hear about it.
 
 ### So NMdata uses data.table. Does that mean variables are modified by reference? 
-NMdata will never modify variables in your workspace by reference, so
+NMdata does not modify variables in your workspace by reference, so
 don't worry. NMdata definitely modify variables by reference
 internally but this will never affect your workspace. This has a
 slight performance price, but using `NMdata` must be easy for R user
@@ -128,15 +151,16 @@ similar.
 Please open an issue on [github](https://github.com/philipdelff/NMdata/issues).
 
 ### Any plans on including some plotting functions?
-No. See the question above about dependencies. If NMdata were extended
+No. See the question above about dependencies. If `NMdata` were extended
 with plotting features, it would become dependent on a number of
 packages, and backward compatibility would be very dificult to
 ensure. 
 
 The only way to provide plotting features for output from `NMdata`
-functions, would be to launch a separate package. But actually, I
+functions, would be to launch a separate package. I
 rarely need much code to get the plots I want based on the format
-returned by `NMscanData` and maybe a call to `findCovs` or `findVars`.
+returned by `NMscanData` and maybe a call to `findCovs` or
+`findVars`. 
 
 
 ## Questions specific to data reading tools 
@@ -147,32 +171,29 @@ recommended). It has no requirement to the naming of the output
 control stream. In order to find the input data, it needs the input
 control stream as well, and it will automatically find it based on the
 output control stream path and an assumed naming convention based on
-PSN (which is that the output control stream is called .lst and the
-input control stream is located next to it called .mod).  This naming
+PSN (which is that the output control stream file name ends in `.lst` and the
+input control stream is located next to it ending in `.mod`). This naming
 convention can easily be configured using the `NMdata.file.mod`
-option.
+option. 
 
 Another commonly used file structure is to have each run in a separate
-folder. Say the output control stream input control stream is always
-located next to the output control stream, you can use
+folder carrying the model name/number. Say the input control stream is
+always called `input.txt` and 
+located next to the output control stream called `output.txt`, you can use
 
 ```{r,eval=FALSE}
 options(NMdata.file.mod=function(file) file.path(dirname(file),"input.txt"))
 ```
 
-Then `NMscanData` will automatically find the input control stream
-when you supply the path to the output control stream in the `file`
-argument.
-
-If the name of the directory is the model name, you can do the
+`NMscanData` reads the name of the model and adds it to a column in
+the returned data. If the name of the directory is the model name, you can do the
 following as well:
 
 ```{r,eval=FALSE}
 options(NMdata.modelname=function(file) basename(dirname(normalizePath(file))))
 ```
-This will take the model name (used in `model` column in the returned
-data and in summaries) from the name of the directory.
-
+Feel free to modify the function to omit parts of the string or add to
+it. 
 
 ### What is "input" and output data?
 - What is referred to as "input data" in `NMdata` documentation is the

@@ -107,7 +107,7 @@ res1.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),
                      col.row="ROW",
                      quiet=TRUE)
 res2.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),
-                     col.row="ROW",name="single-compartment",
+                     col.row="ROW",modelname="single-compartment",
                      quiet=TRUE)
 res.mult <- rbind(res1.m,res2.m,fill=T)
 res.mult.mean <- res.mult[EVID==0&nmout==TRUE,
@@ -122,4 +122,7 @@ ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+
 ## ----eval=FALSE---------------------------------------------------------------
 #  out2in <- function(file) file.path(dirname(file),"input.txt")
 #  res <- NMscanData("path/to/output.txt",file.mod=out2in)
+
+## -----------------------------------------------------------------------------
+print(attributes(res1.m)$meta$variables,topn=3)
 
