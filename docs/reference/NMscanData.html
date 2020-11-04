@@ -146,7 +146,7 @@
   use.input = <span class='fl'>TRUE</span>,
   recover.rows = <span class='fl'>FALSE</span>,
   add.name = <span class='st'>"model"</span>,
-  <span class='kw'>name</span>,
+  <span class='kw'>modelname</span>,
   <span class='kw'>file.mod</span>,
   <span class='kw'>dir.data</span>,
   quiet = <span class='fl'>FALSE</span>,
@@ -208,10 +208,14 @@ default is to store this in a column called "model". See
 argument "name" as well. Set to NULL if not wanted.</p></td>
     </tr>
     <tr>
-      <th>name</th>
+      <th>modelname</th>
       <td><p>The model name to be stored if add.name is not
-NULL. If name is not supplied, the name will be taken from the
-control stream file name.</p></td>
+NULL and not set by options(NMdata.modelname=...). If not
+supplied, the name will be taken from the control stream file
+name by omitting the directory/path and deleting the .lst
+extension. If using the NMdata.modelname option, please submit
+a function taking file as argument and returning the modelname
+(by extracting it from file name or path).</p></td>
     </tr>
     <tr>
       <th>file.mod</th>

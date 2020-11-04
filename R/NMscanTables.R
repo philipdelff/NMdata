@@ -25,7 +25,7 @@
 
 NMscanTables <- function(file,details=F,as.fun=NULL,quiet=FALSE,tab.count=TRUE){
 
-#### Section start: Dummy variables, only not to get NOTE's in pacakge checks #### ####
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     firstlastonly <- NULL
     firstonly <- NULL
@@ -79,7 +79,8 @@ NMscanTables <- function(file,details=F,as.fun=NULL,quiet=FALSE,tab.count=TRUE){
 
     tables <- list()
     for(I in 1:nrow(meta)){
-        if(!file.exists(meta[I,file])) stop(paste0("NMscanTables: File not found: ",meta[I,file],". Did you copy the lst file but forgot table file?"))
+        if(!file.exists(meta[I,file])) stop(paste0("NMscanTables: File not found: ",meta[I,file],". Did you copy the lst file but forgot table
+file?"))
         tables[[I]] <- NMreadTab(meta[I,file],silent=T,tab.count=tab.count,showProgress=FALSE,as.fun="none")
         dim.tmp <- dim(tables[[I]])
         meta[I,nrow:=dim.tmp[1]]

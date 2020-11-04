@@ -41,7 +41,7 @@
 
 <meta property="og:title" content="read input data and translate column names according to the $INPUT section — NMtransInput" />
 <meta property="og:description" content="Based on a nonmem run (lst and/or mod file), this
-    function finds the input data and reads it. But it reads it
+    function finds the input data and reads it. It reads the data
     like the nonmem run by applying DROP/SKIP arguments and
     alternative naming of columns in the nonmem run." />
 
@@ -140,7 +140,7 @@
 
     <div class="ref-description">
     <p>Based on a nonmem run (lst and/or mod file), this
-    function finds the input data and reads it. But it reads it
+    function finds the input data and reads it. It reads the data
     like the nonmem run by applying DROP/SKIP arguments and
     alternative naming of columns in the nonmem run.</p>
     </div>
@@ -177,15 +177,15 @@ by default too.</p></td>
     </tr>
     <tr>
       <th>file.mod</th>
-      <td><p>The input control stream file path. Default is to look for
-\"file\" with extension changed to .mod (PSN style). You can
-also supply the path to the file, or you can provide a
-function that translates the output file path to the input
-file path. If dir.data is missing, the input control stream is
-needed. This is because the .lst does not contain the path to
-the data file. The .mod file is only used for finding the data
-file. How to interpret the datafile is read from the .lst
-file. See dir.data too.</p></td>
+      <td><p>The input control stream file path. Default is to
+look for \"file\" with extension changed to .mod (PSN
+style). You can also supply the path to the file, or you can
+provide a function that translates the output file path to the
+input file path. If dir.data is missing, the input control
+stream is needed. This is because the .lst does not contain
+the path to the data file. The .mod file is only used for
+finding the data file. How to interpret the datafile is read
+from the .lst file. See dir.data too.</p></td>
     </tr>
     <tr>
       <th>dir.data</th>

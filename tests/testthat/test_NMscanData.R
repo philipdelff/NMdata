@@ -20,7 +20,7 @@ test_that("basic",{
     file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
     ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
-    res1 <- NMscanData(file=file.lst)
+    res1 <- NMscanData(file=file.lst,quiet=T)
     ## dim(res1)
 
     fix.time(res1)
