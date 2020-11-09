@@ -43,7 +43,7 @@ NMwriteData
 Other DataRead: 
 \code{\link{NMreadTab}()},
 \code{\link{NMscanData}()},
-\code{\link{NMscanTables}()},
-\code{\link{NMtransInput}()}
+\code{\link{NMscanInput}()},
+\code{\link{NMscanTables}()}
 }
 \concept{DataRead}

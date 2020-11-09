@@ -142,7 +142,7 @@ runAsFun <- function(data,as.fun){
 ##' }
 ##'
 ##' Notice, if the argument dir.data is used in NMscanData or
-##' NMtransInput, the input control stream is not used at all.
+##' NMtscanInput, the input control stream is not used at all.
 
 getFileMod <- function(file.lst,file.mod=NULL){
     

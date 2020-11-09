@@ -231,7 +231,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 
     rows.flo <- tables$meta[firstlastonly==TRUE]
     if(rows.flo[,.N]>0) {
-        warning("One or more output tables with FIRSTLASTONLY option detected. This is not supported, and the table will be disregarded. Use a combination of NMscanTables, NMtransInput, and merge manually.")
+        warning("One or more output tables with FIRSTLASTONLY option detected. This is not supported, and the table will be disregarded. Use a combination of NMscanTables, NMscanInput, and merge manually.")
         k <- tables$meta[,which(firstlastonly==TRUE)]
         tables$data <- tables$data[-k]
         tables$meta <- tables$meta[-k]
@@ -343,7 +343,17 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 
     
     if(use.input&&!any(tables$meta$full.length)) {
-        data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=TRUE,use.rds=use.rds,applyFilters=cbind.by.filters,as.fun="none")
+        
+        data.input.all <- NMscanInput(file,file.mod=file.mod,
+                                      dir.data=dir.data,quiet=TRUE,
+                                      use.rds=use.rds,
+                                      applyFilters=cbind.by.filters,
+                                      as.fun="none",
+                                      col.id=col.id,
+                                      details=TRUE)
+        meta.data <- data.input.all$meta
+        data.input <- data.input.all$data
+        
         tab.row <- copy(data.input)
         setattr(tab.row,"file",NULL)
         setattr(tab.row,"type.file",NULL)
@@ -364,14 +374,33 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     
     if(use.input&&any(tables$meta$full.length)) {
         ## if(!quiet) messageWrap("Searching for input data.")
-        data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=TRUE,use.rds=use.rds,applyFilters=cbind.by.filters,as.fun="none")
+        
+        data.input.all <- NMscanInput(file,file.mod=file.mod,
+                                      dir.data=dir.data, quiet=TRUE,
+                                      use.rds=use.rds,
+                                      applyFilters=cbind.by.filters,
+                                      as.fun="none",
+                                      col.id=col.id,
+                                      details=TRUE)
+        meta.data <- data.input.all$meta
+        data.input <- data.input.all$data
+        
         cnames.input <- colnames(data.input)
 
         ## if no method is specified, search for possible col.row to help the user
         if(search.col.row){
             
-            data.input.all <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=TRUE,use.rds=use.rds,applyFilters=FALSE,as.fun="none")
-            cols.row.input <- colnames(data.input.all)[data.input.all[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
+            dia <- NMscanInput(file,file.mod=file.mod,
+                                          dir.data=dir.data,
+                                          quiet=TRUE,use.rds=use.rds,
+                                          applyFilters=FALSE,
+                                          details=TRUE,
+                                          col.id=col.id,
+                                          as.fun="none")
+            meta.dia <- dia$meta
+            data.dia <- dia$data
+            
+            cols.row.input <- colnames(data.dia)[data.dia[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 
             cols.row.output <- colnames(tab.row)[tab.row[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 
@@ -390,10 +419,10 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         }
         
         if(cbind.by.filters) {
-
+            
             if(!is.null(tab.row)&nrow(data.input)!=nrow(tab.row)) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.                
-                messageWrap("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted. For info on what limitations of this function, see ?NMtranFilters. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or manually merge output from NMscanTables() and NMtransInput().",fun.msg=stop)
+                messageWrap("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted. For info on what limitations of this function, see ?NMtransFilters. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or manually merge output from NMscanTables() and NMscanInput().",fun.msg=stop)
             }
 
             
@@ -553,10 +582,12 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         
         skip.recover <- FALSE
         if(cbind.by.filters) {
-            data.recover <- NMtransInput(file,quiet=TRUE,use.rds=use.rds,applyFilters=cbind.by.filters,invert=T,as.fun="none")
+            data.recover <- NMscanInput(file,quiet=TRUE,use.rds=use.rds,
+                                        applyFilters=cbind.by.filters,
+                                        invert=T,as.fun="none",
+                                        details=FALSE)
         } else {
             data.recover <- data.input[!get(col.row)%in%tab.row[,get(col.row)]]
-            ## data.input[get(col.row)%in%tab.row[,get(col.row)]]
         }
         data.recover[,nmout:=FALSE]
         tab.row <- rbind(tab.row,data.recover,fill=T)

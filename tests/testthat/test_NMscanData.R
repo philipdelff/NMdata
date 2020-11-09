@@ -1,9 +1,8 @@
 ## library(devtools)
 ## setwd("tests/testthat")
-## load_all("../../")
+load_all("../../")
 
 context("NMscanData")
-
 
 fix.time <- function(x){
     meta.x <- attr(x,"meta")

@@ -3,7 +3,7 @@
 ##' @param details If TRUE, metadata is added to output. In this case,
 ##'     you get a list. Typically, this is mostly useful if
 ##'     programming up functions which behavior must depend on
-##'     properties of the output. See details.
+##'     properties of the output. 
 ##' @param quiet The default is to give some information along the way
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use.

@@ -42,6 +42,6 @@ Other DataRead:
 \code{\link{NMreadCsv}()},
 \code{\link{NMreadTab}()},
 \code{\link{NMscanData}()},
-\code{\link{NMtransInput}()}
+\code{\link{NMscanInput}()}
 }
 \concept{DataRead}

@@ -16,7 +16,7 @@ NMtransFilters(
 }
 \arguments{
 \item{data}{An input data object. Could be read with NMreadCsv or
-NMtransInput.}
+NMscanInput.}
 
 \item{file}{Path to mod/lst file. Only one of file, text, or lines
 to be given. See ?NMgetSection for understanding when to use,

@@ -128,7 +128,7 @@ argument.
 Other DataRead: 
 \code{\link{NMreadCsv}()},
 \code{\link{NMreadTab}()},
-\code{\link{NMscanTables}()},
-\code{\link{NMtransInput}()}
+\code{\link{NMscanInput}()},
+\code{\link{NMscanTables}()}
 }
 \concept{DataRead}
