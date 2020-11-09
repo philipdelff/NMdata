@@ -1,6 +1,6 @@
 ## library(devtools)
 ## setwd("tests/testthat")
-load_all("../../")
+## load_all("../../")
 
 context("NMscanData")
 
@@ -34,6 +34,7 @@ test_that("Modifications to column names in $INPUT",{
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr002.lst")
 
+load_all("../../")
     res <- NMscanData(file=file.lst)
     fix.time(res)
     

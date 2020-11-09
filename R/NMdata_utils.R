@@ -250,8 +250,16 @@ summary.NMdata <- function(data,...){
 print.summary_NMdata <- function(x,...){
     
     if(!"summary_NMdata"%in%class(x)) stop("list does not seem to be of class NMdata")
-    vars <- x$variables
+    vars <- copy(x$variables)
+    if(!is.data.table(vars)){
+        vars <- as.data.table(vars)
+    }
+    
     tabs.out <- copy(x$tables.output)
+    if(!is.data.table(tabs.out)){
+        tabs.out <- as.data.table(tabs.out)
+    }
+
     vars <- mergeCheck(vars,data.table(included=c(TRUE,FALSE),
                                        ## inc=factor(c("included","not"),levels=c("included","not"))),
                                        inc=c("included","not")),

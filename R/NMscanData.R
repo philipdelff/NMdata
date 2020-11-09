@@ -594,6 +594,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     }
 
 ###  Section end: Recover rows
+
     if(!is.null(add.name)) {
         
         tab.row[,c(add.name):=runname]
@@ -606,17 +607,10 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                                    ,level="model"
                                     ))
 
-        
-        ## tab.vars <- rbind(tab.vars,
-        ##                   data.table(var=add.name,source="NMscanData"),
-        ##                   fill=T)
     }
-
-    ## setorder(tab.vars,var)
-    
+   
     tab.row <- runAsFun(tab.row,as.fun)
-    ##    tab.vars <- runAsFun(tab.vars,as.fun)
-
+    tables.output <- runAsFun(tables$meta,as.fun)
     
 ### more meta information needed.
     meta <- list(
@@ -638,8 +632,8 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         file.input=NA_character_,
         ## if available: mtime of input data
         mtime.input=NA_character_,
-        variables=dt.vars,
-        tables.output=tables$meta
+        variables=runAsFun(dt.vars,as.fun),
+        tables.output=tables.output
     )
 
     
