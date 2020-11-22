@@ -606,11 +606,17 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                                    ,source="NMscanData"
                                    ,level="model"
                                     ))
-
     }
-   
+
+    
+    tables$meta[,source:="output"]
+    meta.data[,source:="input"]
+    tables.meta <- rbind(tables$meta,meta.data,fill=TRUE)
+    setcolorder(tables.meta,c("source","name","nrow","ncol"))
+    
     tab.row <- runAsFun(tab.row,as.fun)
-    tables.output <- runAsFun(tables$meta,as.fun)
+    tables.meta <- runAsFun(tables.meta,as.fun)
+
     
 ### more meta information needed.
     meta <- list(
@@ -633,13 +639,13 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         ## if available: mtime of input data
         mtime.input=NA_character_,
         variables=runAsFun(dt.vars,as.fun),
-        tables.output=tables.output
+        tables=tables.meta
     )
 
     
-    if(use.input) meta$file.input <- attr(data.input,"file")
+    if(use.input) meta$file.input <- meta.data[,file]
     ## if available: file info for input data
-    if(use.input) meta$mtime.input <- attr(data.input,"mtime.file")
+    if(use.input) meta$mtime.input <- meta.data[,file.mtime]
 
     setattr(tab.row,"meta",meta)
     
