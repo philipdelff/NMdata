@@ -184,13 +184,18 @@ depending on nmout TRUE or FALSE.
     CLOSED: [2020-10-09 Fri 21:13]
 *** DONE Fix NMscanData messages to be just one.
     CLOSED: [2020-10-15 Thu 13:09]
-*** TODO Vignettes should mostly use data.frame's.
+*** DONE Vignettes should mostly use data.frame's.
+    CLOSED: [2020-11-24 Tue 19:46]
 *** DONE Release 0.0.6
     CLOSED: [2020-10-18 Sun 11:00]
 **** DONE Look for file.mod option
      CLOSED: [2020-10-15 Thu 20:50]
-**** TODO Release 0.0.6.1
+**** DONE Release 0.0.6.1
+     CLOSED: [2020-11-24 Tue 19:46]
  with only diff from 0.0.6 that it returns data.frames by default
+*** DONE check of mtimes relative to each other
+    CLOSED: [2020-11-25 Wed 10:33]
+*** TODO Test input with duplicated column names
 *** TODO Release 0.0.7
 **** Update vignettes
 ***** DONE NMscanData

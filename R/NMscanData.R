@@ -97,10 +97,12 @@
 
 ## when col.row and cbind.by.filters are missing, do cbind.by.filters but look for a row identifier. Explain and tell user to provide col.row or cbind.by.filters to get less messages.
 
-NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
-                       recover.rows=FALSE,add.name="model",modelname,
-                       file.mod,dir.data,quiet=FALSE,use.rds=TRUE,
-                       as.fun=NULL,col.id="ID",tab.count=FALSE) {
+NMscanData <- function(file, col.row, cbind.by.filters,
+                       use.input=TRUE, recover.rows=FALSE,
+                       add.name="model", modelname, file.mod,
+                       dir.data, quiet=FALSE, use.rds=TRUE,
+                       as.fun=NULL, col.id="ID", tab.count=FALSE,
+                       orderColumns=TRUE, checkTime=TRUE) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -145,6 +147,8 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     do.cbind.by.filters <- FALSE
     merge.by.row <- FALSE
 
+    
+    
     if(use.input){
 ### method not specified
         ## simplest function call - default
@@ -343,16 +347,15 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 
     
     if(use.input&&!any(tables$meta$full.length)) {
-        
-        data.input.all <- NMscanInput(file,file.mod=file.mod,
-                                      dir.data=dir.data,quiet=TRUE,
-                                      use.rds=use.rds,
-                                      applyFilters=cbind.by.filters,
-                                      as.fun="none",
-                                      col.id=col.id,
-                                      details=TRUE)
-        meta.data <- data.input.all$meta
-        data.input <- data.input.all$data
+        ## data.input
+        ## meta.data 
+        data.input <- NMscanInput(file,file.mod=file.mod,
+                                  dir.data=dir.data,quiet=TRUE,
+                                  use.rds=use.rds,
+                                  applyFilters=cbind.by.filters,
+                                  as.fun="none",
+                                  col.id=col.id,
+                                  details=TRUE)
         
         tab.row <- copy(data.input)
         setattr(tab.row,"file",NULL)
@@ -375,32 +378,28 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     if(use.input&&any(tables$meta$full.length)) {
         ## if(!quiet) messageWrap("Searching for input data.")
         
-        data.input.all <- NMscanInput(file,file.mod=file.mod,
-                                      dir.data=dir.data, quiet=TRUE,
-                                      use.rds=use.rds,
-                                      applyFilters=cbind.by.filters,
-                                      as.fun="none",
-                                      col.id=col.id,
-                                      details=TRUE)
-        meta.data <- data.input.all$meta
-        data.input <- data.input.all$data
+        data.input <- NMscanInput(file,file.mod=file.mod,
+                                  dir.data=dir.data, quiet=TRUE,
+                                  use.rds=use.rds,
+                                  applyFilters=cbind.by.filters,
+                                  as.fun="none",
+                                  col.id=col.id,
+                                  details=TRUE)
         
-        cnames.input <- colnames(data.input)
+        cnames.input <- colnames(data.input$data)
 
         ## if no method is specified, search for possible col.row to help the user
         if(search.col.row){
             
             dia <- NMscanInput(file,file.mod=file.mod,
-                                          dir.data=dir.data,
-                                          quiet=TRUE,use.rds=use.rds,
-                                          applyFilters=FALSE,
-                                          details=TRUE,
-                                          col.id=col.id,
-                                          as.fun="none")
-            meta.dia <- dia$meta
-            data.dia <- dia$data
+                               dir.data=dir.data,
+                               quiet=TRUE,use.rds=use.rds,
+                               applyFilters=FALSE,
+                               details=TRUE,
+                               col.id=col.id,
+                               as.fun="none")
             
-            cols.row.input <- colnames(data.dia)[data.dia[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
+            cols.row.input <- colnames(dia$data)[dia$data[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 
             cols.row.output <- colnames(tab.row)[tab.row[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 
@@ -420,14 +419,14 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         
         if(cbind.by.filters) {
             
-            if(!is.null(tab.row)&nrow(data.input)!=nrow(tab.row)) {
+            if(!is.null(tab.row)&nrow(data.input$data)!=nrow(tab.row)) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.                
                 messageWrap("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted. For info on what limitations of this function, see ?NMtransFilters. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or manually merge output from NMscanTables() and NMscanInput().",fun.msg=stop)
             }
 
             
             dt.vars1 <- data.table(
-                variable=colnames(data.input)
+                variable=colnames(data.input$data)
                ,table="input"
                ,source="input"
                ,level="row")
@@ -441,10 +440,10 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                              )
             
             
-            ## tab.vars <- rbind(tab.vars,data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",level="row"))
+            ## tab.vars <- rbind(tab.vars,data.table(var=setdiff(colnames(data.input$data),colnames(tab.row)),source="input",level="row"))
             tab.row <- cbind(
                 tab.row,
-                data.input[,!colnames(data.input)%in%colnames(tab.row),with=F]
+                data.input$data[,!colnames(data.input$data)%in%colnames(tab.row),with=F]
             )
 
             
@@ -456,7 +455,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 ### merging by col.row
             ## Has this check already been done?
             if(col.row%in%cnames.input) {
-                if(data.input[,any(duplicated(get(col.row)))]) {
+                if(data.input$data[,any(duplicated(get(col.row)))]) {
                     messageWrap("use.input=TRUE and cbind.by.filters=FALSE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and cbind.by.filters=FALSE.",fun.msg=stop)
                 }
             } else {
@@ -477,21 +476,21 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
             if(use.input) {
                 
                 dt.vars1 <- data.table(
-                    variable=colnames(data.input)
+                    variable=colnames(data.input$data)
                    ,table="input"
                    ,source="input"
                    ,level="row"
                 )
                 
                 dt.vars1[,
-                         included:=variable%in%setdiff(colnames(data.input),colnames(tab.row))
+                         included:=variable%in%setdiff(colnames(data.input$data),colnames(tab.row))
                          ]
 
                 dt.vars <- rbind(dt.vars,dt.vars1)
                 ## tab.vars <- rbind(tab.vars,
-                ## data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",level="row"))
+                ## data.table(var=setdiff(colnames(data.input$data),colnames(tab.row)),source="input",level="row"))
                 
-                tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=T,as.fun="none")
+                tab.row <- mergeCheck(tab.row,data.input$data[,c(col.row,setdiff(colnames(data.input$data),colnames(tab.row))),with=FALSE],by=col.row,all.x=T,as.fun="none")
                 
             }
             
@@ -587,7 +586,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                                         invert=T,as.fun="none",
                                         details=FALSE)
         } else {
-            data.recover <- data.input[!get(col.row)%in%tab.row[,get(col.row)]]
+            data.recover <- data.input$data[!get(col.row)%in%tab.row[,get(col.row)]]
         }
         data.recover[,nmout:=FALSE]
         tab.row <- rbind(tab.row,data.recover,fill=T)
@@ -595,6 +594,40 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 
 ###  Section end: Recover rows
 
+#### Section start: Check file modification times ####
+    
+    if(checkTime){    
+        if(!is.null(file.mod)) {
+            mtime.mod <- file.mtime(file.mod)
+            if(mtime.mod>file.mtime(file.lst)){
+                messageWrap(paste0("input control stream (",file.mod,") is newer than output control stream (",file.lst,") Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
+                            fun.msg=warning)
+            }
+            if(mtime.mod>max(tables$meta[,file.mtime])){
+                messageWrap(paste0("input control stream (",file.mod,") is newer than output tables. Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
+                            fun.msg=warning)
+            }
+        }
+
+        if(use.input) {
+            mtime.inp <- max(data.input$meta$file.mtime)
+            if(mtime.inp > file.mtime(file.lst)){
+                messageWrap(paste0("input data (",data.input$meta$file,") is newer than output control stream (",file.lst,") Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                            fun.msg=warning)
+            }
+            if(mtime.inp > max(tables$meta[,file.mtime])){
+                messageWrap(paste0("input data file (",data.input$meta$file,") is newer than output tables. Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                            fun.msg=warning)
+            }
+        }
+    }
+
+### Section end: Check file modification times
+
+
+    
+#### Section start: Format output ####
+    
     if(!is.null(add.name)) {
         
         tab.row[,c(add.name):=runname]
@@ -608,10 +641,26 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                                     ))
     }
 
+
+    
+### order columns in returned data
+    if(orderColumns){
+        tab.row <- NMorderColumns(tab.row, row=col.row, as.fun="none",
+                                  alpha=FALSE, quiet=TRUE)
+    }
+    
+### order columns in variable table accordingly.
+    dt.vars[included==TRUE,COLNUM:=match(variable,colnames(tab.row))]
+    setorder(dt.vars,-included,COLNUM)
+    dt.vars[,included:=NULL]    
     
     tables$meta[,source:="output"]
-    meta.data[,source:="input"]
-    tables.meta <- rbind(tables$meta,meta.data,fill=TRUE)
+    if(use.input){
+        data.input$meta[,source:="input"]
+        tables.meta <- rbind(tables$meta,data.input$meta,fill=TRUE)
+    } else {
+        tables.meta <- tables$meta
+    }
     setcolorder(tables.meta,c("source","name","nrow","ncol"))
     
     tab.row <- runAsFun(tab.row,as.fun)
@@ -642,12 +691,14 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         tables=tables.meta
     )
 
-    
-    if(use.input) meta$file.input <- meta.data[,file]
     ## if available: file info for input data
-    if(use.input) meta$mtime.input <- meta.data[,file.mtime]
-
+    if(use.input){
+        meta$file.input <- data.input$meta[,file]
+        meta$mtime.input <- data.input$meta[,file.mtime]
+    }
     setattr(tab.row,"meta",meta)
+
+###  Section end: Format output
     
     setattr(tab.row,"class",c("NMdata",class(tab.row)))
 

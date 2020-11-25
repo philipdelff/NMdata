@@ -34,7 +34,7 @@ test_that("Modifications to column names in $INPUT",{
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr002.lst")
 
-load_all("../../")
+
     res <- NMscanData(file=file.lst)
     fix.time(res)
     
@@ -318,7 +318,6 @@ test_that("dir structure with input.txt/output.txt",{
     options(NMdata.file.mod=function(file) file.path(dirname(file),"input.txt"))
     options(NMdata.modelname=function(file) basename(dirname(normalizePath(file))))
 
-    ## fileRef <- "testReference/NMscanData18.rds"
     filedir.lst <- NMdata_filepath("examples/nonmem/xgxr001dir/output.txt")
     res1dir <- NMscanData(filedir.lst)
     expect_equal(attr(res1dir,"meta")$model,"xgxr001dir")
@@ -338,4 +337,22 @@ test_that("dir structure with input.txt/output.txt",{
 
     options(NMdata.as.fun=NULL)
     
+})
+
+
+### there seems to be a bug in NMscanInput.
+
+test_that("Duplicate columns in input data",{
+    fileRef <- "testReference/NMscanData20.rds"
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr015.lst")
+
+    ## res <- NMscanData(file=file.lst)
+    ## res <- NMscanData(file=file.lst)
+
+    load_all("../../")
+    res <- NMscanData(file=file.lst,cbind.by.filters = T)
+    fix.time(res)
+    ## names(res$row)
+    
+    expect_equal_to_reference(res,fileRef,version=2)
 })

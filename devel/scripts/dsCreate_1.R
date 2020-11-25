@@ -71,7 +71,7 @@ tab.count
 pk <- pk[order(ID,TIME,CMT)]
 pk <- pk[DOSE>0]
 pk[,ROW:=1:nrow(pk)]
-NMorderColumns(pk,by.ref=TRUE)
+pk <- NMorderColumns(pk)
 colnames(pk)
 dim(pk)
 
@@ -93,3 +93,10 @@ NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write
 ##     NMreplacePart,section="INPUT",
 ##     newlines="$INPUT ROW ID NOMTIME TIME EVID CMT AMT DV BLQ CYCLE DOSE FLAG PART PROFDAY PROFTIME STUDY WEIGHTB"
 ## )
+
+
+## a version with duplicated column names for testing
+pk2 <- cbind(pk,pk[,.(DOSE)])
+NMwriteData(pk2,file=file.path(NMdata_filepath(),"examples/data/xgxr3.csv"),write.rds=T,args.rds=list(version=2))
+
+

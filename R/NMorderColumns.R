@@ -34,7 +34,9 @@
 ##'     you want first.
 ##' @param as.fun The default is to return a data.table if data is a
 ##'     data.table and return a data.frame in all other cases. Pass a
-##'     function in as.fun to convert to something else. 
+##'     function in as.fun to convert to something else.
+##' @param quiet If true, no warning will be given about missing
+##'     standard Nonmem columns.
 ##' @details This function will change the order of columns but it
 ##'     will never edit values in any columns.
 ##'
@@ -50,7 +52,7 @@
 ##'  \item{"chars.last - "}{numeric, or interpretable as numeric}
 ##'  \item{"not editable - "}{less often used nonmem names: FLAG, OCC, ROUTE, GRP, TRIAL, DRUG, STUDY}
 ##'  \item{"lower.last - "}{lower case in name}
-##'  \item{"not editable - "}{Alphabetic/numeric sorting}
+##'  \item{"alpha - "}{Alphabetic/numeric sorting}
 ##' }
 ##'
 ##' @family DataCreate
@@ -58,9 +60,16 @@
 ##' @export
 
 
-NMorderColumns <- function(data,first,last,lower.last=FALSE,
-                           chars.last=TRUE, nomtime="NOMTIME",
-                           row="ROW", as.fun=NULL){
+NMorderColumns <- function(data,
+                           first,
+                           last,
+                           lower.last=FALSE,
+                           chars.last=TRUE,
+                           alpha=TRUE,
+                           nomtime="NOMTIME",
+                           row="ROW",
+                           as.fun=NULL,
+                           quiet=FALSE){
 
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -89,13 +98,23 @@ NMorderColumns <- function(data,first,last,lower.last=FALSE,
                 "DV","MDV")
     first2 <- c("FLAG","OCC","ROUTE","GRP","TRIAL","DRUG","STUDY")
 
+    
     nms <- names(data)
+    nms.dup <- nms[duplicated(nms)]
+    if(!quiet && length(nms.dup)) messageWrap(paste0("Duplicated column names:\n",paste(nms.dup,collapse=", ")),fun.msg=warning)
     missing <- setdiff(setdiff(first1,"RATE"),nms)
-    if(length(missing)) warning(paste0("These standard nonmem columns were not found in data:\n",paste(missing,collapse="\n")))
+    if(!quiet && length(missing)) messageWrap(paste0("These standard nonmem columns were not found in data:\n",paste(missing,collapse="\n")),fun.msg=warning)
 
     first <- c(first1,first)
 
     dt.names <- data.table(name=colnames(data))
+    if(chars.last){
+        ## chars.last: If columns cannot be converted to numerics
+        dt.num.w <- data[,lapply(.SD,NMisNumeric)]
+        dt.names[,isnum:=as.logical(dt.num.w[1,])]
+    } else {
+        dt.names[,isnum:=TRUE]
+    }
     dt.names[,nfirst:=match(name,first)]
     dt.names[,nfirst2:=match(name,first2)]
     dt.names[,nlast:=match(name,last)]
@@ -103,19 +122,13 @@ NMorderColumns <- function(data,first,last,lower.last=FALSE,
     if(lower.last){
         dt.names[,islower:=grepl("[a-z]",name) ]
     }
-    ## chars.last: If columns cannot be converted to numerics
 
-    if(chars.last){
-        dt.num.w <- data[,lapply(.SD,NMisNumeric)]
-        dt.num <- data.table(name=colnames(dt.num.w),isnum=as.logical(dt.num.w[1,]))
-        dt.names <- mergeCheck(dt.names,dt.num,by="name")
-    } else {
-        dt.names[,isnum:=TRUE]
-    }
+    if(!alpha) dt.names[,name:=""]
 
-    ## order data by dt.names
-    setorder(dt.names,nfirst,-nlast,-isnum,nfirst2,islower,name,na.last=TRUE)
-    setcolorder(data,dt.names[,name])
+    ## order data by dt.names. Making sure this works even with
+    ## duplicate column names.
+    dt.names[,order:=frank(dt.names,nfirst,-nlast,-isnum,nfirst2,islower,name,na.last=TRUE,ties.method="first")]
+    setcolorder(data,order(dt.names[,order]))
 
     if(!was.dt || !is.null(as.fun)) {
         ##        data <- as.data.frame(data)

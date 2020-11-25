@@ -1,0 +1,1501 @@
+FLAG,ID,TIME,NOMTIME,TIMEUNIT,AMT,DV,CMT,NAME,EVENTU,BLQ,EVID,WEIGHTB,eff0,TRTACT,DOSE,PROFDAY,PROFTIME,CYCLE,PART,STUDY,trtact,flag,ROW,DOSE
+0,31,0,0,Hours,3,.,1,Dosing,mg,0,1,87.031,56.461,3 mg,3,1,0,1,1,1,3 mg,Analysis set,1,3
+10,31,0.13381,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,87.031,56.461,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,2,3
+10,31,0.48619,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,87.031,56.461,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,3,3
+10,31,1.00637,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,87.031,56.461,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,4,3
+10,31,2.02464,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,87.031,56.461,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,5,3
+10,31,4.05792,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,87.031,56.461,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,6,3
+10,31,7.98235,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,87.031,56.461,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,7,3
+10,31,11.88249,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,87.031,56.461,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,8,3
+10,31,17.70457,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,87.031,56.461,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,9,3
+10,31,23.73723,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,87.031,56.461,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,10,3
+0,32,0,0,Hours,3,.,1,Dosing,mg,0,1,100.62,45.096,3 mg,3,1,0,1,1,1,3 mg,Analysis set,11,3
+10,32,0.15395,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,100.62,45.096,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,12,3
+10,32,0.69559,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,100.62,45.096,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,13,3
+10,32,1.09283,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,100.62,45.096,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,14,3
+10,32,2.11826,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,100.62,45.096,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,15,3
+10,32,4.14729,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,100.62,45.096,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,16,3
+10,32,8.1345,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,100.62,45.096,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,17,3
+10,32,12.2495,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,100.62,45.096,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,18,3
+10,32,18.27137,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,100.62,45.096,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,19,3
+10,32,24.30534,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,100.62,45.096,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,20,3
+0,33,0,0,Hours,3,.,1,Dosing,mg,0,1,112.99,49.189,3 mg,3,1,0,1,1,1,3 mg,Analysis set,21,3
+10,33,0.1163,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.99,49.189,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,22,3
+10,33,0.5253,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.99,49.189,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,23,3
+10,33,1.17542,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.99,49.189,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,24,3
+10,33,2.27018,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.99,49.189,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,25,3
+10,33,4.30927,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.99,49.189,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,26,3
+10,33,8.19661,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.99,49.189,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,27,3
+10,33,12.10942,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.99,49.189,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,28,3
+10,33,18.00368,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.99,49.189,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,29,3
+10,33,23.90775,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.99,49.189,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,30,3
+0,34,0,0,Hours,3,.,1,Dosing,mg,0,1,144.13,56.239,3 mg,3,1,0,1,1,1,3 mg,Analysis set,31,3
+10,34,0.08367,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.13,56.239,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,32,3
+10,34,0.29436,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.13,56.239,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,33,3
+10,34,0.75491,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.13,56.239,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,34,3
+10,34,1.69134,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.13,56.239,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,35,3
+10,34,3.76737,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.13,56.239,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,36,3
+10,34,7.85103,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.13,56.239,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,37,3
+10,34,11.77408,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.13,56.239,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,38,3
+10,34,17.81426,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.13,56.239,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,39,3
+10,34,23.58865,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.13,56.239,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,40,3
+0,35,0,0,Hours,3,.,1,Dosing,mg,0,1,80.384,58.419,3 mg,3,1,0,1,1,1,3 mg,Analysis set,41,3
+10,35,0.08024,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.384,58.419,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,42,3
+10,35,0.50847,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.384,58.419,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,43,3
+0,35,0.8577,1,Hours,0,0.059541,2,PK Concentration,ng/mL,0,0,80.384,58.419,3 mg,3,1,1,1,1,1,3 mg,Analysis set,44,3
+10,35,1.89874,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.384,58.419,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,45,3
+10,35,3.88583,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.384,58.419,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,46,3
+10,35,7.99594,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.384,58.419,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,47,3
+10,35,11.99447,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.384,58.419,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,48,3
+10,35,17.93912,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.384,58.419,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,49,3
+10,35,23.96224,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.384,58.419,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,50,3
+0,36,0,0,Hours,3,.,1,Dosing,mg,0,1,120.86,58.163,3 mg,3,1,0,1,1,1,3 mg,Analysis set,51,3
+10,36,0.07993,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,120.86,58.163,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,52,3
+10,36,0.4382,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,120.86,58.163,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,53,3
+10,36,0.8714,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,120.86,58.163,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,54,3
+10,36,1.85621,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,120.86,58.163,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,55,3
+10,36,3.78569,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,120.86,58.163,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,56,3
+10,36,7.83977,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,120.86,58.163,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,57,3
+10,36,11.95368,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,120.86,58.163,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,58,3
+10,36,18.17308,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,120.86,58.163,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,59,3
+10,36,24.02743,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,120.86,58.163,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,60,3
+0,37,0,0,Hours,3,.,1,Dosing,mg,0,1,138.44,42.122,3 mg,3,1,0,1,1,1,3 mg,Analysis set,61,3
+10,37,0.14444,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,138.44,42.122,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,62,3
+10,37,0.43864,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,138.44,42.122,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,63,3
+10,37,0.89375,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,138.44,42.122,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,64,3
+10,37,1.83776,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,138.44,42.122,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,65,3
+10,37,3.85276,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,138.44,42.122,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,66,3
+10,37,7.71369,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,138.44,42.122,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,67,3
+10,37,11.80703,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,138.44,42.122,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,68,3
+10,37,17.88952,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,138.44,42.122,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,69,3
+10,37,23.79215,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,138.44,42.122,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,70,3
+0,38,0,0,Hours,3,.,1,Dosing,mg,0,1,123.35,59.18,3 mg,3,1,0,1,1,1,3 mg,Analysis set,71,3
+10,38,0.09852,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,123.35,59.18,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,72,3
+10,38,0.45521,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,123.35,59.18,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,73,3
+10,38,1.01769,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,123.35,59.18,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,74,3
+10,38,2.09277,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,123.35,59.18,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,75,3
+10,38,4.0787,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,123.35,59.18,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,76,3
+10,38,7.98691,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,123.35,59.18,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,77,3
+10,38,12.03932,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,123.35,59.18,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,78,3
+10,38,18.08296,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,123.35,59.18,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,79,3
+10,38,24.0341,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,123.35,59.18,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,80,3
+0,39,0,0,Hours,3,.,1,Dosing,mg,0,1,137.08,47.222,3 mg,3,1,0,1,1,1,3 mg,Analysis set,81,3
+10,39,0.13686,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,137.08,47.222,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,82,3
+10,39,0.51923,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,137.08,47.222,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,83,3
+10,39,0.96971,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,137.08,47.222,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,84,3
+10,39,1.84677,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,137.08,47.222,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,85,3
+10,39,3.8258,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,137.08,47.222,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,86,3
+10,39,7.85066,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,137.08,47.222,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,87,3
+10,39,11.8989,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,137.08,47.222,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,88,3
+10,39,17.94199,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,137.08,47.222,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,89,3
+10,39,23.78394,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,137.08,47.222,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,90,3
+0,40,0,0,Hours,3,.,1,Dosing,mg,0,1,134.09,49.498,3 mg,3,1,0,1,1,1,3 mg,Analysis set,91,3
+10,40,0.224,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,134.09,49.498,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,92,3
+10,40,0.59685,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,134.09,49.498,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,93,3
+0,40,1.03292,1,Hours,0,0.057728,2,PK Concentration,ng/mL,0,0,134.09,49.498,3 mg,3,1,1,1,1,1,3 mg,Analysis set,94,3
+10,40,1.96644,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,134.09,49.498,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,95,3
+10,40,3.95359,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,134.09,49.498,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,96,3
+10,40,8.1494,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,134.09,49.498,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,97,3
+10,40,12.1604,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,134.09,49.498,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,98,3
+10,40,18.22809,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,134.09,49.498,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,99,3
+10,40,24.12099,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,134.09,49.498,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,100,3
+0,41,0,0,Hours,3,.,1,Dosing,mg,0,1,80.018,41.362,3 mg,3,1,0,1,1,1,3 mg,Analysis set,101,3
+10,41,0.13528,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.018,41.362,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,102,3
+0,41,0.58013,0.5,Hours,0,0.053388,2,PK Concentration,ng/mL,0,0,80.018,41.362,3 mg,3,1,0.5,1,1,1,3 mg,Analysis set,103,3
+10,41,0.9852,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.018,41.362,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,104,3
+10,41,1.98585,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.018,41.362,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,105,3
+10,41,3.77023,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.018,41.362,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,106,3
+10,41,7.77617,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.018,41.362,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,107,3
+10,41,11.91224,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.018,41.362,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,108,3
+10,41,17.8567,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.018,41.362,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,109,3
+10,41,23.7888,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.018,41.362,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,110,3
+0,42,0,0,Hours,3,.,1,Dosing,mg,0,1,142.9,54.624,3 mg,3,1,0,1,1,1,3 mg,Analysis set,111,3
+10,42,0.1275,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.9,54.624,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,112,3
+10,42,0.60805,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.9,54.624,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,113,3
+10,42,1.0342,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.9,54.624,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,114,3
+10,42,2.06481,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.9,54.624,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,115,3
+10,42,4.12565,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.9,54.624,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,116,3
+10,42,8.13231,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.9,54.624,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,117,3
+10,42,12.20724,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.9,54.624,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,118,3
+10,42,18.34547,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.9,54.624,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,119,3
+10,42,24.1022,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.9,54.624,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,120,3
+0,43,0,0,Hours,3,.,1,Dosing,mg,0,1,97.637,51.154,3 mg,3,1,0,1,1,1,3 mg,Analysis set,121,3
+10,43,0.04422,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,97.637,51.154,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,122,3
+10,43,0.35556,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,97.637,51.154,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,123,3
+0,43,0.80248,1,Hours,0,0.070144,2,PK Concentration,ng/mL,0,0,97.637,51.154,3 mg,3,1,1,1,1,1,3 mg,Analysis set,124,3
+10,43,1.81184,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,97.637,51.154,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,125,3
+10,43,3.99178,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,97.637,51.154,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,126,3
+10,43,7.95043,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,97.637,51.154,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,127,3
+10,43,11.7487,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,97.637,51.154,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,128,3
+10,43,17.76616,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,97.637,51.154,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,129,3
+10,43,23.70483,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,97.637,51.154,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,130,3
+0,44,0,0,Hours,3,.,1,Dosing,mg,0,1,105.31,54.303,3 mg,3,1,0,1,1,1,3 mg,Analysis set,131,3
+10,44,0.15524,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,105.31,54.303,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,132,3
+10,44,0.39729,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,105.31,54.303,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,133,3
+10,44,1.06782,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,105.31,54.303,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,134,3
+10,44,2.24601,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,105.31,54.303,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,135,3
+10,44,4.21082,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,105.31,54.303,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,136,3
+10,44,8.18613,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,105.31,54.303,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,137,3
+10,44,12.36524,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,105.31,54.303,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,138,3
+10,44,18.26494,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,105.31,54.303,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,139,3
+10,44,24.27933,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,105.31,54.303,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,140,3
+0,45,0,0,Hours,3,.,1,Dosing,mg,0,1,83.345,59.97,3 mg,3,1,0,1,1,1,3 mg,Analysis set,141,3
+10,45,0.02567,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,83.345,59.97,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,142,3
+10,45,0.51723,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,83.345,59.97,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,143,3
+10,45,1.04561,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,83.345,59.97,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,144,3
+10,45,2.02074,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,83.345,59.97,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,145,3
+10,45,3.95317,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,83.345,59.97,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,146,3
+10,45,7.78607,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,83.345,59.97,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,147,3
+10,45,11.82085,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,83.345,59.97,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,148,3
+10,45,17.86848,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,83.345,59.97,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,149,3
+10,45,23.6581,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,83.345,59.97,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,150,3
+0,46,0,0,Hours,3,.,1,Dosing,mg,0,1,148.54,40.533,3 mg,3,1,0,1,1,1,3 mg,Analysis set,151,3
+10,46,0.16275,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,148.54,40.533,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,152,3
+10,46,0.52374,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,148.54,40.533,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,153,3
+10,46,1.07561,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,148.54,40.533,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,154,3
+10,46,2.04434,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,148.54,40.533,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,155,3
+10,46,4.05315,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,148.54,40.533,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,156,3
+10,46,8.09314,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,148.54,40.533,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,157,3
+10,46,12.01023,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,148.54,40.533,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,158,3
+10,46,18.05982,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,148.54,40.533,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,159,3
+10,46,24.03649,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,148.54,40.533,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,160,3
+0,47,0,0,Hours,3,.,1,Dosing,mg,0,1,121.06,42.542,3 mg,3,1,0,1,1,1,3 mg,Analysis set,161,3
+10,47,0.05555,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,121.06,42.542,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,162,3
+10,47,0.43921,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,121.06,42.542,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,163,3
+10,47,0.83181,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,121.06,42.542,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,164,3
+0,47,1.86562,2,Hours,0,0.053046,2,PK Concentration,ng/mL,0,0,121.06,42.542,3 mg,3,1,2,1,1,1,3 mg,Analysis set,165,3
+10,47,3.97836,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,121.06,42.542,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,166,3
+10,47,8.15176,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,121.06,42.542,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,167,3
+10,47,12.15015,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,121.06,42.542,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,168,3
+10,47,18.06004,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,121.06,42.542,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,169,3
+10,47,23.74119,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,121.06,42.542,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,170,3
+0,48,0,0,Hours,3,.,1,Dosing,mg,0,1,97.761,51.29,3 mg,3,1,0,1,1,1,3 mg,Analysis set,171,3
+10,48,0.07106,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,97.761,51.29,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,172,3
+10,48,0.46158,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,97.761,51.29,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,173,3
+10,48,1.04453,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,97.761,51.29,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,174,3
+0,48,2.15364,2,Hours,0,0.054191,2,PK Concentration,ng/mL,0,0,97.761,51.29,3 mg,3,1,2,1,1,1,3 mg,Analysis set,175,3
+10,48,4.1556,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,97.761,51.29,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,176,3
+10,48,8.22615,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,97.761,51.29,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,177,3
+10,48,12.46347,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,97.761,51.29,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,178,3
+10,48,18.48075,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,97.761,51.29,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,179,3
+10,48,24.31061,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,97.761,51.29,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,180,3
+0,49,0,0,Hours,3,.,1,Dosing,mg,0,1,144.24,45.758,3 mg,3,1,0,1,1,1,3 mg,Analysis set,181,3
+10,49,0.00196,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.24,45.758,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,182,3
+10,49,0.42831,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.24,45.758,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,183,3
+10,49,0.76864,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.24,45.758,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,184,3
+10,49,1.83463,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.24,45.758,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,185,3
+10,49,3.85122,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.24,45.758,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,186,3
+10,49,7.81278,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.24,45.758,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,187,3
+10,49,11.72921,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.24,45.758,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,188,3
+10,49,17.70444,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.24,45.758,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,189,3
+10,49,23.65461,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.24,45.758,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,190,3
+0,50,0,0,Hours,3,.,1,Dosing,mg,0,1,111.4,44.106,3 mg,3,1,0,1,1,1,3 mg,Analysis set,191,3
+10,50,0.19346,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.4,44.106,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,192,3
+0,50,0.54834,0.5,Hours,0,0.055448,2,PK Concentration,ng/mL,0,0,111.4,44.106,3 mg,3,1,0.5,1,1,1,3 mg,Analysis set,193,3
+10,50,0.92037,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.4,44.106,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,194,3
+10,50,1.77992,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.4,44.106,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,195,3
+10,50,3.73429,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.4,44.106,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,196,3
+10,50,7.65875,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.4,44.106,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,197,3
+10,50,11.67718,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.4,44.106,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,198,3
+10,50,17.87135,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.4,44.106,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,199,3
+10,50,23.83828,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.4,44.106,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,200,3
+0,51,0,0,Hours,3,.,1,Dosing,mg,0,1,144.87,42.832,3 mg,3,1,0,1,1,1,3 mg,Analysis set,201,3
+10,51,0.09816,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.87,42.832,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,202,3
+10,51,0.34569,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.87,42.832,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,203,3
+0,51,0.88685,1,Hours,0,0.061782,2,PK Concentration,ng/mL,0,0,144.87,42.832,3 mg,3,1,1,1,1,1,3 mg,Analysis set,204,3
+0,51,1.93839,2,Hours,0,0.087176,2,PK Concentration,ng/mL,0,0,144.87,42.832,3 mg,3,1,2,1,1,1,3 mg,Analysis set,205,3
+10,51,3.9424,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.87,42.832,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,206,3
+10,51,8.00583,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.87,42.832,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,207,3
+10,51,12.01979,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.87,42.832,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,208,3
+10,51,18.0052,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.87,42.832,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,209,3
+10,51,23.80365,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,144.87,42.832,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,210,3
+0,52,0,0,Hours,3,.,1,Dosing,mg,0,1,136.98,48.142,3 mg,3,1,0,1,1,1,3 mg,Analysis set,211,3
+10,52,0.13008,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.98,48.142,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,212,3
+10,52,0.55496,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.98,48.142,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,213,3
+10,52,0.96127,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.98,48.142,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,214,3
+10,52,1.94358,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.98,48.142,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,215,3
+10,52,4.02005,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.98,48.142,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,216,3
+10,52,8.0782,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.98,48.142,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,217,3
+10,52,12.052,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.98,48.142,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,218,3
+10,52,18.06467,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.98,48.142,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,219,3
+10,52,23.9585,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.98,48.142,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,220,3
+0,53,0,0,Hours,3,.,1,Dosing,mg,0,1,124.95,52.037,3 mg,3,1,0,1,1,1,3 mg,Analysis set,221,3
+10,53,0.0485,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,124.95,52.037,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,222,3
+10,53,0.51011,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,124.95,52.037,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,223,3
+10,53,0.83868,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,124.95,52.037,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,224,3
+10,53,1.74915,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,124.95,52.037,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,225,3
+10,53,3.73162,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,124.95,52.037,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,226,3
+10,53,7.93672,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,124.95,52.037,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,227,3
+10,53,11.96698,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,124.95,52.037,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,228,3
+10,53,17.95747,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,124.95,52.037,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,229,3
+10,53,23.83993,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,124.95,52.037,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,230,3
+0,54,0,0,Hours,3,.,1,Dosing,mg,0,1,139.26,54.637,3 mg,3,1,0,1,1,1,3 mg,Analysis set,231,3
+10,54,0.15224,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.26,54.637,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,232,3
+10,54,0.50454,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.26,54.637,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,233,3
+10,54,1.05227,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.26,54.637,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,234,3
+0,54,1.9684,2,Hours,0,0.061108,2,PK Concentration,ng/mL,0,0,139.26,54.637,3 mg,3,1,2,1,1,1,3 mg,Analysis set,235,3
+10,54,3.97169,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.26,54.637,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,236,3
+10,54,7.98444,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.26,54.637,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,237,3
+10,54,11.96274,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.26,54.637,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,238,3
+10,54,17.76461,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.26,54.637,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,239,3
+10,54,23.65643,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.26,54.637,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,240,3
+0,55,0,0,Hours,3,.,1,Dosing,mg,0,1,127.35,57.822,3 mg,3,1,0,1,1,1,3 mg,Analysis set,241,3
+10,55,0.04202,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,127.35,57.822,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,242,3
+10,55,0.48842,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,127.35,57.822,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,243,3
+10,55,0.86645,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,127.35,57.822,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,244,3
+0,55,1.93918,2,Hours,0,0.058852,2,PK Concentration,ng/mL,0,0,127.35,57.822,3 mg,3,1,2,1,1,1,3 mg,Analysis set,245,3
+10,55,3.83527,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,127.35,57.822,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,246,3
+10,55,8.03034,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,127.35,57.822,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,247,3
+10,55,11.94591,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,127.35,57.822,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,248,3
+10,55,17.83534,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,127.35,57.822,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,249,3
+10,55,23.92341,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,127.35,57.822,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,250,3
+0,56,0,0,Hours,3,.,1,Dosing,mg,0,1,136.26,48.192,3 mg,3,1,0,1,1,1,3 mg,Analysis set,251,3
+10,56,0.25083,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.26,48.192,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,252,3
+10,56,0.54015,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.26,48.192,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,253,3
+10,56,1.06846,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.26,48.192,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,254,3
+10,56,2.09963,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.26,48.192,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,255,3
+10,56,4.19658,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.26,48.192,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,256,3
+10,56,8.19727,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.26,48.192,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,257,3
+10,56,12.09721,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.26,48.192,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,258,3
+10,56,17.99445,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.26,48.192,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,259,3
+10,56,23.87987,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.26,48.192,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,260,3
+0,57,0,0,Hours,3,.,1,Dosing,mg,0,1,139.74,45.235,3 mg,3,1,0,1,1,1,3 mg,Analysis set,261,3
+10,57,0.17368,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.74,45.235,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,262,3
+10,57,0.4533,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.74,45.235,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,263,3
+10,57,1.00492,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.74,45.235,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,264,3
+10,57,1.89905,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.74,45.235,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,265,3
+10,57,3.91173,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.74,45.235,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,266,3
+10,57,7.96428,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.74,45.235,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,267,3
+10,57,12.00139,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.74,45.235,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,268,3
+10,57,18.00408,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.74,45.235,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,269,3
+10,57,24.03005,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.74,45.235,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,270,3
+0,58,0,0,Hours,3,.,1,Dosing,mg,0,1,90.185,51.918,3 mg,3,1,0,1,1,1,3 mg,Analysis set,271,3
+10,58,0.03738,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,90.185,51.918,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,272,3
+10,58,0.22681,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,90.185,51.918,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,273,3
+10,58,0.49957,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,90.185,51.918,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,274,3
+10,58,1.4962,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,90.185,51.918,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,275,3
+10,58,3.52236,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,90.185,51.918,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,276,3
+10,58,7.43581,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,90.185,51.918,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,277,3
+10,58,11.55433,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,90.185,51.918,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,278,3
+10,58,17.58484,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,90.185,51.918,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,279,3
+10,58,23.46885,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,90.185,51.918,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,280,3
+0,59,0,0,Hours,3,.,1,Dosing,mg,0,1,142.72,54.874,3 mg,3,1,0,1,1,1,3 mg,Analysis set,281,3
+10,59,0.02374,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.72,54.874,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,282,3
+10,59,0.38799,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.72,54.874,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,283,3
+0,59,0.84592,1,Hours,0,0.065172,2,PK Concentration,ng/mL,0,0,142.72,54.874,3 mg,3,1,1,1,1,1,3 mg,Analysis set,284,3
+0,59,1.86897,2,Hours,0,0.085506,2,PK Concentration,ng/mL,0,0,142.72,54.874,3 mg,3,1,2,1,1,1,3 mg,Analysis set,285,3
+10,59,4.09852,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.72,54.874,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,286,3
+10,59,8.11786,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.72,54.874,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,287,3
+10,59,12.15811,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.72,54.874,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,288,3
+10,59,18.3544,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.72,54.874,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,289,3
+10,59,24.36892,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.72,54.874,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,290,3
+0,60,0,0,Hours,3,.,1,Dosing,mg,0,1,91.702,57.376,3 mg,3,1,0,1,1,1,3 mg,Analysis set,291,3
+10,60,0.13852,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.702,57.376,3 mg,3,1,0.1,1,1,1,3 mg,Below LLOQ,292,3
+10,60,0.6148,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.702,57.376,3 mg,3,1,0.5,1,1,1,3 mg,Below LLOQ,293,3
+10,60,1.15579,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.702,57.376,3 mg,3,1,1,1,1,1,3 mg,Below LLOQ,294,3
+10,60,2.13558,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.702,57.376,3 mg,3,1,2,1,1,1,3 mg,Below LLOQ,295,3
+10,60,4.25633,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.702,57.376,3 mg,3,1,4,1,1,1,3 mg,Below LLOQ,296,3
+10,60,8.22341,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.702,57.376,3 mg,3,1,8,1,1,1,3 mg,Below LLOQ,297,3
+10,60,12.36538,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.702,57.376,3 mg,3,1,12,1,1,1,3 mg,Below LLOQ,298,3
+10,60,18.36783,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.702,57.376,3 mg,3,1,18,1,1,1,3 mg,Below LLOQ,299,3
+10,60,24.47224,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.702,57.376,3 mg,3,1,23.9,1,1,1,3 mg,Below LLOQ,300,3
+0,61,0,0,Hours,10,.,1,Dosing,mg,0,1,133.04,58.744,10 mg,10,1,0,1,1,1,10 mg,Analysis set,301,10
+0,61,0.1172,0.1,Hours,0,0.063257,2,PK Concentration,ng/mL,0,0,133.04,58.744,10 mg,10,1,0.1,1,1,1,10 mg,Analysis set,302,10
+0,61,0.4897,0.5,Hours,0,0.073687,2,PK Concentration,ng/mL,0,0,133.04,58.744,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,303,10
+0,61,0.90639,1,Hours,0,0.18979,2,PK Concentration,ng/mL,0,0,133.04,58.744,10 mg,10,1,1,1,1,1,10 mg,Analysis set,304,10
+0,61,1.75431,2,Hours,0,0.1331,2,PK Concentration,ng/mL,0,0,133.04,58.744,10 mg,10,1,2,1,1,1,10 mg,Analysis set,305,10
+10,61,3.64863,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.04,58.744,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,306,10
+10,61,7.7356,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.04,58.744,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,307,10
+10,61,11.91157,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.04,58.744,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,308,10
+10,61,17.7625,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.04,58.744,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,309,10
+10,61,23.63779,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.04,58.744,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,310,10
+0,62,0,0,Hours,10,.,1,Dosing,mg,0,1,104.29,40.081,10 mg,10,1,0,1,1,1,10 mg,Analysis set,311,10
+10,62,0.06217,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,104.29,40.081,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,312,10
+0,62,0.56209,0.5,Hours,0,0.097183,2,PK Concentration,ng/mL,0,0,104.29,40.081,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,313,10
+0,62,1.15643,1,Hours,0,0.084462,2,PK Concentration,ng/mL,0,0,104.29,40.081,10 mg,10,1,1,1,1,1,10 mg,Analysis set,314,10
+0,62,2.02155,2,Hours,0,0.099815,2,PK Concentration,ng/mL,0,0,104.29,40.081,10 mg,10,1,2,1,1,1,10 mg,Analysis set,315,10
+10,62,4.05525,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,104.29,40.081,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,316,10
+10,62,8.05738,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,104.29,40.081,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,317,10
+10,62,12.16267,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,104.29,40.081,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,318,10
+10,62,18.10208,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,104.29,40.081,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,319,10
+10,62,24.02567,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,104.29,40.081,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,320,10
+0,63,0,0,Hours,10,.,1,Dosing,mg,0,1,107.65,49.956,10 mg,10,1,0,1,1,1,10 mg,Analysis set,321,10
+10,63,0.13362,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,107.65,49.956,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,322,10
+0,63,0.61034,0.5,Hours,0,0.075575,2,PK Concentration,ng/mL,0,0,107.65,49.956,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,323,10
+0,63,1.05657,1,Hours,0,0.062657,2,PK Concentration,ng/mL,0,0,107.65,49.956,10 mg,10,1,1,1,1,1,10 mg,Analysis set,324,10
+0,63,2.02516,2,Hours,0,0.063535,2,PK Concentration,ng/mL,0,0,107.65,49.956,10 mg,10,1,2,1,1,1,10 mg,Analysis set,325,10
+10,63,4.08175,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,107.65,49.956,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,326,10
+10,63,7.9587,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,107.65,49.956,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,327,10
+10,63,11.84489,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,107.65,49.956,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,328,10
+10,63,17.74975,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,107.65,49.956,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,329,10
+10,63,23.77194,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,107.65,49.956,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,330,10
+0,64,0,0,Hours,10,.,1,Dosing,mg,0,1,141.42,56.587,10 mg,10,1,0,1,1,1,10 mg,Analysis set,331,10
+10,64,0.18882,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,141.42,56.587,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,332,10
+0,64,0.39268,0.5,Hours,0,0.079001,2,PK Concentration,ng/mL,0,0,141.42,56.587,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,333,10
+0,64,0.89294,1,Hours,0,0.065457,2,PK Concentration,ng/mL,0,0,141.42,56.587,10 mg,10,1,1,1,1,1,10 mg,Analysis set,334,10
+10,64,1.74108,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,141.42,56.587,10 mg,10,1,2,1,1,1,10 mg,Below LLOQ,335,10
+0,64,3.79068,4,Hours,0,0.061901,2,PK Concentration,ng/mL,0,0,141.42,56.587,10 mg,10,1,4,1,1,1,10 mg,Analysis set,336,10
+10,64,7.76966,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,141.42,56.587,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,337,10
+10,64,11.67417,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,141.42,56.587,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,338,10
+10,64,17.55783,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,141.42,56.587,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,339,10
+10,64,23.33304,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,141.42,56.587,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,340,10
+0,65,0,0,Hours,10,.,1,Dosing,mg,0,1,113.97,50.127,10 mg,10,1,0,1,1,1,10 mg,Analysis set,341,10
+10,65,0.04405,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,113.97,50.127,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,342,10
+10,65,0.47187,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,113.97,50.127,10 mg,10,1,0.5,1,1,1,10 mg,Below LLOQ,343,10
+0,65,0.93825,1,Hours,0,0.07977,2,PK Concentration,ng/mL,0,0,113.97,50.127,10 mg,10,1,1,1,1,1,10 mg,Analysis set,344,10
+0,65,1.98649,2,Hours,0,0.095357,2,PK Concentration,ng/mL,0,0,113.97,50.127,10 mg,10,1,2,1,1,1,10 mg,Analysis set,345,10
+10,65,3.90169,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,113.97,50.127,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,346,10
+10,65,7.83038,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,113.97,50.127,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,347,10
+10,65,11.71004,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,113.97,50.127,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,348,10
+10,65,17.65582,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,113.97,50.127,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,349,10
+10,65,23.57233,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,113.97,50.127,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,350,10
+0,66,0,0,Hours,10,.,1,Dosing,mg,0,1,112.19,49.28,10 mg,10,1,0,1,1,1,10 mg,Analysis set,351,10
+10,66,0.32898,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.19,49.28,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,352,10
+0,66,0.71506,0.5,Hours,0,0.053488,2,PK Concentration,ng/mL,0,0,112.19,49.28,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,353,10
+0,66,1.30474,1,Hours,0,0.078787,2,PK Concentration,ng/mL,0,0,112.19,49.28,10 mg,10,1,1,1,1,1,10 mg,Analysis set,354,10
+10,66,2.225,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.19,49.28,10 mg,10,1,2,1,1,1,10 mg,Below LLOQ,355,10
+10,66,4.15387,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.19,49.28,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,356,10
+10,66,8.16789,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.19,49.28,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,357,10
+10,66,12.1816,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.19,49.28,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,358,10
+10,66,18.25799,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.19,49.28,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,359,10
+10,66,24.09213,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.19,49.28,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,360,10
+0,67,0,0,Hours,10,.,1,Dosing,mg,0,1,87.38,48.628,10 mg,10,1,0,1,1,1,10 mg,Analysis set,361,10
+10,67,0.17798,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,87.38,48.628,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,362,10
+10,67,0.72569,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,87.38,48.628,10 mg,10,1,0.5,1,1,1,10 mg,Below LLOQ,363,10
+0,67,1.08122,1,Hours,0,0.056598,2,PK Concentration,ng/mL,0,0,87.38,48.628,10 mg,10,1,1,1,1,1,10 mg,Analysis set,364,10
+0,67,2.12529,2,Hours,0,0.061905,2,PK Concentration,ng/mL,0,0,87.38,48.628,10 mg,10,1,2,1,1,1,10 mg,Analysis set,365,10
+10,67,4.19491,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,87.38,48.628,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,366,10
+10,67,8.09006,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,87.38,48.628,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,367,10
+10,67,12.24386,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,87.38,48.628,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,368,10
+10,67,18.29911,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,87.38,48.628,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,369,10
+10,67,24.31705,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,87.38,48.628,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,370,10
+0,68,0,0,Hours,10,.,1,Dosing,mg,0,1,126.68,47.701,10 mg,10,1,0,1,1,1,10 mg,Analysis set,371,10
+0,68,0.21941,0.1,Hours,0,0.067591,2,PK Concentration,ng/mL,0,0,126.68,47.701,10 mg,10,1,0.1,1,1,1,10 mg,Analysis set,372,10
+0,68,0.63138,0.5,Hours,0,0.11906,2,PK Concentration,ng/mL,0,0,126.68,47.701,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,373,10
+0,68,1.0884,1,Hours,0,0.13329,2,PK Concentration,ng/mL,0,0,126.68,47.701,10 mg,10,1,1,1,1,1,10 mg,Analysis set,374,10
+0,68,2.2241,2,Hours,0,0.092449,2,PK Concentration,ng/mL,0,0,126.68,47.701,10 mg,10,1,2,1,1,1,10 mg,Analysis set,375,10
+0,68,4.21899,4,Hours,0,0.057499,2,PK Concentration,ng/mL,0,0,126.68,47.701,10 mg,10,1,4,1,1,1,10 mg,Analysis set,376,10
+10,68,8.09098,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,126.68,47.701,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,377,10
+10,68,12.21747,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,126.68,47.701,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,378,10
+10,68,18.14197,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,126.68,47.701,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,379,10
+10,68,24.02578,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,126.68,47.701,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,380,10
+0,69,0,0,Hours,10,.,1,Dosing,mg,0,1,110.81,44.421,10 mg,10,1,0,1,1,1,10 mg,Analysis set,381,10
+0,69,0.19508,0.1,Hours,0,0.096482,2,PK Concentration,ng/mL,0,0,110.81,44.421,10 mg,10,1,0.1,1,1,1,10 mg,Analysis set,382,10
+0,69,0.50524,0.5,Hours,0,0.091304,2,PK Concentration,ng/mL,0,0,110.81,44.421,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,383,10
+0,69,0.97247,1,Hours,0,0.095125,2,PK Concentration,ng/mL,0,0,110.81,44.421,10 mg,10,1,1,1,1,1,10 mg,Analysis set,384,10
+0,69,1.86819,2,Hours,0,0.10366,2,PK Concentration,ng/mL,0,0,110.81,44.421,10 mg,10,1,2,1,1,1,10 mg,Analysis set,385,10
+10,69,3.87022,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,110.81,44.421,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,386,10
+10,69,7.91309,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,110.81,44.421,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,387,10
+10,69,11.95591,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,110.81,44.421,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,388,10
+10,69,18.15382,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,110.81,44.421,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,389,10
+10,69,24.12212,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,110.81,44.421,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,390,10
+0,70,0,0,Hours,10,.,1,Dosing,mg,0,1,142.9,50.431,10 mg,10,1,0,1,1,1,10 mg,Analysis set,391,10
+0,70,0.17299,0.1,Hours,0,0.050509,2,PK Concentration,ng/mL,0,0,142.9,50.431,10 mg,10,1,0.1,1,1,1,10 mg,Analysis set,392,10
+0,70,0.64555,0.5,Hours,0,0.065368,2,PK Concentration,ng/mL,0,0,142.9,50.431,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,393,10
+0,70,1.22458,1,Hours,0,0.11613,2,PK Concentration,ng/mL,0,0,142.9,50.431,10 mg,10,1,1,1,1,1,10 mg,Analysis set,394,10
+0,70,2.02913,2,Hours,0,0.079521,2,PK Concentration,ng/mL,0,0,142.9,50.431,10 mg,10,1,2,1,1,1,10 mg,Analysis set,395,10
+10,70,3.91377,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.9,50.431,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,396,10
+10,70,7.97493,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.9,50.431,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,397,10
+10,70,11.83673,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.9,50.431,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,398,10
+10,70,17.70451,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.9,50.431,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,399,10
+10,70,23.47941,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.9,50.431,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,400,10
+0,71,0,0,Hours,10,.,1,Dosing,mg,0,1,88.158,58.193,10 mg,10,1,0,1,1,1,10 mg,Analysis set,401,10
+0,71,0.25218,0.1,Hours,0,0.077593,2,PK Concentration,ng/mL,0,0,88.158,58.193,10 mg,10,1,0.1,1,1,1,10 mg,Analysis set,402,10
+0,71,0.58299,0.5,Hours,0,0.11922,2,PK Concentration,ng/mL,0,0,88.158,58.193,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,403,10
+0,71,1.06301,1,Hours,0,0.084979,2,PK Concentration,ng/mL,0,0,88.158,58.193,10 mg,10,1,1,1,1,1,10 mg,Analysis set,404,10
+0,71,2.06217,2,Hours,0,0.11295,2,PK Concentration,ng/mL,0,0,88.158,58.193,10 mg,10,1,2,1,1,1,10 mg,Analysis set,405,10
+10,71,4.10278,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,88.158,58.193,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,406,10
+10,71,8.10531,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,88.158,58.193,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,407,10
+10,71,12.21512,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,88.158,58.193,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,408,10
+10,71,18.34202,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,88.158,58.193,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,409,10
+10,71,24.2927,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,88.158,58.193,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,410,10
+0,72,0,0,Hours,10,.,1,Dosing,mg,0,1,115.39,59.961,10 mg,10,1,0,1,1,1,10 mg,Analysis set,411,10
+0,72,0.15403,0.1,Hours,0,0.073797,2,PK Concentration,ng/mL,0,0,115.39,59.961,10 mg,10,1,0.1,1,1,1,10 mg,Analysis set,412,10
+0,72,0.39479,0.5,Hours,0,0.069249,2,PK Concentration,ng/mL,0,0,115.39,59.961,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,413,10
+0,72,0.84652,1,Hours,0,0.12861,2,PK Concentration,ng/mL,0,0,115.39,59.961,10 mg,10,1,1,1,1,1,10 mg,Analysis set,414,10
+0,72,1.80579,2,Hours,0,0.10838,2,PK Concentration,ng/mL,0,0,115.39,59.961,10 mg,10,1,2,1,1,1,10 mg,Analysis set,415,10
+0,72,3.87095,4,Hours,0,0.10479,2,PK Concentration,ng/mL,0,0,115.39,59.961,10 mg,10,1,4,1,1,1,10 mg,Analysis set,416,10
+10,72,7.97795,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,115.39,59.961,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,417,10
+10,72,11.9906,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,115.39,59.961,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,418,10
+10,72,18.04853,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,115.39,59.961,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,419,10
+10,72,23.69576,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,115.39,59.961,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,420,10
+0,73,0,0,Hours,10,.,1,Dosing,mg,0,1,91.806,41.836,10 mg,10,1,0,1,1,1,10 mg,Analysis set,421,10
+10,73,0.02338,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.806,41.836,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,422,10
+0,73,0.42957,0.5,Hours,0,0.085654,2,PK Concentration,ng/mL,0,0,91.806,41.836,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,423,10
+0,73,1.00567,1,Hours,0,0.11502,2,PK Concentration,ng/mL,0,0,91.806,41.836,10 mg,10,1,1,1,1,1,10 mg,Analysis set,424,10
+0,73,2.06124,2,Hours,0,0.13476,2,PK Concentration,ng/mL,0,0,91.806,41.836,10 mg,10,1,2,1,1,1,10 mg,Analysis set,425,10
+0,73,3.97623,4,Hours,0,0.094165,2,PK Concentration,ng/mL,0,0,91.806,41.836,10 mg,10,1,4,1,1,1,10 mg,Analysis set,426,10
+10,73,8.01378,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.806,41.836,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,427,10
+10,73,11.93184,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.806,41.836,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,428,10
+10,73,18.03014,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.806,41.836,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,429,10
+10,73,23.93456,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.806,41.836,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,430,10
+0,74,0,0,Hours,10,.,1,Dosing,mg,0,1,111.08,42.848,10 mg,10,1,0,1,1,1,10 mg,Analysis set,431,10
+10,74,0.0816,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.08,42.848,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,432,10
+0,74,0.43846,0.5,Hours,0,0.11223,2,PK Concentration,ng/mL,0,0,111.08,42.848,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,433,10
+0,74,0.90112,1,Hours,0,0.17785,2,PK Concentration,ng/mL,0,0,111.08,42.848,10 mg,10,1,1,1,1,1,10 mg,Analysis set,434,10
+0,74,1.79705,2,Hours,0,0.17279,2,PK Concentration,ng/mL,0,0,111.08,42.848,10 mg,10,1,2,1,1,1,10 mg,Analysis set,435,10
+0,74,3.5882,4,Hours,0,0.081025,2,PK Concentration,ng/mL,0,0,111.08,42.848,10 mg,10,1,4,1,1,1,10 mg,Analysis set,436,10
+10,74,7.47191,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.08,42.848,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,437,10
+10,74,11.33165,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.08,42.848,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,438,10
+10,74,17.07081,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.08,42.848,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,439,10
+10,74,22.95739,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.08,42.848,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,440,10
+0,75,0,0,Hours,10,.,1,Dosing,mg,0,1,120.87,56.245,10 mg,10,1,0,1,1,1,10 mg,Analysis set,441,10
+10,75,0.02034,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,120.87,56.245,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,442,10
+0,75,0.48576,0.5,Hours,0,0.10381,2,PK Concentration,ng/mL,0,0,120.87,56.245,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,443,10
+0,75,1.05704,1,Hours,0,0.14217,2,PK Concentration,ng/mL,0,0,120.87,56.245,10 mg,10,1,1,1,1,1,10 mg,Analysis set,444,10
+0,75,2.06561,2,Hours,0,0.181,2,PK Concentration,ng/mL,0,0,120.87,56.245,10 mg,10,1,2,1,1,1,10 mg,Analysis set,445,10
+0,75,4.06285,4,Hours,0,0.052016,2,PK Concentration,ng/mL,0,0,120.87,56.245,10 mg,10,1,4,1,1,1,10 mg,Analysis set,446,10
+10,75,7.96216,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,120.87,56.245,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,447,10
+10,75,12.00222,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,120.87,56.245,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,448,10
+10,75,18.14065,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,120.87,56.245,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,449,10
+10,75,24.06403,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,120.87,56.245,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,450,10
+0,76,0,0,Hours,10,.,1,Dosing,mg,0,1,102.04,47.031,10 mg,10,1,0,1,1,1,10 mg,Analysis set,451,10
+10,76,0.10452,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,102.04,47.031,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,452,10
+0,76,0.42564,0.5,Hours,0,0.083911,2,PK Concentration,ng/mL,0,0,102.04,47.031,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,453,10
+0,76,0.99085,1,Hours,0,0.10613,2,PK Concentration,ng/mL,0,0,102.04,47.031,10 mg,10,1,1,1,1,1,10 mg,Analysis set,454,10
+0,76,1.92132,2,Hours,0,0.086746,2,PK Concentration,ng/mL,0,0,102.04,47.031,10 mg,10,1,2,1,1,1,10 mg,Analysis set,455,10
+10,76,3.80472,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,102.04,47.031,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,456,10
+10,76,7.78435,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,102.04,47.031,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,457,10
+10,76,11.75204,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,102.04,47.031,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,458,10
+10,76,17.59443,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,102.04,47.031,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,459,10
+10,76,23.40642,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,102.04,47.031,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,460,10
+0,77,0,0,Hours,10,.,1,Dosing,mg,0,1,143.75,52.876,10 mg,10,1,0,1,1,1,10 mg,Analysis set,461,10
+10,77,0.10854,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,143.75,52.876,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,462,10
+0,77,0.39682,0.5,Hours,0,0.13604,2,PK Concentration,ng/mL,0,0,143.75,52.876,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,463,10
+0,77,0.72868,1,Hours,0,0.1536,2,PK Concentration,ng/mL,0,0,143.75,52.876,10 mg,10,1,1,1,1,1,10 mg,Analysis set,464,10
+0,77,1.80714,2,Hours,0,0.22189,2,PK Concentration,ng/mL,0,0,143.75,52.876,10 mg,10,1,2,1,1,1,10 mg,Analysis set,465,10
+10,77,3.81416,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,143.75,52.876,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,466,10
+10,77,7.77866,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,143.75,52.876,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,467,10
+10,77,11.83923,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,143.75,52.876,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,468,10
+10,77,17.73516,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,143.75,52.876,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,469,10
+10,77,23.52908,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,143.75,52.876,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,470,10
+0,78,0,0,Hours,10,.,1,Dosing,mg,0,1,148.76,46.962,10 mg,10,1,0,1,1,1,10 mg,Analysis set,471,10
+10,78,0.01664,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,148.76,46.962,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,472,10
+10,78,0.30994,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,148.76,46.962,10 mg,10,1,0.5,1,1,1,10 mg,Below LLOQ,473,10
+0,78,0.72541,1,Hours,0,0.055758,2,PK Concentration,ng/mL,0,0,148.76,46.962,10 mg,10,1,1,1,1,1,10 mg,Analysis set,474,10
+0,78,1.77394,2,Hours,0,0.068394,2,PK Concentration,ng/mL,0,0,148.76,46.962,10 mg,10,1,2,1,1,1,10 mg,Analysis set,475,10
+0,78,3.88195,4,Hours,0,0.052635,2,PK Concentration,ng/mL,0,0,148.76,46.962,10 mg,10,1,4,1,1,1,10 mg,Analysis set,476,10
+10,78,7.86475,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,148.76,46.962,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,477,10
+10,78,11.86275,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,148.76,46.962,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,478,10
+10,78,17.79497,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,148.76,46.962,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,479,10
+10,78,23.75965,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,148.76,46.962,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,480,10
+0,79,0,0,Hours,10,.,1,Dosing,mg,0,1,128.35,43.855,10 mg,10,1,0,1,1,1,10 mg,Analysis set,481,10
+0,79,0.27802,0.1,Hours,0,0.077559,2,PK Concentration,ng/mL,0,0,128.35,43.855,10 mg,10,1,0.1,1,1,1,10 mg,Analysis set,482,10
+0,79,0.69402,0.5,Hours,0,0.11199,2,PK Concentration,ng/mL,0,0,128.35,43.855,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,483,10
+0,79,1.26546,1,Hours,0,0.066045,2,PK Concentration,ng/mL,0,0,128.35,43.855,10 mg,10,1,1,1,1,1,10 mg,Analysis set,484,10
+0,79,2.16992,2,Hours,0,0.069355,2,PK Concentration,ng/mL,0,0,128.35,43.855,10 mg,10,1,2,1,1,1,10 mg,Analysis set,485,10
+10,79,4.03063,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,128.35,43.855,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,486,10
+10,79,8.11808,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,128.35,43.855,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,487,10
+10,79,11.99026,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,128.35,43.855,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,488,10
+10,79,18.07006,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,128.35,43.855,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,489,10
+10,79,23.97207,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,128.35,43.855,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,490,10
+0,80,0,0,Hours,10,.,1,Dosing,mg,0,1,143.31,57.924,10 mg,10,1,0,1,1,1,10 mg,Analysis set,491,10
+10,80,0.16874,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,143.31,57.924,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,492,10
+0,80,0.52519,0.5,Hours,0,0.055793,2,PK Concentration,ng/mL,0,0,143.31,57.924,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,493,10
+0,80,1.12211,1,Hours,0,0.10147,2,PK Concentration,ng/mL,0,0,143.31,57.924,10 mg,10,1,1,1,1,1,10 mg,Analysis set,494,10
+10,80,2.32045,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,143.31,57.924,10 mg,10,1,2,1,1,1,10 mg,Below LLOQ,495,10
+10,80,4.32668,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,143.31,57.924,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,496,10
+10,80,8.23531,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,143.31,57.924,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,497,10
+10,80,12.01945,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,143.31,57.924,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,498,10
+10,80,18.12335,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,143.31,57.924,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,499,10
+10,80,23.99322,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,143.31,57.924,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,500,10
+0,81,0,0,Hours,10,.,1,Dosing,mg,0,1,145.68,48.497,10 mg,10,1,0,1,1,1,10 mg,Analysis set,501,10
+10,81,0.02905,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,145.68,48.497,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,502,10
+0,81,0.53264,0.5,Hours,0,0.25568,2,PK Concentration,ng/mL,0,0,145.68,48.497,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,503,10
+0,81,0.92519,1,Hours,0,0.2063,2,PK Concentration,ng/mL,0,0,145.68,48.497,10 mg,10,1,1,1,1,1,10 mg,Analysis set,504,10
+0,81,1.85409,2,Hours,0,0.17766,2,PK Concentration,ng/mL,0,0,145.68,48.497,10 mg,10,1,2,1,1,1,10 mg,Analysis set,505,10
+0,81,4.13423,4,Hours,0,0.090846,2,PK Concentration,ng/mL,0,0,145.68,48.497,10 mg,10,1,4,1,1,1,10 mg,Analysis set,506,10
+10,81,8.12594,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,145.68,48.497,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,507,10
+10,81,12.17511,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,145.68,48.497,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,508,10
+10,81,18.18856,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,145.68,48.497,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,509,10
+10,81,23.97286,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,145.68,48.497,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,510,10
+0,82,0,0,Hours,10,.,1,Dosing,mg,0,1,125.55,48.89,10 mg,10,1,0,1,1,1,10 mg,Analysis set,511,10
+10,82,0.10452,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,125.55,48.89,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,512,10
+0,82,0.54385,0.5,Hours,0,0.054357,2,PK Concentration,ng/mL,0,0,125.55,48.89,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,513,10
+0,82,0.98008,1,Hours,0,0.10469,2,PK Concentration,ng/mL,0,0,125.55,48.89,10 mg,10,1,1,1,1,1,10 mg,Analysis set,514,10
+0,82,1.8409,2,Hours,0,0.058971,2,PK Concentration,ng/mL,0,0,125.55,48.89,10 mg,10,1,2,1,1,1,10 mg,Analysis set,515,10
+10,82,3.90129,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,125.55,48.89,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,516,10
+10,82,7.94343,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,125.55,48.89,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,517,10
+10,82,11.94474,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,125.55,48.89,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,518,10
+10,82,18.04209,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,125.55,48.89,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,519,10
+10,82,24.05382,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,125.55,48.89,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,520,10
+0,83,0,0,Hours,10,.,1,Dosing,mg,0,1,124.87,41.692,10 mg,10,1,0,1,1,1,10 mg,Analysis set,521,10
+0,83,0.19527,0.1,Hours,0,0.065587,2,PK Concentration,ng/mL,0,0,124.87,41.692,10 mg,10,1,0.1,1,1,1,10 mg,Analysis set,522,10
+0,83,0.61388,0.5,Hours,0,0.13523,2,PK Concentration,ng/mL,0,0,124.87,41.692,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,523,10
+0,83,1.24767,1,Hours,0,0.13594,2,PK Concentration,ng/mL,0,0,124.87,41.692,10 mg,10,1,1,1,1,1,10 mg,Analysis set,524,10
+0,83,2.26486,2,Hours,0,0.13245,2,PK Concentration,ng/mL,0,0,124.87,41.692,10 mg,10,1,2,1,1,1,10 mg,Analysis set,525,10
+0,83,4.21963,4,Hours,0,0.065892,2,PK Concentration,ng/mL,0,0,124.87,41.692,10 mg,10,1,4,1,1,1,10 mg,Analysis set,526,10
+10,83,8.27642,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,124.87,41.692,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,527,10
+10,83,12.45896,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,124.87,41.692,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,528,10
+10,83,18.36746,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,124.87,41.692,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,529,10
+10,83,24.25641,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,124.87,41.692,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,530,10
+0,84,0,0,Hours,10,.,1,Dosing,mg,0,1,127.3,47.241,10 mg,10,1,0,1,1,1,10 mg,Analysis set,531,10
+10,84,0.1167,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,127.3,47.241,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,532,10
+0,84,0.48176,0.5,Hours,0,0.096232,2,PK Concentration,ng/mL,0,0,127.3,47.241,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,533,10
+0,84,0.85937,1,Hours,0,0.126,2,PK Concentration,ng/mL,0,0,127.3,47.241,10 mg,10,1,1,1,1,1,10 mg,Analysis set,534,10
+0,84,1.74505,2,Hours,0,0.081164,2,PK Concentration,ng/mL,0,0,127.3,47.241,10 mg,10,1,2,1,1,1,10 mg,Analysis set,535,10
+0,84,3.88373,4,Hours,0,0.060447,2,PK Concentration,ng/mL,0,0,127.3,47.241,10 mg,10,1,4,1,1,1,10 mg,Analysis set,536,10
+10,84,7.87194,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,127.3,47.241,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,537,10
+10,84,12.05823,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,127.3,47.241,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,538,10
+10,84,18.06738,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,127.3,47.241,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,539,10
+10,84,23.99741,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,127.3,47.241,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,540,10
+0,85,0,0,Hours,10,.,1,Dosing,mg,0,1,139.6,55.084,10 mg,10,1,0,1,1,1,10 mg,Analysis set,541,10
+10,85,0.28541,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.6,55.084,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,542,10
+0,85,0.78857,0.5,Hours,0,0.17388,2,PK Concentration,ng/mL,0,0,139.6,55.084,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,543,10
+0,85,1.36852,1,Hours,0,0.15804,2,PK Concentration,ng/mL,0,0,139.6,55.084,10 mg,10,1,1,1,1,1,10 mg,Analysis set,544,10
+0,85,2.36642,2,Hours,0,0.14138,2,PK Concentration,ng/mL,0,0,139.6,55.084,10 mg,10,1,2,1,1,1,10 mg,Analysis set,545,10
+10,85,4.29434,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.6,55.084,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,546,10
+10,85,8.27424,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.6,55.084,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,547,10
+10,85,12.30001,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.6,55.084,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,548,10
+10,85,18.36538,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.6,55.084,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,549,10
+10,85,24.19485,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,139.6,55.084,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,550,10
+0,86,0,0,Hours,10,.,1,Dosing,mg,0,1,147.17,42.582,10 mg,10,1,0,1,1,1,10 mg,Analysis set,551,10
+10,86,0.06872,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,147.17,42.582,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,552,10
+0,86,0.40348,0.5,Hours,0,0.065886,2,PK Concentration,ng/mL,0,0,147.17,42.582,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,553,10
+0,86,0.85976,1,Hours,0,0.14187,2,PK Concentration,ng/mL,0,0,147.17,42.582,10 mg,10,1,1,1,1,1,10 mg,Analysis set,554,10
+0,86,1.87314,2,Hours,0,0.11607,2,PK Concentration,ng/mL,0,0,147.17,42.582,10 mg,10,1,2,1,1,1,10 mg,Analysis set,555,10
+10,86,3.89964,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,147.17,42.582,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,556,10
+10,86,7.91819,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,147.17,42.582,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,557,10
+10,86,11.88822,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,147.17,42.582,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,558,10
+10,86,17.90973,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,147.17,42.582,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,559,10
+10,86,23.63643,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,147.17,42.582,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,560,10
+0,87,0,0,Hours,10,.,1,Dosing,mg,0,1,112.1,59.316,10 mg,10,1,0,1,1,1,10 mg,Analysis set,561,10
+10,87,0.12344,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.1,59.316,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,562,10
+0,87,0.45651,0.5,Hours,0,0.096882,2,PK Concentration,ng/mL,0,0,112.1,59.316,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,563,10
+0,87,0.89489,1,Hours,0,0.11837,2,PK Concentration,ng/mL,0,0,112.1,59.316,10 mg,10,1,1,1,1,1,10 mg,Analysis set,564,10
+0,87,1.93058,2,Hours,0,0.14015,2,PK Concentration,ng/mL,0,0,112.1,59.316,10 mg,10,1,2,1,1,1,10 mg,Analysis set,565,10
+10,87,3.98127,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.1,59.316,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,566,10
+10,87,7.69727,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.1,59.316,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,567,10
+10,87,11.74027,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.1,59.316,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,568,10
+10,87,17.65268,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.1,59.316,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,569,10
+10,87,23.64207,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.1,59.316,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,570,10
+0,88,0,0,Hours,10,.,1,Dosing,mg,0,1,122.97,49.694,10 mg,10,1,0,1,1,1,10 mg,Analysis set,571,10
+0,88,0.17938,0.1,Hours,0,0.056229,2,PK Concentration,ng/mL,0,0,122.97,49.694,10 mg,10,1,0.1,1,1,1,10 mg,Analysis set,572,10
+0,88,0.5985,0.5,Hours,0,0.1179,2,PK Concentration,ng/mL,0,0,122.97,49.694,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,573,10
+0,88,1.10471,1,Hours,0,0.088384,2,PK Concentration,ng/mL,0,0,122.97,49.694,10 mg,10,1,1,1,1,1,10 mg,Analysis set,574,10
+0,88,2.09044,2,Hours,0,0.13175,2,PK Concentration,ng/mL,0,0,122.97,49.694,10 mg,10,1,2,1,1,1,10 mg,Analysis set,575,10
+10,88,4.14264,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,122.97,49.694,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,576,10
+10,88,8.24278,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,122.97,49.694,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,577,10
+10,88,12.36605,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,122.97,49.694,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,578,10
+10,88,18.28882,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,122.97,49.694,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,579,10
+10,88,24.16126,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,122.97,49.694,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,580,10
+0,89,0,0,Hours,10,.,1,Dosing,mg,0,1,101.6,40.517,10 mg,10,1,0,1,1,1,10 mg,Analysis set,581,10
+10,89,0.16053,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,101.6,40.517,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,582,10
+10,89,0.41717,0.5,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,101.6,40.517,10 mg,10,1,0.5,1,1,1,10 mg,Below LLOQ,583,10
+10,89,0.85092,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,101.6,40.517,10 mg,10,1,1,1,1,1,10 mg,Below LLOQ,584,10
+10,89,1.85455,2,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,101.6,40.517,10 mg,10,1,2,1,1,1,10 mg,Below LLOQ,585,10
+0,89,3.97092,4,Hours,0,0.057579,2,PK Concentration,ng/mL,0,0,101.6,40.517,10 mg,10,1,4,1,1,1,10 mg,Analysis set,586,10
+10,89,8.0715,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,101.6,40.517,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,587,10
+10,89,12.05805,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,101.6,40.517,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,588,10
+10,89,17.93843,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,101.6,40.517,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,589,10
+10,89,23.74329,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,101.6,40.517,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,590,10
+0,90,0,0,Hours,10,.,1,Dosing,mg,0,1,126.33,46.436,10 mg,10,1,0,1,1,1,10 mg,Analysis set,591,10
+10,90,0.16578,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,126.33,46.436,10 mg,10,1,0.1,1,1,1,10 mg,Below LLOQ,592,10
+0,90,0.60741,0.5,Hours,0,0.054085,2,PK Concentration,ng/mL,0,0,126.33,46.436,10 mg,10,1,0.5,1,1,1,10 mg,Analysis set,593,10
+0,90,1.16568,1,Hours,0,0.12449,2,PK Concentration,ng/mL,0,0,126.33,46.436,10 mg,10,1,1,1,1,1,10 mg,Analysis set,594,10
+0,90,2.15518,2,Hours,0,0.075859,2,PK Concentration,ng/mL,0,0,126.33,46.436,10 mg,10,1,2,1,1,1,10 mg,Analysis set,595,10
+10,90,4.12435,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,126.33,46.436,10 mg,10,1,4,1,1,1,10 mg,Below LLOQ,596,10
+10,90,8.13602,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,126.33,46.436,10 mg,10,1,8,1,1,1,10 mg,Below LLOQ,597,10
+10,90,12.20458,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,126.33,46.436,10 mg,10,1,12,1,1,1,10 mg,Below LLOQ,598,10
+10,90,18.29829,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,126.33,46.436,10 mg,10,1,18,1,1,1,10 mg,Below LLOQ,599,10
+10,90,24.06144,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,126.33,46.436,10 mg,10,1,23.9,1,1,1,10 mg,Below LLOQ,600,10
+0,91,0,0,Hours,30,.,1,Dosing,mg,0,1,91.716,58.817,30 mg,30,1,0,1,1,1,30 mg,Analysis set,601,30
+0,91,0.17478,0.1,Hours,0,0.25706,2,PK Concentration,ng/mL,0,0,91.716,58.817,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,602,30
+0,91,0.58579,0.5,Hours,0,0.70798,2,PK Concentration,ng/mL,0,0,91.716,58.817,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,603,30
+0,91,1.01329,1,Hours,0,0.5857,2,PK Concentration,ng/mL,0,0,91.716,58.817,30 mg,30,1,1,1,1,1,30 mg,Analysis set,604,30
+0,91,2.04161,2,Hours,0,0.64982,2,PK Concentration,ng/mL,0,0,91.716,58.817,30 mg,30,1,2,1,1,1,30 mg,Analysis set,605,30
+0,91,3.95021,4,Hours,0,0.18526,2,PK Concentration,ng/mL,0,0,91.716,58.817,30 mg,30,1,4,1,1,1,30 mg,Analysis set,606,30
+10,91,8.03116,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.716,58.817,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,607,30
+10,91,11.98484,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.716,58.817,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,608,30
+10,91,18.07877,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.716,58.817,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,609,30
+10,91,23.9334,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,91.716,58.817,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,610,30
+0,92,0,0,Hours,30,.,1,Dosing,mg,0,1,101.98,41.972,30 mg,30,1,0,1,1,1,30 mg,Analysis set,611,30
+0,92,0.18769,0.1,Hours,0,0.086748,2,PK Concentration,ng/mL,0,0,101.98,41.972,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,612,30
+0,92,0.64159,0.5,Hours,0,0.18008,2,PK Concentration,ng/mL,0,0,101.98,41.972,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,613,30
+0,92,1.16797,1,Hours,0,0.19879,2,PK Concentration,ng/mL,0,0,101.98,41.972,30 mg,30,1,1,1,1,1,30 mg,Analysis set,614,30
+0,92,2.20767,2,Hours,0,0.19367,2,PK Concentration,ng/mL,0,0,101.98,41.972,30 mg,30,1,2,1,1,1,30 mg,Analysis set,615,30
+0,92,4.07455,4,Hours,0,0.21215,2,PK Concentration,ng/mL,0,0,101.98,41.972,30 mg,30,1,4,1,1,1,30 mg,Analysis set,616,30
+0,92,7.97697,8,Hours,0,0.076733,2,PK Concentration,ng/mL,0,0,101.98,41.972,30 mg,30,1,8,1,1,1,30 mg,Analysis set,617,30
+10,92,12.06269,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,101.98,41.972,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,618,30
+10,92,18.13312,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,101.98,41.972,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,619,30
+10,92,24.12719,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,101.98,41.972,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,620,30
+0,93,0,0,Hours,30,.,1,Dosing,mg,0,1,131.86,57.696,30 mg,30,1,0,1,1,1,30 mg,Analysis set,621,30
+0,93,0.21464,0.1,Hours,0,0.17612,2,PK Concentration,ng/mL,0,0,131.86,57.696,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,622,30
+0,93,0.58955,0.5,Hours,0,0.2786,2,PK Concentration,ng/mL,0,0,131.86,57.696,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,623,30
+0,93,1.00408,1,Hours,0,0.19066,2,PK Concentration,ng/mL,0,0,131.86,57.696,30 mg,30,1,1,1,1,1,30 mg,Analysis set,624,30
+0,93,1.88771,2,Hours,0,0.1852,2,PK Concentration,ng/mL,0,0,131.86,57.696,30 mg,30,1,2,1,1,1,30 mg,Analysis set,625,30
+0,93,3.95918,4,Hours,0,0.05512,2,PK Concentration,ng/mL,0,0,131.86,57.696,30 mg,30,1,4,1,1,1,30 mg,Analysis set,626,30
+10,93,7.6947,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,131.86,57.696,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,627,30
+10,93,11.77436,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,131.86,57.696,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,628,30
+10,93,17.76394,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,131.86,57.696,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,629,30
+10,93,23.62043,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,131.86,57.696,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,630,30
+0,94,0,0,Hours,30,.,1,Dosing,mg,0,1,84.754,42.902,30 mg,30,1,0,1,1,1,30 mg,Analysis set,631,30
+10,94,0.00731,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,84.754,42.902,30 mg,30,1,0.1,1,1,1,30 mg,Below LLOQ,632,30
+0,94,0.32277,0.5,Hours,0,0.13855,2,PK Concentration,ng/mL,0,0,84.754,42.902,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,633,30
+0,94,0.72079,1,Hours,0,0.16273,2,PK Concentration,ng/mL,0,0,84.754,42.902,30 mg,30,1,1,1,1,1,30 mg,Analysis set,634,30
+0,94,1.69628,2,Hours,0,0.2591,2,PK Concentration,ng/mL,0,0,84.754,42.902,30 mg,30,1,2,1,1,1,30 mg,Analysis set,635,30
+0,94,3.77711,4,Hours,0,0.064629,2,PK Concentration,ng/mL,0,0,84.754,42.902,30 mg,30,1,4,1,1,1,30 mg,Analysis set,636,30
+10,94,7.78784,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,84.754,42.902,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,637,30
+10,94,11.73506,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,84.754,42.902,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,638,30
+10,94,17.88818,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,84.754,42.902,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,639,30
+10,94,23.7353,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,84.754,42.902,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,640,30
+0,95,0,0,Hours,30,.,1,Dosing,mg,0,1,83.878,41.517,30 mg,30,1,0,1,1,1,30 mg,Analysis set,641,30
+0,95,0.10515,0.1,Hours,0,0.056887,2,PK Concentration,ng/mL,0,0,83.878,41.517,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,642,30
+0,95,0.72367,0.5,Hours,0,0.11065,2,PK Concentration,ng/mL,0,0,83.878,41.517,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,643,30
+0,95,1.18022,1,Hours,0,0.35931,2,PK Concentration,ng/mL,0,0,83.878,41.517,30 mg,30,1,1,1,1,1,30 mg,Analysis set,644,30
+0,95,2.20405,2,Hours,0,0.20009,2,PK Concentration,ng/mL,0,0,83.878,41.517,30 mg,30,1,2,1,1,1,30 mg,Analysis set,645,30
+0,95,4.28735,4,Hours,0,0.12642,2,PK Concentration,ng/mL,0,0,83.878,41.517,30 mg,30,1,4,1,1,1,30 mg,Analysis set,646,30
+0,95,8.25584,8,Hours,0,0.073517,2,PK Concentration,ng/mL,0,0,83.878,41.517,30 mg,30,1,8,1,1,1,30 mg,Analysis set,647,30
+0,95,12.24608,12,Hours,0,0.062952,2,PK Concentration,ng/mL,0,0,83.878,41.517,30 mg,30,1,12,1,1,1,30 mg,Analysis set,648,30
+10,95,18.30696,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,83.878,41.517,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,649,30
+10,95,24.27337,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,83.878,41.517,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,650,30
+0,96,0,0,Hours,30,.,1,Dosing,mg,0,1,121.11,57.137,30 mg,30,1,0,1,1,1,30 mg,Analysis set,651,30
+0,96,0.12236,0.1,Hours,0,0.068034,2,PK Concentration,ng/mL,0,0,121.11,57.137,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,652,30
+0,96,0.52289,0.5,Hours,0,0.16596,2,PK Concentration,ng/mL,0,0,121.11,57.137,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,653,30
+0,96,0.93763,1,Hours,0,0.20658,2,PK Concentration,ng/mL,0,0,121.11,57.137,30 mg,30,1,1,1,1,1,30 mg,Analysis set,654,30
+0,96,1.89116,2,Hours,0,0.31463,2,PK Concentration,ng/mL,0,0,121.11,57.137,30 mg,30,1,2,1,1,1,30 mg,Analysis set,655,30
+0,96,4.01112,4,Hours,0,0.05585,2,PK Concentration,ng/mL,0,0,121.11,57.137,30 mg,30,1,4,1,1,1,30 mg,Analysis set,656,30
+10,96,7.91944,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,121.11,57.137,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,657,30
+10,96,11.85686,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,121.11,57.137,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,658,30
+10,96,17.86944,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,121.11,57.137,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,659,30
+10,96,23.77888,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,121.11,57.137,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,660,30
+0,97,0,0,Hours,30,.,1,Dosing,mg,0,1,133.69,55.847,30 mg,30,1,0,1,1,1,30 mg,Analysis set,661,30
+10,97,0.06883,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.69,55.847,30 mg,30,1,0.1,1,1,1,30 mg,Below LLOQ,662,30
+0,97,0.44855,0.5,Hours,0,0.1921,2,PK Concentration,ng/mL,0,0,133.69,55.847,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,663,30
+0,97,0.99985,1,Hours,0,0.23065,2,PK Concentration,ng/mL,0,0,133.69,55.847,30 mg,30,1,1,1,1,1,30 mg,Analysis set,664,30
+0,97,2.13755,2,Hours,0,0.17834,2,PK Concentration,ng/mL,0,0,133.69,55.847,30 mg,30,1,2,1,1,1,30 mg,Analysis set,665,30
+0,97,4.13836,4,Hours,0,0.080614,2,PK Concentration,ng/mL,0,0,133.69,55.847,30 mg,30,1,4,1,1,1,30 mg,Analysis set,666,30
+10,97,8.08066,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.69,55.847,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,667,30
+10,97,11.98046,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.69,55.847,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,668,30
+10,97,17.87606,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.69,55.847,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,669,30
+10,97,23.895,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.69,55.847,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,670,30
+0,98,0,0,Hours,30,.,1,Dosing,mg,0,1,80.206,55.302,30 mg,30,1,0,1,1,1,30 mg,Analysis set,671,30
+0,98,0.14646,0.1,Hours,0,0.13245,2,PK Concentration,ng/mL,0,0,80.206,55.302,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,672,30
+0,98,0.48534,0.5,Hours,0,0.10025,2,PK Concentration,ng/mL,0,0,80.206,55.302,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,673,30
+0,98,0.96182,1,Hours,0,0.31455,2,PK Concentration,ng/mL,0,0,80.206,55.302,30 mg,30,1,1,1,1,1,30 mg,Analysis set,674,30
+0,98,2.07718,2,Hours,0,0.23572,2,PK Concentration,ng/mL,0,0,80.206,55.302,30 mg,30,1,2,1,1,1,30 mg,Analysis set,675,30
+0,98,4.04219,4,Hours,0,0.25946,2,PK Concentration,ng/mL,0,0,80.206,55.302,30 mg,30,1,4,1,1,1,30 mg,Analysis set,676,30
+0,98,8.00311,8,Hours,0,0.13295,2,PK Concentration,ng/mL,0,0,80.206,55.302,30 mg,30,1,8,1,1,1,30 mg,Analysis set,677,30
+0,98,11.84812,12,Hours,0,0.12596,2,PK Concentration,ng/mL,0,0,80.206,55.302,30 mg,30,1,12,1,1,1,30 mg,Analysis set,678,30
+0,98,17.79657,18,Hours,0,0.071785,2,PK Concentration,ng/mL,0,0,80.206,55.302,30 mg,30,1,18,1,1,1,30 mg,Analysis set,679,30
+0,98,23.7404,23.9,Hours,0,0.052102,2,PK Concentration,ng/mL,0,0,80.206,55.302,30 mg,30,1,23.9,1,1,1,30 mg,Analysis set,680,30
+0,99,0,0,Hours,30,.,1,Dosing,mg,0,1,96.745,49.018,30 mg,30,1,0,1,1,1,30 mg,Analysis set,681,30
+0,99,0.18481,0.1,Hours,0,0.12016,2,PK Concentration,ng/mL,0,0,96.745,49.018,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,682,30
+0,99,0.72969,0.5,Hours,0,0.36903,2,PK Concentration,ng/mL,0,0,96.745,49.018,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,683,30
+0,99,1.35523,1,Hours,0,0.3887,2,PK Concentration,ng/mL,0,0,96.745,49.018,30 mg,30,1,1,1,1,1,30 mg,Analysis set,684,30
+0,99,2.37487,2,Hours,0,0.19279,2,PK Concentration,ng/mL,0,0,96.745,49.018,30 mg,30,1,2,1,1,1,30 mg,Analysis set,685,30
+0,99,4.43998,4,Hours,0,0.19117,2,PK Concentration,ng/mL,0,0,96.745,49.018,30 mg,30,1,4,1,1,1,30 mg,Analysis set,686,30
+0,99,8.33256,8,Hours,0,0.087244,2,PK Concentration,ng/mL,0,0,96.745,49.018,30 mg,30,1,8,1,1,1,30 mg,Analysis set,687,30
+10,99,12.39657,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,96.745,49.018,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,688,30
+10,99,18.31423,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,96.745,49.018,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,689,30
+10,99,24.43297,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,96.745,49.018,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,690,30
+0,100,0,0,Hours,30,.,1,Dosing,mg,0,1,109.04,46.163,30 mg,30,1,0,1,1,1,30 mg,Analysis set,691,30
+10,100,0.06671,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,109.04,46.163,30 mg,30,1,0.1,1,1,1,30 mg,Below LLOQ,692,30
+0,100,0.32435,0.5,Hours,0,0.12057,2,PK Concentration,ng/mL,0,0,109.04,46.163,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,693,30
+0,100,1.09785,1,Hours,0,0.20807,2,PK Concentration,ng/mL,0,0,109.04,46.163,30 mg,30,1,1,1,1,1,30 mg,Analysis set,694,30
+0,100,2.14235,2,Hours,0,0.11653,2,PK Concentration,ng/mL,0,0,109.04,46.163,30 mg,30,1,2,1,1,1,30 mg,Analysis set,695,30
+0,100,4.09254,4,Hours,0,0.097987,2,PK Concentration,ng/mL,0,0,109.04,46.163,30 mg,30,1,4,1,1,1,30 mg,Analysis set,696,30
+10,100,8.09164,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,109.04,46.163,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,697,30
+10,100,12.16465,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,109.04,46.163,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,698,30
+10,100,18.21023,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,109.04,46.163,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,699,30
+10,100,24.06574,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,109.04,46.163,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,700,30
+0,101,0,0,Hours,30,.,1,Dosing,mg,0,1,142.04,53.02,30 mg,30,1,0,1,1,1,30 mg,Analysis set,701,30
+0,101,0.06896,0.1,Hours,0,0.068493,2,PK Concentration,ng/mL,0,0,142.04,53.02,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,702,30
+0,101,0.449,0.5,Hours,0,0.29452,2,PK Concentration,ng/mL,0,0,142.04,53.02,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,703,30
+0,101,1.00014,1,Hours,0,0.38954,2,PK Concentration,ng/mL,0,0,142.04,53.02,30 mg,30,1,1,1,1,1,30 mg,Analysis set,704,30
+0,101,1.90757,2,Hours,0,0.1879,2,PK Concentration,ng/mL,0,0,142.04,53.02,30 mg,30,1,2,1,1,1,30 mg,Analysis set,705,30
+0,101,3.75628,4,Hours,0,0.13172,2,PK Concentration,ng/mL,0,0,142.04,53.02,30 mg,30,1,4,1,1,1,30 mg,Analysis set,706,30
+10,101,7.809,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.04,53.02,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,707,30
+10,101,11.89533,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.04,53.02,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,708,30
+10,101,17.87456,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.04,53.02,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,709,30
+10,101,23.68814,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,142.04,53.02,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,710,30
+0,102,0,0,Hours,30,.,1,Dosing,mg,0,1,111.7,53.996,30 mg,30,1,0,1,1,1,30 mg,Analysis set,711,30
+0,102,0.12282,0.1,Hours,0,0.18039,2,PK Concentration,ng/mL,0,0,111.7,53.996,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,712,30
+0,102,0.60436,0.5,Hours,0,0.45544,2,PK Concentration,ng/mL,0,0,111.7,53.996,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,713,30
+0,102,1.07791,1,Hours,0,0.5314,2,PK Concentration,ng/mL,0,0,111.7,53.996,30 mg,30,1,1,1,1,1,30 mg,Analysis set,714,30
+0,102,2.12511,2,Hours,0,0.31196,2,PK Concentration,ng/mL,0,0,111.7,53.996,30 mg,30,1,2,1,1,1,30 mg,Analysis set,715,30
+0,102,4.16856,4,Hours,0,0.14115,2,PK Concentration,ng/mL,0,0,111.7,53.996,30 mg,30,1,4,1,1,1,30 mg,Analysis set,716,30
+10,102,8.3225,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.7,53.996,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,717,30
+10,102,12.31985,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.7,53.996,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,718,30
+10,102,18.42132,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.7,53.996,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,719,30
+10,102,24.38577,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.7,53.996,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,720,30
+0,103,0,0,Hours,30,.,1,Dosing,mg,0,1,92.732,50.635,30 mg,30,1,0,1,1,1,30 mg,Analysis set,721,30
+10,103,0.10063,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,92.732,50.635,30 mg,30,1,0.1,1,1,1,30 mg,Below LLOQ,722,30
+0,103,0.33054,0.5,Hours,0,0.1518,2,PK Concentration,ng/mL,0,0,92.732,50.635,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,723,30
+0,103,0.84919,1,Hours,0,0.1649,2,PK Concentration,ng/mL,0,0,92.732,50.635,30 mg,30,1,1,1,1,1,30 mg,Analysis set,724,30
+0,103,1.81018,2,Hours,0,0.17894,2,PK Concentration,ng/mL,0,0,92.732,50.635,30 mg,30,1,2,1,1,1,30 mg,Analysis set,725,30
+0,103,3.94291,4,Hours,0,0.10985,2,PK Concentration,ng/mL,0,0,92.732,50.635,30 mg,30,1,4,1,1,1,30 mg,Analysis set,726,30
+0,103,7.84246,8,Hours,0,0.10832,2,PK Concentration,ng/mL,0,0,92.732,50.635,30 mg,30,1,8,1,1,1,30 mg,Analysis set,727,30
+0,103,12.02864,12,Hours,0,0.092176,2,PK Concentration,ng/mL,0,0,92.732,50.635,30 mg,30,1,12,1,1,1,30 mg,Analysis set,728,30
+10,103,17.83749,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,92.732,50.635,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,729,30
+0,103,23.68433,23.9,Hours,0,0.055384,2,PK Concentration,ng/mL,0,0,92.732,50.635,30 mg,30,1,23.9,1,1,1,30 mg,Analysis set,730,30
+0,104,0,0,Hours,30,.,1,Dosing,mg,0,1,83.444,58.264,30 mg,30,1,0,1,1,1,30 mg,Analysis set,731,30
+10,104,0.07993,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,83.444,58.264,30 mg,30,1,0.1,1,1,1,30 mg,Below LLOQ,732,30
+0,104,0.36403,0.5,Hours,0,0.16038,2,PK Concentration,ng/mL,0,0,83.444,58.264,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,733,30
+0,104,0.92853,1,Hours,0,0.21547,2,PK Concentration,ng/mL,0,0,83.444,58.264,30 mg,30,1,1,1,1,1,30 mg,Analysis set,734,30
+0,104,1.95744,2,Hours,0,0.17339,2,PK Concentration,ng/mL,0,0,83.444,58.264,30 mg,30,1,2,1,1,1,30 mg,Analysis set,735,30
+0,104,4.06254,4,Hours,0,0.16116,2,PK Concentration,ng/mL,0,0,83.444,58.264,30 mg,30,1,4,1,1,1,30 mg,Analysis set,736,30
+0,104,7.98263,8,Hours,0,0.080437,2,PK Concentration,ng/mL,0,0,83.444,58.264,30 mg,30,1,8,1,1,1,30 mg,Analysis set,737,30
+10,104,12.1307,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,83.444,58.264,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,738,30
+10,104,18.14547,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,83.444,58.264,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,739,30
+10,104,23.91445,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,83.444,58.264,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,740,30
+0,105,0,0,Hours,30,.,1,Dosing,mg,0,1,121.69,49.004,30 mg,30,1,0,1,1,1,30 mg,Analysis set,741,30
+0,105,0.08799,0.1,Hours,0,0.21545,2,PK Concentration,ng/mL,0,0,121.69,49.004,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,742,30
+0,105,0.4915,0.5,Hours,0,0.21836,2,PK Concentration,ng/mL,0,0,121.69,49.004,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,743,30
+0,105,1.01327,1,Hours,0,0.56205,2,PK Concentration,ng/mL,0,0,121.69,49.004,30 mg,30,1,1,1,1,1,30 mg,Analysis set,744,30
+0,105,2.16344,2,Hours,0,0.49329,2,PK Concentration,ng/mL,0,0,121.69,49.004,30 mg,30,1,2,1,1,1,30 mg,Analysis set,745,30
+0,105,4.24444,4,Hours,0,0.1061,2,PK Concentration,ng/mL,0,0,121.69,49.004,30 mg,30,1,4,1,1,1,30 mg,Analysis set,746,30
+10,105,8.17064,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,121.69,49.004,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,747,30
+10,105,12.10069,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,121.69,49.004,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,748,30
+10,105,18.20997,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,121.69,49.004,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,749,30
+10,105,24.1087,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,121.69,49.004,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,750,30
+0,106,0,0,Hours,30,.,1,Dosing,mg,0,1,133.3,53.44,30 mg,30,1,0,1,1,1,30 mg,Analysis set,751,30
+10,106,0.04011,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.3,53.44,30 mg,30,1,0.1,1,1,1,30 mg,Below LLOQ,752,30
+0,106,0.34121,0.5,Hours,0,0.16255,2,PK Concentration,ng/mL,0,0,133.3,53.44,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,753,30
+0,106,1.03168,1,Hours,0,0.14393,2,PK Concentration,ng/mL,0,0,133.3,53.44,30 mg,30,1,1,1,1,1,30 mg,Analysis set,754,30
+0,106,2.03189,2,Hours,0,0.16918,2,PK Concentration,ng/mL,0,0,133.3,53.44,30 mg,30,1,2,1,1,1,30 mg,Analysis set,755,30
+10,106,4.06794,4,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.3,53.44,30 mg,30,1,4,1,1,1,30 mg,Below LLOQ,756,30
+10,106,8.04567,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.3,53.44,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,757,30
+10,106,11.88142,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.3,53.44,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,758,30
+10,106,17.76261,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.3,53.44,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,759,30
+10,106,23.76669,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.3,53.44,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,760,30
+0,107,0,0,Hours,30,.,1,Dosing,mg,0,1,84.755,49.63,30 mg,30,1,0,1,1,1,30 mg,Analysis set,761,30
+0,107,0.07056,0.1,Hours,0,0.085107,2,PK Concentration,ng/mL,0,0,84.755,49.63,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,762,30
+0,107,0.40453,0.5,Hours,0,0.22446,2,PK Concentration,ng/mL,0,0,84.755,49.63,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,763,30
+0,107,0.91703,1,Hours,0,0.23832,2,PK Concentration,ng/mL,0,0,84.755,49.63,30 mg,30,1,1,1,1,1,30 mg,Analysis set,764,30
+0,107,1.79568,2,Hours,0,0.27753,2,PK Concentration,ng/mL,0,0,84.755,49.63,30 mg,30,1,2,1,1,1,30 mg,Analysis set,765,30
+0,107,3.73812,4,Hours,0,0.050193,2,PK Concentration,ng/mL,0,0,84.755,49.63,30 mg,30,1,4,1,1,1,30 mg,Analysis set,766,30
+10,107,7.71362,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,84.755,49.63,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,767,30
+10,107,11.66978,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,84.755,49.63,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,768,30
+10,107,17.6751,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,84.755,49.63,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,769,30
+10,107,23.57673,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,84.755,49.63,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,770,30
+0,108,0,0,Hours,30,.,1,Dosing,mg,0,1,95.846,46.434,30 mg,30,1,0,1,1,1,30 mg,Analysis set,771,30
+10,108,0.09789,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,95.846,46.434,30 mg,30,1,0.1,1,1,1,30 mg,Below LLOQ,772,30
+0,108,0.48672,0.5,Hours,0,0.22912,2,PK Concentration,ng/mL,0,0,95.846,46.434,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,773,30
+0,108,0.9398,1,Hours,0,0.19435,2,PK Concentration,ng/mL,0,0,95.846,46.434,30 mg,30,1,1,1,1,1,30 mg,Analysis set,774,30
+0,108,1.87374,2,Hours,0,0.087053,2,PK Concentration,ng/mL,0,0,95.846,46.434,30 mg,30,1,2,1,1,1,30 mg,Analysis set,775,30
+0,108,3.98975,4,Hours,0,0.1725,2,PK Concentration,ng/mL,0,0,95.846,46.434,30 mg,30,1,4,1,1,1,30 mg,Analysis set,776,30
+0,108,7.85965,8,Hours,0,0.078384,2,PK Concentration,ng/mL,0,0,95.846,46.434,30 mg,30,1,8,1,1,1,30 mg,Analysis set,777,30
+10,108,11.70574,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,95.846,46.434,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,778,30
+10,108,17.86701,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,95.846,46.434,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,779,30
+10,108,23.91378,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,95.846,46.434,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,780,30
+0,109,0,0,Hours,30,.,1,Dosing,mg,0,1,113.81,57.663,30 mg,30,1,0,1,1,1,30 mg,Analysis set,781,30
+10,109,0.07568,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,113.81,57.663,30 mg,30,1,0.1,1,1,1,30 mg,Below LLOQ,782,30
+0,109,0.47212,0.5,Hours,0,0.20317,2,PK Concentration,ng/mL,0,0,113.81,57.663,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,783,30
+0,109,0.93694,1,Hours,0,0.12709,2,PK Concentration,ng/mL,0,0,113.81,57.663,30 mg,30,1,1,1,1,1,30 mg,Analysis set,784,30
+0,109,1.94935,2,Hours,0,0.19622,2,PK Concentration,ng/mL,0,0,113.81,57.663,30 mg,30,1,2,1,1,1,30 mg,Analysis set,785,30
+0,109,4.02112,4,Hours,0,0.17164,2,PK Concentration,ng/mL,0,0,113.81,57.663,30 mg,30,1,4,1,1,1,30 mg,Analysis set,786,30
+0,109,7.93445,8,Hours,0,0.14549,2,PK Concentration,ng/mL,0,0,113.81,57.663,30 mg,30,1,8,1,1,1,30 mg,Analysis set,787,30
+0,109,11.93747,12,Hours,0,0.06766,2,PK Concentration,ng/mL,0,0,113.81,57.663,30 mg,30,1,12,1,1,1,30 mg,Analysis set,788,30
+10,109,17.91233,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,113.81,57.663,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,789,30
+10,109,23.98528,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,113.81,57.663,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,790,30
+0,110,0,0,Hours,30,.,1,Dosing,mg,0,1,116.78,58.513,30 mg,30,1,0,1,1,1,30 mg,Analysis set,791,30
+0,110,0.19224,0.1,Hours,0,0.19189,2,PK Concentration,ng/mL,0,0,116.78,58.513,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,792,30
+0,110,0.49175,0.5,Hours,0,0.27813,2,PK Concentration,ng/mL,0,0,116.78,58.513,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,793,30
+0,110,1.03657,1,Hours,0,0.24317,2,PK Concentration,ng/mL,0,0,116.78,58.513,30 mg,30,1,1,1,1,1,30 mg,Analysis set,794,30
+0,110,1.79408,2,Hours,0,0.23811,2,PK Concentration,ng/mL,0,0,116.78,58.513,30 mg,30,1,2,1,1,1,30 mg,Analysis set,795,30
+0,110,4.04061,4,Hours,0,0.11589,2,PK Concentration,ng/mL,0,0,116.78,58.513,30 mg,30,1,4,1,1,1,30 mg,Analysis set,796,30
+10,110,7.88764,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,116.78,58.513,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,797,30
+10,110,11.73823,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,116.78,58.513,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,798,30
+10,110,17.68101,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,116.78,58.513,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,799,30
+10,110,23.45354,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,116.78,58.513,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,800,30
+0,111,0,0,Hours,30,.,1,Dosing,mg,0,1,138.87,58.687,30 mg,30,1,0,1,1,1,30 mg,Analysis set,801,30
+0,111,0.1245,0.1,Hours,0,0.11723,2,PK Concentration,ng/mL,0,0,138.87,58.687,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,802,30
+0,111,0.46706,0.5,Hours,0,0.53593,2,PK Concentration,ng/mL,0,0,138.87,58.687,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,803,30
+0,111,0.85682,1,Hours,0,0.49724,2,PK Concentration,ng/mL,0,0,138.87,58.687,30 mg,30,1,1,1,1,1,30 mg,Analysis set,804,30
+0,111,1.76439,2,Hours,0,0.32097,2,PK Concentration,ng/mL,0,0,138.87,58.687,30 mg,30,1,2,1,1,1,30 mg,Analysis set,805,30
+0,111,3.64934,4,Hours,0,0.12996,2,PK Concentration,ng/mL,0,0,138.87,58.687,30 mg,30,1,4,1,1,1,30 mg,Analysis set,806,30
+10,111,7.54362,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,138.87,58.687,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,807,30
+10,111,11.56732,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,138.87,58.687,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,808,30
+10,111,17.61184,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,138.87,58.687,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,809,30
+10,111,23.54206,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,138.87,58.687,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,810,30
+0,112,0,0,Hours,30,.,1,Dosing,mg,0,1,114,50.922,30 mg,30,1,0,1,1,1,30 mg,Analysis set,811,30
+0,112,0.14967,0.1,Hours,0,0.17008,2,PK Concentration,ng/mL,0,0,114,50.922,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,812,30
+0,112,0.67075,0.5,Hours,0,0.36436,2,PK Concentration,ng/mL,0,0,114,50.922,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,813,30
+0,112,1.26443,1,Hours,0,0.41501,2,PK Concentration,ng/mL,0,0,114,50.922,30 mg,30,1,1,1,1,1,30 mg,Analysis set,814,30
+0,112,2.35366,2,Hours,0,0.31444,2,PK Concentration,ng/mL,0,0,114,50.922,30 mg,30,1,2,1,1,1,30 mg,Analysis set,815,30
+0,112,4.45544,4,Hours,0,0.13989,2,PK Concentration,ng/mL,0,0,114,50.922,30 mg,30,1,4,1,1,1,30 mg,Analysis set,816,30
+0,112,8.3548,8,Hours,0,0.065395,2,PK Concentration,ng/mL,0,0,114,50.922,30 mg,30,1,8,1,1,1,30 mg,Analysis set,817,30
+10,112,12.25127,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,114,50.922,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,818,30
+10,112,18.29111,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,114,50.922,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,819,30
+10,112,24.13447,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,114,50.922,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,820,30
+0,113,0,0,Hours,30,.,1,Dosing,mg,0,1,114.26,49.663,30 mg,30,1,0,1,1,1,30 mg,Analysis set,821,30
+0,113,0.18013,0.1,Hours,0,0.15112,2,PK Concentration,ng/mL,0,0,114.26,49.663,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,822,30
+0,113,0.71043,0.5,Hours,0,0.42257,2,PK Concentration,ng/mL,0,0,114.26,49.663,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,823,30
+0,113,1.51803,1,Hours,0,0.39695,2,PK Concentration,ng/mL,0,0,114.26,49.663,30 mg,30,1,1,1,1,1,30 mg,Analysis set,824,30
+0,113,2.32625,2,Hours,0,0.27912,2,PK Concentration,ng/mL,0,0,114.26,49.663,30 mg,30,1,2,1,1,1,30 mg,Analysis set,825,30
+0,113,4.2446,4,Hours,0,0.23177,2,PK Concentration,ng/mL,0,0,114.26,49.663,30 mg,30,1,4,1,1,1,30 mg,Analysis set,826,30
+10,113,8.33669,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,114.26,49.663,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,827,30
+10,113,12.38659,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,114.26,49.663,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,828,30
+10,113,18.20765,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,114.26,49.663,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,829,30
+10,113,24.21544,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,114.26,49.663,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,830,30
+0,114,0,0,Hours,30,.,1,Dosing,mg,0,1,105.09,49.476,30 mg,30,1,0,1,1,1,30 mg,Analysis set,831,30
+10,114,0.00826,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,105.09,49.476,30 mg,30,1,0.1,1,1,1,30 mg,Below LLOQ,832,30
+0,114,0.31636,0.5,Hours,0,0.16338,2,PK Concentration,ng/mL,0,0,105.09,49.476,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,833,30
+0,114,0.67668,1,Hours,0,0.11719,2,PK Concentration,ng/mL,0,0,105.09,49.476,30 mg,30,1,1,1,1,1,30 mg,Analysis set,834,30
+0,114,1.66044,2,Hours,0,0.3698,2,PK Concentration,ng/mL,0,0,105.09,49.476,30 mg,30,1,2,1,1,1,30 mg,Analysis set,835,30
+0,114,3.75573,4,Hours,0,0.17491,2,PK Concentration,ng/mL,0,0,105.09,49.476,30 mg,30,1,4,1,1,1,30 mg,Analysis set,836,30
+10,114,8.02073,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,105.09,49.476,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,837,30
+10,114,11.94735,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,105.09,49.476,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,838,30
+10,114,17.91359,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,105.09,49.476,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,839,30
+10,114,23.92279,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,105.09,49.476,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,840,30
+0,115,0,0,Hours,30,.,1,Dosing,mg,0,1,129.36,50.889,30 mg,30,1,0,1,1,1,30 mg,Analysis set,841,30
+0,115,0.088,0.1,Hours,0,0.05393,2,PK Concentration,ng/mL,0,0,129.36,50.889,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,842,30
+0,115,0.44149,0.5,Hours,0,0.23465,2,PK Concentration,ng/mL,0,0,129.36,50.889,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,843,30
+0,115,1.03529,1,Hours,0,0.31535,2,PK Concentration,ng/mL,0,0,129.36,50.889,30 mg,30,1,1,1,1,1,30 mg,Analysis set,844,30
+0,115,2.01344,2,Hours,0,0.1901,2,PK Concentration,ng/mL,0,0,129.36,50.889,30 mg,30,1,2,1,1,1,30 mg,Analysis set,845,30
+0,115,4.08563,4,Hours,0,0.073228,2,PK Concentration,ng/mL,0,0,129.36,50.889,30 mg,30,1,4,1,1,1,30 mg,Analysis set,846,30
+10,115,8.00542,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,129.36,50.889,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,847,30
+10,115,12.03987,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,129.36,50.889,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,848,30
+10,115,17.96923,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,129.36,50.889,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,849,30
+10,115,24.05987,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,129.36,50.889,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,850,30
+0,116,0,0,Hours,30,.,1,Dosing,mg,0,1,109.16,42.2,30 mg,30,1,0,1,1,1,30 mg,Analysis set,851,30
+10,116,0.00674,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,109.16,42.2,30 mg,30,1,0.1,1,1,1,30 mg,Below LLOQ,852,30
+0,116,0.56605,0.5,Hours,0,0.12818,2,PK Concentration,ng/mL,0,0,109.16,42.2,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,853,30
+0,116,1.1961,1,Hours,0,0.19893,2,PK Concentration,ng/mL,0,0,109.16,42.2,30 mg,30,1,1,1,1,1,30 mg,Analysis set,854,30
+0,116,2.20765,2,Hours,0,0.18766,2,PK Concentration,ng/mL,0,0,109.16,42.2,30 mg,30,1,2,1,1,1,30 mg,Analysis set,855,30
+0,116,4.18117,4,Hours,0,0.069117,2,PK Concentration,ng/mL,0,0,109.16,42.2,30 mg,30,1,4,1,1,1,30 mg,Analysis set,856,30
+10,116,8.21117,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,109.16,42.2,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,857,30
+10,116,12.18389,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,109.16,42.2,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,858,30
+10,116,18.04663,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,109.16,42.2,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,859,30
+10,116,23.88948,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,109.16,42.2,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,860,30
+0,117,0,0,Hours,30,.,1,Dosing,mg,0,1,116.96,45.204,30 mg,30,1,0,1,1,1,30 mg,Analysis set,861,30
+10,117,0.1776,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,116.96,45.204,30 mg,30,1,0.1,1,1,1,30 mg,Below LLOQ,862,30
+0,117,0.71134,0.5,Hours,0,0.083666,2,PK Concentration,ng/mL,0,0,116.96,45.204,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,863,30
+0,117,1.17209,1,Hours,0,0.15478,2,PK Concentration,ng/mL,0,0,116.96,45.204,30 mg,30,1,1,1,1,1,30 mg,Analysis set,864,30
+0,117,2.20991,2,Hours,0,0.063504,2,PK Concentration,ng/mL,0,0,116.96,45.204,30 mg,30,1,2,1,1,1,30 mg,Analysis set,865,30
+0,117,4.10099,4,Hours,0,0.085747,2,PK Concentration,ng/mL,0,0,116.96,45.204,30 mg,30,1,4,1,1,1,30 mg,Analysis set,866,30
+10,117,8.04965,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,116.96,45.204,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,867,30
+0,117,11.88236,12,Hours,0,0.052503,2,PK Concentration,ng/mL,0,0,116.96,45.204,30 mg,30,1,12,1,1,1,30 mg,Analysis set,868,30
+10,117,17.87129,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,116.96,45.204,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,869,30
+10,117,23.75508,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,116.96,45.204,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,870,30
+0,118,0,0,Hours,30,.,1,Dosing,mg,0,1,119.33,40.657,30 mg,30,1,0,1,1,1,30 mg,Analysis set,871,30
+0,118,0.23304,0.1,Hours,0,0.11687,2,PK Concentration,ng/mL,0,0,119.33,40.657,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,872,30
+0,118,0.57989,0.5,Hours,0,0.19397,2,PK Concentration,ng/mL,0,0,119.33,40.657,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,873,30
+0,118,1.32308,1,Hours,0,0.19485,2,PK Concentration,ng/mL,0,0,119.33,40.657,30 mg,30,1,1,1,1,1,30 mg,Analysis set,874,30
+0,118,2.37697,2,Hours,0,0.050287,2,PK Concentration,ng/mL,0,0,119.33,40.657,30 mg,30,1,2,1,1,1,30 mg,Analysis set,875,30
+0,118,4.24662,4,Hours,0,0.10055,2,PK Concentration,ng/mL,0,0,119.33,40.657,30 mg,30,1,4,1,1,1,30 mg,Analysis set,876,30
+10,118,8.32718,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,119.33,40.657,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,877,30
+10,118,12.33606,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,119.33,40.657,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,878,30
+10,118,18.38175,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,119.33,40.657,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,879,30
+10,118,24.11242,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,119.33,40.657,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,880,30
+0,119,0,0,Hours,30,.,1,Dosing,mg,0,1,130.04,57.173,30 mg,30,1,0,1,1,1,30 mg,Analysis set,881,30
+10,119,0.02008,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,130.04,57.173,30 mg,30,1,0.1,1,1,1,30 mg,Below LLOQ,882,30
+0,119,0.46269,0.5,Hours,0,0.20976,2,PK Concentration,ng/mL,0,0,130.04,57.173,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,883,30
+0,119,1.07657,1,Hours,0,0.33665,2,PK Concentration,ng/mL,0,0,130.04,57.173,30 mg,30,1,1,1,1,1,30 mg,Analysis set,884,30
+0,119,1.96912,2,Hours,0,0.11558,2,PK Concentration,ng/mL,0,0,130.04,57.173,30 mg,30,1,2,1,1,1,30 mg,Analysis set,885,30
+0,119,3.9303,4,Hours,0,0.12248,2,PK Concentration,ng/mL,0,0,130.04,57.173,30 mg,30,1,4,1,1,1,30 mg,Analysis set,886,30
+0,119,7.84104,8,Hours,0,0.056566,2,PK Concentration,ng/mL,0,0,130.04,57.173,30 mg,30,1,8,1,1,1,30 mg,Analysis set,887,30
+10,119,11.7725,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,130.04,57.173,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,888,30
+10,119,17.69016,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,130.04,57.173,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,889,30
+10,119,23.47796,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,130.04,57.173,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,890,30
+0,120,0,0,Hours,30,.,1,Dosing,mg,0,1,95.384,47.696,30 mg,30,1,0,1,1,1,30 mg,Analysis set,891,30
+0,120,0.19822,0.1,Hours,0,0.072752,2,PK Concentration,ng/mL,0,0,95.384,47.696,30 mg,30,1,0.1,1,1,1,30 mg,Analysis set,892,30
+0,120,0.64213,0.5,Hours,0,0.18071,2,PK Concentration,ng/mL,0,0,95.384,47.696,30 mg,30,1,0.5,1,1,1,30 mg,Analysis set,893,30
+0,120,1.04507,1,Hours,0,0.086114,2,PK Concentration,ng/mL,0,0,95.384,47.696,30 mg,30,1,1,1,1,1,30 mg,Analysis set,894,30
+0,120,2.05861,2,Hours,0,0.066699,2,PK Concentration,ng/mL,0,0,95.384,47.696,30 mg,30,1,2,1,1,1,30 mg,Analysis set,895,30
+0,120,4.02579,4,Hours,0,0.13774,2,PK Concentration,ng/mL,0,0,95.384,47.696,30 mg,30,1,4,1,1,1,30 mg,Analysis set,896,30
+10,120,8.00918,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,95.384,47.696,30 mg,30,1,8,1,1,1,30 mg,Below LLOQ,897,30
+10,120,12.13113,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,95.384,47.696,30 mg,30,1,12,1,1,1,30 mg,Below LLOQ,898,30
+10,120,18.12645,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,95.384,47.696,30 mg,30,1,18,1,1,1,30 mg,Below LLOQ,899,30
+10,120,24.07496,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,95.384,47.696,30 mg,30,1,23.9,1,1,1,30 mg,Below LLOQ,900,30
+0,121,0,0,Hours,100,.,1,Dosing,mg,0,1,136.77,47.184,100 mg,100,1,0,1,1,1,100 mg,Analysis set,901,100
+0,121,0.02479,0.1,Hours,0,0.071078,2,PK Concentration,ng/mL,0,0,136.77,47.184,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,902,100
+0,121,0.36324,0.5,Hours,0,0.69813,2,PK Concentration,ng/mL,0,0,136.77,47.184,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,903,100
+0,121,0.7975,1,Hours,0,1.2559,2,PK Concentration,ng/mL,0,0,136.77,47.184,100 mg,100,1,1,1,1,1,100 mg,Analysis set,904,100
+0,121,1.76767,2,Hours,0,1.1848,2,PK Concentration,ng/mL,0,0,136.77,47.184,100 mg,100,1,2,1,1,1,100 mg,Analysis set,905,100
+0,121,3.69121,4,Hours,0,0.43703,2,PK Concentration,ng/mL,0,0,136.77,47.184,100 mg,100,1,4,1,1,1,100 mg,Analysis set,906,100
+0,121,7.82843,8,Hours,0,0.13704,2,PK Concentration,ng/mL,0,0,136.77,47.184,100 mg,100,1,8,1,1,1,100 mg,Analysis set,907,100
+0,121,11.89969,12,Hours,0,0.10741,2,PK Concentration,ng/mL,0,0,136.77,47.184,100 mg,100,1,12,1,1,1,100 mg,Analysis set,908,100
+0,121,18.01424,18,Hours,0,0.060968,2,PK Concentration,ng/mL,0,0,136.77,47.184,100 mg,100,1,18,1,1,1,100 mg,Analysis set,909,100
+10,121,23.81114,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,136.77,47.184,100 mg,100,1,23.9,1,1,1,100 mg,Below LLOQ,910,100
+0,122,0,0,Hours,100,.,1,Dosing,mg,0,1,94.357,49.776,100 mg,100,1,0,1,1,1,100 mg,Analysis set,911,100
+0,122,0.18565,0.1,Hours,0,0.24245,2,PK Concentration,ng/mL,0,0,94.357,49.776,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,912,100
+0,122,0.59963,0.5,Hours,0,0.3664,2,PK Concentration,ng/mL,0,0,94.357,49.776,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,913,100
+0,122,1.15334,1,Hours,0,0.81816,2,PK Concentration,ng/mL,0,0,94.357,49.776,100 mg,100,1,1,1,1,1,100 mg,Analysis set,914,100
+0,122,2.20166,2,Hours,0,0.61674,2,PK Concentration,ng/mL,0,0,94.357,49.776,100 mg,100,1,2,1,1,1,100 mg,Analysis set,915,100
+0,122,4.38005,4,Hours,0,0.57963,2,PK Concentration,ng/mL,0,0,94.357,49.776,100 mg,100,1,4,1,1,1,100 mg,Analysis set,916,100
+0,122,8.66431,8,Hours,0,0.09613,2,PK Concentration,ng/mL,0,0,94.357,49.776,100 mg,100,1,8,1,1,1,100 mg,Analysis set,917,100
+0,122,12.73189,12,Hours,0,0.14476,2,PK Concentration,ng/mL,0,0,94.357,49.776,100 mg,100,1,12,1,1,1,100 mg,Analysis set,918,100
+0,122,18.67622,18,Hours,0,0.077275,2,PK Concentration,ng/mL,0,0,94.357,49.776,100 mg,100,1,18,1,1,1,100 mg,Analysis set,919,100
+10,122,24.63433,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,94.357,49.776,100 mg,100,1,23.9,1,1,1,100 mg,Below LLOQ,920,100
+0,123,0,0,Hours,100,.,1,Dosing,mg,0,1,81.491,57.013,100 mg,100,1,0,1,1,1,100 mg,Analysis set,921,100
+10,123,0.0131,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,81.491,57.013,100 mg,100,1,0.1,1,1,1,100 mg,Below LLOQ,922,100
+0,123,0.29813,0.5,Hours,0,0.41137,2,PK Concentration,ng/mL,0,0,81.491,57.013,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,923,100
+0,123,0.81341,1,Hours,0,1.2466,2,PK Concentration,ng/mL,0,0,81.491,57.013,100 mg,100,1,1,1,1,1,100 mg,Analysis set,924,100
+0,123,1.68078,2,Hours,0,0.67687,2,PK Concentration,ng/mL,0,0,81.491,57.013,100 mg,100,1,2,1,1,1,100 mg,Analysis set,925,100
+0,123,3.70704,4,Hours,0,0.54053,2,PK Concentration,ng/mL,0,0,81.491,57.013,100 mg,100,1,4,1,1,1,100 mg,Analysis set,926,100
+0,123,7.81287,8,Hours,0,0.22388,2,PK Concentration,ng/mL,0,0,81.491,57.013,100 mg,100,1,8,1,1,1,100 mg,Analysis set,927,100
+0,123,11.64694,12,Hours,0,0.15922,2,PK Concentration,ng/mL,0,0,81.491,57.013,100 mg,100,1,12,1,1,1,100 mg,Analysis set,928,100
+0,123,17.64373,18,Hours,0,0.085794,2,PK Concentration,ng/mL,0,0,81.491,57.013,100 mg,100,1,18,1,1,1,100 mg,Analysis set,929,100
+0,123,23.44087,23.9,Hours,0,0.058996,2,PK Concentration,ng/mL,0,0,81.491,57.013,100 mg,100,1,23.9,1,1,1,100 mg,Analysis set,930,100
+0,124,0,0,Hours,100,.,1,Dosing,mg,0,1,115.37,51.224,100 mg,100,1,0,1,1,1,100 mg,Analysis set,931,100
+0,124,0.05613,0.1,Hours,0,0.1857,2,PK Concentration,ng/mL,0,0,115.37,51.224,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,932,100
+0,124,0.49574,0.5,Hours,0,0.7842,2,PK Concentration,ng/mL,0,0,115.37,51.224,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,933,100
+0,124,1.0832,1,Hours,0,0.92287,2,PK Concentration,ng/mL,0,0,115.37,51.224,100 mg,100,1,1,1,1,1,100 mg,Analysis set,934,100
+0,124,2.10227,2,Hours,0,0.89822,2,PK Concentration,ng/mL,0,0,115.37,51.224,100 mg,100,1,2,1,1,1,100 mg,Analysis set,935,100
+0,124,4.03055,4,Hours,0,0.41685,2,PK Concentration,ng/mL,0,0,115.37,51.224,100 mg,100,1,4,1,1,1,100 mg,Analysis set,936,100
+0,124,7.89546,8,Hours,0,0.16721,2,PK Concentration,ng/mL,0,0,115.37,51.224,100 mg,100,1,8,1,1,1,100 mg,Analysis set,937,100
+0,124,11.90159,12,Hours,0,0.069434,2,PK Concentration,ng/mL,0,0,115.37,51.224,100 mg,100,1,12,1,1,1,100 mg,Analysis set,938,100
+0,124,17.6029,18,Hours,0,0.055867,2,PK Concentration,ng/mL,0,0,115.37,51.224,100 mg,100,1,18,1,1,1,100 mg,Analysis set,939,100
+10,124,23.35893,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,115.37,51.224,100 mg,100,1,23.9,1,1,1,100 mg,Below LLOQ,940,100
+0,125,0,0,Hours,100,.,1,Dosing,mg,0,1,148.11,41.539,100 mg,100,1,0,1,1,1,100 mg,Analysis set,941,100
+0,125,0.1889,0.1,Hours,0,0.41915,2,PK Concentration,ng/mL,0,0,148.11,41.539,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,942,100
+0,125,0.6321,0.5,Hours,0,1.471,2,PK Concentration,ng/mL,0,0,148.11,41.539,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,943,100
+0,125,0.89093,1,Hours,0,0.82051,2,PK Concentration,ng/mL,0,0,148.11,41.539,100 mg,100,1,1,1,1,1,100 mg,Analysis set,944,100
+0,125,1.92556,2,Hours,0,1.0833,2,PK Concentration,ng/mL,0,0,148.11,41.539,100 mg,100,1,2,1,1,1,100 mg,Analysis set,945,100
+0,125,3.8166,4,Hours,0,0.51144,2,PK Concentration,ng/mL,0,0,148.11,41.539,100 mg,100,1,4,1,1,1,100 mg,Analysis set,946,100
+0,125,7.75314,8,Hours,0,0.28799,2,PK Concentration,ng/mL,0,0,148.11,41.539,100 mg,100,1,8,1,1,1,100 mg,Analysis set,947,100
+0,125,11.55812,12,Hours,0,0.14043,2,PK Concentration,ng/mL,0,0,148.11,41.539,100 mg,100,1,12,1,1,1,100 mg,Analysis set,948,100
+0,125,17.57979,18,Hours,0,0.12127,2,PK Concentration,ng/mL,0,0,148.11,41.539,100 mg,100,1,18,1,1,1,100 mg,Analysis set,949,100
+0,125,23.45039,23.9,Hours,0,0.10272,2,PK Concentration,ng/mL,0,0,148.11,41.539,100 mg,100,1,23.9,1,1,1,100 mg,Analysis set,950,100
+0,126,0,0,Hours,100,.,1,Dosing,mg,0,1,148.23,48.961,100 mg,100,1,0,1,1,1,100 mg,Analysis set,951,100
+0,126,0.23182,0.1,Hours,0,1.0148,2,PK Concentration,ng/mL,0,0,148.23,48.961,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,952,100
+0,126,0.73639,0.5,Hours,0,1.549,2,PK Concentration,ng/mL,0,0,148.23,48.961,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,953,100
+0,126,1.23017,1,Hours,0,1.4027,2,PK Concentration,ng/mL,0,0,148.23,48.961,100 mg,100,1,1,1,1,1,100 mg,Analysis set,954,100
+0,126,2.21826,2,Hours,0,1.2307,2,PK Concentration,ng/mL,0,0,148.23,48.961,100 mg,100,1,2,1,1,1,100 mg,Analysis set,955,100
+0,126,4.41202,4,Hours,0,0.37568,2,PK Concentration,ng/mL,0,0,148.23,48.961,100 mg,100,1,4,1,1,1,100 mg,Analysis set,956,100
+0,126,8.40353,8,Hours,0,0.14147,2,PK Concentration,ng/mL,0,0,148.23,48.961,100 mg,100,1,8,1,1,1,100 mg,Analysis set,957,100
+0,126,12.36955,12,Hours,0,0.078357,2,PK Concentration,ng/mL,0,0,148.23,48.961,100 mg,100,1,12,1,1,1,100 mg,Analysis set,958,100
+10,126,18.37572,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,148.23,48.961,100 mg,100,1,18,1,1,1,100 mg,Below LLOQ,959,100
+10,126,24.31185,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,148.23,48.961,100 mg,100,1,23.9,1,1,1,100 mg,Below LLOQ,960,100
+0,127,0,0,Hours,100,.,1,Dosing,mg,0,1,133.16,42.732,100 mg,100,1,0,1,1,1,100 mg,Analysis set,961,100
+0,127,0.18777,0.1,Hours,0,0.34041,2,PK Concentration,ng/mL,0,0,133.16,42.732,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,962,100
+0,127,0.59696,0.5,Hours,0,0.39846,2,PK Concentration,ng/mL,0,0,133.16,42.732,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,963,100
+0,127,0.93896,1,Hours,0,0.7696,2,PK Concentration,ng/mL,0,0,133.16,42.732,100 mg,100,1,1,1,1,1,100 mg,Analysis set,964,100
+0,127,1.90141,2,Hours,0,1.0476,2,PK Concentration,ng/mL,0,0,133.16,42.732,100 mg,100,1,2,1,1,1,100 mg,Analysis set,965,100
+0,127,3.96241,4,Hours,0,0.81882,2,PK Concentration,ng/mL,0,0,133.16,42.732,100 mg,100,1,4,1,1,1,100 mg,Analysis set,966,100
+0,127,7.98352,8,Hours,0,0.36466,2,PK Concentration,ng/mL,0,0,133.16,42.732,100 mg,100,1,8,1,1,1,100 mg,Analysis set,967,100
+0,127,12.00779,12,Hours,0,0.57353,2,PK Concentration,ng/mL,0,0,133.16,42.732,100 mg,100,1,12,1,1,1,100 mg,Analysis set,968,100
+0,127,17.96845,18,Hours,0,0.36034,2,PK Concentration,ng/mL,0,0,133.16,42.732,100 mg,100,1,18,1,1,1,100 mg,Analysis set,969,100
+0,127,23.97854,23.9,Hours,0,0.15444,2,PK Concentration,ng/mL,0,0,133.16,42.732,100 mg,100,1,23.9,1,1,1,100 mg,Analysis set,970,100
+0,128,0,0,Hours,100,.,1,Dosing,mg,0,1,82.14,49.704,100 mg,100,1,0,1,1,1,100 mg,Analysis set,971,100
+0,128,0.10903,0.1,Hours,0,0.34346,2,PK Concentration,ng/mL,0,0,82.14,49.704,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,972,100
+0,128,0.37668,0.5,Hours,0,0.50309,2,PK Concentration,ng/mL,0,0,82.14,49.704,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,973,100
+10,128,1.10004,1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,82.14,49.704,100 mg,100,1,1,1,1,1,100 mg,Below LLOQ,974,100
+0,128,2.05534,2,Hours,0,0.50655,2,PK Concentration,ng/mL,0,0,82.14,49.704,100 mg,100,1,2,1,1,1,100 mg,Analysis set,975,100
+0,128,4.18339,4,Hours,0,0.506,2,PK Concentration,ng/mL,0,0,82.14,49.704,100 mg,100,1,4,1,1,1,100 mg,Analysis set,976,100
+0,128,8.28691,8,Hours,0,0.1773,2,PK Concentration,ng/mL,0,0,82.14,49.704,100 mg,100,1,8,1,1,1,100 mg,Analysis set,977,100
+0,128,12.35063,12,Hours,0,0.14582,2,PK Concentration,ng/mL,0,0,82.14,49.704,100 mg,100,1,12,1,1,1,100 mg,Analysis set,978,100
+0,128,18.34426,18,Hours,0,0.10582,2,PK Concentration,ng/mL,0,0,82.14,49.704,100 mg,100,1,18,1,1,1,100 mg,Analysis set,979,100
+0,128,24.15493,23.9,Hours,0,0.051117,2,PK Concentration,ng/mL,0,0,82.14,49.704,100 mg,100,1,23.9,1,1,1,100 mg,Analysis set,980,100
+0,129,0,0,Hours,100,.,1,Dosing,mg,0,1,88.087,46.169,100 mg,100,1,0,1,1,1,100 mg,Analysis set,981,100
+0,129,0.08617,0.1,Hours,0,0.22265,2,PK Concentration,ng/mL,0,0,88.087,46.169,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,982,100
+0,129,0.44338,0.5,Hours,0,1.225,2,PK Concentration,ng/mL,0,0,88.087,46.169,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,983,100
+0,129,1.06052,1,Hours,0,1.0062,2,PK Concentration,ng/mL,0,0,88.087,46.169,100 mg,100,1,1,1,1,1,100 mg,Analysis set,984,100
+0,129,2.09687,2,Hours,0,1.2209,2,PK Concentration,ng/mL,0,0,88.087,46.169,100 mg,100,1,2,1,1,1,100 mg,Analysis set,985,100
+0,129,4.26499,4,Hours,0,0.49138,2,PK Concentration,ng/mL,0,0,88.087,46.169,100 mg,100,1,4,1,1,1,100 mg,Analysis set,986,100
+0,129,8.30062,8,Hours,0,0.20166,2,PK Concentration,ng/mL,0,0,88.087,46.169,100 mg,100,1,8,1,1,1,100 mg,Analysis set,987,100
+0,129,12.23473,12,Hours,0,0.12758,2,PK Concentration,ng/mL,0,0,88.087,46.169,100 mg,100,1,12,1,1,1,100 mg,Analysis set,988,100
+10,129,18.28327,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,88.087,46.169,100 mg,100,1,18,1,1,1,100 mg,Below LLOQ,989,100
+0,129,24.19776,23.9,Hours,0,0.082743,2,PK Concentration,ng/mL,0,0,88.087,46.169,100 mg,100,1,23.9,1,1,1,100 mg,Analysis set,990,100
+0,130,0,0,Hours,100,.,1,Dosing,mg,0,1,142.17,49.395,100 mg,100,1,0,1,1,1,100 mg,Analysis set,991,100
+0,130,0.10784,0.1,Hours,0,0.20414,2,PK Concentration,ng/mL,0,0,142.17,49.395,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,992,100
+0,130,0.55724,0.5,Hours,0,1.0995,2,PK Concentration,ng/mL,0,0,142.17,49.395,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,993,100
+0,130,1.01875,1,Hours,0,1.223,2,PK Concentration,ng/mL,0,0,142.17,49.395,100 mg,100,1,1,1,1,1,100 mg,Analysis set,994,100
+0,130,2.17875,2,Hours,0,0.90808,2,PK Concentration,ng/mL,0,0,142.17,49.395,100 mg,100,1,2,1,1,1,100 mg,Analysis set,995,100
+0,130,4.17916,4,Hours,0,0.47622,2,PK Concentration,ng/mL,0,0,142.17,49.395,100 mg,100,1,4,1,1,1,100 mg,Analysis set,996,100
+0,130,8.22032,8,Hours,0,0.19057,2,PK Concentration,ng/mL,0,0,142.17,49.395,100 mg,100,1,8,1,1,1,100 mg,Analysis set,997,100
+0,130,12.20681,12,Hours,0,0.10859,2,PK Concentration,ng/mL,0,0,142.17,49.395,100 mg,100,1,12,1,1,1,100 mg,Analysis set,998,100
+0,130,18.20915,18,Hours,0,0.072627,2,PK Concentration,ng/mL,0,0,142.17,49.395,100 mg,100,1,18,1,1,1,100 mg,Analysis set,999,100
+0,130,24.14748,23.9,Hours,0,0.06644,2,PK Concentration,ng/mL,0,0,142.17,49.395,100 mg,100,1,23.9,1,1,1,100 mg,Analysis set,1000,100
+0,131,0,0,Hours,100,.,1,Dosing,mg,0,1,117.81,57.872,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1001,100
+0,131,0.06525,0.1,Hours,0,0.10842,2,PK Concentration,ng/mL,0,0,117.81,57.872,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,1002,100
+0,131,0.60693,0.5,Hours,0,0.70543,2,PK Concentration,ng/mL,0,0,117.81,57.872,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1003,100
+0,131,1.24625,1,Hours,0,0.93462,2,PK Concentration,ng/mL,0,0,117.81,57.872,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1004,100
+0,131,2.33725,2,Hours,0,0.5656,2,PK Concentration,ng/mL,0,0,117.81,57.872,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1005,100
+0,131,4.46475,4,Hours,0,0.3613,2,PK Concentration,ng/mL,0,0,117.81,57.872,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1006,100
+0,131,8.50021,8,Hours,0,0.5074,2,PK Concentration,ng/mL,0,0,117.81,57.872,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1007,100
+0,131,12.56454,12,Hours,0,0.2947,2,PK Concentration,ng/mL,0,0,117.81,57.872,100 mg,100,1,12,1,1,1,100 mg,Analysis set,1008,100
+0,131,18.61659,18,Hours,0,0.20718,2,PK Concentration,ng/mL,0,0,117.81,57.872,100 mg,100,1,18,1,1,1,100 mg,Analysis set,1009,100
+0,131,24.59006,23.9,Hours,0,0.14904,2,PK Concentration,ng/mL,0,0,117.81,57.872,100 mg,100,1,23.9,1,1,1,100 mg,Analysis set,1010,100
+0,132,0,0,Hours,100,.,1,Dosing,mg,0,1,132.71,42.86,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1011,100
+10,132,0.02435,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,132.71,42.86,100 mg,100,1,0.1,1,1,1,100 mg,Below LLOQ,1012,100
+0,132,0.25036,0.5,Hours,0,0.59209,2,PK Concentration,ng/mL,0,0,132.71,42.86,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1013,100
+0,132,0.83021,1,Hours,0,0.60356,2,PK Concentration,ng/mL,0,0,132.71,42.86,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1014,100
+0,132,1.87566,2,Hours,0,1.2145,2,PK Concentration,ng/mL,0,0,132.71,42.86,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1015,100
+0,132,3.83298,4,Hours,0,0.83265,2,PK Concentration,ng/mL,0,0,132.71,42.86,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1016,100
+0,132,7.93783,8,Hours,0,0.2664,2,PK Concentration,ng/mL,0,0,132.71,42.86,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1017,100
+0,132,12.06453,12,Hours,0,0.16666,2,PK Concentration,ng/mL,0,0,132.71,42.86,100 mg,100,1,12,1,1,1,100 mg,Analysis set,1018,100
+0,132,18.20487,18,Hours,0,0.25914,2,PK Concentration,ng/mL,0,0,132.71,42.86,100 mg,100,1,18,1,1,1,100 mg,Analysis set,1019,100
+0,132,23.89055,23.9,Hours,0,0.11592,2,PK Concentration,ng/mL,0,0,132.71,42.86,100 mg,100,1,23.9,1,1,1,100 mg,Analysis set,1020,100
+0,133,0,0,Hours,100,.,1,Dosing,mg,0,1,114.95,40.94,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1021,100
+0,133,0.20858,0.1,Hours,0,0.50708,2,PK Concentration,ng/mL,0,0,114.95,40.94,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,1022,100
+0,133,0.7636,0.5,Hours,0,0.34099,2,PK Concentration,ng/mL,0,0,114.95,40.94,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1023,100
+0,133,1.33656,1,Hours,0,1.0052,2,PK Concentration,ng/mL,0,0,114.95,40.94,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1024,100
+0,133,2.37416,2,Hours,0,0.62231,2,PK Concentration,ng/mL,0,0,114.95,40.94,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1025,100
+0,133,4.26803,4,Hours,0,0.43169,2,PK Concentration,ng/mL,0,0,114.95,40.94,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1026,100
+0,133,8.52534,8,Hours,0,0.086021,2,PK Concentration,ng/mL,0,0,114.95,40.94,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1027,100
+0,133,12.6719,12,Hours,0,0.096522,2,PK Concentration,ng/mL,0,0,114.95,40.94,100 mg,100,1,12,1,1,1,100 mg,Analysis set,1028,100
+10,133,18.53046,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,114.95,40.94,100 mg,100,1,18,1,1,1,100 mg,Below LLOQ,1029,100
+10,133,24.31325,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,114.95,40.94,100 mg,100,1,23.9,1,1,1,100 mg,Below LLOQ,1030,100
+0,134,0,0,Hours,100,.,1,Dosing,mg,0,1,145.1,54.023,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1031,100
+0,134,0.03785,0.1,Hours,0,0.39571,2,PK Concentration,ng/mL,0,0,145.1,54.023,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,1032,100
+0,134,0.49883,0.5,Hours,0,2.5462,2,PK Concentration,ng/mL,0,0,145.1,54.023,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1033,100
+0,134,0.95254,1,Hours,0,2.3899,2,PK Concentration,ng/mL,0,0,145.1,54.023,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1034,100
+0,134,1.97366,2,Hours,0,1.102,2,PK Concentration,ng/mL,0,0,145.1,54.023,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1035,100
+0,134,3.95461,4,Hours,0,0.20535,2,PK Concentration,ng/mL,0,0,145.1,54.023,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1036,100
+10,134,8.02448,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,145.1,54.023,100 mg,100,1,8,1,1,1,100 mg,Below LLOQ,1037,100
+10,134,11.86952,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,145.1,54.023,100 mg,100,1,12,1,1,1,100 mg,Below LLOQ,1038,100
+10,134,17.84903,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,145.1,54.023,100 mg,100,1,18,1,1,1,100 mg,Below LLOQ,1039,100
+10,134,23.68013,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,145.1,54.023,100 mg,100,1,23.9,1,1,1,100 mg,Below LLOQ,1040,100
+0,135,0,0,Hours,100,.,1,Dosing,mg,0,1,117.55,55.676,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1041,100
+0,135,0.08542,0.1,Hours,0,0.25568,2,PK Concentration,ng/mL,0,0,117.55,55.676,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,1042,100
+0,135,0.53272,0.5,Hours,0,1.5695,2,PK Concentration,ng/mL,0,0,117.55,55.676,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1043,100
+0,135,1.16429,1,Hours,0,1.9076,2,PK Concentration,ng/mL,0,0,117.55,55.676,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1044,100
+0,135,2.21235,2,Hours,0,0.85755,2,PK Concentration,ng/mL,0,0,117.55,55.676,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1045,100
+0,135,4.43508,4,Hours,0,0.4243,2,PK Concentration,ng/mL,0,0,117.55,55.676,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1046,100
+0,135,8.30293,8,Hours,0,0.13399,2,PK Concentration,ng/mL,0,0,117.55,55.676,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1047,100
+0,135,12.27659,12,Hours,0,0.071772,2,PK Concentration,ng/mL,0,0,117.55,55.676,100 mg,100,1,12,1,1,1,100 mg,Analysis set,1048,100
+10,135,18.15867,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,117.55,55.676,100 mg,100,1,18,1,1,1,100 mg,Below LLOQ,1049,100
+10,135,24.0245,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,117.55,55.676,100 mg,100,1,23.9,1,1,1,100 mg,Below LLOQ,1050,100
+0,136,0,0,Hours,100,.,1,Dosing,mg,0,1,117.82,45.134,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1051,100
+10,136,0.01504,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,117.82,45.134,100 mg,100,1,0.1,1,1,1,100 mg,Below LLOQ,1052,100
+0,136,0.31737,0.5,Hours,0,0.22903,2,PK Concentration,ng/mL,0,0,117.82,45.134,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1053,100
+0,136,0.89851,1,Hours,0,0.18807,2,PK Concentration,ng/mL,0,0,117.82,45.134,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1054,100
+0,136,2.02535,2,Hours,0,0.59639,2,PK Concentration,ng/mL,0,0,117.82,45.134,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1055,100
+0,136,3.96587,4,Hours,0,0.49141,2,PK Concentration,ng/mL,0,0,117.82,45.134,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1056,100
+0,136,8.04832,8,Hours,0,0.13606,2,PK Concentration,ng/mL,0,0,117.82,45.134,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1057,100
+0,136,11.99572,12,Hours,0,0.23184,2,PK Concentration,ng/mL,0,0,117.82,45.134,100 mg,100,1,12,1,1,1,100 mg,Analysis set,1058,100
+0,136,18.05023,18,Hours,0,0.12708,2,PK Concentration,ng/mL,0,0,117.82,45.134,100 mg,100,1,18,1,1,1,100 mg,Analysis set,1059,100
+0,136,23.92879,23.9,Hours,0,0.081048,2,PK Concentration,ng/mL,0,0,117.82,45.134,100 mg,100,1,23.9,1,1,1,100 mg,Analysis set,1060,100
+0,137,0,0,Hours,100,.,1,Dosing,mg,0,1,133.54,45.305,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1061,100
+10,137,0.00341,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.54,45.305,100 mg,100,1,0.1,1,1,1,100 mg,Below LLOQ,1062,100
+0,137,0.4741,0.5,Hours,0,1.4297,2,PK Concentration,ng/mL,0,0,133.54,45.305,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1063,100
+0,137,0.93049,1,Hours,0,1.2515,2,PK Concentration,ng/mL,0,0,133.54,45.305,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1064,100
+0,137,1.99821,2,Hours,0,0.67263,2,PK Concentration,ng/mL,0,0,133.54,45.305,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1065,100
+0,137,4.07759,4,Hours,0,0.13437,2,PK Concentration,ng/mL,0,0,133.54,45.305,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1066,100
+10,137,8.2429,8,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.54,45.305,100 mg,100,1,8,1,1,1,100 mg,Below LLOQ,1067,100
+10,137,12.21223,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.54,45.305,100 mg,100,1,12,1,1,1,100 mg,Below LLOQ,1068,100
+10,137,18.24101,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.54,45.305,100 mg,100,1,18,1,1,1,100 mg,Below LLOQ,1069,100
+10,137,23.94669,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,133.54,45.305,100 mg,100,1,23.9,1,1,1,100 mg,Below LLOQ,1070,100
+0,138,0,0,Hours,100,.,1,Dosing,mg,0,1,119.45,49.917,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1071,100
+0,138,0.13795,0.1,Hours,0,0.24091,2,PK Concentration,ng/mL,0,0,119.45,49.917,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,1072,100
+0,138,0.36047,0.5,Hours,0,0.48955,2,PK Concentration,ng/mL,0,0,119.45,49.917,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1073,100
+0,138,0.68176,1,Hours,0,0.30215,2,PK Concentration,ng/mL,0,0,119.45,49.917,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1074,100
+0,138,1.78665,2,Hours,0,0.38199,2,PK Concentration,ng/mL,0,0,119.45,49.917,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1075,100
+0,138,3.71022,4,Hours,0,0.59584,2,PK Concentration,ng/mL,0,0,119.45,49.917,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1076,100
+0,138,7.7618,8,Hours,0,0.2673,2,PK Concentration,ng/mL,0,0,119.45,49.917,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1077,100
+0,138,11.85768,12,Hours,0,0.15323,2,PK Concentration,ng/mL,0,0,119.45,49.917,100 mg,100,1,12,1,1,1,100 mg,Analysis set,1078,100
+10,138,17.81683,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,119.45,49.917,100 mg,100,1,18,1,1,1,100 mg,Below LLOQ,1079,100
+0,138,23.64434,23.9,Hours,0,0.050694,2,PK Concentration,ng/mL,0,0,119.45,49.917,100 mg,100,1,23.9,1,1,1,100 mg,Analysis set,1080,100
+0,139,0,0,Hours,100,.,1,Dosing,mg,0,1,149.55,43.93,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1081,100
+0,139,0.11935,0.1,Hours,0,0.13044,2,PK Concentration,ng/mL,0,0,149.55,43.93,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,1082,100
+0,139,0.74874,0.5,Hours,0,1.1848,2,PK Concentration,ng/mL,0,0,149.55,43.93,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1083,100
+0,139,1.26737,1,Hours,0,0.99824,2,PK Concentration,ng/mL,0,0,149.55,43.93,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1084,100
+0,139,2.17323,2,Hours,0,0.5132,2,PK Concentration,ng/mL,0,0,149.55,43.93,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1085,100
+0,139,4.0988,4,Hours,0,0.77474,2,PK Concentration,ng/mL,0,0,149.55,43.93,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1086,100
+0,139,8.0386,8,Hours,0,0.54534,2,PK Concentration,ng/mL,0,0,149.55,43.93,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1087,100
+0,139,12.13104,12,Hours,0,0.34551,2,PK Concentration,ng/mL,0,0,149.55,43.93,100 mg,100,1,12,1,1,1,100 mg,Analysis set,1088,100
+0,139,18.1378,18,Hours,0,0.22989,2,PK Concentration,ng/mL,0,0,149.55,43.93,100 mg,100,1,18,1,1,1,100 mg,Analysis set,1089,100
+0,139,24.1653,23.9,Hours,0,0.17264,2,PK Concentration,ng/mL,0,0,149.55,43.93,100 mg,100,1,23.9,1,1,1,100 mg,Analysis set,1090,100
+0,140,0,0,Hours,100,.,1,Dosing,mg,0,1,112.98,48.596,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1091,100
+0,140,0.12065,0.1,Hours,0,0.48014,2,PK Concentration,ng/mL,0,0,112.98,48.596,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,1092,100
+0,140,0.37391,0.5,Hours,0,1.0441,2,PK Concentration,ng/mL,0,0,112.98,48.596,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1093,100
+0,140,0.91144,1,Hours,0,1.7247,2,PK Concentration,ng/mL,0,0,112.98,48.596,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1094,100
+0,140,1.97955,2,Hours,0,1.2431,2,PK Concentration,ng/mL,0,0,112.98,48.596,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1095,100
+0,140,4.02434,4,Hours,0,0.65988,2,PK Concentration,ng/mL,0,0,112.98,48.596,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1096,100
+0,140,7.88383,8,Hours,0,0.087931,2,PK Concentration,ng/mL,0,0,112.98,48.596,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1097,100
+0,140,11.66059,12,Hours,0,0.056272,2,PK Concentration,ng/mL,0,0,112.98,48.596,100 mg,100,1,12,1,1,1,100 mg,Analysis set,1098,100
+10,140,17.67095,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,112.98,48.596,100 mg,100,1,18,1,1,1,100 mg,Below LLOQ,1099,100
+0,140,23.46669,23.9,Hours,0,0.061525,2,PK Concentration,ng/mL,0,0,112.98,48.596,100 mg,100,1,23.9,1,1,1,100 mg,Analysis set,1100,100
+0,141,0,0,Hours,100,.,1,Dosing,mg,0,1,130.2,44.755,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1101,100
+0,141,0.08127,0.1,Hours,0,0.058082,2,PK Concentration,ng/mL,0,0,130.2,44.755,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,1102,100
+0,141,0.63093,0.5,Hours,0,0.3519,2,PK Concentration,ng/mL,0,0,130.2,44.755,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1103,100
+0,141,1.09728,1,Hours,0,0.66682,2,PK Concentration,ng/mL,0,0,130.2,44.755,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1104,100
+0,141,1.95857,2,Hours,0,0.61891,2,PK Concentration,ng/mL,0,0,130.2,44.755,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1105,100
+0,141,3.83992,4,Hours,0,0.35109,2,PK Concentration,ng/mL,0,0,130.2,44.755,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1106,100
+0,141,7.96776,8,Hours,0,0.36045,2,PK Concentration,ng/mL,0,0,130.2,44.755,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1107,100
+0,141,11.84305,12,Hours,0,0.27661,2,PK Concentration,ng/mL,0,0,130.2,44.755,100 mg,100,1,12,1,1,1,100 mg,Analysis set,1108,100
+0,141,17.82111,18,Hours,0,0.088328,2,PK Concentration,ng/mL,0,0,130.2,44.755,100 mg,100,1,18,1,1,1,100 mg,Analysis set,1109,100
+0,141,23.58646,23.9,Hours,0,0.12003,2,PK Concentration,ng/mL,0,0,130.2,44.755,100 mg,100,1,23.9,1,1,1,100 mg,Analysis set,1110,100
+0,142,0,0,Hours,100,.,1,Dosing,mg,0,1,147.08,50.895,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1111,100
+0,142,0.11556,0.1,Hours,0,0.34291,2,PK Concentration,ng/mL,0,0,147.08,50.895,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,1112,100
+0,142,0.61299,0.5,Hours,0,0.78393,2,PK Concentration,ng/mL,0,0,147.08,50.895,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1113,100
+0,142,1.04675,1,Hours,0,0.64487,2,PK Concentration,ng/mL,0,0,147.08,50.895,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1114,100
+0,142,2.05587,2,Hours,0,0.42881,2,PK Concentration,ng/mL,0,0,147.08,50.895,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1115,100
+0,142,4.12854,4,Hours,0,0.45885,2,PK Concentration,ng/mL,0,0,147.08,50.895,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1116,100
+0,142,8.16552,8,Hours,0,0.10179,2,PK Concentration,ng/mL,0,0,147.08,50.895,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1117,100
+10,142,12.25528,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,147.08,50.895,100 mg,100,1,12,1,1,1,100 mg,Below LLOQ,1118,100
+10,142,18.20174,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,147.08,50.895,100 mg,100,1,18,1,1,1,100 mg,Below LLOQ,1119,100
+10,142,24.11167,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,147.08,50.895,100 mg,100,1,23.9,1,1,1,100 mg,Below LLOQ,1120,100
+0,143,0,0,Hours,100,.,1,Dosing,mg,0,1,96.265,43.053,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1121,100
+0,143,0.2472,0.1,Hours,0,0.46146,2,PK Concentration,ng/mL,0,0,96.265,43.053,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,1122,100
+0,143,0.64365,0.5,Hours,0,1.0795,2,PK Concentration,ng/mL,0,0,96.265,43.053,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1123,100
+0,143,1.08398,1,Hours,0,0.8845,2,PK Concentration,ng/mL,0,0,96.265,43.053,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1124,100
+0,143,2.24596,2,Hours,0,0.72992,2,PK Concentration,ng/mL,0,0,96.265,43.053,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1125,100
+0,143,4.19652,4,Hours,0,0.84376,2,PK Concentration,ng/mL,0,0,96.265,43.053,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1126,100
+0,143,8.19752,8,Hours,0,0.19466,2,PK Concentration,ng/mL,0,0,96.265,43.053,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1127,100
+0,143,12.1493,12,Hours,0,0.20568,2,PK Concentration,ng/mL,0,0,96.265,43.053,100 mg,100,1,12,1,1,1,100 mg,Analysis set,1128,100
+0,143,17.98408,18,Hours,0,0.24472,2,PK Concentration,ng/mL,0,0,96.265,43.053,100 mg,100,1,18,1,1,1,100 mg,Analysis set,1129,100
+0,143,23.81243,23.9,Hours,0,0.071495,2,PK Concentration,ng/mL,0,0,96.265,43.053,100 mg,100,1,23.9,1,1,1,100 mg,Analysis set,1130,100
+0,144,0,0,Hours,100,.,1,Dosing,mg,0,1,132.65,51.302,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1131,100
+10,144,0.00219,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,132.65,51.302,100 mg,100,1,0.1,1,1,1,100 mg,Below LLOQ,1132,100
+0,144,0.3226,0.5,Hours,0,0.80283,2,PK Concentration,ng/mL,0,0,132.65,51.302,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1133,100
+0,144,0.99943,1,Hours,0,0.93731,2,PK Concentration,ng/mL,0,0,132.65,51.302,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1134,100
+0,144,2.04845,2,Hours,0,0.98166,2,PK Concentration,ng/mL,0,0,132.65,51.302,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1135,100
+0,144,3.98669,4,Hours,0,0.9866,2,PK Concentration,ng/mL,0,0,132.65,51.302,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1136,100
+0,144,8.04383,8,Hours,0,0.41168,2,PK Concentration,ng/mL,0,0,132.65,51.302,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1137,100
+0,144,12.0087,12,Hours,0,0.16314,2,PK Concentration,ng/mL,0,0,132.65,51.302,100 mg,100,1,12,1,1,1,100 mg,Analysis set,1138,100
+0,144,18.02461,18,Hours,0,0.11644,2,PK Concentration,ng/mL,0,0,132.65,51.302,100 mg,100,1,18,1,1,1,100 mg,Analysis set,1139,100
+0,144,23.95817,23.9,Hours,0,0.087158,2,PK Concentration,ng/mL,0,0,132.65,51.302,100 mg,100,1,23.9,1,1,1,100 mg,Analysis set,1140,100
+0,145,0,0,Hours,100,.,1,Dosing,mg,0,1,118.27,50.193,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1141,100
+0,145,0.18951,0.1,Hours,0,0.86934,2,PK Concentration,ng/mL,0,0,118.27,50.193,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,1142,100
+0,145,0.6931,0.5,Hours,0,0.78567,2,PK Concentration,ng/mL,0,0,118.27,50.193,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1143,100
+0,145,1.1848,1,Hours,0,1.5619,2,PK Concentration,ng/mL,0,0,118.27,50.193,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1144,100
+0,145,2.24289,2,Hours,0,0.91571,2,PK Concentration,ng/mL,0,0,118.27,50.193,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1145,100
+0,145,4.09429,4,Hours,0,0.592,2,PK Concentration,ng/mL,0,0,118.27,50.193,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1146,100
+0,145,8.14669,8,Hours,0,0.18289,2,PK Concentration,ng/mL,0,0,118.27,50.193,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1147,100
+0,145,12.18151,12,Hours,0,0.14008,2,PK Concentration,ng/mL,0,0,118.27,50.193,100 mg,100,1,12,1,1,1,100 mg,Analysis set,1148,100
+0,145,18.25235,18,Hours,0,0.057276,2,PK Concentration,ng/mL,0,0,118.27,50.193,100 mg,100,1,18,1,1,1,100 mg,Analysis set,1149,100
+10,145,24.19293,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,118.27,50.193,100 mg,100,1,23.9,1,1,1,100 mg,Below LLOQ,1150,100
+0,146,0,0,Hours,100,.,1,Dosing,mg,0,1,114.6,56.089,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1151,100
+10,146,0.00883,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,114.6,56.089,100 mg,100,1,0.1,1,1,1,100 mg,Below LLOQ,1152,100
+0,146,0.51378,0.5,Hours,0,1.3488,2,PK Concentration,ng/mL,0,0,114.6,56.089,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1153,100
+0,146,1.12244,1,Hours,0,1.0658,2,PK Concentration,ng/mL,0,0,114.6,56.089,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1154,100
+0,146,2.42728,2,Hours,0,0.98735,2,PK Concentration,ng/mL,0,0,114.6,56.089,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1155,100
+0,146,4.50223,4,Hours,0,0.56562,2,PK Concentration,ng/mL,0,0,114.6,56.089,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1156,100
+0,146,8.68805,8,Hours,0,0.25547,2,PK Concentration,ng/mL,0,0,114.6,56.089,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1157,100
+10,146,12.5708,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,114.6,56.089,100 mg,100,1,12,1,1,1,100 mg,Below LLOQ,1158,100
+0,146,18.42098,18,Hours,0,0.080083,2,PK Concentration,ng/mL,0,0,114.6,56.089,100 mg,100,1,18,1,1,1,100 mg,Analysis set,1159,100
+0,146,24.23604,23.9,Hours,0,0.059898,2,PK Concentration,ng/mL,0,0,114.6,56.089,100 mg,100,1,23.9,1,1,1,100 mg,Analysis set,1160,100
+0,147,0,0,Hours,100,.,1,Dosing,mg,0,1,141.93,54.312,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1161,100
+0,147,0.07275,0.1,Hours,0,0.12135,2,PK Concentration,ng/mL,0,0,141.93,54.312,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,1162,100
+0,147,0.63052,0.5,Hours,0,0.68703,2,PK Concentration,ng/mL,0,0,141.93,54.312,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1163,100
+0,147,1.08854,1,Hours,0,0.9712,2,PK Concentration,ng/mL,0,0,141.93,54.312,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1164,100
+0,147,2.2156,2,Hours,0,0.74951,2,PK Concentration,ng/mL,0,0,141.93,54.312,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1165,100
+0,147,4.30067,4,Hours,0,0.41213,2,PK Concentration,ng/mL,0,0,141.93,54.312,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1166,100
+0,147,8.22436,8,Hours,0,0.20816,2,PK Concentration,ng/mL,0,0,141.93,54.312,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1167,100
+0,147,12.22472,12,Hours,0,0.10605,2,PK Concentration,ng/mL,0,0,141.93,54.312,100 mg,100,1,12,1,1,1,100 mg,Analysis set,1168,100
+0,147,18.0997,18,Hours,0,0.073984,2,PK Concentration,ng/mL,0,0,141.93,54.312,100 mg,100,1,18,1,1,1,100 mg,Analysis set,1169,100
+10,147,24.01103,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,141.93,54.312,100 mg,100,1,23.9,1,1,1,100 mg,Below LLOQ,1170,100
+0,148,0,0,Hours,100,.,1,Dosing,mg,0,1,99.604,44.034,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1171,100
+0,148,0.04657,0.1,Hours,0,0.11386,2,PK Concentration,ng/mL,0,0,99.604,44.034,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,1172,100
+0,148,0.45304,0.5,Hours,0,0.86092,2,PK Concentration,ng/mL,0,0,99.604,44.034,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1173,100
+0,148,1.03405,1,Hours,0,1.0481,2,PK Concentration,ng/mL,0,0,99.604,44.034,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1174,100
+0,148,2.05094,2,Hours,0,0.71287,2,PK Concentration,ng/mL,0,0,99.604,44.034,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1175,100
+0,148,4.12433,4,Hours,0,0.74046,2,PK Concentration,ng/mL,0,0,99.604,44.034,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1176,100
+0,148,8.1336,8,Hours,0,0.22677,2,PK Concentration,ng/mL,0,0,99.604,44.034,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1177,100
+0,148,12.2055,12,Hours,0,0.10657,2,PK Concentration,ng/mL,0,0,99.604,44.034,100 mg,100,1,12,1,1,1,100 mg,Analysis set,1178,100
+0,148,18.22628,18,Hours,0,0.096279,2,PK Concentration,ng/mL,0,0,99.604,44.034,100 mg,100,1,18,1,1,1,100 mg,Analysis set,1179,100
+0,148,24.21476,23.9,Hours,0,0.10883,2,PK Concentration,ng/mL,0,0,99.604,44.034,100 mg,100,1,23.9,1,1,1,100 mg,Analysis set,1180,100
+0,149,0,0,Hours,100,.,1,Dosing,mg,0,1,111.11,55.695,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1181,100
+10,149,0.00404,0.1,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.11,55.695,100 mg,100,1,0.1,1,1,1,100 mg,Below LLOQ,1182,100
+0,149,0.37387,0.5,Hours,0,1.0591,2,PK Concentration,ng/mL,0,0,111.11,55.695,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1183,100
+0,149,1.01969,1,Hours,0,1.3481,2,PK Concentration,ng/mL,0,0,111.11,55.695,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1184,100
+0,149,1.91426,2,Hours,0,0.963,2,PK Concentration,ng/mL,0,0,111.11,55.695,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1185,100
+0,149,3.82873,4,Hours,0,0.2248,2,PK Concentration,ng/mL,0,0,111.11,55.695,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1186,100
+0,149,7.7242,8,Hours,0,0.075842,2,PK Concentration,ng/mL,0,0,111.11,55.695,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1187,100
+0,149,11.81292,12,Hours,0,0.060947,2,PK Concentration,ng/mL,0,0,111.11,55.695,100 mg,100,1,12,1,1,1,100 mg,Analysis set,1188,100
+0,149,18.00095,18,Hours,0,0.052488,2,PK Concentration,ng/mL,0,0,111.11,55.695,100 mg,100,1,18,1,1,1,100 mg,Analysis set,1189,100
+10,149,23.77036,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.11,55.695,100 mg,100,1,23.9,1,1,1,100 mg,Below LLOQ,1190,100
+0,150,0,0,Hours,100,.,1,Dosing,mg,0,1,111.82,55.035,100 mg,100,1,0,1,1,1,100 mg,Analysis set,1191,100
+0,150,0.11851,0.1,Hours,0,0.19802,2,PK Concentration,ng/mL,0,0,111.82,55.035,100 mg,100,1,0.1,1,1,1,100 mg,Analysis set,1192,100
+0,150,0.64282,0.5,Hours,0,0.9141,2,PK Concentration,ng/mL,0,0,111.82,55.035,100 mg,100,1,0.5,1,1,1,100 mg,Analysis set,1193,100
+0,150,1.03876,1,Hours,0,0.8266,2,PK Concentration,ng/mL,0,0,111.82,55.035,100 mg,100,1,1,1,1,1,100 mg,Analysis set,1194,100
+0,150,2.15224,2,Hours,0,0.65961,2,PK Concentration,ng/mL,0,0,111.82,55.035,100 mg,100,1,2,1,1,1,100 mg,Analysis set,1195,100
+0,150,4.2897,4,Hours,0,0.20174,2,PK Concentration,ng/mL,0,0,111.82,55.035,100 mg,100,1,4,1,1,1,100 mg,Analysis set,1196,100
+0,150,8.39132,8,Hours,0,0.10097,2,PK Concentration,ng/mL,0,0,111.82,55.035,100 mg,100,1,8,1,1,1,100 mg,Analysis set,1197,100
+10,150,12.51302,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.82,55.035,100 mg,100,1,12,1,1,1,100 mg,Below LLOQ,1198,100
+10,150,18.41193,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.82,55.035,100 mg,100,1,18,1,1,1,100 mg,Below LLOQ,1199,100
+10,150,24.28779,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.82,55.035,100 mg,100,1,23.9,1,1,1,100 mg,Below LLOQ,1200,100
+0,151,0,0,Hours,300,.,1,Dosing,mg,0,1,88.319,53.035,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1201,300
+0,151,0.05808,0.1,Hours,0,0.2431,2,PK Concentration,ng/mL,0,0,88.319,53.035,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1202,300
+0,151,0.46598,0.5,Hours,0,1.7919,2,PK Concentration,ng/mL,0,0,88.319,53.035,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1203,300
+0,151,1.12106,1,Hours,0,2.7321,2,PK Concentration,ng/mL,0,0,88.319,53.035,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1204,300
+0,151,2.22422,2,Hours,0,3.0981,2,PK Concentration,ng/mL,0,0,88.319,53.035,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1205,300
+0,151,4.23104,4,Hours,0,2.5527,2,PK Concentration,ng/mL,0,0,88.319,53.035,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1206,300
+0,151,8.16116,8,Hours,0,2.3443,2,PK Concentration,ng/mL,0,0,88.319,53.035,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1207,300
+0,151,12.06316,12,Hours,0,1.088,2,PK Concentration,ng/mL,0,0,88.319,53.035,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1208,300
+0,151,18.12033,18,Hours,0,0.62808,2,PK Concentration,ng/mL,0,0,88.319,53.035,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1209,300
+0,151,24.00293,23.9,Hours,0,0.7403,2,PK Concentration,ng/mL,0,0,88.319,53.035,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1210,300
+0,152,0,0,Hours,300,.,1,Dosing,mg,0,1,121.32,47.391,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1211,300
+0,152,0.09154,0.1,Hours,0,0.636,2,PK Concentration,ng/mL,0,0,121.32,47.391,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1212,300
+0,152,0.27913,0.5,Hours,0,1.363,2,PK Concentration,ng/mL,0,0,121.32,47.391,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1213,300
+0,152,0.8843,1,Hours,0,2.1548,2,PK Concentration,ng/mL,0,0,121.32,47.391,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1214,300
+0,152,1.8801,2,Hours,0,1.7368,2,PK Concentration,ng/mL,0,0,121.32,47.391,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1215,300
+0,152,3.94207,4,Hours,0,2.5683,2,PK Concentration,ng/mL,0,0,121.32,47.391,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1216,300
+0,152,8.10449,8,Hours,0,1.1512,2,PK Concentration,ng/mL,0,0,121.32,47.391,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1217,300
+0,152,12.05548,12,Hours,0,0.24278,2,PK Concentration,ng/mL,0,0,121.32,47.391,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1218,300
+0,152,18.04964,18,Hours,0,0.36915,2,PK Concentration,ng/mL,0,0,121.32,47.391,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1219,300
+0,152,23.92381,23.9,Hours,0,0.1958,2,PK Concentration,ng/mL,0,0,121.32,47.391,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1220,300
+0,153,0,0,Hours,300,.,1,Dosing,mg,0,1,93.475,56.259,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1221,300
+0,153,0.17939,0.1,Hours,0,1.7858,2,PK Concentration,ng/mL,0,0,93.475,56.259,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1222,300
+0,153,0.43599,0.5,Hours,0,5.3732,2,PK Concentration,ng/mL,0,0,93.475,56.259,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1223,300
+0,153,0.9012,1,Hours,0,5.974,2,PK Concentration,ng/mL,0,0,93.475,56.259,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1224,300
+0,153,1.89762,2,Hours,0,3.2298,2,PK Concentration,ng/mL,0,0,93.475,56.259,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1225,300
+0,153,3.88083,4,Hours,0,0.27755,2,PK Concentration,ng/mL,0,0,93.475,56.259,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1226,300
+0,153,7.80954,8,Hours,0,0.10177,2,PK Concentration,ng/mL,0,0,93.475,56.259,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1227,300
+0,153,11.7826,12,Hours,0,0.097033,2,PK Concentration,ng/mL,0,0,93.475,56.259,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1228,300
+10,153,17.77755,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,93.475,56.259,300 mg,300,1,18,1,1,1,300 mg,Below LLOQ,1229,300
+0,153,23.68338,23.9,Hours,0,0.055788,2,PK Concentration,ng/mL,0,0,93.475,56.259,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1230,300
+0,154,0,0,Hours,300,.,1,Dosing,mg,0,1,147.68,52.824,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1231,300
+0,154,0.01983,0.1,Hours,0,0.16514,2,PK Concentration,ng/mL,0,0,147.68,52.824,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1232,300
+0,154,0.42866,0.5,Hours,0,2.0102,2,PK Concentration,ng/mL,0,0,147.68,52.824,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1233,300
+0,154,0.96303,1,Hours,0,1.5604,2,PK Concentration,ng/mL,0,0,147.68,52.824,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1234,300
+0,154,1.97224,2,Hours,0,1.9812,2,PK Concentration,ng/mL,0,0,147.68,52.824,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1235,300
+0,154,3.9528,4,Hours,0,1.5568,2,PK Concentration,ng/mL,0,0,147.68,52.824,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1236,300
+0,154,8.01773,8,Hours,0,0.91672,2,PK Concentration,ng/mL,0,0,147.68,52.824,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1237,300
+0,154,11.86096,12,Hours,0,0.34248,2,PK Concentration,ng/mL,0,0,147.68,52.824,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1238,300
+0,154,17.94781,18,Hours,0,0.34077,2,PK Concentration,ng/mL,0,0,147.68,52.824,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1239,300
+0,154,24.0585,23.9,Hours,0,0.33168,2,PK Concentration,ng/mL,0,0,147.68,52.824,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1240,300
+0,155,0,0,Hours,300,.,1,Dosing,mg,0,1,96.953,58.3,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1241,300
+0,155,0.05248,0.1,Hours,0,0.42032,2,PK Concentration,ng/mL,0,0,96.953,58.3,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1242,300
+0,155,0.47745,0.5,Hours,0,1.2634,2,PK Concentration,ng/mL,0,0,96.953,58.3,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1243,300
+0,155,0.89358,1,Hours,0,2.1585,2,PK Concentration,ng/mL,0,0,96.953,58.3,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1244,300
+0,155,1.90493,2,Hours,0,2.2313,2,PK Concentration,ng/mL,0,0,96.953,58.3,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1245,300
+0,155,3.86393,4,Hours,0,1.553,2,PK Concentration,ng/mL,0,0,96.953,58.3,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1246,300
+0,155,7.76924,8,Hours,0,0.46178,2,PK Concentration,ng/mL,0,0,96.953,58.3,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1247,300
+0,155,11.82121,12,Hours,0,0.39662,2,PK Concentration,ng/mL,0,0,96.953,58.3,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1248,300
+0,155,17.86484,18,Hours,0,0.14573,2,PK Concentration,ng/mL,0,0,96.953,58.3,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1249,300
+0,155,23.68733,23.9,Hours,0,0.1088,2,PK Concentration,ng/mL,0,0,96.953,58.3,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1250,300
+0,156,0,0,Hours,300,.,1,Dosing,mg,0,1,140.81,46.16,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1251,300
+0,156,0.01678,0.1,Hours,0,0.10738,2,PK Concentration,ng/mL,0,0,140.81,46.16,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1252,300
+0,156,0.44035,0.5,Hours,0,1.9282,2,PK Concentration,ng/mL,0,0,140.81,46.16,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1253,300
+0,156,0.73958,1,Hours,0,3.1695,2,PK Concentration,ng/mL,0,0,140.81,46.16,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1254,300
+0,156,1.6682,2,Hours,0,2.76,2,PK Concentration,ng/mL,0,0,140.81,46.16,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1255,300
+0,156,3.69548,4,Hours,0,0.81312,2,PK Concentration,ng/mL,0,0,140.81,46.16,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1256,300
+0,156,7.51952,8,Hours,0,0.12258,2,PK Concentration,ng/mL,0,0,140.81,46.16,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1257,300
+10,156,11.59314,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,140.81,46.16,300 mg,300,1,12,1,1,1,300 mg,Below LLOQ,1258,300
+10,156,17.44298,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,140.81,46.16,300 mg,300,1,18,1,1,1,300 mg,Below LLOQ,1259,300
+10,156,23.34926,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,140.81,46.16,300 mg,300,1,23.9,1,1,1,300 mg,Below LLOQ,1260,300
+0,157,0,0,Hours,300,.,1,Dosing,mg,0,1,94.526,53.894,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1261,300
+0,157,0.04052,0.1,Hours,0,0.63173,2,PK Concentration,ng/mL,0,0,94.526,53.894,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1262,300
+0,157,0.53874,0.5,Hours,0,5.553,2,PK Concentration,ng/mL,0,0,94.526,53.894,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1263,300
+0,157,1.11178,1,Hours,0,5.519,2,PK Concentration,ng/mL,0,0,94.526,53.894,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1264,300
+0,157,2.15046,2,Hours,0,1.8032,2,PK Concentration,ng/mL,0,0,94.526,53.894,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1265,300
+0,157,4.15631,4,Hours,0,2.2293,2,PK Concentration,ng/mL,0,0,94.526,53.894,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1266,300
+0,157,8.119,8,Hours,0,0.46981,2,PK Concentration,ng/mL,0,0,94.526,53.894,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1267,300
+0,157,12.05372,12,Hours,0,0.29599,2,PK Concentration,ng/mL,0,0,94.526,53.894,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1268,300
+0,157,18.0371,18,Hours,0,0.22859,2,PK Concentration,ng/mL,0,0,94.526,53.894,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1269,300
+0,157,23.83799,23.9,Hours,0,0.18399,2,PK Concentration,ng/mL,0,0,94.526,53.894,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1270,300
+0,158,0,0,Hours,300,.,1,Dosing,mg,0,1,146.82,54.044,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1271,300
+0,158,0.11663,0.1,Hours,0,0.60657,2,PK Concentration,ng/mL,0,0,146.82,54.044,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1272,300
+0,158,0.54487,0.5,Hours,0,1.2839,2,PK Concentration,ng/mL,0,0,146.82,54.044,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1273,300
+0,158,1.00365,1,Hours,0,4.0217,2,PK Concentration,ng/mL,0,0,146.82,54.044,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1274,300
+0,158,2.03528,2,Hours,0,1.9996,2,PK Concentration,ng/mL,0,0,146.82,54.044,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1275,300
+0,158,4.07918,4,Hours,0,2.6361,2,PK Concentration,ng/mL,0,0,146.82,54.044,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1276,300
+0,158,8.04724,8,Hours,0,1.1642,2,PK Concentration,ng/mL,0,0,146.82,54.044,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1277,300
+0,158,12.27588,12,Hours,0,0.36105,2,PK Concentration,ng/mL,0,0,146.82,54.044,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1278,300
+0,158,18.17237,18,Hours,0,0.28669,2,PK Concentration,ng/mL,0,0,146.82,54.044,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1279,300
+0,158,24.12485,23.9,Hours,0,0.22182,2,PK Concentration,ng/mL,0,0,146.82,54.044,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1280,300
+0,159,0,0,Hours,300,.,1,Dosing,mg,0,1,145.53,55.699,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1281,300
+0,159,0.21017,0.1,Hours,0,1.0539,2,PK Concentration,ng/mL,0,0,145.53,55.699,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1282,300
+0,159,0.63377,0.5,Hours,0,2.5788,2,PK Concentration,ng/mL,0,0,145.53,55.699,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1283,300
+0,159,1.25382,1,Hours,0,2.3282,2,PK Concentration,ng/mL,0,0,145.53,55.699,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1284,300
+0,159,2.2867,2,Hours,0,2.0515,2,PK Concentration,ng/mL,0,0,145.53,55.699,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1285,300
+0,159,4.24113,4,Hours,0,2.4871,2,PK Concentration,ng/mL,0,0,145.53,55.699,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1286,300
+0,159,8.34746,8,Hours,0,0.56674,2,PK Concentration,ng/mL,0,0,145.53,55.699,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1287,300
+0,159,12.36589,12,Hours,0,0.12666,2,PK Concentration,ng/mL,0,0,145.53,55.699,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1288,300
+0,159,18.31886,18,Hours,0,0.19183,2,PK Concentration,ng/mL,0,0,145.53,55.699,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1289,300
+0,159,24.25165,23.9,Hours,0,0.18005,2,PK Concentration,ng/mL,0,0,145.53,55.699,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1290,300
+0,160,0,0,Hours,300,.,1,Dosing,mg,0,1,127.4,50.455,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1291,300
+0,160,0.10093,0.1,Hours,0,0.85598,2,PK Concentration,ng/mL,0,0,127.4,50.455,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1292,300
+0,160,0.48352,0.5,Hours,0,0.67873,2,PK Concentration,ng/mL,0,0,127.4,50.455,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1293,300
+0,160,0.99273,1,Hours,0,3.8656,2,PK Concentration,ng/mL,0,0,127.4,50.455,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1294,300
+0,160,2.0404,2,Hours,0,1.0407,2,PK Concentration,ng/mL,0,0,127.4,50.455,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1295,300
+0,160,4.2177,4,Hours,0,0.42043,2,PK Concentration,ng/mL,0,0,127.4,50.455,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1296,300
+0,160,8.1602,8,Hours,0,0.12314,2,PK Concentration,ng/mL,0,0,127.4,50.455,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1297,300
+10,160,12.16709,12,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,127.4,50.455,300 mg,300,1,12,1,1,1,300 mg,Below LLOQ,1298,300
+10,160,18.19368,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,127.4,50.455,300 mg,300,1,18,1,1,1,300 mg,Below LLOQ,1299,300
+10,160,24.13546,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,127.4,50.455,300 mg,300,1,23.9,1,1,1,300 mg,Below LLOQ,1300,300
+0,161,0,0,Hours,300,.,1,Dosing,mg,0,1,101.58,55.4,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1301,300
+0,161,0.07593,0.1,Hours,0,1.5408,2,PK Concentration,ng/mL,0,0,101.58,55.4,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1302,300
+0,161,0.6443,0.5,Hours,0,3.1692,2,PK Concentration,ng/mL,0,0,101.58,55.4,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1303,300
+0,161,1.32621,1,Hours,0,2.5511,2,PK Concentration,ng/mL,0,0,101.58,55.4,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1304,300
+0,161,2.38455,2,Hours,0,3.2987,2,PK Concentration,ng/mL,0,0,101.58,55.4,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1305,300
+0,161,4.51302,4,Hours,0,1.428,2,PK Concentration,ng/mL,0,0,101.58,55.4,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1306,300
+0,161,8.52147,8,Hours,0,1.2534,2,PK Concentration,ng/mL,0,0,101.58,55.4,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1307,300
+0,161,12.55336,12,Hours,0,0.73797,2,PK Concentration,ng/mL,0,0,101.58,55.4,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1308,300
+0,161,18.69995,18,Hours,0,0.20865,2,PK Concentration,ng/mL,0,0,101.58,55.4,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1309,300
+0,161,24.58933,23.9,Hours,0,0.23023,2,PK Concentration,ng/mL,0,0,101.58,55.4,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1310,300
+0,162,0,0,Hours,300,.,1,Dosing,mg,0,1,102.62,59.111,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1311,300
+0,162,0.24663,0.1,Hours,0,0.54414,2,PK Concentration,ng/mL,0,0,102.62,59.111,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1312,300
+0,162,0.83729,0.5,Hours,0,2.2678,2,PK Concentration,ng/mL,0,0,102.62,59.111,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1313,300
+0,162,1.34143,1,Hours,0,1.9784,2,PK Concentration,ng/mL,0,0,102.62,59.111,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1314,300
+0,162,2.32064,2,Hours,0,1.113,2,PK Concentration,ng/mL,0,0,102.62,59.111,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1315,300
+0,162,4.26278,4,Hours,0,0.54381,2,PK Concentration,ng/mL,0,0,102.62,59.111,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1316,300
+0,162,8.275,8,Hours,0,0.22436,2,PK Concentration,ng/mL,0,0,102.62,59.111,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1317,300
+0,162,12.25383,12,Hours,0,0.11733,2,PK Concentration,ng/mL,0,0,102.62,59.111,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1318,300
+10,162,18.27339,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,102.62,59.111,300 mg,300,1,18,1,1,1,300 mg,Below LLOQ,1319,300
+10,162,24.26335,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,102.62,59.111,300 mg,300,1,23.9,1,1,1,300 mg,Below LLOQ,1320,300
+0,163,0,0,Hours,300,.,1,Dosing,mg,0,1,85.221,41.015,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1321,300
+0,163,0.10261,0.1,Hours,0,0.47157,2,PK Concentration,ng/mL,0,0,85.221,41.015,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1322,300
+0,163,0.48216,0.5,Hours,0,1.6759,2,PK Concentration,ng/mL,0,0,85.221,41.015,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1323,300
+0,163,0.90037,1,Hours,0,2.346,2,PK Concentration,ng/mL,0,0,85.221,41.015,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1324,300
+0,163,2.01815,2,Hours,0,1.3633,2,PK Concentration,ng/mL,0,0,85.221,41.015,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1325,300
+0,163,3.89578,4,Hours,0,0.54386,2,PK Concentration,ng/mL,0,0,85.221,41.015,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1326,300
+0,163,7.75968,8,Hours,0,0.36475,2,PK Concentration,ng/mL,0,0,85.221,41.015,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1327,300
+0,163,11.758,12,Hours,0,0.15013,2,PK Concentration,ng/mL,0,0,85.221,41.015,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1328,300
+0,163,17.89008,18,Hours,0,0.097114,2,PK Concentration,ng/mL,0,0,85.221,41.015,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1329,300
+0,163,23.64683,23.9,Hours,0,0.055928,2,PK Concentration,ng/mL,0,0,85.221,41.015,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1330,300
+0,164,0,0,Hours,300,.,1,Dosing,mg,0,1,84.974,54.064,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1331,300
+0,164,0.09428,0.1,Hours,0,0.97813,2,PK Concentration,ng/mL,0,0,84.974,54.064,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1332,300
+0,164,0.49527,0.5,Hours,0,1.3451,2,PK Concentration,ng/mL,0,0,84.974,54.064,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1333,300
+0,164,1.07929,1,Hours,0,2.193,2,PK Concentration,ng/mL,0,0,84.974,54.064,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1334,300
+0,164,2.07899,2,Hours,0,4.3448,2,PK Concentration,ng/mL,0,0,84.974,54.064,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1335,300
+0,164,4.07953,4,Hours,0,1.7942,2,PK Concentration,ng/mL,0,0,84.974,54.064,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1336,300
+0,164,8.25342,8,Hours,0,0.23774,2,PK Concentration,ng/mL,0,0,84.974,54.064,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1337,300
+0,164,12.19512,12,Hours,0,0.56814,2,PK Concentration,ng/mL,0,0,84.974,54.064,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1338,300
+0,164,18.33182,18,Hours,0,0.23579,2,PK Concentration,ng/mL,0,0,84.974,54.064,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1339,300
+0,164,24.30466,23.9,Hours,0,0.27051,2,PK Concentration,ng/mL,0,0,84.974,54.064,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1340,300
+0,165,0,0,Hours,300,.,1,Dosing,mg,0,1,124.23,53.337,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1341,300
+0,165,0.14164,0.1,Hours,0,1.0447,2,PK Concentration,ng/mL,0,0,124.23,53.337,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1342,300
+0,165,0.42175,0.5,Hours,0,3.276,2,PK Concentration,ng/mL,0,0,124.23,53.337,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1343,300
+0,165,0.86104,1,Hours,0,1.0359,2,PK Concentration,ng/mL,0,0,124.23,53.337,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1344,300
+0,165,1.88532,2,Hours,0,2.1682,2,PK Concentration,ng/mL,0,0,124.23,53.337,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1345,300
+0,165,3.81433,4,Hours,0,0.20773,2,PK Concentration,ng/mL,0,0,124.23,53.337,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1346,300
+0,165,7.85353,8,Hours,0,0.097537,2,PK Concentration,ng/mL,0,0,124.23,53.337,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1347,300
+0,165,11.93321,12,Hours,0,0.05021,2,PK Concentration,ng/mL,0,0,124.23,53.337,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1348,300
+10,165,18.02515,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,124.23,53.337,300 mg,300,1,18,1,1,1,300 mg,Below LLOQ,1349,300
+10,165,23.89279,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,124.23,53.337,300 mg,300,1,23.9,1,1,1,300 mg,Below LLOQ,1350,300
+0,166,0,0,Hours,300,.,1,Dosing,mg,0,1,101.18,59.792,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1351,300
+0,166,0.08645,0.1,Hours,0,0.70949,2,PK Concentration,ng/mL,0,0,101.18,59.792,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1352,300
+0,166,0.66277,0.5,Hours,0,2.8874,2,PK Concentration,ng/mL,0,0,101.18,59.792,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1353,300
+0,166,1.12333,1,Hours,0,3.183,2,PK Concentration,ng/mL,0,0,101.18,59.792,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1354,300
+0,166,2.23962,2,Hours,0,2.4079,2,PK Concentration,ng/mL,0,0,101.18,59.792,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1355,300
+0,166,4.42218,4,Hours,0,0.48919,2,PK Concentration,ng/mL,0,0,101.18,59.792,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1356,300
+0,166,8.37875,8,Hours,0,0.29588,2,PK Concentration,ng/mL,0,0,101.18,59.792,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1357,300
+0,166,12.38231,12,Hours,0,0.13962,2,PK Concentration,ng/mL,0,0,101.18,59.792,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1358,300
+0,166,18.40176,18,Hours,0,0.17204,2,PK Concentration,ng/mL,0,0,101.18,59.792,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1359,300
+0,166,24.21624,23.9,Hours,0,0.090917,2,PK Concentration,ng/mL,0,0,101.18,59.792,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1360,300
+0,167,0,0,Hours,300,.,1,Dosing,mg,0,1,119.05,45.097,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1361,300
+0,167,0.36374,0.1,Hours,0,2.335,2,PK Concentration,ng/mL,0,0,119.05,45.097,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1362,300
+0,167,0.82524,0.5,Hours,0,4.6233,2,PK Concentration,ng/mL,0,0,119.05,45.097,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1363,300
+0,167,1.30176,1,Hours,0,3.6978,2,PK Concentration,ng/mL,0,0,119.05,45.097,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1364,300
+0,167,2.24744,2,Hours,0,1.9026,2,PK Concentration,ng/mL,0,0,119.05,45.097,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1365,300
+0,167,4.24627,4,Hours,0,0.83561,2,PK Concentration,ng/mL,0,0,119.05,45.097,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1366,300
+0,167,8.27304,8,Hours,0,0.26192,2,PK Concentration,ng/mL,0,0,119.05,45.097,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1367,300
+0,167,12.317,12,Hours,0,0.12897,2,PK Concentration,ng/mL,0,0,119.05,45.097,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1368,300
+0,167,18.35228,18,Hours,0,0.10278,2,PK Concentration,ng/mL,0,0,119.05,45.097,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1369,300
+0,167,24.28435,23.9,Hours,0,0.069296,2,PK Concentration,ng/mL,0,0,119.05,45.097,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1370,300
+0,168,0,0,Hours,300,.,1,Dosing,mg,0,1,95.155,46.504,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1371,300
+0,168,0.15091,0.1,Hours,0,2.0721,2,PK Concentration,ng/mL,0,0,95.155,46.504,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1372,300
+0,168,0.46295,0.5,Hours,0,2.7909,2,PK Concentration,ng/mL,0,0,95.155,46.504,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1373,300
+0,168,0.83206,1,Hours,0,5.1248,2,PK Concentration,ng/mL,0,0,95.155,46.504,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1374,300
+0,168,2.02522,2,Hours,0,3.5464,2,PK Concentration,ng/mL,0,0,95.155,46.504,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1375,300
+0,168,4.17534,4,Hours,0,1.5664,2,PK Concentration,ng/mL,0,0,95.155,46.504,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1376,300
+0,168,8.19567,8,Hours,0,0.32641,2,PK Concentration,ng/mL,0,0,95.155,46.504,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1377,300
+0,168,12.18772,12,Hours,0,0.145,2,PK Concentration,ng/mL,0,0,95.155,46.504,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1378,300
+0,168,18.11614,18,Hours,0,0.072975,2,PK Concentration,ng/mL,0,0,95.155,46.504,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1379,300
+0,168,23.87567,23.9,Hours,0,0.13812,2,PK Concentration,ng/mL,0,0,95.155,46.504,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1380,300
+0,169,0,0,Hours,300,.,1,Dosing,mg,0,1,124.98,54.155,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1381,300
+0,169,0.0808,0.1,Hours,0,0.39348,2,PK Concentration,ng/mL,0,0,124.98,54.155,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1382,300
+0,169,0.41338,0.5,Hours,0,1.3333,2,PK Concentration,ng/mL,0,0,124.98,54.155,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1383,300
+0,169,0.71311,1,Hours,0,2.9199,2,PK Concentration,ng/mL,0,0,124.98,54.155,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1384,300
+0,169,1.81113,2,Hours,0,3.2434,2,PK Concentration,ng/mL,0,0,124.98,54.155,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1385,300
+0,169,3.89225,4,Hours,0,1.1369,2,PK Concentration,ng/mL,0,0,124.98,54.155,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1386,300
+0,169,7.7735,8,Hours,0,0.81552,2,PK Concentration,ng/mL,0,0,124.98,54.155,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1387,300
+0,169,11.68242,12,Hours,0,0.58983,2,PK Concentration,ng/mL,0,0,124.98,54.155,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1388,300
+0,169,17.72767,18,Hours,0,0.32216,2,PK Concentration,ng/mL,0,0,124.98,54.155,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1389,300
+0,169,23.57802,23.9,Hours,0,0.24793,2,PK Concentration,ng/mL,0,0,124.98,54.155,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1390,300
+0,170,0,0,Hours,300,.,1,Dosing,mg,0,1,102.15,51.862,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1391,300
+0,170,0.14121,0.1,Hours,0,1.2661,2,PK Concentration,ng/mL,0,0,102.15,51.862,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1392,300
+0,170,0.59387,0.5,Hours,0,2.2195,2,PK Concentration,ng/mL,0,0,102.15,51.862,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1393,300
+0,170,0.96587,1,Hours,0,1.8931,2,PK Concentration,ng/mL,0,0,102.15,51.862,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1394,300
+0,170,1.8855,2,Hours,0,1.3631,2,PK Concentration,ng/mL,0,0,102.15,51.862,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1395,300
+0,170,3.77074,4,Hours,0,1.1019,2,PK Concentration,ng/mL,0,0,102.15,51.862,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1396,300
+0,170,7.75467,8,Hours,0,0.26721,2,PK Concentration,ng/mL,0,0,102.15,51.862,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1397,300
+0,170,11.89013,12,Hours,0,0.068213,2,PK Concentration,ng/mL,0,0,102.15,51.862,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1398,300
+10,170,18.05341,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,102.15,51.862,300 mg,300,1,18,1,1,1,300 mg,Below LLOQ,1399,300
+10,170,24.01997,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,102.15,51.862,300 mg,300,1,23.9,1,1,1,300 mg,Below LLOQ,1400,300
+0,171,0,0,Hours,300,.,1,Dosing,mg,0,1,136.23,47.295,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1401,300
+0,171,0.14088,0.1,Hours,0,0.71752,2,PK Concentration,ng/mL,0,0,136.23,47.295,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1402,300
+0,171,0.55465,0.5,Hours,0,1.8174,2,PK Concentration,ng/mL,0,0,136.23,47.295,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1403,300
+0,171,1.07913,1,Hours,0,2.0087,2,PK Concentration,ng/mL,0,0,136.23,47.295,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1404,300
+0,171,2.07843,2,Hours,0,1.5626,2,PK Concentration,ng/mL,0,0,136.23,47.295,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1405,300
+0,171,4.07533,4,Hours,0,1.8502,2,PK Concentration,ng/mL,0,0,136.23,47.295,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1406,300
+0,171,8.06889,8,Hours,0,1.2647,2,PK Concentration,ng/mL,0,0,136.23,47.295,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1407,300
+0,171,12.06841,12,Hours,0,0.68197,2,PK Concentration,ng/mL,0,0,136.23,47.295,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1408,300
+0,171,17.975,18,Hours,0,0.43507,2,PK Concentration,ng/mL,0,0,136.23,47.295,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1409,300
+0,171,23.88245,23.9,Hours,0,0.31785,2,PK Concentration,ng/mL,0,0,136.23,47.295,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1410,300
+0,172,0,0,Hours,300,.,1,Dosing,mg,0,1,80.888,49.242,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1411,300
+0,172,0.0925,0.1,Hours,0,1.0334,2,PK Concentration,ng/mL,0,0,80.888,49.242,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1412,300
+0,172,0.56282,0.5,Hours,0,2.8445,2,PK Concentration,ng/mL,0,0,80.888,49.242,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1413,300
+0,172,1.1897,1,Hours,0,2.4939,2,PK Concentration,ng/mL,0,0,80.888,49.242,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1414,300
+0,172,2.2095,2,Hours,0,1.6299,2,PK Concentration,ng/mL,0,0,80.888,49.242,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1415,300
+0,172,4.13753,4,Hours,0,0.53568,2,PK Concentration,ng/mL,0,0,80.888,49.242,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1416,300
+0,172,8.14041,8,Hours,0,0.11459,2,PK Concentration,ng/mL,0,0,80.888,49.242,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1417,300
+0,172,12.13355,12,Hours,0,0.08528,2,PK Concentration,ng/mL,0,0,80.888,49.242,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1418,300
+10,172,18.04962,18,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.888,49.242,300 mg,300,1,18,1,1,1,300 mg,Below LLOQ,1419,300
+10,172,23.98825,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,80.888,49.242,300 mg,300,1,23.9,1,1,1,300 mg,Below LLOQ,1420,300
+0,173,0,0,Hours,300,.,1,Dosing,mg,0,1,132.04,53.646,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1421,300
+0,173,0.07745,0.1,Hours,0,1.5278,2,PK Concentration,ng/mL,0,0,132.04,53.646,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1422,300
+0,173,0.38651,0.5,Hours,0,4.3087,2,PK Concentration,ng/mL,0,0,132.04,53.646,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1423,300
+0,173,0.83926,1,Hours,0,3.7125,2,PK Concentration,ng/mL,0,0,132.04,53.646,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1424,300
+0,173,1.89197,2,Hours,0,3.3198,2,PK Concentration,ng/mL,0,0,132.04,53.646,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1425,300
+0,173,3.97273,4,Hours,0,1.5593,2,PK Concentration,ng/mL,0,0,132.04,53.646,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1426,300
+0,173,8.01947,8,Hours,0,0.076807,2,PK Concentration,ng/mL,0,0,132.04,53.646,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1427,300
+0,173,12.00566,12,Hours,0,0.11618,2,PK Concentration,ng/mL,0,0,132.04,53.646,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1428,300
+0,173,18.10756,18,Hours,0,0.098357,2,PK Concentration,ng/mL,0,0,132.04,53.646,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1429,300
+0,173,24.07948,23.9,Hours,0,0.10685,2,PK Concentration,ng/mL,0,0,132.04,53.646,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1430,300
+0,174,0,0,Hours,300,.,1,Dosing,mg,0,1,118.69,59.691,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1431,300
+0,174,0.07332,0.1,Hours,0,0.6422,2,PK Concentration,ng/mL,0,0,118.69,59.691,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1432,300
+0,174,0.67103,0.5,Hours,0,2.4457,2,PK Concentration,ng/mL,0,0,118.69,59.691,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1433,300
+0,174,1.19782,1,Hours,0,3.5908,2,PK Concentration,ng/mL,0,0,118.69,59.691,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1434,300
+0,174,2.07916,2,Hours,0,4.1654,2,PK Concentration,ng/mL,0,0,118.69,59.691,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1435,300
+0,174,3.9302,4,Hours,0,1.4329,2,PK Concentration,ng/mL,0,0,118.69,59.691,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1436,300
+0,174,7.92795,8,Hours,0,0.73403,2,PK Concentration,ng/mL,0,0,118.69,59.691,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1437,300
+0,174,11.67419,12,Hours,0,0.38258,2,PK Concentration,ng/mL,0,0,118.69,59.691,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1438,300
+0,174,17.70341,18,Hours,0,0.17337,2,PK Concentration,ng/mL,0,0,118.69,59.691,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1439,300
+0,174,23.67751,23.9,Hours,0,0.24384,2,PK Concentration,ng/mL,0,0,118.69,59.691,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1440,300
+0,175,0,0,Hours,300,.,1,Dosing,mg,0,1,111.83,53.775,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1441,300
+0,175,0.21855,0.1,Hours,0,3.2069,2,PK Concentration,ng/mL,0,0,111.83,53.775,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1442,300
+0,175,0.62295,0.5,Hours,0,4.3127,2,PK Concentration,ng/mL,0,0,111.83,53.775,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1443,300
+0,175,1.19034,1,Hours,0,4.4909,2,PK Concentration,ng/mL,0,0,111.83,53.775,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1444,300
+0,175,2.34434,2,Hours,0,1.8174,2,PK Concentration,ng/mL,0,0,111.83,53.775,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1445,300
+0,175,4.35565,4,Hours,0,0.47795,2,PK Concentration,ng/mL,0,0,111.83,53.775,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1446,300
+0,175,8.41349,8,Hours,0,0.19892,2,PK Concentration,ng/mL,0,0,111.83,53.775,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1447,300
+0,175,12.32938,12,Hours,0,0.15005,2,PK Concentration,ng/mL,0,0,111.83,53.775,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1448,300
+0,175,18.34326,18,Hours,0,0.085676,2,PK Concentration,ng/mL,0,0,111.83,53.775,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1449,300
+10,175,24.1159,23.9,Hours,0,0.05,2,PK Concentration,ng/mL,1,0,111.83,53.775,300 mg,300,1,23.9,1,1,1,300 mg,Below LLOQ,1450,300
+0,176,0,0,Hours,300,.,1,Dosing,mg,0,1,95.78,54.516,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1451,300
+0,176,0.00841,0.1,Hours,0,0.098081,2,PK Concentration,ng/mL,0,0,95.78,54.516,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1452,300
+0,176,0.47559,0.5,Hours,0,2.0518,2,PK Concentration,ng/mL,0,0,95.78,54.516,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1453,300
+0,176,0.90372,1,Hours,0,2.9713,2,PK Concentration,ng/mL,0,0,95.78,54.516,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1454,300
+0,176,1.91062,2,Hours,0,3.228,2,PK Concentration,ng/mL,0,0,95.78,54.516,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1455,300
+0,176,3.92396,4,Hours,0,1.835,2,PK Concentration,ng/mL,0,0,95.78,54.516,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1456,300
+0,176,7.93484,8,Hours,0,0.7543,2,PK Concentration,ng/mL,0,0,95.78,54.516,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1457,300
+0,176,11.7985,12,Hours,0,0.61321,2,PK Concentration,ng/mL,0,0,95.78,54.516,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1458,300
+0,176,17.77765,18,Hours,0,0.13569,2,PK Concentration,ng/mL,0,0,95.78,54.516,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1459,300
+0,176,23.6107,23.9,Hours,0,0.33498,2,PK Concentration,ng/mL,0,0,95.78,54.516,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1460,300
+0,177,0,0,Hours,300,.,1,Dosing,mg,0,1,135.53,51.307,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1461,300
+0,177,0.10596,0.1,Hours,0,0.7765,2,PK Concentration,ng/mL,0,0,135.53,51.307,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1462,300
+0,177,0.41948,0.5,Hours,0,1.767,2,PK Concentration,ng/mL,0,0,135.53,51.307,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1463,300
+0,177,0.91422,1,Hours,0,2.7276,2,PK Concentration,ng/mL,0,0,135.53,51.307,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1464,300
+0,177,1.90778,2,Hours,0,2.1203,2,PK Concentration,ng/mL,0,0,135.53,51.307,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1465,300
+0,177,4.0453,4,Hours,0,0.72436,2,PK Concentration,ng/mL,0,0,135.53,51.307,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1466,300
+0,177,8.09692,8,Hours,0,0.90244,2,PK Concentration,ng/mL,0,0,135.53,51.307,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1467,300
+0,177,12.21804,12,Hours,0,0.36619,2,PK Concentration,ng/mL,0,0,135.53,51.307,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1468,300
+0,177,18.23546,18,Hours,0,0.236,2,PK Concentration,ng/mL,0,0,135.53,51.307,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1469,300
+0,177,24.11987,23.9,Hours,0,0.14187,2,PK Concentration,ng/mL,0,0,135.53,51.307,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1470,300
+0,178,0,0,Hours,300,.,1,Dosing,mg,0,1,99.496,51.16,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1471,300
+0,178,0.07722,0.1,Hours,0,0.63351,2,PK Concentration,ng/mL,0,0,99.496,51.16,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1472,300
+0,178,0.47974,0.5,Hours,0,3.8886,2,PK Concentration,ng/mL,0,0,99.496,51.16,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1473,300
+0,178,0.93259,1,Hours,0,3.0963,2,PK Concentration,ng/mL,0,0,99.496,51.16,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1474,300
+0,178,1.93655,2,Hours,0,3.2475,2,PK Concentration,ng/mL,0,0,99.496,51.16,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1475,300
+0,178,4.03706,4,Hours,0,1.9013,2,PK Concentration,ng/mL,0,0,99.496,51.16,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1476,300
+0,178,7.85728,8,Hours,0,0.48786,2,PK Concentration,ng/mL,0,0,99.496,51.16,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1477,300
+0,178,11.74432,12,Hours,0,0.33389,2,PK Concentration,ng/mL,0,0,99.496,51.16,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1478,300
+0,178,17.64397,18,Hours,0,0.17029,2,PK Concentration,ng/mL,0,0,99.496,51.16,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1479,300
+0,178,23.46247,23.9,Hours,0,0.18108,2,PK Concentration,ng/mL,0,0,99.496,51.16,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1480,300
+0,179,0,0,Hours,300,.,1,Dosing,mg,0,1,89.308,55.116,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1481,300
+0,179,0.0513,0.1,Hours,0,0.86104,2,PK Concentration,ng/mL,0,0,89.308,55.116,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1482,300
+0,179,0.32056,0.5,Hours,0,3.7022,2,PK Concentration,ng/mL,0,0,89.308,55.116,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1483,300
+0,179,0.80685,1,Hours,0,3.9559,2,PK Concentration,ng/mL,0,0,89.308,55.116,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1484,300
+0,179,1.74428,2,Hours,0,3.1761,2,PK Concentration,ng/mL,0,0,89.308,55.116,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1485,300
+0,179,3.5636,4,Hours,0,1.6545,2,PK Concentration,ng/mL,0,0,89.308,55.116,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1486,300
+0,179,7.61734,8,Hours,0,0.44108,2,PK Concentration,ng/mL,0,0,89.308,55.116,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1487,300
+0,179,11.64531,12,Hours,0,0.28489,2,PK Concentration,ng/mL,0,0,89.308,55.116,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1488,300
+0,179,17.51638,18,Hours,0,0.30512,2,PK Concentration,ng/mL,0,0,89.308,55.116,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1489,300
+0,179,23.30215,23.9,Hours,0,0.24914,2,PK Concentration,ng/mL,0,0,89.308,55.116,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1490,300
+0,180,0,0,Hours,300,.,1,Dosing,mg,0,1,98.103,57.835,300 mg,300,1,0,1,1,1,300 mg,Analysis set,1491,300
+0,180,0.27947,0.1,Hours,0,0.69625,2,PK Concentration,ng/mL,0,0,98.103,57.835,300 mg,300,1,0.1,1,1,1,300 mg,Analysis set,1492,300
+0,180,0.61885,0.5,Hours,0,1.8122,2,PK Concentration,ng/mL,0,0,98.103,57.835,300 mg,300,1,0.5,1,1,1,300 mg,Analysis set,1493,300
+0,180,1.182,1,Hours,0,2.4193,2,PK Concentration,ng/mL,0,0,98.103,57.835,300 mg,300,1,1,1,1,1,300 mg,Analysis set,1494,300
+0,180,2.03866,2,Hours,0,1.385,2,PK Concentration,ng/mL,0,0,98.103,57.835,300 mg,300,1,2,1,1,1,300 mg,Analysis set,1495,300
+0,180,4.1422,4,Hours,0,0.61468,2,PK Concentration,ng/mL,0,0,98.103,57.835,300 mg,300,1,4,1,1,1,300 mg,Analysis set,1496,300
+0,180,8.16823,8,Hours,0,0.24103,2,PK Concentration,ng/mL,0,0,98.103,57.835,300 mg,300,1,8,1,1,1,300 mg,Analysis set,1497,300
+0,180,12.15164,12,Hours,0,0.097516,2,PK Concentration,ng/mL,0,0,98.103,57.835,300 mg,300,1,12,1,1,1,300 mg,Analysis set,1498,300
+0,180,18.04313,18,Hours,0,0.080055,2,PK Concentration,ng/mL,0,0,98.103,57.835,300 mg,300,1,18,1,1,1,300 mg,Analysis set,1499,300
+0,180,23.87067,23.9,Hours,0,0.065688,2,PK Concentration,ng/mL,0,0,98.103,57.835,300 mg,300,1,23.9,1,1,1,300 mg,Analysis set,1500,300
