@@ -377,6 +377,8 @@ NMscanData <- function(file, col.row, cbind.by.filters,
     
     if(use.input&&any(tables$meta$full.length)) {
         ## if(!quiet) messageWrap("Searching for input data.")
+
+        
         
         data.input <- NMscanInput(file,file.mod=file.mod,
                                   dir.data=dir.data, quiet=TRUE,
@@ -391,13 +393,13 @@ NMscanData <- function(file, col.row, cbind.by.filters,
         ## if no method is specified, search for possible col.row to help the user
         if(search.col.row){
             
-            dia <- NMscanInput(file,file.mod=file.mod,
+            dia <- suppressWarnings(NMscanInput(file,file.mod=file.mod,
                                dir.data=dir.data,
                                quiet=TRUE,use.rds=use.rds,
                                applyFilters=FALSE,
                                details=TRUE,
                                col.id=col.id,
-                               as.fun="none")
+                               as.fun="none"))
             
             cols.row.input <- colnames(dia$data)[dia$data[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 

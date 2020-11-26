@@ -27,3 +27,15 @@ test_that("single = filter",{
     
 })
 
+test_that("Duplicate columns in input data",{
+    fileRef <- "testReference/NMscanInput3.rds"
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr015.lst")
+
+    ## res <- NMscanData(file=file.lst)
+    ## res <- NMscanData(file=file.lst)
+
+    load_all("../../")
+    ## debugonce(NMscanInput)
+    inpdat <- expect_warning(NMscanInput(file=file.lst))
+    
+})

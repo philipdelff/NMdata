@@ -96,6 +96,7 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
     line <- sub("^ ","",line)
     line <- sub(" $","",line)
 
+    ### nms is the names of columns as in nonmem control stream
     nms <- strsplit(line," ")[[1]]
 
 ### this is to keep even dropped columns
@@ -151,6 +152,7 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
     }
 
     if(translate){
+    ### cnames.input is the names of columns as in input data file
         cnames.input <- colnames(data.input)
     }
     ## More column names can be specified in the nonmem control stream
@@ -160,15 +162,14 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
         nms <- nms[1:length(cnames.input)]
         messageWrap("More column names specified in Nonmem $INPUT than found in data file. The additional names have been disregarded.",fun.msg=warning)
     }
+    
     cnames.input[1:length(nms)] <- nms
     colnames(data.input) <- cnames.input
 
     ## check for unique column names
     if(any(duplicated(cnames.input))) {
         nms2 <- cnames.input[-(1:length(nms))]
-        ## nms.u <- nms
-        ## nms2.u <- nms2
-        if(any(duplicated(nms))){
+            if(any(duplicated(nms))){
             messageWrap(paste("Duplicated variable names declared in nonmem $INPUT section. Only first will be used:",paste(nms[duplicated(nms)],collapse=", ")),fun.msg=warning)
             ## nms.u <- unique(nms)
         } 
@@ -178,6 +179,9 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
         }
         nms.cross <- c(unique(nms),unique(nms2))
         if(any(duplicated(nms.cross))){
+            ##:ess-bp-start::conditional@:##
+browser(expr={TRUE})##:ess-bp-end:##
+            
             messageWrap(paste("The same variable names are found in input variables as read by nonmem and the rest of input data file. Please look at column names in input data and the $INPUT section in nonmem control stream. Only the first occurrence of the columns will be used:",paste(unique(nms.cross[duplicated(nms.cross)]),collapse=", ")),fun.msg=warning)
         }
 

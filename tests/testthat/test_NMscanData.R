@@ -349,7 +349,8 @@ test_that("Duplicate columns in input data",{
     ## res <- NMscanData(file=file.lst)
     ## res <- NMscanData(file=file.lst)
 
-    load_all("../../")
+    ## load_all("../../")
+    debugonce(NMscanData)
     res <- NMscanData(file=file.lst,cbind.by.filters = T)
     fix.time(res)
     ## names(res$row)
