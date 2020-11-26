@@ -179,8 +179,6 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
         }
         nms.cross <- c(unique(nms),unique(nms2))
         if(any(duplicated(nms.cross))){
-            ##:ess-bp-start::conditional@:##
-browser(expr={TRUE})##:ess-bp-end:##
             
             messageWrap(paste("The same variable names are found in input variables as read by nonmem and the rest of input data file. Please look at column names in input data and the $INPUT section in nonmem control stream. Only the first occurrence of the columns will be used:",paste(unique(nms.cross[duplicated(nms.cross)]),collapse=", ")),fun.msg=warning)
         }

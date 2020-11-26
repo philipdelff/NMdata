@@ -19,7 +19,7 @@ test_that("basic",{
     file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
     ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
-    res1 <- NMscanData(file=file.lst,quiet=T)
+    res1 <- NMscanData(file=file.lst,quiet=T,checkTime = FALSE)
     ## dim(res1)
 
     fix.time(res1)
@@ -35,7 +35,7 @@ test_that("Modifications to column names in $INPUT",{
     file.lst <- NMdata_filepath("examples/nonmem/xgxr002.lst")
 
 
-    res <- NMscanData(file=file.lst)
+    res <- NMscanData(file=file.lst,checkTime = FALSE)
     fix.time(res)
     
     expect_equal_to_reference(res,fileRef,version=2)
@@ -48,7 +48,7 @@ test_that("Multiple output table formats",{
     file.lst <- NMdata_filepath("examples/nonmem/xgxr003.lst")
 
     ## res <- NMscanData(file=file.lst)
-    res <- NMscanData(file=file.lst)
+    res <- NMscanData(file=file.lst,checkTime = FALSE)
     fix.time(res)
     
     expect_equal_to_reference(res,fileRef,version=2)
@@ -61,7 +61,7 @@ test_that("Interpret IGNORE statement",{
     ## res <- NMscanData(file=file.lst)
     ## res <- NMscanData(file=file.lst)
 
-    res <- NMscanData(file=file.lst,cbind.by.filters = T)
+    res <- NMscanData(file=file.lst,cbind.by.filters = T,checkTime = FALSE)
     fix.time(res)
     ## names(res$row)
     
@@ -76,8 +76,8 @@ test_that("List of ACCEPT statements and vs separate statements",{
 
     NMgetSection(file1.lst,section="PROBLEM")
     NMgetSection(file2.lst,section="PROBLEM")
-    res1 <- NMscanData(file=file1.lst,cbind.by.filters = T,add.name=NULL)
-    res2 <- NMscanData(file=file2.lst,cbind.by.filters = T,add.name=NULL)
+    res1 <- NMscanData(file=file1.lst,cbind.by.filters = T,add.name=NULL,checkTime = FALSE)
+    res2 <- NMscanData(file=file2.lst,cbind.by.filters = T,add.name=NULL,checkTime = FALSE)
     setattr(res1,"meta",NULL)
     setattr(res2,"meta",NULL)
     expect_identical(res1,res2)
@@ -92,8 +92,8 @@ test_that("merge by filters or not",{
 
     ## NMgetSection(file1.lst,section="PROBLEM")
     ## NMgetSection(file2.lst,section="PROBLEM")
-    res1 <- NMscanData(file=file1.lst,cbind.by.filters = T,add.name=NULL)
-    res2 <- NMscanData(file=file2.lst,cbind.by.filters = T,add.name=NULL)
+    res1 <- NMscanData(file=file1.lst,cbind.by.filters = T,add.name=NULL,checkTime = FALSE)
+    res2 <- NMscanData(file=file2.lst,cbind.by.filters = T,add.name=NULL,checkTime = FALSE)
 
     setcolorder(res1,colnames(res2))
 
@@ -122,7 +122,7 @@ test_that("Only a firstonly without ID but with ROW",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
     
-    res1 <- NMscanData(file=file.lst,col.row="ROW")
+    res1 <- NMscanData(file=file.lst,col.row="ROW",checkTime = FALSE)
     fix.time(res1)
     expect_equal_to_reference(res1,fileRef,version=2)
     
@@ -145,7 +145,7 @@ test_that("Only a firstonly, no ID, no ROW",{
     
     expect_error(
         expect_warning(
-            res1 <- NMscanData(file=file.lst)
+            res1 <- NMscanData(file=file.lst,checkTime = FALSE)
         )
     )
 })
@@ -162,7 +162,7 @@ test_that("FO and row-level output. No ID, no row.",{
 
     ## tabs <- NMscanTables(file=file.lst)
     res1 <- expect_warning(
-        NMscanData(file=file.lst)
+        NMscanData(file=file.lst,checkTime = FALSE)
     )
     fix.time(res1)
     expect_equal_to_reference(
@@ -180,10 +180,12 @@ test_that("FO and row-level output. No ID, no row. cbind.by.filters=T",{
     
     ## tabs <- NMscanTables(file=file.lst)
     res1 <- expect_warning(
-        NMscanData(file=file.lst,cbind.by.filters=T)
+        NMscanData(file=file.lst,cbind.by.filters=T,checkTime = FALSE)
     )
     fix.time(res1)
-    
+    summary(res1)$variables
+    summary(res1)$tables
+    summary(res1)
     expect_equal_to_reference(
         res1,fileRef,version=2
     )
@@ -193,7 +195,7 @@ test_that("FO and row-level output. No ID, no row. cbind.by.filters=T",{
 
 
 test_that("Only a firstonly without ID but with ROW",{
-### cbind.by.filters is TRUE, so ROW is used to recover firstonly data.
+### cbind.by.filters is TRUE, so ROW is not used to recover firstonly data.
 
     fileRef <- "testReference/NMscanData15.rds"
 
@@ -207,13 +209,15 @@ test_that("Only a firstonly without ID but with ROW",{
 
     res1 <- expect_error(
         expect_warning(
-    NMscanData(file=file.lst,cbind.by.filters=T)
+    NMscanData(file=file.lst,cbind.by.filters=T,checkTime = FALSE)
     ))
-    
+
+##    tabs=NMscanTables(file=file.lst)
+## tabs
 })
 
 test_that("Only a firstonly without ID but with ROW. Using col.row.",{
-### cbind.by.filters is TRUE, so ROW is used to recover firstonly data.
+### ROW is used to recover firstonly data.
 
     fileRef <- "testReference/NMscanData15b.rds"
 
@@ -225,7 +229,7 @@ test_that("Only a firstonly without ID but with ROW. Using col.row.",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-    res1 <- NMscanData(file=file.lst,col.row="ROW")
+    res1 <- NMscanData(file=file.lst,col.row="ROW",checkTime = FALSE)
     fix.time(res1)
     expect_equal_to_reference(
         res1,fileRef,version=2
@@ -236,7 +240,6 @@ test_that("Only a firstonly without ID but with ROW. Using col.row.",{
 ### recoverRows without a row identifier
 
 test_that("recoverRows without a row identifier",{
-### cbind.by.filters is TRUE, so ROW is used to recover firstonly data.
 
     fileRef <- "testReference/NMscanData16.rds"
 
@@ -248,7 +251,7 @@ test_that("recoverRows without a row identifier",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-    res1 <- NMscanData(file=file.lst,cbind.by.filters=T,recover.rows = T,as.fun="none")
+    res1 <- NMscanData(file=file.lst,cbind.by.filters=T,recover.rows = T,as.fun="none",checkTime = FALSE)
     dim(res1)
     res1[,table(nmout,DOSE)]
     fix.time(res1)
@@ -269,7 +272,7 @@ test_that("use as.fun to get a data.frame",{
     NMgetSection(file.lst,section="DATA")
     NMgetSection(file.lst,section="TABLE")
 
-    res1 <- NMscanData(file=file.lst,cbind.by.filters=T,recover.rows = T,as.fun=as.data.frame)
+    res1 <- NMscanData(file=file.lst,cbind.by.filters=T,recover.rows = T,as.fun=as.data.frame,checkTime = FALSE)
     dim(res1)
     class(res1)
     with(res1,table(nmout,DOSE))
@@ -297,7 +300,7 @@ test_that("use as.fun to get a tibble",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-    res1 <- NMscanData(file=file.lst,cbind.by.filters=T,recover.rows = T,as.fun=tibble::as_tibble)
+    res1 <- NMscanData(file=file.lst,cbind.by.filters=T,recover.rows = T,as.fun=tibble::as_tibble,checkTime = FALSE)
     dim(res1)
     class(res1)
 
@@ -319,7 +322,7 @@ test_that("dir structure with input.txt/output.txt",{
     options(NMdata.modelname=function(file) basename(dirname(normalizePath(file))))
 
     filedir.lst <- NMdata_filepath("examples/nonmem/xgxr001dir/output.txt")
-    res1dir <- NMscanData(filedir.lst)
+    res1dir <- NMscanData(filedir.lst,checkTime = FALSE)
     expect_equal(attr(res1dir,"meta")$model,"xgxr001dir")
     umod <- unique(res1dir[,model])
     expect_equal(length(umod),1)
@@ -329,7 +332,7 @@ test_that("dir structure with input.txt/output.txt",{
     options(NMdata.file.mod=NULL)
     options(NMdata.modelname=NULL)
     file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
-    res1 <- NMscanData(file=file.lst)
+    res1 <- NMscanData(file=file.lst,checkTime = FALSE)
 
     unNMdata(res1)
     unNMdata(res1dir)
@@ -340,8 +343,6 @@ test_that("dir structure with input.txt/output.txt",{
 })
 
 
-### there seems to be a bug in NMscanInput.
-
 test_that("Duplicate columns in input data",{
     fileRef <- "testReference/NMscanData20.rds"
     file.lst <- NMdata_filepath("examples/nonmem/xgxr015.lst")
@@ -350,8 +351,8 @@ test_that("Duplicate columns in input data",{
     ## res <- NMscanData(file=file.lst)
 
     ## load_all("../../")
-    debugonce(NMscanData)
-    res <- NMscanData(file=file.lst,cbind.by.filters = T)
+    ## debugonce(NMscanData)
+    res <- expect_warning(NMscanData(file=file.lst,cbind.by.filters = T,checkTime = FALSE))
     fix.time(res)
     ## names(res$row)
     

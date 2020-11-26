@@ -97,6 +97,10 @@ Remember to use what we know about col.row. And put output variables first?
 **** DONE source for nmout and model must be internal
      CLOSED: [2020-07-18 Sat 23:13]
 in var table 
+**** TODO report tables that are not used
+See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
+is not visible in summary because summary is based on tables in returned
+data. It should be based on tables in meta$tables.
 *** NMwriteData
 **** DONE Check if character variables contain commas
      CLOSED: [2020-09-19 Sat 09:52]

@@ -12,7 +12,7 @@ NMdata_filepath <- function(...) {
 ##' @param ... parameters to pass to strwrap
 ##' @param fun.msg The function to pass the text through. Typically,
 ##'     message, warning, or stop.
-##' @param prefix Passed to strwrap. Default is "\n".
+##' @param prefix Passed to strwrap. Default is "\\n".
 ##' @param initial Passed to strwrap. Default is an empty string.
 ##' @param width Passed to strwrap. Default is 80.
 messageWrap <- function(..., fun.msg=message, prefix = "\n", initial = "", width=80){

@@ -12,7 +12,7 @@ NMscanTables(file, details = F, as.fun = NULL, quiet = FALSE, tab.count = TRUE)
 \item{details}{If TRUE, metadata is added to output. In this case,
 you get a list. Typically, this is mostly useful if
 programming up functions which behavior must depend on
-properties of the output. See details.}
+properties of the output.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to

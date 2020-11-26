@@ -357,7 +357,7 @@ NMscanData <- function(file, col.row, cbind.by.filters,
                                   col.id=col.id,
                                   details=TRUE)
         
-        tab.row <- copy(data.input)
+        tab.row <- copy(data.input$data)
         setattr(tab.row,"file",NULL)
         setattr(tab.row,"type.file",NULL)
         setattr(tab.row,"mtime.file",NULL)
@@ -370,8 +370,7 @@ NMscanData <- function(file, col.row, cbind.by.filters,
                             ,source="input"
                             ,level="row")
                          )
-        ## tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="input",level="row"))
-
+        
         tab.row[,nmout:=FALSE]
     }
     
@@ -601,8 +600,8 @@ NMscanData <- function(file, col.row, cbind.by.filters,
     if(checkTime){    
         if(!is.null(file.mod)) {
             mtime.mod <- file.mtime(file.mod)
-            if(mtime.mod>file.mtime(file.lst)){
-                messageWrap(paste0("input control stream (",file.mod,") is newer than output control stream (",file.lst,") Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
+            if(mtime.mod>file.mtime(file)){
+                messageWrap(paste0("input control stream (",file.mod,") is newer than output control stream (",file,") Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
                             fun.msg=warning)
             }
             if(mtime.mod>max(tables$meta[,file.mtime])){
@@ -613,8 +612,8 @@ NMscanData <- function(file, col.row, cbind.by.filters,
 
         if(use.input) {
             mtime.inp <- max(data.input$meta$file.mtime)
-            if(mtime.inp > file.mtime(file.lst)){
-                messageWrap(paste0("input data (",data.input$meta$file,") is newer than output control stream (",file.lst,") Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+            if(mtime.inp > file.mtime(file)){
+                messageWrap(paste0("input data (",data.input$meta$file,") is newer than output control stream (",file,") Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
                             fun.msg=warning)
             }
             if(mtime.inp > max(tables$meta[,file.mtime])){

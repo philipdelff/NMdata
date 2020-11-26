@@ -10,9 +10,11 @@ NMorderColumns(
   last,
   lower.last = FALSE,
   chars.last = TRUE,
+  alpha = TRUE,
   nomtime = "NOMTIME",
   row = "ROW",
-  as.fun = NULL
+  as.fun = NULL,
+  quiet = FALSE
 )
 }
 \arguments{
@@ -54,6 +56,9 @@ you want first.}
 \item{as.fun}{The default is to return a data.table if data is a
 data.table and return a data.frame in all other cases. Pass a
 function in as.fun to convert to something else.}
+
+\item{quiet}{If true, no warning will be given about missing
+standard Nonmem columns.}
 }
 \description{
 Order data columns for easy export to Nonmem. No data values are
@@ -76,7 +81,7 @@ corresponding argument. Not
  \item{"chars.last - "}{numeric, or interpretable as numeric}
  \item{"not editable - "}{less often used nonmem names: FLAG, OCC, ROUTE, GRP, TRIAL, DRUG, STUDY}
  \item{"lower.last - "}{lower case in name}
- \item{"not editable - "}{Alphabetic/numeric sorting}
+ \item{"alpha - "}{Alphabetic/numeric sorting}
 }
 }
 \seealso{

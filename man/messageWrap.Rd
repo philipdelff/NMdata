@@ -12,7 +12,7 @@ messageWrap(..., fun.msg = message, prefix = "\\n", initial = "", width = 80)
 \item{fun.msg}{The function to pass the text through. Typically,
 message, warning, or stop.}
 
-\item{prefix}{Passed to strwrap. Default is " ".}
+\item{prefix}{Passed to strwrap. Default is "\\n".}
 
 \item{initial}{Passed to strwrap. Default is an empty string.}
 

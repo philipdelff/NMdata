@@ -18,7 +18,9 @@ NMscanData(
   use.rds = TRUE,
   as.fun = NULL,
   col.id = "ID",
-  tab.count = FALSE
+  tab.count = FALSE,
+  orderColumns = TRUE,
+  checkTime = TRUE
 )
 }
 \arguments{
