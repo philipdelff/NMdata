@@ -1,74 +1,76 @@
 ##' automatically find Nonmem tables and organize data
 ##'
-##' @param file A nonmem control stream or output file from nonmem
-##'     (.mod or .lst)
-##' @param file.mod The input control stream. Default is to look for
-##'     \"file\" with extension changed to .mod (PSN style). You can
-##'     also supply the path to the file, or you can provide a
-##'     function that translates the output file path to the input
-##'     file path. The default behavior is controlled by the
-##'     "NMdata.file.mod" option. See dir.data too.
-##' @param col.id The name of the subject ID variable, default is
-##'     "ID".
-##' @param col.row A column with a unique value for each row. Such a
-##'     column is recommended to use if possible. See cbind.by.filters
-##'     and details as well.
-##' @param use.input Merge with columns in input data? Using this, you
-##'     don't have to worry about remembering including all relevant
-##'     variables in the output tables.
-##' @param recover.rows Include rows from input data files that do not
-##'     exist in output tables? This will be added to the $row dataset
-##'     only, and $run, $id, and $occ datasets are created before this
-##'     is taken into account. A column called nmout will be TRUE when
-##'     the row was found in output tables, and FALSE when not. This
-##'     is still experimental. More testing is needed.
-##' @param add.name If a character string, a column of this name will
-##'     be included in all tables containing the model name. The
-##'     default is to store this in a column called "model". See
-##'     argument "name" as well. Set to NULL if not wanted.
-##' @param modelname The model name to be stored if add.name is not
-##'     NULL and not set by options(NMdata.modelname=...). If not
-##'     supplied, the name will be taken from the control stream file
-##'     name by omitting the directory/path and deleting the .lst
-##'     extension. If using the NMdata.modelname option, please submit
-##'     a function taking file as argument and returning the modelname
-##'     (by extracting it from file name or path).
-##' @param use.rds If an rds file is found with the exact same name
-##'     (except for .rds instead of say .csv) as the input data file
-##'     mentioned in the Nonmem control stream, should this be used
-##'     instead? The default is yes, and NMwriteData will create this
-##'     by default too.
-##' @param dir.data The data directory can only be read from the
-##'     control stream (.mod) and not from the output file (.lst). So
-##'     if you only have the output file, use dir.data to tell in
-##'     which directory to find the data file. If dir.data is
-##'     provided, the .mod file is not used at all.
-##' @param quiet The default is to give some information along the way
-##'     on what data is found. But consider setting this to TRUE for
-##'     non-interactive use.
-##' @param as.fun The default is to return data as a data.frame. Pass
-##'     a function (say tibble::as_tibble) in as.fun to convert to
-##'     something else. If data.tables are wanted, use
-##'     as.fun="none". See ?runAsFun.
-##' @param cbind.by.filters If TRUE, Nonmem data filtering is
-##'     interpreted from lst file (restrictions apply), and after an
-##'     imitated selection of rows, data columns will be appended to
-##'     output data. This method relies on interpretation of Nonmem
-##'     code, and it will not work in advanced use of IGNORE and
-##'     ACCEPT statements in $INPUT. Consider using col.row instead,
+##' @param file A nonmem control stream or output file from nonmem (.mod or
+##'     .lst)
+##' @param file.mod The input control stream. Default is to look for \"file\"
+##'     with extension changed to .mod (PSN style). You can also supply the path
+##'     to the file, or you can provide a function that translates the output
+##'     file path to the input file path. The default behavior is controlled by
+##'     the "NMdata.file.mod" option. See dir.data too.
+##' @param col.id The name of the subject ID variable, default is "ID".
+##' @param col.row A column with a unique value for each row. Such a column is
+##'     recommended to use if possible. See cbind.by.filters and details as
+##'     well.
+##' @param use.input Merge with columns in input data? Using this, you don't
+##'     have to worry about remembering including all relevant variables in the
+##'     output tables.
+##' @param recover.rows Include rows from input data files that do not exist in
+##'     output tables? This will be added to the $row dataset only, and $run,
+##'     $id, and $occ datasets are created before this is taken into account. A
+##'     column called nmout will be TRUE when the row was found in output
+##'     tables, and FALSE when not. This is still experimental. More testing is
+##'     needed.
+##' @param add.name If a character string, a column of this name will be
+##'     included in all tables containing the model name. The default is to
+##'     store this in a column called "model". See argument "name" as well. Set
+##'     to NULL if not wanted.
+##' @param modelname The model name to be stored if add.name is not NULL and not
+##'     set by options(NMdata.modelname=...). If not supplied, the name will be
+##'     taken from the control stream file name by omitting the directory/path
+##'     and deleting the .lst extension. If using the NMdata.modelname option,
+##'     please submit a function taking file as argument and returning the
+##'     modelname (by extracting it from file name or path).
+##' @param use.rds If an rds file is found with the exact same name (except for
+##'     .rds instead of say .csv) as the input data file mentioned in the Nonmem
+##'     control stream, should this be used instead? The default is yes, and
+##'     NMwriteData will create this by default too.
+##' @param dir.data The data directory can only be read from the control stream
+##'     (.mod) and not from the output file (.lst). So if you only have the
+##'     output file, use dir.data to tell in which directory to find the data
+##'     file. If dir.data is provided, the .mod file is not used at all.
+##' @param quiet The default is to give some information along the way on what
+##'     data is found. But consider setting this to TRUE for non-interactive
+##'     use.
+##' @param as.fun The default is to return data as a data.frame. Pass a function
+##'     (say tibble::as_tibble) in as.fun to convert to something else. If
+##'     data.tables are wanted, use as.fun="none". See ?runAsFun.
+##' @param cbind.by.filters If TRUE, Nonmem data filtering is interpreted from
+##'     lst file (restrictions apply), and after an imitated selection of rows,
+##'     data columns will be appended to output data. This method relies on
+##'     interpretation of Nonmem code, and it will not work in advanced use of
+##'     IGNORE and ACCEPT statements in $INPUT. Consider using col.row instead,
 ##'     if possible. Default is TRUE if col.row is either missing or
-##'     NULL. However, explicitly specifying cbind.by.filters is
-##'     recommended if that is the intended behaviour. If not,
-##'     NMscanData will search for potential columns to merge by and
-##'     print information about it. See col.row (recommended method)
-##'     as well.
-##' @param tab.count Nonmem includes a counter of tables in the
-##'     written data files. These are often not useful. Especially for
-##'     NMscanData output it can be meaningless because multiple
-##'     tables can be combined so this information is not unique
-##'     across those source tables. However, if tab.count is TRUE (not
-##'     default), this will be carried forward and added as a column
-##'     called TABLENO.
+##'     NULL. However, explicitly specifying cbind.by.filters is recommended if
+##'     that is the intended behaviour. If not, NMscanData will search for
+##'     potential columns to merge by and print information about it. See
+##'     col.row (recommended method) as well.
+##' @param tab.count Nonmem includes a counter of tables in the written data
+##'     files. These are often not useful. Especially for NMscanData output it
+##'     can be meaningless because multiple tables can be combined so this
+##'     information is not unique across those source tables. However, if
+##'     tab.count is TRUE (not default), this will be carried forward and added
+##'     as a column called TABLENO.
+##' @param order.columns If TRUE (default), NMorderColumns is used to reorder
+##'     the columns before returning the data. NMorderColumns will be called
+##'     with alpha=FALSE, so columns are not sorted alphebetically. But standard
+##'     Nonmem columns like ID, TIME, and other will be first. If col.row is
+##'     used, this will be passed to NMorderColumns too.
+##' @param check.time If TRUE (default) and if input data is used, input control
+##'     stream and input data are checked to be newer than output control stream
+##'     and output tables. These are important assumptions for the way
+##'     information is merged by NMscanData. However, if data has been
+##'     transfered from another system where Nonmem was run, these checks may
+##'     not make sense, and you may not want to see these warnings.
 ##'
 ##' @details This function makes it very easy to collect the data from
 ##'     a Nonmem run.
@@ -97,26 +99,32 @@
 
 ## when col.row and cbind.by.filters are missing, do cbind.by.filters but look for a row identifier. Explain and tell user to provide col.row or cbind.by.filters to get less messages.
 
-NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
-                       recover.rows=FALSE,add.name="model",modelname,
-                       file.mod,dir.data,quiet=FALSE,use.rds=TRUE,
-                       as.fun=NULL,col.id="ID",tab.count=FALSE) {
+NMscanData <- function(file, col.row, cbind.by.filters,
+                       use.input=TRUE, recover.rows=FALSE,
+                       add.name="model", modelname, file.mod,
+                       dir.data, quiet=FALSE, use.rds=TRUE,
+                       as.fun=NULL, col.id="ID", tab.count=FALSE,
+                       order.columns=TRUE, check.time=TRUE) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
+    COLNUM <- NULL
+    DV <- NULL
+    firstlastonly <- NULL
     firstonly <- NULL
     has.row <- NULL
-    type <- NULL
-    maxLength <- NULL
     full.length <- NULL
-    nmout <- NULL
-    DV <- NULL
-    var <- NULL
-    firstlastonly <- NULL
     idlevel <- NULL
+    included <- NULL
     lastonly <- NULL
     level <- NULL
-
+    maxLength <- NULL
+    name <- NULL
+    nmout <- NULL
+    type <- NULL
+    var <- NULL
+    variable <- NULL
+    
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
 
@@ -145,6 +153,8 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
     do.cbind.by.filters <- FALSE
     merge.by.row <- FALSE
 
+    
+    
     if(use.input){
 ### method not specified
         ## simplest function call - default
@@ -231,7 +241,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 
     rows.flo <- tables$meta[firstlastonly==TRUE]
     if(rows.flo[,.N]>0) {
-        warning("One or more output tables with FIRSTLASTONLY option detected. This is not supported, and the table will be disregarded. Use a combination of NMscanTables, NMtransInput, and merge manually.")
+        warning("One or more output tables with FIRSTLASTONLY option detected. This is not supported, and the table will be disregarded. Use a combination of NMscanTables, NMscanInput, and merge manually.")
         k <- tables$meta[,which(firstlastonly==TRUE)]
         tables$data <- tables$data[-k]
         tables$meta <- tables$meta[-k]
@@ -343,8 +353,17 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 
     
     if(use.input&&!any(tables$meta$full.length)) {
-        data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=TRUE,use.rds=use.rds,applyFilters=cbind.by.filters,as.fun="none")
-        tab.row <- copy(data.input)
+        ## data.input
+        ## meta.data 
+        data.input <- NMscanInput(file,file.mod=file.mod,
+                                  dir.data=dir.data,quiet=TRUE,
+                                  use.rds=use.rds,
+                                  applyFilters=cbind.by.filters,
+                                  as.fun="none",
+                                  col.id=col.id,
+                                  details=TRUE)
+        
+        tab.row <- copy(data.input$data)
         setattr(tab.row,"file",NULL)
         setattr(tab.row,"type.file",NULL)
         setattr(tab.row,"mtime.file",NULL)
@@ -357,21 +376,37 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                             ,source="input"
                             ,level="row")
                          )
-        ## tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="input",level="row"))
-
+        
         tab.row[,nmout:=FALSE]
     }
     
     if(use.input&&any(tables$meta$full.length)) {
         ## if(!quiet) messageWrap("Searching for input data.")
-        data.input <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=TRUE,use.rds=use.rds,applyFilters=cbind.by.filters,as.fun="none")
-        cnames.input <- colnames(data.input)
+
+        
+        
+        data.input <- NMscanInput(file,file.mod=file.mod,
+                                  dir.data=dir.data, quiet=TRUE,
+                                  use.rds=use.rds,
+                                  applyFilters=cbind.by.filters,
+                                  as.fun="none",
+                                  col.id=col.id,
+                                  details=TRUE)
+        
+        cnames.input <- colnames(data.input$data)
 
         ## if no method is specified, search for possible col.row to help the user
         if(search.col.row){
             
-            data.input.all <- NMtransInput(file,file.mod=file.mod,dir.data=dir.data,quiet=TRUE,use.rds=use.rds,applyFilters=FALSE,as.fun="none")
-            cols.row.input <- colnames(data.input.all)[data.input.all[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
+            dia <- suppressWarnings(NMscanInput(file,file.mod=file.mod,
+                               dir.data=dir.data,
+                               quiet=TRUE,use.rds=use.rds,
+                               applyFilters=FALSE,
+                               details=TRUE,
+                               col.id=col.id,
+                               as.fun="none"))
+            
+            cols.row.input <- colnames(dia$data)[dia$data[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 
             cols.row.output <- colnames(tab.row)[tab.row[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 
@@ -390,15 +425,15 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         }
         
         if(cbind.by.filters) {
-
-            if(!is.null(tab.row)&nrow(data.input)!=nrow(tab.row)) {
+            
+            if(!is.null(tab.row)&nrow(data.input$data)!=nrow(tab.row)) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.                
-                messageWrap("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted. For info on what limitations of this function, see ?NMtranFilters. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or manually merge output from NMscanTables() and NMtransInput().",fun.msg=stop)
+                messageWrap("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted. For info on what limitations of this function, see ?NMtransFilters. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or manually merge output from NMscanTables() and NMscanInput().",fun.msg=stop)
             }
 
             
             dt.vars1 <- data.table(
-                variable=colnames(data.input)
+                variable=colnames(data.input$data)
                ,table="input"
                ,source="input"
                ,level="row")
@@ -412,10 +447,10 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                              )
             
             
-            ## tab.vars <- rbind(tab.vars,data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",level="row"))
+            ## tab.vars <- rbind(tab.vars,data.table(var=setdiff(colnames(data.input$data),colnames(tab.row)),source="input",level="row"))
             tab.row <- cbind(
                 tab.row,
-                data.input[,!colnames(data.input)%in%colnames(tab.row),with=F]
+                data.input$data[,!colnames(data.input$data)%in%colnames(tab.row),with=F]
             )
 
             
@@ -427,7 +462,7 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
 ### merging by col.row
             ## Has this check already been done?
             if(col.row%in%cnames.input) {
-                if(data.input[,any(duplicated(get(col.row)))]) {
+                if(data.input$data[,any(duplicated(get(col.row)))]) {
                     messageWrap("use.input=TRUE and cbind.by.filters=FALSE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and cbind.by.filters=FALSE.",fun.msg=stop)
                 }
             } else {
@@ -448,21 +483,21 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
             if(use.input) {
                 
                 dt.vars1 <- data.table(
-                    variable=colnames(data.input)
+                    variable=colnames(data.input$data)
                    ,table="input"
                    ,source="input"
                    ,level="row"
                 )
                 
                 dt.vars1[,
-                         included:=variable%in%setdiff(colnames(data.input),colnames(tab.row))
+                         included:=variable%in%setdiff(colnames(data.input$data),colnames(tab.row))
                          ]
 
                 dt.vars <- rbind(dt.vars,dt.vars1)
                 ## tab.vars <- rbind(tab.vars,
-                ## data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",level="row"))
+                ## data.table(var=setdiff(colnames(data.input$data),colnames(tab.row)),source="input",level="row"))
                 
-                tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=T,as.fun="none")
+                tab.row <- mergeCheck(tab.row,data.input$data[,c(col.row,setdiff(colnames(data.input$data),colnames(tab.row))),with=FALSE],by=col.row,all.x=T,as.fun="none")
                 
             }
             
@@ -553,16 +588,53 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         
         skip.recover <- FALSE
         if(cbind.by.filters) {
-            data.recover <- NMtransInput(file,quiet=TRUE,use.rds=use.rds,applyFilters=cbind.by.filters,invert=T,as.fun="none")
+            data.recover <- NMscanInput(file,quiet=TRUE,use.rds=use.rds,
+                                        applyFilters=cbind.by.filters,
+                                        invert=T,as.fun="none",
+                                        details=FALSE)
         } else {
-            data.recover <- data.input[!get(col.row)%in%tab.row[,get(col.row)]]
-            ## data.input[get(col.row)%in%tab.row[,get(col.row)]]
+            data.recover <- data.input$data[!get(col.row)%in%tab.row[,get(col.row)]]
         }
         data.recover[,nmout:=FALSE]
         tab.row <- rbind(tab.row,data.recover,fill=T)
     }
 
 ###  Section end: Recover rows
+
+#### Section start: Check file modification times ####
+    
+    if(check.time){    
+        if(!is.null(file.mod)) {
+            mtime.mod <- file.mtime(file.mod)
+            if(mtime.mod>file.mtime(file)){
+                messageWrap(paste0("input control stream (",file.mod,") is newer than output control stream (",file,") Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
+                            fun.msg=warning)
+            }
+            if(mtime.mod>max(tables$meta[,file.mtime])){
+                messageWrap(paste0("input control stream (",file.mod,") is newer than output tables. Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
+                            fun.msg=warning)
+            }
+        }
+
+        if(use.input) {
+            mtime.inp <- max(data.input$meta$file.mtime)
+            if(mtime.inp > file.mtime(file)){
+                messageWrap(paste0("input data (",data.input$meta$file,") is newer than output control stream (",file,") Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                            fun.msg=warning)
+            }
+            if(mtime.inp > max(tables$meta[,file.mtime])){
+                messageWrap(paste0("input data file (",data.input$meta$file,") is newer than output tables. Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                            fun.msg=warning)
+            }
+        }
+    }
+
+### Section end: Check file modification times
+
+
+    
+#### Section start: Format output ####
+    
     if(!is.null(add.name)) {
         
         tab.row[,c(add.name):=runname]
@@ -574,17 +646,32 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
                                    ,source="NMscanData"
                                    ,level="model"
                                     ))
-
-        
-        ## tab.vars <- rbind(tab.vars,
-        ##                   data.table(var=add.name,source="NMscanData"),
-        ##                   fill=T)
     }
 
-    ## setorder(tab.vars,var)
+
+    
+### order columns in returned data
+    if(order.columns){
+        tab.row <- NMorderColumns(tab.row, row=col.row, as.fun="none",
+                                  alpha=FALSE, quiet=TRUE)
+    }
+    
+### order columns in variable table accordingly.
+    dt.vars[included==TRUE,COLNUM:=match(variable,colnames(tab.row))]
+    setorder(dt.vars,-included,COLNUM)
+    dt.vars[,included:=NULL]    
+    
+    tables$meta[,source:="output"]
+    if(use.input){
+        data.input$meta[,source:="input"]
+        tables.meta <- rbind(tables$meta,data.input$meta,fill=TRUE)
+    } else {
+        tables.meta <- tables$meta
+    }
+    setcolorder(tables.meta,c("source","name","nrow","ncol"))
     
     tab.row <- runAsFun(tab.row,as.fun)
-    ##    tab.vars <- runAsFun(tab.vars,as.fun)
+    tables.meta <- runAsFun(tables.meta,as.fun)
 
     
 ### more meta information needed.
@@ -607,16 +694,18 @@ NMscanData <- function(file,col.row,cbind.by.filters,use.input=TRUE,
         file.input=NA_character_,
         ## if available: mtime of input data
         mtime.input=NA_character_,
-        variables=dt.vars,
-        tables.output=tables$meta
+        variables=runAsFun(dt.vars,as.fun),
+        tables=tables.meta
     )
 
-    
-    if(use.input) meta$file.input <- attr(data.input,"file")
     ## if available: file info for input data
-    if(use.input) meta$mtime.input <- attr(data.input,"mtime.file")
-
+    if(use.input){
+        meta$file.input <- data.input$meta[,file]
+        meta$mtime.input <- data.input$meta[,file.mtime]
+    }
     setattr(tab.row,"meta",meta)
+
+###  Section end: Format output
     
     setattr(tab.row,"class",c("NMdata",class(tab.row)))
 

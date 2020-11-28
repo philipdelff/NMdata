@@ -10,9 +10,11 @@ NMorderColumns(
   last,
   lower.last = FALSE,
   chars.last = TRUE,
+  alpha = TRUE,
   nomtime = "NOMTIME",
   row = "ROW",
-  as.fun = NULL
+  as.fun = NULL,
+  quiet = FALSE
 )
 }
 \arguments{
@@ -20,40 +22,41 @@ NMorderColumns(
 
 \item{first}{Columns that should come almost first. See details.}
 
-\item{last}{Columns to move to back of dataset. If you work with a
-large dataset, and some columns are irrelevant for the Nonmem
-runs, you can use this argument.}
+\item{last}{Columns to move to back of dataset. If you work with a large
+dataset, and some columns are irrelevant for the Nonmem runs, you can
+use this argument.}
 
-\item{lower.last}{Should columns which names contain lowercase
-characters be moved towards the back? Some people use a
-standard of lowercase variables (say "race") being character
-representations ("asian", "caucasian", etc.) variables and the
-uppercase (1,2,...) being the numeric representation for
-Nonmem.}
+\item{lower.last}{Should columns which names contain lowercase characters be
+moved towards the back? Some people use a standard of lowercase
+variables (say "race") being character representations ("asian",
+"caucasian", etc.) variables and the uppercase (1,2,...) being the
+numeric representation for Nonmem.}
 
-\item{chars.last}{Should columns which cannot be converted to
-numeric be put towards the end? A column can be a character or
-a factor in R, but still be valid in Nonmem (often the case
-for ID which can only contain numeric digits but really is a
-character or factor). So rather than only looking at the
-column class, the columns are attempted converted to
-numeric. Notice, it will attempted to be converted to numeric
-to test whether Nonmem will be able to make sense of it, but
-the values in the resulting dataset will be untouched. No
-values will be edited. If TRUE, logicals will always be put
-last. NA's must be NA or ".".}
+\item{chars.last}{Should columns which cannot be converted to numeric be put
+towards the end? A column can be a character or a factor in R, but still
+be valid in Nonmem (often the case for ID which can only contain numeric
+digits but really is a character or factor). So rather than only looking
+at the column class, the columns are attempted converted to
+numeric. Notice, it will attempted to be converted to numeric to test
+whether Nonmem will be able to make sense of it, but the values in the
+resulting dataset will be untouched. No values will be edited. If TRUE,
+logicals will always be put last. NA's must be NA or ".".}
 
-\item{nomtime}{The name of the column containing nominal time. If
-given, it will put the column quite far left, just after row
-counter and ID.}
+\item{alpha}{Sort columns alphabetically. Notice, this is the last order
+priority applied.}
 
-\item{row}{A row counter column. This will be the first column in
-the dataset. Technically, you can use it for whatever column
-you want first.}
+\item{nomtime}{The name of the column containing nominal time. If given, it
+will put the column quite far left, just after row counter and ID.}
 
-\item{as.fun}{The default is to return a data.table if data is a
-data.table and return a data.frame in all other cases. Pass a
-function in as.fun to convert to something else.}
+\item{row}{A row counter column. This will be the first column in the
+dataset. Technically, you can use it for whatever column you want first.}
+
+\item{as.fun}{The default is to return a data.table if data is a data.table
+and return a data.frame in all other cases. Pass a function in as.fun to
+convert to something else.}
+
+\item{quiet}{If true, no warning will be given about missing standard Nonmem
+columns.}
 }
 \description{
 Order data columns for easy export to Nonmem. No data values are
@@ -61,8 +64,8 @@ edited. The order is configurable through multiple arguments. See
 details.
 }
 \details{
-This function will change the order of columns but it
-    will never edit values in any columns.
+This function will change the order of columns but it will never
+    edit values in any columns.
 
 The ordering is by the following steps, each step depending on
 corresponding argument. Not
@@ -76,7 +79,7 @@ corresponding argument. Not
  \item{"chars.last - "}{numeric, or interpretable as numeric}
  \item{"not editable - "}{less often used nonmem names: FLAG, OCC, ROUTE, GRP, TRIAL, DRUG, STUDY}
  \item{"lower.last - "}{lower case in name}
- \item{"not editable - "}{Alphabetic/numeric sorting}
+ \item{"alpha - "}{Alphabetic/numeric sorting}
 }
 }
 \seealso{

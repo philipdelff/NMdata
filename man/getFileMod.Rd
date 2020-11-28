@@ -32,5 +32,5 @@ options(NMdata.file.mod=function(file) file.path(dirname(file),"input.txt"))
 }
 
 Notice, if the argument dir.data is used in NMscanData or
-NMtransInput, the input control stream is not used at all.
+NMtscanInput, the input control stream is not used at all.
 }

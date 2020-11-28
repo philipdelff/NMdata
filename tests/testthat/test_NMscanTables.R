@@ -31,6 +31,7 @@ test_that("Details table",{
 ### this will make trouble because meta data table contains absolute
 ### paths which is machine dependent. So removing path.
     res$meta[,file:=basename(file)]
+    res$meta$file.mtime <- NULL
     ## df approach
     ## res$meta$file <- basename(res$meta$file)
     expect_equal_to_reference(res,fileRef,version=2)

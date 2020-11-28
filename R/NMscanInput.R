@@ -3,7 +3,7 @@
 ##' @description Based on a nonmem run (lst and/or mod file), this
 ##'     function finds the input data and reads it. It reads the data
 ##'     like the nonmem run by applying DROP/SKIP arguments and
-##'     alternative naming of columns in the nonmem run. 
+##'     alternative naming of columns in the nonmem run.
 ##' @param file a .lst (output) or a .mod (input) control stream
 ##'     file. The filename does not need to end in .lst. It is
 ##'     recommended to use the output control stream because it
@@ -31,6 +31,16 @@
 ##' @param applyFilters If TRUE (default), IGNORE and ACCEPT
 ##'     statements in the nonmem control streams are applied before
 ##'     returning the data.
+##' @param translate If TRUE (default), data columns are named as
+##'     interpreted by Nonmem (in $INPUT). If data file contains more
+##'     columns than mentioned in $INPUT, these will be named as in
+##'     data file (if data file contains named variables).
+##' @param details If TRUE, metadata is added to output. In this case,
+##'     you get a list. Typically, this is mostly useful if
+##'     programming up functions which behavior must depend on
+##'     properties of the output. See details.
+##' @param col.id The name of the subject ID column. Only used if
+##'     details=TRUE to summarize number of subjects in data.
 ##' @param quiet Default is to inform a little, but TRUE is useful for
 ##'     non-interactive stuff.
 ##' @param as.fun The default is to return data as a data.frame. Pass
@@ -50,9 +60,19 @@
 ##' @family DataRead
 ##' @export
 
-NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
-                         dir.data=NULL, applyFilters=FALSE,
-                         quiet=FALSE, invert=FALSE, as.fun=NULL) {
+NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
+                        dir.data=NULL, applyFilters=FALSE, translate=TRUE,
+                        details=FALSE, col.id="ID", quiet=FALSE, invert=FALSE,
+                        as.fun=NULL) {
+
+
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+
+    nid <- NULL
+    
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+
+    
 ### the lst file only contains the name of the data file, not the path to it. So we need to find the .mod instead.
 
     if(missing(file)) file <- NULL
@@ -84,6 +104,7 @@ NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
     line <- sub("^ ","",line)
     line <- sub(" $","",line)
 
+### nms is the names of columns as in nonmem control stream
     nms <- strsplit(line," ")[[1]]
 
 ### this is to keep even dropped columns
@@ -124,7 +145,7 @@ NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
         data.input <- readRDS(path.data.input)
     } else {
         if(file.exists(path.data.input)){
-            type.file <- "delimited"
+            type.file <- "text"
             if(!quiet) message("Read delimited text input data file.")
             data.input <- NMreadCsv(path.data.input,as.fun="none")
         } else {
@@ -138,7 +159,10 @@ NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
         data.input <- NMtransFilters(data.input,file=file,invert=invert,quiet=quiet,as.fun="none")
     }
 
-    cnames.input <- colnames(data.input)
+    if(translate){
+### cnames.input is the names of columns as in input data file
+        cnames.input <- colnames(data.input)
+    }
     ## More column names can be specified in the nonmem control stream
     ## than actually found in the input data. We will simply disregard
     ## them.
@@ -146,22 +170,24 @@ NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
         nms <- nms[1:length(cnames.input)]
         messageWrap("More column names specified in Nonmem $INPUT than found in data file. The additional names have been disregarded.",fun.msg=warning)
     }
+    
     cnames.input[1:length(nms)] <- nms
     colnames(data.input) <- cnames.input
 
     ## check for unique column names
-    
-    
     if(any(duplicated(cnames.input))) {
+        nms2 <- cnames.input[-(1:length(nms))]
         if(any(duplicated(nms))){
             messageWrap(paste("Duplicated variable names declared in nonmem $INPUT section. Only first will be used:",paste(nms[duplicated(nms)],collapse=", ")),fun.msg=warning)
-        }
-        nms2 <- cnames.input[-(1:length(nms))]
+            ## nms.u <- unique(nms)
+        } 
         if(length(nms2)&&any(duplicated(nms2))){
             messageWrap(paste("Duplicated variable names detected in input data not processed by Nonmem. Only first will be used:",paste(nms2[duplicated(nms2)],collapse=", ")),fun.msg=warning)
+            ## nms2.u <- unique(nms2)
         }
         nms.cross <- c(unique(nms),unique(nms2))
         if(any(duplicated(nms.cross))){
+            
             messageWrap(paste("The same variable names are found in input variables as read by nonmem and the rest of input data file. Please look at column names in input data and the $INPUT section in nonmem control stream. Only the first occurrence of the columns will be used:",paste(unique(nms.cross[duplicated(nms.cross)]),collapse=", ")),fun.msg=warning)
         }
 
@@ -172,9 +198,34 @@ NMtransInput <- function(file, use.rds=TRUE, file.mod=NULL,
     }
 
     data.input <- runAsFun(data.input,as.fun)
-    setattr(data.input,"type.file",type.file)
-    setattr(data.input,"file",path.data.input)
-    setattr(data.input,"mtime.file",file.info(path.data.input)$mtime)
+    ## setattr(data.input,"type.file",type.file)
+    ## setattr(data.input,"file",path.data.input)
+    ## setattr(data.input,"mtime.file",file.info(path.data.input)$mtime)
 
+
+    if(details){
+### file (full path)
+### name (filename(file))
+### format/filetype (ascii, rds?)
+### nrow
+### ncol
+### nid
+### file.mtime
+
+        meta <- data.table(
+            file=path.data.input,
+            name=basename(path.data.input),
+            filetype=type.file,
+            nrow=nrow(data.input),
+            ncol=ncol(data.input),
+            file.mtime=file.mtime(path.data.input)
+        )
+        if(col.id%in%cnames.input) {
+            meta[,nid:=data.input[,uniqueN(get(col.id))]]
+        }
+        return(list(data=data.input,meta=meta))
+    }
+    
+    
     return(data.input)
 }

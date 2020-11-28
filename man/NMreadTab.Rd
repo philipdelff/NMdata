@@ -44,7 +44,7 @@ The actual reading of data is based on
 Other DataRead: 
 \code{\link{NMreadCsv}()},
 \code{\link{NMscanData}()},
-\code{\link{NMscanTables}()},
-\code{\link{NMtransInput}()}
+\code{\link{NMscanInput}()},
+\code{\link{NMscanTables}()}
 }
 \concept{DataRead}
