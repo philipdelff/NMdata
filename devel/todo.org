@@ -199,7 +199,10 @@ depending on nmout TRUE or FALSE.
  with only diff from 0.0.6 that it returns data.frames by default
 *** DONE check of mtimes relative to each other
     CLOSED: [2020-11-25 Wed 10:33]
-*** TODO Test input with duplicated column names
+*** DONE Test input with duplicated column names
+    CLOSED: [2020-11-27 Fri 22:06]
+*** TODO summary.NMdata: no visible global function definition for '.'
+*** TODO Drop filepath_NMdata
 *** TODO Release 0.0.7
 **** Update vignettes
 ***** DONE NMscanData

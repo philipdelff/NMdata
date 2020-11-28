@@ -2,17 +2,23 @@
 % Please edit documentation in R/summary_NMdata.R
 \name{summary.NMdata}
 \alias{summary.NMdata}
-\title{print method for NMdata objects}
+\title{summary method for NMdata objects}
 \usage{
-\method{summary}{NMdata}(data, ...)
+\method{summary}{NMdata}(object, ...)
+}
+\arguments{
+\item{object}{An NMdata object (from NMscanData).}
+
+\item{...}{Only passed to the summary generic if object is missing NMdata
+meta data (this should not happen anyway).}
 }
 \description{
-print method for NMdata objects
+summary method for NMdata objects
 }
 \details{
-The subjects are counted conditioned on the nmout
-    column. If only id-level output tables are present, there are
-    no nmout=TRUE rows. This means that in this case it will
-    report that no IDs are found in output. The correct statement
-    is that records are found for zero subjects in output tables.
+The subjects are counted conditioned on the nmout column. If only
+    id-level output tables are present, there are no nmout=TRUE rows. This
+    means that in this case it will report that no IDs are found in
+    output. The correct statement is that records are found for zero
+    subjects in output tables.
 }

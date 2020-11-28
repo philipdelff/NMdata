@@ -1,20 +1,34 @@
-##' print method for NMdata objects
-##' @details The subjects are counted conditioned on the nmout
-##'     column. If only id-level output tables are present, there are
-##'     no nmout=TRUE rows. This means that in this case it will
-##'     report that no IDs are found in output. The correct statement
-##'     is that records are found for zero subjects in output tables.
+##' summary method for NMdata objects
+##' @param object An NMdata object (from NMscanData).
+##' @param ... Only passed to the summary generic if object is missing NMdata
+##'     meta data (this should not happen anyway).
+##' @details The subjects are counted conditioned on the nmout column. If only
+##'     id-level output tables are present, there are no nmout=TRUE rows. This
+##'     means that in this case it will report that no IDs are found in
+##'     output. The correct statement is that records are found for zero
+##'     subjects in output tables.
+##' @import data.table
 ##' @export
-summary.NMdata <- function(data,...){
-    
+summary.NMdata <- function(object,...){
 
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+
+    EVID <- NULL
+    ID <- NULL
+    N.ids <- NULL
+    nmout <- NULL
+    
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+
+    data <- object
     if(!"NMdata"%in%class(data)) stop("data does not seem to be of class NMdata.")
 
     ## I need to look more into this. Some operations (merge?) drop
     ## many attributes but not the NMdata class. If that has happened,
     ## we ave nothing to use the class for.
     if(!"meta"%in%names(attributes(data))) {
-        setattr(data,"class",setdiff(attr(data,"class"),"NMdata"))
+        warning("object seems to be a corrupted NMdata object (meta data missing).")
+        unNMdata(data)
         return(summary(data,...))
     }
     
@@ -48,9 +62,29 @@ summary.NMdata <- function(data,...){
     s1
 }
 
-
+##' print method for NMdata summaries
+##' @param x The summary object to be printed. See ?summary.NMdata
+##' @param ... Arguments passed to print.
+##'
+##' @import data.table
 ##' @export
 print.summary_NMdata <- function(x,...){
+
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+
+    . <- NULL
+    COLNUM <- NULL
+    included <- NULL
+    inc <- NULL
+    not <- NULL
+    print.inc <- NULL
+    tabn <- NULL
+    name <- NULL
+    idlevel <- NULL
+    level <- NULL
+    N <- NULL
+    
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
     
     if(!"summary_NMdata"%in%class(x)) stop("list does not seem to be of class NMdata")
@@ -97,7 +131,7 @@ print.summary_NMdata <- function(x,...){
 
     ## how many ids (broken down on output vs. input-only)
     
-                                        #n1 <- merge(x$N.rows,x$N.ids,by="nmout")
+    ## n1 <- merge(x$N.rows,x$N.ids,by="nmout")
     n2 <- melt(x$N.rows,id.vars="nmout",variable.name="N")
     n3 <- mergeCheck(n2,dt.nmout,by="nmout",all.x=TRUE)
     n4 <- dcast(n3,N~NMOUT,value.var="value")

@@ -19,93 +19,97 @@ NMscanData(
   as.fun = NULL,
   col.id = "ID",
   tab.count = FALSE,
-  orderColumns = TRUE,
-  checkTime = TRUE
+  order.columns = TRUE,
+  check.time = TRUE
 )
 }
 \arguments{
-\item{file}{A nonmem control stream or output file from nonmem
-(.mod or .lst)}
+\item{file}{A nonmem control stream or output file from nonmem (.mod or
+.lst)}
 
-\item{col.row}{A column with a unique value for each row. Such a
-column is recommended to use if possible. See cbind.by.filters
-and details as well.}
+\item{col.row}{A column with a unique value for each row. Such a column is
+recommended to use if possible. See cbind.by.filters and details as
+well.}
 
-\item{cbind.by.filters}{If TRUE, Nonmem data filtering is
-interpreted from lst file (restrictions apply), and after an
-imitated selection of rows, data columns will be appended to
-output data. This method relies on interpretation of Nonmem
-code, and it will not work in advanced use of IGNORE and
-ACCEPT statements in $INPUT. Consider using col.row instead,
+\item{cbind.by.filters}{If TRUE, Nonmem data filtering is interpreted from
+lst file (restrictions apply), and after an imitated selection of rows,
+data columns will be appended to output data. This method relies on
+interpretation of Nonmem code, and it will not work in advanced use of
+IGNORE and ACCEPT statements in $INPUT. Consider using col.row instead,
 if possible. Default is TRUE if col.row is either missing or
-NULL. However, explicitly specifying cbind.by.filters is
-recommended if that is the intended behaviour. If not,
-NMscanData will search for potential columns to merge by and
-print information about it. See col.row (recommended method)
-as well.}
+NULL. However, explicitly specifying cbind.by.filters is recommended if
+that is the intended behaviour. If not, NMscanData will search for
+potential columns to merge by and print information about it. See
+col.row (recommended method) as well.}
 
-\item{use.input}{Merge with columns in input data? Using this, you
-don't have to worry about remembering including all relevant
-variables in the output tables.}
+\item{use.input}{Merge with columns in input data? Using this, you don't
+have to worry about remembering including all relevant variables in the
+output tables.}
 
-\item{recover.rows}{Include rows from input data files that do not
-exist in output tables? This will be added to the $row dataset
-only, and $run, $id, and $occ datasets are created before this
-is taken into account. A column called nmout will be TRUE when
-the row was found in output tables, and FALSE when not. This
-is still experimental. More testing is needed.}
+\item{recover.rows}{Include rows from input data files that do not exist in
+output tables? This will be added to the $row dataset only, and $run,
+$id, and $occ datasets are created before this is taken into account. A
+column called nmout will be TRUE when the row was found in output
+tables, and FALSE when not. This is still experimental. More testing is
+needed.}
 
-\item{add.name}{If a character string, a column of this name will
-be included in all tables containing the model name. The
-default is to store this in a column called "model". See
-argument "name" as well. Set to NULL if not wanted.}
+\item{add.name}{If a character string, a column of this name will be
+included in all tables containing the model name. The default is to
+store this in a column called "model". See argument "name" as well. Set
+to NULL if not wanted.}
 
-\item{modelname}{The model name to be stored if add.name is not
-NULL and not set by options(NMdata.modelname=...). If not
-supplied, the name will be taken from the control stream file
-name by omitting the directory/path and deleting the .lst
-extension. If using the NMdata.modelname option, please submit
-a function taking file as argument and returning the modelname
-(by extracting it from file name or path).}
+\item{modelname}{The model name to be stored if add.name is not NULL and not
+set by options(NMdata.modelname=...). If not supplied, the name will be
+taken from the control stream file name by omitting the directory/path
+and deleting the .lst extension. If using the NMdata.modelname option,
+please submit a function taking file as argument and returning the
+modelname (by extracting it from file name or path).}
 
-\item{file.mod}{The input control stream. Default is to look for
-\"file\" with extension changed to .mod (PSN style). You can
-also supply the path to the file, or you can provide a
-function that translates the output file path to the input
-file path. The default behavior is controlled by the
-"NMdata.file.mod" option. See dir.data too.}
+\item{file.mod}{The input control stream. Default is to look for \"file\"
+with extension changed to .mod (PSN style). You can also supply the path
+to the file, or you can provide a function that translates the output
+file path to the input file path. The default behavior is controlled by
+the "NMdata.file.mod" option. See dir.data too.}
 
-\item{dir.data}{The data directory can only be read from the
-control stream (.mod) and not from the output file (.lst). So
-if you only have the output file, use dir.data to tell in
-which directory to find the data file. If dir.data is
-provided, the .mod file is not used at all.}
+\item{dir.data}{The data directory can only be read from the control stream
+(.mod) and not from the output file (.lst). So if you only have the
+output file, use dir.data to tell in which directory to find the data
+file. If dir.data is provided, the .mod file is not used at all.}
 
-\item{quiet}{The default is to give some information along the way
-on what data is found. But consider setting this to TRUE for
-non-interactive use.}
+\item{quiet}{The default is to give some information along the way on what
+data is found. But consider setting this to TRUE for non-interactive
+use.}
 
-\item{use.rds}{If an rds file is found with the exact same name
-(except for .rds instead of say .csv) as the input data file
-mentioned in the Nonmem control stream, should this be used
-instead? The default is yes, and NMwriteData will create this
-by default too.}
+\item{use.rds}{If an rds file is found with the exact same name (except for
+.rds instead of say .csv) as the input data file mentioned in the Nonmem
+control stream, should this be used instead? The default is yes, and
+NMwriteData will create this by default too.}
 
-\item{as.fun}{The default is to return data as a data.frame. Pass
-a function (say tibble::as_tibble) in as.fun to convert to
-something else. If data.tables are wanted, use
-as.fun="none". See ?runAsFun.}
+\item{as.fun}{The default is to return data as a data.frame. Pass a function
+(say tibble::as_tibble) in as.fun to convert to something else. If
+data.tables are wanted, use as.fun="none". See ?runAsFun.}
 
-\item{col.id}{The name of the subject ID variable, default is
-"ID".}
+\item{col.id}{The name of the subject ID variable, default is "ID".}
 
-\item{tab.count}{Nonmem includes a counter of tables in the
-written data files. These are often not useful. Especially for
-NMscanData output it can be meaningless because multiple
-tables can be combined so this information is not unique
-across those source tables. However, if tab.count is TRUE (not
-default), this will be carried forward and added as a column
-called TABLENO.}
+\item{tab.count}{Nonmem includes a counter of tables in the written data
+files. These are often not useful. Especially for NMscanData output it
+can be meaningless because multiple tables can be combined so this
+information is not unique across those source tables. However, if
+tab.count is TRUE (not default), this will be carried forward and added
+as a column called TABLENO.}
+
+\item{order.columns}{If TRUE (default), NMorderColumns is used to reorder
+the columns before returning the data. NMorderColumns will be called
+with alpha=FALSE, so columns are not sorted alphebetically. But standard
+Nonmem columns like ID, TIME, and other will be first. If col.row is
+used, this will be passed to NMorderColumns too.}
+
+\item{check.time}{If TRUE (default) and if input data is used, input control
+stream and input data are checked to be newer than output control stream
+and output tables. These are important assumptions for the way
+information is merged by NMscanData. However, if data has been
+transfered from another system where Nonmem was run, these checks may
+not make sense, and you may not want to see these warnings.}
 }
 \description{
 automatically find Nonmem tables and organize data

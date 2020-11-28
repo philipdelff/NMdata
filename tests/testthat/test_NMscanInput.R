@@ -34,7 +34,7 @@ test_that("Duplicate columns in input data",{
     ## res <- NMscanData(file=file.lst)
     ## res <- NMscanData(file=file.lst)
 
-    load_all("../../")
+    ## load_all("../../")
     ## debugonce(NMscanInput)
     inpdat <- expect_warning(NMscanInput(file=file.lst))
     
