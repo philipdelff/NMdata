@@ -4,7 +4,7 @@
 \alias{mergeCheck}
 \title{Merge, order, and check resulting rows and columns.}
 \usage{
-mergeCheck(df1, df2, by, as.fun = NULL, ...)
+mergeCheck(df1, df2, by, as.fun = NULL, fun.commoncols = base::warning, ...)
 }
 \arguments{
 \item{df1}{A data.fram with the number of rows must should be
@@ -19,6 +19,15 @@ ordered like df1.}
 \item{as.fun}{The default is to return a data.table if df1 is a
 data.table and return a data.frame in all other cases. Pass a
 function in as.fun to convert to something else.}
+
+\item{fun.commoncols}{If common columns are found in df1 and df2,
+and they are not used in by, this will create columns named
+like col.x and col.y in result (see ?merge). Often, this is a
+mistake, and the default is to throw a warning if this
+happens. If using mergeCheck in a function, you may want to
+make sure this is not happening and use
+fun.commoncols=stop. If you want nothing to happen, you can do
+fun.commoncols=NULL.}
 
 \item{...}{additional arguments passed to merge. If all is among
 them, an error will be returned.}

@@ -5,7 +5,7 @@ test_that("basic",{
     fileRef <- "testReference/NMgetSection.rds"
 
     ## file.lst <- "../../inst/examples/nonmem/run001.lst"
-    file.lst <- NMdata_filepath("examples/nonmem/run001.lst")
+    file.lst <- system.file("examples/nonmem/run001.lst",package="NMdata")
     ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
     res1 <- NMgetSection(file=file.lst,section="DATA")

@@ -49,7 +49,7 @@
 ##'     then be called by NMgetSection.
 ##' @family Nonmem
 ##' @examples
-##' NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+##' NMgetSection(system.file("examples/nonmem/run001.lst", package = "NMdata"),section="DATA")
 ##' @export
 
 
@@ -60,6 +60,9 @@ NMextractText <- function(file, lines, text, section, char.section,
                           simplify=TRUE, cleanSpaces=FALSE,
                           type="mod", linesep="\n"){
 
+    
+    
+    
     if(sum(c(!missing(file)&&!is.null(file),
            !missing(lines)&&!is.null(lines),
            !missing(text)&&!is.null(text)

@@ -36,7 +36,7 @@
 ##' @return character vector with extracted lines.
 ##' @family Nonmem
 ##' @examples
-##' NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+##' NMgetSection(system.file("examples/nonmem/run001.lst", package="NMdata"),section="DATA")
 ##'
 ##' @export
 

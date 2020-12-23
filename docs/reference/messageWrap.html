@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.4</span>
       </span>
     </div>
 
@@ -151,11 +151,12 @@
     <tr>
       <th>fun.msg</th>
       <td><p>The function to pass the text through. Typically,
-message, warning, or stop.</p></td>
+message, warning, or stop. If NULL, nothing will happen, and
+NULL is invisibly returned.</p></td>
     </tr>
     <tr>
       <th>prefix</th>
-      <td><p>Passed to strwrap. Default is " ".</p></td>
+      <td><p>Passed to strwrap. Default is "\n".</p></td>
     </tr>
     <tr>
       <th>initial</th>

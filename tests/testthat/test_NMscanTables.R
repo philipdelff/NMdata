@@ -7,7 +7,7 @@ context("NMscanTables")
 test_that("Multiple output table formats",{
 
     fileRef <- "testReference/NMscanTables1.rds"
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr003.lst")
+    file.lst <- system.file("examples/nonmem/xgxr003.lst",package="NMdata")
 
     res.dt <- NMscanTables(file=file.lst,as.fun="none")
     expect_equal_to_reference(res.dt,fileRef,version=2)
@@ -25,7 +25,7 @@ test_that("Multiple output table formats",{
 
 test_that("Details table",{
     fileRef <- "testReference/NMscanTables2.rds"
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr003.lst")
+    file.lst <- system.file("examples/nonmem/xgxr003.lst", package="NMdata")
 
     res <- NMscanTables(file=file.lst,details=T,as.fun="none")
 ### this will make trouble because meta data table contains absolute

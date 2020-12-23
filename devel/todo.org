@@ -201,12 +201,15 @@ depending on nmout TRUE or FALSE.
     CLOSED: [2020-11-25 Wed 10:33]
 *** DONE Test input with duplicated column names
     CLOSED: [2020-11-27 Fri 22:06]
-*** TODO summary.NMdata: no visible global function definition for '.'
-*** TODO Drop filepath_NMdata
+*** DONE summary.NMdata: no visible global function definition for '.'
+    CLOSED: [2020-12-22 Tue 19:01]
+replaced a couple of calls to . by list. Not sure why this happens for
+exactly these uses of ".". Anyway, no consequence to functionality.
+*** DONE Drop filepath_NMdata
+    CLOSED: [2020-12-22 Tue 19:01]
 *** TODO Release 0.0.7
 **** Update vignettes
-***** DONE NMscanData
-      CLOSED: [2020-10-15 Thu 14:57]
+***** TODO NMscanData
 ***** TODO FAQ
 ***** TODO DataCreate
 **** TODO document data objects

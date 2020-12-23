@@ -31,9 +31,6 @@
     <loc>https://philipdelff.github.io/NMdata/reference/NMcode2R.html</loc>
   </url>
   <url>
-    <loc>https://philipdelff.github.io/NMdata/reference/NMdata_filepath.html</loc>
-  </url>
-  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMextractText.html</loc>
   </url>
   <url>
@@ -55,19 +52,22 @@
     <loc>https://philipdelff.github.io/NMdata/reference/NMscanData.html</loc>
   </url>
   <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMscanInput.html</loc>
+  </url>
+  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMscanTables.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMtransFilters.html</loc>
   </url>
   <url>
-    <loc>https://philipdelff.github.io/NMdata/reference/NMtransInput.html</loc>
-  </url>
-  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMwriteData.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/objInfo.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/print.summary_NMdata.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/runAsFun.html</loc>

@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.4</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2020-10-27 using NMdata 0.0.6.2.</p>
+<p>Built 2020-12-22 using NMdata 0.0.6.3.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -116,7 +116,7 @@
 <a href="#get-started" class="anchor"></a>Get started</h2>
 <p>Try NMscanData on any model:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw">res0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>),
+<span class="kw">res0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),
                    cbind.by.filters=<span class="fl">TRUE</span>)
 <span class="co">#&gt; Model:  xgxr001 </span>
 <span class="co">#&gt; </span>
@@ -143,9 +143,18 @@
 <a href="#merge-output-and-input-data-by-a-unique-row-identifier" class="anchor"></a>Merge output and input data by a unique row identifier</h3>
 <p>The default method of interpreting Nonmem code is not recommended. It is the default because it does not rely on assumptions about the input data and hence very generic. It happens that this dataset and one of the output tables contain a row identifier (a row counter in the column called <code>ROW</code>). If we skipped the <code>cbind.by.filters</code> above, <code>NMscanData</code> would figure this out and recommend merging by this column. This is what we will now do using the <code>col.row</code> argument. The following checks that we get the same result from the two methods.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>),col.row=<span class="st">"ROW"</span>,quiet=<span class="fl">TRUE</span>)
+<span class="kw">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),col.row=<span class="st">"ROW"</span>,quiet=<span class="fl">TRUE</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="kw">res0</span>,<span class="kw">res1</span>,check.attributes=<span class="fl">FALSE</span>)
-<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt;  [1] "Component 1: Mean relative difference: 6.572347"  </span>
+<span class="co">#&gt;  [2] "Component 2: Mean relative difference: 28.41031"  </span>
+<span class="co">#&gt;  [3] "Component 3: Mean relative difference: 0.03024765"</span>
+<span class="co">#&gt;  [4] "Component 4: Mean relative difference: 26.99972"  </span>
+<span class="co">#&gt;  [5] "Component 5: Mean relative difference: 1"         </span>
+<span class="co">#&gt;  [6] "Component 6: Mean relative difference: 1.102333"  </span>
+<span class="co">#&gt;  [7] "Component 7: Mean relative difference: 27.23623"  </span>
+<span class="co">#&gt;  [8] "Component 8: Mean absolute difference: 0.670929"  </span>
+<span class="co">#&gt;  [9] "Component 9: Mean relative difference: 1"         </span>
+<span class="co">#&gt; [10] "Component 10: Mean relative difference: 0.9989509"</span>
 </pre></div>
 <p>All features shown below will work whether you supply <code>col.row</code> or not. We use <code>col.row</code> because it is more robust and always recommended.</p>
 <p>Let’s have a quick look at the data we got back. The following is done with data.table. The comments in the code should make it clear what happens if you are not familiar with <code>data.table</code>. You can do this with <code><a href="https://rdrr.io/r/base/tapply.html">base::tapply</a></code>, <code><a href="https://rdrr.io/r/stats/aggregate.html">stats::aggregate</a></code>, a combination of <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarize</a></code>, or whatever you prefer.</p>
@@ -197,22 +206,22 @@
 <p>Let’s use the same function to see the variables that are constant across the whole dataset</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="fu"><a href="../reference/findCovs.html">findCovs</a></span>(<span class="kw">res1</span>)
-<span class="co">#&gt;      TVKA  TVV2    TVCL    TVV3     TVQ      V3       Q nmout BLQ CYCLE FLAG</span>
-<span class="co">#&gt; 1 0.18116 0.042 0.72491 0.17857 8813700 0.17857 8813700  TRUE   0     1    0</span>
-<span class="co">#&gt;   PART PROFDAY STUDY TIMEUNIT         flag   model</span>
-<span class="co">#&gt; 1    1       1     1    Hours Analysis set xgxr001</span>
+<span class="co">#&gt;   FLAG STUDY    TVKA  TVV2    TVCL    TVV3     TVQ      V3       Q BLQ CYCLE</span>
+<span class="co">#&gt; 1    0     1 0.18116 0.042 0.72491 0.17857 8813700 0.17857 8813700   0     1</span>
+<span class="co">#&gt;   PART PROFDAY nmout TIMEUNIT         flag   model</span>
+<span class="co">#&gt; 1    1       1  TRUE    Hours Analysis set xgxr001</span>
 </pre></div>
 <p>Let’s take a look at what is in the <code>res1.id</code> generated above. It is a mix of variables that vary at subject level and varibles that are constant across the full dataset.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">res1.id</span>)
 <span class="co">#&gt; [1] 150  27</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">res1.id</span>,<span class="fl">2</span>)
-<span class="co">#&gt;    ID    TVKA  TVV2    TVCL    TVV3     TVQ      KA    V2      CL      V3</span>
-<span class="co">#&gt; 1: 31 0.18116 0.042 0.72491 0.17857 8813700 0.18116 0.042 0.72491 0.17857</span>
-<span class="co">#&gt; 2: 32 0.18116 0.042 0.72491 0.17857 8813700 0.18116 0.042 0.72491 0.17857</span>
-<span class="co">#&gt;          Q nmout BLQ CYCLE DOSE FLAG PART PROFDAY STUDY WEIGHTB   eff0 TIMEUNIT</span>
-<span class="co">#&gt; 1: 8813700  TRUE   0     1    3    0    1       1     1  87.031 56.461    Hours</span>
-<span class="co">#&gt; 2: 8813700  TRUE   0     1    3    0    1       1     1 100.620 45.096    Hours</span>
+<span class="co">#&gt;    ID FLAG STUDY    TVKA  TVV2    TVCL    TVV3     TVQ      KA    V2      CL</span>
+<span class="co">#&gt; 1: 31    0     1 0.18116 0.042 0.72491 0.17857 8813700 0.18116 0.042 0.72491</span>
+<span class="co">#&gt; 2: 32    0     1 0.18116 0.042 0.72491 0.17857 8813700 0.18116 0.042 0.72491</span>
+<span class="co">#&gt;         V3       Q BLQ CYCLE DOSE PART PROFDAY WEIGHTB   eff0 nmout TIMEUNIT</span>
+<span class="co">#&gt; 1: 0.17857 8813700   0     1    3    1       1  87.031 56.461  TRUE    Hours</span>
+<span class="co">#&gt; 2: 0.17857 8813700   0     1    3    1       1 100.620 45.096  TRUE    Hours</span>
 <span class="co">#&gt;    TRTACT         flag trtact   model Cmax</span>
 <span class="co">#&gt; 1:   3 mg Analysis set   3 mg xgxr001    0</span>
 <span class="co">#&gt; 2:   3 mg Analysis set   3 mg xgxr001    0</span>
@@ -242,8 +251,21 @@
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(NMdata.as.fun=<span class="st">"none"</span>)
 </pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="kw">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>),
+<span class="kw">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>, package=<span class="st">"NMdata"</span>),
                    col.row=<span class="st">"ROW"</span>,recover.rows=<span class="fl">TRUE</span>)
+<span class="co">#&gt; Warning: In NMscanData(system.file("examples/nonmem/xgxr014.lst", package = "NMdata"), :</span>
+<span class="co">#&gt; input control stream</span>
+<span class="co">#&gt; (C:/Users/delff/software/R/R-4.0.2/library/NMdata/examples/nonmem/xgxr014.mod)</span>
+<span class="co">#&gt; is newer than output control stream</span>
+<span class="co">#&gt; (C:/Users/delff/software/R/R-4.0.2/library/NMdata/examples/nonmem/xgxr014.lst)</span>
+<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
+<span class="co">#&gt; edited, this can corrupt results.</span>
+<span class="co">#&gt; In col.row = "ROW", recover.rows = TRUE) : input control stream</span>
+<span class="co">#&gt; (C:/Users/delff/software/R/R-4.0.2/library/NMdata/examples/nonmem/xgxr014.mod)</span>
+<span class="co">#&gt; is newer than output control stream</span>
+<span class="co">#&gt; (C:/Users/delff/software/R/R-4.0.2/library/NMdata/examples/nonmem/xgxr014.lst)</span>
+<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
+<span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="co">#&gt; Model:  xgxr014 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Tables, number of columns in tables, and their detail level:</span>
@@ -295,12 +317,26 @@
 <p>You may have noticed a column called <code>model</code> in some of the output above. <code>NMscanData</code> by default adds this column for convenience when working with multiple models. You can specify both column name and content as arguments in <code>NMscanData</code>. If you don’t, the column will be called <code>model</code>, and the model name taken from the <code>lst</code> file name (say, <code>xgxr001</code>). In the following we use this to compare population predictions from two different models. We read them again just to show the use of the argument to name the models ourselves. Remember, we reset the <code>NMdata.as.fun</code> option so we are working with <code>data.table</code> and we easily stack filling in <code>NA</code>’s with <code>rbind</code> (<code>rbind.data.table</code>).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="co">## notice fill is an option to rbind with data.table</span>
-<span class="kw">res1.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>),
+<span class="kw">res1.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),
                      col.row=<span class="st">"ROW"</span>,
                      quiet=<span class="fl">TRUE</span>)
-<span class="kw">res2.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>),
+<span class="kw">res2.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>, package=<span class="st">"NMdata"</span>),
                      col.row=<span class="st">"ROW"</span>,modelname=<span class="st">"single-compartment"</span>,
                      quiet=<span class="fl">TRUE</span>)
+<span class="co">#&gt; Warning: In NMscanData(system.file("examples/nonmem/xgxr014.lst", package = "NMdata"), :</span>
+<span class="co">#&gt; input control stream</span>
+<span class="co">#&gt; (C:/Users/delff/software/R/R-4.0.2/library/NMdata/examples/nonmem/xgxr014.mod)</span>
+<span class="co">#&gt; is newer than output control stream</span>
+<span class="co">#&gt; (C:/Users/delff/software/R/R-4.0.2/library/NMdata/examples/nonmem/xgxr014.lst)</span>
+<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
+<span class="co">#&gt; edited, this can corrupt results.</span>
+<span class="co">#&gt; In col.row = "ROW", modelname = "single-compartment", quiet = TRUE) : input</span>
+<span class="co">#&gt; control stream</span>
+<span class="co">#&gt; (C:/Users/delff/software/R/R-4.0.2/library/NMdata/examples/nonmem/xgxr014.mod)</span>
+<span class="co">#&gt; is newer than output control stream</span>
+<span class="co">#&gt; (C:/Users/delff/software/R/R-4.0.2/library/NMdata/examples/nonmem/xgxr014.lst)</span>
+<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
+<span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="kw">res.mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="kw">res1.m</span>,<span class="kw">res2.m</span>,fill=<span class="kw">T</span>)
 <span class="kw">res.mult.mean</span> <span class="op">&lt;-</span> <span class="kw">res.mult</span>[<span class="kw">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">&amp;</span><span class="kw">nmout</span><span class="op">==</span><span class="fl">TRUE</span>,
                           <span class="fu">.</span>(gmPRED=<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="kw">PRED</span>)))),
@@ -361,14 +397,14 @@
 <p>Notice that the summary text printed to the <code>R</code> terminal by <code>NMscanData</code> tells how many columns are included from the available tables. Also, within the resulting object, you can find a detailed table of all variables available, and whether they are included or not.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span>(<span class="kw">res1.m</span>)<span class="op">$</span><span class="kw">meta</span><span class="op">$</span><span class="kw">variables</span>,topn=<span class="fl">3</span>)
-<span class="co">#&gt;     variable           table included     source level</span>
-<span class="co">#&gt;  1:      ROW xgxr001_res.txt     TRUE     output   row</span>
-<span class="co">#&gt;  2:     TVKA xgxr001_res.txt     TRUE     output   row</span>
-<span class="co">#&gt;  3:     TVV2 xgxr001_res.txt     TRUE     output   row</span>
-<span class="co">#&gt; ---                                                   </span>
-<span class="co">#&gt; 40:     flag           input     TRUE      input   row</span>
-<span class="co">#&gt; 41:   trtact           input     TRUE      input   row</span>
-<span class="co">#&gt; 42:    model            &lt;NA&gt;     TRUE NMscanData model</span>
+<span class="co">#&gt;     variable           table     source level COLNUM</span>
+<span class="co">#&gt;  1:      ROW xgxr001_res.txt     output   row      1</span>
+<span class="co">#&gt;  2:       ID           input      input   row      2</span>
+<span class="co">#&gt;  3:  NOMTIME           input      input   row      3</span>
+<span class="co">#&gt; ---                                                 </span>
+<span class="co">#&gt; 40:    model            &lt;NA&gt; NMscanData model     40</span>
+<span class="co">#&gt; 41:      ROW           input      input   row     NA</span>
+<span class="co">#&gt; 42:       DV           input      input   row     NA</span>
 </pre></div>
 </div>
 <div id="the-building-blocks" class="section level2">
