@@ -10,7 +10,8 @@ messageWrap(..., fun.msg = message, prefix = "\\n", initial = "", width = 80)
 \item{...}{parameters to pass to strwrap}
 
 \item{fun.msg}{The function to pass the text through. Typically,
-message, warning, or stop.}
+message, warning, or stop. If NULL, nothing will happen, and
+NULL is invisibly returned.}
 
 \item{prefix}{Passed to strwrap. Default is "\\n".}
 

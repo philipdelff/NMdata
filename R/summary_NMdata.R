@@ -37,7 +37,7 @@ summary.NMdata <- function(object,...){
 
     
     s1 <- attr(data,"meta")
-    s1$N.ids1 <- data[,.(N.ids=uniqueN(ID)),by="nmout"]
+    s1$N.ids1 <- data[,list(N.ids=uniqueN(ID)),by="nmout"]
 
     N.ids.nmout <- s1$N.ids1[nmout==TRUE,N.ids]
     if(length(N.ids.nmout)==0) N.ids.nmout <- 0
@@ -51,10 +51,10 @@ summary.NMdata <- function(object,...){
     )
     s1$N.ids1 <- NULL
 
-    s1$N.rows <- data[,.(N.rows=.N),by="nmout"]
+    s1$N.rows <- data[,list(N.rows=.N),by="nmout"]
     s1$N.evids <- NA
     if("EVID"%in%colnames(data)){
-        s1$N.evids <- data[,.N,by=.(nmout,EVID)]
+        s1$N.evids <- data[,.N,by=list(nmout,EVID)]
     }
     
     setattr(s1,"class",c("summary_NMdata",class(s1)))

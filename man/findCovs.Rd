@@ -26,7 +26,7 @@ a data set with one observation per combination of values
 Extract columns that do not vary within variables in data
 }
 \examples{
-dat <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
+dat <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"))
 ### very common use
 findCovs(dat,cols.id="ID")
 ### Without an ID column we get non-varying columns

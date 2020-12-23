@@ -74,7 +74,7 @@ details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.4</span>
       </span>
     </div>
 
@@ -149,9 +149,11 @@ details.</p>
   <span class='kw'>last</span>,
   lower.last = <span class='fl'>FALSE</span>,
   chars.last = <span class='fl'>TRUE</span>,
+  alpha = <span class='fl'>TRUE</span>,
   nomtime = <span class='st'>"NOMTIME"</span>,
   row = <span class='st'>"ROW"</span>,
-  as.fun = <span class='kw'>NULL</span>
+  as.fun = <span class='kw'>NULL</span>,
+  quiet = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -167,57 +169,62 @@ details.</p>
     </tr>
     <tr>
       <th>last</th>
-      <td><p>Columns to move to back of dataset. If you work with a
-large dataset, and some columns are irrelevant for the Nonmem
-runs, you can use this argument.</p></td>
+      <td><p>Columns to move to back of dataset. If you work with a large
+dataset, and some columns are irrelevant for the Nonmem runs, you can
+use this argument.</p></td>
     </tr>
     <tr>
       <th>lower.last</th>
-      <td><p>Should columns which names contain lowercase
-characters be moved towards the back? Some people use a
-standard of lowercase variables (say "race") being character
-representations ("asian", "caucasian", etc.) variables and the
-uppercase (1,2,...) being the numeric representation for
-Nonmem.</p></td>
+      <td><p>Should columns which names contain lowercase characters be
+moved towards the back? Some people use a standard of lowercase
+variables (say "race") being character representations ("asian",
+"caucasian", etc.) variables and the uppercase (1,2,...) being the
+numeric representation for Nonmem.</p></td>
     </tr>
     <tr>
       <th>chars.last</th>
-      <td><p>Should columns which cannot be converted to
-numeric be put towards the end? A column can be a character or
-a factor in R, but still be valid in Nonmem (often the case
-for ID which can only contain numeric digits but really is a
-character or factor). So rather than only looking at the
-column class, the columns are attempted converted to
-numeric. Notice, it will attempted to be converted to numeric
-to test whether Nonmem will be able to make sense of it, but
-the values in the resulting dataset will be untouched. No
-values will be edited. If TRUE, logicals will always be put
-last. NA's must be NA or ".".</p></td>
+      <td><p>Should columns which cannot be converted to numeric be put
+towards the end? A column can be a character or a factor in R, but still
+be valid in Nonmem (often the case for ID which can only contain numeric
+digits but really is a character or factor). So rather than only looking
+at the column class, the columns are attempted converted to
+numeric. Notice, it will attempted to be converted to numeric to test
+whether Nonmem will be able to make sense of it, but the values in the
+resulting dataset will be untouched. No values will be edited. If TRUE,
+logicals will always be put last. NA's must be NA or ".".</p></td>
+    </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p>Sort columns alphabetically. Notice, this is the last order
+priority applied.</p></td>
     </tr>
     <tr>
       <th>nomtime</th>
-      <td><p>The name of the column containing nominal time. If
-given, it will put the column quite far left, just after row
-counter and ID.</p></td>
+      <td><p>The name of the column containing nominal time. If given, it
+will put the column quite far left, just after row counter and ID.</p></td>
     </tr>
     <tr>
       <th>row</th>
-      <td><p>A row counter column. This will be the first column in
-the dataset. Technically, you can use it for whatever column
-you want first.</p></td>
+      <td><p>A row counter column. This will be the first column in the
+dataset. Technically, you can use it for whatever column you want first.</p></td>
     </tr>
     <tr>
       <th>as.fun</th>
-      <td><p>The default is to return a data.table if data is a
-data.table and return a data.frame in all other cases. Pass a
-function in as.fun to convert to something else.</p></td>
+      <td><p>The default is to return a data.table if data is a data.table
+and return a data.frame in all other cases. Pass a function in as.fun to
+convert to something else.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>If true, no warning will be given about missing standard Nonmem
+columns.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function will change the order of columns but it
-    will never edit values in any columns.</p>
+    <p>This function will change the order of columns but it will never
+    edit values in any columns.</p>
 <p>The ordering is by the following steps, each step depending on
 corresponding argument. Not</p><ul>
 <li><p>"row - "Row id if argument row is non-NULL</p></li>
@@ -229,7 +236,7 @@ corresponding argument. Not</p><ul>
 <li><p>"chars.last - "numeric, or interpretable as numeric</p></li>
 <li><p>"not editable - "less often used nonmem names: FLAG, OCC, ROUTE, GRP, TRIAL, DRUG, STUDY</p></li>
 <li><p>"lower.last - "lower case in name</p></li>
-<li><p>"not editable - "Alphabetic/numeric sorting</p></li>
+<li><p>"alpha - "Alphabetic/numeric sorting</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

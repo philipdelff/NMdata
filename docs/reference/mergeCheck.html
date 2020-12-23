@@ -75,7 +75,7 @@ merge and ensures that exactly this and nothing else happened." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.4</span>
       </span>
     </div>
 
@@ -145,7 +145,7 @@ created. For this very common type of (simple) merges, mergeCheck does the
 merge and ensures that exactly this and nothing else happened.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mergeCheck</span>(<span class='kw'>df1</span>, <span class='kw'>df2</span>, <span class='kw'>by</span>, as.fun = <span class='kw'>NULL</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>mergeCheck</span>(<span class='kw'>df1</span>, <span class='kw'>df2</span>, <span class='kw'>by</span>, as.fun = <span class='kw'>NULL</span>, fun.commoncols = <span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/warning.html'>warning</a></span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -170,6 +170,17 @@ ordered like df1.</p></td>
       <td><p>The default is to return a data.table if df1 is a
 data.table and return a data.frame in all other cases. Pass a
 function in as.fun to convert to something else.</p></td>
+    </tr>
+    <tr>
+      <th>fun.commoncols</th>
+      <td><p>If common columns are found in df1 and df2,
+and they are not used in by, this will create columns named
+like col.x and col.y in result (see ?merge). Often, this is a
+mistake, and the default is to throw a warning if this
+happens. If using mergeCheck in a function, you may want to
+make sure this is not happening and use
+fun.commoncols=stop. If you want nothing to happen, you can do
+fun.commoncols=NULL.</p></td>
     </tr>
     <tr>
       <th>...</th>

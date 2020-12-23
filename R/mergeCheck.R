@@ -13,7 +13,15 @@
 ##'     (vector). Must be supplied.
 ##' @param as.fun The default is to return a data.table if df1 is a
 ##'     data.table and return a data.frame in all other cases. Pass a
-##'     function in as.fun to convert to something else. 
+##'     function in as.fun to convert to something else.
+##' @param fun.commoncols If common columns are found in df1 and df2,
+##'     and they are not used in by, this will create columns named
+##'     like col.x and col.y in result (see ?merge). Often, this is a
+##'     mistake, and the default is to throw a warning if this
+##'     happens. If using mergeCheck in a function, you may want to
+##'     make sure this is not happening and use
+##'     fun.commoncols=stop. If you want nothing to happen, you can do
+##'     fun.commoncols=NULL.
 ##' @param ... additional arguments passed to merge. If all is among
 ##'     them, an error will be returned.
 ##' @details Besides merging and checking rows, mergeCheck makes sure
@@ -29,7 +37,7 @@
 ##' @return a data.frame resulting from merging df1 and df2
 ##' @export
 
-mergeCheck <- function(df1,df2,by,as.fun=NULL,...){
+mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,...){
     
     name.df1 <- deparse(substitute(df1))
     name.df2 <- deparse(substitute(df2))
@@ -49,13 +57,22 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,...){
         df1 <- as.data.table(df1)
         df1.was.dt <- FALSE
     }
-    
-    if(is.data.table(df2)){
-        df2 <- copy(df2)
-    } else {
+
+    ## df2 is not edited. So if already a data.table, we don't edit.
+    if(!is.data.table(df2)){
         df2 <- as.data.table(df2)
     }
 
+    if(!missing(by)){
+        cols.common <- intersect(colnames(df1),colnames(df2))
+        cols.com.notby <- setdiff(cols.common,by)
+        commoncols.found <- FALSE
+        if(length(cols.com.notby)) {
+            messageWrap("option all not supported. mergeCheck is for merges that are intended to result in column additions to df1, that's all.",
+                        fun.msg=fun.commoncols)
+            commoncols.found <- TRUE
+        }
+    }
     rowcol <- tmpcol(names=c(colnames(df1),colnames(df2)))
 
     if(nrow(df1)) {
@@ -92,7 +109,8 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,...){
 
 ###### check if new column names have been created
     if(!all(colnames(df3) %in% c(colnames(df1),colnames(df2)))){
-        warning("Merge created new column names. Not merging by all common columns?")
+        messageWrap("Merge created new column names. Apart from values of by, common columns were not found in df1 and df2, so this should not happen. Please inspect df1, df2 and result carefully.",
+                    fun.msg=warning)
     }
 
     if(!df1.was.dt || !is.null(as.fun)){

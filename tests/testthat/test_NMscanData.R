@@ -3,6 +3,10 @@
 ## load_all("../../")
 
 context("NMscanData")
+NMdata_filepath <- function(...) {
+    system.file(..., package = "NMdata")
+}
+
 
 fix.time <- function(x){
     meta.x <- attr(x,"meta")

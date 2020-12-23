@@ -19,8 +19,4 @@ Use this to tidy up paths. Combines pieces of a path like
     comparisson. Redundant /'s removed. normalizePath is used to
     possibly shorten path.
 }
-\seealso{
-Other FileSystem: 
-\code{\link{NMdata_filepath}()}
-}
 \concept{FileSystem}

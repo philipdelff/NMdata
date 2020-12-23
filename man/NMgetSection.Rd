@@ -70,7 +70,7 @@ model file. Look NMextractText for more general functionality
 suitable for the results part too.
 }
 \examples{
-NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+NMgetSection(system.file("examples/nonmem/run001.lst", package="NMdata"),section="DATA")
 
 }
 \seealso{

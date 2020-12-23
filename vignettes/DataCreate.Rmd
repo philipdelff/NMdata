@@ -48,7 +48,7 @@ functions return data.table objects is that the data set is a
 data.table to begin with
 
 ```{r}
-pk <- readRDS(file=file.path(NMdata_filepath(),"examples/data/xgxr2.rds"))
+pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 class(pk)
 ```
 
@@ -148,7 +148,7 @@ The function that applies inclusion/excluasion rules is called
 arguments.
 
 ```{r}
-pk <- readRDS(file=file.path(NMdata_filepath(),"examples/data/xgxr2.rds"))
+pk <- readRDS(file=system.file("examples/data/xgxr2.rds", package="NMdata"))
 dt.flags <- fread(text="FLAG,flag,condition
 10,Below LLOQ,BLQ==1")
 

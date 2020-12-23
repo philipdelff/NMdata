@@ -1,3 +1,15 @@
+# NMdata 0.0.6.4
+If all common column names two data objects to merge are not used for
+merging (by), new column names are created by merge. The behavior of
+mergeCheck can now be controlled in case this happens. This is
+especially useful when using mergeCheck in programming.
+
+A shortcut to system.file(...,package="NMdata") has been removed. The
+function was called NMdata_filepath and is no longer available. Use
+system.file instead.
+
+# NMdata 0.0.6.3
+
 # NMdata 0.0.6.2
 A summary function is provided for NMdata objects. There is a print
 function for the summary too. This is printet automatically by NMdata

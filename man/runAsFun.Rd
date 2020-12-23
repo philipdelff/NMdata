@@ -76,14 +76,16 @@ convert to other classes unless the user supply the conversion
 function.
 }
 \examples{
-dat <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
+dat <- NMscanData(system.file("examples/nonmem/xgxr001.lst",package="NMdata"))
 class(dat)
-dat <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),as.fun="none")
+dat <- NMscanData(system.file("examples/nonmem/xgxr001.lst",package="NMdata"),
+                  as.fun="none")
 class(dat)
 options(NMdata.run.as="none")
-dat <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
+dat <- NMscanData(system.file("examples/nonmem/xgxr001.lst",package="NMdata"))
 class(dat)
 library(tibble)
-dat <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),as.fun=tibble::as_tibble)
+dat <- NMscanData(system.file("examples/nonmem/xgxr001.lst",package="NMdata"),
+                  as.fun=tibble::as_tibble)
 class(dat)
 }

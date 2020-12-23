@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.4</span>
       </span>
     </div>
 
@@ -97,14 +97,14 @@
 
     
     
-<p>Built 2020-10-27 using NMdata 0.0.6.2.</p>
+<p>Built 2020-12-22 using NMdata 0.0.6.3.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>Nonmem has quite a number of restrictions on the format of the input data, and problems with the data set is a very typical for Nonmem not to behave as expected. When this happens, you easily waste a lot time debugging the data. <code>NMdata</code> includes some simple functions to prevent these situations.</p>
 <p>This vignette uses <code>data.table</code> syntax for the little bit of data manipulation performed. However, you don’t need to use data.table <em>at all</em> to use these tools or any tool in <code>NMdata</code>. The reason why the functions return data.table objects is that the data set is a data.table to begin with</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(file = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(), <span class="st">"examples/data/xgxr2.rds"</span>))
+<span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(file = <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/data/xgxr2.rds"</span>, package = <span class="st">"NMdata"</span>))
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="kw">pk</span>)
 <span class="co">#&gt; [1] "data.table" "data.frame"</span>
 </pre></div>
@@ -124,15 +124,15 @@
 <span class="kw">dt.cov</span>
 <span class="co">#&gt;     ID COV</span>
 <span class="co">#&gt;  1: 31   5</span>
-<span class="co">#&gt;  2: 32   1</span>
+<span class="co">#&gt;  2: 32   4</span>
 <span class="co">#&gt;  3: 33   4</span>
 <span class="co">#&gt;  4: 34   3</span>
-<span class="co">#&gt;  5: 35   5</span>
-<span class="co">#&gt;  6: 36   4</span>
-<span class="co">#&gt;  7: 37   5</span>
-<span class="co">#&gt;  8: 38   2</span>
-<span class="co">#&gt;  9: 39   5</span>
-<span class="co">#&gt; 10: 40   2</span>
+<span class="co">#&gt;  5: 35   1</span>
+<span class="co">#&gt;  6: 36   3</span>
+<span class="co">#&gt;  7: 37   2</span>
+<span class="co">#&gt;  8: 38   4</span>
+<span class="co">#&gt;  9: 39   2</span>
+<span class="co">#&gt; 10: 40   3</span>
 <span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk2</span>)
 <span class="co">#&gt; [1] 100  25</span>
@@ -182,7 +182,7 @@
 <p>What rows to omit from a dataset can vary from one analysis to another. Hence, the aim with the chosen design is that the inclusion criteria can be changed and applied to overwrite an existing inclusion/exclusion selection.</p>
 <p>The function that applies inclusion/excluasion rules is called <code>flagsAssign</code>, and it takes a dataset and a data.frame with rules as arguments.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(file = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="../reference/NMdata_filepath.html">NMdata_filepath</a></span>(), <span class="st">"examples/data/xgxr2.rds"</span>))
+<span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(file = <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/data/xgxr2.rds"</span>, package = <span class="st">"NMdata"</span>))
 <span class="kw">dt.flags</span> <span class="op">&lt;-</span> <span class="fu">fread</span>(text = <span class="st">"FLAG,flag,condition
 10,Below LLOQ,BLQ==1"</span>)
 
@@ -217,7 +217,7 @@
 <p>Columns that cannot be converted to numeric are put in the back, while column bearing standard Nonmem variable names like ID, TIME, EVID etc. will be pulled up front. You can of course add column names to prioritize to front (<code>first</code>) or back (<code>last</code>). See <code><a href="../reference/NMorderColumns.html">?NMorderColumns</a></code> for more options.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
 <span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMorderColumns.html">NMorderColumns</a></span>(<span class="kw">pk</span>)
-<span class="co">#&gt; Warning in NMorderColumns(pk): These standard nonmem columns were not found in data:</span>
+<span class="co">#&gt; Warning: In NMorderColumns(pk) : These standard nonmem columns were not found in data:</span>
 <span class="co">#&gt; MDV</span>
 </pre></div>
 </div>
@@ -252,7 +252,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2020-10-27 08:41:13 EDT"</span>
+<span class="co">#&gt; [1] "2020-12-22 22:04:31 EST"</span>
 </pre></div>
 <p>These are very simple functions. But they are simple to use as well, and hopefully they will help you avoid sitting with a data set trying to guess which script generated it so you can do a modification or understand how something was done.</p>
 <p>When using NMwriteData, you don’t have to call stampObj explicitly. Just pass the <code>script</code> argument to <code>NMwriteData</code> and <code>stampObj</code> will be applied automatically.</p>

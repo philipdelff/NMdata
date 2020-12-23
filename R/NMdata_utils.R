@@ -1,22 +1,15 @@
-##' get a file or dir from a the NMdata package
-##' @param ... parameters to pass to system.file
-##' @description
-##' a light wrapper around system.file
-##' @family FileSystem
-##' @export
-NMdata_filepath <- function(...) {
-    system.file(..., package = "NMdata")
-}
-
 ##' Pretty wrapping of lines in NMdata vignettes
 ##' @param ... parameters to pass to strwrap
 ##' @param fun.msg The function to pass the text through. Typically,
-##'     message, warning, or stop.
+##'     message, warning, or stop. If NULL, nothing will happen, and
+##'     NULL is invisibly returned.
 ##' @param prefix Passed to strwrap. Default is "\\n".
 ##' @param initial Passed to strwrap. Default is an empty string.
 ##' @param width Passed to strwrap. Default is 80.
 messageWrap <- function(..., fun.msg=message, prefix = "\n", initial = "", width=80){
 
+    if(is.null(fun.msg)) invisible(return(NULL))
+    
     parent.call <- sys.call(sys.nframe() - 1L)
 
     list.args <- list(strwrap(paste("In",deparse(parent.call),":",...)
@@ -93,15 +86,17 @@ messageWrap <- function(..., fun.msg=message, prefix = "\n", initial = "", width
 ##' function. 
 ##'
 ##' @examples
-##' dat <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
+##' dat <- NMscanData(system.file("examples/nonmem/xgxr001.lst",package="NMdata"))
 ##' class(dat)
-##' dat <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),as.fun="none")
+##' dat <- NMscanData(system.file("examples/nonmem/xgxr001.lst",package="NMdata"),
+##'                   as.fun="none")
 ##' class(dat)
 ##' options(NMdata.run.as="none")
-##' dat <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"))
+##' dat <- NMscanData(system.file("examples/nonmem/xgxr001.lst",package="NMdata"))
 ##' class(dat)
 ##' library(tibble)
-##' dat <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),as.fun=tibble::as_tibble)
+##' dat <- NMscanData(system.file("examples/nonmem/xgxr001.lst",package="NMdata"),
+##'                   as.fun=tibble::as_tibble)
 ##' class(dat)
 
 

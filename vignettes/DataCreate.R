@@ -19,7 +19,7 @@ library(data.table)
 
 
 ## -----------------------------------------------------------------------------
-pk <- readRDS(file=file.path(NMdata_filepath(),"examples/data/xgxr2.rds"))
+pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 class(pk)
 
 ## -----------------------------------------------------------------------------
@@ -49,7 +49,7 @@ pk3 <- mergeCheck(pk,dt.cov,by="ID",all.x=TRUE)
 dim(pk3)
 
 ## -----------------------------------------------------------------------------
-pk <- readRDS(file=file.path(NMdata_filepath(),"examples/data/xgxr2.rds"))
+pk <- readRDS(file=system.file("examples/data/xgxr2.rds", package="NMdata"))
 dt.flags <- fread(text="FLAG,flag,condition
 10,Below LLOQ,BLQ==1")
 

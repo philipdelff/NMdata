@@ -20,12 +20,12 @@ theme_set(theme_bw()+theme(legend.position="bottom"))
 
 
 ## ----eval=TRUE----------------------------------------------------------------
-res0 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),
+res0 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
                    cbind.by.filters=TRUE)
 class(res0)
 
 ## ----eval=TRUE----------------------------------------------------------------
-res1 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),col.row="ROW",quiet=TRUE)
+res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),col.row="ROW",quiet=TRUE)
 all.equal(res0,res1,check.attributes=FALSE)
 
 ## ----eval=TRUE----------------------------------------------------------------
@@ -78,7 +78,7 @@ head(res1.id2,2)
 options(NMdata.as.fun="none")
 
 ## -----------------------------------------------------------------------------
-res2 <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),
+res2 <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
                    col.row="ROW",recover.rows=TRUE)
 ## now we have a data.table
 class(res2)
@@ -103,10 +103,10 @@ res2[,.N,by=.(nmout,flag)]
 
 ## -----------------------------------------------------------------------------
 ## notice fill is an option to rbind with data.table
-res1.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr001.lst"),
+res1.m <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
                      col.row="ROW",
                      quiet=TRUE)
-res2.m <- NMscanData(NMdata_filepath("examples/nonmem/xgxr014.lst"),
+res2.m <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
                      col.row="ROW",modelname="single-compartment",
                      quiet=TRUE)
 res.mult <- rbind(res1.m,res2.m,fill=T)

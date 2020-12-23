@@ -7,19 +7,19 @@ test_that("basic",{
 
     fileRef <- "testReference/NMwriteData_1.rds"
 
-    pk <- readRDS(file=file.path(NMdata_filepath(),"examples/data/xgxr2.rds"))
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     expect_equal_to_reference(
-        NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),
+        NMwriteData(pk,file=system.file("examples/data/xgxr1.csv",package="NMdata"),
                     write.rds=F,write.csv=F,nmdir.data="/example")
        ,fileRef)
 })
 
 test_that("basic2",{
-    pk <- readRDS(file=file.path(NMdata_filepath(),"examples/data/xgxr2.rds"))
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     ## not allowed
     expect_error(
         NMwriteData(pk
-                   ,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv")
+                   ,file=system.file("examples/data/xgxr1.csv",package="NMdata")
                    ,write.rds=F,write.csv=F
                    ,nmdrop=""
                     )
@@ -29,9 +29,9 @@ test_that("basic2",{
 test_that("Dropping a column in Nonmem",{
 
     fileRef <- "testReference/NMwriteData_2.rds"
-    pk <- readRDS(file=file.path(NMdata_filepath(),"examples/data/xgxr2.rds"))
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     expect_equal_to_reference(
-        NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),
+        NMwriteData(pk,file=system.file("examples/data/xgxr1.csv",package="NMdata"),
                     write.rds=F,write.csv=F,
                     nmdrop="PART",
                     nmdir.data="/example")
@@ -42,7 +42,7 @@ test_that("Dropping a column in Nonmem",{
     fileRef <- "testReference/NMwriteData_3.rds"
 
     expect_equal_to_reference(
-        NMwriteData(pk,file=NMdata_filepath("examples/data/xgxr1.csv"),
+        NMwriteData(pk,file=system.file("examples/data/xgxr1.csv",package="NMdata"),
                     write.rds=F,write.csv=F,
                     nmdrop="CYCLE",
                     nmdir.data="/example"),
@@ -53,14 +53,14 @@ test_that("Dropping a column in Nonmem",{
 
 test_that("A comma in a character",{
 
-    pk <- readRDS(file=file.path(NMdata_filepath(),"examples/data/xgxr2.rds"))
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     ## dropping a character column
     pk[,CYCLE:=paste0(as.character(CYCLE),",0")]
 
     fileRef <- "testReference/NMwriteData_3.rds"
 
     expect_error(
-        NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),
+        NMwriteData(pk,file=system.file("examples/data/xgxr1.csv",package="NMdata"),
                     write.rds=F,write.csv=F,
                     nmdrop="CYCLE")
     )
@@ -70,10 +70,10 @@ test_that("A comma in a character",{
 
 test_that("Identical column names",{
 
-    pk <- readRDS(file=file.path(NMdata_filepath(),"examples/data/xgxr2.rds"))
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     pk <- cbind(pk[,.(CYCLE)],pk)
-    expect_warning(NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),
-                               write.rds=F,write.csv=F
+    expect_warning(NMwriteData(pk,file=system.file("examples/data/xgxr1.csv",package="NMdata")
+                              ,write.rds=F,write.csv=F
                                ))
 
 })
