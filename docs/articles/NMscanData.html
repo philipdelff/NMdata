@@ -107,7 +107,7 @@
 <ul>
 <li>Read and combine output tables</li>
 <li>If wanted, read input data and restore variables that were not output from the nonmem model</li>
-<li>If wanted, also restore rows from input data that were disregarded in Nonmem (e.g. observations or subjects that are not part of the analysis).</li>
+<li>If wanted, also restore rows from input data that were disregarded in Nonmem (e.g. observations or subjects that are not part of the analysis)</li>
 </ul>
 <p>It should not be to hard to do. But with the large degree of flexibility Nonmem offer, there are a lot of caveats to be aware of, again especially if the model wasn’t written by your own (current) standards.</p>
 <p>For this vignette we initialize by attaching these packages and tweaking plotting layout slightly:</p>
@@ -127,6 +127,19 @@
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="kw">res0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),
                    cbind.by.filters=<span class="fl">TRUE</span>)
+<span class="co">#&gt; Warning: In NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"), :</span>
+<span class="co">#&gt; input control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpuKKj5P/temp_libpath70c489a1541/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; is newer than output control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpuKKj5P/temp_libpath70c489a1541/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
+<span class="co">#&gt; edited, this can corrupt results.</span>
+<span class="co">#&gt; In cbind.by.filters = TRUE) : input control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpuKKj5P/temp_libpath70c489a1541/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; is newer than output control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpuKKj5P/temp_libpath70c489a1541/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
+<span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="co">#&gt; Model:  xgxr001 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Tables, number of columns in tables, and their detail level:</span>
@@ -153,6 +166,19 @@
 <p>The default method of interpreting Nonmem code is not recommended. It is the default because it does not rely on assumptions about the input data and hence very generic. It happens that this dataset and one of the output tables contain a row identifier (a row counter in the column called <code>ROW</code>). If we skipped the <code>cbind.by.filters</code> above, <code>NMscanData</code> would figure this out and recommend merging by this column. This is what we will now do using the <code>col.row</code> argument. The following checks that we get the same result from the two methods. When using <code>col.row</code>, the row identifier is the first column in the returned data. This is why the columns in <code>res0</code> are reordered accordingly before the comparison. The way the reordering of columns is done is a bit involved. It makes sure that if any columns in <code>res0</code> are not in <code>res1</code>, these are not dismissed. It would be much easier to use <code><a href="https://Rdatatable.gitlab.io/data.table/reference/setcolorder.html">data.table::setcolorder</a></code> but we are sticking to base R here.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="kw">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),col.row=<span class="st">"ROW"</span>,quiet=<span class="fl">TRUE</span>)
+<span class="co">#&gt; Warning: In NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"), :</span>
+<span class="co">#&gt; input control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpuKKj5P/temp_libpath70c489a1541/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; is newer than output control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpuKKj5P/temp_libpath70c489a1541/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
+<span class="co">#&gt; edited, this can corrupt results.</span>
+<span class="co">#&gt; In col.row = "ROW", quiet = TRUE) : input control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpuKKj5P/temp_libpath70c489a1541/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; is newer than output control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpuKKj5P/temp_libpath70c489a1541/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
+<span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="kw">res0</span> <span class="op">&lt;-</span> <span class="kw">res0</span>[,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res1</span>),<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setops.html">setdiff</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res0</span>),<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res1</span>)))]
 <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/all.equal.data.table.html">all.equal</a></span>(<span class="kw">res0</span>,<span class="kw">res1</span>,check.attributes=<span class="fl">FALSE</span>)
 <span class="co">#&gt; [1] TRUE</span>
@@ -254,19 +280,6 @@
 <div class="sourceCode" id="cb11"><pre class="downlit">
 <span class="kw">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>, package=<span class="st">"NMdata"</span>),
                    col.row=<span class="st">"ROW"</span>,recover.rows=<span class="fl">TRUE</span>)
-<span class="co">#&gt; Warning: In NMscanData(system.file("examples/nonmem/xgxr014.lst", package = "NMdata"), :</span>
-<span class="co">#&gt; input control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpC05fmT/temp_libpath47102aec1730/NMdata/examples/nonmem/xgxr014.mod)</span>
-<span class="co">#&gt; is newer than output control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpC05fmT/temp_libpath47102aec1730/NMdata/examples/nonmem/xgxr014.lst)</span>
-<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
-<span class="co">#&gt; edited, this can corrupt results.</span>
-<span class="co">#&gt; In col.row = "ROW", recover.rows = TRUE) : input control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpC05fmT/temp_libpath47102aec1730/NMdata/examples/nonmem/xgxr014.mod)</span>
-<span class="co">#&gt; is newer than output control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpC05fmT/temp_libpath47102aec1730/NMdata/examples/nonmem/xgxr014.lst)</span>
-<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
-<span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="co">#&gt; Model:  xgxr014 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Tables, number of columns in tables, and their detail level:</span>
@@ -321,23 +334,22 @@
 <span class="kw">res1.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),
                      col.row=<span class="st">"ROW"</span>,
                      quiet=<span class="fl">TRUE</span>)
+<span class="co">#&gt; Warning: In NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"), :</span>
+<span class="co">#&gt; input control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpuKKj5P/temp_libpath70c489a1541/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; is newer than output control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpuKKj5P/temp_libpath70c489a1541/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
+<span class="co">#&gt; edited, this can corrupt results.</span>
+<span class="co">#&gt; In col.row = "ROW", quiet = TRUE) : input control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpuKKj5P/temp_libpath70c489a1541/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; is newer than output control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpuKKj5P/temp_libpath70c489a1541/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
+<span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="kw">res2.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>, package=<span class="st">"NMdata"</span>),
                      col.row=<span class="st">"ROW"</span>,modelname=<span class="st">"single-compartment"</span>,
                      quiet=<span class="fl">TRUE</span>)
-<span class="co">#&gt; Warning: In NMscanData(system.file("examples/nonmem/xgxr014.lst", package = "NMdata"), :</span>
-<span class="co">#&gt; input control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpC05fmT/temp_libpath47102aec1730/NMdata/examples/nonmem/xgxr014.mod)</span>
-<span class="co">#&gt; is newer than output control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpC05fmT/temp_libpath47102aec1730/NMdata/examples/nonmem/xgxr014.lst)</span>
-<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
-<span class="co">#&gt; edited, this can corrupt results.</span>
-<span class="co">#&gt; In col.row = "ROW", modelname = "single-compartment", quiet = TRUE) : input</span>
-<span class="co">#&gt; control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpC05fmT/temp_libpath47102aec1730/NMdata/examples/nonmem/xgxr014.mod)</span>
-<span class="co">#&gt; is newer than output control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpC05fmT/temp_libpath47102aec1730/NMdata/examples/nonmem/xgxr014.lst)</span>
-<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
-<span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="kw">res.mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/rbindlist.html">rbind</a></span>(<span class="kw">res1.m</span>,<span class="kw">res2.m</span>,fill=<span class="kw">T</span>)
 <span class="kw">res.mult.mean</span> <span class="op">&lt;-</span> <span class="kw">res.mult</span>[<span class="kw">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">&amp;</span><span class="kw">nmout</span><span class="op">==</span><span class="fl">TRUE</span>,
                           <span class="fu">.</span>(gmPRED=<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="kw">PRED</span>)))),

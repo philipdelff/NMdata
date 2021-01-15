@@ -123,16 +123,16 @@
 <span class="kw">dt.cov</span>[, <span class="fu">`:=`</span>(<span class="kw">COV</span>, <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, size = <span class="fl">10</span>, replace = <span class="fl">TRUE</span>))]
 <span class="kw">dt.cov</span>
 <span class="co">#&gt;     ID COV</span>
-<span class="co">#&gt;  1: 31   1</span>
-<span class="co">#&gt;  2: 32   3</span>
-<span class="co">#&gt;  3: 33   2</span>
-<span class="co">#&gt;  4: 34   5</span>
-<span class="co">#&gt;  5: 35   5</span>
-<span class="co">#&gt;  6: 36   3</span>
-<span class="co">#&gt;  7: 37   5</span>
-<span class="co">#&gt;  8: 38   1</span>
-<span class="co">#&gt;  9: 39   5</span>
-<span class="co">#&gt; 10: 40   1</span>
+<span class="co">#&gt;  1: 31   3</span>
+<span class="co">#&gt;  2: 32   2</span>
+<span class="co">#&gt;  3: 33   3</span>
+<span class="co">#&gt;  4: 34   2</span>
+<span class="co">#&gt;  5: 35   3</span>
+<span class="co">#&gt;  6: 36   5</span>
+<span class="co">#&gt;  7: 37   1</span>
+<span class="co">#&gt;  8: 38   2</span>
+<span class="co">#&gt;  9: 39   2</span>
+<span class="co">#&gt; 10: 40   4</span>
 <span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk2</span>)
 <span class="co">#&gt; [1] 100  25</span>
@@ -252,7 +252,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-01-15 10:48:56 EST"</span>
+<span class="co">#&gt; [1] "2021-01-15 11:00:02 EST"</span>
 </pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
@@ -262,7 +262,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-01-15 10:48:56 EST"</span>
+<span class="co">#&gt; [1] "2021-01-15 11:00:02 EST"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span>

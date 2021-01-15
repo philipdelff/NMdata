@@ -11,9 +11,11 @@ header-includes:
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
- ,fig.width=7)
+                      collapse = TRUE
+                     ,comment = "#>"
+                     ,fig.width=7
+                     ,cache=FALSE
+                  )
 
 ## this change data.table syntax. I think we can do without.
 ## knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
@@ -52,7 +54,7 @@ In brevity, the most important steps are
   output from the nonmem model
 - If wanted, also restore rows from input data that were disregarded
   in Nonmem (e.g. observations or subjects that are not part of the
-  analysis).
+  analysis)
   
 It should not be to hard to do. But with the large degree of
 flexibility Nonmem offer, there are a lot of caveats to be aware of,
