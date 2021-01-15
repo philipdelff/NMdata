@@ -89,19 +89,23 @@ behaviour. However, if we left it out, `NMscanData` would try to
 explain this to you so you make an active choice what to do here. 
 
 ### Merge output and input data by a unique row identifier
-The default method
-of interpreting Nonmem code is not recommended. It is the default
-because it does not rely on assumptions about the input data and hence
-very generic. It
-happens that this dataset and one of the output tables contain a row
-identifier (a row counter in the column called `ROW`). If we skipped
-the `cbind.by.filters` above, `NMscanData` would figure this out and
-recommend merging by this column. This is what we will now do using
-the `col.row` argument. The following
-checks that we get the same result from the two methods.
+The default method of interpreting Nonmem code is not recommended. It is the
+default because it does not rely on assumptions about the input data and hence
+very generic. It happens that this dataset and one of the output tables contain
+a row identifier (a row counter in the column called `ROW`). If we skipped the
+`cbind.by.filters` above, `NMscanData` would figure this out and recommend
+merging by this column. This is what we will now do using the `col.row`
+argument. The following checks that we get the same result from the two
+methods. When using `col.row`, the row identifier is the first column in the
+returned data. This is why the columns in `res0` are reordered accordingly
+before the comparison. The way the reordering of columns is done is a bit
+involved. It makes sure that if any columns in `res0` are not in `res1`, these
+are not dismissed. It would be much easier to use `data.table::setcolorder` but
+we are sticking to base R here.
 
 ```{r,eval=TRUE}
 res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),col.row="ROW",quiet=TRUE)
+res0 <- res0[,c(colnames(res1),setdiff(colnames(res0),colnames(res1)))]
 all.equal(res0,res1,check.attributes=FALSE)
 ```
 All features shown below will work whether you supply `col.row` or

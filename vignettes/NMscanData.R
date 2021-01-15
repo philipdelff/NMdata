@@ -26,6 +26,7 @@ class(res0)
 
 ## ----eval=TRUE----------------------------------------------------------------
 res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),col.row="ROW",quiet=TRUE)
+res0 <- res0[,c(colnames(res1),setdiff(colnames(res0),colnames(res1)))]
 all.equal(res0,res1,check.attributes=FALSE)
 
 ## ----eval=TRUE----------------------------------------------------------------

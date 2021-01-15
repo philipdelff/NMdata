@@ -240,13 +240,19 @@ other information you want to include with the data set.
 pk <- stampObj(pk,script="vignettes/DataCreate.Rmd")
 objInfo(pk)
 ```
+The `script` argument is recognized by `stampObj`, but you can add anything to this. Say you want to keep descriptive note too:
+
+```{r}
+pk <- stampObj(pk,script="vignettes/DataCreate.Rmd",Description="A PK dataset used for examples.")
+objInfo(pk)
+```
 
 These are very simple functions. But they are simple to use as well,
 and hopefully they will help you avoid sitting with a data set trying
 to guess which script generated it so you can do a modification or
 understand how something was done.
 
-When using NMwriteData, you don't have to call stampObj
+When using `NMwriteData`, you don't have to call `stampObj`
 explicitly. Just pass the `script` argument to `NMwriteData` and
 `stampObj` will be applied automatically.
 

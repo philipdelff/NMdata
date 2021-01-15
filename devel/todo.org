@@ -6,24 +6,29 @@ just provide functions to get them
 *** DONE Allow for say input.txt/output.txt
     CLOSED: [2020-06-29 Mon 21:28]
 **** NMtransInput
-*** TODO Support for return as tibble or whatever
+*** DONE Support for return as tibble or whatever
+    CLOSED: [2020-12-23 Wed 11:21]
 Could we use an option, NMdata.return="dplyr::as.tibble" which could then be
 reached and applied from within NMdata? It would have to not create extra
 dependencies. This solution is being tested on pmxtricks.
-*** TODO Where does NMcode2R belong?
+*** DONE Where does NMcode2R belong?
+    CLOSED: [2020-12-23 Wed 11:21]
 It is needed in NMdata but should it be exported from NMdata?
 Conclusion: export from pmxtricks, internal in NMdata.
 ** New functions
-*** TODO summary.NMdata
-*** TODO NMgetSection
-*** TODO NMreplacepart
-Instead of the section argument, NMreplacepart must accept newlines as
-a named list.
+*** DONE summary.NMdata
+    CLOSED: [2020-12-23 Wed 11:22]
+*** DONE NMgetSection
+    CLOSED: [2020-12-23 Wed 11:25]
 *** TODO A function to check data
 **** TODO Find previously used code
 **** TODO Implement more checks
 https://doi.org/10.1208/s12248-012-9387-9
 ** Function improvements
+*** NMreplacepart
+**** TODO Support for multiple sections
+Instead of the section argument, NMreplacepart must accept newlines as a named
+list.
 *** NMextractText
 **** TODO reduce lines and text to one argument
 The information is sufficient when taking into account the linesep
@@ -92,8 +97,9 @@ check if variables are consistent within ROW: ID (others?) This is
 fatal and will happen when using long ID's and non-matching format
 when writing tables from Nonmem.
 **** TODO When using input data, ID should never be read from output data
-**** TODO Run NMorderColumns in the end
-Remember to use what we know about col.row. And put output variables first?
+**** DONE Run NMorderColumns in the end
+     CLOSED: [2020-12-23 Wed 11:29]
+Remember to use what we know about col.row. 
 **** DONE source for nmout and model must be internal
      CLOSED: [2020-07-18 Sat 23:13]
 in var table 
@@ -121,9 +127,11 @@ Nonmem.
      CLOSED: [2020-09-19 Sat 09:27]
 Not warning. Warning if standard variable?
 *** NMordercolumns
-**** TODO Polish
+**** DONE Polish
+     CLOSED: [2020-12-23 Wed 11:31]
 *** flagsAssign
-**** TODO Improve messages at each FLAG coding
+**** DONE Improve messages at each FLAG coding
+     CLOSED: [2020-12-23 Wed 11:31]
 **** TODO Old todo list
 ## Per default, should not overwrite already assigned FLAG. User may
 ## have hardcoded some flags already.
