@@ -251,11 +251,11 @@
 <a href="#recover-rows" class="anchor"></a>Recover rows</h3>
 <p>You may have wondered why there is so little data on the small doses in the plot of observations and geometric mean population predictions above. The reason is that observations below the lower limit of quantification have been disregarded. For this and many other reasons, it is very common to use <code>ACCEPT</code> and <code>IGNORE</code> statements in the <code>$INPUT</code> section of nonmem control streams. NMscanData can include this data in the returned data object as well. Let’s redo the plot above taking advantage of this option. We will use <code>data.table</code> for the calculations again, so we will reset the <code>NMdata,as.fun</code> which we set in the beginning to get <code>data.frame</code>’s.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="co">## options(NMdata.as.fun="none")</span>
+<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(NMdata.as.fun=<span class="st">"none"</span>)
 </pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit">
 <span class="kw">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>, package=<span class="st">"NMdata"</span>),
-                   col.row=<span class="st">"ROW"</span>,recover.rows=<span class="fl">TRUE</span>,check.time=<span class="fl">FALSE</span>,as.fun=<span class="st">"none"</span>)
+                   col.row=<span class="st">"ROW"</span>,recover.rows=<span class="fl">TRUE</span>,check.time=<span class="fl">FALSE</span>)
 <span class="co">#&gt; Model:  xgxr014 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Tables, number of columns in tables, and their detail level:</span>
@@ -289,7 +289,7 @@
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span><span class="kw">trtact</span>,scales=<span class="st">"free_y"</span>)<span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(x=<span class="st">"Hours since administration"</span>,y=<span class="st">"Concentration (ng/mL)"</span>)
 </pre></div>
-<p><img src="NMscanData_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
+<p><img src="NMscanData_files/figure-html/meanbydose-1.png" width="672"></p>
 <p>A couple of details are different compared to when we read <code>res1</code>. For now, notice one thing changed when calculating the population geometric means by nominal time and dose. We included <code>nmout==TRUE</code>. <code>nmout</code> is a boolean column created by <code>NMscanData</code> expressing whether the rows were in the output data (<code>nmout==TRUE</code>) or they were recovered from the input data. <code>PRED</code> is obviously not calculated for data rows neglected by Nonmem, so we want to keep those out of the calculation. Let’s see how many were recovered</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="co">## this is just a long-format representation of</span>
@@ -325,7 +325,7 @@
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span>()<span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span><span class="kw">trtact</span>,scales=<span class="st">"free_y"</span>)
 </pre></div>
-<p><img src="NMscanData_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
+<p><img src="NMscanData_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 </div>
 <div id="use-a-row-identifier-or-interpret-nonmem-code" class="section level3">
 <h3 class="hasAnchor">
