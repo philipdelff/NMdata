@@ -89,6 +89,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Automated and general reader of Nonmem data</h1>
             
+            <h4 class="date">2021-01-15</h4>
       
       
       <div class="hidden name"><code>NMscanData.Rmd</code></div>
@@ -250,11 +251,11 @@
 <a href="#recover-rows" class="anchor"></a>Recover rows</h3>
 <p>You may have wondered why there is so little data on the small doses in the plot of observations and geometric mean population predictions above. The reason is that observations below the lower limit of quantification have been disregarded. For this and many other reasons, it is very common to use <code>ACCEPT</code> and <code>IGNORE</code> statements in the <code>$INPUT</code> section of nonmem control streams. NMscanData can include this data in the returned data object as well. Let’s redo the plot above taking advantage of this option. We will use <code>data.table</code> for the calculations again, so we will reset the <code>NMdata,as.fun</code> which we set in the beginning to get <code>data.frame</code>’s.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(NMdata.as.fun=<span class="st">"none"</span>)
+<span class="co">## options(NMdata.as.fun="none")</span>
 </pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit">
 <span class="kw">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>, package=<span class="st">"NMdata"</span>),
-                   col.row=<span class="st">"ROW"</span>,recover.rows=<span class="fl">TRUE</span>,check.time=<span class="fl">FALSE</span>)
+                   col.row=<span class="st">"ROW"</span>,recover.rows=<span class="fl">TRUE</span>,check.time=<span class="fl">FALSE</span>,as.fun=<span class="st">"none"</span>)
 <span class="co">#&gt; Model:  xgxr014 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Tables, number of columns in tables, and their detail level:</span>
@@ -289,7 +290,7 @@
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(x=<span class="st">"Hours since administration"</span>,y=<span class="st">"Concentration (ng/mL)"</span>)
 </pre></div>
 <p><img src="NMscanData_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
-<p>A couple of details are different compared to when we read <code>res1</code>. For now, notice one thing changed when calculating the population geometric means by nominal time and dose. We included <code>nmout==TRUE</code>. <code>nmout</code> is a boolean column created by NMscanData expressing whether the rows were in the output data (<code>nmout==TRUE</code>) or they were recovered from the input data. <code>PRED</code> is obviously not calculated for data rows neglected by Nonmem, so we want to keep those out of the calculation. Let’s see how many were recovered</p>
+<p>A couple of details are different compared to when we read <code>res1</code>. For now, notice one thing changed when calculating the population geometric means by nominal time and dose. We included <code>nmout==TRUE</code>. <code>nmout</code> is a boolean column created by <code>NMscanData</code> expressing whether the rows were in the output data (<code>nmout==TRUE</code>) or they were recovered from the input data. <code>PRED</code> is obviously not calculated for data rows neglected by Nonmem, so we want to keep those out of the calculation. Let’s see how many were recovered</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="co">## this is just a long-format representation of</span>
 <span class="co">## with(res1,table(nmout,flag)) using data.table.</span>
@@ -305,6 +306,9 @@
 <a href="#combine-multiple-models" class="anchor"></a>Combine multiple models</h3>
 <p>You may have noticed a column called <code>model</code> in some of the output above. <code>NMscanData</code> by default adds this column for convenience when working with multiple models. You can specify both column name and content as arguments in <code>NMscanData</code>. If you don’t, the column will be called <code>model</code>, and the model name taken from the <code>lst</code> file name (say, <code>xgxr001</code>). In the following we use this to compare population predictions from two different models. We read them again just to show the use of the argument to name the models ourselves. Remember, we reset the <code>NMdata.as.fun</code> option so we are working with <code>data.table</code> and we easily stack filling in <code>NA</code>’s with <code>rbind</code> (<code>rbind.data.table</code>).</p>
 <div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(NMdata.as.fun=<span class="st">"none"</span>)
+</pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit">
 <span class="co">## notice fill is an option to rbind with data.table</span>
 <span class="kw">res1.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),
                      col.row=<span class="st">"ROW"</span>,quiet=<span class="fl">TRUE</span>,check.time=<span class="fl">FALSE</span>)
@@ -321,7 +325,7 @@
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span>()<span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span><span class="kw">trtact</span>,scales=<span class="st">"free_y"</span>)
 </pre></div>
-<p><img src="NMscanData_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
+<p><img src="NMscanData_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
 </div>
 <div id="use-a-row-identifier-or-interpret-nonmem-code" class="section level3">
 <h3 class="hasAnchor">
@@ -349,7 +353,7 @@
 <li>Explicitly give the path to the input control stream or</li>
 <li>Pass a function that translates from the output control stream to the input. Example if the input is called <code>input.txt</code> and the output is called <code>output.txt</code>:</li>
 </ul>
-<div class="sourceCode" id="cb14"><pre class="downlit">
+<div class="sourceCode" id="cb15"><pre class="downlit">
 <span class="kw">out2in</span> <span class="op">&lt;-</span> <span class="fu">function</span>(<span class="kw">file</span>) <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span>(<span class="kw">file</span>),<span class="st">"input.txt"</span>)
 <span class="kw">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="st">"path/to/output.txt"</span>,file.mod=<span class="kw">out2in</span>,check.time=<span class="fl">FALSE</span>)
 </pre></div>
@@ -369,7 +373,7 @@
 <li>The primary aim is to return the output data. If input and output cannot be meaningfully combined (very rare), output will be returned.</li>
 </ul>
 <p>Notice that the summary text printed to the <code>R</code> terminal by <code>NMscanData</code> tells how many columns are included from the available tables. Also, within the resulting object, you can find a detailed table of all variables available, and whether they are included or not.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit">
+<div class="sourceCode" id="cb16"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span>(<span class="kw">res1.m</span>)<span class="op">$</span><span class="kw">meta</span><span class="op">$</span><span class="kw">variables</span>,topn=<span class="fl">3</span>)
 <span class="co">#&gt;     variable           table     source level COLNUM</span>
 <span class="co">#&gt;  1:      ROW xgxr001_res.txt     output   row      1</span>
