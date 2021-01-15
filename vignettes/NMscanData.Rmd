@@ -24,14 +24,6 @@ knitr::opts_chunk$set(
 ## load_all("C:/Users/delff/working_copies/NMdata")
 ```
 
-```{r,setup,include=F}
-library(NMdata)
-library(data.table)
-library(ggplot2)
-
-theme_set(theme_bw()+theme(legend.position="bottom"))
-
-```
 Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
 
@@ -67,8 +59,19 @@ flexibility Nonmem offer, there are a lot of caveats to be aware of,
 again especially if the model wasn't written by your own (current)
 standards.
 
+For this vignette we initialize by attaching these packages and tweaking
+plotting layout slightly:
+
+```{r,setup,include=T}
+library(NMdata)
+library(data.table)
+library(ggplot2)
+theme_set(theme_bw()+theme(legend.position="bottom"))
+```
+
 ## Get started
 Try NMscanData on any model:
+
 ```{r,eval=TRUE}
 res0 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
                    cbind.by.filters=TRUE)
@@ -220,16 +223,17 @@ head(res1.id2,2)
 `findVars(res1,cols.id="ID")` to find variables that are non-constant
 within (at least one value of) ID. `cols.id` can be of arbitrary length.
 
-Of course, we most often know what covariates or other subject-level
-variables to look at, and we would not search for them after running a
-nonmem model. But in the situation where you are looking at someone
-else's work or you are doing a meta analysis across models where the
-data has been coded slightly differently, these simple tools can be
-very useful. Or if you like writing generic wrapper functions, you may
-find this very handy. Also, remember that if a variable is returned by these
-functions, you know that they fullfill the variability requirement. We
-know that variables in `res1.id` above do not vary within `ID`, meaning
-that no `ID` has more than one value of the variable. `NA` counts as any other value, so if a value is returned for subject in `res1.id`, this subject does not have `NA`'s in `res1`.
+Of course, we most often know what covariates or other subject-level variables
+to look at, and we would not search for them after running a nonmem model. But
+in the situation where you are looking at someone else's work or you are doing a
+meta analysis across models where the data has been coded slightly differently,
+these simple tools can be very useful. Or if you like writing generic wrapper
+functions, you may find this very handy. Also, remember that if a variable is
+returned by these functions, you know that they fullfill the variability
+requirement. We know that variables in `res1.id` above do not vary within `ID`,
+meaning that no `ID` has more than one value of the variable. `NA` counts as any
+other value, so if a value is returned for subject in `res1.id`, this subject
+does not have `NA`'s in `res1`.
 
 
 ## More options and features

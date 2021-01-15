@@ -11,13 +11,11 @@ knitr::opts_chunk$set(
 ## library(devtools)
 ## load_all("C:/Users/delff/working_copies/NMdata")
 
-## ----setup,include=F----------------------------------------------------------
+## ----setup,include=T----------------------------------------------------------
 library(NMdata)
 library(data.table)
 library(ggplot2)
-
 theme_set(theme_bw()+theme(legend.position="bottom"))
-
 
 ## ----eval=TRUE----------------------------------------------------------------
 res0 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),

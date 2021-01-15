@@ -110,12 +110,21 @@
 <li>If wanted, also restore rows from input data that were disregarded in Nonmem (e.g. observations or subjects that are not part of the analysis).</li>
 </ul>
 <p>It should not be to hard to do. But with the large degree of flexibility Nonmem offer, there are a lot of caveats to be aware of, again especially if the model wasn’t written by your own (current) standards.</p>
+<p>For this vignette we initialize by attaching these packages and tweaking plotting layout slightly:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://philipdelff.github.io/NMdata">NMdata</a></span>)
+<span class="co">#&gt; Welcome to NMdata. Best place to browse NMdata documentation is</span>
+<span class="co">#&gt; https://philipdelff.github.io/NMdata</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://r-datatable.com">data.table</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span>)
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()<span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(legend.position=<span class="st">"bottom"</span>))
+</pre></div>
 </div>
 <div id="get-started" class="section level2">
 <h2 class="hasAnchor">
 <a href="#get-started" class="anchor"></a>Get started</h2>
 <p>Try NMscanData on any model:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
+<div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="kw">res0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),
                    cbind.by.filters=<span class="fl">TRUE</span>)
 <span class="co">#&gt; Model:  xgxr001 </span>
@@ -142,32 +151,32 @@
 <h3 class="hasAnchor">
 <a href="#merge-output-and-input-data-by-a-unique-row-identifier" class="anchor"></a>Merge output and input data by a unique row identifier</h3>
 <p>The default method of interpreting Nonmem code is not recommended. It is the default because it does not rely on assumptions about the input data and hence very generic. It happens that this dataset and one of the output tables contain a row identifier (a row counter in the column called <code>ROW</code>). If we skipped the <code>cbind.by.filters</code> above, <code>NMscanData</code> would figure this out and recommend merging by this column. This is what we will now do using the <code>col.row</code> argument. The following checks that we get the same result from the two methods. When using <code>col.row</code>, the row identifier is the first column in the returned data. This is why the columns in <code>res0</code> are reordered accordingly before the comparison. The way the reordering of columns is done is a bit involved. It makes sure that if any columns in <code>res0</code> are not in <code>res1</code>, these are not dismissed. It would be much easier to use <code><a href="https://Rdatatable.gitlab.io/data.table/reference/setcolorder.html">data.table::setcolorder</a></code> but we are sticking to base R here.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
+<div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="kw">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),col.row=<span class="st">"ROW"</span>,quiet=<span class="fl">TRUE</span>)
-<span class="kw">res0</span> <span class="op">&lt;-</span> <span class="kw">res0</span>[,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res1</span>),<span class="fu"><a href="https://rdrr.io/r/base/sets.html">setdiff</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res0</span>),<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res1</span>)))]
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="kw">res0</span>,<span class="kw">res1</span>,check.attributes=<span class="fl">FALSE</span>)
+<span class="kw">res0</span> <span class="op">&lt;-</span> <span class="kw">res0</span>[,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res1</span>),<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setops.html">setdiff</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res0</span>),<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res1</span>)))]
+<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/all.equal.data.table.html">all.equal</a></span>(<span class="kw">res0</span>,<span class="kw">res1</span>,check.attributes=<span class="fl">FALSE</span>)
 <span class="co">#&gt; [1] TRUE</span>
 </pre></div>
 <p>All features shown below will work whether you supply <code>col.row</code> or not. We use <code>col.row</code> because it is more robust and always recommended.</p>
 <p>Let’s have a quick look at the data we got back. The following is done with data.table. The comments in the code should make it clear what happens if you are not familiar with <code>data.table</code>. You can do this with <code><a href="https://rdrr.io/r/base/tapply.html">base::tapply</a></code>, <code><a href="https://rdrr.io/r/stats/aggregate.html">stats::aggregate</a></code>, a combination of <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarize</a></code>, or whatever you prefer.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
+<div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="co">## trtact is a character. Make it a factor with levels ordered by</span>
 <span class="co">## numerical dose level.</span>
 <span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span>(<span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span>,<span class="kw">res1</span><span class="op">$</span><span class="kw">DOSE</span>)
 <span class="co">## We are going to use data.table</span>
-<span class="kw">res1.dt</span> <span class="op">&lt;-</span> <span class="fu">as.data.table</span>(<span class="kw">res1</span>)
+<span class="kw">res1.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html">as.data.table</a></span>(<span class="kw">res1</span>)
 <span class="co">## Derive another data.table with geometric mean pop predictions by</span>
 <span class="co">## treatment and nominal sample time. Only use sample records.</span>
 <span class="kw">res1.mean</span> <span class="op">&lt;-</span> <span class="kw">res1.dt</span>[<span class="kw">EVID</span><span class="op">==</span><span class="fl">0</span>,<span class="fu">.</span>(gmPRED=<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="kw">PRED</span>)))),
                      by=<span class="fu">.</span>(<span class="kw">trtact</span>,<span class="kw">NOMTIME</span>)]
 <span class="co">## plot individual observations and geometric mean pop</span>
 <span class="co">## predictions. Split by treatment.</span>
-<span class="fu">ggplot</span>(<span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(<span class="kw">res1</span>,<span class="kw">EVID</span><span class="op">==</span><span class="fl">0</span>))<span class="op">+</span>
-    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="kw">TIME</span>,<span class="kw">DV</span>))<span class="op">+</span>
-    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="kw">NOMTIME</span>,<span class="kw">gmPRED</span>),data=<span class="kw">res1.mean</span>,colour=<span class="st">"red"</span>)<span class="op">+</span>
-    <span class="fu">scale_y_log10</span>()<span class="op">+</span>
-    <span class="fu">facet_wrap</span>(<span class="op">~</span><span class="kw">trtact</span>,scales=<span class="st">"free_y"</span>)<span class="op">+</span>
-    <span class="fu">labs</span>(x=<span class="st">"Hours since administration"</span>,y=<span class="st">"Concentration (ng/mL)"</span>)
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span>(<span class="kw">res1</span>,<span class="kw">EVID</span><span class="op">==</span><span class="fl">0</span>))<span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">TIME</span>,<span class="kw">DV</span>))<span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">NOMTIME</span>,<span class="kw">gmPRED</span>),data=<span class="kw">res1.mean</span>,colour=<span class="st">"red"</span>)<span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span>()<span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span><span class="kw">trtact</span>,scales=<span class="st">"free_y"</span>)<span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(x=<span class="st">"Hours since administration"</span>,y=<span class="st">"Concentration (ng/mL)"</span>)
 </pre></div>
 <p><img src="NMscanData_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
 <p>We see from the plot that the obtained dataset contains both model predictions (i.e. from output tables) and a character variable, <code>trtact</code> (i.e. from input data). NMscanData has read both and combined them. The data used for the example is a PK single ascending dose data set borrowed from the <a href="https://cran.r-project.org/web/packages/xgxr/index.html">xgxr</a> package, kindly allowed by the xgxr team.</p>
@@ -176,7 +185,7 @@
 <h3 class="hasAnchor">
 <a href="#subject-level-variables" class="anchor"></a>Subject-level variables</h3>
 <p>In a proper PK/PD analysis we need to explore the data at multiple variability levels. What we looked at above is at dosing and sampling level (one row per dosing or sampling event). <code>NMdata</code> provides very useful functions to extract information at other levels of variability. Before extracting the subject-level information we will add an individual exposure measure to the dataset. We will use the empirical Bayes’ estimate of the individual maximum concentration. This is derived as the maximum prediction across the sample times - it may be better to simulate the model at a richer time scale to get better precision. Again, we make use of <code>data.table</code> but feel free to use what you prefer. <code>findCovs</code> - like other <code>NMdata</code> functions - will work on <code>data.frame</code>’s, <code>tibble</code>’s and other <code>data.frame</code>-like classes.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
+<div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="co">## with data.table, create a new column representing ID-level Cmax</span>
 <span class="kw">res1.dt</span>[,<span class="kw">Cmax</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="kw">IPRED</span>),by=<span class="fu">.</span>(<span class="kw">ID</span>)]
 <span class="co">## findCovs picks the columns that do not vary within cols.id. One row</span>
@@ -184,19 +193,19 @@
 <span class="kw">res1.id</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/findCovs.html">findCovs</a></span>(<span class="kw">res1.dt</span>,cols.id=<span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">res1.id</span>)
 <span class="co">#&gt; [1] 150  27</span>
-<span class="fu">ggplot</span>(<span class="kw">res1.id</span>,<span class="fu">aes</span>(<span class="kw">WEIGHTB</span>,<span class="kw">Cmax</span><span class="op">/</span><span class="kw">DOSE</span>,colour=<span class="kw">trtact</span>))<span class="op">+</span>
-    <span class="fu">geom_point</span>()<span class="op">+</span>
-    <span class="fu">labs</span>(x=<span class="st">"Bodyweight at baseline (kg)"</span>)
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">res1.id</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">WEIGHTB</span>,<span class="kw">Cmax</span><span class="op">/</span><span class="kw">DOSE</span>,colour=<span class="kw">trtact</span>))<span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>()<span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(x=<span class="st">"Bodyweight at baseline (kg)"</span>)
 </pre></div>
 <p><img src="NMscanData_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 <p><code>cols.id</code> can be longer than one. Include a treatment column to support cross-over, a study column for meta analysis, or a model column if you are comparing model fits (see below how to do this very easily).</p>
 <p>If your model includes occasion variability, you probably also want to look at</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
+<div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="co">## we have no occasion variability in this data</span>
 <span class="co">## res1.id.occ &lt;- findCovs(res1,cols.id=c("ID","OCC"))</span>
 </pre></div>
 <p>Let’s use the same function to see the variables that are constant across the whole dataset</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
+<div class="sourceCode" id="cb7"><pre class="downlit">
 <span class="fu"><a href="../reference/findCovs.html">findCovs</a></span>(<span class="kw">res1</span>)
 <span class="co">#&gt;   FLAG STUDY    TVKA  TVV2    TVCL    TVV3     TVQ      V3       Q BLQ CYCLE</span>
 <span class="co">#&gt; 1    0     1 0.18116 0.042 0.72491 0.17857 8813700 0.17857 8813700   0     1</span>
@@ -204,7 +213,7 @@
 <span class="co">#&gt; 1    1       1  TRUE    Hours Analysis set xgxr001</span>
 </pre></div>
 <p>Let’s take a look at what is in the <code>res1.id</code> generated above. It is a mix of variables that vary at subject level and varibles that are constant across the full dataset.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
+<div class="sourceCode" id="cb8"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">res1.id</span>)
 <span class="co">#&gt; [1] 150  27</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">res1.id</span>,<span class="fl">2</span>)
@@ -219,7 +228,7 @@
 <span class="co">#&gt; 2:   3 mg Analysis set   3 mg xgxr001    0</span>
 </pre></div>
 <p><code>findCovs</code> has a counterpart in <code>findVars</code> which finds variables that do vary within constant values of optional <code>cols.id</code> columns. To get only the ones that vary within the dataset (i.e. they are truely subject-level variables and not say a study number if we only have one study), we can do</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
+<div class="sourceCode" id="cb9"><pre class="downlit">
 <span class="kw">res1.id2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/findVars.html">findVars</a></span>(<span class="kw">res1.id</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">res1.id2</span>)
 <span class="co">#&gt; [1] 150  10</span>
@@ -239,12 +248,25 @@
 <h3 class="hasAnchor">
 <a href="#recover-rows" class="anchor"></a>Recover rows</h3>
 <p>You may have wondered why there is so little data on the small doses in the plot of observations and geometric mean population predictions above. The reason is that observations below the lower limit of quantification have been disregarded. For this and many other reasons, it is very common to use <code>ACCEPT</code> and <code>IGNORE</code> statements in the <code>$INPUT</code> section of nonmem control streams. NMscanData can include this data in the returned data object as well. Let’s redo the plot above taking advantage of this option. We will use <code>data.table</code> for the calculations again, so we will reset the <code>NMdata,as.fun</code> which we set in the beginning to get <code>data.frame</code>’s.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
+<div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(NMdata.as.fun=<span class="st">"none"</span>)
 </pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit">
+<div class="sourceCode" id="cb11"><pre class="downlit">
 <span class="kw">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>, package=<span class="st">"NMdata"</span>),
                    col.row=<span class="st">"ROW"</span>,recover.rows=<span class="fl">TRUE</span>)
+<span class="co">#&gt; Warning: In NMscanData(system.file("examples/nonmem/xgxr014.lst", package = "NMdata"), :</span>
+<span class="co">#&gt; input control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpC05fmT/temp_libpath47102aec1730/NMdata/examples/nonmem/xgxr014.mod)</span>
+<span class="co">#&gt; is newer than output control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpC05fmT/temp_libpath47102aec1730/NMdata/examples/nonmem/xgxr014.lst)</span>
+<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
+<span class="co">#&gt; edited, this can corrupt results.</span>
+<span class="co">#&gt; In col.row = "ROW", recover.rows = TRUE) : input control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpC05fmT/temp_libpath47102aec1730/NMdata/examples/nonmem/xgxr014.mod)</span>
+<span class="co">#&gt; is newer than output control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpC05fmT/temp_libpath47102aec1730/NMdata/examples/nonmem/xgxr014.lst)</span>
+<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
+<span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="co">#&gt; Model:  xgxr014 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Tables, number of columns in tables, and their detail level:</span>
@@ -271,16 +293,16 @@
                   by=<span class="fu">.</span>(<span class="kw">trtact</span>,<span class="kw">NOMTIME</span>)]
 <span class="co">## plot individual observations and geometric mean pop</span>
 <span class="co">## predictions. Split by treatment.</span>
-<span class="fu">ggplot</span>(<span class="kw">res2</span>[<span class="kw">EVID</span><span class="op">==</span><span class="fl">0</span>])<span class="op">+</span>
-    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="kw">TIME</span>,<span class="kw">DV</span>,colour=<span class="kw">flag</span>))<span class="op">+</span>
-    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="kw">NOMTIME</span>,<span class="kw">gmPRED</span>),data=<span class="kw">res2.mean</span>)<span class="op">+</span>
-    <span class="fu">scale_y_log10</span>()<span class="op">+</span>
-    <span class="fu">facet_wrap</span>(<span class="op">~</span><span class="kw">trtact</span>,scales=<span class="st">"free_y"</span>)<span class="op">+</span>
-    <span class="fu">labs</span>(x=<span class="st">"Hours since administration"</span>,y=<span class="st">"Concentration (ng/mL)"</span>)
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">res2</span>[<span class="kw">EVID</span><span class="op">==</span><span class="fl">0</span>])<span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">TIME</span>,<span class="kw">DV</span>,colour=<span class="kw">flag</span>))<span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">NOMTIME</span>,<span class="kw">gmPRED</span>),data=<span class="kw">res2.mean</span>)<span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span>()<span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span><span class="kw">trtact</span>,scales=<span class="st">"free_y"</span>)<span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(x=<span class="st">"Hours since administration"</span>,y=<span class="st">"Concentration (ng/mL)"</span>)
 </pre></div>
 <p><img src="NMscanData_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
 <p>A couple of details are different compared to when we read <code>res1</code>. For now, notice one thing changed when calculating the population geometric means by nominal time and dose. We included <code>nmout==TRUE</code>. <code>nmout</code> is a boolean column created by NMscanData expressing whether the rows were in the output data (<code>nmout==TRUE</code>) or they were recovered from the input data. <code>PRED</code> is obviously not calculated for data rows neglected by Nonmem, so we want to keep those out of the calculation. Let’s see how many were recovered</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
+<div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="co">## this is just a long-format representation of</span>
 <span class="co">## with(res1,table(nmout,flag)) using data.table.</span>
 <span class="kw">res2</span>[,<span class="kw">.N</span>,by=<span class="fu">.</span>(<span class="kw">nmout</span>,<span class="kw">flag</span>)]
@@ -294,7 +316,7 @@
 <h3 class="hasAnchor">
 <a href="#combine-multiple-models" class="anchor"></a>Combine multiple models</h3>
 <p>You may have noticed a column called <code>model</code> in some of the output above. <code>NMscanData</code> by default adds this column for convenience when working with multiple models. You can specify both column name and content as arguments in <code>NMscanData</code>. If you don’t, the column will be called <code>model</code>, and the model name taken from the <code>lst</code> file name (say, <code>xgxr001</code>). In the following we use this to compare population predictions from two different models. We read them again just to show the use of the argument to name the models ourselves. Remember, we reset the <code>NMdata.as.fun</code> option so we are working with <code>data.table</code> and we easily stack filling in <code>NA</code>’s with <code>rbind</code> (<code>rbind.data.table</code>).</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
+<div class="sourceCode" id="cb13"><pre class="downlit">
 <span class="co">## notice fill is an option to rbind with data.table</span>
 <span class="kw">res1.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),
                      col.row=<span class="st">"ROW"</span>,
@@ -302,15 +324,29 @@
 <span class="kw">res2.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>, package=<span class="st">"NMdata"</span>),
                      col.row=<span class="st">"ROW"</span>,modelname=<span class="st">"single-compartment"</span>,
                      quiet=<span class="fl">TRUE</span>)
-<span class="kw">res.mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="kw">res1.m</span>,<span class="kw">res2.m</span>,fill=<span class="kw">T</span>)
+<span class="co">#&gt; Warning: In NMscanData(system.file("examples/nonmem/xgxr014.lst", package = "NMdata"), :</span>
+<span class="co">#&gt; input control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpC05fmT/temp_libpath47102aec1730/NMdata/examples/nonmem/xgxr014.mod)</span>
+<span class="co">#&gt; is newer than output control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpC05fmT/temp_libpath47102aec1730/NMdata/examples/nonmem/xgxr014.lst)</span>
+<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
+<span class="co">#&gt; edited, this can corrupt results.</span>
+<span class="co">#&gt; In col.row = "ROW", modelname = "single-compartment", quiet = TRUE) : input</span>
+<span class="co">#&gt; control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpC05fmT/temp_libpath47102aec1730/NMdata/examples/nonmem/xgxr014.mod)</span>
+<span class="co">#&gt; is newer than output control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpC05fmT/temp_libpath47102aec1730/NMdata/examples/nonmem/xgxr014.lst)</span>
+<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
+<span class="co">#&gt; edited, this can corrupt results.</span>
+<span class="kw">res.mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/rbindlist.html">rbind</a></span>(<span class="kw">res1.m</span>,<span class="kw">res2.m</span>,fill=<span class="kw">T</span>)
 <span class="kw">res.mult.mean</span> <span class="op">&lt;-</span> <span class="kw">res.mult</span>[<span class="kw">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">&amp;</span><span class="kw">nmout</span><span class="op">==</span><span class="fl">TRUE</span>,
                           <span class="fu">.</span>(gmPRED=<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="kw">PRED</span>)))),
                           by=<span class="fu">.</span>(<span class="kw">model</span>,<span class="kw">trtact</span>,<span class="kw">NOMTIME</span>)]
 
-<span class="fu">ggplot</span>(<span class="kw">res.mult.mean</span>,<span class="fu">aes</span>(<span class="kw">NOMTIME</span>,<span class="kw">gmPRED</span>,colour=<span class="kw">model</span>))<span class="op">+</span>
-    <span class="fu">geom_line</span>()<span class="op">+</span>
-    <span class="fu">scale_y_log10</span>()<span class="op">+</span>
-    <span class="fu">facet_wrap</span>(<span class="op">~</span><span class="kw">trtact</span>,scales=<span class="st">"free_y"</span>)
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">res.mult.mean</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">NOMTIME</span>,<span class="kw">gmPRED</span>,colour=<span class="kw">model</span>))<span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>()<span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span>()<span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span><span class="kw">trtact</span>,scales=<span class="st">"free_y"</span>)
 </pre></div>
 <p><img src="NMscanData_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 </div>
@@ -340,7 +376,7 @@
 <li>Explicitly give the path to the input control stream or</li>
 <li>Pass a function that translates from the output control stream to the input. Example if the input is called <code>input.txt</code> and the output is called <code>output.txt</code>:</li>
 </ul>
-<div class="sourceCode" id="cb13"><pre class="downlit">
+<div class="sourceCode" id="cb14"><pre class="downlit">
 <span class="kw">out2in</span> <span class="op">&lt;-</span> <span class="fu">function</span>(<span class="kw">file</span>) <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span>(<span class="kw">file</span>),<span class="st">"input.txt"</span>)
 <span class="kw">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="st">"path/to/output.txt"</span>,file.mod=<span class="kw">out2in</span>)
 </pre></div>
@@ -360,7 +396,7 @@
 <li>The primary aim is to return the output data. If input and output cannot be meaningfully combined (very rare), output will be returned.</li>
 </ul>
 <p>Notice that the summary text printed to the <code>R</code> terminal by <code>NMscanData</code> tells how many columns are included from the available tables. Also, within the resulting object, you can find a detailed table of all variables available, and whether they are included or not.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
+<div class="sourceCode" id="cb15"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span>(<span class="kw">res1.m</span>)<span class="op">$</span><span class="kw">meta</span><span class="op">$</span><span class="kw">variables</span>,topn=<span class="fl">3</span>)
 <span class="co">#&gt;     variable           table     source level COLNUM</span>
 <span class="co">#&gt;  1:      ROW xgxr001_res.txt     output   row      1</span>

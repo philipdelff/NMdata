@@ -69,3 +69,7 @@ NMwriteData(pk)
 pk <- stampObj(pk,script="vignettes/DataCreate.Rmd")
 objInfo(pk)
 
+## -----------------------------------------------------------------------------
+pk <- stampObj(pk,script="vignettes/DataCreate.Rmd",Description="A PK dataset used for examples.")
+objInfo(pk)
+
