@@ -76,12 +76,11 @@ Try NMscanData on any model:
 
 ```{r,eval=TRUE}
 res0 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                   cbind.by.filters=TRUE)
+                   cbind.by.filters=TRUE,check.time=FALSE)
 class(res0)
 ```
 
-
-NMscanData has read and combined input and output data and returned
+`NMscanData` has read and combined input and output data and returned
 a `data.frame`. The `NMdata` class allows for keeping additional
 information in the object, but the object can be treated as a
 `data.frame`. The `cbind.by.filters` means that we want `NMscanData`
@@ -109,7 +108,8 @@ are not dismissed. It would be much easier to use `data.table::setcolorder` but
 we are sticking to base R here.
 
 ```{r,eval=TRUE}
-res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),col.row="ROW",quiet=TRUE)
+res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
+                   col.row="ROW",quiet=TRUE,check.time=FALSE)
 res0 <- res0[,c(colnames(res1),setdiff(colnames(res0),colnames(res1)))]
 all.equal(res0,res1,check.attributes=FALSE)
 ```
@@ -257,7 +257,7 @@ options(NMdata.as.fun="none")
 
 ```{r}
 res2 <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
-                   col.row="ROW",recover.rows=TRUE)
+                   col.row="ROW",recover.rows=TRUE,check.time=FALSE)
 ## now we have a data.table
 class(res2)
 ## Derive another data.table with geometric mean pop predictions by
@@ -308,11 +308,10 @@ stack filling in `NA`'s with `rbind` (`rbind.data.table`).
 ```{r}
 ## notice fill is an option to rbind with data.table
 res1.m <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                     col.row="ROW",
-                     quiet=TRUE)
+                     col.row="ROW",quiet=TRUE,check.time=FALSE)
 res2.m <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
                      col.row="ROW",modelname="single-compartment",
-                     quiet=TRUE)
+                     quiet=TRUE,check.time=FALSE)
 res.mult <- rbind(res1.m,res2.m,fill=T)
 res.mult.mean <- res.mult[EVID==0&nmout==TRUE,
                           .(gmPRED=exp(mean(log(PRED)))),
@@ -397,7 +396,7 @@ following if needed:
 
 ```{r,eval=FALSE}
 out2in <- function(file) file.path(dirname(file),"input.txt")
-res <- NMscanData("path/to/output.txt",file.mod=out2in)
+res <- NMscanData("path/to/output.txt",file.mod=out2in,check.time=FALSE)
 ```
 
 ## What exactly will NMscanData return?
