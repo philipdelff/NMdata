@@ -157,7 +157,8 @@ getFileMod <- function(file.lst,file.mod=NULL){
     if(is.character(file.mod)){
         return(file.mod)
     }
-    messageWrap("file.mod is not recognized as a function or a character",fun.msg=stop)
+    messageWrap("file.mod is not recognized as a function or a character",
+                fun.msg=stop)
     
 }
 

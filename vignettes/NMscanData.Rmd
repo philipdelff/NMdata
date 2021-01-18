@@ -1,7 +1,7 @@
 ---
 title: "Automated and general reader of Nonmem data"
-output: rmarkdown::html_vignette
 date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Automated and general reader of Nonmem data}
   %\VignetteEngine{knitr::rmarkdown}
