@@ -14,7 +14,7 @@
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
-##'     as.fun="none". See ?runAsFun.
+##'     as.fun=identity. See ?runAsFun.
 ##' @return A list of all the tables as data.frames. If details=TRUE,
 ##'     this is in one element, called data, and meta is another
 ##'     element. If not, only the element corresponding to data is
@@ -81,7 +81,7 @@ NMscanTables <- function(file,details=F,as.fun=NULL,quiet=FALSE,tab.count=TRUE){
     for(I in 1:nrow(meta)){
         if(!file.exists(meta[I,file])) stop(paste0("NMscanTables: File not found: ",meta[I,file],". Did you copy the lst file but forgot table
 file?"))
-        tables[[I]] <- NMreadTab(meta[I,file],silent=T,tab.count=tab.count,showProgress=FALSE,as.fun="none")
+        tables[[I]] <- NMreadTab(meta[I,file],silent=T,tab.count=tab.count,showProgress=FALSE,as.fun=identity)
         dim.tmp <- dim(tables[[I]])
         meta[I,nrow:=dim.tmp[1]]
         meta[I,ncol:=dim.tmp[2]]

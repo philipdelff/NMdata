@@ -46,7 +46,7 @@
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
-##'     as.fun="none". See ?runAsFun.
+##'     as.fun=identity. See ?runAsFun.
 ##' @param invert If TRUE, the data rows that are dismissed by the
 ##'     Nonmem data filters (ACCEPT and IGNORE) and only this will be
 ##'     returned. Only used if applyFilters is TRUE.
@@ -83,8 +83,11 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
                     fun.msg=stop)
     }
     if(is.null(dir.data)) {
+        
+        file.mod <- NMdataDecideOption("file.mod",file.mod)
 
-        file.find.data <- getFileMod(file.lst=file,file.mod=file.mod)
+        file.find.data <- file.mod(file)
+        ## file.find.data <- getFileMod(file.lst=file,file.mod=file.mod)
         
         if(!file.exists(file.find.data)) {
             messageWrap("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument. Input data not used.",fun.msg=warning)
@@ -147,7 +150,7 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
         if(file.exists(path.data.input)){
             type.file <- "text"
             if(!quiet) message("Read delimited text input data file.")
-            data.input <- NMreadCsv(path.data.input,as.fun="none")
+            data.input <- NMreadCsv(path.data.input,as.fun=identity)
         } else {
             stop(paste("Input data file not found. Was expecting to find",path.data.input))
             ##        use.input <- FALSE
@@ -156,7 +159,7 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
 
 ### filters must be applied here according to NM manual IV-1
     if(applyFilters){
-        data.input <- NMtransFilters(data.input,file=file,invert=invert,quiet=quiet,as.fun="none")
+        data.input <- NMtransFilters(data.input,file=file,invert=invert,quiet=quiet,as.fun=identity)
     }
 
     if(translate){

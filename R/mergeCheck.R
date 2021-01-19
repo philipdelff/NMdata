@@ -115,6 +115,7 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,...){
 
     if(!df1.was.dt || !is.null(as.fun)){
         ##        df3 <- as.data.frame(df3)
+        as.fun <- NMdataDecideOption("as.fun",as.fun)
         df3 <- runAsFun(df3,as.fun)
     }
     
