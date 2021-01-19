@@ -101,21 +101,22 @@ messageWrap <- function(..., fun.msg=message, prefix = "\n", initial = "", width
 
 
 runAsFun <- function(data,as.fun){
-    if(is.null(as.fun)){
-        as.fun <- getOption("NMdata.as.fun")
-    }
-    if(is.character(as.fun)&&length(as.fun)==1&&as.fun=="none"){
-        return(data)
-    }
-    if(is.null(as.fun)){
-        ## default behaviour. Function or "none" not specified in
-        ## argument, nor in option.
-        ## return(data)
-        as.fun <- as.data.frame
-    }
-    if(!is.function(as.fun)){
-        stop("as.fun must be a function or the character string \"none\".")
-    }
+    ## if(is.null(as.fun)){
+    ##     ## as.fun <- getOption("NMdata.as.fun")
+    ##     as.fun <- NMdataGetOption("as.fun")
+    ## }
+    ## if(is.character(as.fun)&&length(as.fun)==1&&as.fun=="none"){
+    ##     return(data)
+    ## }
+    ## if(is.null(as.fun)){
+    ##     ## default behaviour. Function or "none" not specified in
+    ##     ## argument, nor in option.
+    ##     ## return(data)
+    ##     as.fun <- as.data.frame
+    ## }
+    ## if(!is.function(as.fun)){
+    ##     stop("as.fun must be a function or the character string \"none\".")
+    ## }
     as.fun(data)
 }
 
@@ -142,7 +143,8 @@ runAsFun <- function(data,as.fun){
 getFileMod <- function(file.lst,file.mod=NULL){
     
     if(is.null(file.mod)){
-        file.mod <- getOption("NMdata.file.mod")
+        ## file.mod <- getOption("NMdata.file.mod")
+        file.mod <- NMdataGetOption("file.mod")
         if(!is.null(file.mod) && !is.function(file.mod)) {
             messageWrap("When file.mod is specified by getOption(\"NMdata.file.mod\"), it has to be a function.",
                         fun.msg=stop)
@@ -157,7 +159,8 @@ getFileMod <- function(file.lst,file.mod=NULL){
     if(is.character(file.mod)){
         return(file.mod)
     }
-    messageWrap("file.mod is not recognized as a function or a character",fun.msg=stop)
+    messageWrap("file.mod is not recognized as a function or a character",
+                fun.msg=stop)
     
 }
 

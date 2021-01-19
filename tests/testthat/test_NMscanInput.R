@@ -18,11 +18,13 @@ test_that("basic",{
 
 
 test_that("single = filter",{
-    
+    ## load_all("c:/Users/delff/working_copies/NMdata")
+
+
     file.lst <- system.file("examples/nonmem/xgxr009.lst", package="NMdata")
     ## NMgetSection(file.lst,section="PROBLEM")
     ## NMgetSection(file.lst,section="DATA")
-    res1 <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")
+    res1 <- NMscanInput(file=file.lst,applyFilters = T,as.fun="data.table")
     expect_equal(res1[,unique(DOSE)],10)
     
 })

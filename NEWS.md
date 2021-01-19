@@ -1,3 +1,8 @@
+# NMdata 0.0.7
+Configuration mechanism improved
+
+as.fun="data.table"
+
 # NMdata 0.0.6.4
 If all common column names two data objects to merge are not used for
 merging (by), new column names are created by merge. The behavior of
@@ -9,6 +14,7 @@ function was called NMdata_filepath and is no longer available. Use
 system.file instead.
 
 # NMdata 0.0.6.3
+Meta information added about the input data.
 
 # NMdata 0.0.6.2
 A summary function is provided for NMdata objects. There is a print

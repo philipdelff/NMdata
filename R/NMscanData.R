@@ -141,7 +141,10 @@ NMscanData <- function(file, col.row, cbind.by.filters,
     ## for easier passing of the argument
     if(missing(dir.data)) dir.data <- NULL
     if(missing(file.mod)) file.mod <- NULL
+    check.time <- NMdataDecideOption("check.time",check.time)
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
 
+    ### combination of arguments
     if(!is.null(dir.data)&&!is.null(file.mod)){
         messageWrap("Only use one of dir.data and file.mod. The aim is to find the input data file, so either give the directory (dir.data) in which it is, and the filename will be taken from the lst file, or help finding the .mod file using the file.mod argument. Using both is redundant.",fun.msg=stop)
     }
@@ -200,26 +203,28 @@ NMscanData <- function(file, col.row, cbind.by.filters,
         col.row <- NULL
     }
 
-    modelname.by.option <- FALSE
-    if(missing(modelname)) {
-        modelname <- getOption("NMdata.modelname")
-        modelname.by.option <- TRUE
-    }
-    if(!is.null(modelname) && !is.function (modelname) && !(is.character(file)&&length(file)==1)) {
-        stoptext <- "If provided, modelname must be either a function or a character of length 1."
-        if(modelname.by.option) {
-            stoptext <- paste0(stoptext,"modelname was taken from getOption(\"NMdata.modelname\"). ",stoptext)
-        }
-        messageWrap(stoptext,fun.msg=stop)
-    }
-    if(is.null(modelname)) {
-        modelname <- function(file) sub("\\.lst$","",basename(sub(" $","",file)))
-    } 
-    if(is.function(modelname)){
-        runname <- modelname(file)
-    } else {
-        runname <- modelname
-    }
+    modelname <- NMdataDecideOption("modelname",modelname)
+    runname <- modelname(file)
+    ## modelname.by.option <- FALSE
+    ## if(missing(modelname)) {
+    ##     modelname <- getOption("NMdata.modelname")
+    ##     modelname.by.option <- TRUE
+    ## }
+    ## if(!is.null(modelname) && !is.function (modelname) && !(is.character(file)&&length(file)==1)) {
+    ##     stoptext <- "If provided, modelname must be either a function or a character of length 1."
+    ##     if(modelname.by.option) {
+    ##         stoptext <- paste0(stoptext,"modelname was taken from getOption(\"NMdata.modelname\"). ",stoptext)
+    ##     }
+    ##     messageWrap(stoptext,fun.msg=stop)
+    ## }
+    ## if(is.null(modelname)) {
+    ##     modelname <- function(file) sub("\\.lst$","",basename(sub(" $","",file)))
+    ## } 
+    ## if(is.function(modelname)){
+    ##     runname <- modelname(file)
+    ## } else {
+    ##     runname <- modelname
+    ## }
 
     if(!is.null(add.name)) {
         if(!is.character(add.name) || length(add.name)!=1 ||  add.name=="" ) {
@@ -237,7 +242,7 @@ NMscanData <- function(file, col.row, cbind.by.filters,
 #### Section start: read all output tables and merge to max one firstonly and max one row ####
 
     ## if(!quiet) messageWrap("Scanning for output tables.")
-    tables <- NMscanTables(file,details=T,tab.count=tab.count,quiet=TRUE,as.fun="none")
+    tables <- NMscanTables(file,details=T,tab.count=tab.count,quiet=TRUE,as.fun=identity)
 
     rows.flo <- tables$meta[firstlastonly==TRUE]
     if(rows.flo[,.N]>0) {
@@ -337,7 +342,10 @@ NMscanData <- function(file, col.row, cbind.by.filters,
     ## use.input.row <- use.input
 
     if(use.input && is.null(dir.data)) {
-        file.mod <- getFileMod(file.lst=file,file.mod=file.mod)
+        
+        ## file.mod <- getFileMod(file.lst=file,file.mod=file.mod)
+        file.mod <- NMdataDecideOption("file.mod",file.mod)
+        file.mod <- file.mod(file)
 
         if(!file.exists(file.mod)) {
             messageWrap("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument. Input data not used.",
@@ -359,7 +367,7 @@ NMscanData <- function(file, col.row, cbind.by.filters,
                                   dir.data=dir.data,quiet=TRUE,
                                   use.rds=use.rds,
                                   applyFilters=cbind.by.filters,
-                                  as.fun="none",
+                                  as.fun=identity,
                                   col.id=col.id,
                                   details=TRUE)
         
@@ -389,7 +397,7 @@ NMscanData <- function(file, col.row, cbind.by.filters,
                                   dir.data=dir.data, quiet=TRUE,
                                   use.rds=use.rds,
                                   applyFilters=cbind.by.filters,
-                                  as.fun="none",
+                                  as.fun=identity,
                                   col.id=col.id,
                                   details=TRUE)
         
@@ -404,7 +412,7 @@ NMscanData <- function(file, col.row, cbind.by.filters,
                                applyFilters=FALSE,
                                details=TRUE,
                                col.id=col.id,
-                               as.fun="none"))
+                               as.fun=identity))
             
             cols.row.input <- colnames(dia$data)[dia$data[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 
@@ -497,7 +505,7 @@ NMscanData <- function(file, col.row, cbind.by.filters,
                 ## tab.vars <- rbind(tab.vars,
                 ## data.table(var=setdiff(colnames(data.input$data),colnames(tab.row)),source="input",level="row"))
                 
-                tab.row <- mergeCheck(tab.row,data.input$data[,c(col.row,setdiff(colnames(data.input$data),colnames(tab.row))),with=FALSE],by=col.row,all.x=T,as.fun="none")
+                tab.row <- mergeCheck(tab.row,data.input$data[,c(col.row,setdiff(colnames(data.input$data),colnames(tab.row))),with=FALSE],by=col.row,all.x=T,as.fun=identity)
                 
             }
             
@@ -538,7 +546,7 @@ NMscanData <- function(file, col.row, cbind.by.filters,
         ## if col.id is not in tab.idlevel but col.row is, get col.id and discard row.
         if(!skip.idlevel && !is.null(tab.row) && !all(col.id%in%colnames(tab.idlevel))) {
             
-            tab.idlevel <- mergeCheck(tab.idlevel[,setdiff(colnames(tab.idlevel),col.id),with=F],tab.row[,c(col.row,col.id),with=F],by=col.row,as.fun="none")
+            tab.idlevel <- mergeCheck(tab.idlevel[,setdiff(colnames(tab.idlevel),col.id),with=F],tab.row[,c(col.row,col.id),with=F],by=col.row,as.fun=identity)
             tab.idlevel[,(col.row):=NULL]
         }
 
@@ -563,7 +571,7 @@ NMscanData <- function(file, col.row, cbind.by.filters,
                 ## use tab.vars for the subset
                 cols.to.use <- unique(c(col.id,setdiff(colnames(tab.idlevel),dt.vars[source=="output",variable])))
                 tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=F]
-                tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="none")
+                tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun=identity)
                 
                 dt.vars.id1[,included:=FALSE]
                 dt.vars.id1[variable%in%setdiff(cols.to.use,col.id),included:=TRUE]
@@ -590,7 +598,7 @@ NMscanData <- function(file, col.row, cbind.by.filters,
         if(cbind.by.filters) {
             data.recover <- NMscanInput(file,quiet=TRUE,use.rds=use.rds,
                                         applyFilters=cbind.by.filters,
-                                        invert=T,as.fun="none",
+                                        invert=T,as.fun=identity,
                                         details=FALSE)
         } else {
             data.recover <- data.input$data[!get(col.row)%in%tab.row[,get(col.row)]]
@@ -652,7 +660,7 @@ NMscanData <- function(file, col.row, cbind.by.filters,
     
 ### order columns in returned data
     if(order.columns){
-        tab.row <- NMorderColumns(tab.row, row=col.row, as.fun="none",
+        tab.row <- NMorderColumns(tab.row, row=col.row, as.fun=identity,
                                   alpha=FALSE, quiet=TRUE)
     }
     
@@ -669,9 +677,12 @@ NMscanData <- function(file, col.row, cbind.by.filters,
         tables.meta <- tables$meta
     }
     setcolorder(tables.meta,c("source","name","nrow","ncol"))
+        
     
-    tab.row <- runAsFun(tab.row,as.fun)
-    tables.meta <- runAsFun(tables.meta,as.fun)
+    ## tab.row <- runAsFun(tab.row,as.fun)
+    ## tables.meta <- runAsFun(tables.meta,as.fun)
+    tab.row <- as.fun(tab.row)
+    tables.meta <- as.fun(tables.meta)
 
     
 ### more meta information needed.

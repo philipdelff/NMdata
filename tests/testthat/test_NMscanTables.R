@@ -2,6 +2,8 @@
 ## load_all("NMdata")
 ## setwd("NMdata/tests/testthat")
 
+## load_all("c:/Users/delff/working_copies/NMdata")
+
 context("NMscanTables")
 
 test_that("Multiple output table formats",{
