@@ -27,9 +27,11 @@ test_that("basic",{
     fileRef <- "testReference/NMscanData1.rds"
 
     ## file.lst <- "../../inst/examples/nonmem/run001.lst"
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
-    ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+    ## file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
+    file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
+## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
+    
     res1 <- NMscanData(file=file.lst,quiet=T)
     ## dim(res1)
 
@@ -324,12 +326,15 @@ test_that("use as.fun to get a tibble",{
 ## test the dir structure with input.txt/output.txt 
 ## load_all("../../")
 test_that("dir structure with input.txt/output.txt",{
-
-    options(NMdata.as.fun="none")
+    ## options(NMdata.as.fun="none")
     
-    options(NMdata.file.mod=function(file) file.path(dirname(file),"input.txt"))
-    options(NMdata.modelname=function(file) basename(dirname(normalizePath(file))))
+    ## options(NMdata.file.mod=function(file) file.path(dirname(file),"input.txt"))
+    ## options(NMdata.modelname=function(file) basename(dirname(normalizePath(file))))
 
+    NMdataConfig(as.fun="data.table")
+    NMdataConfig(file.mod=function(file) file.path(dirname(file),"input.txt"))
+    NMdataConfig(modelname=function(file) basename(dirname(normalizePath(file))))
+    
     filedir.lst <- NMdata_filepath("examples/nonmem/xgxr001dir/output.txt")
     res1dir <- NMscanData(filedir.lst,check.time = FALSE)
     expect_equal(attr(res1dir,"meta")$model,"xgxr001dir")
@@ -338,8 +343,12 @@ test_that("dir structure with input.txt/output.txt",{
     expect_equal(umod,"xgxr001dir")
 
     
-    options(NMdata.file.mod=NULL)
-    options(NMdata.modelname=NULL)
+    ## options(NMdata.file.mod=NULL)
+    ## options(NMdata.modelname=NULL)
+    NMdataConfig(file.mod="default")
+    NMdataConfig(modelname=NULL)
+    ## NMdataConfig()
+    
     file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
     res1 <- NMscanData(file=file.lst,check.time = FALSE)
 
@@ -347,8 +356,7 @@ test_that("dir structure with input.txt/output.txt",{
     unNMdata(res1dir)
     expect_equal(res1[,!("model")],res1dir[,!("model")])
 
-    options(NMdata.as.fun=NULL)
-    
+    NMdataConfig(as.fun=NULL)
 })
 
 

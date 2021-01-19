@@ -1,7 +1,7 @@
 ---
 title: "Automated and general reader of Nonmem data"
-output: rmarkdown::html_vignette
 date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Automated and general reader of Nonmem data}
   %\VignetteEngine{knitr::rmarkdown}
@@ -77,7 +77,7 @@ Try NMscanData on any model:
 
 ```{r,eval=TRUE}
 res0 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                   cbind.by.filters=TRUE,check.time=FALSE)
+                   cbind.by.filters=TRUE)
 class(res0)
 ```
 
@@ -110,7 +110,7 @@ we are sticking to base R here.
 
 ```{r,eval=TRUE}
 res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                   col.row="ROW",quiet=TRUE,check.time=FALSE)
+                   col.row="ROW",quiet=TRUE)
 res0 <- res0[,c(colnames(res1),setdiff(colnames(res0),colnames(res1)))]
 all.equal(res0,res1,check.attributes=FALSE)
 ```
@@ -253,12 +253,12 @@ the calculations again, so we will reset the `NMdata,as.fun` which we
 set in the beginning to get `data.frame`'s. 
 
 ```{r}
-options(NMdata.as.fun="none")
+NMdataConfig(as.fun="data.table")
 ```
 
 ```{r,meanbydose}
 res2 <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
-                   col.row="ROW",recover.rows=TRUE,check.time=FALSE)
+                   col.row="ROW",recover.rows=TRUE)
 ## now we have a data.table
 class(res2)
 ## Derive another data.table with geometric mean pop predictions by
@@ -307,17 +307,17 @@ argument to name the models ourselves. Remember, we reset the
 stack filling in `NA`'s with `rbind` (`rbind.data.table`).
 
 ```{r}
-options(NMdata.as.fun="none")
+NMdataConfig(as.fun="data.table")
 ```
 
 
 ```{r}
 ## notice fill is an option to rbind with data.table
 res1.m <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                     col.row="ROW",quiet=TRUE,check.time=FALSE)
+                     col.row="ROW",quiet=TRUE)
 res2.m <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
                      col.row="ROW",modelname="single-compartment",
-                     quiet=TRUE,check.time=FALSE)
+                     quiet=TRUE)
 res.mult <- rbind(res1.m,res2.m,fill=T)
 res.mult.mean <- res.mult[EVID==0&nmout==TRUE,
                           .(gmPRED=exp(mean(log(PRED)))),
@@ -389,7 +389,7 @@ vignette](https://philipdelff.github.io/NMdata/articles/DataCreate.html).
 
 
 ### Custom naming of input and output control streams
-By default, `NMscanData` expects a (psn)[https://uupharmacometrics.github.io/PsN/]-style naming of input and output
+By default, `NMscanData` expects a (PSN)[https://uupharmacometrics.github.io/PsN/]-style naming of input and output
 control streams. This means that if the input control stream is called
 `model.mod`, the returned control stream is called model.lst. If you use
 a different setup, you can use the `file.mod` argument. Do one of the
@@ -402,7 +402,7 @@ following if needed:
 
 ```{r,eval=FALSE}
 out2in <- function(file) file.path(dirname(file),"input.txt")
-res <- NMscanData("path/to/output.txt",file.mod=out2in,check.time=FALSE)
+res <- NMscanData("path/to/output.txt",file.mod=out2in)
 ```
 
 ## What exactly will NMscanData return?
