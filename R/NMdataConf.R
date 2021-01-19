@@ -76,7 +76,7 @@ NMdataOptionValues <- function(name){
             ## has to be length 1 character or function
            ,is.allowed=is.logical
            ,msg.not.allowed="check.time must be logical"
-            ,process=identity
+           ,process=identity
         )
        ,
         file.mod=list(
