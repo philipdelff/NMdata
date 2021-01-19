@@ -200,7 +200,9 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
         
     }
 
-    data.input <- runAsFun(data.input,as.fun)
+    as.fun <-
+        NMdataDecideOption("as.fun",as.fun)
+    data.input <- as.fun(data.input)
     ## setattr(data.input,"type.file",type.file)
     ## setattr(data.input,"file",path.data.input)
     ## setattr(data.input,"mtime.file",file.info(path.data.input)$mtime)

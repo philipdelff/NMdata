@@ -6,7 +6,10 @@
 
 ## process option to support other than function input - OK
 
-## replace getFileMod etc
+## replace getFileMod etc - OK
+
+## what do we want to get from NMdataDecideOption(name,NULL) ?
+### Existing option setting. However, we need to be able to reset options, one at a time
 
 NMdataConfig <- function(...){
     
@@ -34,13 +37,10 @@ NMdataConfig <- function(...){
         }
     } else {
 
-
-        ## this should be done calling NMdataDecideOption
-        ## options.allowed <- c("as.fun","file.mod","modelname")
-        ## Check names of options
-
         args <- lapply(1:N.args,function(I){
-            NMdataDecideOption(names.args[I],dots[[I]])
+            val <- dots[[I]]
+            if(is.null(val)) val <- "default"
+            NMdataDecideOption(names.args[I],val)
         })
 
     }
@@ -60,12 +60,15 @@ NMdataOptionValues <- function(name){
         as.fun=list(
             default=as.data.frame
            ,is.allowed=function(x){
-               is.function(x) || (length(x)==1 && is.character(x) && x=="none")
+               is.function(x) || (length(x)==1 && is.character(x) && x%in%c("none","data.table"))
            }
           ,msg.not.allowed="as.fun must be a function"
-          ,process=function(x)if(is.character(x)&&length(x)==1&&x=="none"){
-                                  identity
-                              }
+          ,process=function(x){
+              if(is.character(x)&&length(x)==1&&x%in%c("none","data.table")){
+                  return(identity)
+              }
+              x
+          }
         )
        ,
         check.time=list(
@@ -110,12 +113,8 @@ NMdataOptionValues <- function(name){
         }
         
     } else {
-
         return(all.options)
-        
     }
-
-    
 }
 
 NMdataDecideOption <- function(name,argument){
@@ -123,12 +122,17 @@ NMdataDecideOption <- function(name,argument){
     values.option <- NMdataOptionValues(name)
     ## TODO check that we found that option at all
 
+    if(!missing(argument) && is.character(argument) && length(argument)==1 && argument=="default") {
+        return(values.option$default)
+    }
     
     if(missing(argument)||is.null(argument)) return(NMdataGetOption(name))
     ## TODO better error message
     if(!values.option$is.allowed(argument)) stop(values.option$msg.not.allowed)
 
     argument <- values.option$process(argument)
+
+
     
     return(argument)
 

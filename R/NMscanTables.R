@@ -114,9 +114,13 @@ file?"))
     
     names(tables) <- meta[,name]
 
-    tables <- lapply(tables,runAsFun,as.fun=as.fun)
-    meta <- runAsFun(meta,as.fun=as.fun)
     
+    ## tables <- lapply(tables,runAsFun,as.fun=as.fun)
+    ## meta <- runAsFun(meta,as.fun=as.fun)
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    tables <- lapply(tables,as.fun)
+    meta <- as.fun(meta)
+
     if(details){
         out <- list(data=tables,meta=meta)
     } else {

@@ -678,6 +678,7 @@ NMscanData <- function(file, col.row, cbind.by.filters,
     }
     setcolorder(tables.meta,c("source","name","nrow","ncol"))
         
+    
     ## tab.row <- runAsFun(tab.row,as.fun)
     ## tables.meta <- runAsFun(tables.meta,as.fun)
     tab.row <- as.fun(tab.row)
