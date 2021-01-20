@@ -1,5 +1,14 @@
-##' automatically find Nonmem tables and organize data
+##' Automatically find Nonmem tables and organize data
 ##'
+##' This is a very general solution to automatically identifying, reading, and  merging all output and input data in a Nonmem model. The most important
+##' steps are
+##' \itemize{
+##'  \item{Read and combine output tables,}
+##'  \item{If wanted, read input data and restore variables that were not output from the nonmem model}
+##'  \item{If wanted, also restore rows from input data that were disregarded in
+##' Nonmem (e.g. observations or subjects that are not part of the analysis)}
+##' }
+##' 
 ##' @param file A nonmem control stream or output file from nonmem (.mod or
 ##'     .lst)
 ##' @param file.mod The input control stream. Default is to look for \"file\"
@@ -43,7 +52,7 @@
 ##'     use.
 ##' @param as.fun The default is to return data as a data.frame. Pass a function
 ##'     (say tibble::as_tibble) in as.fun to convert to something else. If
-##'     data.tables are wanted, use as.fun="none". See ?runAsFun.
+##'     data.tables are wanted, use as.fun="data.table". See ?runAsFun.
 ##' @param cbind.by.filters If TRUE, Nonmem data filtering is interpreted from
 ##'     lst file (restrictions apply), and after an imitated selection of rows,
 ##'     data columns will be appended to output data. This method relies on

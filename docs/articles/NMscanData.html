@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.904</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2021-01-19 using NMdata 0.0.6.5.903.</p>
+<p>Built 2021-01-20 using NMdata 0.0.6.5.904.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -109,7 +109,7 @@
 <li>If wanted, read input data and restore variables that were not output from the nonmem model</li>
 <li>If wanted, also restore rows from input data that were disregarded in Nonmem (e.g. observations or subjects that are not part of the analysis)</li>
 </ul>
-<p>It should not be to hard to do. But with the large degree of flexibility Nonmem offer, there are a lot of caveats to be aware of, again especially if the model wasn’t written by your own (current) standards.</p>
+<p>This should not be too hard to do. But with the large degree of flexibility Nonmem offer, there are a lot of caveats to be aware of, again especially if the model wasn’t written by your own (current) standards.</p>
 <p>For this vignette we initialize by attaching these packages and tweaking plotting layout slightly:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://philipdelff.github.io/NMdata">NMdata</a></span>)
@@ -121,7 +121,7 @@
 </pre></div>
 <p>For the purpose of this vignette we will configure <code>NMdata</code> not to check time stamps of input control streams and input data against output control streams. You will typically not need this. We need it because we cannot control time stamps of the files in the distributed package.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu">NMdataConfig</span>(check.time=<span class="fl">FALSE</span>)
+<span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span>(check.time=<span class="fl">FALSE</span>)
 </pre></div>
 </div>
 <div id="get-started" class="section level2">
@@ -252,9 +252,9 @@
 <div id="recover-rows" class="section level3">
 <h3 class="hasAnchor">
 <a href="#recover-rows" class="anchor"></a>Recover rows</h3>
-<p>You may have wondered why there is so little data on the small doses in the plot of observations and geometric mean population predictions above. The reason is that observations below the lower limit of quantification have been disregarded. For this and many other reasons, it is very common to use <code>ACCEPT</code> and <code>IGNORE</code> statements in the <code>$INPUT</code> section of nonmem control streams. NMscanData can include this data in the returned data object as well. Let’s redo the plot above taking advantage of this option. We will use <code>data.table</code> for the calculations again, so we will reset the <code>NMdata,as.fun</code> which we set in the beginning to get <code>data.frame</code>’s.</p>
+<p>You may have wondered why there is so little data on the small doses in the plot of observations and geometric mean population predictions above. The reason is that observations below the lower limit of quantification have been disregarded. For this and many other reasons, it is very common to use <code>ACCEPT</code> and <code>IGNORE</code> statements in the <code>$INPUT</code> section of nonmem control streams. NMscanData can include this data in the returned data object as well. Let’s redo the plot above taking advantage of this option. We will use <code>data.table</code> for the calculations again, so we will reset the <code>as.fun</code> which we set in the beginning to get <code>data.frame</code>’s.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="fu">NMdataConfig</span>(as.fun=<span class="st">"data.table"</span>)
+<span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span>(as.fun=<span class="st">"data.table"</span>)
 </pre></div>
 <div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="kw">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>, package=<span class="st">"NMdata"</span>),
@@ -309,7 +309,7 @@
 <a href="#combine-multiple-models" class="anchor"></a>Combine multiple models</h3>
 <p>You may have noticed a column called <code>model</code> in some of the output above. <code>NMscanData</code> by default adds this column for convenience when working with multiple models. You can specify both column name and content as arguments in <code>NMscanData</code>. If you don’t, the column will be called <code>model</code>, and the model name taken from the <code>lst</code> file name (say, <code>xgxr001</code>). In the following we use this to compare population predictions from two different models. We read them again just to show the use of the argument to name the models ourselves. Remember, we reset the <code>NMdata.as.fun</code> option so we are working with <code>data.table</code> and we easily stack filling in <code>NA</code>’s with <code>rbind</code> (<code>rbind.data.table</code>).</p>
 <div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="fu">NMdataConfig</span>(as.fun=<span class="st">"data.table"</span>)
+<span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span>(as.fun=<span class="st">"data.table"</span>)
 </pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit">
 <span class="co">## notice fill is an option to rbind with data.table</span>
@@ -351,7 +351,7 @@
 <div id="custom-naming-of-input-and-output-control-streams" class="section level3">
 <h3 class="hasAnchor">
 <a href="#custom-naming-of-input-and-output-control-streams" class="anchor"></a>Custom naming of input and output control streams</h3>
-<p>By default, <code>NMscanData</code> expects a (PSN)[<a href="https://uupharmacometrics.github.io/PsN/" class="uri">https://uupharmacometrics.github.io/PsN/</a>]-style naming of input and output control streams. This means that if the input control stream is called <code>model.mod</code>, the returned control stream is called model.lst. If you use a different setup, you can use the <code>file.mod</code> argument. Do one of the following if needed:</p>
+<p>By default, <code>NMscanData</code> expects a <a href="https://uupharmacometrics.github.io/PsN/">PSN</a>-style naming of input and output control streams. This means that if the input control stream is called <code>model.mod</code>, the returned control stream is called model.lst. If you use a different setup, you can use the <code>file.mod</code> argument. Do one of the following if needed:</p>
 <ul>
 <li>Explicitly give the path to the input control stream or</li>
 <li>Pass a function that translates from the output control stream to the input. Example if the input is called <code>input.txt</code> and the output is called <code>output.txt</code>:</li>

@@ -148,7 +148,7 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
             paste("Coding FLAG =",tab.flags[fn,FLAG],", flag =",tab.flags[fn,flag])
            ,fun.msg=message)
         ## find all affected columns
-        is.matched <- try(with(data,eval(parse(text=tab.flags[fn,condition.used]))),silent=T)
+        is.matched <- try(with(data,eval(parse(text=tab.flags[fn,condition.used]))),silent=TRUE)
         if("try-error"%in%class(is.matched)){
             messageWrap(attr(is.matched,"condition")$message,fun.msg=warning)
             next

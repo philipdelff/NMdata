@@ -8,7 +8,7 @@
 ##' table file alone.
 ##'
 ##' @param file path to NONMEM table file
-##' @param silent logical stating whether or not information is
+##' @param quiet logical stating whether or not information is
 ##'     printed about what is being done.
 ##' @param tab.count Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. However, if
@@ -28,7 +28,7 @@
 ##' @export
 
 
-NMreadTab <- function(file,silent=TRUE,tab.count=TRUE,as.fun=NULL,...) {
+NMreadTab <- function(file,quiet=TRUE,tab.count=TRUE,as.fun=NULL,...) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -44,13 +44,13 @@ NMreadTab <- function(file,silent=TRUE,tab.count=TRUE,as.fun=NULL,...) {
 
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     
-    if(!silent){
+    if(!quiet){
         message("Reading data using fread")
     }
     dt1 <- fread(file,fill=T,header=T,skip=1,...)
 
     cnames <- colnames(dt1)
-    if(!silent){
+    if(!quiet){
         message("Adding table numbers to data")
     }
     if(tab.count){
@@ -59,7 +59,7 @@ NMreadTab <- function(file,silent=TRUE,tab.count=TRUE,as.fun=NULL,...) {
         dt1[,TABLENO:=cumsum(!is.na(TABLE))+1]
         dt1[,TABLE:=NULL]
     }
-    if(!silent){
+    if(!quiet){
         message("getting rid of non-data rows")
     }
     dt1 <- dt1[grep("^ *[[:alpha:]]",as.character(get(cnames[1])),invert=T,perl=T)]
@@ -70,7 +70,7 @@ NMreadTab <- function(file,silent=TRUE,tab.count=TRUE,as.fun=NULL,...) {
         dt1 <- dt1[,unique(cnames),with=FALSE]
     }
 
-    if(!silent){
+    if(!quiet){
         message("Making sure everything is numeric")
     }
 

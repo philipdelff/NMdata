@@ -56,7 +56,7 @@ In brevity, the most important steps are
   in Nonmem (e.g. observations or subjects that are not part of the
   analysis)
   
-It should not be to hard to do. But with the large degree of
+This should not be too hard to do. But with the large degree of
 flexibility Nonmem offer, there are a lot of caveats to be aware of,
 again especially if the model wasn't written by your own (current)
 standards.
@@ -77,7 +77,7 @@ streams. You will typically not need this. We need it because we cannot control
 time stamps of the files in the distributed package.
 
 ```{r,setup2,include=T}
-NMdataConfig(check.time=FALSE)
+NMdataConf(check.time=FALSE)
 ```
 
 
@@ -258,11 +258,11 @@ it is very common to use `ACCEPT` and `IGNORE` statements in the
 `$INPUT` section of nonmem control streams. NMscanData can include
 this data in the returned data object as well. Let's redo the plot
 above taking advantage of this option. We will use `data.table` for
-the calculations again, so we will reset the `NMdata,as.fun` which we
+the calculations again, so we will reset the `as.fun` which we
 set in the beginning to get `data.frame`'s. 
 
 ```{r}
-NMdataConfig(as.fun="data.table")
+NMdataConf(as.fun="data.table")
 ```
 
 ```{r,meanbydose}
@@ -318,7 +318,7 @@ argument to name the models ourselves. Remember, we reset the
 stack filling in `NA`'s with `rbind` (`rbind.data.table`).
 
 ```{r}
-NMdataConfig(as.fun="data.table")
+NMdataConf(as.fun="data.table")
 ```
 
 

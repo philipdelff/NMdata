@@ -2,7 +2,7 @@
 
 S3method(print,summary_NMdata)
 S3method(summary,NMdata)
-export(NMdataConfig)
+export(NMdataConf)
 export(NMextractText)
 export(NMgetSection)
 export(NMorderColumns)

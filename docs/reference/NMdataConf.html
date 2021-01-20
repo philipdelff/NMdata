@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>generate a name for a new data column that is not already in use. — tmpcol • NMdata</title>
+<title>Configure default behavior of NMdata functions — NMdataConf • NMdata</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="generate a name for a new data column that is not already in use. — tmpcol" />
-<meta property="og:description" content="generate a name for a new data column that is not already in use." />
+<meta property="og:title" content="Configure default behavior of NMdata functions — NMdataConf" />
+<meta property="og:description" content="Configure default behavior of NMdata functions" />
 
 
 
@@ -130,67 +130,18 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>generate a name for a new data column that is not already in use.</h1>
+    <h1>Configure default behavior of NMdata functions</h1>
     
-    <div class="hidden name"><code>tmpcol.Rd</code></div>
+    <div class="hidden name"><code>NMdataConf.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>generate a name for a new data column that is not already in use.</p>
+    <p>Configure default behavior of NMdata functions</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tmpcol</span>(
-  <span class='kw'>data</span>,
-  names = <span class='kw'>NULL</span>,
-  base = <span class='st'>"atmpcol999"</span>,
-  max.it = <span class='fl'>100</span>,
-  prefer.plain = <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>NMdataConf</span>(<span class='kw'>...</span>)</pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>data</th>
-      <td><p>The dataset to find a new element name for</p></td>
-    </tr>
-    <tr>
-      <th>names</th>
-      <td><p>Character vector of names that must not be
-matched. Only one of data and names can be supplied.</p></td>
-    </tr>
-    <tr>
-      <th>base</th>
-      <td><p>The base name of the new element. A number will
-appended to this string that will ensure that the new element
-name is not already in use.</p></td>
-    </tr>
-    <tr>
-      <th>max.it</th>
-      <td><p>Maximum number of iterations on element name.</p></td>
-    </tr>
-    <tr>
-      <th>prefer.plain</th>
-      <td><p>If base isn't in use already, use it without a
-digit appended?</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A character string</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>make.names</p>
-<p>Other DataCreate: 
-<code><a href='NMorderColumns.html'>NMorderColumns</a>()</code>,
-<code><a href='findCovs.html'>findCovs</a>()</code>,
-<code><a href='findVars.html'>findVars</a>()</code>,
-<code><a href='flagsAssign.html'>flagsAssign</a>()</code>,
-<code><a href='flagsCount.html'>flagsCount</a>()</code>,
-<code><a href='mergeCheck.html'>mergeCheck</a>()</code>,
-<code><a href='objInfo.html'>objInfo</a>()</code>,
-<code><a href='stampObj.html'>stampObj</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

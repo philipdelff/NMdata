@@ -2,7 +2,7 @@
 % Please edit documentation in R/NMscanData.R
 \name{NMscanData}
 \alias{NMscanData}
-\title{automatically find Nonmem tables and organize data}
+\title{Automatically find Nonmem tables and organize data}
 \usage{
 NMscanData(
   file,
@@ -20,7 +20,7 @@ NMscanData(
   col.id = "ID",
   tab.count = FALSE,
   order.columns = TRUE,
-  check.time = TRUE
+  check.time = NULL
 )
 }
 \arguments{
@@ -112,7 +112,14 @@ transfered from another system where Nonmem was run, these checks may
 not make sense, and you may not want to see these warnings.}
 }
 \description{
-automatically find Nonmem tables and organize data
+This is a very general solution to automatically identifying, reading, and  merging all output and input data in a Nonmem model. The most important
+steps are
+\itemize{
+ \item{Read and combine output tables,}
+ \item{If wanted, read input data and restore variables that were not output from the nonmem model}
+ \item{If wanted, also restore rows from input data that were disregarded in
+Nonmem (e.g. observations or subjects that are not part of the analysis)}
+}
 }
 \details{
 This function makes it very easy to collect the data from

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>automatically find Nonmem tables and organize data — NMscanData • NMdata</title>
+<title>Automatically find Nonmem tables and organize data — NMscanData • NMdata</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,15 @@
 
 
 
-<meta property="og:title" content="automatically find Nonmem tables and organize data — NMscanData" />
-<meta property="og:description" content="automatically find Nonmem tables and organize data" />
+<meta property="og:title" content="Automatically find Nonmem tables and organize data — NMscanData" />
+<meta property="og:description" content="This is a very general solution to automatically identifying, reading, and  merging all output and input data in a Nonmem model. The most important
+steps are
+Read and combine output tables,
+If wanted, read input data and restore variables that were not output from the nonmem model
+If wanted, also restore rows from input data that were disregarded in
+Nonmem (e.g. observations or subjects that are not part of the analysis)
+
+" />
 
 
 
@@ -72,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.904</span>
       </span>
     </div>
 
@@ -130,13 +137,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>automatically find Nonmem tables and organize data</h1>
+    <h1>Automatically find Nonmem tables and organize data</h1>
     
     <div class="hidden name"><code>NMscanData.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>automatically find Nonmem tables and organize data</p>
+    <p>This is a very general solution to automatically identifying, reading, and  merging all output and input data in a Nonmem model. The most important
+steps are</p><ul>
+<li><p>Read and combine output tables,</p></li>
+<li><p>If wanted, read input data and restore variables that were not output from the nonmem model</p></li>
+<li><p>If wanted, also restore rows from input data that were disregarded in
+Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li>
+</ul>
+
     </div>
 
     <pre class="usage"><span class='fu'>NMscanData</span>(
@@ -155,7 +169,7 @@
   col.id = <span class='st'>"ID"</span>,
   tab.count = <span class='fl'>FALSE</span>,
   order.columns = <span class='fl'>TRUE</span>,
-  check.time = <span class='fl'>TRUE</span>
+  check.time = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>

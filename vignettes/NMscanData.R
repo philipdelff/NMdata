@@ -20,7 +20,7 @@ library(ggplot2)
 theme_set(theme_bw()+theme(legend.position="bottom"))
 
 ## ----setup2,include=T---------------------------------------------------------
-NMdataConfig(check.time=FALSE)
+NMdataConf(check.time=FALSE)
 
 ## ----eval=TRUE----------------------------------------------------------------
 res0 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
@@ -80,7 +80,7 @@ dim(res1.id2)
 head(res1.id2,2)
 
 ## -----------------------------------------------------------------------------
-NMdataConfig(as.fun="data.table")
+NMdataConf(as.fun="data.table")
 
 ## ----meanbydose---------------------------------------------------------------
 res2 <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
@@ -107,7 +107,7 @@ ggplot(res2[EVID==0])+
 res2[,.N,by=.(nmout,flag)]
 
 ## -----------------------------------------------------------------------------
-NMdataConfig(as.fun="data.table")
+NMdataConf(as.fun="data.table")
 
 ## -----------------------------------------------------------------------------
 ## notice fill is an option to rbind with data.table
