@@ -11,6 +11,7 @@
 ## what do we want to get from NMdataDecideOption(name,NULL) ?
 ### Existing option setting. However, we need to be able to reset options, one at a time
 
+##' @export
 NMdataConfig <- function(...){
     
     dots <- list(...)
@@ -85,7 +86,6 @@ NMdataOptionValues <- function(name){
            ,is.allowed=function(x) is.function(x) || (length(x)==1 && is.character(x))
            ,msg.not.allowed="file.mod must be a function or a character of length 1"
            ,process=function(x) {
-               
                if(is.character(x)) return(function(file) x)
                x
            }
@@ -96,7 +96,10 @@ NMdataOptionValues <- function(name){
             ## has to be length 1 character or function
            ,is.allowed=function(x) is.function(x) || (length(x)==1 && is.character(x))
            ,msg.not.allowed="modelname must be either a function or a character."
-           ,process=identity
+           ,process=function(x) {
+               if(is.character(x)) return(function(file) x)
+               x
+           }
         )
     )
 

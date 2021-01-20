@@ -42,6 +42,7 @@ NMreadTab <- function(file,silent=TRUE,tab.count=TRUE,as.fun=NULL,...) {
     if(!is.character(file)) stop("file should be a character string",call.=F)
     if(!file.exists(file)) stop("argument file is not a path to an existing file.",call.=F)
 
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
     
     if(!silent){
         message("Reading data using fread")
@@ -78,7 +79,7 @@ NMreadTab <- function(file,silent=TRUE,tab.count=TRUE,as.fun=NULL,...) {
         set(dt1, j=col, value=as.numeric(dt1[[col]]))
     }
 
-    dt1 <- runAsFun(dt1,as.fun)
-        
+    dt1 <- as.fun(dt1)
+    
     return(dt1)
 }

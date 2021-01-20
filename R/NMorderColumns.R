@@ -80,7 +80,8 @@ NMorderColumns <- function(data,
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
-
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    
     was.dt <- FALSE
     if(is.data.table(data)){
         data <- copy(data) 
@@ -129,7 +130,7 @@ NMorderColumns <- function(data,
 
     if(!was.dt || !is.null(as.fun)) {
         ##        data <- as.data.frame(data)
-        data <- runAsFun(data,as.fun=as.fun)
+        data <- as.fun(data)
     }
 
     data

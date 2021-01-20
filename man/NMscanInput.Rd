@@ -74,7 +74,7 @@ returned. Only used if applyFilters is TRUE.}
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
-as.fun="none". See ?runAsFun.}
+as.fun=identity. See ?runAsFun.}
 }
 \description{
 Based on a nonmem run (lst and/or mod file), this

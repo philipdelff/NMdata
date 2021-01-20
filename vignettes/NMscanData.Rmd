@@ -1,6 +1,5 @@
 ---
 title: "Automated and general reader of Nonmem data"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Automated and general reader of Nonmem data}
@@ -71,6 +70,16 @@ library(data.table)
 library(ggplot2)
 theme_set(theme_bw()+theme(legend.position="bottom"))
 ```
+
+For the purpose of this vignette we will configure `NMdata` not to check time
+stamps of input control streams and input data against output control
+streams. You will typically not need this. We need it because we cannot control
+time stamps of the files in the distributed package.
+
+```{r,setup2,include=T}
+NMdataConfig(check.time=FALSE)
+```
+
 
 ## Get started
 Try NMscanData on any model:
@@ -284,11 +293,13 @@ were in the output data (`nmout==TRUE`) or they were recovered from
 the input data. `PRED` is obviously not calculated for data rows
 neglected by Nonmem, so we want to keep those out of the
 calculation. Let's see how many were recovered 
+
 ```{r}
 ## this is just a long-format representation of
 ## with(res1,table(nmout,flag)) using data.table.
 res2[,.N,by=.(nmout,flag)]
 ```
+
 So `res2[nmout==TRUE,.N]` were part of the analysis. 
 The `recover.rows` argument can be used independently of whether
 `col.row` is used.
@@ -389,7 +400,7 @@ vignette](https://philipdelff.github.io/NMdata/articles/DataCreate.html).
 
 
 ### Custom naming of input and output control streams
-By default, `NMscanData` expects a (PSN)[https://uupharmacometrics.github.io/PsN/]-style naming of input and output
+By default, `NMscanData` expects a [PSN](https://uupharmacometrics.github.io/PsN/)-style naming of input and output
 control streams. This means that if the input control stream is called
 `model.mod`, the returned control stream is called model.lst. If you use
 a different setup, you can use the `file.mod` argument. Do one of the

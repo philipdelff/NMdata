@@ -104,7 +104,7 @@ NMscanData <- function(file, col.row, cbind.by.filters,
                        add.name="model", modelname, file.mod,
                        dir.data, quiet=FALSE, use.rds=TRUE,
                        as.fun=NULL, col.id="ID", tab.count=FALSE,
-                       order.columns=TRUE, check.time=TRUE) {
+                       order.columns=TRUE, check.time=NULL) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -143,6 +143,7 @@ NMscanData <- function(file, col.row, cbind.by.filters,
     if(missing(file.mod)) file.mod <- NULL
     check.time <- NMdataDecideOption("check.time",check.time)
     as.fun <- NMdataDecideOption("as.fun",as.fun)
+    modelname <- NMdataDecideOption("modelname",modelname)
 
     ### combination of arguments
     if(!is.null(dir.data)&&!is.null(file.mod)){
@@ -203,7 +204,6 @@ NMscanData <- function(file, col.row, cbind.by.filters,
         col.row <- NULL
     }
 
-    modelname <- NMdataDecideOption("modelname",modelname)
     runname <- modelname(file)
     ## modelname.by.option <- FALSE
     ## if(missing(modelname)) {
@@ -705,7 +705,7 @@ NMscanData <- function(file, col.row, cbind.by.filters,
         file.input=NA_character_,
         ## if available: mtime of input data
         mtime.input=NA_character_,
-        variables=runAsFun(dt.vars,as.fun),
+        variables=as.fun(dt.vars),
         tables=tables.meta
     )
 

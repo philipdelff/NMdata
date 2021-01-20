@@ -21,9 +21,11 @@
 
 NMreadCsv <- function(file,na.strings=".",header=TRUE,stringsAsFactors=FALSE,as.fun=NULL,...){
 
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    
     dt <- fread(file=file,na.strings=na.strings,header=header,stringsAsFactors=stringsAsFactors,...)
 
-    dt <- runAsFun(dt,as.fun)
+    dt <- as.fun(dt)
 
     return(dt)
 }

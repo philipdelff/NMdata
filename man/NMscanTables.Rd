@@ -17,7 +17,7 @@ properties of the output.}
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
-as.fun="none". See ?runAsFun.}
+as.fun=identity. See ?runAsFun.}
 
 \item{quiet}{The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for

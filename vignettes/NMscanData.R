@@ -1,8 +1,10 @@
 ## ---- include = FALSE---------------------------------------------------------
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
- ,fig.width=7)
+                      collapse = TRUE
+                     ,comment = "#>"
+                     ,fig.width=7
+                     ,cache=FALSE
+                  )
 
 ## this change data.table syntax. I think we can do without.
 ## knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
@@ -17,13 +19,17 @@ library(data.table)
 library(ggplot2)
 theme_set(theme_bw()+theme(legend.position="bottom"))
 
+## ----setup2,include=T---------------------------------------------------------
+NMdataConfig(check.time=FALSE)
+
 ## ----eval=TRUE----------------------------------------------------------------
 res0 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
                    cbind.by.filters=TRUE)
 class(res0)
 
 ## ----eval=TRUE----------------------------------------------------------------
-res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),col.row="ROW",quiet=TRUE)
+res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
+                   col.row="ROW",quiet=TRUE)
 res0 <- res0[,c(colnames(res1),setdiff(colnames(res0),colnames(res1)))]
 all.equal(res0,res1,check.attributes=FALSE)
 
@@ -74,9 +80,9 @@ dim(res1.id2)
 head(res1.id2,2)
 
 ## -----------------------------------------------------------------------------
-options(NMdata.as.fun="none")
+NMdataConfig(as.fun="data.table")
 
-## -----------------------------------------------------------------------------
+## ----meanbydose---------------------------------------------------------------
 res2 <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
                    col.row="ROW",recover.rows=TRUE)
 ## now we have a data.table
@@ -101,10 +107,12 @@ ggplot(res2[EVID==0])+
 res2[,.N,by=.(nmout,flag)]
 
 ## -----------------------------------------------------------------------------
+NMdataConfig(as.fun="data.table")
+
+## -----------------------------------------------------------------------------
 ## notice fill is an option to rbind with data.table
 res1.m <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                     col.row="ROW",
-                     quiet=TRUE)
+                     col.row="ROW",quiet=TRUE)
 res2.m <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
                      col.row="ROW",modelname="single-compartment",
                      quiet=TRUE)

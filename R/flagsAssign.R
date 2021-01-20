@@ -177,16 +177,14 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
     data[,(col.row):=NULL]
 
     
+
     if(!data.was.data.table || !is.null(as.fun) ) {
-        data <- runAsFun(data,as.fun)
-        tab.flags <- runAsFun(tab.flags,as.fun)
+        as.fun <- NMdataDecideOption("as.fun",as.fun)
+        data <- as.fun(data)
+        tab.flags <- as.fun(tab.flags)
     }
 
-    
     if(return.all){
-        if(!tab.flags.was.data.table || !is.null(as.fun) ) {
-            tab.flags <- runAsFun(tab.flags,as.fun)
-        }
         return(list(data,tab.flags))
     } else {
         return(data)

@@ -54,7 +54,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL,as.fun=NULL){
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
     if(missing(file)) file <- NULL
-
+    
     stopifnot(is.data.frame(data))
     stopifnot(is.data.frame(tab.flags))
 
@@ -148,7 +148,8 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL,as.fun=NULL){
     }
 
     if(!data.was.data.table || !is.null(as.fun) ) {
-        allres <- runAsFun(allres,as.fun)
+        as.fun <- NMdataDecideOption("as.fun",as.fun)
+        allres <- as.fun(allres)
     }
     
     return(allres)

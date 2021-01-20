@@ -25,6 +25,8 @@
 
 NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=FALSE) {
 
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    
     ## get mod/lst text in lines format
     if(sum(c(!missing(file)&&!is.null(file),
              !missing(lines)&&!is.null(lines),
@@ -139,7 +141,7 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
         data <- as.data.table(data)[eval(parse(text=expressions.all))]
     }
 
-    data <- runAsFun(data,as.fun)
+    data <- as.fun(data)
 
     data
 }

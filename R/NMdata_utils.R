@@ -100,7 +100,7 @@ messageWrap <- function(..., fun.msg=message, prefix = "\n", initial = "", width
 ##' class(dat)
 
 
-runAsFun <- function(data,as.fun){
+## runAsFun <- function(data,as.fun){
     ## if(is.null(as.fun)){
     ##     ## as.fun <- getOption("NMdata.as.fun")
     ##     as.fun <- NMdataGetOption("as.fun")
@@ -117,8 +117,8 @@ runAsFun <- function(data,as.fun){
     ## if(!is.function(as.fun)){
     ##     stop("as.fun must be a function or the character string \"none\".")
     ## }
-    as.fun(data)
-}
+##     as.fun(data)
+## }
 
 ##' Determine file.mod to use based on argument and options
 ##' @param file.lst Path to output control stream.
@@ -140,29 +140,29 @@ runAsFun <- function(data,as.fun){
 ##' Notice, if the argument dir.data is used in NMscanData or
 ##' NMtscanInput, the input control stream is not used at all.
 
-getFileMod <- function(file.lst,file.mod=NULL){
+## getFileMod <- function(file.lst,file.mod=NULL){
     
-    if(is.null(file.mod)){
-        ## file.mod <- getOption("NMdata.file.mod")
-        file.mod <- NMdataGetOption("file.mod")
-        if(!is.null(file.mod) && !is.function(file.mod)) {
-            messageWrap("When file.mod is specified by getOption(\"NMdata.file.mod\"), it has to be a function.",
-                        fun.msg=stop)
-        }
-    }
-    if(is.null(file.mod)){
-        return(sub("\\.lst","\\.mod",file.lst))
-    }
-    if(is.function(file.mod)) {
-        return(file.mod(file.lst))
-    }
-    if(is.character(file.mod)){
-        return(file.mod)
-    }
-    messageWrap("file.mod is not recognized as a function or a character",
-                fun.msg=stop)
+##     if(is.null(file.mod)){
+##         ## file.mod <- getOption("NMdata.file.mod")
+##         file.mod <- NMdataGetOption("file.mod")
+##         if(!is.null(file.mod) && !is.function(file.mod)) {
+##             messageWrap("When file.mod is specified by getOption(\"NMdata.file.mod\"), it has to be a function.",
+##                         fun.msg=stop)
+##         }
+##     }
+##     if(is.null(file.mod)){
+##         return(sub("\\.lst","\\.mod",file.lst))
+##     }
+##     if(is.function(file.mod)) {
+##         return(file.mod(file.lst))
+##     }
+##     if(is.character(file.mod)){
+##         return(file.mod)
+##     }
+##     messageWrap("file.mod is not recognized as a function or a character",
+##                 fun.msg=stop)
     
-}
+## }
 
 
 

@@ -120,32 +120,31 @@ You can get a tibble if you work with `dplyr`/`tidyverse` tools:
 NMscanData(...,as.fun=tibble::as_tibble)
 ```
 
-Under the hood, NMdata is implemented in `data.table`, and in fact the
+Under the hood, `NMdata` is implemented in `data.table`, and in fact the
 default is to convert to `data.frame` before returning the output. So
-if you want `data.table`, use `"none"` to avoid the conversion
+if you want `data.table`, use `"data.table"` (notice as a character string, not a function) to avoid the conversion
 
 ```{r,eval=F}
-NMscanData(...,as.fun="none")
+NMscanData(...,as.fun="data.table")
 ```
 
-Using `as.fun=as.data.table` wold work but is not recommended, because
-that would do an unnecessary deep copy of data.
+Using `as.fun=as.data.table` (a function this time) wold work but is not
+recommended, because that would do an unnecessary copy of data.
 
 If you want to change the behaviour generally for the session and omit
 the `as.fun` argument, you can do this by this option:
 
 ```{r,eval=F}
 ## for tibbles
-options(NMdata.as.fun=tibble::as_tibble)
+NMdataConfig(as.fun=tibble::as_tibble)
 ## for data.table
-options(NMdata.as.fun="none")
+NMdataConfig(as.fun="data.table")
 ```
 
-And all `NMdata` functions (that return data) should now return
-tibbles or data.tables. If you use `options` to control this, for
-reproducibility please
-do so explecitly in your code and not in your `.Rprofile` or
-similar. 
+And all `NMdata` functions (that return data) should now return tibbles or
+data.tables. If you use `NMdataConfig` to control this, for reproducibility
+please do so explicitly in your script and not in your `.Rprofile` or similar.
+
 
 ### Can I request a feature?
 Please open an issue on [github](https://github.com/philipdelff/NMdata/issues).
@@ -173,7 +172,7 @@ control stream as well, and it will automatically find it based on the
 output control stream path and an assumed naming convention based on
 PSN (which is that the output control stream file name ends in `.lst` and the
 input control stream is located next to it ending in `.mod`). This naming
-convention can easily be configured using the `NMdata.file.mod`
+convention can easily be configured using the `file.mod`
 option. 
 
 Another commonly used file structure is to have each run in a separate
@@ -182,7 +181,7 @@ always called `input.txt` and
 located next to the output control stream called `output.txt`, you can use
 
 ```{r,eval=FALSE}
-options(NMdata.file.mod=function(file) file.path(dirname(file),"input.txt"))
+NMdataConfig(file.mod=function(file) file.path(dirname(file),"input.txt"))
 ```
 
 `NMscanData` reads the name of the model and adds it to a column in
@@ -190,7 +189,7 @@ the returned data. If the name of the directory is the model name, you can do th
 following as well:
 
 ```{r,eval=FALSE}
-options(NMdata.modelname=function(file) basename(dirname(normalizePath(file))))
+NMdataConfig(modelname=function(file) basename(dirname(normalizePath(file))))
 ```
 Feel free to modify the function to omit parts of the string or add to
 it. 
