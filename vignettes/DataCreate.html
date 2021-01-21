@@ -315,10 +315,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<p>Built 2021-01-15 using NMdata 0.0.6.4.</p>
+<p>Built 2021-01-20 using NMdata 0.0.6.5.904.</p>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>Nonmem has quite a number of restrictions on the format of the input data, and problems with the data set is a very typical for Nonmem not to behave as expected. When this happens, you easily waste a lot time debugging the data. <code>NMdata</code> includes some simple functions to prevent these situations.</p>
+<p>Nonmem has quite a number of restrictions on the format of the input data, and problems with the data set is a very common reason for Nonmem not to behave as expected. When this happens, you easily waste a lot time debugging the data. <code>NMdata</code> includes some simple functions to prevent these situations.</p>
 <p>This vignette uses <code>data.table</code> syntax for the little bit of data manipulation performed. However, you don’t need to use data.table <em>at all</em> to use these tools or any tool in <code>NMdata</code>. The reason why the functions return data.table objects is that the data set is a data.table to begin with</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="kw">system.file</span>(<span class="st">&quot;examples/data/xgxr2.rds&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;NMdata&quot;</span>))</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">class</span>(pk)</span>
@@ -327,7 +327,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="automated-checks-of-merge-results" class="section level2">
 <h2>Automated checks of merge results</h2>
-<p>Merges are a very common source of data creation bugs. As simple as it may seem in the head of the programmer, merges likely leave you with an unexpected number of rows, repeated or omitted rows. Merges are very powerful and flexible, and when preparing a data set, they are fundamental. However, many merges for dataset creation are of the specific and simple kind where columns are added to an existing dataset. In this situation the rows that come out of the merge are the exact same as in one of the existing datasets. Say we want to add a covariate:</p>
+<p>Merges are a very common source of data creation bugs. As simple as they may seem, merges likely leave you with an unexpected number of rows, some repeated or some omitted. Merges are very powerful and flexible, and when preparing a data set, they are fundamental. However, many merges for dataset creation are of the specific and simple kind where columns are added to an existing dataset. In this situation the rows that come out of the merge are the exact same as in one of the existing datasets. Say we want to add a covariate:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">dim</span>(pk)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   24</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="kw">class</span>(pk)</span>
@@ -337,15 +337,15 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>dt.cov</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="co">#&gt;     ID COV</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="co">#&gt;  1: 31   4</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="co">#&gt;  2: 32   1</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="co">#&gt;  3: 33   4</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a><span class="co">#&gt;  4: 34   2</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a><span class="co">#&gt;  5: 35   3</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a><span class="co">#&gt;  6: 36   4</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a><span class="co">#&gt;  7: 37   5</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a><span class="co">#&gt;  8: 38   3</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a><span class="co">#&gt;  9: 39   1</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a><span class="co">#&gt; 10: 40   5</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="co">#&gt;  2: 32   4</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="co">#&gt;  3: 33   2</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a><span class="co">#&gt;  4: 34   1</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a><span class="co">#&gt;  5: 35   5</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a><span class="co">#&gt;  6: 36   2</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a><span class="co">#&gt;  7: 37   3</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a><span class="co">#&gt;  8: 38   4</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a><span class="co">#&gt;  9: 39   5</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a><span class="co">#&gt; 10: 40   1</span></span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>pk2 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>)</span>
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a><span class="kw">dim</span>(pk2)</span>
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a><span class="co">#&gt; [1] 100  25</span></span>
@@ -353,7 +353,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a>pk3 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>, <span class="dt">all.x =</span> <span class="ot">TRUE</span>)</span>
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a><span class="kw">dim</span>(pk3)</span>
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   25</span></span></code></pre></div>
-<p>So when creating <code>pk2</code> we lost a lot of rows because we forgot the <code>all.x</code> option. And also, just checking the resulting dimensions is not enough.</p>
+<p>So when creating <code>pk2</code> we lost a lot of rows because we forgot the <code>all.x</code> option. And also as we shall now see, just checking the resulting dimensions is not enough.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>dt.cov2 &lt;-<span class="st"> </span>pk[, .(<span class="dt">ID =</span> <span class="kw">unique</span>(ID))]</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>dt.cov2[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(COV, <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">size =</span> .N, <span class="dt">replace =</span> <span class="ot">TRUE</span>))]</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>dt.cov2 &lt;-<span class="st"> </span>dt.cov2[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span><span class="op">:</span>(.N <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))]</span>
@@ -375,9 +375,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a><span class="kw">dim</span>(pk3)</span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   25</span></span></code></pre></div>
 <p>The result always has the same order of rows as the <code>x1</code> argument.</p>
-<p>Another problem that the programmer may not realize during a merge is that column names are shared across <code>x1</code> and <code>x2</code>. This will silently create colmn names like <code>col.x</code> and <code>col.y</code> in the output. <code>mergeCheck</code> will give a warning if that happens.</p>
+<p>Another problem that the programmer may not realize during a merge is that column names are shared across <code>x1</code> and <code>x2</code>. This will silently create colmn names like <code>col.x</code> and <code>col.y</code> in the output. <code>mergeCheck</code> will by default give a warning if that happens.</p>
 <p>There is only one difference from the behaviour of the <code>merge.data.frame</code> function syntax, being that the <code>by</code> argument must always be supplied.</p>
-<p>So you may think that this will limit your merges, and that you need merges for inner and outer joins etc. You are exactly right - <code>mergeCheck</code> is not intended for those merges and does not support them. When that is said, the kind of merges that are supported, are indeed very common. As a fun fact, all merges in the <code>NMdata</code> package are performed with <code>mergeCheck</code>.</p>
+<p>You may think that this will limit your merges, and that you need merges for inner and outer joins etc. You are exactly right - <code>mergeCheck</code> is not intended for those merges and does not support them. When that is said, the kind of merges that are supported, are indeed very common. As a fun fact, all merges in the <code>NMdata</code> package are performed with <code>mergeCheck</code>.</p>
 </div>
 <div id="exclusion-flags" class="section level2">
 <h2>Exclusion flags</h2>
@@ -445,7 +445,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;vignettes/DataCreate.Rmd&quot;</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a><span class="co">#&gt; $CreationTime</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2021-01-15 10:47:02 EST&quot;</span></span></code></pre></div>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2021-01-20 22:22:37 EST&quot;</span></span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">stampObj</span>(pk, <span class="dt">script =</span> <span class="st">&quot;vignettes/DataCreate.Rmd&quot;</span>, <span class="dt">Description =</span> <span class="st">&quot;A PK dataset used for examples.&quot;</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="kw">objInfo</span>(pk)</span>
@@ -453,7 +453,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;vignettes/DataCreate.Rmd&quot;</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a><span class="co">#&gt; $CreationTime</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2021-01-15 10:47:02 EST&quot;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2021-01-20 22:22:37 EST&quot;</span></span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a><span class="co">#&gt; $Description</span></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;A PK dataset used for examples.&quot;</span></span></code></pre></div>

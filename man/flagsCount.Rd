@@ -9,33 +9,30 @@ flagsCount(data, tab.flags, file, col.id = "ID", by = NULL, as.fun = NULL)
 \arguments{
 \item{data}{The dataset including both FLAG and flag columns.}
 
-\item{tab.flags}{A data.frame containing at least these named
-columns: FLAG, flag, condition. Condition is disregarded for
-FLAG==0.}
+\item{tab.flags}{A data.frame containing at least these named columns: FLAG,
+flag, condition. Condition is disregarded for FLAG==0.}
 
-\item{file}{A file to write the table of flag counts to. Will
-probably be removed and put in a separate function.}
+\item{file}{A file to write the table of flag counts to. Will probably be
+removed and put in a separate function.}
 
-\item{col.id}{The name of the subject ID column. Default is
-"ID".@param col.id The name of the subject ID column. Default
-is "ID".}
+\item{col.id}{The name of the subject ID column. Default is "ID".@param
+col.id The name of the subject ID column. Default is "ID".}
 
-\item{by}{An optional column to group the counting by. This could
-be "STUDY", "DRUG", "EVID", or a combination of multiple
-columns.}
+\item{by}{An optional column to group the counting by. This could be
+"STUDY", "DRUG", "EVID", or a combination of multiple columns.}
 
-\item{as.fun}{The default is to return a data.table if input data
-is a data.table, and return a data.frame for all other input
-classes. Pass a function in as.fun to convert to something
-else.}
+\item{as.fun}{The default is to return a data.table if input data is a
+data.table, and return a data.frame for all other input classes. Pass a
+function in as.fun to convert to something else. If data is not a
+data.table, default can be configured using NMdataConf.}
 }
 \value{
-A summary table with number of discarded and retained
-    subjects and observations when applying each condition in the
-    flag table. "discarded" means that the reduction of number of
-    observations and subjects resulting from the flag, "retained"
-    means the numbers that are left after application of the
-    flag. The default is "both" which will report both.
+A summary table with number of discarded and retained subjects and
+    observations when applying each condition in the flag table. "discarded"
+    means that the reduction of number of observations and subjects
+    resulting from the flag, "retained" means the numbers that are left
+    after application of the flag. The default is "both" which will report
+    both.
 }
 \description{
 Generate an overview of number of observations disregarded due to
@@ -44,10 +41,9 @@ flag.
 }
 \details{
 Notice number of subjects in N.discarded mode can be
-    misunderstood. If two is reported, it can mean that the
-    remining one observation of these two subjects are discarded
-    due to this flag. The majority of the samples can have been
-    discarded by earlier flags.
+    misunderstood. If two is reported, it can mean that the remining one
+    observation of these two subjects are discarded due to this flag. The
+    majority of the samples can have been discarded by earlier flags.
 }
 \seealso{
 Other DataCreate: 

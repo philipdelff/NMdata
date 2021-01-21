@@ -10,7 +10,7 @@ objInfo(data)
 \item{data}{The dataset to receive info about}
 }
 \description{
-Get stamped info about object
+Very simple function that extracts info stored by stampObj.
 }
 \seealso{
 stampObj

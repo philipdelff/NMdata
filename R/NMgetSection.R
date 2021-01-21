@@ -41,8 +41,11 @@
 ##' @export
 
 
-NMgetSection <- function(file=NULL, lines=NULL, text=NULL, section, return="text", keepEmpty=FALSE, keepName=TRUE, keepComments=TRUE, asOne=TRUE, simplify=TRUE, cleanSpaces=FALSE, ...){
-
+NMgetSection <- function(file=NULL, lines=NULL, text=NULL, section, return="text",
+                         keepEmpty=FALSE, keepName=TRUE,
+                         keepComments=TRUE, asOne=TRUE,
+                         simplify=TRUE, cleanSpaces=FALSE, ...){
+    
     NMextractText(file=file, lines=lines, text=text, section=section,
                   ## this wrapper is especially made for "$" sections
                   char.section="\\$",

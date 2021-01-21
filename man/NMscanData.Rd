@@ -50,20 +50,19 @@ output tables.}
 output tables? This will be added to the $row dataset only, and $run,
 $id, and $occ datasets are created before this is taken into account. A
 column called nmout will be TRUE when the row was found in output
-tables, and FALSE when not. This is still experimental. More testing is
-needed.}
+tables, and FALSE when not.}
 
 \item{add.name}{If a character string, a column of this name will be
 included in all tables containing the model name. The default is to
 store this in a column called "model". See argument "name" as well. Set
 to NULL if not wanted.}
 
-\item{modelname}{The model name to be stored if add.name is not NULL and not
-set by options(NMdata.modelname=...). If not supplied, the name will be
-taken from the control stream file name by omitting the directory/path
-and deleting the .lst extension. If using the NMdata.modelname option,
-please submit a function taking file as argument and returning the
-modelname (by extracting it from file name or path).}
+\item{modelname}{The model name to be stored if add.name is not NULL. If not
+supplied, the name will be taken from the control stream file name by
+omitting the directory/path and deleting the .lst extension. This can be
+a character string or a function taking file as argument and returning
+the modelname (by extracting it from file name or path). The default can
+be configured using NMdataConf.}
 
 \item{file.mod}{The input control stream. Default is to look for \"file\"
 with extension changed to .mod (PSN style). You can also supply the path
@@ -73,8 +72,9 @@ the "NMdata.file.mod" option. See dir.data too.}
 
 \item{dir.data}{The data directory can only be read from the control stream
 (.mod) and not from the output file (.lst). So if you only have the
-output file, use dir.data to tell in which directory to find the data
-file. If dir.data is provided, the .mod file is not used at all.}
+output control stream, use dir.data to tell in which directory to find
+the data file. If dir.data is provided, the .mod file is not used at
+all.}
 
 \item{quiet}{The default is to give some information along the way on what
 data is found. But consider setting this to TRUE for non-interactive
@@ -87,7 +87,8 @@ NMwriteData will create this by default too.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass a function
 (say tibble::as_tibble) in as.fun to convert to something else. If
-data.tables are wanted, use as.fun="none". See ?runAsFun.}
+data.tables are wanted, use as.fun="data.table". The default can be
+configured using NMdataConf.}
 
 \item{col.id}{The name of the subject ID variable, default is "ID".}
 
@@ -109,7 +110,8 @@ stream and input data are checked to be newer than output control stream
 and output tables. These are important assumptions for the way
 information is merged by NMscanData. However, if data has been
 transfered from another system where Nonmem was run, these checks may
-not make sense, and you may not want to see these warnings.}
+not make sense, and you may not want to see these warnings. The default
+can be configured using NMdataConf.}
 }
 \description{
 This is a very general solution to automatically identifying, reading, and  merging all output and input data in a Nonmem model. The most important

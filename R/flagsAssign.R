@@ -4,22 +4,19 @@
 ##' pre-specified table of flags, assign the flags automatically.
 ##'
 ##' @param data The dataset to assign flags to.
-##' @param tab.flags A data.frame containing at least these named
-##'     columns: FLAG, flag, condition. Condition is disregarded for
-##'     FLAG==0. FLAG must be numeric and non-negative, flag and
-##'     condition are characters.
-##' @param return.all If TRUE, both the edited dataset and the table
-##'     of flags are returned. If FALSE (default) only the edited
-##'     dataset is returned.
+##' @param tab.flags A data.frame containing at least these named columns: FLAG,
+##'     flag, condition. Condition is disregarded for FLAG==0. FLAG must be
+##'     numeric and non-negative, flag and condition are characters.
+##' @param return.all If TRUE, both the edited dataset and the table of flags
+##'     are returned. If FALSE (default) only the edited dataset is returned.
 ##' @param col.id The name of the subject ID column. Default is "ID".
 ##' @param col.dv The name of the data value column. Default is "DV".
-##' @param as.fun The default is to return data.tables if input data
-##'     is a data.table, and return a data.frame for all other input
-##'     classes. Pass a function in as.fun to convert to something
-##'     else. If return.all=F, this is applied to data and tab.flags
-##'     independently.
-##' @return The dataset with flags added. See parameter flags.return
-##'     as well.
+##' @param as.fun The default is to return data.tables if input data is a
+##'     data.table, and return a data.frame for all other input classes. Pass a
+##'     function in as.fun to convert to something else. If return.all=F, this
+##'     is applied to data and tab.flags independently. If input is not a
+##'     data.table, default can be configured using NMdataConf.
+##' @return The dataset with flags added. See parameter flags.return as well.
 ##' @import data.table
 ##' @family DataCreate
 ##' @export

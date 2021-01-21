@@ -2,7 +2,7 @@
 ##'
 ##' Dataset metadata makes it possible to trace an archived dataset
 ##' back to the code that generated it. The metadata added by
-##' stampData can be accessed using the function dsInfo.
+##' stampData can be accessed using the function objInfo.
 ##'
 ##' @param data The dataset to stamp.
 ##' @param script path to the script where the dataset was generated.

@@ -22,10 +22,10 @@ NMreadCsv(
 
 \item{stringsAsFactors}{See read.table.}
 
-\item{as.fun}{The default is to return data as a data.frame. Pass
-a function (say tibble::as_tibble) in as.fun to convert to
-something else. If data.tables are wanted, use
-as.fun="none". See ?runAsFun.}
+\item{as.fun}{The default is to return data as a data.frame. Pass a function
+(say tibble::as_tibble) in as.fun to convert to something else. If
+data.tables are wanted, use as.fun="data.table". The default can be
+configured using NMdataConf.}
 
 \item{...}{passed to read.csv}
 }
@@ -34,8 +34,8 @@ This function is especially useful if the csv file was written
 using NMwriteData.
 }
 \details{
-This is just a shortcut to fread so you don't have to
-    remember how to read the data that was exported for nonmem.
+This is just a shortcut to fread so you don't have to remember how
+    to read the data that was exported for nonmem.
 }
 \seealso{
 NMwriteData

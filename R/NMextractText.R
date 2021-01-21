@@ -1,4 +1,4 @@
-##' Versatile text extractor from Nonmem (input or output) control streams 
+##' Versatile text extractor from Nonmem (input or output) control streams
 ##'
 ##' If you want to extract input sections like $PROBLEM, $DATA etc,
 ##' see NMgetSection. This function is more general and can be used to
@@ -60,9 +60,7 @@ NMextractText <- function(file, lines, text, section, char.section,
                           simplify=TRUE, cleanSpaces=FALSE,
                           type="mod", linesep="\n"){
 
-    
-    
-    
+
     if(sum(c(!missing(file)&&!is.null(file),
            !missing(lines)&&!is.null(lines),
            !missing(text)&&!is.null(text)
@@ -152,9 +150,6 @@ NMextractText <- function(file, lines, text, section, char.section,
     if(simplify && length(result)==1) result <- result[[1]]
     
 
-########## formating return
-    
-    ## result <- unlist(result)
     return (result)
     
 }

@@ -9,21 +9,26 @@ findCovs(data, cols.id = NULL, as.fun = NULL)
 \arguments{
 \item{data}{data.frame in which to look for covariates}
 
-\item{cols.id}{covariates will be searched for in combinations of
-values in these columns. Often cols.id will be either empty or
-ID. But it can also be both say c("ID","DRUG") or
-c("ID","TRT").}
+\item{cols.id}{covariates will be searched for in combinations of values in
+these columns. Often cols.id will be either empty or ID. But it can also
+be both say c("ID","DRUG") or c("ID","TRT").}
 
-\item{as.fun}{The default is to return a data.table if data is a
-data.table and return a data.frame in all other cases. Pass a
-function in as.fun to convert to something else. See ?runAsFun.}
+\item{as.fun}{The default is to return a data.table if data is a data.table
+and return a data.frame in all other cases. Pass a function in as.fun to
+convert to something else. If data is not a data.table, the default can
+be configued using NMdataConf.}
 }
 \value{
-a data set with one observation per combination of values
-    of variables listed in cols.id.
+a data set with one observation per combination of values of
+    variables listed in cols.id.
 }
 \description{
-Extract columns that do not vary within variables in data
+This function provides an automated method to extract covariate-like
+columns. The user decides which columns these variables cannot vary
+within. So if you have repeated measures for each ID, this function can find
+the columns that are constant within ID and their unique values for each
+ID. Or, you can provide a combination of id.cols, say ID and STUDY, and get
+variables that do not vary within unique combinations of these.
 }
 \examples{
 dat <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"))

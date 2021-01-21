@@ -8,21 +8,20 @@
 ##' table file alone.
 ##'
 ##' @param file path to NONMEM table file
-##' @param quiet logical stating whether or not information is
-##'     printed about what is being done.
-##' @param tab.count Nonmem includes a counter of tables in the
-##'     written data files. These are often not useful. However, if
-##'     tab.count is TRUE (default), this will be carried forward and
-##'     added as a column called TABLENO.
-##' @param as.fun The default is to return data as a data.frame. Pass
-##'     a function (say tibble::as_tibble) in as.fun to convert to
-##'     something else. If data.tables are wanted, use
-##'     as.fun="none". See ?runAsFun.
+##' @param quiet logical stating whether or not information is printed about
+##'     what is being done.
+##' @param tab.count Nonmem includes a counter of tables in the written data
+##'     files. These are often not useful. However, if tab.count is TRUE
+##'     (default), this will be carried forward and added as a column called
+##'     TABLENO.
+##' @param as.fun The default is to return data as a data.frame. Pass a function
+##'     (say tibble::as_tibble) in as.fun to convert to something else. If
+##'     data.tables are wanted, use as.fun="data.table". The default can be
+##'     configured using NMdataConf.
 ##' @param ... Arguments passed to fread.
 ##' @return The Nonmem table data.
 ##' @details The actual reading of data is based on
-##'     data.table::fread. Generally, the function is fast thanks to
-##'     data.table.
+##'     data.table::fread. Generally, the function is fast thanks to data.table.
 ##' @import data.table
 ##' @family DataRead
 ##' @export

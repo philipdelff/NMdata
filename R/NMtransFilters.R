@@ -1,27 +1,25 @@
 ##' Translate filters in Nonmem and apply to data
 ##' @param data An input data object. Could be read with NMreadCsv or
 ##'     NMscanInput.
-##' @param file Path to mod/lst file. Only one of file, text, or lines
-##'     to be given. See ?NMgetSection for understanding when to use,
-##'     file, text, or lines.
+##' @param file Path to mod/lst file. Only one of file, text, or lines to be
+##'     given. See ?NMgetSection for understanding when to use, file, text, or
+##'     lines.
 ##' @param text The mod/lst as characters.
 ##' @param lines The mod/lst as character, line by line.
-##' @param invert Invert the filters? This means read what Nonmem
-##'     would disregard, and disregard what Nonmem would read.
-##' @param as.fun The default is to return data as a data.frame. Pass
-##'     a function (say tibble::as_tibble) in as.fun to convert to
-##'     something else. If data.tables are wanted, use
-##'     as.fun="none". See ?runAsFun.
-##' @param quiet Don't report information along the way if no warnings
-##'     or errors. Default is FALSE.
-##' @details This is not bulletproof. A statement like ACCEPT=(DOSE
-##'     10) which in Nonmem means the same as ACCEPT=(DOSE==10) will
-##'     not be correctly interpreted. Also, nested conditions are not
-##'     supported altogether.
+##' @param invert Invert the filters? This means read what Nonmem would
+##'     disregard, and disregard what Nonmem would read.
+##' @param as.fun The default is to return data as a data.frame. Pass a function
+##'     (say tibble::as_tibble) in as.fun to convert to something else. If
+##'     data.tables are wanted, use as.fun="data.table". The default can be
+##'     configured using NMdataConf.
+##' @param quiet Don't report information along the way if no warnings or
+##'     errors. Default is FALSE.
+##' @details This is not bulletproof. A statement like ACCEPT=(DOSE 10) which in
+##'     Nonmem means the same as ACCEPT=(DOSE==10) will not be correctly
+##'     interpreted. Also, nested conditions are not supported altogether.
 ##' @family Nonmem
 
 ## Don't export. This is only being used by NMscanData at this point.
-
 
 NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=FALSE) {
 
@@ -61,7 +59,6 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
     ## if no filters found, just return data as is
     if(!any.accepts&&!any.ignores) return(data)
     if(any.accepts&&any.ignores) stop("IGNORE and ACCEPT are not allowed together according to Nonmem documentation.")
-
     
     if(any.ignores) {
         type.condition <- "IGNORE"
@@ -70,7 +67,6 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
     }
     
 
-    
 ### expression-style ones
     ## this is not entirely correct.
 ### 1. A comma-separated list of expressions can be inside the ()s.

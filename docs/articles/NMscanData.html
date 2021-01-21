@@ -425,10 +425,11 @@
 <a href="#character-time-variables-not-interpreted" class="anchor"></a>Character time variables not interpreted</h3>
 <p>Nonmem supports a clocktime input format for a column called TIME in input data. Based on a day counter and a character (“00:00”) clock format, Nonmem can calculate the individual time since first record. This behaviour is not mimicked by NMscanData, and the only ways to get TIME in this case are to either include it in an output <code>TABLE</code> or to code the translation yourself after calling <code>NMscanData</code>. Of course, this is on the todo list.</p>
 </div>
-<div id="firstlastonly-not-supported" class="section level3">
+<div id="some-table-options-not-supported" class="section level3">
 <h3 class="hasAnchor">
-<a href="#firstlastonly-not-supported" class="anchor"></a>FIRSTLASTONLY not supported</h3>
-<p>The <code>FIRSTLASTONLY</code> option in <code>$TABLE</code> results in two rows per subject. For now, this cannot be merged with input, and these tables are disregarded with a warning (you can read them with <code>NMscanTables</code>). <code>LASTONLY</code> is treated like <code>FIRSTONLY</code>, i.e. as ID-level information if not available elsewhere.</p>
+<a href="#some-table-options-not-supported" class="anchor"></a>Some TABLE options not supported</h3>
+<p>The <code>FIRSTLASTONLY</code> option in <code>$TABLE</code> results in two rows per subject from Nonmem. For now, this cannot be merged with input, and these tables are disregarded with a warning (you can read them with <code>NMscanTables</code>). <code>LASTONLY</code> is treated like <code>FIRSTONLY</code>, i.e. as ID-level information if not available elsewhere.</p>
+<p>The <code>OBSONLY</code> <code>$TABLE</code> option is not supported for automatic merges.</p>
 </div>
 </div>
   </div>

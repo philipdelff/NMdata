@@ -35,37 +35,33 @@ Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
 
 ## Introduction
-Nonmem has quite a number of restrictions on the format of the input
-data, and problems with the data set is a very typical for Nonmem not
-to behave as expected. When this happens, you easily waste a lot time
-debugging the data. `NMdata` includes some simple functions to prevent
-these situations.
+Nonmem has quite a number of restrictions on the format of the input data, and
+problems with the data set is a very common reason for Nonmem not to behave as
+expected. When this happens, you easily waste a lot time debugging the
+data. `NMdata` includes some simple functions to prevent these situations.
 
-This vignette uses `data.table` syntax for the little bit of data
-manipulation performed. However, you don't need to use data.table _at
-all_ to use these tools or any tool in `NMdata`. The reason why the
-functions return data.table objects is that the data set is a
-data.table to begin with
+This vignette uses `data.table` syntax for the little bit of data manipulation
+performed. However, you don't need to use data.table _at all_ to use these tools
+or any tool in `NMdata`. The reason why the functions return data.table objects
+is that the data set is a data.table to begin with
 
 ```{r}
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 class(pk)
 ```
 
-If this was a `data.frame`, the `NMdata` functions would keep
-returning objects of class `data.frame`.
+If this was a `data.frame`, the `NMdata` functions would keep returning objects
+of class `data.frame`.
 
 
 ## Automated checks of merge results
-Merges are a very common source of data creation bugs. As simple as it
-may seem in the head of the programmer, merges likely leave you with
-an unexpected number of rows, repeated or omitted rows. Merges are
-very powerful and flexible, and when preparing a data set, they are
-fundamental. However, many merges for dataset creation are
-of the specific and simple kind where columns are added to an existing
-dataset. In this situation the rows that come out of the merge are the
-exact same as in one of the existing datasets. Say we want to add a
-covariate:
+Merges are a very common source of data creation bugs. As simple as they may
+seem, merges likely leave you with an unexpected number of rows, some repeated or
+some omitted. Merges are very powerful and flexible, and when preparing a data
+set, they are fundamental. However, many merges for dataset creation are of the
+specific and simple kind where columns are added to an existing dataset. In this
+situation the rows that come out of the merge are the exact same as in one of
+the existing datasets. Say we want to add a covariate:
 
 ```{r}
 dim(pk)
@@ -81,7 +77,7 @@ dim(pk3)
 ```
 
 So when creating `pk2` we lost a lot of rows because we forgot the `all.x`
-option. And also, just checking the resulting dimensions is not enough.
+option. And also as we shall now see, just checking the resulting dimensions is not enough.
 
 ```{r}
 dt.cov2 <- pk[,.(ID=unique(ID))]
@@ -109,13 +105,13 @@ The result always has the same order of rows as the `x1` argument.
 Another problem that the programmer may not realize during a merge is
 that column names are shared across `x1` and `x2`. This will silently create
 colmn names like `col.x` and `col.y` in the output. `mergeCheck` will
-give a warning if that happens.
+by default give a warning if that happens.
 
 There
 is only one difference from the behaviour of the `merge.data.frame`
 function syntax, being that the `by` argument must always be supplied.
 
-So you may think that this will limit your merges, and that you need
+You may think that this will limit your merges, and that you need
 merges for inner and outer joins etc. You are exactly right -
 `mergeCheck` is not intended for those merges and does not support
 them. When that is said, the kind of merges that are supported, are

@@ -31,7 +31,9 @@
 ##'     dataset. Technically, you can use it for whatever column you want first.
 ##' @param as.fun The default is to return a data.table if data is a data.table
 ##'     and return a data.frame in all other cases. Pass a function in as.fun to
-##'     convert to something else.
+##'     convert to something else. The default can be configured using
+##'     NMdataConf. However, if data is a data.table, settings via NMdataConf
+##'     are ignored.
 ##' @param quiet If true, no warning will be given about missing standard Nonmem
 ##'     columns.
 ##' @details This function will change the order of columns but it will never

@@ -17,7 +17,7 @@ Description="PK data for ph1 trials in project".}
 \description{
 Dataset metadata makes it possible to trace an archived dataset
 back to the code that generated it. The metadata added by
-stampData can be accessed using the function dsInfo.
+stampData can be accessed using the function objInfo.
 }
 \seealso{
 objInfo
