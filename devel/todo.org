@@ -152,7 +152,14 @@ Not warning. Warning if standard variable?
 ## This function must handle NA ID's and maybe FAS as well.
 
 ## If EVID is present, only treat EVID==0. Or maybe better group by EVID.
-
+*** NMdataConf
+**** TODO Add support for add.name
+**** TODO use.input
+**** TODO recover.rows
+**** TODO use.rds
+**** TODO quiet
+**** TODO col.row
+**** TODO order.columns
 ** Nonmem examples
 *** DONE Use FLAG
     CLOSED: [2020-06-29 Mon 21:28]
@@ -216,9 +223,12 @@ exactly these uses of ".". Anyway, no consequence to functionality.
 *** DONE Drop filepath_NMdata
     CLOSED: [2020-12-22 Tue 19:01]
 *** TODO Release 0.0.7
+**** TODO Go through all manuals and update according to new config system
 **** Update vignettes
 ***** TODO NMscanData
 ***** TODO FAQ
 ***** TODO DataCreate
-**** TODO document data objects
-See how it's done in pmxtricks
+**** DONE document data objects
+     CLOSED: [2021-01-20 Wed 19:53]
+See how it's done in pmxtricks.  This is done. However, the datasets are not
+exported so it's not very important.

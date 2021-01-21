@@ -520,9 +520,11 @@ ways to get TIME in this case are to either include it in an output
 `TABLE` or to code the translation yourself after calling
 `NMscanData`. Of course, this is on the todo list.
 
-### FIRSTLASTONLY not supported
-The `FIRSTLASTONLY` option in `$TABLE` results in two rows per
-subject. For now, this cannot be merged with input, and these tables
-are disregarded with a warning (you can read them with
-`NMscanTables`). `LASTONLY` is treated like `FIRSTONLY`, i.e. as
-ID-level information if not available elsewhere. 
+### Some TABLE options not supported
+The `FIRSTLASTONLY` option in `$TABLE` results in two rows per subject from
+Nonmem. For now, this cannot be merged with input, and these tables are
+disregarded with a warning (you can read them with `NMscanTables`). `LASTONLY`
+is treated like `FIRSTONLY`, i.e. as ID-level information if not available
+elsewhere.
+
+The `OBSONLY` `$TABLE` option is not supported for automatic merges.

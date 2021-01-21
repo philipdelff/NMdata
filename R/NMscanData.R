@@ -27,32 +27,33 @@
 ##'     output tables? This will be added to the $row dataset only, and $run,
 ##'     $id, and $occ datasets are created before this is taken into account. A
 ##'     column called nmout will be TRUE when the row was found in output
-##'     tables, and FALSE when not. This is still experimental. More testing is
-##'     needed.
+##'     tables, and FALSE when not.
 ##' @param add.name If a character string, a column of this name will be
 ##'     included in all tables containing the model name. The default is to
 ##'     store this in a column called "model". See argument "name" as well. Set
 ##'     to NULL if not wanted.
-##' @param modelname The model name to be stored if add.name is not NULL and not
-##'     set by options(NMdata.modelname=...). If not supplied, the name will be
-##'     taken from the control stream file name by omitting the directory/path
-##'     and deleting the .lst extension. If using the NMdata.modelname option,
-##'     please submit a function taking file as argument and returning the
-##'     modelname (by extracting it from file name or path).
+##' @param modelname The model name to be stored if add.name is not NULL. If not
+##'     supplied, the name will be taken from the control stream file name by
+##'     omitting the directory/path and deleting the .lst extension. This can be
+##'     a character string or a function taking file as argument and returning
+##'     the modelname (by extracting it from file name or path). The default can
+##'     be configured using NMdataConf.
 ##' @param use.rds If an rds file is found with the exact same name (except for
 ##'     .rds instead of say .csv) as the input data file mentioned in the Nonmem
 ##'     control stream, should this be used instead? The default is yes, and
 ##'     NMwriteData will create this by default too.
 ##' @param dir.data The data directory can only be read from the control stream
 ##'     (.mod) and not from the output file (.lst). So if you only have the
-##'     output file, use dir.data to tell in which directory to find the data
-##'     file. If dir.data is provided, the .mod file is not used at all.
+##'     output control stream, use dir.data to tell in which directory to find
+##'     the data file. If dir.data is provided, the .mod file is not used at
+##'     all.
 ##' @param quiet The default is to give some information along the way on what
 ##'     data is found. But consider setting this to TRUE for non-interactive
 ##'     use.
 ##' @param as.fun The default is to return data as a data.frame. Pass a function
 ##'     (say tibble::as_tibble) in as.fun to convert to something else. If
-##'     data.tables are wanted, use as.fun="data.table". See ?runAsFun.
+##'     data.tables are wanted, use as.fun="data.table". The default can be
+##'     configured using NMdataConf.
 ##' @param cbind.by.filters If TRUE, Nonmem data filtering is interpreted from
 ##'     lst file (restrictions apply), and after an imitated selection of rows,
 ##'     data columns will be appended to output data. This method relies on
@@ -79,7 +80,8 @@
 ##'     and output tables. These are important assumptions for the way
 ##'     information is merged by NMscanData. However, if data has been
 ##'     transfered from another system where Nonmem was run, these checks may
-##'     not make sense, and you may not want to see these warnings.
+##'     not make sense, and you may not want to see these warnings. The default
+##'     can be configured using NMdataConf.
 ##'
 ##' @details This function makes it very easy to collect the data from
 ##'     a Nonmem run.
@@ -99,14 +101,6 @@
 ##' @import data.table
 ##' @export
 
-
-
-#### change log
-## adding possibility to stack with discarded lines from input data.
-#### end change log
-
-
-## when col.row and cbind.by.filters are missing, do cbind.by.filters but look for a row identifier. Explain and tell user to provide col.row or cbind.by.filters to get less messages.
 
 NMscanData <- function(file, col.row, cbind.by.filters,
                        use.input=TRUE, recover.rows=FALSE,
@@ -153,7 +147,9 @@ NMscanData <- function(file, col.row, cbind.by.filters,
     check.time <- NMdataDecideOption("check.time",check.time)
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     modelname <- NMdataDecideOption("modelname",modelname)
-
+    runname <- modelname(file)
+    ## file.mod is treated later if we need the input control stream
+    
     ### combination of arguments
     if(!is.null(dir.data)&&!is.null(file.mod)){
         messageWrap("Only use one of dir.data and file.mod. The aim is to find the input data file, so either give the directory (dir.data) in which it is, and the filename will be taken from the lst file, or help finding the .mod file using the file.mod argument. Using both is redundant.",fun.msg=stop)
@@ -167,8 +163,7 @@ NMscanData <- function(file, col.row, cbind.by.filters,
     merge.by.row <- FALSE
 
     
-    
-    if(use.input){
+if(use.input){
 ### method not specified
         ## simplest function call - default
         if( missing(cbind.by.filters) && missing(col.row) ){
@@ -212,28 +207,6 @@ NMscanData <- function(file, col.row, cbind.by.filters,
     if(missing(col.row)||(!is.null(col.row)&&is.na(col.row))||(is.character(col.row)&&any(col.row==""))) {
         col.row <- NULL
     }
-
-    runname <- modelname(file)
-    ## modelname.by.option <- FALSE
-    ## if(missing(modelname)) {
-    ##     modelname <- getOption("NMdata.modelname")
-    ##     modelname.by.option <- TRUE
-    ## }
-    ## if(!is.null(modelname) && !is.function (modelname) && !(is.character(file)&&length(file)==1)) {
-    ##     stoptext <- "If provided, modelname must be either a function or a character of length 1."
-    ##     if(modelname.by.option) {
-    ##         stoptext <- paste0(stoptext,"modelname was taken from getOption(\"NMdata.modelname\"). ",stoptext)
-    ##     }
-    ##     messageWrap(stoptext,fun.msg=stop)
-    ## }
-    ## if(is.null(modelname)) {
-    ##     modelname <- function(file) sub("\\.lst$","",basename(sub(" $","",file)))
-    ## } 
-    ## if(is.function(modelname)){
-    ##     runname <- modelname(file)
-    ## } else {
-    ##     runname <- modelname
-    ## }
 
     if(!is.null(add.name)) {
         if(!is.character(add.name) || length(add.name)!=1 ||  add.name=="" ) {
@@ -352,7 +325,6 @@ NMscanData <- function(file, col.row, cbind.by.filters,
 
     if(use.input && is.null(dir.data)) {
         
-        ## file.mod <- getFileMod(file.lst=file,file.mod=file.mod)
         file.mod <- NMdataDecideOption("file.mod",file.mod)
         file.mod <- file.mod(file)
 
