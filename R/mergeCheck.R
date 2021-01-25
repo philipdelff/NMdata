@@ -68,7 +68,7 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,...){
         cols.com.notby <- setdiff(cols.common,by)
         commoncols.found <- FALSE
         if(length(cols.com.notby)) {
-            messageWrap("option all not supported. mergeCheck is for merges that are intended to result in column additions to df1, that's all.",
+            messageWrap("df1 and df2 have common column names not being merged by.",
                         fun.msg=fun.commoncols)
             commoncols.found <- TRUE
         }

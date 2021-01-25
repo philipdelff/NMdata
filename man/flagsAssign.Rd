@@ -10,31 +10,38 @@ flagsAssign(
   return.all = F,
   col.id = "ID",
   col.dv = "DV",
+  col.nflag = "FLAG",
+  col.cflag = "flag",
   as.fun = NULL
 )
 }
 \arguments{
 \item{data}{The dataset to assign flags to.}
 
-\item{tab.flags}{A data.frame containing at least these named columns: FLAG,
-flag, condition. Condition is disregarded for FLAG==0. FLAG must be
-numeric and non-negative, flag and condition are characters.}
+\item{tab.flags}{A data.frame containing at least these named
+columns: FLAG, flag, condition. Condition is disregarded for
+FLAG==0. FLAG must be numeric and non-negative, flag and
+condition are characters.}
 
-\item{return.all}{If TRUE, both the edited dataset and the table of flags
-are returned. If FALSE (default) only the edited dataset is returned.}
+\item{return.all}{If TRUE, both the edited dataset and the table
+of flags are returned. If FALSE (default) only the edited
+dataset is returned.}
 
-\item{col.id}{The name of the subject ID column. Default is "ID".}
+\item{col.id}{The name of the subject ID column. Default is
+"ID". This column must contain unique subject identifiers. NA
+and empty strings are not allowed.}
 
 \item{col.dv}{The name of the data value column. Default is "DV".}
 
-\item{as.fun}{The default is to return data.tables if input data is a
-data.table, and return a data.frame for all other input classes. Pass a
-function in as.fun to convert to something else. If return.all=F, this
-is applied to data and tab.flags independently. If input is not a
-data.table, default can be configured using NMdataConf.}
+\item{as.fun}{The default is to return data.tables if input data
+is a data.table, and return a data.frame for all other input
+classes. Pass a function in as.fun to convert to something
+else. If return.all=F, this is applied to data and tab.flags
+independently.}
 }
 \value{
-The dataset with flags added. See parameter flags.return as well.
+The dataset with flags added. See parameter flags.return
+    as well.
 }
 \description{
 The aim with this function is to take a (say PK) dataset and a

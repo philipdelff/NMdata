@@ -68,6 +68,15 @@ pk <- flagsAssign(pk,dt.flags)
 tab.count <- flagsCount(pk,dt.flags)
 tab.count
 
+## test of alternative column naming
+## dt.flags2 <- data.table(
+##     flagn=10,
+##     flagc="Below LLOQ",
+##     condition=c("BLQ==1"))
+
+## pk <- flagsAssign(pk,dt.flags2,col.nflag="flagn",col.cflag="flagc")
+##
+
 pk <- pk[order(ID,TIME,CMT)]
 pk <- pk[DOSE>0]
 pk[,ROW:=1:nrow(pk)]

@@ -45,7 +45,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL,as.fun=NULL){
     flag <- NULL
     notAll <- NULL
     isFinal <- NULL
-    . <- function()NULL
+    . <- function() NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
