@@ -24,6 +24,15 @@
 ##'     as well.
 ##' @import data.table
 ##' @family DataCreate
+##' @examples
+##' pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+##' dt.flags <- data.frame(
+##'   flagn=10,
+##'   flagc="Below LLOQ",
+##' condition=c("BLQ==1"))
+##' pk <- flagsAssign(pk,dt.flags,col.nflag="flagn",col.cflag="flagc")
+##' unique(pk[,c("flagn","flagc","flagn")])
+##' flagsCount(pk,dt.flags)
 ##' @export
 
 

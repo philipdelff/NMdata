@@ -29,10 +29,21 @@
 ##'     majority of the samples can have been discarded by earlier flags.
 ##' @import data.table
 ##' @family DataCreate
+##' @examples
+##' pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+##' dt.flags <- data.frame(
+##'   flagn=10,
+##'   flagc="Below LLOQ",
+##' condition=c("BLQ==1"))
+##' pk <- flagsAssign(pk,dt.flags,col.nflag="flagn",col.cflag="flagc")
+##' unique(pk[,c("flagn","flagc","flagn")])
+##' flagsCount(pk,dt.flags)
 ##' @export
 
 
-flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL,as.fun=NULL){
+flagsCount <- function(data,tab.flags,file,col.id="ID",
+                       col.nflag= "FLAG", col.cflag="flag",
+                       by=NULL,as.fun=NULL){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -55,17 +66,35 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL,as.fun=NULL){
     stopifnot(is.data.frame(tab.flags))
 
     data.was.data.table <- TRUE
-    if(!is.data.table(data)) {
+    if(is.data.table(data)) {
+        data <- copy(data)
+    } else {
         data <- as.data.table(data)
         ##  data.was.data.frame <- TRUE
         data.was.data.table <- FALSE
     }
     tab.flags.was.data.table <- TRUE
-    if(!is.data.table(tab.flags)) {
+    if(is.data.table(tab.flags)) {
+        tab.flags <- copy(tab.flags)
+    } else {
         tab.flags <- as.data.table(tab.flags)
         ##  tab.flags.was.data.frame <- TRUE
         tab.flags.was.data.table <- FALSE
     }
+
+### check that tab.flags contains col.nflag and col.cflag and that data contains col.nflag
+    cnames.data <- copy(colnames(data))
+    if(!col.nflag%in%cnames.data) messageWrap("data must contain a column with same name as value of col.nflag",fun.msg="stop")
+
+    cnames.tab.flags <- copy(colnames(tab.flags))
+    if(!col.nflag%in%cnames.tab.flags) messageWrap("tab.flags must contain a column with same name as value of col.nflag",fun.msg="stop")
+    if(!col.cflag%in%cnames.tab.flags) messageWrap("tab.flags must contain a column with same name as value of col.cflag",fun.msg="stop")
+
+###  rename columns to FLAG and flag
+    tab.flags[,FLAG:=get(col.nflag)]
+    tab.flags[,flag:=get(col.cflag)]
+    data[,FLAG:=get(col.nflag)]
+
 
 ### if 0 and Inf are not in tab.flags, insert them
     if(!0%in%tab.flags[,FLAG]){
@@ -82,9 +111,6 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL,as.fun=NULL){
     ## applied. This must match what flagsAssign does.
     tab.flags <- tab.flags[order(FLAG)]
 
-    data.tmp <- copy(data)
-
-    
 
     allres.l <- lapply(1:tab.flags[,.N],function(I){
         resI <- data[FLAG==0|FLAG>tab.flags[I,FLAG],.(
@@ -100,9 +126,9 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL,as.fun=NULL){
 ### All data
     allres <- rbind(allres,
                     data[,.(N.left=uniqueN(ID)
-                            ,Nobs.left=.N
-                            ,FLAG=Inf
-                        ),by=by]
+                           ,Nobs.left=.N
+                           ,FLAG=Inf
+                            ),by=by]
                    ,fill=TRUE
                     )
 
@@ -133,10 +159,11 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL,as.fun=NULL){
     allres[,`:=`(FLAG=NULL
                 ,notAll=NULL
                 ,isFinal=NULL)
-                 ]
+           ]
     
     setcolorder(allres,c(by,"flag","N.left","Nobs.left","N.discarded","Nobs.discarded"))
-
+    setnames(allres,"flag",col.cflag)
+    
     if(!is.null(file)){
         ## write.csv(allres,file=file,quote=F,row.names=F)
         fwrite(allres,file=file,quote=F,row.names=F)
