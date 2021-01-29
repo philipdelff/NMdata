@@ -7,8 +7,9 @@
 NMdataConf(...)
 }
 \arguments{
-\item{...}{NMdata options to modify, like for base::options. See examples for how
-    to use. Parameters that can be controlled are
+\item{...}{NMdata options to modify, like for base::options. See
+    examples for how to use. Parameters that can be controlled are:
+
 \itemize{
 
 \item{as.fun} A function that will be applied to data returned by various
@@ -39,6 +40,24 @@ become run1. Technically, it can be a string too, but when using NMdataConf,
 this would make little sense because it would translate all output control
 streams model name.
 
+\item{col.flagn} The name of the column containing numerical flag
+values for data row omission. Default value is FLAG. Used by
+flagsAssign, flagsCount.
+
+\item{col.flagc} The name of the column containing the character
+flag values for data row omission. Default value is FLAG. Used
+by flagsAssign, flagsCount.
+
+\item{use.input} In NMscanData, merge with columns in input data?
+Using this, you don't have to worry about remembering including
+all relevant variables in the output tables. Default is TRUE.
+
+\item{recover.rows} In NMscanData, Include rows from input data
+    files that do not exist in output tables? This will be added
+    to the $row dataset only, and $run, $id, and $occ datasets are
+    created before this is taken into account. A column called
+    nmout will be TRUE when the row was found in output tables,
+    and FALSE when not. Default is FALSE.
 }}
 }
 \description{

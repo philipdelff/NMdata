@@ -9,8 +9,9 @@
 ##' this function transparently in the code and not in a configuration file
 ##' hidden from other users.
 ##'
-##' @param ... NMdata options to modify, like for base::options. See examples for how
-##'     to use. Parameters that can be controlled are
+##' @param ... NMdata options to modify, like for base::options. See
+##'     examples for how to use. Parameters that can be controlled are:
+##'
 ##' \itemize{
 ##' 
 ##' \item{as.fun} A function that will be applied to data returned by various
@@ -41,8 +42,26 @@
 ##' this would make little sense because it would translate all output control
 ##' streams model name.
 ##'
-##' }
+##' \item{col.flagn} The name of the column containing numerical flag
+##' values for data row omission. Default value is FLAG. Used by
+##' flagsAssign, flagsCount.
+##' 
+##' \item{col.flagc} The name of the column containing the character
+##' flag values for data row omission. Default value is FLAG. Used
+##' by flagsAssign, flagsCount.
 ##'
+##' \item{use.input} In NMscanData, merge with columns in input data?
+##' Using this, you don't have to worry about remembering including
+##' all relevant variables in the output tables. Default is TRUE.
+##'
+##' \item{recover.rows} In NMscanData, Include rows from input data
+##'     files that do not exist in output tables? This will be added
+##'     to the $row dataset only, and $run, $id, and $occ datasets are
+##'     created before this is taken into account. A column called
+##'     nmout will be TRUE when the row was found in output tables,
+##'     and FALSE when not. Default is FALSE.
+##' }
+##' 
 ##' @examples
 ##' ## get current defaults
 ##' NMdataConf()
@@ -148,6 +167,36 @@ NMdataConfOptions <- function(name){
                if(is.character(x)) return(function(file) x)
                x
            }
+        )
+       ,
+        col.flagn=list(
+            default="FLAG"
+           ,is.allowed=function(x) (is.character(x) && length(x)==1)
+           ,msg.not.allowed="col.flagn must be a character vector of length 1."
+           ,process=identity
+        )
+       ,
+        col.flagc=list(
+            default="flag"
+           ,is.allowed=function(x) (is.character(x) && length(x)==1)
+           ,msg.not.allowed="col.flagc must be a character vector of length 1."
+           ,process=identity
+        )
+        ,
+        use.input=list(
+            default=TRUE
+            ## has to be length 1 character or function
+           ,is.allowed=is.logical
+           ,msg.not.allowed="use.input must be logical"
+           ,process=identity
+        )
+        ,
+        recover.rows=list(
+            default=FALSE
+            ## has to be length 1 character or function
+           ,is.allowed=is.logical
+           ,msg.not.allowed="recover.rows must be logical"
+           ,process=identity
         )
     )
 

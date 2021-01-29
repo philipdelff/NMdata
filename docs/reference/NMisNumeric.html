@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Determine as.fun to use based on argument and options — NMisNumeric • NMdata</title>
+<title>Test if a variable can be interpreted by Nonmem — NMisNumeric • NMdata</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Determine as.fun to use based on argument and options — NMisNumeric" />
+<meta property="og:title" content="Test if a variable can be interpreted by Nonmem — NMisNumeric" />
 <meta property="og:description" content="Nonmem can only interpret numeric data. However, a
     factor or a character variable may very well be interpretable
     by Nonmem (e.g. &quot;33&quot;). This function tells whether Nonmem will
@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.910</span>
       </span>
     </div>
 
@@ -133,7 +133,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Determine as.fun to use based on argument and options</h1>
+    <h1>Test if a variable can be interpreted by Nonmem</h1>
     
     <div class="hidden name"><code>NMisNumeric.Rd</code></div>
     </div>
@@ -154,97 +154,9 @@
       <th>x</th>
       <td><p>The vector to check Don't export</p></td>
     </tr>
-    <tr>
-      <th>data</th>
-      <td><p>Dataset to possibly convert.</p></td>
-    </tr>
-    <tr>
-      <th>as.fun</th>
-      <td><p>A function to apply if not NULL.</p></td>
-    </tr>
-    <tr>
-      <th>file.lst</th>
-      <td><p>Path to output control stream.</p></td>
-    </tr>
-    <tr>
-      <th>file.mod</th>
-      <td><p>Path or function. Default is NULL. See details.</p></td>
-    </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Possibly converted data.</p>
-<p>path to .mod file</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>NMdata functions can return objects based on different
-    classes. The general default is to return
-    data.frames. However, if you prefer working with with other
-    classes (typically data.table or tibble), you can have those
-    returned instead. In general this is controlled by the run.as
-    arguments to functions and the "NMdata.as.fun" option.</p>
-<p>You can use the following values for run.as (argument) and
-NMdata.as.fun (option):</p>
-<ul>
-<li><p>"none"Return a data.table. Yes, a data.table and
- not a data.frame. If you work with data.table, this will give the
- best performance.</p></li>
-<li><p>a functionApply the function. You
- must supply the actual function, not a string representing
- it. Examples: as.data.frame or tibble::as_tibble. Do not use
- as.data.table - use "none" to get a data.table.</p></li>
-<li><p>NULLUse default, i.e. try getOptions("NMdata.as.fun") and if still NULL, rely on default behavior.</p></li>
-</ul>
-
-<p>It is perfectly possible but not recommended to convert the
-    results coming out of NMdata functions for three reasons</p>
-<ul>
-<li><p>ConvenienceYou would lose the NMdata class which enables a method like summary to work properly.</p></li>
-<li><p>ReliabilityYou would have to do it every time you have called an NMdata function increasing risk of errors.</p></li>
-<li><p>Performancecan be significantly better using "none".</p></li>
-</ul> 
-
-<p>The functions that return table data structures (like a data.frame)
-    take an argument as.fun which controls this behaviour. You can
-    also control the default behaviour by the NMdata.as.fun
-    option. If not NULL (the default value) as.fun always
-    overrules getOption("NMdata.run.as").</p>
-<p>For functions that read and process data from the file system
-(like NMreadCsv, NMscanData, NMscanTables and many others),
-default is data.frame. Default can be overruled using
-options(NMdata.run.as=...), and the default behaviour can be
-overruled using the run.as argument.</p>
-<p>For functions that process a data set supplied in an argument (as
-    opposed to reading data from the file system), the class of
-    the input data makes a difference. This applies to functions
-    like mergeCheck, NMorderCols, findCovs, findVars, flagsAssign,
-    flagsCount. If a data.table is supplied to these (and as.fun
-    is NULL), a data.table will be returned. If not, a data.frame
-    is still default, and the default can be configured using
-    options(NMdata.run.as=...).</p>
-<p>NMdata heavily uses data.table under the hood, so "none" means
-that no conversion is done by the end of the function. Since
-NMdata has no other dependencies than data.table, it cannot
-convert to other classes unless the user supply the conversion
-function.</p>
-<p>NMdata needs the input control stream to find the path to
-    the input data file. You have a few different options.</p><ul>
-<li><p>PSN styleBy default, NMdata assumes that
-    by stripping the extension from the output control stream and
-    appending .mod, it will find the input control stream.</p></li>
-<li><p>pathfile.mod="path/to/input/control/strem"</p></li>
-<li><p>translation functionfile.path can be a function that takes the lst path as argument and returns the input control stream path.</p></li>
-<li><p>set optionIf you use a function, you may want to set this as default behaviour. Say your output control stream is always called input.txt and located in the same dir as the output control stream, you can use
-options(NMdata.file.mod=function(file) file.path(dirname(file),"input.txt"))</p></li>
-</ul>
-
-<p>Notice, if the argument dir.data is used in NMscanData or
-NMtscanInput, the input control stream is not used at all.
-Test if a variable can be interpreted by Nonmem</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

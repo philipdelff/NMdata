@@ -73,7 +73,7 @@ using NMwriteData." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.910</span>
       </span>
     </div>
 
@@ -171,10 +171,10 @@ using NMwriteData.</p>
     </tr>
     <tr>
       <th>as.fun</th>
-      <td><p>The default is to return data as a data.frame. Pass
-a function (say tibble::as_tibble) in as.fun to convert to
-something else. If data.tables are wanted, use
-as.fun="none". See ?runAsFun.</p></td>
+      <td><p>The default is to return data as a data.frame. Pass a function
+(say tibble::as_tibble) in as.fun to convert to something else. If
+data.tables are wanted, use as.fun="data.table". The default can be
+configured using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -184,8 +184,8 @@ as.fun="none". See ?runAsFun.</p></td>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This is just a shortcut to fread so you don't have to
-    remember how to read the data that was exported for nonmem.</p>
+    <p>This is just a shortcut to fread so you don't have to remember how
+    to read the data that was exported for nonmem.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>NMwriteData</p>

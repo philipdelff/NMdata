@@ -331,9 +331,9 @@ test_that("dir structure with input.txt/output.txt",{
     ## options(NMdata.file.mod=function(file) file.path(dirname(file),"input.txt"))
     ## options(NMdata.modelname=function(file) basename(dirname(normalizePath(file))))
 
-    NMdataConfig(as.fun="data.table")
-    NMdataConfig(file.mod=function(file) file.path(dirname(file),"input.txt"))
-    NMdataConfig(modelname=function(file) basename(dirname(normalizePath(file))))
+    NMdataConf(as.fun="data.table")
+    NMdataConf(file.mod=function(file) file.path(dirname(file),"input.txt"))
+    NMdataConf(modelname=function(file) basename(dirname(normalizePath(file))))
     
     filedir.lst <- NMdata_filepath("examples/nonmem/xgxr001dir/output.txt")
     res1dir <- NMscanData(filedir.lst,check.time = FALSE)
@@ -345,9 +345,8 @@ test_that("dir structure with input.txt/output.txt",{
     
     ## options(NMdata.file.mod=NULL)
     ## options(NMdata.modelname=NULL)
-    NMdataConfig(file.mod="default")
-    NMdataConfig(modelname=NULL)
-    ## NMdataConfig()
+    NMdataConf(file.mod="default")
+    NMdataConf(modelname=NULL)
     
     file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
     res1 <- NMscanData(file=file.lst,check.time = FALSE)
@@ -356,7 +355,7 @@ test_that("dir structure with input.txt/output.txt",{
     unNMdata(res1dir)
     expect_equal(res1[,!("model")],res1dir[,!("model")])
 
-    NMdataConfig(as.fun=NULL)
+    NMdataConf(as.fun=NULL)
 })
 
 

@@ -10,8 +10,8 @@ flagsAssign(
   return.all = F,
   col.id = "ID",
   col.dv = "DV",
-  col.nflag = "FLAG",
-  col.cflag = "flag",
+  col.flagn,
+  col.flagc,
   as.fun = NULL
 )
 }
@@ -33,6 +33,14 @@ and empty strings are not allowed.}
 
 \item{col.dv}{The name of the data value column. Default is "DV".}
 
+\item{col.flagn}{The name of the column containing the numerical
+flag values in tab.flags. This will be added to data. Default
+value is FLAG and can be configured using NMdataConf.}
+
+\item{col.flagc}{The name of the column containing the character
+flag values in tab.flags. This will be added to data. Default
+value is flag and can be configured using NMdataConf.}
+
 \item{as.fun}{The default is to return data.tables if input data
 is a data.table, and return a data.frame for all other input
 classes. Pass a function in as.fun to convert to something
@@ -46,6 +54,17 @@ The dataset with flags added. See parameter flags.return
 \description{
 The aim with this function is to take a (say PK) dataset and a
 pre-specified table of flags, assign the flags automatically.
+}
+\examples{
+pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+dt.flags <- data.frame(
+       flagn=10,
+       flagc="Below LLOQ",
+       condition=c("BLQ==1")
+)
+pk <- flagsAssign(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
+unique(pk[,c("flagn","flagc","BLQ")])
+flagsCount(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
 }
 \seealso{
 Other DataCreate: 

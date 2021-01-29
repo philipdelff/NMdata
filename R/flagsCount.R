@@ -5,28 +5,42 @@
 ##' flag.
 ##' 
 ##' @param data The dataset including both FLAG and flag columns.
-##' @param tab.flags A data.frame containing at least these named columns: FLAG,
-##'     flag, condition. Condition is disregarded for FLAG==0.
-##' @param file A file to write the table of flag counts to. Will probably be
-##'     removed and put in a separate function.
-##' @param col.id The name of the subject ID column. Default is "ID".@param
-##'     col.id The name of the subject ID column. Default is "ID".
-##' @param by An optional column to group the counting by. This could be
-##'     "STUDY", "DRUG", "EVID", or a combination of multiple columns.
-##' @param as.fun The default is to return a data.table if input data is a
-##'     data.table, and return a data.frame for all other input classes. Pass a
-##'     function in as.fun to convert to something else. If data is not a
-##'     data.table, default can be configured using NMdataConf.
-##' @return A summary table with number of discarded and retained subjects and
-##'     observations when applying each condition in the flag table. "discarded"
-##'     means that the reduction of number of observations and subjects
-##'     resulting from the flag, "retained" means the numbers that are left
-##'     after application of the flag. The default is "both" which will report
-##'     both.
+##' @param tab.flags A data.frame containing at least these named
+##'     columns: FLAG, flag, condition. Condition is disregarded for
+##'     FLAG==0.
+##' @param file A file to write the table of flag counts to. Will
+##'     probably be removed and put in a separate function.
+##' @param col.id The name of the subject ID column. Default is
+##'     "ID".@param col.id The name of the subject ID column. Default
+##'     is "ID".
+##' @param col.flagn The name of the column containing the numerical
+##'     flag values in tab.flags. This will be added to data. Use the
+##'     same as when flagsAssign was called (if that was
+##'     used). Default value is FLAG and can be configured using
+##'     NMdataConf.
+##' @param col.flagc The name of the column containing the character
+##'     flag values in data and tab.flags. Use the same as when
+##'     flagsAssign was called (if that was used). Default value is
+##'     flag and can be configured using NMdataConf.
+##' @param by An optional column to group the counting by. This could
+##'     be "STUDY", "DRUG", "EVID", or a combination of multiple
+##'     columns.
+##' @param as.fun The default is to return a data.table if input data
+##'     is a data.table, and return a data.frame for all other input
+##'     classes. Pass a function in as.fun to convert to something
+##'     else. If data is not a data.table, default can be configured
+##'     using NMdataConf.
+##' @return A summary table with number of discarded and retained
+##'     subjects and observations when applying each condition in the
+##'     flag table. "discarded" means that the reduction of number of
+##'     observations and subjects resulting from the flag, "retained"
+##'     means the numbers that are left after application of the
+##'     flag. The default is "both" which will report both.
 ##' @details Notice number of subjects in N.discarded mode can be
-##'     misunderstood. If two is reported, it can mean that the remining one
-##'     observation of these two subjects are discarded due to this flag. The
-##'     majority of the samples can have been discarded by earlier flags.
+##'     misunderstood. If two is reported, it can mean that the
+##'     remining one observation of these two subjects are discarded
+##'     due to this flag. The majority of the samples can have been
+##'     discarded by earlier flags.
 ##' @import data.table
 ##' @family DataCreate
 ##' @examples
@@ -35,14 +49,14 @@
 ##'   flagn=10,
 ##'   flagc="Below LLOQ",
 ##' condition=c("BLQ==1"))
-##' pk <- flagsAssign(pk,dt.flags,col.nflag="flagn",col.cflag="flagc")
+##' pk <- flagsAssign(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
 ##' unique(pk[,c("flagn","flagc","flagn")])
-##' flagsCount(pk,dt.flags)
+##' flagsCount(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
 ##' @export
 
 
 flagsCount <- function(data,tab.flags,file,col.id="ID",
-                       col.nflag= "FLAG", col.cflag="flag",
+                       col.flagn,col.flagc,
                        by=NULL,as.fun=NULL){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -61,6 +75,10 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
     if(missing(file)) file <- NULL
+    if(missing(col.flagn)) col.flagn <- NULL
+    if(missing(col.flagc)) col.flagc <- NULL
+    col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
+    col.flagc <- NMdataDecideOption("col.flagc",col.flagc)
     
     stopifnot(is.data.frame(data))
     stopifnot(is.data.frame(tab.flags))
@@ -82,18 +100,20 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
         tab.flags.was.data.table <- FALSE
     }
 
-### check that tab.flags contains col.nflag and col.cflag and that data contains col.nflag
+### check that tab.flags contains col.flagn and col.flagc and that data contains col.flagn
     cnames.data <- copy(colnames(data))
-    if(!col.nflag%in%cnames.data) messageWrap("data must contain a column with same name as value of col.nflag",fun.msg="stop")
-
+    if(!col.flagn%in%cnames.data) messageWrap("data must contain a column with same name as value of col.flagn",fun.msg="stop")
+    
     cnames.tab.flags <- copy(colnames(tab.flags))
-    if(!col.nflag%in%cnames.tab.flags) messageWrap("tab.flags must contain a column with same name as value of col.nflag",fun.msg="stop")
-    if(!col.cflag%in%cnames.tab.flags) messageWrap("tab.flags must contain a column with same name as value of col.cflag",fun.msg="stop")
+    if(!col.flagn%in%cnames.tab.flags)
+        messageWrap("tab.flags must contain a column with same name as value of col.flagn",fun.msg="stop")
+    if(!col.flagc%in%cnames.tab.flags)
+        messageWrap("tab.flags must contain a column with same name as value of col.flagc",fun.msg="stop")
 
 ###  rename columns to FLAG and flag
-    tab.flags[,FLAG:=get(col.nflag)]
-    tab.flags[,flag:=get(col.cflag)]
-    data[,FLAG:=get(col.nflag)]
+    tab.flags[,FLAG:=get(col.flagn)]
+    tab.flags[,flag:=get(col.flagc)]
+    data[,FLAG:=get(col.flagn)]
 
 
 ### if 0 and Inf are not in tab.flags, insert them
@@ -162,7 +182,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
            ]
     
     setcolorder(allres,c(by,"flag","N.left","Nobs.left","N.discarded","Nobs.discarded"))
-    setnames(allres,"flag",col.cflag)
+    setnames(allres,"flag",col.flagc)
     
     if(!is.null(file)){
         ## write.csv(allres,file=file,quote=F,row.names=F)

@@ -8,13 +8,19 @@
 ##'     columns: FLAG, flag, condition. Condition is disregarded for
 ##'     FLAG==0. FLAG must be numeric and non-negative, flag and
 ##'     condition are characters.
-##' @param return.all If TRUE, both the edited dataset and the table
-##'     of flags are returned. If FALSE (default) only the edited
-##'     dataset is returned.
+##' @param col.flagn The name of the column containing the numerical
+##'     flag values in tab.flags. This will be added to data. Default
+##'     value is FLAG and can be configured using NMdataConf.
+##' @param col.flagc The name of the column containing the character
+##'     flag values in tab.flags. This will be added to data. Default
+##'     value is flag and can be configured using NMdataConf.
 ##' @param col.id The name of the subject ID column. Default is
 ##'     "ID". This column must contain unique subject identifiers. NA
 ##'     and empty strings are not allowed.
 ##' @param col.dv The name of the data value column. Default is "DV".
+##' @param return.all If TRUE, both the edited dataset and the table
+##'     of flags are returned. If FALSE (default) only the edited
+##'     dataset is returned.
 ##' @param as.fun The default is to return data.tables if input data
 ##'     is a data.table, and return a data.frame for all other input
 ##'     classes. Pass a function in as.fun to convert to something
@@ -27,17 +33,18 @@
 ##' @examples
 ##' pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 ##' dt.flags <- data.frame(
-##'   flagn=10,
-##'   flagc="Below LLOQ",
-##' condition=c("BLQ==1"))
-##' pk <- flagsAssign(pk,dt.flags,col.nflag="flagn",col.cflag="flagc")
-##' unique(pk[,c("flagn","flagc","flagn")])
-##' flagsCount(pk,dt.flags)
+##'        flagn=10,
+##'        flagc="Below LLOQ",
+##'        condition=c("BLQ==1")
+##' )
+##' pk <- flagsAssign(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
+##' unique(pk[,c("flagn","flagc","BLQ")])
+##' flagsCount(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
 ##' @export
 
 
 flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
-                        col.dv="DV", col.nflag="FLAG", col.cflag="flag",
+                        col.dv="DV", col.flagn, col.flagc,
                         as.fun=NULL){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -60,6 +67,10 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
 ####### check args ######
     as.fun.arg <- as.fun
     as.fun <- NMdataDecideOption("as.fun",as.fun)
+    if(missing(col.flagn)) col.flagn <- NULL
+    if(missing(col.flagc)) col.flagc <- NULL
+    col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
+    col.flagc <- NMdataDecideOption("col.flagc",col.flagc)
 ####### check args end ######
     
 ####### Check data ######
@@ -75,8 +86,8 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
     }
 
     
-    
     datacols <- copy(colnames(data))
+    
     if(!col.id%in%datacols) stop("data must contain a column name matching the argument col.id.")
     ## Check NA ids. I think this requires that col.id has length 1
     stopifnot(length(col.id)==1)
@@ -85,13 +96,13 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
     if(!col.dv%in%datacols) stop(paste(col.dv,"does not exist. Please see argument col.dv."))
 
 ### data can contain a column named FLAG - but it is removed
-    if(col.nflag%in%datacols) {
+    if(col.flagn%in%datacols) {
         message("Data contains FLAG already. This is overwritten")
-        data[,(col.nflag):=NULL]
+        data[,(col.flagn):=NULL]
     }
-    if(col.cflag%in%datacols) {
+    if(col.flagc%in%datacols) {
         message("Data contains flag already. This is overwritten")
-        data[,(col.cflag):=NULL]
+        data[,(col.flagc):=NULL]
     }
     
 ##### End Check data #######
@@ -99,7 +110,7 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
 
 ####### Check tab.flags ####
     ## Check that tab.flags contain a numeric called FLAG and a character/factor called flag.
-    if(!is.data.frame(tab.flags)||!(all(c(col.nflag,col.cflag,"condition")%in%colnames(tab.flags)))){
+    if(!is.data.frame(tab.flags)||!(all(c(col.flagn,col.flagc,"condition")%in%colnames(tab.flags)))){
         stop("tab.flags must be a data.frame containing FLAG, flag, and condition.")
     }
 
@@ -117,13 +128,13 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
 ### For here, FLAG and flag have to be generalized to match args. These are arg checks.
     ## maybe later? rename tab.flags columns to FLAG and flag
     
-    if(!is.numeric(tab.flags[,get(col.nflag)])) stop("column FLAG in tab.flags must be numeric and non-negative")
-    if(any(tab.flags[,get(col.nflag)]<0)) stop("column FLAG in tab.flags must be non-negative")
-    if(!is.character(tab.flags[,get(col.cflag)])) stop("column flag in tab.flags must be of type character")
+    if(!is.numeric(tab.flags[,get(col.flagn)])) stop("column FLAG in tab.flags must be numeric and non-negative")
+    if(any(tab.flags[,get(col.flagn)]<0)) stop("column FLAG in tab.flags must be non-negative")
+    if(!is.character(tab.flags[,get(col.flagc)])) stop("column flag in tab.flags must be of type character")
     if(!is.character(tab.flags[,condition])) stop("column expression in tab.flags must be of type character")
     
 ###### Check tab.flags: FLAG, flag, and condition contain unique values
-    any.dups <- tab.flags[,lapply(.SD,function(x)any(duplicated(x))),.SDcols=c(col.nflag,col.cflag,"condition")][,any(c(get(col.nflag),get(col.cflag),condition))]
+    any.dups <- tab.flags[,lapply(.SD,function(x)any(duplicated(x))),.SDcols=c(col.flagn,col.flagc,"condition")][,any(c(get(col.flagn),get(col.flagc),condition))]
     if(any.dups){
         messageWrap("Duplicate values not allowed in tab.flags columns FLAG, flag, and condition.",stop)
     }
@@ -153,7 +164,7 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
     
     ## rename tab.flags columns to flag and FLAG
     
-    setnames(tab.flags,c(col.nflag,col.cflag),c("FLAG","flag"))
+    setnames(tab.flags,c(col.flagn,col.flagc),c("FLAG","flag"))
     
 ### FLAG==0 cannot be customized. If not in table, put in table. Return the
 ### table as well. Maybe a reduced table containing only used FLAGS
@@ -216,8 +227,8 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
     stopifnot(all(dim(data)==(dim0+c(0,1))))
 
 ### rename FLAG and flag, and add back backed up columns if relevant
-    setnames(data,c("FLAG","flag"),c(col.nflag,col.cflag))
-    setnames(tab.flags,c("FLAG","flag"),c(col.nflag,col.cflag))
+    setnames(data,c("FLAG","flag"),c(col.flagn,col.flagc))
+    setnames(tab.flags,c("FLAG","flag"),c(col.flagn,col.flagc))
     if(backed.up.old.flags){
         
         data <- mergeCheck(data,flags.orig.data,by=col.row)

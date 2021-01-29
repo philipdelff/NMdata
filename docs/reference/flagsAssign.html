@@ -73,7 +73,7 @@ pre-specified table of flags, assign the flags automatically." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.910</span>
       </span>
     </div>
 
@@ -147,6 +147,8 @@ pre-specified table of flags, assign the flags automatically.</p>
   return.all = <span class='kw'>F</span>,
   col.id = <span class='st'>"ID"</span>,
   col.dv = <span class='st'>"DV"</span>,
+  <span class='kw'>col.flagn</span>,
+  <span class='kw'>col.flagc</span>,
   as.fun = <span class='kw'>NULL</span>
 )</pre>
 
@@ -172,11 +174,25 @@ dataset is returned.</p></td>
     </tr>
     <tr>
       <th>col.id</th>
-      <td><p>The name of the subject ID column. Default is "ID".</p></td>
+      <td><p>The name of the subject ID column. Default is
+"ID". This column must contain unique subject identifiers. NA
+and empty strings are not allowed.</p></td>
     </tr>
     <tr>
       <th>col.dv</th>
       <td><p>The name of the data value column. Default is "DV".</p></td>
+    </tr>
+    <tr>
+      <th>col.flagn</th>
+      <td><p>The name of the column containing the numerical
+flag values in tab.flags. This will be added to data. Default
+value is FLAG and can be configured using NMdataConf.</p></td>
+    </tr>
+    <tr>
+      <th>col.flagc</th>
+      <td><p>The name of the column containing the character
+flag values in tab.flags. This will be added to data. Default
+value is flag and can be configured using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>as.fun</th>
@@ -204,6 +220,23 @@ independently.</p></td>
 <code><a href='stampObj.html'>stampObj</a>()</code>,
 <code><a href='tmpcol.html'>tmpcol</a>()</code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>pk</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span>(file=<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"examples/data/xgxr2.rds"</span>,package=<span class='st'>"NMdata"</span>))
+<span class='kw'>dt.flags</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
+       flagn=<span class='fl'>10</span>,
+       flagc=<span class='st'>"Below LLOQ"</span>,
+       condition=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"BLQ==1"</span>)
+)
+<span class='kw'>pk</span> <span class='op'>&lt;-</span> <span class='fu'>flagsAssign</span>(<span class='kw'>pk</span>,<span class='kw'>dt.flags</span>,col.flagn=<span class='st'>"flagn"</span>,col.flagc=<span class='st'>"flagc"</span>)
+</div><div class='output co'>#&gt; <span class='message'>In flagsAssign(pk, dt.flags, col.flagn = "flagn", col.flagc = "flagc") : Coding</span>
+#&gt; <span class='message'>FLAG = 10 , flag = Below LLOQ</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='kw'>pk</span>[,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"flagn"</span>,<span class='st'>"flagc"</span>,<span class='st'>"BLQ"</span>)])
+</div><div class='output co'>#&gt;    flagn        flagc BLQ
+#&gt; 1:     0 Analysis set   0
+#&gt; 2:    10   Below LLOQ   1</div><div class='input'><span class='fu'><a href='flagsCount.html'>flagsCount</a></span>(<span class='kw'>pk</span>,<span class='kw'>dt.flags</span>,col.flagn=<span class='st'>"flagn"</span>,col.flagc=<span class='st'>"flagc"</span>)
+</div><div class='output co'>#&gt;           flagc N.left Nobs.left N.discarded Nobs.discarded
+#&gt; 1:     All data    150      1500          NA             NA
+#&gt; 2:   Below LLOQ    150       905           0            595
+#&gt; 3: Analysis set    150       905          NA             NA</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

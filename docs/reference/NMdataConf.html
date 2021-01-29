@@ -40,7 +40,14 @@
 
 
 <meta property="og:title" content="Configure default behavior of NMdata functions — NMdataConf" />
-<meta property="og:description" content="Configure default behavior of NMdata functions" />
+<meta property="og:description" content="Allows to change default behavior across the functions in NMdata rather than
+typing the arguments in all function calls. Only some options can be
+controlled here, and they are typically the ones that are characterized by
+the way you interact with Nonmem or standard organization of your
+data. Also, you can control what data class to return (say data.tables or
+tibbles if you prefer one of those over data.frames). Recommendation: Use
+this function transparently in the code and not in a configuration file
+hidden from other users." />
 
 
 
@@ -72,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.910</span>
       </span>
     </div>
 
@@ -136,13 +143,116 @@
     </div>
 
     <div class="ref-description">
-    <p>Configure default behavior of NMdata functions</p>
+    <p>Allows to change default behavior across the functions in NMdata rather than
+typing the arguments in all function calls. Only some options can be
+controlled here, and they are typically the ones that are characterized by
+the way you interact with Nonmem or standard organization of your
+data. Also, you can control what data class to return (say data.tables or
+tibbles if you prefer one of those over data.frames). Recommendation: Use
+this function transparently in the code and not in a configuration file
+hidden from other users.</p>
     </div>
 
     <pre class="usage"><span class='fu'>NMdataConf</span>(<span class='kw'>...</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>...</th>
+      <td><p>NMdata options to modify, like for base::options. See
+    examples for how to use. Parameters that can be controlled are:</p>
+<ul>
+<li><p>as.fun A function that will be applied to data returned by various
+data reading functions (NMscanData, NMreadTab, NMreadCSV, NMscanInput,
+NMscanTables). Also, data processing functions like mergeCheck, findCovs,
+findVars, flagsAssign, flagsCount take this into account, but slightly
+differently. For these functions that take data as arguments, the as.fun
+configuration is only taken into account if a the data passed to the
+functions are not of class data.table. The argument as.fun to these
+functions is always adhered to. Pass an actual function, say
+as.fun=tibble::as_tibble. If you want data.table, use as.fun="data.table"
+(not a function).</p></li>
+<li><p>check.time Logical, applies to NMscanData only. NMscanData by
+defaults checks if output control stream is newer than input control stream
+and input data. Set this to FALSE if you are in an environment where time
+stamps cannot be relied on.</p></li>
+<li><p>file.mod A function that will derive the path to the input control
+stream based on the path to the output control stream. Technically, it can
+be a string too, but when using NMdataConf, this would make little sense
+because it would direct all output control streams to the same input control
+streams.</p></li>
+<li><p>modelname A function that will translate the output control stream
+path to a model name. Default is to strip .lst, so /path/to/run1.lst will
+become run1. Technically, it can be a string too, but when using NMdataConf,
+this would make little sense because it would translate all output control
+streams model name.</p></li>
+<li><p>col.flagn The name of the column containing numerical flag
+values for data row omission. Default value is FLAG. Used by
+flagsAssign, flagsCount.</p></li>
+<li><p>col.flagc The name of the column containing the character
+flag values for data row omission. Default value is FLAG. Used
+by flagsAssign, flagsCount.</p></li>
+<li><p>use.input In NMscanData, merge with columns in input data?
+Using this, you don't have to worry about remembering including
+all relevant variables in the output tables. Default is TRUE.</p></li>
+<li><p>recover.rows In NMscanData, Include rows from input data
+    files that do not exist in output tables? This will be added
+    to the $row dataset only, and $run, $id, and $occ datasets are
+    created before this is taken into account. A column called
+    nmout will be TRUE when the row was found in output tables,
+    and FALSE when not. Default is FALSE.</p></li>
+</ul></td>
+    </tr>
+    </table>
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'>## get current defaults</span>
+<span class='fu'>NMdataConf</span>()
+</div><div class='output co'>#&gt; $as.fun
+#&gt; function (x, row.names = NULL, optional = FALSE, ...) 
+#&gt; {
+#&gt;     if (is.null(x)) 
+#&gt;         return(as.data.frame(list()))
+#&gt;     UseMethod("as.data.frame")
+#&gt; }
+#&gt; &lt;bytecode: 0x000000001eb52510&gt;
+#&gt; &lt;environment: namespace:base&gt;
+#&gt; 
+#&gt; $check.time
+#&gt; [1] TRUE
+#&gt; 
+#&gt; $file.mod
+#&gt; function (file.lst) 
+#&gt; sub("\\.lst", "\\.mod", file.lst)
+#&gt; &lt;bytecode: 0x000000001eb5ab00&gt;
+#&gt; &lt;environment: 0x000000001eb55a10&gt;
+#&gt; 
+#&gt; $modelname
+#&gt; function (file) 
+#&gt; sub("\\.lst$", "", basename(sub(" $", "", file)))
+#&gt; &lt;bytecode: 0x000000001eb5a470&gt;
+#&gt; &lt;environment: 0x000000001eb55a10&gt;
+#&gt; 
+#&gt; $col.flagn
+#&gt; [1] "FLAG"
+#&gt; 
+#&gt; $col.flagc
+#&gt; [1] "flag"
+#&gt; 
+#&gt; $use.input
+#&gt; [1] TRUE
+#&gt; 
+#&gt; $recover.rows
+#&gt; [1] FALSE
+#&gt; </div><div class='input'><span class='co'>## change a parameter</span>
+<span class='fu'>NMdataConf</span>(check.time=<span class='fl'>FALSE</span>)
+<span class='co'>## reset one parameter to default value</span>
+<span class='fu'>NMdataConf</span>(modelname=<span class='kw'>NULL</span>)
+<span class='co'>## reset all parameters to defaults</span>
+<span class='fu'>NMdataConf</span>(reset=<span class='fl'>TRUE</span>)
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

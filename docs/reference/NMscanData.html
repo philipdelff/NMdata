@@ -79,7 +79,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.910</span>
       </span>
     </div>
 
@@ -157,8 +157,8 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
   <span class='kw'>file</span>,
   <span class='kw'>col.row</span>,
   <span class='kw'>cbind.by.filters</span>,
-  use.input = <span class='fl'>TRUE</span>,
-  recover.rows = <span class='fl'>FALSE</span>,
+  <span class='kw'>use.input</span>,
+  <span class='kw'>recover.rows</span>,
   add.name = <span class='st'>"model"</span>,
   <span class='kw'>modelname</span>,
   <span class='kw'>file.mod</span>,
@@ -177,122 +177,136 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>file</th>
-      <td><p>A nonmem control stream or output file from nonmem (.mod or
-.lst)</p></td>
+      <td><p>A nonmem control stream or output file from nonmem
+(.mod or .lst)</p></td>
     </tr>
     <tr>
       <th>col.row</th>
-      <td><p>A column with a unique value for each row. Such a column is
-recommended to use if possible. See cbind.by.filters and details as
-well.</p></td>
+      <td><p>A column with a unique value for each row. Such a
+column is recommended to use if possible. See cbind.by.filters
+and details as well.</p></td>
     </tr>
     <tr>
       <th>cbind.by.filters</th>
-      <td><p>If TRUE, Nonmem data filtering is interpreted from
-lst file (restrictions apply), and after an imitated selection of rows,
-data columns will be appended to output data. This method relies on
-interpretation of Nonmem code, and it will not work in advanced use of
-IGNORE and ACCEPT statements in $INPUT. Consider using col.row instead,
+      <td><p>If TRUE, Nonmem data filtering is
+interpreted from lst file (restrictions apply), and after an
+imitated selection of rows, data columns will be appended to
+output data. This method relies on interpretation of Nonmem
+code, and it will not work in advanced use of IGNORE and
+ACCEPT statements in $INPUT. Consider using col.row instead,
 if possible. Default is TRUE if col.row is either missing or
-NULL. However, explicitly specifying cbind.by.filters is recommended if
-that is the intended behaviour. If not, NMscanData will search for
-potential columns to merge by and print information about it. See
-col.row (recommended method) as well.</p></td>
+NULL. However, explicitly specifying cbind.by.filters is
+recommended if that is the intended behaviour. If not,
+NMscanData will search for potential columns to merge by and
+print information about it. See col.row (recommended method)
+as well.</p></td>
     </tr>
     <tr>
       <th>use.input</th>
-      <td><p>Merge with columns in input data? Using this, you don't
-have to worry about remembering including all relevant variables in the
-output tables.</p></td>
+      <td><p>Merge with columns in input data? Using this, you
+don't have to worry about remembering including all relevant
+variables in the output tables. Default is TRUE and can be
+configured using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>recover.rows</th>
-      <td><p>Include rows from input data files that do not exist in
-output tables? This will be added to the $row dataset only, and $run,
-$id, and $occ datasets are created before this is taken into account. A
-column called nmout will be TRUE when the row was found in output
-tables, and FALSE when not. This is still experimental. More testing is
-needed.</p></td>
+      <td><p>Include rows from input data files that do not
+exist in output tables? This will be added to the $row dataset
+only, and $run, $id, and $occ datasets are created before this
+is taken into account. A column called nmout will be TRUE when
+the row was found in output tables, and FALSE when
+not. Default is FALSE and can be configured using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>add.name</th>
-      <td><p>If a character string, a column of this name will be
-included in all tables containing the model name. The default is to
-store this in a column called "model". See argument "name" as well. Set
-to NULL if not wanted.</p></td>
+      <td><p>If a character string, a column of this name will
+be included in all tables containing the model name. The
+default is to store this in a column called "model". See
+argument "name" as well. Set to NULL if not wanted.</p></td>
     </tr>
     <tr>
       <th>modelname</th>
-      <td><p>The model name to be stored if add.name is not NULL and not
-set by options(NMdata.modelname=...). If not supplied, the name will be
-taken from the control stream file name by omitting the directory/path
-and deleting the .lst extension. If using the NMdata.modelname option,
-please submit a function taking file as argument and returning the
-modelname (by extracting it from file name or path).</p></td>
+      <td><p>The model name to be stored if add.name is not
+NULL. If not supplied, the name will be taken from the control
+stream file name by omitting the directory/path and deleting
+the .lst extension. This can be a character string or a
+function taking file as argument and returning the modelname
+(by extracting it from file name or path). The default can be
+configured using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>file.mod</th>
-      <td><p>The input control stream. Default is to look for \"file\"
-with extension changed to .mod (PSN style). You can also supply the path
-to the file, or you can provide a function that translates the output
-file path to the input file path. The default behavior is controlled by
-the "NMdata.file.mod" option. See dir.data too.</p></td>
+      <td><p>The input control stream. Default is to look for
+\"file\" with extension changed to .mod (PSN style). You can
+also supply the path to the file, or you can provide a
+function that translates the output file path to the input
+file path. The default behavior is controlled by the
+"NMdata.file.mod" option. See dir.data too.</p></td>
     </tr>
     <tr>
       <th>dir.data</th>
-      <td><p>The data directory can only be read from the control stream
-(.mod) and not from the output file (.lst). So if you only have the
-output file, use dir.data to tell in which directory to find the data
-file. If dir.data is provided, the .mod file is not used at all.</p></td>
+      <td><p>The data directory can only be read from the
+control stream (.mod) and not from the output file (.lst). So
+if you only have the output control stream, use dir.data to
+tell in which directory to find the data file. If dir.data is
+provided, the .mod file is not used at all.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>The default is to give some information along the way on what
-data is found. But consider setting this to TRUE for non-interactive
-use.</p></td>
+      <td><p>The default is to give some information along the way
+on what data is found. But consider setting this to TRUE for
+non-interactive use.</p></td>
     </tr>
     <tr>
       <th>use.rds</th>
-      <td><p>If an rds file is found with the exact same name (except for
-.rds instead of say .csv) as the input data file mentioned in the Nonmem
-control stream, should this be used instead? The default is yes, and
-NMwriteData will create this by default too.</p></td>
+      <td><p>If an rds file is found with the exact same name
+(except for .rds instead of say .csv) as the input data file
+mentioned in the Nonmem control stream, should this be used
+instead? The default is yes, and NMwriteData will create this
+by default too.</p></td>
     </tr>
     <tr>
       <th>as.fun</th>
-      <td><p>The default is to return data as a data.frame. Pass a function
-(say tibble::as_tibble) in as.fun to convert to something else. If
-data.tables are wanted, use as.fun="none". See ?runAsFun.</p></td>
+      <td><p>The default is to return data as a data.frame. Pass
+a function (say tibble::as_tibble) in as.fun to convert to
+something else. If data.tables are wanted, use
+as.fun="data.table". The default can be configured using
+NMdataConf.</p></td>
     </tr>
     <tr>
       <th>col.id</th>
-      <td><p>The name of the subject ID variable, default is "ID".</p></td>
+      <td><p>The name of the subject ID variable, default is
+"ID".</p></td>
     </tr>
     <tr>
       <th>tab.count</th>
-      <td><p>Nonmem includes a counter of tables in the written data
-files. These are often not useful. Especially for NMscanData output it
-can be meaningless because multiple tables can be combined so this
-information is not unique across those source tables. However, if
-tab.count is TRUE (not default), this will be carried forward and added
-as a column called TABLENO.</p></td>
+      <td><p>Nonmem includes a counter of tables in the
+written data files. These are often not useful. Especially for
+NMscanData output it can be meaningless because multiple
+tables can be combined so this information is not unique
+across those source tables. However, if tab.count is TRUE (not
+default), this will be carried forward and added as a column
+called TABLENO.</p></td>
     </tr>
     <tr>
       <th>order.columns</th>
-      <td><p>If TRUE (default), NMorderColumns is used to reorder
-the columns before returning the data. NMorderColumns will be called
-with alpha=FALSE, so columns are not sorted alphebetically. But standard
-Nonmem columns like ID, TIME, and other will be first. If col.row is
-used, this will be passed to NMorderColumns too.</p></td>
+      <td><p>If TRUE (default), NMorderColumns is used to
+reorder the columns before returning the data. NMorderColumns
+will be called with alpha=FALSE, so columns are not sorted
+alphebetically. But standard Nonmem columns like ID, TIME, and
+other will be first. If col.row is used, this will be passed
+to NMorderColumns too.</p></td>
     </tr>
     <tr>
       <th>check.time</th>
-      <td><p>If TRUE (default) and if input data is used, input control
-stream and input data are checked to be newer than output control stream
-and output tables. These are important assumptions for the way
-information is merged by NMscanData. However, if data has been
-transfered from another system where Nonmem was run, these checks may
-not make sense, and you may not want to see these warnings.</p></td>
+      <td><p>If TRUE (default) and if input data is used,
+input control stream and input data are checked to be newer
+than output control stream and output tables. These are
+important assumptions for the way information is merged by
+NMscanData. However, if data has been transfered from another
+system where Nonmem was run, these checks may not make sense,
+and you may not want to see these warnings. The default can be
+configured using NMdataConf.</p></td>
     </tr>
     </table>
 

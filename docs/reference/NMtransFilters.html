@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.910</span>
       </span>
     </div>
 
@@ -159,9 +159,9 @@ NMscanInput.</p></td>
     </tr>
     <tr>
       <th>file</th>
-      <td><p>Path to mod/lst file. Only one of file, text, or lines
-to be given. See ?NMgetSection for understanding when to use,
-file, text, or lines.</p></td>
+      <td><p>Path to mod/lst file. Only one of file, text, or lines to be
+given. See ?NMgetSection for understanding when to use, file, text, or
+lines.</p></td>
     </tr>
     <tr>
       <th>text</th>
@@ -173,29 +173,28 @@ file, text, or lines.</p></td>
     </tr>
     <tr>
       <th>invert</th>
-      <td><p>Invert the filters? This means read what Nonmem
-would disregard, and disregard what Nonmem would read.</p></td>
+      <td><p>Invert the filters? This means read what Nonmem would
+disregard, and disregard what Nonmem would read.</p></td>
     </tr>
     <tr>
       <th>as.fun</th>
-      <td><p>The default is to return data as a data.frame. Pass
-a function (say tibble::as_tibble) in as.fun to convert to
-something else. If data.tables are wanted, use
-as.fun="none". See ?runAsFun.</p></td>
+      <td><p>The default is to return data as a data.frame. Pass a function
+(say tibble::as_tibble) in as.fun to convert to something else. If
+data.tables are wanted, use as.fun="data.table". The default can be
+configured using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>Don't report information along the way if no warnings
-or errors. Default is FALSE.</p></td>
+      <td><p>Don't report information along the way if no warnings or
+errors. Default is FALSE.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This is not bulletproof. A statement like ACCEPT=(DOSE
-    10) which in Nonmem means the same as ACCEPT=(DOSE==10) will
-    not be correctly interpreted. Also, nested conditions are not
-    supported altogether.</p>
+    <p>This is not bulletproof. A statement like ACCEPT=(DOSE 10) which in
+    Nonmem means the same as ACCEPT=(DOSE==10) will not be correctly
+    interpreted. Also, nested conditions are not supported altogether.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Nonmem: 

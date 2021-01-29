@@ -150,11 +150,13 @@ dt.flags <- fread(text="FLAG,flag,condition
 
 pk <- flagsAssign(pk,dt.flags)
 ```
+
 Your first question may be why fread is used to create a data.table
 (like read.csv to create a data.frame. The reason is that this way, we
 can write the information line by line. If you have ten lines in the
-dataset above and do `data.frame(FLAG=...,flag=...,condition=...)` it gets impossible to read what elements of the three
-columns that correspond.
+dataset above and do `data.frame(FLAG=...,flag=...,condition=...)` it
+gets impossible to read what elements of the three columns that
+correspond.
 
 `flagsAssign` applies the conditions sequentially. `FLAG=0` means that
 the observation is included in the analysis. You can use any
