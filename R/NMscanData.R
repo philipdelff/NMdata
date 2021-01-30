@@ -32,17 +32,20 @@
 ##'     is taken into account. A column called nmout will be TRUE when
 ##'     the row was found in output tables, and FALSE when
 ##'     not. Default is FALSE and can be configured using NMdataConf.
-##' @param add.name If a character string, a column of this name will
-##'     be included in all tables containing the model name. The
-##'     default is to store this in a column called "model". See
-##'     argument "name" as well. Set to NULL if not wanted.
-##' @param modelname The model name to be stored if add.name is not
+##' @param col.model A column of this name containing the model name
+##'     will be included in the returned data. The default is to store
+##'     this in a column called "model". See argument "modelname" as
+##'     well. Set to NULL if not wanted. Default can be configured
+##'     using NMdataConf.
+##' @param modelname The model name to be stored if col.model is not
 ##'     NULL. If not supplied, the name will be taken from the control
 ##'     stream file name by omitting the directory/path and deleting
-##'     the .lst extension. This can be a character string or a
-##'     function taking file as argument and returning the modelname
-##'     (by extracting it from file name or path). The default can be
-##'     configured using NMdataConf.
+##'     the .lst extension (path/run001.lst becomes run001). This can
+##'     be a character string or a function which is called on the
+##'     value of file (file is another argument to NMscanData). The
+##'     function must take one character argument and return another
+##'     character string. As example, see NMdataConf()$modelname. The
+##'     default can be configured using NMdataConf.
 ##' @param use.rds If an rds file is found with the exact same name
 ##'     (except for .rds instead of say .csv) as the input data file
 ##'     mentioned in the Nonmem control stream, should this be used
@@ -116,10 +119,10 @@
 
 NMscanData <- function(file, col.row, cbind.by.filters,
                        use.input, recover.rows,
-                       add.name="model", modelname, file.mod,
+                       col.model="model", modelname, file.mod,
                        dir.data, quiet=FALSE, use.rds=TRUE,
-                       as.fun=NULL, col.id="ID", tab.count=FALSE,
-                       order.columns=TRUE, check.time=NULL) {
+                       as.fun, col.id="ID", tab.count=FALSE,
+                       order.columns=TRUE, check.time) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -156,6 +159,8 @@ NMscanData <- function(file, col.row, cbind.by.filters,
     ## for easier passing of the argument
     if(missing(dir.data)) dir.data <- NULL
     if(missing(file.mod)) file.mod <- NULL
+    if(missing(check.time)) check.time <- NULL
+    if(missing(as.fun)) as.fun <- NULL
     check.time <- NMdataDecideOption("check.time",check.time)
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     modelname <- NMdataDecideOption("modelname",modelname)
@@ -163,6 +168,23 @@ NMscanData <- function(file, col.row, cbind.by.filters,
     use.input <- NMdataDecideOption("use.input",use.input)
     if(missing(recover.rows)) recover.rows <- NULL
     recover.rows <- NMdataDecideOption("recover.rows",recover.rows)
+
+    if(missing(col.model)) {
+        include.model <- TRUE
+        col.model <- NMdataDecideOption("col.model",NULL)
+    } else if(is.null(col.model)) {
+        include.model <- FALSE
+    } else {
+        include.model <- TRUE
+        col.model <- NMdataDecideOption("col.model",NULL)
+    }
+    
+    if(is.null(col.model)){
+        include.model <- TRUE
+    } else {
+        include.model <- FALSE
+    }
+
     
     runname <- modelname(file)
     ## file.mod is treated later if we need the input control stream
@@ -222,16 +244,6 @@ if(use.input){
 
     if(missing(col.row)||(!is.null(col.row)&&is.na(col.row))||(is.character(col.row)&&any(col.row==""))) {
         col.row <- NULL
-    }
-
-    if(!is.null(add.name)) {
-        if(!is.character(add.name) || length(add.name)!=1 ||  add.name=="" ) {
-            messageWrap("If not NULL, add.name must be a character name of the column to store the run name. The string cannot be empty.",fun.msg=stop)
-        }
-
-        include.model <- TRUE
-    } else {
-        include.model <- FALSE
     }
 
 ###  Section end: Process arguments 
@@ -640,12 +652,12 @@ if(use.input){
     
 #### Section start: Format output ####
     
-    if(!is.null(add.name)) {
+    if(!is.null(col.model)) {
         
-        tab.row[,c(add.name):=runname]
+        tab.row[,c(col.model):=runname]
         
         dt.vars <- rbind(dt.vars,
-                         data.table(variable=add.name
+                         data.table(variable=col.model
                                    ,table=NA_character_
                                    ,included=TRUE 
                                    ,source="NMscanData"

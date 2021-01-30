@@ -87,8 +87,8 @@ test_that("List of ACCEPT statements and vs separate statements",{
 
     NMgetSection(file1.lst,section="PROBLEM")
     NMgetSection(file2.lst,section="PROBLEM")
-    res1 <- NMscanData(file=file1.lst,cbind.by.filters = T,add.name=NULL,check.time = FALSE)
-    res2 <- NMscanData(file=file2.lst,cbind.by.filters = T,add.name=NULL,check.time = FALSE) 
+    res1 <- NMscanData(file=file1.lst,cbind.by.filters = T,col.model=NULL,check.time = FALSE)
+    res2 <- NMscanData(file=file2.lst,cbind.by.filters = T,col.model=NULL,check.time = FALSE) 
     setattr(res1,"meta",NULL)
     setattr(res2,"meta",NULL)
     expect_identical(res1,res2)
@@ -103,8 +103,8 @@ test_that("merge by filters or not",{
 
     ## NMgetSection(file1.lst,section="PROBLEM")
     ## NMgetSection(file2.lst,section="PROBLEM")
-    res1 <- NMscanData(file=file1.lst,cbind.by.filters = T,add.name=NULL,check.time = FALSE)
-    res2 <- NMscanData(file=file2.lst,cbind.by.filters = T,add.name=NULL,check.time = FALSE)
+    res1 <- NMscanData(file=file1.lst,cbind.by.filters = T,col.model=NULL,check.time = FALSE)
+    res2 <- NMscanData(file=file2.lst,cbind.by.filters = T,col.model=NULL,check.time = FALSE)
 
     setcolorder(res1,colnames(res2))
 

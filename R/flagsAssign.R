@@ -97,11 +97,13 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
 
 ### data can contain a column named FLAG - but it is removed
     if(col.flagn%in%datacols) {
-        message("Data contains FLAG already. This is overwritten")
+        ## message("Data contains FLAG already. This is overwritten")
+        messageWrap(sprintf("Data contains %s already. This is overwritten",col.flagn),fun.msg=message)
         data[,(col.flagn):=NULL]
     }
     if(col.flagc%in%datacols) {
-        message("Data contains flag already. This is overwritten")
+        ## message("Data contains flag already. This is overwritten")
+        messageWrap(sprintf("Data contains %s already. This is overwritten",col.flagc),fun.msg=message)
         data[,(col.flagc):=NULL]
     }
     
@@ -111,7 +113,8 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
 ####### Check tab.flags ####
     ## Check that tab.flags contain a numeric called FLAG and a character/factor called flag.
     if(!is.data.frame(tab.flags)||!(all(c(col.flagn,col.flagc,"condition")%in%colnames(tab.flags)))){
-        stop("tab.flags must be a data.frame containing FLAG, flag, and condition.")
+        ## stop("tab.flags must be a data.frame containing FLAG, flag, and condition.")
+        messageWrap(sprintf("tab.flags must be a data.frame containing %s, %s, and condition.",col.flagn,col.flagc),fun.msg=stop)
     }
 
     ## make sure tab.flags and data are data.tables
