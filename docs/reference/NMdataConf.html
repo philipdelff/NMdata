@@ -79,7 +79,7 @@ hidden from other users." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.910</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.6</span>
       </span>
     </div>
 
@@ -217,23 +217,26 @@ all relevant variables in the output tables. Default is TRUE.</p></li>
 #&gt;         return(as.data.frame(list()))
 #&gt;     UseMethod("as.data.frame")
 #&gt; }
-#&gt; &lt;bytecode: 0x000000001eb52510&gt;
+#&gt; &lt;bytecode: 0x000000001eb4f970&gt;
 #&gt; &lt;environment: namespace:base&gt;
 #&gt; 
 #&gt; $check.time
 #&gt; [1] TRUE
 #&gt; 
 #&gt; $file.mod
-#&gt; function (file.lst) 
-#&gt; sub("\\.lst", "\\.mod", file.lst)
-#&gt; &lt;bytecode: 0x000000001eb5ab00&gt;
-#&gt; &lt;environment: 0x000000001eb55a10&gt;
+#&gt; function (file) 
+#&gt; sub("\\.lst *$", "\\.mod", file)
+#&gt; &lt;bytecode: 0x000000001eb577a0&gt;
+#&gt; &lt;environment: 0x000000001eb52e70&gt;
 #&gt; 
 #&gt; $modelname
 #&gt; function (file) 
 #&gt; sub("\\.lst$", "", basename(sub(" $", "", file)))
-#&gt; &lt;bytecode: 0x000000001eb5a470&gt;
-#&gt; &lt;environment: 0x000000001eb55a10&gt;
+#&gt; &lt;bytecode: 0x000000001eb5af40&gt;
+#&gt; &lt;environment: 0x000000001eb52e70&gt;
+#&gt; 
+#&gt; $col.model
+#&gt; [1] "model"
 #&gt; 
 #&gt; $col.flagn
 #&gt; [1] "FLAG"

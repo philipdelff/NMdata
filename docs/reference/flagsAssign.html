@@ -73,7 +73,7 @@ pre-specified table of flags, assign the flags automatically." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.910</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.6</span>
       </span>
     </div>
 
@@ -229,7 +229,7 @@ independently.</p></td>
 )
 <span class='kw'>pk</span> <span class='op'>&lt;-</span> <span class='fu'>flagsAssign</span>(<span class='kw'>pk</span>,<span class='kw'>dt.flags</span>,col.flagn=<span class='st'>"flagn"</span>,col.flagc=<span class='st'>"flagc"</span>)
 </div><div class='output co'>#&gt; <span class='message'>In flagsAssign(pk, dt.flags, col.flagn = "flagn", col.flagc = "flagc") : Coding</span>
-#&gt; <span class='message'>FLAG = 10 , flag = Below LLOQ</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='kw'>pk</span>[,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"flagn"</span>,<span class='st'>"flagc"</span>,<span class='st'>"BLQ"</span>)])
+#&gt; <span class='message'>flagn = 10, flagc = Below LLOQ</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='kw'>pk</span>[,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"flagn"</span>,<span class='st'>"flagc"</span>,<span class='st'>"BLQ"</span>)])
 </div><div class='output co'>#&gt;    flagn        flagc BLQ
 #&gt; 1:     0 Analysis set   0
 #&gt; 2:    10   Below LLOQ   1</div><div class='input'><span class='fu'><a href='flagsCount.html'>flagsCount</a></span>(<span class='kw'>pk</span>,<span class='kw'>dt.flags</span>,col.flagn=<span class='st'>"flagn"</span>,col.flagc=<span class='st'>"flagc"</span>)
