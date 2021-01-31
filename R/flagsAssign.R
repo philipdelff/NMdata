@@ -131,15 +131,16 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
 ### For here, FLAG and flag have to be generalized to match args. These are arg checks.
     ## maybe later? rename tab.flags columns to FLAG and flag
     
-    if(!is.numeric(tab.flags[,get(col.flagn)])) stop("column FLAG in tab.flags must be numeric and non-negative")
-    if(any(tab.flags[,get(col.flagn)]<0)) stop("column FLAG in tab.flags must be non-negative")
-    if(!is.character(tab.flags[,get(col.flagc)])) stop("column flag in tab.flags must be of type character")
+##     if(!is.numeric(tab.flags[,get(col.flagn)])) stop("column FLAG in tab.flags must be numeric and non-negative")
+    if(!is.numeric(tab.flags[,get(col.flagn)])) stop(sprintf("column %s in tab.flags must be numeric and non-negative",tab.flagn))
+    if(any(tab.flags[,get(col.flagn)]<0)) stop(sprintf("column %s in tab.flags must be non-negative",col.flagn))
+    if(!is.character(tab.flags[,get(col.flagc)])) stop(sprintf("column %s in tab.flags must be of type character",flag))
     if(!is.character(tab.flags[,condition])) stop("column expression in tab.flags must be of type character")
     
 ###### Check tab.flags: FLAG, flag, and condition contain unique values
     any.dups <- tab.flags[,lapply(.SD,function(x)any(duplicated(x))),.SDcols=c(col.flagn,col.flagc,"condition")][,any(c(get(col.flagn),get(col.flagc),condition))]
     if(any.dups){
-        messageWrap("Duplicate values not allowed in tab.flags columns FLAG, flag, and condition.",stop)
+        messageWrap(sprintf("Duplicate values not allowed in tab.flags columns %s, %s, and condition.",col.flagn,col.flagc),stop)
     }
 ####### END Check tab.flags ####
     
@@ -200,7 +201,8 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
     for(fn in 1:tab.flags[,.N]){
         
         messageWrap(
-            paste("Coding FLAG =",tab.flags[fn,FLAG],", flag =",tab.flags[fn,flag])
+            ## paste("Coding FLAG =",tab.flags[fn,FLAG],", flag =",tab.flags[fn,flag])
+            sprintf("Coding %s = %d, %s = %s",col.flagn,tab.flags[fn,FLAG],col.flagc,tab.flags[fn,flag])
            ,fun.msg=message)
         ## find all affected columns
         is.matched <- try(with(data,eval(parse(text=tab.flags[fn,condition.used]))),silent=T)
@@ -219,10 +221,10 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
     
     tab.flags <- rbind(tab.flags,tab.flags.0,fill=T)
 
-    
 ### check that all data$FLAG have a value matching tab.flags$FLAG. Then merge on the flag values.
     if(any(is.na(data[,FLAG]))) {
-        stop("NA's found in data$FLAG after assigning FLAGS. Bug in flagsAssign?")
+        ## stop("NA's found in data$FLAG after assigning FLAGS. Bug in flagsAssign?")
+        messageWrap(sprintf("NA's found in %s after assigning flags. Bug in flagsAssign?",col.flagn),fun.msg=stop)
     }
 
     dim0 <- dim(data)
@@ -233,7 +235,6 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
     setnames(data,c("FLAG","flag"),c(col.flagn,col.flagc))
     setnames(tab.flags,c("FLAG","flag"),c(col.flagn,col.flagc))
     if(backed.up.old.flags){
-        
         data <- mergeCheck(data,flags.orig.data,by=col.row)
     }
     

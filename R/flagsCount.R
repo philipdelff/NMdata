@@ -170,10 +170,6 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     allres[,isFinal:=FLAG==0]
     setorderv(allres,c(by,"notAll","isFinal","FLAG"))
 
-    ## tab.flags <- rbind(tab.flags.0,tab.flags,fill=TRUE)
-    ## tab.report <- rbind(tab.report,
-    ##                     tab.flags[-1,.(Data=paste("After exclusion due to",tolower(flag)),Nobs,NID)]
-    ##                     )
 
 ### select columns to report, depending on argument
     allres[,`:=`(FLAG=NULL
