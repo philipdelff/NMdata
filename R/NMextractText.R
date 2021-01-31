@@ -4,7 +4,7 @@
 ##' see NMgetSection. This function is more general and can be used to
 ##' extract eg result sections.
 ##'
-##' @param file A file to read from. Normally a .mod or .lst. See
+##' @param file A file path to read from. Normally a .mod or .lst. See
 ##'     lines and text as well.
 ##' @param lines Text lines to process. This is an alternative to
 ##'     using the file and text arguments.

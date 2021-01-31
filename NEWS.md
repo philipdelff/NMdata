@@ -6,6 +6,10 @@ the package. This is very useful if you want to change the directory
 and file naming structure, or if you want to change default column
 names.
 
+The exclusion flag functions flagsAssign and flagsCount have been
+generalized to use customizable column names for the numerical and
+caracter flags. The default can be configured using NMdataConf.
+
 # NMdata 0.0.6.4
 If all common column names two data objects to merge are not used for
 merging (by), new column names are created by merge. The behavior of

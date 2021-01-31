@@ -8,7 +8,10 @@
 ##' data.frames).
 ##'
 ##' @param ... NMdata options to modify. These are named arguments,
-##'     like for base::options. Multiple arguments can be used. See
+##'     like for base::options. Normally, multiple arguments can be
+##'     used. The exception is if reset=TRUE is used which means all
+##'     options are restored to default values. If NULL is passed to
+##'     an argument, the argument is reset to default.  is See
 ##'     examples for how to use.
 ##'
 ##' Parameters that can be controlled are:
@@ -88,6 +91,10 @@ NMdataConf <- function(...){
     }
 
     names.args <- names(dots)
+    if(is.null(names.args) || any(names.args=="")){
+        stop("All arguments must be named.")
+    }
+
     N.args <- length(dots)
     
 ### look for reset=TRUE. If so (and nothing else is given), set default values
@@ -153,7 +160,7 @@ NMdataConfOptions <- function(name){
         )
        ,
         file.mod=list(
-            default=function(file) sub("\\.lst","\\.mod",file)
+            default=function(file) sub("\\.lst *$","\\.mod",file)
             ## has to be length 1 character or function
            ,is.allowed=function(x) is.function(x) || (length(x)==1 && is.character(x))
            ,msg.not.allowed="file.mod must be a function or a character of length 1"
