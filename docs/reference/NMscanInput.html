@@ -40,10 +40,10 @@
 
 
 <meta property="og:title" content="read input data and translate column names according to the $INPUT section — NMscanInput" />
-<meta property="og:description" content="Based on a nonmem run (lst and/or mod file), this
-    function finds the input data and reads it. It reads the data
-    like the nonmem run by applying DROP/SKIP arguments and
-    alternative naming of columns in the nonmem run." />
+<meta property="og:description" content="Based on a nonmem run (lst and/or mod file), this function
+    finds the input data and reads it. It reads the data like the nonmem run
+    by applying DROP/SKIP arguments and alternative naming of columns in the
+    nonmem run." />
 
 
 
@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.6</span>
       </span>
     </div>
 
@@ -139,10 +139,10 @@
     </div>
 
     <div class="ref-description">
-    <p>Based on a nonmem run (lst and/or mod file), this
-    function finds the input data and reads it. It reads the data
-    like the nonmem run by applying DROP/SKIP arguments and
-    alternative naming of columns in the nonmem run.</p>
+    <p>Based on a nonmem run (lst and/or mod file), this function
+    finds the input data and reads it. It reads the data like the nonmem run
+    by applying DROP/SKIP arguments and alternative naming of columns in the
+    nonmem run.</p>
     </div>
 
     <pre class="usage"><span class='fu'>NMscanInput</span>(
@@ -164,64 +164,59 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>file</th>
-      <td><p>a .lst (output) or a .mod (input) control stream
-file. The filename does not need to end in .lst. It is
-recommended to use the output control stream because it
-reflects the model as it was run rather than how it is planned
-for next run. However, see file.mod and dir.data.</p></td>
+      <td><p>a .lst (output) or a .mod (input) control stream file. The
+filename does not need to end in .lst. It is recommended to use the
+output control stream because it reflects the model as it was run rather
+than how it is planned for next run. However, see file.mod and dir.data.</p></td>
     </tr>
     <tr>
       <th>use.rds</th>
-      <td><p>If an rds file is found with the exact same name
-(except for .rds instead of say .csv) as the text file
-mentioned in the Nonmem control stream, should this be used
-instead? The default is yes, and NMwriteData will create this
-by default too.</p></td>
+      <td><p>If an rds file is found with the exact same name (except for
+.rds instead of say .csv) as the text file mentioned in the Nonmem
+control stream, should this be used instead? The default is yes, and
+NMwriteData will create this by default too.</p></td>
     </tr>
     <tr>
       <th>file.mod</th>
-      <td><p>The input control stream file path. Default is to
-look for \"file\" with extension changed to .mod (PSN
-style). You can also supply the path to the file, or you can
-provide a function that translates the output file path to the
-input file path. If dir.data is missing, the input control
-stream is needed. This is because the .lst does not contain
-the path to the data file. The .mod file is only used for
-finding the data file. How to interpret the datafile is read
-from the .lst file. See dir.data too.</p></td>
+      <td><p>The input control stream file path. Default is to look for
+\"file\" with extension changed to .mod (PSN style). You can also supply
+the path to the file, or you can provide a function that translates the
+output file path to the input file path. If dir.data is missing, the
+input control stream is needed. This is because the .lst does not
+contain the path to the data file. The .mod file is only used for
+finding the data file. How to interpret the datafile is read from the
+.lst file. The default can be configured using NMdataConf. See dir.data
+too.</p></td>
     </tr>
     <tr>
       <th>dir.data</th>
-      <td><p>The data directory can only be read from the
-control stream (.mod) and not from the output file (.lst). So
-if you only have the output file, use dir.data to tell in
-which directory to find the data file. If dir.data is
-provided, the .mod file is not used at all.</p></td>
+      <td><p>The data directory can only be read from the control stream
+(.mod) and not from the output file (.lst). So if you only have the
+output file, use dir.data to tell in which directory to find the data
+file. If dir.data is provided, the .mod file is not used at all.</p></td>
     </tr>
     <tr>
       <th>applyFilters</th>
-      <td><p>If TRUE (default), IGNORE and ACCEPT
-statements in the nonmem control streams are applied before
-returning the data.</p></td>
+      <td><p>If TRUE (default), IGNORE and ACCEPT statements in the
+nonmem control streams are applied before returning the data.</p></td>
     </tr>
     <tr>
       <th>translate</th>
-      <td><p>If TRUE (default), data columns are named as
-interpreted by Nonmem (in $INPUT). If data file contains more
-columns than mentioned in $INPUT, these will be named as in
-data file (if data file contains named variables).</p></td>
+      <td><p>If TRUE (default), data columns are named as interpreted by
+Nonmem (in $INPUT). If data file contains more columns than mentioned in
+$INPUT, these will be named as in data file (if data file contains named
+variables).</p></td>
     </tr>
     <tr>
       <th>details</th>
-      <td><p>If TRUE, metadata is added to output. In this case,
-you get a list. Typically, this is mostly useful if
-programming up functions which behavior must depend on
-properties of the output. See details.</p></td>
+      <td><p>If TRUE, metadata is added to output. In this case, you get a
+list. Typically, this is mostly useful if programming up functions which
+behavior must depend on properties of the output. See details.</p></td>
     </tr>
     <tr>
       <th>col.id</th>
-      <td><p>The name of the subject ID column. Only used if
-details=TRUE to summarize number of subjects in data.</p></td>
+      <td><p>The name of the subject ID column. Only used if details=TRUE
+to summarize number of subjects in data.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
@@ -230,28 +225,27 @@ non-interactive stuff.</p></td>
     </tr>
     <tr>
       <th>invert</th>
-      <td><p>If TRUE, the data rows that are dismissed by the
-Nonmem data filters (ACCEPT and IGNORE) and only this will be
-returned. Only used if applyFilters is TRUE.</p></td>
+      <td><p>If TRUE, the data rows that are dismissed by the Nonmem data
+filters (ACCEPT and IGNORE) and only this will be returned. Only used if
+applyFilters is TRUE.</p></td>
     </tr>
     <tr>
       <th>as.fun</th>
-      <td><p>The default is to return data as a data.frame. Pass
-a function (say tibble::as_tibble) in as.fun to convert to
-something else. If data.tables are wanted, use
-as.fun=identity. See ?runAsFun.</p></td>
+      <td><p>The default is to return data as a data.frame. Pass a function
+(say tibble::as_tibble) in as.fun to convert to something else. If
+data.tables are wanted, use as.fun="data.table". The default can be
+configured using NMdataConf.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The line containing whom the license is issued to cannot
-    be retrieved. Special characters like accents and the
-    registerred trademark (R) sign are likely to cause trouble if
-    locales are changed (say from a linux system running Nonmem to
-    a Windows or Mac running R), so this line is
-    discarded. Columns that are dropped (using DROP or SKIP in
-    $INPUT) in the model will be included in the output.</p>
+    <p>The line containing whom the license is issued to cannot be
+    retrieved. Special characters like accents and the registerred trademark
+    (R) sign are likely to cause trouble if locales are changed (say from a
+    linux system running Nonmem to a Windows or Mac running R), so this line
+    is discarded. Columns that are dropped (using DROP or SKIP in $INPUT) in
+    the model will be included in the output.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other DataRead: 

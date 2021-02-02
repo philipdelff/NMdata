@@ -74,7 +74,7 @@ flag." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.6</span>
       </span>
     </div>
 
@@ -143,7 +143,16 @@ different reasons. And how many are left after each exclusion
 flag.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>flagsCount</span>(<span class='kw'>data</span>, <span class='kw'>tab.flags</span>, <span class='kw'>file</span>, col.id = <span class='st'>"ID"</span>, by = <span class='kw'>NULL</span>, as.fun = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>flagsCount</span>(
+  <span class='kw'>data</span>,
+  <span class='kw'>tab.flags</span>,
+  <span class='kw'>file</span>,
+  col.id = <span class='st'>"ID"</span>,
+  <span class='kw'>col.flagn</span>,
+  <span class='kw'>col.flagc</span>,
+  by = <span class='kw'>NULL</span>,
+  as.fun = <span class='kw'>NULL</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -170,6 +179,21 @@ probably be removed and put in a separate function.</p></td>
 is "ID".</p></td>
     </tr>
     <tr>
+      <th>col.flagn</th>
+      <td><p>The name of the column containing the numerical
+flag values in tab.flags. This will be added to data. Use the
+same as when flagsAssign was called (if that was
+used). Default value is FLAG and can be configured using
+NMdataConf.</p></td>
+    </tr>
+    <tr>
+      <th>col.flagc</th>
+      <td><p>The name of the column containing the character
+flag values in data and tab.flags. Use the same as when
+flagsAssign was called (if that was used). Default value is
+flag and can be configured using NMdataConf.</p></td>
+    </tr>
+    <tr>
       <th>by</th>
       <td><p>An optional column to group the counting by. This could
 be "STUDY", "DRUG", "EVID", or a combination of multiple
@@ -180,7 +204,8 @@ columns.</p></td>
       <td><p>The default is to return a data.table if input data
 is a data.table, and return a data.frame for all other input
 classes. Pass a function in as.fun to convert to something
-else.</p></td>
+else. If data is not a data.table, default can be configured
+using NMdataConf.</p></td>
     </tr>
     </table>
 
@@ -211,6 +236,22 @@ else.</p></td>
 <code><a href='stampObj.html'>stampObj</a>()</code>,
 <code><a href='tmpcol.html'>tmpcol</a>()</code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>pk</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span>(file=<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"examples/data/xgxr2.rds"</span>,package=<span class='st'>"NMdata"</span>))
+<span class='kw'>dt.flags</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
+  flagn=<span class='fl'>10</span>,
+  flagc=<span class='st'>"Below LLOQ"</span>,
+condition=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"BLQ==1"</span>))
+<span class='kw'>pk</span> <span class='op'>&lt;-</span> <span class='fu'><a href='flagsAssign.html'>flagsAssign</a></span>(<span class='kw'>pk</span>,<span class='kw'>dt.flags</span>,col.flagn=<span class='st'>"flagn"</span>,col.flagc=<span class='st'>"flagc"</span>)
+</div><div class='output co'>#&gt; <span class='message'>In flagsAssign(pk, dt.flags, col.flagn = "flagn", col.flagc = "flagc") : Coding</span>
+#&gt; <span class='message'>flagn = 10, flagc = Below LLOQ</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='kw'>pk</span>[,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"flagn"</span>,<span class='st'>"flagc"</span>,<span class='st'>"flagn"</span>)])
+</div><div class='output co'>#&gt;    flagn        flagc flagn
+#&gt; 1:     0 Analysis set     0
+#&gt; 2:    10   Below LLOQ    10</div><div class='input'><span class='fu'>flagsCount</span>(<span class='kw'>pk</span>,<span class='kw'>dt.flags</span>,col.flagn=<span class='st'>"flagn"</span>,col.flagc=<span class='st'>"flagc"</span>)
+</div><div class='output co'>#&gt;           flagc N.left Nobs.left N.discarded Nobs.discarded
+#&gt; 1:     All data    150      1500          NA             NA
+#&gt; 2:   Below LLOQ    150       905           0            595
+#&gt; 3: Analysis set    150       905          NA             NA</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

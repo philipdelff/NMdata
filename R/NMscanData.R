@@ -9,79 +9,94 @@
 ##' Nonmem (e.g. observations or subjects that are not part of the analysis)}
 ##' }
 ##' 
-##' @param file A nonmem control stream or output file from nonmem (.mod or
-##'     .lst)
-##' @param file.mod The input control stream. Default is to look for \"file\"
-##'     with extension changed to .mod (PSN style). You can also supply the path
-##'     to the file, or you can provide a function that translates the output
-##'     file path to the input file path. The default behavior is controlled by
-##'     the "NMdata.file.mod" option. See dir.data too.
-##' @param col.id The name of the subject ID variable, default is "ID".
-##' @param col.row A column with a unique value for each row. Such a column is
-##'     recommended to use if possible. See cbind.by.filters and details as
-##'     well.
-##' @param use.input Merge with columns in input data? Using this, you don't
-##'     have to worry about remembering including all relevant variables in the
-##'     output tables.
-##' @param recover.rows Include rows from input data files that do not exist in
-##'     output tables? This will be added to the $row dataset only, and $run,
-##'     $id, and $occ datasets are created before this is taken into account. A
-##'     column called nmout will be TRUE when the row was found in output
-##'     tables, and FALSE when not.
-##' @param add.name If a character string, a column of this name will be
-##'     included in all tables containing the model name. The default is to
-##'     store this in a column called "model". See argument "name" as well. Set
-##'     to NULL if not wanted.
-##' @param modelname The model name to be stored if add.name is not NULL. If not
-##'     supplied, the name will be taken from the control stream file name by
-##'     omitting the directory/path and deleting the .lst extension. This can be
-##'     a character string or a function taking file as argument and returning
-##'     the modelname (by extracting it from file name or path). The default can
-##'     be configured using NMdataConf.
-##' @param use.rds If an rds file is found with the exact same name (except for
-##'     .rds instead of say .csv) as the input data file mentioned in the Nonmem
-##'     control stream, should this be used instead? The default is yes, and
-##'     NMwriteData will create this by default too.
-##' @param dir.data The data directory can only be read from the control stream
-##'     (.mod) and not from the output file (.lst). So if you only have the
-##'     output control stream, use dir.data to tell in which directory to find
-##'     the data file. If dir.data is provided, the .mod file is not used at
-##'     all.
-##' @param quiet The default is to give some information along the way on what
-##'     data is found. But consider setting this to TRUE for non-interactive
-##'     use.
-##' @param as.fun The default is to return data as a data.frame. Pass a function
-##'     (say tibble::as_tibble) in as.fun to convert to something else. If
-##'     data.tables are wanted, use as.fun="data.table". The default can be
+##' @param file A nonmem control stream or output file from nonmem
+##'     (.mod or .lst)
+##' @param file.mod The input control stream. Default is to look for
+##'     \"file\" with extension changed to .mod (PSN style). You can
+##'     also supply the path to the file, or you can provide a
+##'     function that translates the output file path to the input
+##'     file path. The default behavior is controlled by the
+##'     "NMdata.file.mod" option. See dir.data too.
+##' @param col.id The name of the subject ID variable, default is
+##'     "ID".
+##' @param col.row A column with a unique value for each row. Such a
+##'     column is recommended to use if possible. See cbind.by.filters
+##'     and details as well.
+##' @param use.input Merge with columns in input data? Using this, you
+##'     don't have to worry about remembering including all relevant
+##'     variables in the output tables. Default is TRUE and can be
 ##'     configured using NMdataConf.
-##' @param cbind.by.filters If TRUE, Nonmem data filtering is interpreted from
-##'     lst file (restrictions apply), and after an imitated selection of rows,
-##'     data columns will be appended to output data. This method relies on
-##'     interpretation of Nonmem code, and it will not work in advanced use of
-##'     IGNORE and ACCEPT statements in $INPUT. Consider using col.row instead,
+##' @param recover.rows Include rows from input data files that do not
+##'     exist in output tables? This will be added to the $row dataset
+##'     only, and $run, $id, and $occ datasets are created before this
+##'     is taken into account. A column called nmout will be TRUE when
+##'     the row was found in output tables, and FALSE when
+##'     not. Default is FALSE and can be configured using NMdataConf.
+##' @param col.model A column of this name containing the model name
+##'     will be included in the returned data. The default is to store
+##'     this in a column called "model". See argument "modelname" as
+##'     well. Set to NULL if not wanted. Default can be configured
+##'     using NMdataConf.
+##' @param modelname The model name to be stored if col.model is not
+##'     NULL. If not supplied, the name will be taken from the control
+##'     stream file name by omitting the directory/path and deleting
+##'     the .lst extension (path/run001.lst becomes run001). This can
+##'     be a character string or a function which is called on the
+##'     value of file (file is another argument to NMscanData). The
+##'     function must take one character argument and return another
+##'     character string. As example, see NMdataConf()$modelname. The
+##'     default can be configured using NMdataConf.
+##' @param use.rds If an rds file is found with the exact same name
+##'     (except for .rds instead of say .csv) as the input data file
+##'     mentioned in the Nonmem control stream, should this be used
+##'     instead? The default is yes, and NMwriteData will create this
+##'     by default too.
+##' @param dir.data The data directory can only be read from the
+##'     control stream (.mod) and not from the output file (.lst). So
+##'     if you only have the output control stream, use dir.data to
+##'     tell in which directory to find the data file. If dir.data is
+##'     provided, the .mod file is not used at all.
+##' @param quiet The default is to give some information along the way
+##'     on what data is found. But consider setting this to TRUE for
+##'     non-interactive use.
+##' @param as.fun The default is to return data as a data.frame. Pass
+##'     a function (say tibble::as_tibble) in as.fun to convert to
+##'     something else. If data.tables are wanted, use
+##'     as.fun="data.table". The default can be configured using
+##'     NMdataConf.
+##' @param cbind.by.filters If TRUE, Nonmem data filtering is
+##'     interpreted from lst file (restrictions apply), and after an
+##'     imitated selection of rows, data columns will be appended to
+##'     output data. This method relies on interpretation of Nonmem
+##'     code, and it will not work in advanced use of IGNORE and
+##'     ACCEPT statements in $INPUT. Consider using col.row instead,
 ##'     if possible. Default is TRUE if col.row is either missing or
-##'     NULL. However, explicitly specifying cbind.by.filters is recommended if
-##'     that is the intended behaviour. If not, NMscanData will search for
-##'     potential columns to merge by and print information about it. See
-##'     col.row (recommended method) as well.
-##' @param tab.count Nonmem includes a counter of tables in the written data
-##'     files. These are often not useful. Especially for NMscanData output it
-##'     can be meaningless because multiple tables can be combined so this
-##'     information is not unique across those source tables. However, if
-##'     tab.count is TRUE (not default), this will be carried forward and added
-##'     as a column called TABLENO.
-##' @param order.columns If TRUE (default), NMorderColumns is used to reorder
-##'     the columns before returning the data. NMorderColumns will be called
-##'     with alpha=FALSE, so columns are not sorted alphebetically. But standard
-##'     Nonmem columns like ID, TIME, and other will be first. If col.row is
-##'     used, this will be passed to NMorderColumns too.
-##' @param check.time If TRUE (default) and if input data is used, input control
-##'     stream and input data are checked to be newer than output control stream
-##'     and output tables. These are important assumptions for the way
-##'     information is merged by NMscanData. However, if data has been
-##'     transfered from another system where Nonmem was run, these checks may
-##'     not make sense, and you may not want to see these warnings. The default
-##'     can be configured using NMdataConf.
+##'     NULL. However, explicitly specifying cbind.by.filters is
+##'     recommended if that is the intended behaviour. If not,
+##'     NMscanData will search for potential columns to merge by and
+##'     print information about it. See col.row (recommended method)
+##'     as well.
+##' @param tab.count Nonmem includes a counter of tables in the
+##'     written data files. These are often not useful. Especially for
+##'     NMscanData output it can be meaningless because multiple
+##'     tables can be combined so this information is not unique
+##'     across those source tables. However, if tab.count is TRUE (not
+##'     default), this will be carried forward and added as a column
+##'     called TABLENO.
+##' @param order.columns If TRUE (default), NMorderColumns is used to
+##'     reorder the columns before returning the data. NMorderColumns
+##'     will be called with alpha=FALSE, so columns are not sorted
+##'     alphebetically. But standard Nonmem columns like ID, TIME, and
+##'     other will be first. If col.row is used, this will be passed
+##'     to NMorderColumns too.
+##' @param check.time If TRUE (default) and if input data is used,
+##'     input control stream and input data are checked to be newer
+##'     than output control stream and output tables. These are
+##'     important assumptions for the way information is merged by
+##'     NMscanData. However, if data has been transfered from another
+##'     system where Nonmem was run, these checks may not make sense,
+##'     and you may not want to see these warnings. The default can be
+##'     configured using NMdataConf.
 ##'
 ##' @details This function makes it very easy to collect the data from
 ##'     a Nonmem run.
@@ -103,11 +118,11 @@
 
 
 NMscanData <- function(file, col.row, cbind.by.filters,
-                       use.input=TRUE, recover.rows=FALSE,
-                       add.name="model", modelname, file.mod,
+                       use.input, recover.rows,
+                       col.model="model", modelname, file.mod,
                        dir.data, quiet=FALSE, use.rds=TRUE,
-                       as.fun=NULL, col.id="ID", tab.count=FALSE,
-                       order.columns=TRUE, check.time=NULL) {
+                       as.fun, col.id="ID", tab.count=FALSE,
+                       order.columns=TRUE, check.time) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -144,9 +159,33 @@ NMscanData <- function(file, col.row, cbind.by.filters,
     ## for easier passing of the argument
     if(missing(dir.data)) dir.data <- NULL
     if(missing(file.mod)) file.mod <- NULL
+    if(missing(check.time)) check.time <- NULL
+    if(missing(as.fun)) as.fun <- NULL
     check.time <- NMdataDecideOption("check.time",check.time)
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     modelname <- NMdataDecideOption("modelname",modelname)
+    if(missing(use.input)) use.input <- NULL
+    use.input <- NMdataDecideOption("use.input",use.input)
+    if(missing(recover.rows)) recover.rows <- NULL
+    recover.rows <- NMdataDecideOption("recover.rows",recover.rows)
+
+    if(missing(col.model)) {
+        include.model <- TRUE
+        col.model <- NMdataDecideOption("col.model",NULL)
+    } else if(is.null(col.model)) {
+        include.model <- FALSE
+    } else {
+        include.model <- TRUE
+        col.model <- NMdataDecideOption("col.model",NULL)
+    }
+    
+    if(is.null(col.model)){
+        include.model <- TRUE
+    } else {
+        include.model <- FALSE
+    }
+
+    
     runname <- modelname(file)
     ## file.mod is treated later if we need the input control stream
     
@@ -157,7 +196,6 @@ NMscanData <- function(file, col.row, cbind.by.filters,
 
     
 ### cbind.by.filters and col.row - specification of merging method
-    ## use.input <- TRUE
     search.col.row <- FALSE
     do.cbind.by.filters <- FALSE
     merge.by.row <- FALSE
@@ -206,16 +244,6 @@ if(use.input){
 
     if(missing(col.row)||(!is.null(col.row)&&is.na(col.row))||(is.character(col.row)&&any(col.row==""))) {
         col.row <- NULL
-    }
-
-    if(!is.null(add.name)) {
-        if(!is.character(add.name) || length(add.name)!=1 ||  add.name=="" ) {
-            messageWrap("If not NULL, add.name must be a character name of the column to store the run name. The string cannot be empty.",fun.msg=stop)
-        }
-
-        include.model <- TRUE
-    } else {
-        include.model <- FALSE
     }
 
 ###  Section end: Process arguments 
@@ -624,12 +652,12 @@ if(use.input){
     
 #### Section start: Format output ####
     
-    if(!is.null(add.name)) {
+    if(!is.null(col.model)) {
         
-        tab.row[,c(add.name):=runname]
+        tab.row[,c(col.model):=runname]
         
         dt.vars <- rbind(dt.vars,
-                         data.table(variable=add.name
+                         data.table(variable=col.model
                                    ,table=NA_character_
                                    ,included=TRUE 
                                    ,source="NMscanData"
@@ -641,7 +669,7 @@ if(use.input){
     
 ### order columns in returned data
     if(order.columns){
-        tab.row <- NMorderColumns(tab.row, row=col.row, as.fun=identity,
+        tab.row <- NMorderColumns(tab.row, col.row=col.row, as.fun=identity,
                                   alpha=FALSE, quiet=TRUE)
     }
     

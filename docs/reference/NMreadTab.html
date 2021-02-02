@@ -77,7 +77,7 @@ table file alone." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.6</span>
       </span>
     </div>
 
@@ -149,7 +149,7 @@ be filtered out. NMreadTab can do this automatically based on the
 table file alone.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>NMreadTab</span>(<span class='kw'>file</span>, silent = <span class='fl'>TRUE</span>, tab.count = <span class='fl'>TRUE</span>, as.fun = <span class='kw'>NULL</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>NMreadTab</span>(<span class='kw'>file</span>, quiet = <span class='fl'>TRUE</span>, tab.count = <span class='fl'>TRUE</span>, as.fun = <span class='kw'>NULL</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,23 +159,23 @@ table file alone.</p>
       <td><p>path to NONMEM table file</p></td>
     </tr>
     <tr>
-      <th>silent</th>
-      <td><p>logical stating whether or not information is
-printed about what is being done.</p></td>
+      <th>quiet</th>
+      <td><p>logical stating whether or not information is printed about
+what is being done.</p></td>
     </tr>
     <tr>
       <th>tab.count</th>
-      <td><p>Nonmem includes a counter of tables in the
-written data files. These are often not useful. However, if
-tab.count is TRUE (default), this will be carried forward and
-added as a column called TABLENO.</p></td>
+      <td><p>Nonmem includes a counter of tables in the written data
+files. These are often not useful. However, if tab.count is TRUE
+(default), this will be carried forward and added as a column called
+TABLENO.</p></td>
     </tr>
     <tr>
       <th>as.fun</th>
-      <td><p>The default is to return data as a data.frame. Pass
-a function (say tibble::as_tibble) in as.fun to convert to
-something else. If data.tables are wanted, use
-as.fun="none". See ?runAsFun.</p></td>
+      <td><p>The default is to return data as a data.frame. Pass a function
+(say tibble::as_tibble) in as.fun to convert to something else. If
+data.tables are wanted, use as.fun="data.table". The default can be
+configured using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -189,8 +189,7 @@ as.fun="none". See ?runAsFun.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The actual reading of data is based on
-    data.table::fread. Generally, the function is fast thanks to
-    data.table.</p>
+    data.table::fread. Generally, the function is fast thanks to data.table.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other DataRead: 

@@ -5,34 +5,59 @@
 ##' flag.
 ##' 
 ##' @param data The dataset including both FLAG and flag columns.
-##' @param tab.flags A data.frame containing at least these named columns: FLAG,
-##'     flag, condition. Condition is disregarded for FLAG==0.
-##' @param file A file to write the table of flag counts to. Will probably be
-##'     removed and put in a separate function.
-##' @param col.id The name of the subject ID column. Default is "ID".@param
-##'     col.id The name of the subject ID column. Default is "ID".
-##' @param by An optional column to group the counting by. This could be
-##'     "STUDY", "DRUG", "EVID", or a combination of multiple columns.
-##' @param as.fun The default is to return a data.table if input data is a
-##'     data.table, and return a data.frame for all other input classes. Pass a
-##'     function in as.fun to convert to something else. If data is not a
-##'     data.table, default can be configured using NMdataConf.
-##' @return A summary table with number of discarded and retained subjects and
-##'     observations when applying each condition in the flag table. "discarded"
-##'     means that the reduction of number of observations and subjects
-##'     resulting from the flag, "retained" means the numbers that are left
-##'     after application of the flag. The default is "both" which will report
-##'     both.
+##' @param tab.flags A data.frame containing at least these named
+##'     columns: FLAG, flag, condition. Condition is disregarded for
+##'     FLAG==0.
+##' @param file A file to write the table of flag counts to. Will
+##'     probably be removed and put in a separate function.
+##' @param col.id The name of the subject ID column. Default is
+##'     "ID".@param col.id The name of the subject ID column. Default
+##'     is "ID".
+##' @param col.flagn The name of the column containing the numerical
+##'     flag values in tab.flags. This will be added to data. Use the
+##'     same as when flagsAssign was called (if that was
+##'     used). Default value is FLAG and can be configured using
+##'     NMdataConf.
+##' @param col.flagc The name of the column containing the character
+##'     flag values in data and tab.flags. Use the same as when
+##'     flagsAssign was called (if that was used). Default value is
+##'     flag and can be configured using NMdataConf.
+##' @param by An optional column to group the counting by. This could
+##'     be "STUDY", "DRUG", "EVID", or a combination of multiple
+##'     columns.
+##' @param as.fun The default is to return a data.table if input data
+##'     is a data.table, and return a data.frame for all other input
+##'     classes. Pass a function in as.fun to convert to something
+##'     else. If data is not a data.table, default can be configured
+##'     using NMdataConf.
+##' @return A summary table with number of discarded and retained
+##'     subjects and observations when applying each condition in the
+##'     flag table. "discarded" means that the reduction of number of
+##'     observations and subjects resulting from the flag, "retained"
+##'     means the numbers that are left after application of the
+##'     flag. The default is "both" which will report both.
 ##' @details Notice number of subjects in N.discarded mode can be
-##'     misunderstood. If two is reported, it can mean that the remining one
-##'     observation of these two subjects are discarded due to this flag. The
-##'     majority of the samples can have been discarded by earlier flags.
+##'     misunderstood. If two is reported, it can mean that the
+##'     remining one observation of these two subjects are discarded
+##'     due to this flag. The majority of the samples can have been
+##'     discarded by earlier flags.
 ##' @import data.table
 ##' @family DataCreate
+##' @examples
+##' pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+##' dt.flags <- data.frame(
+##'   flagn=10,
+##'   flagc="Below LLOQ",
+##' condition=c("BLQ==1"))
+##' pk <- flagsAssign(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
+##' unique(pk[,c("flagn","flagc","flagn")])
+##' flagsCount(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
 ##' @export
 
 
-flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL,as.fun=NULL){
+flagsCount <- function(data,tab.flags,file,col.id="ID",
+                       col.flagn,col.flagc,
+                       by=NULL,as.fun=NULL){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -45,27 +70,51 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL,as.fun=NULL){
     flag <- NULL
     notAll <- NULL
     isFinal <- NULL
-    . <- function()NULL
+    . <- function() NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
     if(missing(file)) file <- NULL
+    if(missing(col.flagn)) col.flagn <- NULL
+    if(missing(col.flagc)) col.flagc <- NULL
+    col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
+    col.flagc <- NMdataDecideOption("col.flagc",col.flagc)
     
     stopifnot(is.data.frame(data))
     stopifnot(is.data.frame(tab.flags))
 
     data.was.data.table <- TRUE
-    if(!is.data.table(data)) {
+    if(is.data.table(data)) {
+        data <- copy(data)
+    } else {
         data <- as.data.table(data)
         ##  data.was.data.frame <- TRUE
         data.was.data.table <- FALSE
     }
     tab.flags.was.data.table <- TRUE
-    if(!is.data.table(tab.flags)) {
+    if(is.data.table(tab.flags)) {
+        tab.flags <- copy(tab.flags)
+    } else {
         tab.flags <- as.data.table(tab.flags)
         ##  tab.flags.was.data.frame <- TRUE
         tab.flags.was.data.table <- FALSE
     }
+
+### check that tab.flags contains col.flagn and col.flagc and that data contains col.flagn
+    cnames.data <- copy(colnames(data))
+    if(!col.flagn%in%cnames.data) messageWrap("data must contain a column with same name as value of col.flagn",fun.msg="stop")
+    
+    cnames.tab.flags <- copy(colnames(tab.flags))
+    if(!col.flagn%in%cnames.tab.flags)
+        messageWrap("tab.flags must contain a column with same name as value of col.flagn",fun.msg="stop")
+    if(!col.flagc%in%cnames.tab.flags)
+        messageWrap("tab.flags must contain a column with same name as value of col.flagc",fun.msg="stop")
+
+###  rename columns to FLAG and flag
+    tab.flags[,FLAG:=get(col.flagn)]
+    tab.flags[,flag:=get(col.flagc)]
+    data[,FLAG:=get(col.flagn)]
+
 
 ### if 0 and Inf are not in tab.flags, insert them
     if(!0%in%tab.flags[,FLAG]){
@@ -82,9 +131,6 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL,as.fun=NULL){
     ## applied. This must match what flagsAssign does.
     tab.flags <- tab.flags[order(FLAG)]
 
-    data.tmp <- copy(data)
-
-    
 
     allres.l <- lapply(1:tab.flags[,.N],function(I){
         resI <- data[FLAG==0|FLAG>tab.flags[I,FLAG],.(
@@ -100,9 +146,9 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL,as.fun=NULL){
 ### All data
     allres <- rbind(allres,
                     data[,.(N.left=uniqueN(ID)
-                            ,Nobs.left=.N
-                            ,FLAG=Inf
-                        ),by=by]
+                           ,Nobs.left=.N
+                           ,FLAG=Inf
+                            ),by=by]
                    ,fill=TRUE
                     )
 
@@ -124,19 +170,16 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",by=NULL,as.fun=NULL){
     allres[,isFinal:=FLAG==0]
     setorderv(allres,c(by,"notAll","isFinal","FLAG"))
 
-    ## tab.flags <- rbind(tab.flags.0,tab.flags,fill=TRUE)
-    ## tab.report <- rbind(tab.report,
-    ##                     tab.flags[-1,.(Data=paste("After exclusion due to",tolower(flag)),Nobs,NID)]
-    ##                     )
 
 ### select columns to report, depending on argument
     allres[,`:=`(FLAG=NULL
                 ,notAll=NULL
                 ,isFinal=NULL)
-                 ]
+           ]
     
     setcolorder(allres,c(by,"flag","N.left","Nobs.left","N.discarded","Nobs.discarded"))
-
+    setnames(allres,"flag",col.flagc)
+    
     if(!is.null(file)){
         ## write.csv(allres,file=file,quote=F,row.names=F)
         fwrite(allres,file=file,quote=F,row.names=F)

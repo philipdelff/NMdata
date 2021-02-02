@@ -40,7 +40,12 @@
 
 
 <meta property="og:title" content="Extract columns that do not vary within variables in data — findCovs" />
-<meta property="og:description" content="Extract columns that do not vary within variables in data" />
+<meta property="og:description" content="This function provides an automated method to extract covariate-like
+columns. The user decides which columns these variables cannot vary
+within. So if you have repeated measures for each ID, this function can find
+the columns that are constant within ID and their unique values for each
+ID. Or, you can provide a combination of id.cols, say ID and STUDY, and get
+variables that do not vary within unique combinations of these." />
 
 
 
@@ -72,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.6</span>
       </span>
     </div>
 
@@ -136,7 +141,12 @@
     </div>
 
     <div class="ref-description">
-    <p>Extract columns that do not vary within variables in data</p>
+    <p>This function provides an automated method to extract covariate-like
+columns. The user decides which columns these variables cannot vary
+within. So if you have repeated measures for each ID, this function can find
+the columns that are constant within ID and their unique values for each
+ID. Or, you can provide a combination of id.cols, say ID and STUDY, and get
+variables that do not vary within unique combinations of these.</p>
     </div>
 
     <pre class="usage"><span class='fu'>findCovs</span>(<span class='kw'>data</span>, cols.id = <span class='kw'>NULL</span>, as.fun = <span class='kw'>NULL</span>)</pre>
@@ -150,23 +160,23 @@
     </tr>
     <tr>
       <th>cols.id</th>
-      <td><p>covariates will be searched for in combinations of
-values in these columns. Often cols.id will be either empty or
-ID. But it can also be both say c("ID","DRUG") or
-c("ID","TRT").</p></td>
+      <td><p>covariates will be searched for in combinations of values in
+these columns. Often cols.id will be either empty or ID. But it can also
+be both say c("ID","DRUG") or c("ID","TRT").</p></td>
     </tr>
     <tr>
       <th>as.fun</th>
-      <td><p>The default is to return a data.table if data is a
-data.table and return a data.frame in all other cases. Pass a
-function in as.fun to convert to something else. See ?runAsFun.</p></td>
+      <td><p>The default is to return a data.table if data is a data.table
+and return a data.frame in all other cases. Pass a function in as.fun to
+convert to something else. If data is not a data.table, the default can
+be configued using NMdataConf.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a data set with one observation per combination of values
-    of variables listed in cols.id.</p>
+    <p>a data set with one observation per combination of values of
+    variables listed in cols.id.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other DataCreate: 
@@ -187,8 +197,13 @@ function in as.fun to convert to something else. See ?runAsFun.</p></td>
 #&gt; <span class='message'>this column or one of these columns is not modified by the Nonmem run,</span>
 #&gt; <span class='message'>consider using this in col.row for a robust merge of input and output data.</span>
 #&gt; <span class='message'>Candidate columns: ROW To skip this check, please specify either col.row</span>
-#&gt; <span class='message'>(recommended) or cbind.by.filters.</span></div><div class='output co'>#&gt; 
-#&gt; Model:  xgxr001 
+#&gt; <span class='message'>(recommended) or cbind.by.filters.</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='warning'>Warning: In NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata")) :</span>
+#&gt; <span class='warning'>input control stream</span>
+#&gt; <span class='warning'>(C:/Users/delff/AppData/Local/Temp/RtmpWg5OgO/temp_libpath69a83e805d8b/NMdata/examples/nonmem/xgxr001.mod)</span>
+#&gt; <span class='warning'>is newer than output control stream</span>
+#&gt; <span class='warning'>(C:/Users/delff/AppData/Local/Temp/RtmpWg5OgO/temp_libpath69a83e805d8b/NMdata/examples/nonmem/xgxr001.lst)</span>
+#&gt; <span class='warning'>Seems like model has been edited since last run. If data sections have been</span>
+#&gt; <span class='warning'>edited, this can corrupt results.</span></div><div class='output co'>#&gt; Model:  xgxr001 
 #&gt; 
 #&gt; Tables, number of columns in tables, and their detail level:
 #&gt;            table used/total level

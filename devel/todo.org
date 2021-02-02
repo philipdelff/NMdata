@@ -15,6 +15,21 @@ dependencies. This solution is being tested on pmxtricks.
     CLOSED: [2020-12-23 Wed 11:21]
 It is needed in NMdata but should it be exported from NMdata?
 Conclusion: export from pmxtricks, internal in NMdata.
+*** TODO Check assign by ref inside package
+ copyOrNot <- function(data){
+     data[,newcol:=1]
+     }
+With load_all():
+> dt1 <- data.table(a=1)
+> dt1
+   a
+1: 1
+> r1=copyOrNot(dt1)
+> dt1
+> dt1
+   a newcol
+1: 1      1
+
 ** New functions
 *** DONE summary.NMdata
     CLOSED: [2020-12-23 Wed 11:22]
@@ -153,9 +168,12 @@ Not warning. Warning if standard variable?
 
 ## If EVID is present, only treat EVID==0. Or maybe better group by EVID.
 *** NMdataConf
-**** TODO Add support for add.name
-**** TODO use.input
-**** TODO recover.rows
+**** DONE Add support for add.name
+     CLOSED: [2021-01-30 Sat 14:29]
+**** DONE use.input
+     CLOSED: [2021-01-28 Thu 22:17]
+**** DONE recover.rows
+     CLOSED: [2021-01-28 Thu 22:17]
 **** TODO use.rds
 **** TODO quiet
 **** TODO col.row
@@ -223,7 +241,9 @@ exactly these uses of ".". Anyway, no consequence to functionality.
 *** DONE Drop filepath_NMdata
     CLOSED: [2020-12-22 Tue 19:01]
 *** TODO Release 0.0.7
-**** TODO Go through all manuals and update according to new config system
+**** DONE Go through all manuals and update according to new config system
+     CLOSED: [2021-01-30 Sat 14:35]
+**** TODO Look for any updates by reference
 **** Update vignettes
 ***** TODO NMscanData
 ***** TODO FAQ

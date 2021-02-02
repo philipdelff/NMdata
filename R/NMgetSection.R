@@ -4,7 +4,7 @@
 ##' model file. Look NMextractText for more general functionality
 ##' suitable for the results part too.
 ##'
-##' @param file A file to read from. Normally a .mod or .lst. See
+##' @param file A file path to read from. Normally a .mod or .lst. See
 ##'     lines also.
 ##' @param lines Text lines to process. This is an alternative to
 ##'     using the file argument.

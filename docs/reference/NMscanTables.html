@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.5.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.6</span>
       </span>
     </div>
 
@@ -150,39 +150,37 @@
     </tr>
     <tr>
       <th>details</th>
-      <td><p>If TRUE, metadata is added to output. In this case,
-you get a list. Typically, this is mostly useful if
-programming up functions which behavior must depend on
-properties of the output.</p></td>
+      <td><p>If TRUE, metadata is added to output. In this case, you get a
+list. Typically, this is mostly useful if programming up functions which
+behavior must depend on properties of the output.</p></td>
     </tr>
     <tr>
       <th>as.fun</th>
-      <td><p>The default is to return data as a data.frame. Pass
-a function (say tibble::as_tibble) in as.fun to convert to
-something else. If data.tables are wanted, use
-as.fun=identity. See ?runAsFun.</p></td>
+      <td><p>The default is to return data as a data.frame. Pass a function
+(say tibble::as_tibble) in as.fun to convert to something else. If
+data.tables are wanted, use as.fun="data.table". The default can be
+configured using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>The default is to give some information along the way
-on what data is found. But consider setting this to TRUE for
-non-interactive use.</p></td>
+      <td><p>The default is to give some information along the way on what
+data is found. But consider setting this to TRUE for non-interactive
+use.</p></td>
     </tr>
     <tr>
       <th>tab.count</th>
-      <td><p>Nonmem includes a counter of tables in the
-written data files. These are often not useful. However, if
-tab.count is TRUE (default), this will be carried forward and
-added as a column called TABLENO.</p></td>
+      <td><p>Nonmem includes a counter of tables in the written data
+files. These are often not useful. However, if tab.count is TRUE
+(default), this will be carried forward and added as a column called
+TABLENO.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of all the tables as data.frames. If details=TRUE,
-    this is in one element, called data, and meta is another
-    element. If not, only the element corresponding to data is
-    returned.</p>
+    <p>A list of all the tables as data.frames. If details=TRUE, this is in
+    one element, called data, and meta is another element. If not, only the
+    element corresponding to data is returned.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other DataRead: 

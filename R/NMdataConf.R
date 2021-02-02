@@ -1,16 +1,21 @@
 ##' Configure default behavior of NMdata functions
 ##' 
-##' Allows to change default behavior across the functions in NMdata rather than
-##' typing the arguments in all function calls. Only some options can be
-##' controlled here, and they are typically the ones that are characterized by
-##' the way you interact with Nonmem or standard organization of your
-##' data. Also, you can control what data class to return (say data.tables or
-##' tibbles if you prefer one of those over data.frames). Recommendation: Use
-##' this function transparently in the code and not in a configuration file
-##' hidden from other users.
+##' Configure default behavior across the functions in NMdata rather
+##' than typing the arguments in all function calls. Configure for
+##' your file organization, data set column names, and other NMdata
+##' behaviour. Also, you can control what data class NMdata functions
+##' return (say data.tables or tibbles if you prefer one of those over
+##' data.frames).
 ##'
-##' @param ... NMdata options to modify, like for base::options. See examples for how
-##'     to use. Parameters that can be controlled are
+##' @param ... NMdata options to modify. These are named arguments,
+##'     like for base::options. Normally, multiple arguments can be
+##'     used. The exception is if reset=TRUE is used which means all
+##'     options are restored to default values. If NULL is passed to
+##'     an argument, the argument is reset to default.  is See
+##'     examples for how to use.
+##'
+##' Parameters that can be controlled are:
+##'
 ##' \itemize{
 ##' 
 ##' \item{as.fun} A function that will be applied to data returned by various
@@ -24,11 +29,6 @@
 ##' as.fun=tibble::as_tibble. If you want data.table, use as.fun="data.table"
 ##' (not a function).
 ##'
-##' \item{check.time} Logical, applies to NMscanData only. NMscanData by
-##' defaults checks if output control stream is newer than input control stream
-##' and input data. Set this to FALSE if you are in an environment where time
-##' stamps cannot be relied on.
-##'
 ##' \item{file.mod} A function that will derive the path to the input control
 ##' stream based on the path to the output control stream. Technically, it can
 ##' be a string too, but when using NMdataConf, this would make little sense
@@ -41,8 +41,35 @@
 ##' this would make little sense because it would translate all output control
 ##' streams model name.
 ##'
-##' }
+##' \item{col.flagn} The name of the column containing numerical flag
+##' values for data row omission. Default value is FLAG. Used by
+##' flagsAssign, flagsCount.
+##' 
+##' \item{col.flagc} The name of the column containing the character
+##' flag values for data row omission. Default value is FLAG. Used
+##' by flagsAssign, flagsCount.
 ##'
+##' \item{use.input} In NMscanData, merge with columns in input data?
+##' Using this, you don't have to worry about remembering including
+##' all relevant variables in the output tables. Default is TRUE.
+##'
+##' \item{recover.rows} In NMscanData, Include rows from input data
+##'     files that do not exist in output tables? This will be added
+##'     to the $row dataset only, and $run, $id, and $occ datasets are
+##'     created before this is taken into account. A column called
+##'     nmout will be TRUE when the row was found in output tables,
+##'     and FALSE when not. Default is FALSE.
+##' 
+##' \item{check.time} Logical, applies to NMscanData only. NMscanData by
+##' defaults checks if output control stream is newer than input control stream
+##' and input data. Set this to FALSE if you are in an environment where time
+##' stamps cannot be relied on.
+##'
+##' }
+##' @details Recommendation: Use
+##' this function transparently in the code and not in a configuration file
+##' hidden from other users.
+##' 
 ##' @examples
 ##' ## get current defaults
 ##' NMdataConf()
@@ -64,6 +91,10 @@ NMdataConf <- function(...){
     }
 
     names.args <- names(dots)
+    if(is.null(names.args) || any(names.args=="")){
+        stop("All arguments must be named.")
+    }
+
     N.args <- length(dots)
     
 ### look for reset=TRUE. If so (and nothing else is given), set default values
@@ -129,7 +160,7 @@ NMdataConfOptions <- function(name){
         )
        ,
         file.mod=list(
-            default=function(file.lst) sub("\\.lst","\\.mod",file.lst)
+            default=function(file) sub("\\.lst *$","\\.mod",file)
             ## has to be length 1 character or function
            ,is.allowed=function(x) is.function(x) || (length(x)==1 && is.character(x))
            ,msg.not.allowed="file.mod must be a function or a character of length 1"
@@ -149,6 +180,44 @@ NMdataConfOptions <- function(name){
                x
            }
         )
+       ,
+        col.model=list(
+            default="model"
+           ,is.allowed=function(x) (is.character(x) && length(x)==1)
+           ,msg.not.allowed="col.model must be a character vector of length 1."
+           ,process=identity
+        )
+       ,
+        col.flagn=list(
+            default="FLAG"
+           ,is.allowed=function(x) (is.character(x) && length(x)==1)
+           ,msg.not.allowed="col.flagn must be a character vector of length 1."
+           ,process=identity
+        )
+       ,
+        col.flagc=list(
+            default="flag"
+           ,is.allowed=function(x) (is.character(x) && length(x)==1)
+           ,msg.not.allowed="col.flagc must be a character vector of length 1."
+           ,process=identity
+        )
+       ,
+        use.input=list(
+            default=TRUE
+            ## has to be length 1 character or function
+           ,is.allowed=is.logical
+           ,msg.not.allowed="use.input must be logical"
+           ,process=identity
+        )
+       ,
+        recover.rows=list(
+            default=FALSE
+            ## has to be length 1 character or function
+           ,is.allowed=is.logical
+           ,msg.not.allowed="recover.rows must be logical"
+           ,process=identity
+        )
+
     )
 
     if(!missing(name)&&!is.null(name)){
@@ -181,8 +250,8 @@ NMdataDecideOption <- function(name,argument){
         return(values.option$default)
     }
     
+
     if(missing(argument)||is.null(argument)) return(NMdataGetOption(name))
-    ## TODO better error message
     if(!values.option$is.allowed(argument)) stop(values.option$msg.not.allowed)
 
     argument <- values.option$process(argument)

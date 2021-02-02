@@ -315,7 +315,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<p>Built 2021-01-20 using NMdata 0.0.6.5.904.</p>
+<p>Built 2021-01-26 using NMdata 0.0.6.5.910.</p>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>Nonmem has quite a number of restrictions on the format of the input data, and problems with the data set is a very common reason for Nonmem not to behave as expected. When this happens, you easily waste a lot time debugging the data. <code>NMdata</code> includes some simple functions to prevent these situations.</p>
@@ -336,16 +336,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>dt.cov[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(COV, <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>))]</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>dt.cov</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="co">#&gt;     ID COV</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="co">#&gt;  1: 31   4</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="co">#&gt;  2: 32   4</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="co">#&gt;  1: 31   2</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="co">#&gt;  2: 32   3</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="co">#&gt;  3: 33   2</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a><span class="co">#&gt;  4: 34   1</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a><span class="co">#&gt;  4: 34   5</span></span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a><span class="co">#&gt;  5: 35   5</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a><span class="co">#&gt;  6: 36   2</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a><span class="co">#&gt;  7: 37   3</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a><span class="co">#&gt;  8: 38   4</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a><span class="co">#&gt;  9: 39   5</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a><span class="co">#&gt; 10: 40   1</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a><span class="co">#&gt;  6: 36   5</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a><span class="co">#&gt;  7: 37   1</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a><span class="co">#&gt;  8: 38   3</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a><span class="co">#&gt;  9: 39   2</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a><span class="co">#&gt; 10: 40   2</span></span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>pk2 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>)</span>
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a><span class="kw">dim</span>(pk2)</span>
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a><span class="co">#&gt; [1] 100  25</span></span>
@@ -445,7 +445,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;vignettes/DataCreate.Rmd&quot;</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a><span class="co">#&gt; $CreationTime</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2021-01-20 22:22:37 EST&quot;</span></span></code></pre></div>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2021-01-26 16:42:09 EST&quot;</span></span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">stampObj</span>(pk, <span class="dt">script =</span> <span class="st">&quot;vignettes/DataCreate.Rmd&quot;</span>, <span class="dt">Description =</span> <span class="st">&quot;A PK dataset used for examples.&quot;</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="kw">objInfo</span>(pk)</span>
@@ -453,7 +453,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;vignettes/DataCreate.Rmd&quot;</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a><span class="co">#&gt; $CreationTime</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2021-01-20 22:22:37 EST&quot;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2021-01-26 16:42:09 EST&quot;</span></span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a><span class="co">#&gt; $Description</span></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;A PK dataset used for examples.&quot;</span></span></code></pre></div>

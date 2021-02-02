@@ -147,7 +147,6 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
             data.input <- NMreadCsv(path.data.input,as.fun=identity)
         } else {
             stop(paste("Input data file not found. Was expecting to find",path.data.input))
-            ##        use.input <- FALSE
         }
     }
 
