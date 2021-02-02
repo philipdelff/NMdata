@@ -30,24 +30,17 @@ Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
 
 ## Introduction
-Getting data from R to Nonmem and back can be tedious and time
-consuming. The way data is exported from Nonmem means that a few
-tables may have to be combined, and then some variables may still be
-missing (like character variables which may be in the input data
-file). Most modellers develop some habits over time to avoid some
-issues. But still, it may be time demanding even for experienced
-modelers to pick up a model developed by someone else or by themselves
-earlier in their career just because they need to understand what data
-exported and how. 
+Preparing data for analysis in Nonmem and reading the results back
+into R can be time consuming. After a Nonmem run, a few tables may
+have to be combined. Then we need character variables that are only
+available in the input data file. And maybe the events ignored by
+Nonmem (say, observations below quantification limit that we still
+need in further analysis and plotting). 
 
-This vignette focuses on how NMdata provides a very
-general solution for what needs to be trivial: get a dataset out of a
-Nonmem run, including discarded columns and rows from the input data. And
-"general" means that it will work out of the box in as many cases as
-possible. It will do its best to understand how the data can be read
-and combined, (ideally) regardless of the way the model was written.
-
-In brevity, the most important steps are
+This vignette focuses on how to use NMdata to automate what needs to
+be trivial: get a dataset out of a Nonmem run, including discarded
+columns and rows from the input data. In brevity, the most important
+steps are
 
 - Read and combine output tables
 - If wanted, read input data and restore variables that were not
@@ -56,10 +49,21 @@ In brevity, the most important steps are
   in Nonmem (e.g. observations or subjects that are not part of the
   analysis)
   
-This should not be too hard to do. But with the large degree of
-flexibility Nonmem offer, there are a lot of caveats to be aware of,
-again especially if the model wasn't written by your own (current)
-standards.
+In most cases, this is not too hard to do. But with the large degree
+of flexibility Nonmem offer, there are a lot of caveats to be aware
+of. The implementation in NMdata aims at preventing and
+checking for as many of these caveats as possible. It is fast and
+default argument values can be configured depending on your setup
+(data standards, directory structure and other preferences).
+
+Like the rest of NMdata, this functionality assumes as little as
+possible about how you work. It assumes nothing about the
+Nonmem model itself and as little as possible about the organization
+of data and file paths/names. This makes it powerful for
+meta analyses, for reading a model developed by someone else - or one
+written by
+ourselves when we used to do things slightly differently. It will work
+out of the box in the vast majority of cases.
 
 For this vignette we initialize by attaching these packages and tweaking
 plotting layout slightly:
@@ -71,12 +75,12 @@ library(ggplot2)
 theme_set(theme_bw()+theme(legend.position="bottom"))
 ```
 
-For the purpose of this vignette we will configure `NMdata` not to check time
-stamps of input control streams and input data against output control
-streams. You will typically not need this. We need it because we cannot control
-time stamps of the files in the distributed package.
+<!-- For the purpose of this vignette we will configure `NMdata` not to check time -->
+<!-- stamps of input control streams and input data against output control -->
+<!-- streams. We need it because we cannot control -->
+<!-- time stamps of the files in the distributed package. -->
 
-```{r,setup2,include=T}
+```{r,setup2,include=F}
 NMdataConf(check.time=FALSE)
 ```
 
