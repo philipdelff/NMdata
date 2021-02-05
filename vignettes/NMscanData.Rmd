@@ -1,6 +1,9 @@
 ---
 title: "Automated and general reader of Nonmem data"
 output: rmarkdown::html_vignette
+    toc: true 
+Suggests: markdown
+VignetteBuilder: knitr
 vignette: >
   %\VignetteIndexEntry{Automated and general reader of Nonmem data}
   %\VignetteEngine{knitr::rmarkdown}
@@ -57,11 +60,10 @@ default argument values can be configured depending on your setup
 (data standards, directory structure and other preferences).
 
 Like the rest of NMdata, this functionality assumes as little as
-possible about how you work. It assumes nothing about the
-Nonmem model itself and as little as possible about the organization
-of data and file paths/names. This makes it powerful for
-meta analyses, for reading a model developed by someone else - or one
-written by
+possible about how you work. It assumes nothing about the Nonmem model
+itself and as little as possible about the organization of data and
+file paths/names. This makes it powerful for meta analyses, for
+reading a model developed by someone else - or one written by
 ourselves when we used to do things slightly differently. It will work
 out of the box in the vast majority of cases.
 
@@ -107,19 +109,20 @@ behaviour. However, if we left it out, `NMscanData` would try to
 explain this to you so you make an active choice what to do here. 
 
 ### Merge output and input data by a unique row identifier
-The default method of interpreting Nonmem code is not recommended. It is the
-default because it does not rely on assumptions about the input data and hence
-very generic. It happens that this dataset and one of the output tables contain
-a row identifier (a row counter in the column called `ROW`). If we skipped the
-`cbind.by.filters` above, `NMscanData` would figure this out and recommend
-merging by this column. This is what we will now do using the `col.row`
-argument. The following checks that we get the same result from the two
-methods. When using `col.row`, the row identifier is the first column in the
-returned data. This is why the columns in `res0` are reordered accordingly
-before the comparison. The way the reordering of columns is done is a bit
-involved. It makes sure that if any columns in `res0` are not in `res1`, these
-are not dismissed. It would be much easier to use `data.table::setcolorder` but
-we are sticking to base R here.
+The default method of interpreting Nonmem code is not recommended. It
+is the default because it does not rely on assumptions about the input
+data and hence very generic. It happens that this dataset and one of
+the output tables contain a unique row identifier (a row counter in
+the column called `ROW`). If we skipped the `cbind.by.filters` above,
+`NMscanData` would figure this out and recommend merging by this
+column. This is what we will now do using the `col.row` argument. The
+following demonstrates that we get the same result from the two
+methods. When using `col.row`, the row identifier is the first column
+in the returned data. This is why the columns in `res0` are reordered
+accordingly before the comparison. The way the reordering of columns
+is done is a bit involved. It makes sure that if any columns in `res0`
+are not in `res1`, these are not dismissed. It would be much easier to
+use `data.table::setcolorder` but we are sticking to base R here.
 
 ```{r,eval=TRUE}
 res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
@@ -145,12 +148,12 @@ you prefer.
 res1$trtact <- reorder(res1$trtact,res1$DOSE)
 ## We are going to use data.table
 res1.dt <- as.data.table(res1)
-## Derive another data.table with geometric mean pop predictions by
-## treatment and nominal sample time. Only use sample records.
+## Derive geometric mean pop predictions by treatment and nominal
+## sample time. Only use sample records. 
 res1.mean <- res1.dt[EVID==0,.(gmPRED=exp(mean(log(PRED)))),
                      by=.(trtact,NOMTIME)]
 ## plot individual observations and geometric mean pop
-## predictions. Split by treatment.
+## predictions. Split (facet) by treatment.
 ggplot(subset(res1,EVID==0))+
     geom_point(aes(TIME,DV))+
     geom_line(aes(NOMTIME,gmPRED),data=res1.mean,colour="red")+
@@ -159,11 +162,12 @@ ggplot(subset(res1,EVID==0))+
     labs(x="Hours since administration",y="Concentration (ng/mL)")
 ```
 
-We see from the plot that the obtained dataset contains both model
+We see that the obtained dataset contains both model
 predictions (i.e. from output tables) and a character variable,
-`trtact` (i.e. from input data). NMscanData has read both and combined
-them. The data used for the example is a PK single ascending dose data set
-borrowed from the
+`trtact` (i.e. from input data). Only the .lst (output control stream)
+file path was supplied by us. 
+
+The data used for the example is a PK single ascending dose data set from the
 [xgxr](https://cran.r-project.org/web/packages/xgxr/index.html)
 package, kindly allowed by the xgxr team.
 
@@ -181,7 +185,8 @@ sample times - it may be better to simulate the model at a richer time
 scale to get better precision. Again, we make use of `data.table` but
 feel free to use what you prefer. `findCovs` - like other `NMdata`
 functions - will work on `data.frame`'s, `tibble`'s and other
-`data.frame`-like classes.
+`data.frame`-like classes 
+(classes that inherit from `data.frame`).
 
 ```{r}
 ## with data.table, create a new column representing ID-level Cmax
@@ -195,8 +200,8 @@ ggplot(res1.id,aes(WEIGHTB,Cmax/DOSE,colour=trtact))+
     labs(x="Bodyweight at baseline (kg)")
 ```
 
-`cols.id` can be longer than one. Include a treatment column to
-support cross-over, a study column for meta analysis, or a model
+`cols.id` can be longer than one. Include a study column, a treatment column to
+support cross-over, or a model
 column if you are comparing model fits (see below how to do this very easily).
 
 If your model includes occasion variability, you probably also want to
@@ -207,8 +212,8 @@ look at
 ## res1.id.occ <- findCovs(res1,cols.id=c("ID","OCC"))
 ```
 
-Let's use the same function to see the variables that are constant
-across the whole dataset
+The simplest use of `findCovs` is to get variables that are constant
+across the whole dataset:
 
 
 ```{r}
@@ -216,13 +221,14 @@ findCovs(res1)
 ```
 
 Let's take a look at what is in the
-`res1.id` generated above. It is a mix of variables that vary at subject level and varibles
+`res1.id` generated above. It is a mix of variables that vary at subject level and variables
 that are constant across the full dataset. 
 
 ```{r}
 dim(res1.id)
 head(res1.id,2)
 ```
+
 
 `findCovs` has a counterpart in `findVars` which finds variables that
 do vary within constant values of optional `cols.id` columns. To get only the ones that

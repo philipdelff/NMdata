@@ -1,6 +1,10 @@
 ---
 title: "Data creation tools"
-output: rmarkdown::html_vignette
+output: rmarkdown::html_vignette:
+    toc: true 
+toc_depth: 2
+Suggests: markdown
+VignetteBuilder: knitr
 vignette: >
   %\VignetteIndexEntry{Data creation tools}
   %\VignetteEngine{knitr::rmarkdown}

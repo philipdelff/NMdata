@@ -10,17 +10,17 @@ NMscanData(
   cbind.by.filters,
   use.input,
   recover.rows,
-  add.name = "model",
+  col.model = "model",
   modelname,
   file.mod,
   dir.data,
   quiet = FALSE,
   use.rds = TRUE,
-  as.fun = NULL,
+  as.fun,
   col.id = "ID",
   tab.count = FALSE,
   order.columns = TRUE,
-  check.time = NULL
+  check.time
 )
 }
 \arguments{
@@ -56,18 +56,21 @@ is taken into account. A column called nmout will be TRUE when
 the row was found in output tables, and FALSE when
 not. Default is FALSE and can be configured using NMdataConf.}
 
-\item{add.name}{If a character string, a column of this name will
-be included in all tables containing the model name. The
-default is to store this in a column called "model". See
-argument "name" as well. Set to NULL if not wanted.}
+\item{col.model}{A column of this name containing the model name
+will be included in the returned data. The default is to store
+this in a column called "model". See argument "modelname" as
+well. Set to NULL if not wanted. Default can be configured
+using NMdataConf.}
 
-\item{modelname}{The model name to be stored if add.name is not
+\item{modelname}{The model name to be stored if col.model is not
 NULL. If not supplied, the name will be taken from the control
 stream file name by omitting the directory/path and deleting
-the .lst extension. This can be a character string or a
-function taking file as argument and returning the modelname
-(by extracting it from file name or path). The default can be
-configured using NMdataConf.}
+the .lst extension (path/run001.lst becomes run001). This can
+be a character string or a function which is called on the
+value of file (file is another argument to NMscanData). The
+function must take one character argument and return another
+character string. As example, see NMdataConf()$modelname. The
+default can be configured using NMdataConf.}
 
 \item{file.mod}{The input control stream. Default is to look for
 \"file\" with extension changed to .mod (PSN style). You can

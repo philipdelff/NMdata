@@ -7,8 +7,14 @@
 NMdataConf(...)
 }
 \arguments{
-\item{...}{NMdata options to modify, like for base::options. See
-    examples for how to use. Parameters that can be controlled are:
+\item{...}{NMdata options to modify. These are named arguments,
+    like for base::options. Normally, multiple arguments can be
+    used. The exception is if reset=TRUE is used which means all
+    options are restored to default values. If NULL is passed to
+    an argument, the argument is reset to default.  is See
+    examples for how to use.
+
+Parameters that can be controlled are:
 
 \itemize{
 
@@ -22,11 +28,6 @@ functions are not of class data.table. The argument as.fun to these
 functions is always adhered to. Pass an actual function, say
 as.fun=tibble::as_tibble. If you want data.table, use as.fun="data.table"
 (not a function).
-
-\item{check.time} Logical, applies to NMscanData only. NMscanData by
-defaults checks if output control stream is newer than input control stream
-and input data. Set this to FALSE if you are in an environment where time
-stamps cannot be relied on.
 
 \item{file.mod} A function that will derive the path to the input control
 stream based on the path to the output control stream. Technically, it can
@@ -58,15 +59,24 @@ all relevant variables in the output tables. Default is TRUE.
     created before this is taken into account. A column called
     nmout will be TRUE when the row was found in output tables,
     and FALSE when not. Default is FALSE.
+
+\item{check.time} Logical, applies to NMscanData only. NMscanData by
+defaults checks if output control stream is newer than input control stream
+and input data. Set this to FALSE if you are in an environment where time
+stamps cannot be relied on.
+
 }}
 }
 \description{
-Allows to change default behavior across the functions in NMdata rather than
-typing the arguments in all function calls. Only some options can be
-controlled here, and they are typically the ones that are characterized by
-the way you interact with Nonmem or standard organization of your
-data. Also, you can control what data class to return (say data.tables or
-tibbles if you prefer one of those over data.frames). Recommendation: Use
+Configure default behavior across the functions in NMdata rather
+than typing the arguments in all function calls. Configure for
+your file organization, data set column names, and other NMdata
+behaviour. Also, you can control what data class NMdata functions
+return (say data.tables or tibbles if you prefer one of those over
+data.frames).
+}
+\details{
+Recommendation: Use
 this function transparently in the code and not in a configuration file
 hidden from other users.
 }

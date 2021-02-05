@@ -19,7 +19,7 @@ library(data.table)
 library(ggplot2)
 theme_set(theme_bw()+theme(legend.position="bottom"))
 
-## ----setup2,include=T---------------------------------------------------------
+## ----setup2,include=F---------------------------------------------------------
 NMdataConf(check.time=FALSE)
 
 ## ----eval=TRUE----------------------------------------------------------------
@@ -39,12 +39,12 @@ all.equal(res0,res1,check.attributes=FALSE)
 res1$trtact <- reorder(res1$trtact,res1$DOSE)
 ## We are going to use data.table
 res1.dt <- as.data.table(res1)
-## Derive another data.table with geometric mean pop predictions by
-## treatment and nominal sample time. Only use sample records.
+## Derive geometric mean pop predictions by treatment and nominal
+## sample time. Only use sample records. 
 res1.mean <- res1.dt[EVID==0,.(gmPRED=exp(mean(log(PRED)))),
                      by=.(trtact,NOMTIME)]
 ## plot individual observations and geometric mean pop
-## predictions. Split by treatment.
+## predictions. Split (facet) by treatment.
 ggplot(subset(res1,EVID==0))+
     geom_point(aes(TIME,DV))+
     geom_line(aes(NOMTIME,gmPRED),data=res1.mean,colour="red")+

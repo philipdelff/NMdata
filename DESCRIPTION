@@ -10,7 +10,7 @@ RoxygenNote: 7.1.1
 Roxygen: list(roclets=c("collate", "namespace", "rd", "vignette"))
 Depends: R (>= 3.0.0)
 Imports: data.table
-Suggests: testthat, knitr, ggplot2, tibble
+Suggests: testthat, knitr, rmarkdown, ggplot2, tibble
 VignetteBuilder: knitr
 Encoding: UTF-8
 URL: https://philipdelff.github.io/NMdata/
