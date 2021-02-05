@@ -1,0 +1,311 @@
+---
+title: "Data creation tools"
+output: rmarkdown::html_vignette:
+    toc: true 
+toc_depth: 2
+Suggests: markdown
+VignetteBuilder: knitr
+vignette: >
+  %\VignetteIndexEntry{Data creation tools}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+header-includes:
+- \usepackage{ae}
+---
+
+
+
+
+
+
+Built 2021-02-04 using NMdata 0.0.6.6.
+
+
+## Introduction
+Nonmem has quite a number of restrictions on the format of the input data, and
+problems with the data set is a very common reason for Nonmem not to behave as
+expected. When this happens, you easily waste a lot time debugging the
+data. `NMdata` includes some simple functions to prevent these situations.
+
+This vignette uses `data.table` syntax for the little bit of data manipulation
+performed. However, you don't need to use data.table _at all_ to use these tools
+or any tool in `NMdata`. The reason why the functions return data.table objects
+is that the data set is a data.table to begin with
+
+
+```r
+pk <- readRDS(file = system.file("examples/data/xgxr2.rds", package = "NMdata"))
+class(pk)
+#> [1] "data.table" "data.frame"
+```
+
+If this was a `data.frame`, the `NMdata` functions would keep returning objects
+of class `data.frame`.
+
+
+## Automated checks of merge results
+Merges are a very common source of data creation bugs. As simple as they may
+seem, merges likely leave you with an unexpected number of rows, some repeated or
+some omitted. Merges are very powerful and flexible, and when preparing a data
+set, they are fundamental. However, many merges for dataset creation are of the
+specific and simple kind where columns are added to an existing dataset. In this
+situation the rows that come out of the merge are the exact same as in one of
+the existing datasets. Say we want to add a covariate:
+
+
+```r
+dim(pk)
+#> [1] 1500   24
+class(pk)
+#> [1] "data.table" "data.frame"
+dt.cov <- pk[, .(ID = unique(ID)[1:10])]
+dt.cov[, `:=`(COV, sample(1:5, size = 10, replace = TRUE))]
+dt.cov
+#>     ID COV
+#>  1: 31   3
+#>  2: 32   2
+#>  3: 33   5
+#>  4: 34   5
+#>  5: 35   1
+#>  6: 36   1
+#>  7: 37   5
+#>  8: 38   5
+#>  9: 39   1
+#> 10: 40   1
+pk2 <- merge(pk, dt.cov, by = "ID")
+dim(pk2)
+#> [1] 100  25
+## now as expected
+pk3 <- merge(pk, dt.cov, by = "ID", all.x = TRUE)
+dim(pk3)
+#> [1] 1500   25
+```
+
+So when creating `pk2` we lost a lot of rows because we forgot the `all.x`
+option. And also as we shall now see, just checking the resulting dimensions is not enough.
+
+
+```r
+dt.cov2 <- pk[, .(ID = unique(ID))]
+dt.cov2[, `:=`(COV, sample(1:5, size = .N, replace = TRUE))]
+dt.cov2 <- dt.cov2[c(1, 1:(.N - 1))]
+# dt.cov2 <- dt.cov2[c(1:(.N))]
+pk4 <- merge(pk, dt.cov2, by = "ID")
+dim(pk4)
+#> [1] 1500   25
+```
+
+As illustrated by these simple examples, even the simplest merges have
+to be rigorously checked, no exceptions. The function `mergeCheck(x1,x2)`
+ensures that the result has exactly one of each rows from `x1` and
+nothing else. We can use `...` to pass additional arguments to merge.
+
+
+```r
+pk2 <- try(mergeCheck(pk, dt.cov, by = "ID"))
+#> Warning in mergeCheck(pk, dt.cov, by = "ID"): Rows disappeared during merge.
+#> Warning in mergeCheck(pk, dt.cov, by = "ID"): 
+#> nrow(pk): 1500
+#> nrow(dt.cov): 10
+#> nrow(merged.df): 100
+#> Error in mergeCheck(pk, dt.cov, by = "ID") : 
+#>   Merge added and/or removed rows.
+## now as expected
+pk3 <- mergeCheck(pk, dt.cov, by = "ID", all.x = TRUE)
+dim(pk3)
+#> [1] 1500   25
+```
+
+The result always has the same order of rows as the `x1` argument.
+
+Another problem that the programmer may not realize during a merge is
+that column names are shared across `x1` and `x2`. This will silently create
+colmn names like `col.x` and `col.y` in the output. `mergeCheck` will
+by default give a warning if that happens.
+
+There
+is only one difference from the behaviour of the `merge.data.frame`
+function syntax, being that the `by` argument must always be supplied.
+
+You may think that this will limit your merges, and that you need
+merges for inner and outer joins etc. You are exactly right -
+`mergeCheck` is not intended for those merges and does not support
+them. When that is said, the kind of merges that are supported, are
+indeed very common. As a fun fact, all merges in the `NMdata` package
+are performed with `mergeCheck`. 
+
+
+
+## Exclusion flags
+It is good practice not to discard records from a dataset but to flag
+them and omit them in model estimation. We also need to account for
+how many data records were discarded due to which criteria. A couple
+of functons in `NMdata` help you do this in a way that is easy to
+integrate with Nonmem. 
+
+### Assign and count flags
+For use in Nonmem, the easiest is that inclusion/exclusion is
+determined by a single column in data - we call that column `FLAG`. `FLAG`
+obviously draws on information from other columns such as `TIME`, `DV`,
+and many others, depending on your dataset and your way of working.
+
+What
+rows to omit from a dataset can vary from one analysis to
+another. Hence, the aim with the chosen design is that the inclusion
+criteria can be changed and applied to overwrite an existing
+inclusion/exclusion selection. 
+
+The function that applies inclusion/excluasion rules is called
+`flagsAssign`, and it takes a dataset and a data.frame with rules as
+arguments.
+
+
+```r
+pk <- readRDS(file = system.file("examples/data/xgxr2.rds", package = "NMdata"))
+dt.flags <- fread(text = "FLAG,flag,condition
+10,Below LLOQ,BLQ==1")
+
+pk <- flagsAssign(pk, dt.flags)
+#> In flagsAssign(pk, dt.flags) : Data contains FLAG already. This is overwritten
+#> In flagsAssign(pk, dt.flags) : Data contains flag already. This is overwritten
+#> In flagsAssign(pk, dt.flags) : Coding FLAG = 10, flag = Below LLOQ
+```
+
+Your first question may be why fread is used to create a data.table
+(like read.csv to create a data.frame. The reason is that this way, we
+can write the information line by line. If you have ten lines in the
+dataset above and do `data.frame(FLAG=...,flag=...,condition=...)` it
+gets impossible to read what elements of the three columns that
+correspond.
+
+`flagsAssign` applies the conditions sequentially. `FLAG=0` means that
+the observation is included in the analysis. You can use any
+expression that can be evaluated within the data.frame. In this case,
+BLQ has to exist in `pk`.
+
+Actually, the evaluated expressions are slightly different from what
+is written in the table above. `flagsAssign` will prepend the
+condition that `FLAG==0` in order for the conditions to be
+sequential. Again, the omission will be attributed to the first
+condition matched.
+
+An overview of the number of observations disregarded due to the
+different conditions is then obtained using `flagsCount`:
+
+
+```r
+tab.count <- flagsCount(data = pk, tab.flags = dt.flags)
+print(tab.count)
+#>            flag N.left Nobs.left N.discarded Nobs.discarded
+#> 1:     All data    150      1500          NA             NA
+#> 2:   Below LLOQ    150       905           0            595
+#> 3: Analysis set    150       905          NA             NA
+```
+
+`flagsCount` includes an option to save the the table right away.
+
+## Finalize data format and write to file
+Once you have your dataset in place, `NMdata` provides a few useful
+functions. At this point, ideally you check your dataset for any
+incosistency. If you miss an inconsistency, the time you will spend
+finding it risks increasing hugely. First, you need to wait for Nonmem
+to finish if the inconsistency is not fatal for Nonmem's ability to
+run the model. Then, you may still not realize and continue working
+with Nonmem to build the model before you realize that something is
+wrong. `NMdata` is still ways from providing a sufficient set of tests
+to run, but still these checks are useful and easy and cheap to run.
+
+### Automated ordering of columns
+The order of columns in Nonmem is important for two reasons. One is
+that a character in a variable read into Nonmem will make the run
+fail. The other is that there are restrictions on the number of
+variables you can read into Nonmem, depending on the
+version. `NMcolOrders` tries to put the used columns first, and
+other or maybe even unusable columns in the back of the dataset. It
+does so by a mix of recognition or column names and analysis of the
+column contents. 
+
+Columns that cannot be converted to numeric are put in the back, while
+column bearing standard Nonmem variable names like ID, TIME, EVID etc.
+will be pulled up front. You can of course add column names to
+prioritize to front (`first`) or back (`last`). See `?NMorderColumns` for
+more options.
+
+
+```r
+pk <- NMorderColumns(pk)
+#> Warning: In NMorderColumns(pk) : These standard nonmem columns were not found in data:
+#> MDV
+```
+
+### Writing data to files
+For the final step of writing the dataset, `NMwriteData` is
+provided. Most importantly, it writes a csv for Nonmem and an rds for
+R with equal contents, but with the rds including all information
+(such as factor levels) which cannot be saved in csv (NMscanData will
+know how to make use of this information once you retrieve the Nonmem
+results). It also provides a proposal for text to include in the
+`$INPUT` and `$DATA` sections of the Nonmem control
+streams - for you to copy-paste. 
+
+
+```r
+NMwriteData(pk)
+#> Nonmem data file:
+#> 
+#> For NonMem:
+#> $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE
+#> PART PROFDAY PROFTIME WEIGHTB EFF0
+#> $DATA 
+#> IGN=@
+#> IGNORE=(FLAG.NE.0)
+#> 
+#> Data returned but not written to file(s).
+```
+
+If a file name had been provided, the data would have been written,
+and the path to the data file would have been included in the message
+written back to the user. There are several arguments that will affect
+the proposed text for the Nonmem run, see `?NMwriteData`.
+
+## Stamp objects for traceability
+The last couple of functions that will be introduced here are used for
+tracing datasets to data creation scripts, including time stamps and
+other information you want to include with the data set. 
+
+
+```r
+pk <- stampObj(pk, script = "vignettes/DataCreate.Rmd")
+objInfo(pk)
+#> $DataCreateScript
+#> [1] "vignettes/DataCreate.Rmd"
+#> 
+#> $CreationTime
+#> [1] "2021-02-04 00:35:24 EST"
+```
+The `script` argument is recognized by `stampObj`, but you can add anything to this. Say you want to keep descriptive note too:
+
+
+```r
+pk <- stampObj(pk, script = "vignettes/DataCreate.Rmd", Description = "A PK dataset used for examples.")
+objInfo(pk)
+#> $DataCreateScript
+#> [1] "vignettes/DataCreate.Rmd"
+#> 
+#> $CreationTime
+#> [1] "2021-02-04 00:35:24 EST"
+#> 
+#> $Description
+#> [1] "A PK dataset used for examples."
+```
+
+These are very simple functions. But they are simple to use as well,
+and hopefully they will help you avoid sitting with a data set trying
+to guess which script generated it so you can do a modification or
+understand how something was done.
+
+When using `NMwriteData`, you don't have to call `stampObj`
+explicitly. Just pass the `script` argument to `NMwriteData` and
+`stampObj` will be applied automatically.
+
+
