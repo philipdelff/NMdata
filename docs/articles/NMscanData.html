@@ -97,19 +97,19 @@
 
     
     
-<p>Built 2021-02-01 using NMdata 0.0.6.6.</p>
+<p>Built 2021-02-07 using NMdata 0.0.6.6.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>Getting data from R to Nonmem and back can be tedious and time consuming. The way data is exported from Nonmem means that a few tables may have to be combined, and then some variables may still be missing (like character variables which may be in the input data file). Most modellers develop some habits over time to avoid some issues. But still, it may be time demanding even for experienced modelers to pick up a model developed by someone else or by themselves earlier in their career just because they need to understand what data exported and how.</p>
-<p>This vignette focuses on how NMdata provides a very general solution for what needs to be trivial: get a dataset out of a Nonmem run, including discarded columns and rows from the input data. And “general” means that it will work out of the box in as many cases as possible. It will do its best to understand how the data can be read and combined, (ideally) regardless of the way the model was written.</p>
-<p>In brevity, the most important steps are</p>
+<p>Preparing data for analysis in <code>Nonmem</code> and reading the results back into <code>R</code> can be time consuming. After a <code>Nonmem</code> run, a few tables may have to be combined. Then we need character variables that are only available in the input data file. And maybe the events ignored by <code>Nonmem</code> (say, observations below quantification limit that we still need in further analysis and plotting).</p>
+<p>This vignette focuses on how to use <code>NMdata</code> to automate what needs to be trivial: get a dataset out of a <code>Nonmem</code> run, including discarded columns and rows from the input data. In brevity, the most important steps are</p>
 <ul>
 <li>Read and combine output tables</li>
-<li>If wanted, read input data and restore variables that were not output from the nonmem model</li>
-<li>If wanted, also restore rows from input data that were disregarded in Nonmem (e.g. observations or subjects that are not part of the analysis)</li>
+<li>If wanted, read input data and restore variables that were not output from the <code>Nonmem</code> model</li>
+<li>If wanted, also restore rows from input data that were disregarded in <code>Nonmem</code> (e.g. observations or subjects that are not part of the analysis)</li>
 </ul>
-<p>This should not be too hard to do. But with the large degree of flexibility Nonmem offer, there are a lot of caveats to be aware of, again especially if the model wasn’t written by your own (current) standards.</p>
+<p>In most cases, this is not too hard to do. But with the large degree of flexibility <code>Nonmem</code> offer, there are a lot of caveats to be aware of. The implementation in <code>NMdata</code> aims at preventing and checking for as many of these caveats as possible. It is fast and default argument values can be configured depending on your setup (data standards, directory structure and other preferences).</p>
+<p>Like the rest of <code>NMdata</code>, this functionality assumes as little as possible about how you work. It assumes nothing about the <code>Nonmem</code> model itself and as little as possible about the organization of data and file paths/names. This makes it powerful for meta analyses, for reading a model developed by someone else - or one written by ourselves when we used to do things slightly differently. It will work out of the box in the vast majority of cases.</p>
 <p>For this vignette we initialize by attaching these packages and tweaking plotting layout slightly:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://philipdelff.github.io/NMdata">NMdata</a></span>)
@@ -119,16 +119,16 @@
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span>)
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()<span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(legend.position=<span class="st">"bottom"</span>))
 </pre></div>
-<p>For the purpose of this vignette we will configure <code>NMdata</code> not to check time stamps of input control streams and input data against output control streams. You will typically not need this. We need it because we cannot control time stamps of the files in the distributed package.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span>(check.time=<span class="fl">FALSE</span>)
-</pre></div>
+<!-- For the purpose of this vignette we will configure `NMdata` not to check time -->
+<!-- stamps of input control streams and input data against output control -->
+<!-- streams. We need it because we cannot control -->
+<!-- time stamps of the files in the distributed package. -->
 </div>
 <div id="get-started" class="section level2">
 <h2 class="hasAnchor">
 <a href="#get-started" class="anchor"></a>Get started</h2>
-<p>Try NMscanData on any model:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
+<p>Try <code>NMscanData</code> on any model:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="kw">res0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),
                    cbind.by.filters=<span class="fl">TRUE</span>)
 <span class="co">#&gt; Model:  xgxr001 </span>
@@ -150,12 +150,12 @@
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="kw">res0</span>)
 <span class="co">#&gt; [1] "NMdata"     "data.frame"</span>
 </pre></div>
-<p><code>NMscanData</code> has read and combined input and output data and returned a <code>data.frame</code>. The <code>NMdata</code> class allows for keeping additional information in the object, but the object can be treated as a <code>data.frame</code>. The <code>cbind.by.filters</code> means that we want <code>NMscanData</code> to look at the Nonmem code (the output control stream) to figure out what part of the input data was used by Nonmem for the model run (by <code>$IGNORE</code> and <code>$ACCEPT</code> statements in <code>$DATA</code>). The same filtering is then applied to the input data before adding columns to the output. In fact, that argument is not necessary, this is default behaviour. However, if we left it out, <code>NMscanData</code> would try to explain this to you so you make an active choice what to do here.</p>
+<p><code>NMscanData</code> has read and combined input and output data and returned a <code>data.frame</code>. The <code>NMdata</code> class allows for keeping additional information in the object, but the object can be treated as a <code>data.frame</code>. The <code>cbind.by.filters</code> means that we want <code>NMscanData</code> to look at the <code>Nonmem</code> code (the output control stream) to figure out what part of the input data was used by <code>Nonmem</code> for the model run (by <code>$IGNORE</code> and <code>$ACCEPT</code> statements in <code>$DATA</code>). The same filtering is then applied to the input data before adding columns to the output. In fact, that argument is not necessary, this is default behaviour. However, if we left it out, <code>NMscanData</code> would try to explain this to you so you make an active choice what to do here.</p>
 <div id="merge-output-and-input-data-by-a-unique-row-identifier" class="section level3">
 <h3 class="hasAnchor">
 <a href="#merge-output-and-input-data-by-a-unique-row-identifier" class="anchor"></a>Merge output and input data by a unique row identifier</h3>
-<p>The default method of interpreting Nonmem code is not recommended. It is the default because it does not rely on assumptions about the input data and hence very generic. It happens that this dataset and one of the output tables contain a row identifier (a row counter in the column called <code>ROW</code>). If we skipped the <code>cbind.by.filters</code> above, <code>NMscanData</code> would figure this out and recommend merging by this column. This is what we will now do using the <code>col.row</code> argument. The following checks that we get the same result from the two methods. When using <code>col.row</code>, the row identifier is the first column in the returned data. This is why the columns in <code>res0</code> are reordered accordingly before the comparison. The way the reordering of columns is done is a bit involved. It makes sure that if any columns in <code>res0</code> are not in <code>res1</code>, these are not dismissed. It would be much easier to use <code><a href="https://Rdatatable.gitlab.io/data.table/reference/setcolorder.html">data.table::setcolorder</a></code> but we are sticking to base R here.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
+<p>The default method of interpreting <code>Nonmem</code> code is not recommended. It is the default because it does not rely on assumptions about the input data and hence very generic. It happens that this dataset and one of the output tables contain a unique row identifier (a row counter in the column called <code>ROW</code>). If we skipped the <code>cbind.by.filters</code> above, <code>NMscanData</code> would figure this out and recommend merging by this column. This is what we will now do using the <code>col.row</code> argument. The following demonstrates that we get the same result from the two methods. When using <code>col.row</code>, the row identifier is the first column in the returned data. This is why the columns in <code>res0</code> are reordered accordingly before the comparison. The way the reordering of columns is done is a bit involved. It makes sure that if any columns in <code>res0</code> are not in <code>res1</code>, these are not dismissed. It would be much easier to use <code><a href="https://Rdatatable.gitlab.io/data.table/reference/setcolorder.html">data.table::setcolorder</a></code> but we are sticking to base R here.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="kw">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),
                    col.row=<span class="st">"ROW"</span>,quiet=<span class="fl">TRUE</span>)
 <span class="kw">res0</span> <span class="op">&lt;-</span> <span class="kw">res0</span>[,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res1</span>),<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setops.html">setdiff</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res0</span>),<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res1</span>)))]
@@ -164,18 +164,18 @@
 </pre></div>
 <p>All features shown below will work whether you supply <code>col.row</code> or not. We use <code>col.row</code> because it is more robust and always recommended.</p>
 <p>Let’s have a quick look at the data we got back. The following is done with data.table. The comments in the code should make it clear what happens if you are not familiar with <code>data.table</code>. You can do this with <code><a href="https://rdrr.io/r/base/tapply.html">base::tapply</a></code>, <code><a href="https://rdrr.io/r/stats/aggregate.html">stats::aggregate</a></code>, a combination of <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarize</a></code>, or whatever you prefer.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
+<div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="co">## trtact is a character. Make it a factor with levels ordered by</span>
 <span class="co">## numerical dose level.</span>
 <span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span>(<span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span>,<span class="kw">res1</span><span class="op">$</span><span class="kw">DOSE</span>)
 <span class="co">## We are going to use data.table</span>
 <span class="kw">res1.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html">as.data.table</a></span>(<span class="kw">res1</span>)
-<span class="co">## Derive another data.table with geometric mean pop predictions by</span>
-<span class="co">## treatment and nominal sample time. Only use sample records.</span>
+<span class="co">## Derive geometric mean pop predictions by treatment and nominal</span>
+<span class="co">## sample time. Only use sample records. </span>
 <span class="kw">res1.mean</span> <span class="op">&lt;-</span> <span class="kw">res1.dt</span>[<span class="kw">EVID</span><span class="op">==</span><span class="fl">0</span>,<span class="fu">.</span>(gmPRED=<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="kw">PRED</span>)))),
                      by=<span class="fu">.</span>(<span class="kw">trtact</span>,<span class="kw">NOMTIME</span>)]
 <span class="co">## plot individual observations and geometric mean pop</span>
-<span class="co">## predictions. Split by treatment.</span>
+<span class="co">## predictions. Split (facet) by treatment.</span>
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span>(<span class="kw">res1</span>,<span class="kw">EVID</span><span class="op">==</span><span class="fl">0</span>))<span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">TIME</span>,<span class="kw">DV</span>))<span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">NOMTIME</span>,<span class="kw">gmPRED</span>),data=<span class="kw">res1.mean</span>,colour=<span class="st">"red"</span>)<span class="op">+</span>
@@ -184,66 +184,8 @@
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(x=<span class="st">"Hours since administration"</span>,y=<span class="st">"Concentration (ng/mL)"</span>)
 </pre></div>
 <p><img src="NMscanData_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
-<p>We see from the plot that the obtained dataset contains both model predictions (i.e. from output tables) and a character variable, <code>trtact</code> (i.e. from input data). NMscanData has read both and combined them. The data used for the example is a PK single ascending dose data set borrowed from the <a href="https://cran.r-project.org/web/packages/xgxr/index.html">xgxr</a> package, kindly allowed by the xgxr team.</p>
-</div>
-<div id="subject-level-variables" class="section level3">
-<h3 class="hasAnchor">
-<a href="#subject-level-variables" class="anchor"></a>Subject-level variables</h3>
-<p>In a proper PK/PD analysis we need to explore the data at multiple variability levels. What we looked at above is at dosing and sampling level (one row per dosing or sampling event). <code>NMdata</code> provides very useful functions to extract information at other levels of variability. Before extracting the subject-level information we will add an individual exposure measure to the dataset. We will use the empirical Bayes’ estimate of the individual maximum concentration. This is derived as the maximum prediction across the sample times - it may be better to simulate the model at a richer time scale to get better precision. Again, we make use of <code>data.table</code> but feel free to use what you prefer. <code>findCovs</code> - like other <code>NMdata</code> functions - will work on <code>data.frame</code>’s, <code>tibble</code>’s and other <code>data.frame</code>-like classes.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="co">## with data.table, create a new column representing ID-level Cmax</span>
-<span class="kw">res1.dt</span>[,<span class="kw">Cmax</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="kw">IPRED</span>),by=<span class="fu">.</span>(<span class="kw">ID</span>)]
-<span class="co">## findCovs picks the columns that do not vary within cols.id. One row</span>
-<span class="co">## per value of cols.id.</span>
-<span class="kw">res1.id</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/findCovs.html">findCovs</a></span>(<span class="kw">res1.dt</span>,cols.id=<span class="st">"ID"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">res1.id</span>)
-<span class="co">#&gt; [1] 150  27</span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">res1.id</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">WEIGHTB</span>,<span class="kw">Cmax</span><span class="op">/</span><span class="kw">DOSE</span>,colour=<span class="kw">trtact</span>))<span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>()<span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(x=<span class="st">"Bodyweight at baseline (kg)"</span>)
-</pre></div>
-<p><img src="NMscanData_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
-<p><code>cols.id</code> can be longer than one. Include a treatment column to support cross-over, a study column for meta analysis, or a model column if you are comparing model fits (see below how to do this very easily).</p>
-<p>If your model includes occasion variability, you probably also want to look at</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="co">## we have no occasion variability in this data</span>
-<span class="co">## res1.id.occ &lt;- findCovs(res1,cols.id=c("ID","OCC"))</span>
-</pre></div>
-<p>Let’s use the same function to see the variables that are constant across the whole dataset</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="../reference/findCovs.html">findCovs</a></span>(<span class="kw">res1</span>)
-<span class="co">#&gt;   FLAG STUDY    TVKA  TVV2    TVCL    TVV3     TVQ      V3       Q BLQ CYCLE</span>
-<span class="co">#&gt; 1    0     1 0.18116 0.042 0.72491 0.17857 8813700 0.17857 8813700   0     1</span>
-<span class="co">#&gt;   PART PROFDAY nmout TIMEUNIT         flag   model</span>
-<span class="co">#&gt; 1    1       1  TRUE    Hours Analysis set xgxr001</span>
-</pre></div>
-<p>Let’s take a look at what is in the <code>res1.id</code> generated above. It is a mix of variables that vary at subject level and varibles that are constant across the full dataset.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">res1.id</span>)
-<span class="co">#&gt; [1] 150  27</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">res1.id</span>,<span class="fl">2</span>)
-<span class="co">#&gt;   ID FLAG STUDY    TVKA  TVV2    TVCL    TVV3     TVQ      KA    V2      CL</span>
-<span class="co">#&gt; 1 31    0     1 0.18116 0.042 0.72491 0.17857 8813700 0.18116 0.042 0.72491</span>
-<span class="co">#&gt; 2 32    0     1 0.18116 0.042 0.72491 0.17857 8813700 0.18116 0.042 0.72491</span>
-<span class="co">#&gt;        V3       Q BLQ CYCLE DOSE PART PROFDAY WEIGHTB   eff0 nmout TIMEUNIT</span>
-<span class="co">#&gt; 1 0.17857 8813700   0     1    3    1       1  87.031 56.461  TRUE    Hours</span>
-<span class="co">#&gt; 2 0.17857 8813700   0     1    3    1       1 100.620 45.096  TRUE    Hours</span>
-<span class="co">#&gt;   TRTACT         flag trtact   model Cmax</span>
-<span class="co">#&gt; 1   3 mg Analysis set   3 mg xgxr001    0</span>
-<span class="co">#&gt; 2   3 mg Analysis set   3 mg xgxr001    0</span>
-</pre></div>
-<p><code>findCovs</code> has a counterpart in <code>findVars</code> which finds variables that do vary within constant values of optional <code>cols.id</code> columns. To get only the ones that vary within the dataset (i.e. they are truely subject-level variables and not say a study number if we only have one study), we can do</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="kw">res1.id2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/findVars.html">findVars</a></span>(<span class="kw">res1.id</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">res1.id2</span>)
-<span class="co">#&gt; [1] 150  10</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">res1.id2</span>,<span class="fl">2</span>)
-<span class="co">#&gt;   ID      KA    V2      CL DOSE WEIGHTB   eff0 TRTACT trtact Cmax</span>
-<span class="co">#&gt; 1 31 0.18116 0.042 0.72491    3  87.031 56.461   3 mg   3 mg    0</span>
-<span class="co">#&gt; 2 32 0.18116 0.042 0.72491    3 100.620 45.096   3 mg   3 mg    0</span>
-</pre></div>
-<p><code>findVars</code> supports the cols.id argument too. So you can use <code><a href="../reference/findVars.html">findVars(res1,cols.id="ID")</a></code> to find variables that are non-constant within (at least one value of) ID. <code>cols.id</code> can be of arbitrary length.</p>
-<p>Of course, we most often know what covariates or other subject-level variables to look at, and we would not search for them after running a nonmem model. But in the situation where you are looking at someone else’s work or you are doing a meta analysis across models where the data has been coded slightly differently, these simple tools can be very useful. Or if you like writing generic wrapper functions, you may find this very handy. Also, remember that if a variable is returned by these functions, you know that they fullfill the variability requirement. We know that variables in <code>res1.id</code> above do not vary within <code>ID</code>, meaning that no <code>ID</code> has more than one value of the variable. <code>NA</code> counts as any other value, so if a value is returned for subject in <code>res1.id</code>, this subject does not have <code>NA</code>’s in <code>res1</code>.</p>
+<p>We see that the obtained dataset contains both model predictions (i.e. from output tables) and a character variable, <code>trtact</code> (i.e. from input data). Only the .lst (output control stream) file path was supplied by us.</p>
+<p>The data used for the example is a PK single ascending dose data set from the <a href="https://cran.r-project.org/web/packages/xgxr/index.html">xgxr</a> package, kindly allowed by the xgxr team.</p>
 </div>
 </div>
 <div id="more-options-and-features" class="section level2">
@@ -252,11 +194,11 @@
 <div id="recover-rows" class="section level3">
 <h3 class="hasAnchor">
 <a href="#recover-rows" class="anchor"></a>Recover rows</h3>
-<p>You may have wondered why there is so little data on the small doses in the plot of observations and geometric mean population predictions above. The reason is that observations below the lower limit of quantification have been disregarded. For this and many other reasons, it is very common to use <code>ACCEPT</code> and <code>IGNORE</code> statements in the <code>$INPUT</code> section of nonmem control streams. NMscanData can include this data in the returned data object as well. Let’s redo the plot above taking advantage of this option. We will use <code>data.table</code> for the calculations again, so we will reset the <code>as.fun</code> which we set in the beginning to get <code>data.frame</code>’s.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
+<p>You may have wondered why there is so little data on the small doses in the plot of observations and geometric mean population predictions above. The reason is that observations below the lower limit of quantification have been disregarded. For this and many other reasons, it is very common to use <code>ACCEPT</code> and <code>IGNORE</code> statements in the <code>$INPUT</code> section of nonmem control streams. <code>NMscanData</code> can include this data in the returned data object as well. Let’s redo the plot above taking advantage of this option. We will use <code>data.table</code> for the calculations again, so we will reset the <code>as.fun</code> which we set in the beginning to get <code>data.frame</code>’s.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span>(as.fun=<span class="st">"data.table"</span>)
 </pre></div>
-<div class="sourceCode" id="cb12"><pre class="downlit">
+<div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="kw">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>, package=<span class="st">"NMdata"</span>),
                    col.row=<span class="st">"ROW"</span>,recover.rows=<span class="fl">TRUE</span>)
 <span class="co">#&gt; Model:  xgxr014 </span>
@@ -293,8 +235,8 @@
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(x=<span class="st">"Hours since administration"</span>,y=<span class="st">"Concentration (ng/mL)"</span>)
 </pre></div>
 <p><img src="NMscanData_files/figure-html/meanbydose-1.png" width="672"></p>
-<p>A couple of details are different compared to when we read <code>res1</code>. For now, notice one thing changed when calculating the population geometric means by nominal time and dose. We included <code>nmout==TRUE</code>. <code>nmout</code> is a boolean column created by <code>NMscanData</code> expressing whether the rows were in the output data (<code>nmout==TRUE</code>) or they were recovered from the input data. <code>PRED</code> is obviously not calculated for data rows neglected by Nonmem, so we want to keep those out of the calculation. Let’s see how many were recovered</p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
+<p>Of course, this only works because a value has been assigned to the (in this case) <code>DV</code> column for the observations below the quantification limit. A couple of details are different compared to when we read <code>res1</code>. For now, notice one thing changed when calculating the population geometric means by nominal time and dose. We included <code>nmout==TRUE</code>. <code>nmout</code> is a boolean column created by <code>NMscanData</code> expressing whether the rows were in the output data (<code>nmout==TRUE</code>) or they were recovered from the input data. <code>PRED</code> is obviously not calculated for data rows neglected by <code>Nonmem</code>, so we want to keep those out of the calculation. Let’s see how many were recovered</p>
+<div class="sourceCode" id="cb7"><pre class="downlit">
 <span class="co">## this is just a long-format representation of</span>
 <span class="co">## with(res1,table(nmout,flag)) using data.table.</span>
 <span class="kw">res2</span>[,<span class="kw">.N</span>,by=<span class="fu">.</span>(<span class="kw">nmout</span>,<span class="kw">flag</span>)]
@@ -302,16 +244,16 @@
 <span class="co">#&gt; 1:  TRUE Analysis set 905</span>
 <span class="co">#&gt; 2: FALSE   Below LLOQ 595</span>
 </pre></div>
-<p>So <code>res2[nmout==TRUE,.N]</code> were part of the analysis. The <code>recover.rows</code> argument can be used independently of whether <code>col.row</code> is used.</p>
+<p>So 905 rows were part of the analysis. The <code>recover.rows</code> argument can be used independently of whether <code>col.row</code> is used.</p>
 </div>
 <div id="combine-multiple-models" class="section level3">
 <h3 class="hasAnchor">
 <a href="#combine-multiple-models" class="anchor"></a>Combine multiple models</h3>
-<p>You may have noticed a column called <code>model</code> in some of the output above. <code>NMscanData</code> by default adds this column for convenience when working with multiple models. You can specify both column name and content as arguments in <code>NMscanData</code>. If you don’t, the column will be called <code>model</code>, and the model name taken from the <code>lst</code> file name (say, <code>xgxr001</code>). In the following we use this to compare population predictions from two different models. We read them again just to show the use of the argument to name the models ourselves. Remember, we reset the <code>NMdata.as.fun</code> option so we are working with <code>data.table</code> and we easily stack filling in <code>NA</code>’s with <code>rbind</code> (<code>rbind.data.table</code>).</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
+<p><code>NMscanData</code> by default adds a column called <code>model</code> for convenience when working with multiple models. You can specify both column name and content as arguments in <code>NMscanData</code>. You can also configure the default column name and the function that generates the column content by <code>NMdataConf</code>. If you don’t, the column will be called <code>model</code>, and the model name taken from the <code>lst</code> file name (say, <code>xgxr001</code>). In the following we use this to compare population predictions from two different models. We read them again just to show the use of the argument to name the models ourselves. Remember, we configure <code>NMdata</code>’s <code>as.fun</code> option so we are working with <code>data.table</code> and we easily stack with <code>rbind</code> (<code>rbind.data.table</code>) filling in <code>NA</code>’s.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit">
 <span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span>(as.fun=<span class="st">"data.table"</span>)
 </pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit">
+<div class="sourceCode" id="cb9"><pre class="downlit">
 <span class="co">## notice fill is an option to rbind with data.table</span>
 <span class="kw">res1.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),
                      col.row=<span class="st">"ROW"</span>,quiet=<span class="fl">TRUE</span>)
@@ -328,55 +270,58 @@
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span>()<span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span><span class="kw">trtact</span>,scales=<span class="st">"free_y"</span>)
 </pre></div>
-<p><img src="NMscanData_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
+<p><img src="NMscanData_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
 </div>
 <div id="use-a-row-identifier-or-interpret-nonmem-code" class="section level3">
 <h3 class="hasAnchor">
-<a href="#use-a-row-identifier-or-interpret-nonmem-code" class="anchor"></a>Use a row identifier or interpret Nonmem code</h3>
-<p>The most robust way to combine augment output data with input data using <code>NMscanData</code> is to include a unique row identifier in both input and at least one full-length output table. Then tell NMscanData to use the row identifier using the <code>col.row</code> argument. The advantage is that less nonmem code has to be interpreted for this method. However, notice that no checks are being done if the row identifier has been modified during the nonmem run. If you tell NMscanData that the column called <code>ROW</code> is a to be used as the row identifier, and <code>ROW</code> is being modified in say <code>$PK</code> before being output in an output table, this will mess up the result. But if you keep the good practice of including a unique row identifier in your dataset, the advice is to include it in at least one output table and tell <code>NMscanData</code> to use it by the argument <code>col.row</code>.</p>
+<a href="#use-a-row-identifier-or-interpret-nonmem-code" class="anchor"></a>Use a row identifier or interpret <code>Nonmem</code> code</h3>
+<p>The most robust way to combine augment output data with input data using <code>NMscanData</code> is to include a unique row identifier in both input and at least one full-length output table. Then tell NMscanData to use the row identifier using the <code>col.row</code> argument. The advantage is that less <code>Nonmem</code> code has to be interpreted for this method. However, notice that no checks are being done if the row identifier has been modified during the <code>Nonmem</code> run. If you tell NMscanData that the column called <code>ROW</code> is a to be used as the row identifier, and <code>ROW</code> is being modified in say <code>$PK</code> before being output in an output table, this will mess up the result. But if you keep the good practice of including a unique row identifier in your dataset, the advice is to include it in at least one output table. Tell <code>NMscanData</code> to use it by the <code>col.row</code> argument.</p>
 </div>
 <div id="preserve-all-input-data-properties" class="section level3">
 <h3 class="hasAnchor">
 <a href="#preserve-all-input-data-properties" class="anchor"></a>Preserve all input data properties</h3>
-<p>In the code above when plotting the population predictions together with individual observations, we saw that character variables (the treatment as dose with unit) was read from the input data file and was used for splitting the plots. However, in order to sort the plots naturally by increasing dose level, we had to run <code>reorder</code> on the variable. This is because the input data is read from a csv file. <code>NMscanData</code> will not code any character variables as factors when reading from text files.</p>
-<p>Since the character representation of treatment was already prepared, it would be natural to encode the factor levels already at that point. In order to preserve such information, we can use R’s native rds format. If the argument <code>use.rds</code> is <code>TRUE</code>, <code>NMscanData</code> will look for an rds file next to the input data file (which is a delimited text file) the exact same name as the text file except the extension must be “<code>.rds</code>” rather than say “<code>.csv</code>” (for Nonmem and <code>NMscanData</code>, the extension of the delimited text file doesn’t matter). If it finds the <code>rds</code> file, this will be used instead. No checks are done of whether the contents are similar in any way to the delimited text file which is ignored in this case.</p>
+<p>In the code above when plotting the population predictions together with individual observations, we saw that character variables (the treatment as dose with unit) was read from the input data file and was used for splitting the plots. However, in order to sort the plots by increasing dose level, we had to run <code>reorder</code> on the variable. This is because the input data is read from a csv file and so factor levels are not preserved. <code>NMscanData</code> will not code any character variables as factors when reading from text files.</p>
+<p>Since the character representation of treatment was already prepared, it would be natural to encode the factor levels already at that point. In order to preserve such information, we can use R’s native rds format. If the argument <code>use.rds</code> is <code>TRUE</code>, <code>NMscanData</code> will look for an rds file next to the input data file (which is a delimited text file) the exact same name as the text file except the extension must be “<code>.rds</code>” rather than say “<code>.csv</code>” (for <code>Nonmem</code> and <code>NMscanData</code>, the extension of the delimited text file doesn’t matter). If it finds the <code>rds</code> file, this will be used instead. No checks are done of whether the contents are similar in any way to the delimited text file which is ignored in this case.</p>
 <p>Return to the example above creating the dataset <code>dat2</code>. Notice the message from NMscanData that an <code>rds</code> file was found. This is why we could sort the plots correctly on the dose level with reordering the factor levels first. There are three advantages of using rds files</p>
 <ul>
 <li>All attributes are kept. This includes column classes and factor levels.</li>
 <li>Reading speed may be improved (NMdata uses <code>fread</code> from <code>data.table</code> which is extremely fast for delimited files so in many cases this difference can be small).</li>
 <li>File sizes are greatly reduced from text to <code>rds</code>. This can be a big advantage if you are transfering files or reading over a network connection. <code>NMdata</code> is generally very fast (thanks to <code>data.table</code>) so file/network access (I/O) is likely to be the main bottleneck.</li>
 </ul>
-<p>If you write Nonmem datasets with the <code><a href="../reference/NMwriteData.html">NMdata::NMwriteData</a></code>, you can get an <code>rds</code> file automatically, exactly where <code>NMscanData</code> will look for it. Creating datasets using <code>NMdata</code> is described in <a href="https://philipdelff.github.io/NMdata/articles/DataCreate.html">this vignette</a>.</p>
+<p>If you write <code>Nonmem</code> datasets with the <code><a href="../reference/NMwriteData.html">NMdata::NMwriteData</a></code>, you can get an <code>rds</code> file automatically, exactly where <code>NMscanData</code> will look for it. Creating datasets using <code>NMdata</code> is described in <a href="https://philipdelff.github.io/NMdata/articles/DataCreate.html">this vignette</a>.</p>
 </div>
 <div id="custom-naming-of-input-and-output-control-streams" class="section level3">
 <h3 class="hasAnchor">
 <a href="#custom-naming-of-input-and-output-control-streams" class="anchor"></a>Custom naming of input and output control streams</h3>
-<p>By default, <code>NMscanData</code> expects a <a href="https://uupharmacometrics.github.io/PsN/">PSN</a>-style naming of input and output control streams. This means that if the input control stream is called <code>model.mod</code>, the returned control stream is called model.lst. If you use a different setup, you can use the <code>file.mod</code> argument. Do one of the following if needed:</p>
+<p>By default, <code>NMscanData</code> expects a <a href="https://uupharmacometrics.github.io/PsN/">PSN</a>-style naming of input and output control streams. This means that if the input control stream is called <code>model.mod</code>, the returned control stream is called <code>model.lst</code>. If you use a different setup, you can use the <code>file.mod</code> argument. Do one of the following if needed:</p>
 <ul>
 <li>Explicitly give the path to the input control stream or</li>
 <li>Pass a function that translates from the output control stream to the input. Example if the input is called <code>input.txt</code> and the output is called <code>output.txt</code>:</li>
 </ul>
-<div class="sourceCode" id="cb16"><pre class="downlit">
+<div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="kw">out2in</span> <span class="op">&lt;-</span> <span class="fu">function</span>(<span class="kw">file</span>) <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span>(<span class="kw">file</span>),<span class="st">"input.txt"</span>)
 <span class="kw">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="st">"path/to/output.txt"</span>,file.mod=<span class="kw">out2in</span>)
+</pre></div>
+<p>You can use <code>NMdataConf</code> to configure the default behaviour to match your setup:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span>(file.mod=<span class="kw">out2in</span>)
 </pre></div>
 </div>
 </div>
 <div id="what-exactly-will-nmscandata-return" class="section level2">
 <h2 class="hasAnchor">
 <a href="#what-exactly-will-nmscandata-return" class="anchor"></a>What exactly will NMscanData return?</h2>
-<p>So far, the merge has been very straightforward, but in many situations, choices are made by <code>NMscanData</code>.</p>
-<p>The following main principles are followed:</p>
+<p>So far, the merge has been very straightforward, but in many situations, choices are made by <code>NMscanData</code>. The following main principles are followed:</p>
 <ul>
 <li>Output data prevails over input data</li>
 <li>Row-specific output data is preferred over ID-level (<code>FIRSTONLY</code> or <code>LASTONLY</code>) tables</li>
 <li>Output tables are prioritized by their order of apperance</li>
-<li>Input data is as defined in the <code>$INPUT</code> section in Nonmem. This includes renaming of columns while columns that are dropped in Nonmem (<code>DROP</code> or <code>SKIP</code>) are included by <code>NMscanData</code>. Columns that are not included in <code>$INPUT</code> are named as in the input data file.</li>
+<li>Input data is as defined in the <code>$INPUT</code> section in <code>Nonmem</code>. This includes renaming of columns while columns that are dropped in <code>Nonmem</code> (<code>DROP</code> or <code>SKIP</code>) are included by <code>NMscanData</code>. Columns that are not included in <code>$INPUT</code> are named as in the input data file.</li>
 <li>If rows are being recovered from input data (the <code>recover.rows</code> argument), no information from output is merged onto these rows.</li>
 <li>The primary aim is to return the output data. If input and output cannot be meaningfully combined (very rare), output will be returned.</li>
 </ul>
 <p>Notice that the summary text printed to the <code>R</code> terminal by <code>NMscanData</code> tells how many columns are included from the available tables. Also, within the resulting object, you can find a detailed table of all variables available, and whether they are included or not.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit">
+<div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span>(<span class="kw">res1.m</span>)<span class="op">$</span><span class="kw">meta</span><span class="op">$</span><span class="kw">variables</span>,topn=<span class="fl">3</span>)
 <span class="co">#&gt;     variable           table     source level COLNUM</span>
 <span class="co">#&gt;  1:      ROW xgxr001_res.txt     output   row      1</span>
@@ -394,15 +339,15 @@
 <p>Each of the steps involved in reading and combining the data from a model run can be done separately.</p>
 <p>The <code>lst</code> file was scanned for output tables, and they were all read (including interpreting the possible <code>firstonly</code> option). The input data has been used based on the <code>$DATA</code> and <code>$INPUT</code> sections of the control stream. The key steps in this process are available as independent functions.</p>
 <ul>
-<li><p><code>NMreadTab</code>: Read an Nonmem output table based on the path to the output table file.</p></li>
-<li><p><code>NMscanTables</code>: Read all output data files defined in a Nonmem run. Return a list of tables (as data.frames or data.tables).</p></li>
-<li><p><code>NMtransInput</code>: Read input data based on a nonmem file. Data will be processed and named like the Nonmem model. <code>ACCEPT</code> and <code>IGNORE</code> filters can be applied as well. There are a few limitations to this functionality at this point. More about them below.</p></li>
+<li><p><code>NMreadTab</code>: Read an <code>Nonmem</code> output table based on the path to the output table file.</p></li>
+<li><p><code>NMscanTables</code>: Read all output data files defined in a <code>Nonmem</code> run. Return a list of tables (as data.frames or data.tables).</p></li>
+<li><p><code>NMtransInput</code>: Read input data based on a <code>Nonmem</code> file. Data will be processed and named like the <code>Nonmem</code> model. <code>ACCEPT</code> and <code>IGNORE</code> filters can be applied as well. There are a few limitations to this functionality at this point. More about them below.</p></li>
 </ul>
 </div>
 <div id="what-should-i-do-for-my-models-to-be-compatible-with-nmscandata" class="section level2">
 <h2 class="hasAnchor">
 <a href="#what-should-i-do-for-my-models-to-be-compatible-with-nmscandata" class="anchor"></a>What should I do for my models to be compatible with NMscanData?</h2>
-<p>The answer to this should be as close to “nothing” as possible - that’s more or less the aim of the function. You just have to make sure that the information that you need is present in input data and output data. No need to output information that is unchanged from input, but make sure to output what you need (like <code>IPRED</code>, <code>CWRES</code>, <code>CL</code>, <code>ETA1</code> etc which cannot be found in input). Some of these values can be found from other files generated by Nonmem but notice: <code>NMscanData</code> uses only input and output data.</p>
+<p>The answer to this should be as close to “nothing” as possible - that’s more or less the aim of the function. You just have to make sure that the information that you need is present in input data and output data. No need to output information that is unchanged from input, but make sure to output what you need (like <code>IPRED</code>, <code>CWRES</code>, <code>CL</code>, <code>ETA1</code> etc which cannot be found in input). Some of these values can be found from other files generated by <code>Nonmem</code> but notice: <code>NMscanData</code> uses only input and output data.</p>
 <p>It is recommended to always use a unique row identifier in both input and output data. This is the most robust way to merge back with input data. In firstonly tables, include the subject ID. Again, everything will most likely work even if you don’t, I personally don’t like relying on “most likely” when I can just as well have robustness.</p>
 </div>
 <div id="limitations" class="section level2">
@@ -412,24 +357,23 @@
 <div id="input-file-must-exist-and-be-unmodified-since-model-run" class="section level3">
 <h3 class="hasAnchor">
 <a href="#input-file-must-exist-and-be-unmodified-since-model-run" class="anchor"></a>Input file must exist and be unmodified since model run</h3>
-<p>If merging with input data, the input data must be available as was when the model was run. If you want to avoid this potential issue, Nonmem can be run in a wrapper script that either copies the input data, or runs <code>NMscanData</code> and saves the output in a compressed file format (like <code>rds</code> or <code>zip</code>).</p>
+<p>If merging with input data, the input data must be available as was when the model was run. If you want to avoid this potential issue, <code>Nonmem</code> can be run in a wrapper script that either copies the input data, or runs <code>NMscanData</code> and saves the output in a compressed file format (like <code>rds</code> or <code>zip</code>).</p>
 </div>
 <div id="not-all-data-filter-statements-implemented" class="section level3">
 <h3 class="hasAnchor">
 <a href="#not-all-data-filter-statements-implemented" class="anchor"></a>Not all data filter statements implemented</h3>
-<p>Nested <code>ACCEPT</code> and <code>IGNORE</code> statements are not supported at this point. The resulting number of rows after applying filters is checked against row-level output table dimensions (if any available). In other words, you have to be unlucky to run into trouble without an error. But it is alway recommended to use a unique row identifier in both input and output tables in order to avoid relying on interpretation of Nonmem code.</p>
+<p>Nested <code>ACCEPT</code> and <code>IGNORE</code> statements are not supported at this point. The resulting number of rows after applying filters is checked against row-level output table dimensions (if any available). In other words, you have to be unlucky to run into trouble without an error. But it is alway recommended to use a unique row identifier in both input and output tables in order to avoid relying on interpretation of <code>Nonmem</code> code.</p>
 <p>The <code>RECORDS</code> and <code>NULL</code> options in <code>$DATA</code> are not implemented. If using <code>RECORDS</code>, please use the <code>col.row</code> option to merge by a unique row identifier.</p>
 </div>
 <div id="character-time-variables-not-interpreted" class="section level3">
 <h3 class="hasAnchor">
 <a href="#character-time-variables-not-interpreted" class="anchor"></a>Character time variables not interpreted</h3>
-<p>Nonmem supports a clocktime input format for a column called TIME in input data. Based on a day counter and a character (“00:00”) clock format, Nonmem can calculate the individual time since first record. This behaviour is not mimicked by NMscanData, and the only ways to get TIME in this case are to either include it in an output <code>TABLE</code> or to code the translation yourself after calling <code>NMscanData</code>. Of course, this is on the todo list.</p>
+<p><code>Nonmem</code> supports a clocktime input format for a column called TIME in input data. Based on a day counter and a character (“00:00”) clock format, <code>Nonmem</code> can calculate the individual time since first record. This behaviour is not mimicked by NMscanData, and the only ways to get TIME in this case are to either include it in an output <code>TABLE</code> or to code the translation yourself after calling <code>NMscanData</code>. Of course, this is on the todo list.</p>
 </div>
 <div id="some-table-options-not-supported" class="section level3">
 <h3 class="hasAnchor">
 <a href="#some-table-options-not-supported" class="anchor"></a>Some TABLE options not supported</h3>
-<p>The <code>FIRSTLASTONLY</code> option in <code>$TABLE</code> results in two rows per subject from Nonmem. For now, this cannot be merged with input, and these tables are disregarded with a warning (you can read them with <code>NMscanTables</code>). <code>LASTONLY</code> is treated like <code>FIRSTONLY</code>, i.e. as ID-level information if not available elsewhere.</p>
-<p>The <code>OBSONLY</code> <code>$TABLE</code> option is not supported for automatic merges.</p>
+<p>For now, only output tables returning either all rows or one row per subject can be merged with input. Tables written with options like <code>FIRSTLASTONLY</code> (two rows per subject) and <code>OBSONLY</code> are disregarded with a warning (you can read them with <code>NMscanTables</code>). <code>LASTONLY</code> is treated like <code>FIRSTONLY</code>, i.e. as ID-level information if not available elsewhere.</p>
 </div>
 </div>
   </div>

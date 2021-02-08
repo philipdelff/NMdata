@@ -159,17 +159,17 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
   <span class='kw'>cbind.by.filters</span>,
   <span class='kw'>use.input</span>,
   <span class='kw'>recover.rows</span>,
-  add.name = <span class='st'>"model"</span>,
+  col.model = <span class='st'>"model"</span>,
   <span class='kw'>modelname</span>,
   <span class='kw'>file.mod</span>,
   <span class='kw'>dir.data</span>,
   quiet = <span class='fl'>FALSE</span>,
   use.rds = <span class='fl'>TRUE</span>,
-  as.fun = <span class='kw'>NULL</span>,
+  <span class='kw'>as.fun</span>,
   col.id = <span class='st'>"ID"</span>,
   tab.count = <span class='fl'>FALSE</span>,
   order.columns = <span class='fl'>TRUE</span>,
-  check.time = <span class='kw'>NULL</span>
+  <span class='kw'>check.time</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -218,21 +218,24 @@ the row was found in output tables, and FALSE when
 not. Default is FALSE and can be configured using NMdataConf.</p></td>
     </tr>
     <tr>
-      <th>add.name</th>
-      <td><p>If a character string, a column of this name will
-be included in all tables containing the model name. The
-default is to store this in a column called "model". See
-argument "name" as well. Set to NULL if not wanted.</p></td>
+      <th>col.model</th>
+      <td><p>A column of this name containing the model name
+will be included in the returned data. The default is to store
+this in a column called "model". See argument "modelname" as
+well. Set to NULL if not wanted. Default can be configured
+using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>modelname</th>
-      <td><p>The model name to be stored if add.name is not
+      <td><p>The model name to be stored if col.model is not
 NULL. If not supplied, the name will be taken from the control
 stream file name by omitting the directory/path and deleting
-the .lst extension. This can be a character string or a
-function taking file as argument and returning the modelname
-(by extracting it from file name or path). The default can be
-configured using NMdataConf.</p></td>
+the .lst extension (path/run001.lst becomes run001). This can
+be a character string or a function which is called on the
+value of file (file is another argument to NMscanData). The
+function must take one character argument and return another
+character string. As example, see NMdataConf()$modelname. The
+default can be configured using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>file.mod</th>

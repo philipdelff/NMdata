@@ -17,7 +17,7 @@ The best place to browse information about the package is
 [here](https://philipdelff.github.io/NMdata). All documentation is of
 course included in the package itself too.
 
-## How to Install
+## How to install
 `NMdata` is aimed at CRAN release in near future. Meanwhile, installing
 from Github is easy:
 
