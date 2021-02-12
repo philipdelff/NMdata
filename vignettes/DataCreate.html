@@ -1,481 +1,531 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Introduction</title>
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<script type="text/javascript">
-window.onload = function() {
-  var imgs = document.getElementsByTagName('img'), i, img;
-  for (i = 0; i < imgs.length; i++) {
-    img = imgs[i];
-    // center an image if it is the only element of its parent
-    if (img.parentElement.childElementCount === 1)
-      img.parentElement.style.textAlign = 'center';
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Data creation tools</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
   }
-};
+});
 </script>
 
-<!-- Styles for R syntax highlighter -->
-<style type="text/css">
-   pre .operator,
-   pre .paren {
-     color: rgb(104, 118, 135)
-   }
 
-   pre .literal {
-     color: #990073
-   }
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 
-   pre .number {
-     color: #099;
-   }
-
-   pre .comment {
-     color: #998;
-     font-style: italic
-   }
-
-   pre .keyword {
-     color: #900;
-     font-weight: bold
-   }
-
-   pre .identifier {
-     color: rgb(0, 0, 0);
-   }
-
-   pre .string {
-     color: #d14;
-   }
 </style>
-
-<!-- R syntax highlighter -->
-<script type="text/javascript">
-var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
-hljs.initHighlightingOnLoad();
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
 </script>
 
 
 
-<style type="text/css">
-body, td {
-   font-family: sans-serif;
-   background-color: white;
-   font-size: 13px;
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
 }
-
-body {
-  max-width: 800px;
-  margin: auto;
-  padding: 1em;
-  line-height: 20px;
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
 }
-
-tt, code, pre {
-   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
 }
-
-h1 {
-   font-size:2.2em;
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
 }
-
-h2 {
-   font-size:1.8em;
+#TOC ul ul {
+margin-left: -2em;
 }
-
-h3 {
-   font-size:1.4em;
+#TOC li {
+line-height: 16px;
 }
-
-h4 {
-   font-size:1.0em;
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
 }
-
-h5 {
-   font-size:0.9em;
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
 }
-
-h6 {
-   font-size:0.8em;
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
 }
-
-a:visited {
-   color: rgb(50%, 0%, 50%);
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
 }
-
-pre, img {
-  max-width: 100%;
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
 }
 pre {
-  overflow-x: auto;
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
 }
-pre code {
-   display: block; padding: 0.5em;
+pre:not([class]) {
+background-color: #f7f7f7;
 }
-
 code {
-  font-size: 92%;
-  border: 1px solid #ccc;
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
 }
-
-code[class] {
-  background-color: #F8F8F8;
+p > code, li > code {
+padding: 2px 0px;
 }
-
-table, td, th {
-  border: none;
+div.figure {
+text-align: center;
 }
-
-blockquote {
-   color:#666666;
-   margin:0;
-   padding-left: 1em;
-   border-left: 0.5em #EEE solid;
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
 }
-
-hr {
-   height: 0px;
-   border-bottom: none;
-   border-top-width: thin;
-   border-top-style: dotted;
-   border-top-color: #999999;
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
 }
-
-@media print {
-   * {
-      background: transparent !important;
-      color: black !important;
-      filter:none !important;
-      -ms-filter: none !important;
-   }
-
-   body {
-      font-size:12pt;
-      max-width:100%;
-   }
-
-   a, a:visited {
-      text-decoration: underline;
-   }
-
-   hr {
-      visibility: hidden;
-      page-break-before: always;
-   }
-
-   pre, blockquote {
-      padding-right: 1em;
-      page-break-inside: avoid;
-   }
-
-   tr, img {
-      page-break-inside: avoid;
-   }
-
-   img {
-      max-width: 100% !important;
-   }
-
-   @page :left {
-      margin: 15mm 20mm 15mm 10mm;
-   }
-
-   @page :right {
-      margin: 15mm 10mm 15mm 20mm;
-   }
-
-   p, h2, h3 {
-      orphans: 3; widows: 3;
-   }
-
-   h2, h3 {
-      page-break-after: avoid;
-   }
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
 }
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
+
 
 
 
 </head>
 
 <body>
-<p>Built 2021-02-04 using NMdata 0.0.6.6.</p>
 
+
+
+
+<h1 class="title toc-ignore">Data creation tools</h1>
+
+
+
+<p>Built 2021-02-11 using NMdata 0.0.6.6.</p>
+<div id="introduction" class="section level2">
 <h2>Introduction</h2>
-
-<p>Nonmem has quite a number of restrictions on the format of the input data, and
-problems with the data set is a very common reason for Nonmem not to behave as
-expected. When this happens, you easily waste a lot time debugging the
-data. <code>NMdata</code> includes some simple functions to prevent these situations.</p>
-
-<p>This vignette uses <code>data.table</code> syntax for the little bit of data manipulation
-performed. However, you don&#39;t need to use data.table <em>at all</em> to use these tools
-or any tool in <code>NMdata</code>. The reason why the functions return data.table objects
-is that the data set is a data.table to begin with</p>
-
-<pre><code class="r">pk &lt;- readRDS(file = system.file(&quot;examples/data/xgxr2.rds&quot;, package = &quot;NMdata&quot;))
-class(pk)
-#&gt; [1] &quot;data.table&quot; &quot;data.frame&quot;
-</code></pre>
-
-<p>If this was a <code>data.frame</code>, the <code>NMdata</code> functions would keep returning objects
-of class <code>data.frame</code>.</p>
-
+<p>Nonmem has quite a number of restrictions on the format of the input data, and problems with the data set is a very common reason for Nonmem not to behave as expected. When this happens, you easily waste a lot time debugging the data. <code>NMdata</code> includes some simple functions to prevent these situations.</p>
+<p>This vignette uses <code>data.table</code> syntax for the little bit of data manipulation performed. However, you don’t need to use data.table <em>at all</em> to use these tools or any tool in <code>NMdata</code>. The reason why the functions return data.table objects is that the data set is a data.table to begin with</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="kw">system.file</span>(<span class="st">&quot;examples/data/xgxr2.rds&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;NMdata&quot;</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">class</span>(pk)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;data.table&quot; &quot;data.frame&quot;</span></span></code></pre></div>
+<p>If this was a <code>data.frame</code>, the <code>NMdata</code> functions would keep returning objects of class <code>data.frame</code>.</p>
+</div>
+<div id="automated-checks-of-merge-results" class="section level2">
 <h2>Automated checks of merge results</h2>
-
-<p>Merges are a very common source of data creation bugs. As simple as they may
-seem, merges likely leave you with an unexpected number of rows, some repeated or
-some omitted. Merges are very powerful and flexible, and when preparing a data
-set, they are fundamental. However, many merges for dataset creation are of the
-specific and simple kind where columns are added to an existing dataset. In this
-situation the rows that come out of the merge are the exact same as in one of
-the existing datasets. Say we want to add a covariate:</p>
-
-<pre><code class="r">dim(pk)
-#&gt; [1] 1500   24
-class(pk)
-#&gt; [1] &quot;data.table&quot; &quot;data.frame&quot;
-dt.cov &lt;- pk[, .(ID = unique(ID)[1:10])]
-dt.cov[, `:=`(COV, sample(1:5, size = 10, replace = TRUE))]
-dt.cov
-#&gt;     ID COV
-#&gt;  1: 31   3
-#&gt;  2: 32   2
-#&gt;  3: 33   5
-#&gt;  4: 34   5
-#&gt;  5: 35   1
-#&gt;  6: 36   1
-#&gt;  7: 37   5
-#&gt;  8: 38   5
-#&gt;  9: 39   1
-#&gt; 10: 40   1
-pk2 &lt;- merge(pk, dt.cov, by = &quot;ID&quot;)
-dim(pk2)
-#&gt; [1] 100  25
-## now as expected
-pk3 &lt;- merge(pk, dt.cov, by = &quot;ID&quot;, all.x = TRUE)
-dim(pk3)
-#&gt; [1] 1500   25
-</code></pre>
-
-<p>So when creating <code>pk2</code> we lost a lot of rows because we forgot the <code>all.x</code>
-option. And also as we shall now see, just checking the resulting dimensions is not enough.</p>
-
-<pre><code class="r">dt.cov2 &lt;- pk[, .(ID = unique(ID))]
-dt.cov2[, `:=`(COV, sample(1:5, size = .N, replace = TRUE))]
-dt.cov2 &lt;- dt.cov2[c(1, 1:(.N - 1))]
-# dt.cov2 &lt;- dt.cov2[c(1:(.N))]
-pk4 &lt;- merge(pk, dt.cov2, by = &quot;ID&quot;)
-dim(pk4)
-#&gt; [1] 1500   25
-</code></pre>
-
-<p>As illustrated by these simple examples, even the simplest merges have
-to be rigorously checked, no exceptions. The function <code>mergeCheck(x1,x2)</code>
-ensures that the result has exactly one of each rows from <code>x1</code> and
-nothing else. We can use <code>...</code> to pass additional arguments to merge.</p>
-
-<pre><code class="r">pk2 &lt;- try(mergeCheck(pk, dt.cov, by = &quot;ID&quot;))
-#&gt; Warning in mergeCheck(pk, dt.cov, by = &quot;ID&quot;): Rows disappeared during merge.
-#&gt; Warning in mergeCheck(pk, dt.cov, by = &quot;ID&quot;): 
-#&gt; nrow(pk): 1500
-#&gt; nrow(dt.cov): 10
-#&gt; nrow(merged.df): 100
-#&gt; Error in mergeCheck(pk, dt.cov, by = &quot;ID&quot;) : 
-#&gt;   Merge added and/or removed rows.
-## now as expected
-pk3 &lt;- mergeCheck(pk, dt.cov, by = &quot;ID&quot;, all.x = TRUE)
-dim(pk3)
-#&gt; [1] 1500   25
-</code></pre>
-
+<p>Merges are a very common source of data creation bugs. As simple as they may seem, merges likely leave you with an unexpected number of rows, some repeated or some omitted. Merges are very powerful and flexible, and when preparing a data set, they are fundamental. However, many merges for dataset creation are of the specific and simple kind where columns are added to an existing dataset. In this situation the rows that come out of the merge are the exact same as in one of the existing datasets. Say we want to add a covariate:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">dim</span>(pk)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   24</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="kw">class</span>(pk)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;data.table&quot; &quot;data.frame&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>dt.cov &lt;-<span class="st"> </span>pk[, .(<span class="dt">ID =</span> <span class="kw">unique</span>(ID)[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>])]</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>dt.cov[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(COV, <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>))]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>dt.cov</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="co">#&gt;     ID COV</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="co">#&gt;  1: 31   4</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="co">#&gt;  2: 32   4</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="co">#&gt;  3: 33   5</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a><span class="co">#&gt;  4: 34   3</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a><span class="co">#&gt;  5: 35   1</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a><span class="co">#&gt;  6: 36   5</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a><span class="co">#&gt;  7: 37   3</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a><span class="co">#&gt;  8: 38   1</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a><span class="co">#&gt;  9: 39   3</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a><span class="co">#&gt; 10: 40   2</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>pk2 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a><span class="kw">dim</span>(pk2)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a><span class="co">#&gt; [1] 100  25</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a><span class="co">## now as expected</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a>pk3 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>, <span class="dt">all.x =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a><span class="kw">dim</span>(pk3)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   25</span></span></code></pre></div>
+<p>So when creating <code>pk2</code> we lost a lot of rows because we forgot the <code>all.x</code> option. And also as we shall now see, just checking the resulting dimensions is not enough.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>dt.cov2 &lt;-<span class="st"> </span>pk[, .(<span class="dt">ID =</span> <span class="kw">unique</span>(ID))]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>dt.cov2[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(COV, <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">size =</span> .N, <span class="dt">replace =</span> <span class="ot">TRUE</span>))]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>dt.cov2 &lt;-<span class="st"> </span>dt.cov2[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span><span class="op">:</span>(.N <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="co"># dt.cov2 &lt;- dt.cov2[c(1:(.N))]</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>pk4 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov2, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="kw">dim</span>(pk4)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   25</span></span></code></pre></div>
+<p>As illustrated by these simple examples, even the simplest merges have to be rigorously checked, no exceptions. The function <code>mergeCheck(x1,x2)</code> ensures that the result has exactly one of each rows from <code>x1</code> and nothing else. We can use <code>...</code> to pass additional arguments to merge.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>pk2 &lt;-<span class="st"> </span><span class="kw">try</span>(<span class="kw">mergeCheck</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="co">#&gt; Warning in mergeCheck(pk, dt.cov, by = &quot;ID&quot;): Rows disappeared during merge.</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="co">#&gt; Warning in mergeCheck(pk, dt.cov, by = &quot;ID&quot;): </span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="co">#&gt; nrow(pk): 1500</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="co">#&gt; nrow(dt.cov): 10</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="co">#&gt; nrow(merged.df): 100</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="co">#&gt; Error in mergeCheck(pk, dt.cov, by = &quot;ID&quot;) : </span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a><span class="co">#&gt;   Merge added and/or removed rows.</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a><span class="co">## now as expected</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>pk3 &lt;-<span class="st"> </span><span class="kw">mergeCheck</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>, <span class="dt">all.x =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a><span class="kw">dim</span>(pk3)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a><span class="co">#&gt; [1] 1500   25</span></span></code></pre></div>
 <p>The result always has the same order of rows as the <code>x1</code> argument.</p>
-
-<p>Another problem that the programmer may not realize during a merge is
-that column names are shared across <code>x1</code> and <code>x2</code>. This will silently create
-colmn names like <code>col.x</code> and <code>col.y</code> in the output. <code>mergeCheck</code> will
-by default give a warning if that happens.</p>
-
-<p>There
-is only one difference from the behaviour of the <code>merge.data.frame</code>
-function syntax, being that the <code>by</code> argument must always be supplied.</p>
-
-<p>You may think that this will limit your merges, and that you need
-merges for inner and outer joins etc. You are exactly right -
-<code>mergeCheck</code> is not intended for those merges and does not support
-them. When that is said, the kind of merges that are supported, are
-indeed very common. As a fun fact, all merges in the <code>NMdata</code> package
-are performed with <code>mergeCheck</code>. </p>
-
+<p>Another problem that the programmer may not realize during a merge is that column names are shared across <code>x1</code> and <code>x2</code>. This will silently create colmn names like <code>col.x</code> and <code>col.y</code> in the output. <code>mergeCheck</code> will by default give a warning if that happens.</p>
+<p>There is only one difference from the behaviour of the <code>merge.data.frame</code> function syntax, being that the <code>by</code> argument must always be supplied.</p>
+<p>You may think that this will limit your merges, and that you need merges for inner and outer joins etc. You are exactly right - <code>mergeCheck</code> is not intended for those merges and does not support them. When that is said, the kind of merges that are supported, are indeed very common. As a fun fact, all merges in the <code>NMdata</code> package are performed with <code>mergeCheck</code>.</p>
+</div>
+<div id="exclusion-flags" class="section level2">
 <h2>Exclusion flags</h2>
-
-<p>It is good practice not to discard records from a dataset but to flag
-them and omit them in model estimation. We also need to account for
-how many data records were discarded due to which criteria. A couple
-of functons in <code>NMdata</code> help you do this in a way that is easy to
-integrate with Nonmem. </p>
-
+<p>It is good practice not to discard records from a dataset but to flag them and omit them in model estimation. We also need to account for how many data records were discarded due to which criteria. A couple of functons in <code>NMdata</code> help you do this in a way that is easy to integrate with Nonmem.</p>
+<div id="assign-and-count-flags" class="section level3">
 <h3>Assign and count flags</h3>
-
-<p>For use in Nonmem, the easiest is that inclusion/exclusion is
-determined by a single column in data - we call that column <code>FLAG</code>. <code>FLAG</code>
-obviously draws on information from other columns such as <code>TIME</code>, <code>DV</code>,
-and many others, depending on your dataset and your way of working.</p>
-
-<p>What
-rows to omit from a dataset can vary from one analysis to
-another. Hence, the aim with the chosen design is that the inclusion
-criteria can be changed and applied to overwrite an existing
-inclusion/exclusion selection. </p>
-
-<p>The function that applies inclusion/excluasion rules is called
-<code>flagsAssign</code>, and it takes a dataset and a data.frame with rules as
-arguments.</p>
-
-<pre><code class="r">pk &lt;- readRDS(file = system.file(&quot;examples/data/xgxr2.rds&quot;, package = &quot;NMdata&quot;))
-dt.flags &lt;- fread(text = &quot;FLAG,flag,condition
-10,Below LLOQ,BLQ==1&quot;)
-
-pk &lt;- flagsAssign(pk, dt.flags)
-#&gt; In flagsAssign(pk, dt.flags) : Data contains FLAG already. This is overwritten
-#&gt; In flagsAssign(pk, dt.flags) : Data contains flag already. This is overwritten
-#&gt; In flagsAssign(pk, dt.flags) : Coding FLAG = 10, flag = Below LLOQ
-</code></pre>
-
-<p>Your first question may be why fread is used to create a data.table
-(like read.csv to create a data.frame. The reason is that this way, we
-can write the information line by line. If you have ten lines in the
-dataset above and do <code>data.frame(FLAG=...,flag=...,condition=...)</code> it
-gets impossible to read what elements of the three columns that
-correspond.</p>
-
-<p><code>flagsAssign</code> applies the conditions sequentially. <code>FLAG=0</code> means that
-the observation is included in the analysis. You can use any
-expression that can be evaluated within the data.frame. In this case,
-BLQ has to exist in <code>pk</code>.</p>
-
-<p>Actually, the evaluated expressions are slightly different from what
-is written in the table above. <code>flagsAssign</code> will prepend the
-condition that <code>FLAG==0</code> in order for the conditions to be
-sequential. Again, the omission will be attributed to the first
-condition matched.</p>
-
-<p>An overview of the number of observations disregarded due to the
-different conditions is then obtained using <code>flagsCount</code>:</p>
-
-<pre><code class="r">tab.count &lt;- flagsCount(data = pk, tab.flags = dt.flags)
-print(tab.count)
-#&gt;            flag N.left Nobs.left N.discarded Nobs.discarded
-#&gt; 1:     All data    150      1500          NA             NA
-#&gt; 2:   Below LLOQ    150       905           0            595
-#&gt; 3: Analysis set    150       905          NA             NA
-</code></pre>
-
+<p>For use in Nonmem, the easiest is that inclusion/exclusion is determined by a single column in data - we call that column <code>FLAG</code>. <code>FLAG</code> obviously draws on information from other columns such as <code>TIME</code>, <code>DV</code>, and many others, depending on your dataset and your way of working.</p>
+<p>What rows to omit from a dataset can vary from one analysis to another. Hence, the aim with the chosen design is that the inclusion criteria can be changed and applied to overwrite an existing inclusion/exclusion selection.</p>
+<p>The function that applies inclusion/excluasion rules is called <code>flagsAssign</code>, and it takes a dataset and a data.frame with rules as arguments.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="kw">system.file</span>(<span class="st">&quot;examples/data/xgxr2.rds&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;NMdata&quot;</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>dt.flags &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="dt">text =</span> <span class="st">&quot;FLAG,flag,condition</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="st">10,Below LLOQ,BLQ==1&quot;</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">flagsAssign</span>(pk, dt.flags)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="co">#&gt; In flagsAssign(pk, dt.flags) : Data contains FLAG already. This is overwritten</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="co">#&gt; In flagsAssign(pk, dt.flags) : Data contains flag already. This is overwritten</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a><span class="co">#&gt; In flagsAssign(pk, dt.flags) : Coding FLAG = 10, flag = Below LLOQ</span></span></code></pre></div>
+<p>Your first question may be why fread is used to create a data.table (like read.csv to create a data.frame. The reason is that this way, we can write the information line by line. If you have ten lines in the dataset above and do <code>data.frame(FLAG=...,flag=...,condition=...)</code> it gets impossible to read what elements of the three columns that correspond.</p>
+<p><code>flagsAssign</code> applies the conditions sequentially. <code>FLAG=0</code> means that the observation is included in the analysis. You can use any expression that can be evaluated within the data.frame. In this case, BLQ has to exist in <code>pk</code>.</p>
+<p>Actually, the evaluated expressions are slightly different from what is written in the table above. <code>flagsAssign</code> will prepend the condition that <code>FLAG==0</code> in order for the conditions to be sequential. Again, the omission will be attributed to the first condition matched.</p>
+<p>An overview of the number of observations disregarded due to the different conditions is then obtained using <code>flagsCount</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>tab.count &lt;-<span class="st"> </span><span class="kw">flagsCount</span>(<span class="dt">data =</span> pk, <span class="dt">tab.flags =</span> dt.flags)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">print</span>(tab.count)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="co">#&gt;            flag N.left Nobs.left N.discarded Nobs.discarded</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="co">#&gt; 1:     All data    150      1500          NA             NA</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="co">#&gt; 2:   Below LLOQ    150       905           0            595</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="co">#&gt; 3: Analysis set    150       905          NA             NA</span></span></code></pre></div>
 <p><code>flagsCount</code> includes an option to save the the table right away.</p>
-
+</div>
+</div>
+<div id="finalize-data-format-and-write-to-file" class="section level2">
 <h2>Finalize data format and write to file</h2>
-
-<p>Once you have your dataset in place, <code>NMdata</code> provides a few useful
-functions. At this point, ideally you check your dataset for any
-incosistency. If you miss an inconsistency, the time you will spend
-finding it risks increasing hugely. First, you need to wait for Nonmem
-to finish if the inconsistency is not fatal for Nonmem&#39;s ability to
-run the model. Then, you may still not realize and continue working
-with Nonmem to build the model before you realize that something is
-wrong. <code>NMdata</code> is still ways from providing a sufficient set of tests
-to run, but still these checks are useful and easy and cheap to run.</p>
-
+<p>Once you have your dataset in place, <code>NMdata</code> provides a few useful functions. At this point, ideally you check your dataset for any incosistency. If you miss an inconsistency, the time you will spend finding it risks increasing hugely. First, you need to wait for Nonmem to finish if the inconsistency is not fatal for Nonmem’s ability to run the model. Then, you may still not realize and continue working with Nonmem to build the model before you realize that something is wrong. <code>NMdata</code> is still ways from providing a sufficient set of tests to run, but still these checks are useful and easy and cheap to run.</p>
+<div id="automated-ordering-of-columns" class="section level3">
 <h3>Automated ordering of columns</h3>
-
-<p>The order of columns in Nonmem is important for two reasons. One is
-that a character in a variable read into Nonmem will make the run
-fail. The other is that there are restrictions on the number of
-variables you can read into Nonmem, depending on the
-version. <code>NMcolOrders</code> tries to put the used columns first, and
-other or maybe even unusable columns in the back of the dataset. It
-does so by a mix of recognition or column names and analysis of the
-column contents. </p>
-
-<p>Columns that cannot be converted to numeric are put in the back, while
-column bearing standard Nonmem variable names like ID, TIME, EVID etc.
-will be pulled up front. You can of course add column names to
-prioritize to front (<code>first</code>) or back (<code>last</code>). See <code>?NMorderColumns</code> for
-more options.</p>
-
-<pre><code class="r">pk &lt;- NMorderColumns(pk)
-#&gt; Warning: In NMorderColumns(pk) : These standard nonmem columns were not found in data:
-#&gt; MDV
-</code></pre>
-
+<p>The order of columns in Nonmem is important for two reasons. One is that a character in a variable read into Nonmem will make the run fail. The other is that there are restrictions on the number of variables you can read into Nonmem, depending on the version. <code>NMcolOrders</code> tries to put the used columns first, and other or maybe even unusable columns in the back of the dataset. It does so by a mix of recognition or column names and analysis of the column contents.</p>
+<p>Columns that cannot be converted to numeric are put in the back, while column bearing standard Nonmem variable names like ID, TIME, EVID etc. will be pulled up front. You can of course add column names to prioritize to front (<code>first</code>) or back (<code>last</code>). See <code>?NMorderColumns</code> for more options.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">NMorderColumns</span>(pk)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="co">#&gt; Warning: In NMorderColumns(pk) : These standard nonmem columns were not found in data:</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="co">#&gt; MDV</span></span></code></pre></div>
+</div>
+<div id="writing-data-to-files" class="section level3">
 <h3>Writing data to files</h3>
-
-<p>For the final step of writing the dataset, <code>NMwriteData</code> is
-provided. Most importantly, it writes a csv for Nonmem and an rds for
-R with equal contents, but with the rds including all information
-(such as factor levels) which cannot be saved in csv (NMscanData will
-know how to make use of this information once you retrieve the Nonmem
-results). It also provides a proposal for text to include in the
-<code>$INPUT</code> and <code>$DATA</code> sections of the Nonmem control
-streams - for you to copy-paste. </p>
-
-<pre><code class="r">NMwriteData(pk)
-#&gt; Nonmem data file:
-#&gt; 
-#&gt; For NonMem:
-#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE
-#&gt; PART PROFDAY PROFTIME WEIGHTB EFF0
-#&gt; $DATA 
-#&gt; IGN=@
-#&gt; IGNORE=(FLAG.NE.0)
-#&gt; 
-#&gt; Data returned but not written to file(s).
-</code></pre>
-
-<p>If a file name had been provided, the data would have been written,
-and the path to the data file would have been included in the message
-written back to the user. There are several arguments that will affect
-the proposed text for the Nonmem run, see <code>?NMwriteData</code>.</p>
-
+<p>For the final step of writing the dataset, <code>NMwriteData</code> is provided. Most importantly, it writes a csv for Nonmem and an rds for R with equal contents, but with the rds including all information (such as factor levels) which cannot be saved in csv (NMscanData will know how to make use of this information once you retrieve the Nonmem results). It also provides a proposal for text to include in the <code>$INPUT</code> and <code>$DATA</code> sections of the Nonmem control streams - for you to copy-paste.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">NMwriteData</span>(pk)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="co">#&gt; Nonmem data file:</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="co">#&gt; For NonMem:</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a><span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a><span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB EFF0</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a><span class="co">#&gt; $DATA </span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a><span class="co">#&gt; IGN=@</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a><span class="co">#&gt; IGNORE=(FLAG.NE.0)</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a><span class="co">#&gt; Data returned but not written to file(s).</span></span></code></pre></div>
+<p>If a file name had been provided, the data would have been written, and the path to the data file would have been included in the message written back to the user. There are several arguments that will affect the proposed text for the Nonmem run, see <code>?NMwriteData</code>.</p>
+</div>
+</div>
+<div id="stamp-objects-for-traceability" class="section level2">
 <h2>Stamp objects for traceability</h2>
-
-<p>The last couple of functions that will be introduced here are used for
-tracing datasets to data creation scripts, including time stamps and
-other information you want to include with the data set. </p>
-
-<pre><code class="r">pk &lt;- stampObj(pk, script = &quot;vignettes/DataCreate.Rmd&quot;)
-objInfo(pk)
-#&gt; $DataCreateScript
-#&gt; [1] &quot;vignettes/DataCreate.Rmd&quot;
-#&gt; 
-#&gt; $CreationTime
-#&gt; [1] &quot;2021-02-04 00:35:24 EST&quot;
-</code></pre>
-
+<p>The last couple of functions that will be introduced here are used for tracing datasets to data creation scripts, including time stamps and other information you want to include with the data set.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">stampObj</span>(pk, <span class="dt">script =</span> <span class="st">&quot;vignettes/DataCreate.Rmd&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="kw">objInfo</span>(pk)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="co">#&gt; $DataCreateScript</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;vignettes/DataCreate.Rmd&quot;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a><span class="co">#&gt; $CreationTime</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2021-02-11 22:34:08 EST&quot;</span></span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">stampObj</span>(pk, <span class="dt">script =</span> <span class="st">&quot;vignettes/DataCreate.Rmd&quot;</span>, <span class="dt">Description =</span> <span class="st">&quot;A PK dataset used for examples.&quot;</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="kw">objInfo</span>(pk)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="co">#&gt; $DataCreateScript</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;vignettes/DataCreate.Rmd&quot;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a><span class="co">#&gt; $CreationTime</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2021-02-11 22:34:08 EST&quot;</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a><span class="co">#&gt; $Description</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;A PK dataset used for examples.&quot;</span></span></code></pre></div>
+<p>These are very simple functions. But they are simple to use as well, and hopefully they will help you avoid sitting with a data set trying to guess which script generated it so you can do a modification or understand how something was done.</p>
+<p>When using <code>NMwriteData</code>, you don’t have to call <code>stampObj</code> explicitly. Just pass the <code>script</code> argument to <code>NMwriteData</code> and <code>stampObj</code> will be applied automatically.</p>
+</div>
+<div id="subject-level-variables" class="section level2">
+<h2>Subject-level variables</h2>
+<p>In a proper PK/PD analysis we need to explore the data at multiple variability levels. What we looked at above is at dosing and sampling level (one row per dosing or sampling event). <code>NMdata</code> provides very useful functions to extract information at other levels of variability. Before extracting the subject-level information we will add an individual exposure measure to the dataset. We will use the empirical Bayes’ estimate of the individual maximum concentration. This is derived as the maximum prediction across the sample times - it may be better to simulate the model at a richer time scale to get better precision. Again, we make use of <code>data.table</code> but feel free to use what you prefer. <code>findCovs</code> - like other <code>NMdata</code> functions - will work on <code>data.frame</code>’s, <code>tibble</code>’s and other <code>data.frame</code>-like classes (classes that inherit from <code>data.frame</code>).</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a>res1 &lt;-<span class="st"> </span><span class="kw">NMscanData</span>(<span class="kw">system.file</span>(<span class="st">&quot;examples/nonmem/xgxr001.lst&quot;</span>, </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>    <span class="dt">package =</span> <span class="st">&quot;NMdata&quot;</span>), <span class="dt">col.row =</span> <span class="st">&quot;ROW&quot;</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>, <span class="dt">as.fun =</span> <span class="st">&quot;data.table&quot;</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>res1<span class="op">$</span>trtact &lt;-<span class="st"> </span><span class="kw">reorder</span>(res1<span class="op">$</span>trtact, res1<span class="op">$</span>DOSE)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a><span class="co">## with data.table, create a new column representing ID-level</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a><span class="co">## Cmax</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a>res1[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(Cmax, <span class="kw">max</span>(IPRED)), by =<span class="st"> </span>.(ID)]</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a><span class="co">## findCovs picks the columns that do not vary within cols.id.</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a><span class="co">## One row per value of cols.id.</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a>res1.id &lt;-<span class="st"> </span><span class="kw">findCovs</span>(res1, <span class="dt">cols.id =</span> <span class="st">&quot;ID&quot;</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a><span class="kw">dim</span>(res1.id)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true"></a><span class="co">#&gt; [1] 150  27</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true"></a><span class="kw">ggplot</span>(res1.id, <span class="kw">aes</span>(WEIGHTB, Cmax<span class="op">/</span>DOSE, <span class="dt">colour =</span> trtact)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true"></a><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Bodyweight at baseline (kg)&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p><code>cols.id</code> can be longer than one. Include a study column, a treatment column to support cross-over, or a model column if you are comparing model fits (see below how to do this very easily).</p>
+<p>If your model includes occasion variability, you probably also want to look at</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="co">## we have no occasion variability in this data res1.id.occ &lt;-</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="co">## findCovs(res1,cols.id=c(&#39;ID&#39;,&#39;OCC&#39;))</span></span></code></pre></div>
+<p>The simplest use of <code>findCovs</code> is to get variables that are constant across the whole dataset:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">findCovs</span>(res1)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="co">#&gt;   FLAG STUDY    TVKA  TVV2    TVCL    TVV3     TVQ      V3       Q BLQ CYCLE</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="co">#&gt; 1    0     1 0.18116 0.042 0.72491 0.17857 8813700 0.17857 8813700   0     1</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a><span class="co">#&gt;   PART PROFDAY nmout TIMEUNIT         flag   model</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a><span class="co">#&gt; 1    1       1  TRUE    Hours Analysis set xgxr001</span></span></code></pre></div>
+<p>Let’s take a look at what is in the <code>res1.id</code> generated above. It is a mix of variables that vary at subject level and variables that are constant across the full dataset.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="kw">dim</span>(res1.id)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a><span class="co">#&gt; [1] 150  27</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a><span class="kw">head</span>(res1.id, <span class="dv">2</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a><span class="co">#&gt;   ID FLAG STUDY    TVKA  TVV2    TVCL    TVV3     TVQ      KA    V2      CL</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a><span class="co">#&gt; 1 31    0     1 0.18116 0.042 0.72491 0.17857 8813700 0.18116 0.042 0.72491</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a><span class="co">#&gt; 2 32    0     1 0.18116 0.042 0.72491 0.17857 8813700 0.18116 0.042 0.72491</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a><span class="co">#&gt;        V3       Q BLQ CYCLE DOSE PART PROFDAY WEIGHTB   eff0 nmout TIMEUNIT</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a><span class="co">#&gt; 1 0.17857 8813700   0     1    3    1       1  87.031 56.461  TRUE    Hours</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true"></a><span class="co">#&gt; 2 0.17857 8813700   0     1    3    1       1 100.620 45.096  TRUE    Hours</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true"></a><span class="co">#&gt;   TRTACT         flag trtact   model Cmax</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true"></a><span class="co">#&gt; 1   3 mg Analysis set   3 mg xgxr001    0</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true"></a><span class="co">#&gt; 2   3 mg Analysis set   3 mg xgxr001    0</span></span></code></pre></div>
+<p><code>findCovs</code> has a counterpart in <code>findVars</code> which finds variables that do vary within constant values of optional <code>cols.id</code> columns. To get only the ones that vary within the dataset (i.e. they are truely subject-level variables and not say a study number if we only have one study), we can do</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a>res1.id2 &lt;-<span class="st"> </span><span class="kw">findVars</span>(res1.id)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="kw">dim</span>(res1.id2)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a><span class="co">#&gt; [1] 150  10</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a><span class="kw">head</span>(res1.id2, <span class="dv">2</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a><span class="co">#&gt;   ID      KA    V2      CL DOSE WEIGHTB   eff0 TRTACT trtact Cmax</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true"></a><span class="co">#&gt; 1 31 0.18116 0.042 0.72491    3  87.031 56.461   3 mg   3 mg    0</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true"></a><span class="co">#&gt; 2 32 0.18116 0.042 0.72491    3 100.620 45.096   3 mg   3 mg    0</span></span></code></pre></div>
+<p><code>findVars</code> supports the cols.id argument too. So you can use <code>findVars(res1,cols.id=&quot;ID&quot;)</code> to find variables that are non-constant within (at least one value of) ID. <code>cols.id</code> can be of arbitrary length.</p>
+<p>Of course, we most often know what covariates or other subject-level variables to look at, and we would not search for them after running a nonmem model. But in the situation where you are looking at someone else’s work or you are doing a meta analysis across models where the data has been coded slightly differently, these simple tools can be very useful. Or if you like writing generic wrapper functions, you may find this very handy. Also, remember that if a variable is returned by these functions, you know that they fullfill the variability requirement. We know that variables in <code>res1.id</code> above do not vary within <code>ID</code>, meaning that no <code>ID</code> has more than one value of the variable. <code>NA</code> counts as any other value, so if a value is returned for subject in <code>res1.id</code>, this subject does not have <code>NA</code>’s in <code>res1</code>.</p>
+</div>
 
-<pre><code class="r">pk &lt;- stampObj(pk, script = &quot;vignettes/DataCreate.Rmd&quot;, Description = &quot;A PK dataset used for examples.&quot;)
-objInfo(pk)
-#&gt; $DataCreateScript
-#&gt; [1] &quot;vignettes/DataCreate.Rmd&quot;
-#&gt; 
-#&gt; $CreationTime
-#&gt; [1] &quot;2021-02-04 00:35:24 EST&quot;
-#&gt; 
-#&gt; $Description
-#&gt; [1] &quot;A PK dataset used for examples.&quot;
-</code></pre>
 
-<p>These are very simple functions. But they are simple to use as well,
-and hopefully they will help you avoid sitting with a data set trying
-to guess which script generated it so you can do a modification or
-understand how something was done.</p>
 
-<p>When using <code>NMwriteData</code>, you don&#39;t have to call <code>stampObj</code>
-explicitly. Just pass the <code>script</code> argument to <code>NMwriteData</code> and
-<code>stampObj</code> will be applied automatically.</p>
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 </body>
-
 </html>

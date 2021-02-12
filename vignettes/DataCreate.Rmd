@@ -1,8 +1,6 @@
 ---
 title: "Data creation tools"
-output: rmarkdown::html_vignette:
-    toc: true 
-toc_depth: 2
+output:  rmarkdown::html_vignette
 Suggests: markdown
 VignetteBuilder: knitr
 vignette: >
@@ -29,10 +27,10 @@ knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 
 ```{r,setup,include=F}
 library(NMdata)
-## library(ggplot2)
 library(data.table)
 
-## theme_set(theme_bw()+theme(legend.position="bottom"))
+library(ggplot2)
+theme_set(theme_bw()+theme(legend.position="bottom"))
 
 ```
 Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
@@ -233,6 +231,9 @@ and the path to the data file would have been included in the message
 written back to the user. There are several arguments that will affect
 the proposed text for the Nonmem run, see `?NMwriteData`.
 
+
+
+
 ## Stamp objects for traceability
 The last couple of functions that will be introduced here are used for
 tracing datasets to data creation scripts, including time stamps and
@@ -259,3 +260,91 @@ explicitly. Just pass the `script` argument to `NMwriteData` and
 `stampObj` will be applied automatically.
 
 
+## Subject-level variables
+In a proper PK/PD analysis we need to explore the data at multiple
+variability levels. What we looked at above is at dosing and sampling
+level (one row per dosing or sampling event). `NMdata` provides very
+useful functions to extract information at other levels of
+variability. Before extracting the subject-level information we will
+add an individual exposure measure to the dataset. We will use the
+empirical Bayes' estimate of the individual maximum
+concentration. This is derived as the maximum prediction across the
+sample times - it may be better to simulate the model at a richer time
+scale to get better precision. Again, we make use of `data.table` but
+feel free to use what you prefer. `findCovs` - like other `NMdata`
+functions - will work on `data.frame`'s, `tibble`'s and other
+`data.frame`-like classes 
+(classes that inherit from `data.frame`).
+
+```{r}
+res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
+                   col.row="ROW",quiet=TRUE,as.fun="data.table")
+res1$trtact <- reorder(res1$trtact,res1$DOSE)
+## with data.table, create a new column representing ID-level Cmax
+res1[,Cmax:=max(IPRED),by=.(ID)]
+## findCovs picks the columns that do not vary within cols.id. One row
+## per value of cols.id.
+res1.id <- findCovs(res1,cols.id="ID")
+dim(res1.id)
+ggplot(res1.id,aes(WEIGHTB,Cmax/DOSE,colour=trtact))+
+    geom_point()+
+    labs(x="Bodyweight at baseline (kg)")
+```
+
+`cols.id` can be longer than one. Include a study column, a treatment column to
+support cross-over, or a model
+column if you are comparing model fits (see below how to do this very easily).
+
+If your model includes occasion variability, you probably also want to
+look at 
+
+```{r}
+## we have no occasion variability in this data
+## res1.id.occ <- findCovs(res1,cols.id=c("ID","OCC"))
+```
+
+The simplest use of `findCovs` is to get variables that are constant
+across the whole dataset:
+
+
+```{r}
+findCovs(res1)
+```
+
+Let's take a look at what is in the
+`res1.id` generated above. It is a mix of variables that vary at subject level and variables
+that are constant across the full dataset. 
+
+```{r}
+dim(res1.id)
+head(res1.id,2)
+```
+
+
+`findCovs` has a counterpart in `findVars` which finds variables that
+do vary within constant values of optional `cols.id` columns. To get only the ones that
+vary within the dataset (i.e. they are truely subject-level
+variables and not say a study number if we only have one study), we can do 
+
+```{r}
+res1.id2 <- findVars(res1.id)
+dim(res1.id2)
+head(res1.id2,2)
+```
+
+`findVars` supports the cols.id argument too. So you can use
+`findVars(res1,cols.id="ID")` to find variables that are non-constant
+within (at least one value of) ID. `cols.id` can be of arbitrary length.
+
+Of course, we most often know what covariates or other subject-level
+variables to look at, and we would not search for them after running a
+nonmem model. But in the situation where you are looking at someone
+else's work or you are doing a meta analysis across models where the
+data has been coded slightly differently, these simple tools can be
+very useful. Or if you like writing generic wrapper functions, you may
+find this very handy. Also, remember that if a variable is returned by
+these functions, you know that they fullfill the variability
+requirement. We know that variables in `res1.id` above do not vary
+within `ID`, meaning that no `ID` has more than one value of the
+variable. `NA` counts as any other value, so if a value is returned
+for subject in `res1.id`, this subject does not have `NA`'s in `res1`.

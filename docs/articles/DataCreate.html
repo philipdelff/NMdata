@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2021-02-01 using NMdata 0.0.6.6.</p>
+<p>Built 2021-02-11 using NMdata 0.0.6.6.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -125,14 +125,14 @@
 <span class="co">#&gt;     ID COV</span>
 <span class="co">#&gt;  1: 31   1</span>
 <span class="co">#&gt;  2: 32   1</span>
-<span class="co">#&gt;  3: 33   4</span>
-<span class="co">#&gt;  4: 34   4</span>
-<span class="co">#&gt;  5: 35   3</span>
+<span class="co">#&gt;  3: 33   3</span>
+<span class="co">#&gt;  4: 34   1</span>
+<span class="co">#&gt;  5: 35   4</span>
 <span class="co">#&gt;  6: 36   3</span>
 <span class="co">#&gt;  7: 37   3</span>
-<span class="co">#&gt;  8: 38   5</span>
-<span class="co">#&gt;  9: 39   4</span>
-<span class="co">#&gt; 10: 40   4</span>
+<span class="co">#&gt;  8: 38   1</span>
+<span class="co">#&gt;  9: 39   2</span>
+<span class="co">#&gt; 10: 40   2</span>
 <span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk2</span>)
 <span class="co">#&gt; [1] 100  25</span>
@@ -252,7 +252,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-02-01 22:42:41 EST"</span>
+<span class="co">#&gt; [1] "2021-02-11 22:58:30 EST"</span>
 </pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
@@ -262,13 +262,89 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-02-01 22:42:42 EST"</span>
+<span class="co">#&gt; [1] "2021-02-11 22:58:30 EST"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span>
 </pre></div>
 <p>These are very simple functions. But they are simple to use as well, and hopefully they will help you avoid sitting with a data set trying to guess which script generated it so you can do a modification or understand how something was done.</p>
 <p>When using <code>NMwriteData</code>, you don’t have to call <code>stampObj</code> explicitly. Just pass the <code>script</code> argument to <code>NMwriteData</code> and <code>stampObj</code> will be applied automatically.</p>
+</div>
+<div id="subject-level-variables" class="section level2">
+<h2 class="hasAnchor">
+<a href="#subject-level-variables" class="anchor"></a>Subject-level variables</h2>
+<p>In a proper PK/PD analysis we need to explore the data at multiple variability levels. What we looked at above is at dosing and sampling level (one row per dosing or sampling event). <code>NMdata</code> provides very useful functions to extract information at other levels of variability. Before extracting the subject-level information we will add an individual exposure measure to the dataset. We will use the empirical Bayes’ estimate of the individual maximum concentration. This is derived as the maximum prediction across the sample times - it may be better to simulate the model at a richer time scale to get better precision. Again, we make use of <code>data.table</code> but feel free to use what you prefer. <code>findCovs</code> - like other <code>NMdata</code> functions - will work on <code>data.frame</code>’s, <code>tibble</code>’s and other <code>data.frame</code>-like classes (classes that inherit from <code>data.frame</code>).</p>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="kw">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, 
+    package = <span class="st">"NMdata"</span>), col.row = <span class="st">"ROW"</span>, quiet = <span class="fl">TRUE</span>, as.fun = <span class="st">"data.table"</span>)
+<span class="co">#&gt; Warning: In NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"), :</span>
+<span class="co">#&gt; input control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpAHl7Sv/temp_libpath3d4c6307312b/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; is newer than output control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpAHl7Sv/temp_libpath3d4c6307312b/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
+<span class="co">#&gt; edited, this can corrupt results.</span>
+<span class="co">#&gt; In col.row = "ROW", quiet = TRUE, as.fun = "data.table") : input control</span>
+<span class="co">#&gt; stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpAHl7Sv/temp_libpath3d4c6307312b/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; is newer than output control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpAHl7Sv/temp_libpath3d4c6307312b/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
+<span class="co">#&gt; edited, this can corrupt results.</span>
+<span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span>(<span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span>, <span class="kw">res1</span><span class="op">$</span><span class="kw">DOSE</span>)
+<span class="co">## with data.table, create a new column representing ID-level</span>
+<span class="co">## Cmax</span>
+<span class="kw">res1</span>[, <span class="fu">`:=`</span>(<span class="kw">Cmax</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="kw">IPRED</span>)), by = <span class="fu">.</span>(<span class="kw">ID</span>)]
+<span class="co">## findCovs picks the columns that do not vary within cols.id.</span>
+<span class="co">## One row per value of cols.id.</span>
+<span class="kw">res1.id</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/findCovs.html">findCovs</a></span>(<span class="kw">res1</span>, cols.id = <span class="st">"ID"</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">res1.id</span>)
+<span class="co">#&gt; [1] 150  27</span>
+<span class="fu">ggplot</span>(<span class="kw">res1.id</span>, <span class="fu">aes</span>(<span class="kw">WEIGHTB</span>, <span class="kw">Cmax</span><span class="op">/</span><span class="kw">DOSE</span>, colour = <span class="kw">trtact</span>)) <span class="op">+</span> <span class="fu">geom_point</span>() <span class="op">+</span> 
+    <span class="fu">labs</span>(x = <span class="st">"Bodyweight at baseline (kg)"</span>)
+</pre></div>
+<p><img src="DataCreate_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
+<p><code>cols.id</code> can be longer than one. Include a study column, a treatment column to support cross-over, or a model column if you are comparing model fits (see below how to do this very easily).</p>
+<p>If your model includes occasion variability, you probably also want to look at</p>
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="co">## we have no occasion variability in this data res1.id.occ &lt;-</span>
+<span class="co">## findCovs(res1,cols.id=c('ID','OCC'))</span>
+</pre></div>
+<p>The simplest use of <code>findCovs</code> is to get variables that are constant across the whole dataset:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="fu"><a href="../reference/findCovs.html">findCovs</a></span>(<span class="kw">res1</span>)
+<span class="co">#&gt;   FLAG STUDY    TVKA  TVV2    TVCL    TVV3     TVQ      V3       Q BLQ CYCLE</span>
+<span class="co">#&gt; 1    0     1 0.18116 0.042 0.72491 0.17857 8813700 0.17857 8813700   0     1</span>
+<span class="co">#&gt;   PART PROFDAY nmout TIMEUNIT         flag   model</span>
+<span class="co">#&gt; 1    1       1  TRUE    Hours Analysis set xgxr001</span>
+</pre></div>
+<p>Let’s take a look at what is in the <code>res1.id</code> generated above. It is a mix of variables that vary at subject level and variables that are constant across the full dataset.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">res1.id</span>)
+<span class="co">#&gt; [1] 150  27</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">res1.id</span>, <span class="fl">2</span>)
+<span class="co">#&gt;   ID FLAG STUDY    TVKA  TVV2    TVCL    TVV3     TVQ      KA    V2      CL</span>
+<span class="co">#&gt; 1 31    0     1 0.18116 0.042 0.72491 0.17857 8813700 0.18116 0.042 0.72491</span>
+<span class="co">#&gt; 2 32    0     1 0.18116 0.042 0.72491 0.17857 8813700 0.18116 0.042 0.72491</span>
+<span class="co">#&gt;        V3       Q BLQ CYCLE DOSE PART PROFDAY WEIGHTB   eff0 nmout TIMEUNIT</span>
+<span class="co">#&gt; 1 0.17857 8813700   0     1    3    1       1  87.031 56.461  TRUE    Hours</span>
+<span class="co">#&gt; 2 0.17857 8813700   0     1    3    1       1 100.620 45.096  TRUE    Hours</span>
+<span class="co">#&gt;   TRTACT         flag trtact   model Cmax</span>
+<span class="co">#&gt; 1   3 mg Analysis set   3 mg xgxr001    0</span>
+<span class="co">#&gt; 2   3 mg Analysis set   3 mg xgxr001    0</span>
+</pre></div>
+<p><code>findCovs</code> has a counterpart in <code>findVars</code> which finds variables that do vary within constant values of optional <code>cols.id</code> columns. To get only the ones that vary within the dataset (i.e. they are truely subject-level variables and not say a study number if we only have one study), we can do</p>
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="kw">res1.id2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/findVars.html">findVars</a></span>(<span class="kw">res1.id</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">res1.id2</span>)
+<span class="co">#&gt; [1] 150  10</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">res1.id2</span>, <span class="fl">2</span>)
+<span class="co">#&gt;   ID      KA    V2      CL DOSE WEIGHTB   eff0 TRTACT trtact Cmax</span>
+<span class="co">#&gt; 1 31 0.18116 0.042 0.72491    3  87.031 56.461   3 mg   3 mg    0</span>
+<span class="co">#&gt; 2 32 0.18116 0.042 0.72491    3 100.620 45.096   3 mg   3 mg    0</span>
+</pre></div>
+<p><code>findVars</code> supports the cols.id argument too. So you can use <code><a href="../reference/findVars.html">findVars(res1,cols.id="ID")</a></code> to find variables that are non-constant within (at least one value of) ID. <code>cols.id</code> can be of arbitrary length.</p>
+<p>Of course, we most often know what covariates or other subject-level variables to look at, and we would not search for them after running a nonmem model. But in the situation where you are looking at someone else’s work or you are doing a meta analysis across models where the data has been coded slightly differently, these simple tools can be very useful. Or if you like writing generic wrapper functions, you may find this very handy. Also, remember that if a variable is returned by these functions, you know that they fullfill the variability requirement. We know that variables in <code>res1.id</code> above do not vary within <code>ID</code>, meaning that no <code>ID</code> has more than one value of the variable. <code>NA</code> counts as any other value, so if a value is returned for subject in <code>res1.id</code>, this subject does not have <code>NA</code>’s in <code>res1</code>.</p>
 </div>
   </div>
 

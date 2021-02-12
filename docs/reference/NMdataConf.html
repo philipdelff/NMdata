@@ -40,14 +40,12 @@
 
 
 <meta property="og:title" content="Configure default behavior of NMdata functions — NMdataConf" />
-<meta property="og:description" content="Allows to change default behavior across the functions in NMdata rather than
-typing the arguments in all function calls. Only some options can be
-controlled here, and they are typically the ones that are characterized by
-the way you interact with Nonmem or standard organization of your
-data. Also, you can control what data class to return (say data.tables or
-tibbles if you prefer one of those over data.frames). Recommendation: Use
-this function transparently in the code and not in a configuration file
-hidden from other users." />
+<meta property="og:description" content="Configure default behavior across the functions in NMdata rather
+than typing the arguments in all function calls. Configure for
+your file organization, data set column names, and other NMdata
+behaviour. Also, you can control what data class NMdata functions
+return (say data.tables or tibbles if you prefer one of those over
+data.frames)." />
 
 
 
@@ -143,14 +141,12 @@ hidden from other users." />
     </div>
 
     <div class="ref-description">
-    <p>Allows to change default behavior across the functions in NMdata rather than
-typing the arguments in all function calls. Only some options can be
-controlled here, and they are typically the ones that are characterized by
-the way you interact with Nonmem or standard organization of your
-data. Also, you can control what data class to return (say data.tables or
-tibbles if you prefer one of those over data.frames). Recommendation: Use
-this function transparently in the code and not in a configuration file
-hidden from other users.</p>
+    <p>Configure default behavior across the functions in NMdata rather
+than typing the arguments in all function calls. Configure for
+your file organization, data set column names, and other NMdata
+behaviour. Also, you can control what data class NMdata functions
+return (say data.tables or tibbles if you prefer one of those over
+data.frames).</p>
     </div>
 
     <pre class="usage"><span class='fu'>NMdataConf</span>(<span class='kw'>...</span>)</pre>
@@ -160,8 +156,13 @@ hidden from other users.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>NMdata options to modify, like for base::options. See
-    examples for how to use. Parameters that can be controlled are:</p>
+      <td><p>NMdata options to modify. These are named arguments,
+    like for base::options. Normally, multiple arguments can be
+    used. The exception is if reset=TRUE is used which means all
+    options are restored to default values. If NULL is passed to
+    an argument, the argument is reset to default.  is See
+    examples for how to use.</p>
+<p>Parameters that can be controlled are:</p>
 <ul>
 <li><p>as.fun A function that will be applied to data returned by various
 data reading functions (NMscanData, NMreadTab, NMreadCSV, NMscanInput,
@@ -173,10 +174,6 @@ functions are not of class data.table. The argument as.fun to these
 functions is always adhered to. Pass an actual function, say
 as.fun=tibble::as_tibble. If you want data.table, use as.fun="data.table"
 (not a function).</p></li>
-<li><p>check.time Logical, applies to NMscanData only. NMscanData by
-defaults checks if output control stream is newer than input control stream
-and input data. Set this to FALSE if you are in an environment where time
-stamps cannot be relied on.</p></li>
 <li><p>file.mod A function that will derive the path to the input control
 stream based on the path to the output control stream. Technically, it can
 be a string too, but when using NMdataConf, this would make little sense
@@ -202,10 +199,19 @@ all relevant variables in the output tables. Default is TRUE.</p></li>
     created before this is taken into account. A column called
     nmout will be TRUE when the row was found in output tables,
     and FALSE when not. Default is FALSE.</p></li>
+<li><p>check.time Logical, applies to NMscanData only. NMscanData by
+defaults checks if output control stream is newer than input control stream
+and input data. Set this to FALSE if you are in an environment where time
+stamps cannot be relied on.</p></li>
 </ul></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Recommendation: Use
+this function transparently in the code and not in a configuration file
+hidden from other users.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## get current defaults</span>
@@ -217,7 +223,7 @@ all relevant variables in the output tables. Default is TRUE.</p></li>
 #&gt;         return(as.data.frame(list()))
 #&gt;     UseMethod("as.data.frame")
 #&gt; }
-#&gt; &lt;bytecode: 0x000000001e32e7c8&gt;
+#&gt; &lt;bytecode: 0x000000001eb38188&gt;
 #&gt; &lt;environment: namespace:base&gt;
 #&gt; 
 #&gt; $check.time
@@ -226,14 +232,14 @@ all relevant variables in the output tables. Default is TRUE.</p></li>
 #&gt; $file.mod
 #&gt; function (file) 
 #&gt; sub("\\.lst *$", "\\.mod", file)
-#&gt; &lt;bytecode: 0x000000001e338450&gt;
-#&gt; &lt;environment: 0x000000001e32de98&gt;
+#&gt; &lt;bytecode: 0x000000001eb43e40&gt;
+#&gt; &lt;environment: 0x000000001eb3b688&gt;
 #&gt; 
 #&gt; $modelname
 #&gt; function (file) 
 #&gt; sub("\\.lst$", "", basename(sub(" $", "", file)))
-#&gt; &lt;bytecode: 0x000000001e337dc0&gt;
-#&gt; &lt;environment: 0x000000001e32de98&gt;
+#&gt; &lt;bytecode: 0x000000001eb437b0&gt;
+#&gt; &lt;environment: 0x000000001eb3b688&gt;
 #&gt; 
 #&gt; $col.model
 #&gt; [1] "model"

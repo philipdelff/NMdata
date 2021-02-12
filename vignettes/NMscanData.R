@@ -53,33 +53,6 @@ ggplot(subset(res1,EVID==0))+
     labs(x="Hours since administration",y="Concentration (ng/mL)")
 
 ## -----------------------------------------------------------------------------
-## with data.table, create a new column representing ID-level Cmax
-res1.dt[,Cmax:=max(IPRED),by=.(ID)]
-## findCovs picks the columns that do not vary within cols.id. One row
-## per value of cols.id.
-res1.id <- findCovs(res1.dt,cols.id="ID")
-dim(res1.id)
-ggplot(res1.id,aes(WEIGHTB,Cmax/DOSE,colour=trtact))+
-    geom_point()+
-    labs(x="Bodyweight at baseline (kg)")
-
-## -----------------------------------------------------------------------------
-## we have no occasion variability in this data
-## res1.id.occ <- findCovs(res1,cols.id=c("ID","OCC"))
-
-## -----------------------------------------------------------------------------
-findCovs(res1)
-
-## -----------------------------------------------------------------------------
-dim(res1.id)
-head(res1.id,2)
-
-## -----------------------------------------------------------------------------
-res1.id2 <- findVars(res1.id)
-dim(res1.id2)
-head(res1.id2,2)
-
-## -----------------------------------------------------------------------------
 NMdataConf(as.fun="data.table")
 
 ## ----meanbydose---------------------------------------------------------------
@@ -129,6 +102,9 @@ ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+
 ## ----eval=FALSE---------------------------------------------------------------
 #  out2in <- function(file) file.path(dirname(file),"input.txt")
 #  res <- NMscanData("path/to/output.txt",file.mod=out2in)
+
+## ----eval=FALSE---------------------------------------------------------------
+#  NMdataConf(file.mod=out2in)
 
 ## -----------------------------------------------------------------------------
 print(attributes(res1.m)$meta$variables,topn=3)
