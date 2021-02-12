@@ -132,9 +132,9 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
     ## maybe later? rename tab.flags columns to FLAG and flag
     
 ##     if(!is.numeric(tab.flags[,get(col.flagn)])) stop("column FLAG in tab.flags must be numeric and non-negative")
-    if(!is.numeric(tab.flags[,get(col.flagn)])) stop(sprintf("column %s in tab.flags must be numeric and non-negative",tab.flagn))
+    if(!is.numeric(tab.flags[,get(col.flagn)])) stop(sprintf("column %s in tab.flags must be numeric and non-negative",col.flagn))
     if(any(tab.flags[,get(col.flagn)]<0)) stop(sprintf("column %s in tab.flags must be non-negative",col.flagn))
-    if(!is.character(tab.flags[,get(col.flagc)])) stop(sprintf("column %s in tab.flags must be of type character",flag))
+    if(!is.character(tab.flags[,get(col.flagc)])) stop(sprintf("column %s in tab.flags must be of type character",col.flagc))
     if(!is.character(tab.flags[,condition])) stop("column expression in tab.flags must be of type character")
     
 ###### Check tab.flags: FLAG, flag, and condition contain unique values
