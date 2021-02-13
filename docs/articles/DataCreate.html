@@ -97,12 +97,12 @@
 
     
     
-<p>Built 2021-02-11 using NMdata 0.0.6.6.</p>
+<p>Built 2021-02-13 using NMdata 0.0.6.6.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>Nonmem has quite a number of restrictions on the format of the input data, and problems with the data set is a very common reason for Nonmem not to behave as expected. When this happens, you easily waste a lot time debugging the data. <code>NMdata</code> includes some simple functions to prevent these situations.</p>
-<p>This vignette uses <code>data.table</code> syntax for the little bit of data manipulation performed. However, you don’t need to use data.table <em>at all</em> to use these tools or any tool in <code>NMdata</code>. The reason why the functions return data.table objects is that the data set is a data.table to begin with</p>
+<p>This vignette uses <code>data.table</code> syntax for the little bit of data manipulation performed. However, you don’t need to use data.table <em>at all</em> to use these tools or any tool in <code>NMdata</code>. The reason why the functions return data.table objects is that the data set is a <code>data.table</code> to begin with</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(file = <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/data/xgxr2.rds"</span>, package = <span class="st">"NMdata"</span>))
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="kw">pk</span>)
@@ -113,26 +113,28 @@
 <div id="automated-checks-of-merge-results" class="section level2">
 <h2 class="hasAnchor">
 <a href="#automated-checks-of-merge-results" class="anchor"></a>Automated checks of merge results</h2>
-<p>Merges are a very common source of data creation bugs. As simple as they may seem, merges likely leave you with an unexpected number of rows, some repeated or some omitted. Merges are very powerful and flexible, and when preparing a data set, they are fundamental. However, many merges for dataset creation are of the specific and simple kind where columns are added to an existing dataset. In this situation the rows that come out of the merge are the exact same as in one of the existing datasets. Say we want to add a covariate:</p>
+<p>Merges are a very common source of data creation bugs. As simple as they may seem, merges likely leave you with an unexpected number of rows, some repeated or some omitted. Merges are very powerful and flexible, and when preparing a data set, they are fundamental. However, many merges for dataset creation are of the specific and simple kind where columns are added to an existing dataset. In this situation the rows that come out of the merge are the exact same as in one of the existing datasets. Say we want to add a covariate from a <code>dt.cov</code>. Imagine we just assume that all subjects are represented with one row each in <code>dt.cov</code>, and so we expect the number of rows to be unchanged from <code>pk</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk</span>)
 <span class="co">#&gt; [1] 1500   24</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="kw">pk</span>)
-<span class="co">#&gt; [1] "data.table" "data.frame"</span>
-<span class="kw">dt.cov</span> <span class="op">&lt;-</span> <span class="kw">pk</span>[, <span class="fu">.</span>(ID = <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="kw">ID</span>)[<span class="fl">1</span><span class="op">:</span><span class="fl">10</span>])]
-<span class="kw">dt.cov</span>[, <span class="fu">`:=`</span>(<span class="kw">COV</span>, <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, size = <span class="fl">10</span>, replace = <span class="fl">TRUE</span>))]
+<span class="co">## the number of unique values of ID in pk</span>
+<span class="kw">pk</span>[, <span class="fu">uniqueN</span>(<span class="kw">ID</span>)]
+<span class="co">#&gt; [1] 150</span>
+<span class="kw">pk</span>[, <span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span>(<span class="kw">ID</span>)]
+<span class="co">#&gt; [1]  31 180</span>
+<span class="co">## dt.cov has a covariate for some of the subjects</span>
 <span class="kw">dt.cov</span>
 <span class="co">#&gt;     ID COV</span>
 <span class="co">#&gt;  1: 31   1</span>
 <span class="co">#&gt;  2: 32   1</span>
-<span class="co">#&gt;  3: 33   3</span>
-<span class="co">#&gt;  4: 34   1</span>
-<span class="co">#&gt;  5: 35   4</span>
-<span class="co">#&gt;  6: 36   3</span>
+<span class="co">#&gt;  3: 33   4</span>
+<span class="co">#&gt;  4: 34   3</span>
+<span class="co">#&gt;  5: 35   2</span>
+<span class="co">#&gt;  6: 36   2</span>
 <span class="co">#&gt;  7: 37   3</span>
-<span class="co">#&gt;  8: 38   1</span>
-<span class="co">#&gt;  9: 39   2</span>
-<span class="co">#&gt; 10: 40   2</span>
+<span class="co">#&gt;  8: 38   5</span>
+<span class="co">#&gt;  9: 39   1</span>
+<span class="co">#&gt; 10: 40   1</span>
 <span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk2</span>)
 <span class="co">#&gt; [1] 100  25</span>
@@ -143,13 +145,27 @@
 </pre></div>
 <p>So when creating <code>pk2</code> we lost a lot of rows because we forgot the <code>all.x</code> option. And also as we shall now see, just checking the resulting dimensions is not enough.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">dt.cov2</span> <span class="op">&lt;-</span> <span class="kw">pk</span>[, <span class="fu">.</span>(ID = <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="kw">ID</span>))]
-<span class="kw">dt.cov2</span>[, <span class="fu">`:=`</span>(<span class="kw">COV</span>, <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, size = <span class="kw">.N</span>, replace = <span class="fl">TRUE</span>))]
-<span class="kw">dt.cov2</span> <span class="op">&lt;-</span> <span class="kw">dt.cov2</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">1</span><span class="op">:</span>(<span class="kw">.N</span> <span class="op">-</span> <span class="fl">1</span>))]
-<span class="co"># dt.cov2 &lt;- dt.cov2[c(1:(.N))]</span>
+<span class="kw">dt.cov2</span>
+<span class="co">#&gt;       ID COV</span>
+<span class="co">#&gt;   1:  31   3</span>
+<span class="co">#&gt;   2:  31   3</span>
+<span class="co">#&gt;   3:  32   2</span>
+<span class="co">#&gt;   4:  33   1</span>
+<span class="co">#&gt;   5:  34   5</span>
+<span class="co">#&gt;  ---        </span>
+<span class="co">#&gt; 146: 175   5</span>
+<span class="co">#&gt; 147: 176   3</span>
+<span class="co">#&gt; 148: 177   1</span>
+<span class="co">#&gt; 149: 178   4</span>
+<span class="co">#&gt; 150: 179   2</span>
 <span class="kw">pk4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov2</span>, by = <span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk4</span>)
 <span class="co">#&gt; [1] 1500   25</span>
+<span class="co">## we now have twice as many rows for this subject</span>
+<span class="kw">pk</span>[<span class="kw">ID</span> <span class="op">==</span> <span class="fl">31</span>, <span class="kw">.N</span>]
+<span class="co">#&gt; [1] 10</span>
+<span class="kw">pk4</span>[<span class="kw">ID</span> <span class="op">==</span> <span class="fl">31</span>, <span class="kw">.N</span>]
+<span class="co">#&gt; [1] 20</span>
 </pre></div>
 <p>As illustrated by these simple examples, even the simplest merges have to be rigorously checked, no exceptions. The function <code><a href="../reference/mergeCheck.html">mergeCheck(x1,x2)</a></code> ensures that the result has exactly one of each rows from <code>x1</code> and nothing else. We can use <code>...</code> to pass additional arguments to merge.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
@@ -166,15 +182,16 @@
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk3</span>)
 <span class="co">#&gt; [1] 1500   25</span>
 </pre></div>
-<p>The result always has the same order of rows as the <code>x1</code> argument.</p>
-<p>Another problem that the programmer may not realize during a merge is that column names are shared across <code>x1</code> and <code>x2</code>. This will silently create colmn names like <code>col.x</code> and <code>col.y</code> in the output. <code>mergeCheck</code> will by default give a warning if that happens.</p>
-<p>There is only one difference from the behaviour of the <code>merge.data.frame</code> function syntax, being that the <code>by</code> argument must always be supplied.</p>
-<p>You may think that this will limit your merges, and that you need merges for inner and outer joins etc. You are exactly right - <code>mergeCheck</code> is not intended for those merges and does not support them. When that is said, the kind of merges that are supported, are indeed very common. As a fun fact, all merges in the <code>NMdata</code> package are performed with <code>mergeCheck</code>.</p>
+<p>The result always has the same row order as the <code>x1</code> argument.</p>
+<p>Another problem that the programmer may not realize during a merge is that column names are shared across <code>x1</code> and <code>x2</code> (in addition to columns that are being merged by). This will silently create colmn names like <code>col.x</code> and <code>col.y</code> in the output. <code>mergeCheck</code> will by default give a warning if that happens.</p>
+<p>There is only one difference from the behaviour of the <code>merge.data.frame</code> function syntax, being that the <code>by</code> argument must always be supplied to <code>mergeCheck</code>.</p>
+<p>You may think that this will limit your merges, and that you need merges for inner and outer joins etc. You are exactly right - <code>mergeCheck</code> is not intended for those merges and does not support them. When that is said, the kind of merges that are supported, are indeed very common. To illustrate how common, all merges in the <code>NMdata</code> package are performed with <code>mergeCheck</code>.</p>
 </div>
 <div id="exclusion-flags" class="section level2">
 <h2 class="hasAnchor">
 <a href="#exclusion-flags" class="anchor"></a>Exclusion flags</h2>
-<p>It is good practice not to discard records from a dataset but to flag them and omit them in model estimation. We also need to account for how many data records were discarded due to which criteria. A couple of functons in <code>NMdata</code> help you do this in a way that is easy to integrate with Nonmem.</p>
+<p>It is good practice not to discard records from a dataset but to flag them and omit them in model estimation. When reporting the analysis, we also need to account for how many data records were discarded due to which criteria. A couple of functons in <code>NMdata</code> help you do this in a way that is easy to integrate with Nonmem.</p>
+<!-- The implementation in `NMdata` is based on sequentially checking conditions th -->
 <div id="assign-and-count-flags" class="section level3">
 <h3 class="hasAnchor">
 <a href="#assign-and-count-flags" class="anchor"></a>Assign and count flags</h3>
@@ -252,7 +269,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-02-11 22:58:30 EST"</span>
+<span class="co">#&gt; [1] "2021-02-13 15:58:21 EST"</span>
 </pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
@@ -262,7 +279,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-02-11 22:58:30 EST"</span>
+<span class="co">#&gt; [1] "2021-02-13 15:58:21 EST"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span>
@@ -279,16 +296,16 @@
     package = <span class="st">"NMdata"</span>), col.row = <span class="st">"ROW"</span>, quiet = <span class="fl">TRUE</span>, as.fun = <span class="st">"data.table"</span>)
 <span class="co">#&gt; Warning: In NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"), :</span>
 <span class="co">#&gt; input control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpAHl7Sv/temp_libpath3d4c6307312b/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpWiStFW/temp_libpath5ba866f87553/NMdata/examples/nonmem/xgxr001.mod)</span>
 <span class="co">#&gt; is newer than output control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpAHl7Sv/temp_libpath3d4c6307312b/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpWiStFW/temp_libpath5ba866f87553/NMdata/examples/nonmem/xgxr001.lst)</span>
 <span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
 <span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="co">#&gt; In col.row = "ROW", quiet = TRUE, as.fun = "data.table") : input control</span>
 <span class="co">#&gt; stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpAHl7Sv/temp_libpath3d4c6307312b/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpWiStFW/temp_libpath5ba866f87553/NMdata/examples/nonmem/xgxr001.mod)</span>
 <span class="co">#&gt; is newer than output control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpAHl7Sv/temp_libpath3d4c6307312b/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpWiStFW/temp_libpath5ba866f87553/NMdata/examples/nonmem/xgxr001.lst)</span>
 <span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
 <span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span>(<span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span>, <span class="kw">res1</span><span class="op">$</span><span class="kw">DOSE</span>)
@@ -303,7 +320,7 @@
 <span class="fu">ggplot</span>(<span class="kw">res1.id</span>, <span class="fu">aes</span>(<span class="kw">WEIGHTB</span>, <span class="kw">Cmax</span><span class="op">/</span><span class="kw">DOSE</span>, colour = <span class="kw">trtact</span>)) <span class="op">+</span> <span class="fu">geom_point</span>() <span class="op">+</span> 
     <span class="fu">labs</span>(x = <span class="st">"Bodyweight at baseline (kg)"</span>)
 </pre></div>
-<p><img src="DataCreate_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
+<p><img src="DataCreate_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 <p><code>cols.id</code> can be longer than one. Include a study column, a treatment column to support cross-over, or a model column if you are comparing model fits (see below how to do this very easily).</p>
 <p>If your model includes occasion variability, you probably also want to look at</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
