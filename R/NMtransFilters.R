@@ -34,7 +34,7 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
     }
     if(!missing(file)&&!is.null(file)) {
         if(!file.exists(file)) messageWrap("When using the file argument, file has to point to an existing file.",fun.msg=stop)
-        lines <- readLines(file)
+        lines <- readLines(file,warn=FALSE)
     }
     if(!missing(text)&&!is.null(text)) {
         lines <- strsplit(text,split="\n")[[1]]

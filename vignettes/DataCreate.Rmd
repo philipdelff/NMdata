@@ -138,19 +138,28 @@ we also need to account for how many data records were discarded due
 to which criteria. A couple of functons in `NMdata` help you do this
 in a way that is easy to integrate with Nonmem. 
 
-<!-- The implementation in `NMdata` is based on sequentially checking conditions th -->
+The implementation in `NMdata` is based on sequentially checking
+exclusion conditions. This means we can summarize how many records and
+subjects were excluded from the analysis due to the different
+criteria. The information is represented in one numerical column for
+Nonmem, and one (equivalent) column for the rest of us in the
+resulting data. 
+
+It is good practice to keep all information needed to evaluate the
+exclusion criteria in the data. Say we exclude observations if they
+are flagged for reanalysis by bioanalysis. If we first run a criteria
+for time to be non-negative, we would no longer know which of the
+observations with negative time that were flagged for reanalysis based
+on the exclusion flag. 
+
 
 ### Assign and count flags
 For use in Nonmem, the easiest is that inclusion/exclusion is
-determined by a single column in data - we call that column `FLAG`. `FLAG`
-obviously draws on information from other columns such as `TIME`, `DV`,
-and many others, depending on your dataset and your way of working.
+determined by a single column in data - we call that column `FLAG`
+here, but any column name can be used. `FLAG` obviously draws on
+information from other columns such as `TIME`, `DV`, and many others,
+depending on your dataset and your way of working.
 
-What
-rows to omit from a dataset can vary from one analysis to
-another. Hence, the aim with the chosen design is that the inclusion
-criteria can be changed and applied to overwrite an existing
-inclusion/exclusion selection. 
 
 The function that applies inclusion/excluasion rules is called
 `flagsAssign`, and it takes a dataset and a data.frame with rules as
@@ -159,7 +168,8 @@ arguments.
 ```{r}
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds", package="NMdata"))
 dt.flags <- fread(text="FLAG,flag,condition
-10,Below LLOQ,BLQ==1")
+10,Negative time,TIME<0
+20,Below LLOQ,BLQ==1")
 
 pk <- flagsAssign(pk,dt.flags)
 ```
@@ -171,10 +181,10 @@ dataset above and do `data.frame(FLAG=...,flag=...,condition=...)` it
 gets impossible to read what elements of the three columns that
 correspond.
 
-`flagsAssign` applies the conditions sequentially. `FLAG=0` means that
-the observation is included in the analysis. You can use any
-expression that can be evaluated within the data.frame. In this case,
-BLQ has to exist in `pk`.
+`flagsAssign` applies the conditions sequentially and by increasing
+value of `FLAG`. `FLAG=0` means that the observation is included in
+the analysis. You can use any expression that can be evaluated within
+the data.frame. In this case, `BLQ` has to exist in `pk`.
 
 Actually, the evaluated expressions are slightly different from what
 is written in the table above. `flagsAssign` will prepend the
@@ -182,21 +192,41 @@ condition that `FLAG==0` in order for the conditions to be
 sequential. Again, the omission will be attributed to the first
 condition matched.
 
+
+What rows to omit from a dataset can vary from one analysis to
+another. Hence, the aim with the chosen design is that the inclusion
+criteria can be changed and applied to overwrite an existing
+inclusion/exclusion selection. For another analysis we want to include
+the observations below LLOQ, so we create a different exclusion flag
+for that one:
+
+```{r}
+dt.flags2 <- fread(text="FLAG2,flag2,condition
+10,Negative time,TIME<0")
+
+pk <- flagsAssign(pk,dt.flags2,col.flagn="FLAG2",col.flagc="flag2")
+```
+
+
+
+### Summarize data exclusions
 An overview of the number of observations disregarded due to the
 different conditions is then obtained using `flagsCount`:
 
 ```{r}
 tab.count <- flagsCount(data=pk,tab.flags=dt.flags)
 print(tab.count)
+tab.count2 <- flagsCount(data=pk,tab.flags=dt.flags2,col.flagn="FLAG2",col.flagc="flag2")
+print(tab.count2)
 ```
 
-`flagsCount` includes an option to save the the table right away.
+`flagsCount` includes a `file` option to save the the table right
+away.
 
 ## Finalize data format and write to file
 Once you have your dataset in place, `NMdata` provides a few useful
-functions. At this point, ideally you check your dataset for any
-incosistency. If you miss an inconsistency, the time you will spend
-finding it risks increasing hugely. First, you need to wait for Nonmem
+functions. At this point, ideally you check your data for any
+inconsistency. If you miss an inconsistency, you need to wait for Nonmem
 to finish if the inconsistency is not fatal for Nonmem's ability to
 run the model. Then, you may still not realize and continue working
 with Nonmem to build the model before you realize that something is
@@ -214,7 +244,7 @@ does so by a mix of recognition or column names and analysis of the
 column contents. 
 
 Columns that cannot be converted to numeric are put in the back, while
-column bearing standard Nonmem variable names like ID, TIME, EVID etc.
+column bearing standard Nonmem variable names like `ID`, `TIME`, `EVID` etc.
 will be pulled up front. You can of course add column names to
 prioritize to front (`first`) or back (`last`). See `?NMorderColumns` for
 more options.

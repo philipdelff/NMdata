@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2021-02-13 using NMdata 0.0.6.6.</p>
+<p>Built 2021-02-16 using NMdata 0.0.6.6.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -125,16 +125,16 @@
 <span class="co">## dt.cov has a covariate for some of the subjects</span>
 <span class="kw">dt.cov</span>
 <span class="co">#&gt;     ID COV</span>
-<span class="co">#&gt;  1: 31   1</span>
-<span class="co">#&gt;  2: 32   1</span>
-<span class="co">#&gt;  3: 33   4</span>
-<span class="co">#&gt;  4: 34   3</span>
+<span class="co">#&gt;  1: 31   5</span>
+<span class="co">#&gt;  2: 32   3</span>
+<span class="co">#&gt;  3: 33   2</span>
+<span class="co">#&gt;  4: 34   1</span>
 <span class="co">#&gt;  5: 35   2</span>
-<span class="co">#&gt;  6: 36   2</span>
+<span class="co">#&gt;  6: 36   4</span>
 <span class="co">#&gt;  7: 37   3</span>
-<span class="co">#&gt;  8: 38   5</span>
+<span class="co">#&gt;  8: 38   3</span>
 <span class="co">#&gt;  9: 39   1</span>
-<span class="co">#&gt; 10: 40   1</span>
+<span class="co">#&gt; 10: 40   3</span>
 <span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk2</span>)
 <span class="co">#&gt; [1] 100  25</span>
@@ -147,17 +147,17 @@
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="kw">dt.cov2</span>
 <span class="co">#&gt;       ID COV</span>
-<span class="co">#&gt;   1:  31   3</span>
-<span class="co">#&gt;   2:  31   3</span>
-<span class="co">#&gt;   3:  32   2</span>
-<span class="co">#&gt;   4:  33   1</span>
-<span class="co">#&gt;   5:  34   5</span>
+<span class="co">#&gt;   1:  31   2</span>
+<span class="co">#&gt;   2:  31   2</span>
+<span class="co">#&gt;   3:  32   1</span>
+<span class="co">#&gt;   4:  33   5</span>
+<span class="co">#&gt;   5:  34   1</span>
 <span class="co">#&gt;  ---        </span>
-<span class="co">#&gt; 146: 175   5</span>
-<span class="co">#&gt; 147: 176   3</span>
-<span class="co">#&gt; 148: 177   1</span>
-<span class="co">#&gt; 149: 178   4</span>
-<span class="co">#&gt; 150: 179   2</span>
+<span class="co">#&gt; 146: 175   1</span>
+<span class="co">#&gt; 147: 176   4</span>
+<span class="co">#&gt; 148: 177   4</span>
+<span class="co">#&gt; 149: 178   2</span>
+<span class="co">#&gt; 150: 179   3</span>
 <span class="kw">pk4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov2</span>, by = <span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk4</span>)
 <span class="co">#&gt; [1] 1500   25</span>
@@ -191,48 +191,71 @@
 <h2 class="hasAnchor">
 <a href="#exclusion-flags" class="anchor"></a>Exclusion flags</h2>
 <p>It is good practice not to discard records from a dataset but to flag them and omit them in model estimation. When reporting the analysis, we also need to account for how many data records were discarded due to which criteria. A couple of functons in <code>NMdata</code> help you do this in a way that is easy to integrate with Nonmem.</p>
-<!-- The implementation in `NMdata` is based on sequentially checking conditions th -->
+<p>The implementation in <code>NMdata</code> is based on sequentially checking exclusion conditions. This means we can summarize how many records and subjects were excluded from the analysis due to the different criteria. The information is represented in one numerical column for Nonmem, and one (equivalent) column for the rest of us in the resulting data.</p>
+<p>It is good practice to keep all information needed to evaluate the exclusion criteria in the data. Say we exclude observations if they are flagged for reanalysis by bioanalysis. If we first run a criteria for time to be non-negative, we would no longer know which of the observations with negative time that were flagged for reanalysis based on the exclusion flag.</p>
 <div id="assign-and-count-flags" class="section level3">
 <h3 class="hasAnchor">
 <a href="#assign-and-count-flags" class="anchor"></a>Assign and count flags</h3>
-<p>For use in Nonmem, the easiest is that inclusion/exclusion is determined by a single column in data - we call that column <code>FLAG</code>. <code>FLAG</code> obviously draws on information from other columns such as <code>TIME</code>, <code>DV</code>, and many others, depending on your dataset and your way of working.</p>
-<p>What rows to omit from a dataset can vary from one analysis to another. Hence, the aim with the chosen design is that the inclusion criteria can be changed and applied to overwrite an existing inclusion/exclusion selection.</p>
+<p>For use in Nonmem, the easiest is that inclusion/exclusion is determined by a single column in data - we call that column <code>FLAG</code> here, but any column name can be used. <code>FLAG</code> obviously draws on information from other columns such as <code>TIME</code>, <code>DV</code>, and many others, depending on your dataset and your way of working.</p>
 <p>The function that applies inclusion/excluasion rules is called <code>flagsAssign</code>, and it takes a dataset and a data.frame with rules as arguments.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(file = <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/data/xgxr2.rds"</span>, package = <span class="st">"NMdata"</span>))
 <span class="kw">dt.flags</span> <span class="op">&lt;-</span> <span class="fu">fread</span>(text = <span class="st">"FLAG,flag,condition
-10,Below LLOQ,BLQ==1"</span>)
+10,Negative time,TIME&lt;0
+20,Below LLOQ,BLQ==1"</span>)
 
 <span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsAssign.html">flagsAssign</a></span>(<span class="kw">pk</span>, <span class="kw">dt.flags</span>)
 <span class="co">#&gt; In flagsAssign(pk, dt.flags) : Data contains FLAG already. This is overwritten</span>
 <span class="co">#&gt; In flagsAssign(pk, dt.flags) : Data contains flag already. This is overwritten</span>
-<span class="co">#&gt; In flagsAssign(pk, dt.flags) : Coding FLAG = 10, flag = Below LLOQ</span>
+<span class="co">#&gt; In flagsAssign(pk, dt.flags) : Coding FLAG = 10, flag = Negative time</span>
+<span class="co">#&gt; In flagsAssign(pk, dt.flags) : Coding FLAG = 20, flag = Below LLOQ</span>
 </pre></div>
 <p>Your first question may be why fread is used to create a data.table (like read.csv to create a data.frame. The reason is that this way, we can write the information line by line. If you have ten lines in the dataset above and do <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame(FLAG=...,flag=...,condition=...)</a></code> it gets impossible to read what elements of the three columns that correspond.</p>
-<p><code>flagsAssign</code> applies the conditions sequentially. <code>FLAG=0</code> means that the observation is included in the analysis. You can use any expression that can be evaluated within the data.frame. In this case, BLQ has to exist in <code>pk</code>.</p>
+<p><code>flagsAssign</code> applies the conditions sequentially and by increasing value of <code>FLAG</code>. <code>FLAG=0</code> means that the observation is included in the analysis. You can use any expression that can be evaluated within the data.frame. In this case, <code>BLQ</code> has to exist in <code>pk</code>.</p>
 <p>Actually, the evaluated expressions are slightly different from what is written in the table above. <code>flagsAssign</code> will prepend the condition that <code>FLAG==0</code> in order for the conditions to be sequential. Again, the omission will be attributed to the first condition matched.</p>
-<p>An overview of the number of observations disregarded due to the different conditions is then obtained using <code>flagsCount</code>:</p>
+<p>What rows to omit from a dataset can vary from one analysis to another. Hence, the aim with the chosen design is that the inclusion criteria can be changed and applied to overwrite an existing inclusion/exclusion selection. For another analysis we want to include the observations below LLOQ, so we create a different exclusion flag for that one:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="kw">dt.flags2</span> <span class="op">&lt;-</span> <span class="fu">fread</span>(text = <span class="st">"FLAG2,flag2,condition
+10,Negative time,TIME&lt;0"</span>)
+
+<span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsAssign.html">flagsAssign</a></span>(<span class="kw">pk</span>, <span class="kw">dt.flags2</span>, col.flagn = <span class="st">"FLAG2"</span>, col.flagc = <span class="st">"flag2"</span>)
+<span class="co">#&gt; In flagsAssign(pk, dt.flags2, col.flagn = "FLAG2", col.flagc = "flag2") :</span>
+<span class="co">#&gt; Coding FLAG2 = 10, flag2 = Negative time</span>
+</pre></div>
+</div>
+<div id="summarize-data-exclusions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#summarize-data-exclusions" class="anchor"></a>Summarize data exclusions</h3>
+<p>An overview of the number of observations disregarded due to the different conditions is then obtained using <code>flagsCount</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit">
 <span class="kw">tab.count</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsCount.html">flagsCount</a></span>(data = <span class="kw">pk</span>, tab.flags = <span class="kw">dt.flags</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">tab.count</span>)
-<span class="co">#&gt;            flag N.left Nobs.left N.discarded Nobs.discarded</span>
-<span class="co">#&gt; 1:     All data    150      1500          NA             NA</span>
-<span class="co">#&gt; 2:   Below LLOQ    150       905           0            595</span>
-<span class="co">#&gt; 3: Analysis set    150       905          NA             NA</span>
+<span class="co">#&gt;             flag N.left Nobs.left N.discarded Nobs.discarded</span>
+<span class="co">#&gt; 1:      All data    150      1500          NA             NA</span>
+<span class="co">#&gt; 2: Negative time    150      1500           0           -595</span>
+<span class="co">#&gt; 3:    Below LLOQ    150       905           0            595</span>
+<span class="co">#&gt; 4:  Analysis set    150       905          NA             NA</span>
+<span class="kw">tab.count2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsCount.html">flagsCount</a></span>(data = <span class="kw">pk</span>, tab.flags = <span class="kw">dt.flags2</span>, col.flagn = <span class="st">"FLAG2"</span>, 
+    col.flagc = <span class="st">"flag2"</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">tab.count2</span>)
+<span class="co">#&gt;            flag2 N.left Nobs.left N.discarded Nobs.discarded</span>
+<span class="co">#&gt; 1:      All data    150      1500          NA             NA</span>
+<span class="co">#&gt; 2: Negative time    150      1500           0              0</span>
+<span class="co">#&gt; 3:  Analysis set    150      1500          NA             NA</span>
 </pre></div>
-<p><code>flagsCount</code> includes an option to save the the table right away.</p>
+<p><code>flagsCount</code> includes a <code>file</code> option to save the the table right away.</p>
 </div>
 </div>
 <div id="finalize-data-format-and-write-to-file" class="section level2">
 <h2 class="hasAnchor">
 <a href="#finalize-data-format-and-write-to-file" class="anchor"></a>Finalize data format and write to file</h2>
-<p>Once you have your dataset in place, <code>NMdata</code> provides a few useful functions. At this point, ideally you check your dataset for any incosistency. If you miss an inconsistency, the time you will spend finding it risks increasing hugely. First, you need to wait for Nonmem to finish if the inconsistency is not fatal for Nonmem’s ability to run the model. Then, you may still not realize and continue working with Nonmem to build the model before you realize that something is wrong. <code>NMdata</code> is still ways from providing a sufficient set of tests to run, but still these checks are useful and easy and cheap to run.</p>
+<p>Once you have your dataset in place, <code>NMdata</code> provides a few useful functions. At this point, ideally you check your data for any inconsistency. If you miss an inconsistency, you need to wait for Nonmem to finish if the inconsistency is not fatal for Nonmem’s ability to run the model. Then, you may still not realize and continue working with Nonmem to build the model before you realize that something is wrong. <code>NMdata</code> is still ways from providing a sufficient set of tests to run, but still these checks are useful and easy and cheap to run.</p>
 <div id="automated-ordering-of-columns" class="section level3">
 <h3 class="hasAnchor">
 <a href="#automated-ordering-of-columns" class="anchor"></a>Automated ordering of columns</h3>
 <p>The order of columns in Nonmem is important for two reasons. One is that a character in a variable read into Nonmem will make the run fail. The other is that there are restrictions on the number of variables you can read into Nonmem, depending on the version. <code>NMcolOrders</code> tries to put the used columns first, and other or maybe even unusable columns in the back of the dataset. It does so by a mix of recognition or column names and analysis of the column contents.</p>
-<p>Columns that cannot be converted to numeric are put in the back, while column bearing standard Nonmem variable names like ID, TIME, EVID etc. will be pulled up front. You can of course add column names to prioritize to front (<code>first</code>) or back (<code>last</code>). See <code><a href="../reference/NMorderColumns.html">?NMorderColumns</a></code> for more options.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
+<p>Columns that cannot be converted to numeric are put in the back, while column bearing standard Nonmem variable names like <code>ID</code>, <code>TIME</code>, <code>EVID</code> etc. will be pulled up front. You can of course add column names to prioritize to front (<code>first</code>) or back (<code>last</code>). See <code><a href="../reference/NMorderColumns.html">?NMorderColumns</a></code> for more options.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit">
 <span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMorderColumns.html">NMorderColumns</a></span>(<span class="kw">pk</span>)
 <span class="co">#&gt; Warning: In NMorderColumns(pk) : These standard nonmem columns were not found in data:</span>
 <span class="co">#&gt; MDV</span>
@@ -242,13 +265,13 @@
 <h3 class="hasAnchor">
 <a href="#writing-data-to-files" class="anchor"></a>Writing data to files</h3>
 <p>For the final step of writing the dataset, <code>NMwriteData</code> is provided. Most importantly, it writes a csv for Nonmem and an rds for R with equal contents, but with the rds including all information (such as factor levels) which cannot be saved in csv (NMscanData will know how to make use of this information once you retrieve the Nonmem results). It also provides a proposal for text to include in the <code>$INPUT</code> and <code>$DATA</code> sections of the Nonmem control streams - for you to copy-paste.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
+<div class="sourceCode" id="cb9"><pre class="downlit">
 <span class="fu"><a href="../reference/NMwriteData.html">NMwriteData</a></span>(<span class="kw">pk</span>)
 <span class="co">#&gt; Nonmem data file:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; For NonMem:</span>
 <span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span>
-<span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB EFF0</span>
+<span class="co">#&gt; FLAG2 PART PROFDAY PROFTIME WEIGHTB EFF0</span>
 <span class="co">#&gt; $DATA </span>
 <span class="co">#&gt; IGN=@</span>
 <span class="co">#&gt; IGNORE=(FLAG.NE.0)</span>
@@ -262,24 +285,24 @@
 <h2 class="hasAnchor">
 <a href="#stamp-objects-for-traceability" class="anchor"></a>Stamp objects for traceability</h2>
 <p>The last couple of functions that will be introduced here are used for tracing datasets to data creation scripts, including time stamps and other information you want to include with the data set.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
+<div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stampObj.html">stampObj</a></span>(<span class="kw">pk</span>, script = <span class="st">"vignettes/DataCreate.Rmd"</span>)
 <span class="fu"><a href="../reference/objInfo.html">objInfo</a></span>(<span class="kw">pk</span>)
 <span class="co">#&gt; $DataCreateScript</span>
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-02-13 15:58:21 EST"</span>
+<span class="co">#&gt; [1] "2021-02-16 14:45:35 EST"</span>
 </pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
+<div class="sourceCode" id="cb11"><pre class="downlit">
 <span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stampObj.html">stampObj</a></span>(<span class="kw">pk</span>, script = <span class="st">"vignettes/DataCreate.Rmd"</span>, Description = <span class="st">"A PK dataset used for examples."</span>)
 <span class="fu"><a href="../reference/objInfo.html">objInfo</a></span>(<span class="kw">pk</span>)
 <span class="co">#&gt; $DataCreateScript</span>
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-02-13 15:58:21 EST"</span>
+<span class="co">#&gt; [1] "2021-02-16 14:45:35 EST"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span>
@@ -291,21 +314,21 @@
 <h2 class="hasAnchor">
 <a href="#subject-level-variables" class="anchor"></a>Subject-level variables</h2>
 <p>In a proper PK/PD analysis we need to explore the data at multiple variability levels. What we looked at above is at dosing and sampling level (one row per dosing or sampling event). <code>NMdata</code> provides very useful functions to extract information at other levels of variability. Before extracting the subject-level information we will add an individual exposure measure to the dataset. We will use the empirical Bayes’ estimate of the individual maximum concentration. This is derived as the maximum prediction across the sample times - it may be better to simulate the model at a richer time scale to get better precision. Again, we make use of <code>data.table</code> but feel free to use what you prefer. <code>findCovs</code> - like other <code>NMdata</code> functions - will work on <code>data.frame</code>’s, <code>tibble</code>’s and other <code>data.frame</code>-like classes (classes that inherit from <code>data.frame</code>).</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
+<div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="kw">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, 
     package = <span class="st">"NMdata"</span>), col.row = <span class="st">"ROW"</span>, quiet = <span class="fl">TRUE</span>, as.fun = <span class="st">"data.table"</span>)
 <span class="co">#&gt; Warning: In NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"), :</span>
 <span class="co">#&gt; input control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpWiStFW/temp_libpath5ba866f87553/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpWiStFW/temp_libpath5ba83f152b08/NMdata/examples/nonmem/xgxr001.mod)</span>
 <span class="co">#&gt; is newer than output control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpWiStFW/temp_libpath5ba866f87553/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpWiStFW/temp_libpath5ba83f152b08/NMdata/examples/nonmem/xgxr001.lst)</span>
 <span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
 <span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="co">#&gt; In col.row = "ROW", quiet = TRUE, as.fun = "data.table") : input control</span>
 <span class="co">#&gt; stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpWiStFW/temp_libpath5ba866f87553/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpWiStFW/temp_libpath5ba83f152b08/NMdata/examples/nonmem/xgxr001.mod)</span>
 <span class="co">#&gt; is newer than output control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpWiStFW/temp_libpath5ba866f87553/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpWiStFW/temp_libpath5ba83f152b08/NMdata/examples/nonmem/xgxr001.lst)</span>
 <span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
 <span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span>(<span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span>, <span class="kw">res1</span><span class="op">$</span><span class="kw">DOSE</span>)
@@ -320,15 +343,15 @@
 <span class="fu">ggplot</span>(<span class="kw">res1.id</span>, <span class="fu">aes</span>(<span class="kw">WEIGHTB</span>, <span class="kw">Cmax</span><span class="op">/</span><span class="kw">DOSE</span>, colour = <span class="kw">trtact</span>)) <span class="op">+</span> <span class="fu">geom_point</span>() <span class="op">+</span> 
     <span class="fu">labs</span>(x = <span class="st">"Bodyweight at baseline (kg)"</span>)
 </pre></div>
-<p><img src="DataCreate_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
+<p><img src="DataCreate_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
 <p><code>cols.id</code> can be longer than one. Include a study column, a treatment column to support cross-over, or a model column if you are comparing model fits (see below how to do this very easily).</p>
 <p>If your model includes occasion variability, you probably also want to look at</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
+<div class="sourceCode" id="cb13"><pre class="downlit">
 <span class="co">## we have no occasion variability in this data res1.id.occ &lt;-</span>
 <span class="co">## findCovs(res1,cols.id=c('ID','OCC'))</span>
 </pre></div>
 <p>The simplest use of <code>findCovs</code> is to get variables that are constant across the whole dataset:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
+<div class="sourceCode" id="cb14"><pre class="downlit">
 <span class="fu"><a href="../reference/findCovs.html">findCovs</a></span>(<span class="kw">res1</span>)
 <span class="co">#&gt;   FLAG STUDY    TVKA  TVV2    TVCL    TVV3     TVQ      V3       Q BLQ CYCLE</span>
 <span class="co">#&gt; 1    0     1 0.18116 0.042 0.72491 0.17857 8813700 0.17857 8813700   0     1</span>
@@ -336,7 +359,7 @@
 <span class="co">#&gt; 1    1       1  TRUE    Hours Analysis set xgxr001</span>
 </pre></div>
 <p>Let’s take a look at what is in the <code>res1.id</code> generated above. It is a mix of variables that vary at subject level and variables that are constant across the full dataset.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
+<div class="sourceCode" id="cb15"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">res1.id</span>)
 <span class="co">#&gt; [1] 150  27</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">res1.id</span>, <span class="fl">2</span>)
@@ -351,7 +374,7 @@
 <span class="co">#&gt; 2   3 mg Analysis set   3 mg xgxr001    0</span>
 </pre></div>
 <p><code>findCovs</code> has a counterpart in <code>findVars</code> which finds variables that do vary within constant values of optional <code>cols.id</code> columns. To get only the ones that vary within the dataset (i.e. they are truely subject-level variables and not say a study number if we only have one study), we can do</p>
-<div class="sourceCode" id="cb15"><pre class="downlit">
+<div class="sourceCode" id="cb16"><pre class="downlit">
 <span class="kw">res1.id2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/findVars.html">findVars</a></span>(<span class="kw">res1.id</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">res1.id2</span>)
 <span class="co">#&gt; [1] 150  10</span>

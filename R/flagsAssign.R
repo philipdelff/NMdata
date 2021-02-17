@@ -28,6 +28,7 @@
 ##'     independently.
 ##' @return The dataset with flags added. See parameter flags.return
 ##'     as well.
+##' @details dt.flags must contain a column with numerical exclusion flags, one with character exclusion flags, and one with a expressions to evaluate for whether to apply the exclusion flag. The flags are applied sequentially, by increasing value of the numerical exclusion flag.
 ##' @import data.table
 ##' @family DataCreate
 ##' @examples

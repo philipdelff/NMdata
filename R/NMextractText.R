@@ -67,7 +67,7 @@ NMextractText <- function(file, lines, text, section, char.section,
            ))!=1) stop("Exactly one of file, lines, or text must be supplied")
     if(!missing(file)&&!is.null(file)) {
         if(!file.exists(file)) stop("When using the file argument, file has to point to an existing file.")
-        lines <- readLines(file)
+        lines <- readLines(file,warn=FALSE)
     }
     if(!missing(text)&&!is.null(text)) {
         lines <- strsplit(text,split=linesep)[[1]]
