@@ -76,8 +76,8 @@ default can be configured using NMdataConf.}
 \"file\" with extension changed to .mod (PSN style). You can
 also supply the path to the file, or you can provide a
 function that translates the output file path to the input
-file path. The default behavior is controlled by the
-"NMdata.file.mod" option. See dir.data too.}
+file path. The default behavior can be configured using
+NMdataConf. See dir.data too.}
 
 \item{dir.data}{The data directory can only be read from the
 control stream (.mod) and not from the output file (.lst). So

@@ -55,6 +55,9 @@ The dataset with flags added. See parameter flags.return
 The aim with this function is to take a (say PK) dataset and a
 pre-specified table of flags, assign the flags automatically.
 }
+\details{
+dt.flags must contain a column with numerical exclusion flags, one with character exclusion flags, and one with a expressions to evaluate for whether to apply the exclusion flag. The flags are applied sequentially, by increasing value of the numerical exclusion flag.
+}
 \examples{
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 dt.flags <- data.frame(

@@ -9,7 +9,7 @@ header-includes:
 - \usepackage{ae}
 ---
 
-```{r, include = FALSE}
+```{r,include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -24,10 +24,10 @@ Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 ## General `NMdata` questions
 
 ### How do I install NMdata?
-To get the most up to date version of `NMdata`, do the following from
+To get the development version of `NMdata`, do the following from
 within R:
 
-```{eval=FALSE}
+```{r,eval=FALSE}
 library(remotes)
 install_github("philipdelff/NMdata")
 library(NMdata)
@@ -35,13 +35,15 @@ library(NMdata)
 
 In a production environment, use a [github
 release](https://github.com/philipdelff/NMdata/releases) To install
-`NMdata 0.0.6.3` release, do
+`NMdata 0.0.6.6` release, do
 
-```{eval=FALSE}
+```{r,eval=FALSE}
 library(remotes)
-install_github("philipdelff/NMdata@v0.0.6.3")
+install_github("philipdelff/NMdata@v0.0.6.6")
 library(NMdata)
 ```
+
+Please make sure to check for latest version on (https://github.com/philipdelff/NMdata/releases)
 
 If you need to archive a script that is dependent on a feature or bug
 fix which is only in the master branch, request a release. 
