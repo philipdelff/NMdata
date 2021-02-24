@@ -37,6 +37,7 @@ With load_all():
     CLOSED: [2020-12-23 Wed 11:25]
 *** TODO A function to check data
 **** TODO Find previously used code
+**** TODO Implement checks in pmxtricks todo
 **** TODO Implement more checks
 https://doi.org/10.1208/s12248-012-9387-9
 ** Function improvements
@@ -71,7 +72,7 @@ According to the manual single = can be used for comparisons. This is not and
 should not be translated by NMcode2R.
 **** DONE $INPT is an alias for $INPUT
      CLOSED: [2020-06-15 Mon 21:09]
-**** TODO Implement NULL 
+**** TODO Implement NULL
 The way to change the missing string in nonmem. User could use
 NULL=NAN which would mean that NA should be interpreted as NA in R.
 **** TODO Implement or at least detect RECORDS
@@ -101,7 +102,8 @@ Either they must be firstonly, or they must be full.length.
 ***** Firstonly (FO) data can only be used if ID is both input and FO table
   We can implement taking the sequence of IDs from input and restore
   ID's from that
-**** TODO Improve summary of what tables were used and how.
+**** DONE Improve summary of what tables were used and how.
+     CLOSED: [2021-02-23 Tue 22:24]
 Right now it only says if input or output. Table name would be helpful.
 **** TODO Support for no ID, no ROW in firstonly tables
 If mergeByFilters we can take the sequence of ID in the input
@@ -111,7 +113,8 @@ whenever ID changes, but test this.
 check if variables are consistent within ROW: ID (others?) This is
 fatal and will happen when using long ID's and non-matching format
 when writing tables from Nonmem.
-**** TODO When using input data, ID should never be read from output data
+**** TODO New argument to define columns to read from input data
+ID should be default. Maybe TIME too?
 **** DONE Run NMorderColumns in the end
      CLOSED: [2020-12-23 Wed 11:29]
 Remember to use what we know about col.row. 
@@ -147,26 +150,9 @@ Not warning. Warning if standard variable?
 *** flagsAssign
 **** DONE Improve messages at each FLAG coding
      CLOSED: [2020-12-23 Wed 11:31]
-**** TODO Old todo list
-## Per default, should not overwrite already assigned FLAG. User may
-## have hardcoded some flags already.
-
-## check that all PKdata$FLAG have a value matching tab.flags$FLAG. Then merge
-## on the flag values.
-
-## Check that tab.flags contain a numeric called FLAG and a character/factor
-## called flag.
-
-## Check that FLAG, flag, and condition contain unique values
-
-## Add an increasing variable to PKdata so we can arrange the observations
-## exactly as they were to begin with.
-
-## arrange back to original order
-
-## This function must handle NA ID's and maybe FAS as well.
-
-## If EVID is present, only treat EVID==0. Or maybe better group by EVID.
+**** TODO Make sure we arrange back to original order
+**** TODO Introduce a way to apply to a subset only?
+This could be EVID==0 or maybe one study in a meta analysis
 *** NMdataConf
 **** DONE Add support for add.name
      CLOSED: [2021-01-30 Sat 14:29]
@@ -177,6 +163,9 @@ Not warning. Warning if standard variable?
 **** TODO use.rds
 **** TODO quiet
 **** TODO col.row
+This is two steps. 
+***** A method.merge argument must be introduced in NMscanData
+***** col.row can be non-NULL even if using cbind for combining data
 **** TODO order.columns
 ** Nonmem examples
 *** DONE Use FLAG
@@ -245,9 +234,12 @@ exactly these uses of ".". Anyway, no consequence to functionality.
      CLOSED: [2021-01-30 Sat 14:35]
 **** TODO Look for any updates by reference
 **** Update vignettes
-***** TODO NMscanData
-***** TODO FAQ
-***** TODO DataCreate
+***** DONE NMscanData
+      CLOSED: [2021-02-23 Tue 22:34]
+***** DONE FAQ
+      CLOSED: [2021-02-23 Tue 22:34]
+***** DONE DataCreate
+      CLOSED: [2021-02-23 Tue 22:34]
 **** DONE document data objects
      CLOSED: [2021-01-20 Wed 19:53]
 See how it's done in pmxtricks.  This is done. However, the datasets are not
