@@ -79,7 +79,7 @@ NMorderColumns <- function(data,
                            as.fun=NULL,
                            quiet=FALSE){
 
-
+    
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     nfirst <- NULL
@@ -92,7 +92,6 @@ NMorderColumns <- function(data,
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     if(missing(col.flagn)) col.flagn <- NULL
     col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
-    as.fun <- NMdataDecideOption("as.fun",as.fun)
     
     was.dt <- FALSE
     if(is.data.table(data)){
@@ -141,7 +140,7 @@ NMorderColumns <- function(data,
     setcolorder(data,order(dt.names[,order]))
 
     if(!was.dt || !is.null(as.fun)) {
-        ##        data <- as.data.frame(data)
+        as.fun <- NMdataDecideOption("as.fun",as.fun)
         data <- as.fun(data)
     }
 

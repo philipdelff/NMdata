@@ -36,9 +36,9 @@ findCovs <- function(data,cols.id=NULL,as.fun=NULL){
         stop("data must be a data.frame (or data.table)")
     }
 
-    was.data.table <- T
+    was.data.table <- TRUE
     if(!is.data.table(data)){
-        was.data.table <- F
+        was.data.table <- FALSE
         data <- as.data.table(data)
     }
 
@@ -59,9 +59,11 @@ findCovs <- function(data,cols.id=NULL,as.fun=NULL){
         reduced <- reduced[order(get(cols.id))]
     }
 
-
-    as.fun <- NMdataDecideOption("as.fun",as.fun)
-    reduced <- as.fun(reduced)
+    
+    if(!was.data.table || !is.null(as.fun)){
+        as.fun <- NMdataDecideOption("as.fun",as.fun)
+        reduced <- as.fun(reduced)
+    }
     
     reduced
 
