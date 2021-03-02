@@ -1,10 +1,20 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
  ,fig.width=7)
 
 knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
+
+## ----eval=FALSE---------------------------------------------------------------
+#  library(remotes)
+#  install_github("philipdelff/NMdata")
+#  library(NMdata)
+
+## ----eval=FALSE---------------------------------------------------------------
+#  library(remotes)
+#  install_github("philipdelff/NMdata@v0.0.6.6")
+#  library(NMdata)
 
 ## ----eval=F-------------------------------------------------------------------
 #  NMscanData(...,as.fun=tibble::as_tibble)

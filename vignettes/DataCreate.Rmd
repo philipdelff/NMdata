@@ -57,12 +57,14 @@ of class `data.frame`.
 
 ## Automated checks of merge results
 Merges are a very common source of data creation bugs. As simple as they may
-seem, merges likely leave you with an unexpected number of rows, some repeated or
-some omitted. Merges are very powerful and flexible, and when preparing a data
-set, they are fundamental. However, many merges for dataset creation are of the
-specific and simple kind where columns are added to an existing dataset. In this
-situation the rows that come out of the merge are the exact same as in one of
-the existing datasets. Say we want to add a covariate from a `dt.cov`. Imagine we just assume that all subjects are represented with one row each in `dt.cov`, and so we expect the number of rows to be unchanged from `pk`:
+seem, merges likely leave you with an unexpected number of rows, some repeated
+or some omitted. Merges are very powerful and flexible, and when preparing a
+data set, they are fundamental. However, many merges for dataset creation are of
+the specific and simple kind where columns are added to an existing dataset. In
+this situation the rows that come out of the merge are the exact same as in one
+of the existing datasets. Say we want to add a covariate from a
+`dt.cov`. Imagine we just assume that all subjects are represented with one row
+each in `dt.cov`, and so we expect the number of rows to be unchanged from `pk`:
 
 ```{r,include=FALSE}
 dt.cov <- pk[,.(ID=unique(ID)[1:10])]
@@ -174,8 +176,8 @@ dt.flags <- fread(text="FLAG,flag,condition
 pk <- flagsAssign(pk,dt.flags)
 ```
 
-Your first question may be why fread is used to create a data.table
-(like read.csv to create a data.frame. The reason is that this way, we
+Your first question may be why `fread` is used to create a data.table
+(like `read.csv` to create a data.frame). The reason is that this way, we
 can write the information line by line. If you have ten lines in the
 dataset above and do `data.frame(FLAG=...,flag=...,condition=...)` it
 gets impossible to read what elements of the three columns that

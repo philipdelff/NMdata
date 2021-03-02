@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2021-02-16 using NMdata 0.0.6.6.</p>
+<p>Built 2021-03-02 using NMdata 0.0.6.6.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -125,16 +125,16 @@
 <span class="co">## dt.cov has a covariate for some of the subjects</span>
 <span class="kw">dt.cov</span>
 <span class="co">#&gt;     ID COV</span>
-<span class="co">#&gt;  1: 31   5</span>
+<span class="co">#&gt;  1: 31   2</span>
 <span class="co">#&gt;  2: 32   3</span>
-<span class="co">#&gt;  3: 33   2</span>
-<span class="co">#&gt;  4: 34   1</span>
-<span class="co">#&gt;  5: 35   2</span>
-<span class="co">#&gt;  6: 36   4</span>
+<span class="co">#&gt;  3: 33   4</span>
+<span class="co">#&gt;  4: 34   2</span>
+<span class="co">#&gt;  5: 35   5</span>
+<span class="co">#&gt;  6: 36   5</span>
 <span class="co">#&gt;  7: 37   3</span>
 <span class="co">#&gt;  8: 38   3</span>
-<span class="co">#&gt;  9: 39   1</span>
-<span class="co">#&gt; 10: 40   3</span>
+<span class="co">#&gt;  9: 39   2</span>
+<span class="co">#&gt; 10: 40   4</span>
 <span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk2</span>)
 <span class="co">#&gt; [1] 100  25</span>
@@ -149,15 +149,15 @@
 <span class="co">#&gt;       ID COV</span>
 <span class="co">#&gt;   1:  31   2</span>
 <span class="co">#&gt;   2:  31   2</span>
-<span class="co">#&gt;   3:  32   1</span>
-<span class="co">#&gt;   4:  33   5</span>
-<span class="co">#&gt;   5:  34   1</span>
+<span class="co">#&gt;   3:  32   3</span>
+<span class="co">#&gt;   4:  33   1</span>
+<span class="co">#&gt;   5:  34   3</span>
 <span class="co">#&gt;  ---        </span>
-<span class="co">#&gt; 146: 175   1</span>
-<span class="co">#&gt; 147: 176   4</span>
-<span class="co">#&gt; 148: 177   4</span>
-<span class="co">#&gt; 149: 178   2</span>
-<span class="co">#&gt; 150: 179   3</span>
+<span class="co">#&gt; 146: 175   5</span>
+<span class="co">#&gt; 147: 176   2</span>
+<span class="co">#&gt; 148: 177   5</span>
+<span class="co">#&gt; 149: 178   5</span>
+<span class="co">#&gt; 150: 179   2</span>
 <span class="kw">pk4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov2</span>, by = <span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk4</span>)
 <span class="co">#&gt; [1] 1500   25</span>
@@ -210,7 +210,7 @@
 <span class="co">#&gt; In flagsAssign(pk, dt.flags) : Coding FLAG = 10, flag = Negative time</span>
 <span class="co">#&gt; In flagsAssign(pk, dt.flags) : Coding FLAG = 20, flag = Below LLOQ</span>
 </pre></div>
-<p>Your first question may be why fread is used to create a data.table (like read.csv to create a data.frame. The reason is that this way, we can write the information line by line. If you have ten lines in the dataset above and do <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame(FLAG=...,flag=...,condition=...)</a></code> it gets impossible to read what elements of the three columns that correspond.</p>
+<p>Your first question may be why <code>fread</code> is used to create a data.table (like <code>read.csv</code> to create a data.frame). The reason is that this way, we can write the information line by line. If you have ten lines in the dataset above and do <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame(FLAG=...,flag=...,condition=...)</a></code> it gets impossible to read what elements of the three columns that correspond.</p>
 <p><code>flagsAssign</code> applies the conditions sequentially and by increasing value of <code>FLAG</code>. <code>FLAG=0</code> means that the observation is included in the analysis. You can use any expression that can be evaluated within the data.frame. In this case, <code>BLQ</code> has to exist in <code>pk</code>.</p>
 <p>Actually, the evaluated expressions are slightly different from what is written in the table above. <code>flagsAssign</code> will prepend the condition that <code>FLAG==0</code> in order for the conditions to be sequential. Again, the omission will be attributed to the first condition matched.</p>
 <p>What rows to omit from a dataset can vary from one analysis to another. Hence, the aim with the chosen design is that the inclusion criteria can be changed and applied to overwrite an existing inclusion/exclusion selection. For another analysis we want to include the observations below LLOQ, so we create a different exclusion flag for that one:</p>
@@ -231,15 +231,15 @@
 <span class="kw">tab.count</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsCount.html">flagsCount</a></span>(data = <span class="kw">pk</span>, tab.flags = <span class="kw">dt.flags</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">tab.count</span>)
 <span class="co">#&gt;             flag N.left Nobs.left N.discarded Nobs.discarded</span>
-<span class="co">#&gt; 1:      All data    150      1500          NA             NA</span>
-<span class="co">#&gt; 2: Negative time    150      1500           0           -595</span>
+<span class="co">#&gt; 1:          &lt;NA&gt;    150      1500          NA             NA</span>
+<span class="co">#&gt; 2: Negative time    150      1500           0              0</span>
 <span class="co">#&gt; 3:    Below LLOQ    150       905           0            595</span>
 <span class="co">#&gt; 4:  Analysis set    150       905          NA             NA</span>
 <span class="kw">tab.count2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsCount.html">flagsCount</a></span>(data = <span class="kw">pk</span>, tab.flags = <span class="kw">dt.flags2</span>, col.flagn = <span class="st">"FLAG2"</span>, 
     col.flagc = <span class="st">"flag2"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">tab.count2</span>)
 <span class="co">#&gt;            flag2 N.left Nobs.left N.discarded Nobs.discarded</span>
-<span class="co">#&gt; 1:      All data    150      1500          NA             NA</span>
+<span class="co">#&gt; 1:          &lt;NA&gt;    150      1500          NA             NA</span>
 <span class="co">#&gt; 2: Negative time    150      1500           0              0</span>
 <span class="co">#&gt; 3:  Analysis set    150      1500          NA             NA</span>
 </pre></div>
@@ -292,7 +292,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-02-16 14:45:35 EST"</span>
+<span class="co">#&gt; [1] "2021-03-02 06:59:56 EST"</span>
 </pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit">
@@ -302,7 +302,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-02-16 14:45:35 EST"</span>
+<span class="co">#&gt; [1] "2021-03-02 06:59:56 EST"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span>
@@ -319,16 +319,16 @@
     package = <span class="st">"NMdata"</span>), col.row = <span class="st">"ROW"</span>, quiet = <span class="fl">TRUE</span>, as.fun = <span class="st">"data.table"</span>)
 <span class="co">#&gt; Warning: In NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"), :</span>
 <span class="co">#&gt; input control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpWiStFW/temp_libpath5ba83f152b08/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpoZjlQZ/temp_libpath54f4506538ef/NMdata/examples/nonmem/xgxr001.mod)</span>
 <span class="co">#&gt; is newer than output control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpWiStFW/temp_libpath5ba83f152b08/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpoZjlQZ/temp_libpath54f4506538ef/NMdata/examples/nonmem/xgxr001.lst)</span>
 <span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
 <span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="co">#&gt; In col.row = "ROW", quiet = TRUE, as.fun = "data.table") : input control</span>
 <span class="co">#&gt; stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpWiStFW/temp_libpath5ba83f152b08/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpoZjlQZ/temp_libpath54f4506538ef/NMdata/examples/nonmem/xgxr001.mod)</span>
 <span class="co">#&gt; is newer than output control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpWiStFW/temp_libpath5ba83f152b08/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpoZjlQZ/temp_libpath54f4506538ef/NMdata/examples/nonmem/xgxr001.lst)</span>
 <span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
 <span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span>(<span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span>, <span class="kw">res1</span><span class="op">$</span><span class="kw">DOSE</span>)

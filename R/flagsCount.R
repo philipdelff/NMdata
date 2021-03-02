@@ -141,23 +141,29 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
         resI[,FLAG:=tab.flags[I,FLAG]]
         resI
     })
-    allres <- rbindlist(allres.l)
+    allres0 <- rbindlist(allres.l)
 
 ### All data
-    allres <- rbind(allres,
+    
+
+    allres <- rbind(allres0,
+                    ## this is all data - must be returned as first row.
                     data[,.(N.left=uniqueN(ID)
                            ,Nobs.left=.N
-                           ,FLAG=Inf
+                           ,FLAG=-Inf
                             ),by=by]
                    ,fill=TRUE
                     )
 
-    setorder(allres,-FLAG)
+    setorder(allres,FLAG)
     allres[,N.discarded:=c(NA,-diff(N.left)),by=by]
+    
+    
     allres[,Nobs.discarded:=c(NA,-diff(Nobs.left)),by=by]
 
     
     allres <- rbind(allres,
+                    ## this is the analysis set
                     data[FLAG==0,.(FLAG=0,N.left=uniqueN(ID),Nobs.left=.N,N.discarded=NA,Nobs.discarded=NA),by=by],
                     fill=T)
     
@@ -192,5 +198,4 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     }
     
     return(allres)
-
 }

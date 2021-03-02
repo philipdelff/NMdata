@@ -208,6 +208,9 @@ independently.</p></td>
 
     <p>The dataset with flags added. See parameter flags.return
     as well.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>dt.flags must contain a column with numerical exclusion flags, one with character exclusion flags, and one with a expressions to evaluate for whether to apply the exclusion flag. The flags are applied sequentially, by increasing value of the numerical exclusion flag.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other DataCreate: 
@@ -234,7 +237,7 @@ independently.</p></td>
 #&gt; 1:     0 Analysis set   0
 #&gt; 2:    10   Below LLOQ   1</div><div class='input'><span class='fu'><a href='flagsCount.html'>flagsCount</a></span>(<span class='kw'>pk</span>,<span class='kw'>dt.flags</span>,col.flagn=<span class='st'>"flagn"</span>,col.flagc=<span class='st'>"flagc"</span>)
 </div><div class='output co'>#&gt;           flagc N.left Nobs.left N.discarded Nobs.discarded
-#&gt; 1:     All data    150      1500          NA             NA
+#&gt; 1:         &lt;NA&gt;    150      1500          NA             NA
 #&gt; 2:   Below LLOQ    150       905           0            595
 #&gt; 3: Analysis set    150       905          NA             NA</div></pre>
   </div>

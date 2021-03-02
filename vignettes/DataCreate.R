@@ -13,7 +13,6 @@ knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 ## ----setup,include=F----------------------------------------------------------
 library(NMdata)
 library(data.table)
-
 library(ggplot2)
 theme_set(theme_bw()+theme(legend.position="bottom"))
 
@@ -22,11 +21,20 @@ theme_set(theme_bw()+theme(legend.position="bottom"))
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 class(pk)
 
-## -----------------------------------------------------------------------------
-dim(pk)
-class(pk)
+## ----include=FALSE------------------------------------------------------------
 dt.cov <- pk[,.(ID=unique(ID)[1:10])]
 dt.cov[,COV:=sample(1:5,size=10,replace=TRUE)]
+
+dt.cov2 <- pk[,.(ID=unique(ID))]
+dt.cov2[,COV:=sample(1:5,size=.N,replace=TRUE)]
+dt.cov2 <- dt.cov2[c(1,1:(.N-1))]
+
+## -----------------------------------------------------------------------------
+dim(pk)
+## the number of unique values of ID in pk
+pk[,uniqueN(ID)]
+pk[,range(ID)]
+## dt.cov has a covariate for some of the subjects
 dt.cov
 pk2 <- merge(pk,dt.cov,by="ID")
 dim(pk2)
@@ -35,12 +43,12 @@ pk3 <- merge(pk,dt.cov,by="ID",all.x=TRUE)
 dim(pk3)
 
 ## -----------------------------------------------------------------------------
-dt.cov2 <- pk[,.(ID=unique(ID))]
-dt.cov2[,COV:=sample(1:5,size=.N,replace=TRUE)]
-dt.cov2 <- dt.cov2[c(1,1:(.N-1))]
-# dt.cov2 <- dt.cov2[c(1:(.N))]
+dt.cov2
 pk4 <- merge(pk,dt.cov2,by="ID")
 dim(pk4)
+## we now have twice as many rows for this subject
+pk[ID==31,.N]
+pk4[ID==31,.N]
 
 ## -----------------------------------------------------------------------------
 pk2 <- try(mergeCheck(pk,dt.cov,by="ID"))
@@ -51,13 +59,22 @@ dim(pk3)
 ## -----------------------------------------------------------------------------
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds", package="NMdata"))
 dt.flags <- fread(text="FLAG,flag,condition
-10,Below LLOQ,BLQ==1")
+10,Negative time,TIME<0
+20,Below LLOQ,BLQ==1")
 
 pk <- flagsAssign(pk,dt.flags)
 
 ## -----------------------------------------------------------------------------
+dt.flags2 <- fread(text="FLAG2,flag2,condition
+10,Negative time,TIME<0")
+
+pk <- flagsAssign(pk,dt.flags2,col.flagn="FLAG2",col.flagc="flag2")
+
+## -----------------------------------------------------------------------------
 tab.count <- flagsCount(data=pk,tab.flags=dt.flags)
 print(tab.count)
+tab.count2 <- flagsCount(data=pk,tab.flags=dt.flags2,col.flagn="FLAG2",col.flagc="flag2")
+print(tab.count2)
 
 ## -----------------------------------------------------------------------------
 pk <- NMorderColumns(pk)
