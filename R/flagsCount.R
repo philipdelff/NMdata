@@ -187,7 +187,6 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     setnames(allres,"flag",col.flagc)
     
     if(!is.null(file)){
-        ## write.csv(allres,file=file,quote=F,row.names=F)
         fwrite(allres,file=file,quote=F,row.names=F)
         cat(paste0("Table written to ",file,"\n"))
     }
