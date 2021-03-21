@@ -188,6 +188,13 @@ NMdataConfOptions <- function(name){
            ,process=identity
         )
        ,
+        col.nomtime=list(
+            default="nomtime"
+           ,is.allowed=function(x) (is.character(x) && length(x)==1)
+           ,msg.not.allowed="col.nomtime must be a character vector of length 1."
+           ,process=identity
+        )
+       ,
         col.flagn=list(
             default="FLAG"
            ,is.allowed=function(x) (is.character(x) && length(x)==1)
@@ -199,6 +206,21 @@ NMdataConfOptions <- function(name){
             default="flag"
            ,is.allowed=function(x) (is.character(x) && length(x)==1)
            ,msg.not.allowed="col.flagc must be a character vector of length 1."
+           ,process=identity
+        )
+       ,
+        col.row=list(
+            default="ROW"
+           ,is.allowed=function(x) (is.character(x) && length(x)==1)
+           ,msg.not.allowed="col.row must be a character vector of length 1."
+           ,process=identity
+        )
+       ,
+        method.combine=list(
+            default="filters"
+            ## has to be length 1 character 
+           ,is.allowed=function(x)is.character(x) && length(x)==1 && x%in%c("filters","col.row","none")
+           ,msg.not.allowed="method.combine must be character and one of filters, col.row, and none."
            ,process=identity
         )
        ,

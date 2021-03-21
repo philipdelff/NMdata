@@ -15,15 +15,16 @@ NMwriteData(
   args.rds,
   nmdrop,
   nmdir.data,
-  col.flag = "FLAG"
+  col.flag = "FLAG",
+  capitalize.names = FALSE
 )
 }
 \arguments{
 \item{data}{The dataset to write to file for use in Nonmem.}
 
-\item{file}{The file to write to. The extension (everything after
-and including last ".") is dropped. csv, rds and other
-standard file name extensions are added.}
+\item{file}{The file to write to. The extension (everything after and
+including last ".") is dropped. csv, rds and other standard file name
+extensions are added.}
 
 \item{write.csv}{Write to csv file?}
 
@@ -32,29 +33,31 @@ recommended. Use write.rds instead.}
 
 \item{write.rds}{write an rds file?}
 
-\item{script}{If provided, the object will be stamped with this
-script name before saved to rds or Rdata. See ?stampObj.}
+\item{script}{If provided, the object will be stamped with this script name
+before saved to rds or Rdata. See ?stampObj.}
 
 \item{args.stamp}{A list of arguments to be passed to stampObj.}
 
 \item{args.rds}{A list of arguments to be passed to saveRDS.}
 
-\item{nmdrop}{Only used for generation of proposed text for Nonmem
-control stream. Columns to drop in Nonmem $DATA. This has two
-implications. One is that the proposed $DATA indicates =DROP
-after the given column names. The other that in case it is a
-non-numeric column, succeeding columns can still be included.}
+\item{nmdrop}{Only used for generation of proposed text for Nonmem control
+stream. Columns to drop in Nonmem $DATA. This has two implications. One
+is that the proposed $DATA indicates =DROP after the given column
+names. The other that in case it is a non-numeric column, succeeding
+columns can still be included.}
 
-\item{nmdir.data}{For the $DATA text proposal only. The path to
-the input datafile to be used in the Nonmem $DATA
-section. Often, a relative path to the actual Nonmem run is
-wanted here.}
+\item{nmdir.data}{For the $DATA text proposal only. The path to the input
+datafile to be used in the Nonmem $DATA section. Often, a relative path
+to the actual Nonmem run is wanted here.}
 
-\item{col.flag}{Name of a numeric column with zero value for rows
-to include in Nonmem run, non-zero for rows to skip. The
-argument is only used for generating the proposed text to
-paste into the Nonmem control stream. To skip this feature,
-use col.flag=NULL.}
+\item{col.flag}{Name of a numeric column with zero value for rows to include
+in Nonmem run, non-zero for rows to skip. The argument is only used for
+generating the proposed text to paste into the Nonmem control stream. To
+skip this feature, use col.flag=NULL.}
+
+\item{capitalize.names}{For the $DATA text proposal only. If TRUE, the
+suggested text for Nonmem will only contain capital letters in column
+names.}
 }
 \value{
 Text for inclusion in Nonmem control stream, invisibly.
@@ -69,10 +72,9 @@ etc. are derived by replacing the extension to the filename given
 in the file argument.
 }
 \details{
-When writing csv files, the file will be
-    comma-separated. Because Nonmem does not support quoted
-    fields, you must avoid commas in character fields. An error is
-    returned if commas are found in strings.
+When writing csv files, the file will be comma-separated. Because
+    Nonmem does not support quoted fields, you must avoid commas in
+    character fields. An error is returned if commas are found in strings.
 
 The user is provided with text to use in Nonmem. This lists names
 of the data columns. Once a column is reached that Nonmem will not

@@ -6,46 +6,43 @@
 ##' 
 ##' @param data The dataset which columns to reorder.
 ##' @param first Columns that should come almost first. See details.
-##' @param last Columns to move to back of dataset. If you work with a
-##'     large dataset, and some columns are irrelevant for the Nonmem
-##'     runs, you can use this argument.
-##' @param lower.last Should columns which names contain lowercase
-##'     characters be moved towards the back? Some people use a
-##'     standard of lowercase variables (say "race") being character
-##'     representations ("asian", "caucasian", etc.) variables and the
-##'     uppercase (1,2,...) being the numeric representation for
-##'     Nonmem.
-##' @param chars.last Should columns which cannot be converted to
-##'     numeric be put towards the end? A column can be a character or
-##'     a factor in R, but still be valid in Nonmem (often the case
-##'     for ID which can only contain numeric digits but really is a
-##'     character or factor). So rather than only looking at the
-##'     column class, the columns are attempted converted to
-##'     numeric. Notice, it will attempted to be converted to numeric
-##'     to test whether Nonmem will be able to make sense of it, but
-##'     the values in the resulting dataset will be untouched. No
-##'     values will be edited. If TRUE, logicals will always be put
-##'     last. NA's must be NA or ".".
-##' @param alpha Sort columns alphabetically. Notice, this is the last
-##'     order priority applied.
-##' @param col.ntime The name of the column containing nominal time. If
-##'     given, it will put the column quite far left, just after row
-##'     counter and ID.
-##' @param col.row A row counter column. This will be the first column in
-##'     the dataset. Technically, you can use it for whatever column
-##'     you want first.
-##' @param col.flagn The name of the column containing numerical flag
-##'     values for data row omission. Default value is FLAG and can be
-##'     configured with NMdataConf.
-##' @param as.fun The default is to return a data.table if data is a
-##'     data.table and return a data.frame in all other cases. Pass a
-##'     function in as.fun to convert to something else. The default
-##'     can be configured using NMdataConf. However, if data is a
-##'     data.table, settings via NMdataConf are ignored.
-##' @param quiet If true, no warning will be given about missing
-##'     standard Nonmem columns.
-##' @details This function will change the order of columns but it
-##'     will never edit values in any columns.
+##' @param last Columns to move to back of dataset. If you work with a large
+##'     dataset, and some columns are irrelevant for the Nonmem runs, you can
+##'     use this argument.
+##' @param lower.last Should columns which names contain lowercase characters be
+##'     moved towards the back? Some people use a standard of lowercase
+##'     variables (say "race") being character representations ("asian",
+##'     "caucasian", etc.) variables and the uppercase (1,2,...) being the
+##'     numeric representation for Nonmem.
+##' @param chars.last Should columns which cannot be converted to numeric be put
+##'     towards the end? A column can be a character or a factor in R, but still
+##'     be valid in Nonmem (often the case for ID which can only contain numeric
+##'     digits but really is a character or factor). So rather than only looking
+##'     at the column class, the columns are attempted converted to
+##'     numeric. Notice, it will attempted to be converted to numeric to test
+##'     whether Nonmem will be able to make sense of it, but the values in the
+##'     resulting dataset will be untouched. No values will be edited. If TRUE,
+##'     logicals will always be put last. NA's must be NA or ".".
+##' @param alpha Sort columns alphabetically. Notice, this is the last order
+##'     priority applied.
+##' @param col.nomtime The name of the column containing nominal time. If given,
+##'     it will put the column quite far left, just after row counter and
+##'     ID. Default value is NOMTIME and can be configured with NMdataConf.
+##' @param col.row A row counter column. This will be the first column in the
+##'     dataset. Technically, you can use it for whatever column you want
+##'     first. Default value is ROW and can be configured with NMdataConf.
+##' @param col.flagn The name of the column containing numerical flag values for
+##'     data row omission. Default value is FLAG and can be configured with
+##'     NMdataConf.
+##' @param as.fun The default is to return a data.table if data is a data.table
+##'     and return a data.frame in all other cases. Pass a function in as.fun to
+##'     convert to something else. The default can be configured using
+##'     NMdataConf. However, if data is a data.table, settings via NMdataConf
+##'     are ignored.
+##' @param quiet If true, no warning will be given about missing standard Nonmem
+##'     columns.
+##' @details This function will change the order of columns but it will never
+##'     edit values in any columns.
 ##'
 ##' The ordering is by the following steps, each step depending on
 ##' corresponding argument. Not
@@ -73,8 +70,8 @@ NMorderColumns <- function(data,
                            lower.last=FALSE,
                            chars.last=TRUE,
                            alpha=TRUE,
-                           col.ntime="NOMTIME",
-                           col.row="ROW",
+                           col.nomtime,
+                           col.row,
                            col.flagn,
                            as.fun=NULL,
                            quiet=FALSE){
@@ -92,6 +89,11 @@ NMorderColumns <- function(data,
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     if(missing(col.flagn)) col.flagn <- NULL
     col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
+    if(missing(col.nomtime)) col.nomtime <- NULL
+    col.nomtime <- NMdataDecideOption("col.nomtime",col.nomtime)
+    if(missing(col.row)) col.row <- NULL
+    col.row <- NMdataDecideOption("col.row",col.row)
+
     
     was.dt <- FALSE
     if(is.data.table(data)){
@@ -103,7 +105,7 @@ NMorderColumns <- function(data,
     if(missing(first)) first <- NULL
     if(missing(last)) last <- NULL
     
-    first1 <- c(col.row,"ID",col.ntime,"TIME","EVID","CMT","AMT","RATE",
+    first1 <- c(col.row,"ID",col.nomtime,"TIME","EVID","CMT","AMT","RATE",
                 "DV","MDV")
     first2 <- c(col.flagn,"OCC","GRP","TRIAL","STUDY","DRUG","ROUTE")
 

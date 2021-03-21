@@ -22,10 +22,6 @@
 ##' @param col.row A column with a unique value for each row. Such a
 ##'     column is recommended to use if possible. See cbind.by.filters
 ##'     and details as well.
-##' @param use.input Merge with columns in input data? Using this, you
-##'     don't have to worry about remembering including all relevant
-##'     variables in the output tables. Default is TRUE and can be
-##'     configured using NMdataConf.
 ##' @param recover.rows Include rows from input data files that do not
 ##'     exist in output tables? This will be added to the $row dataset
 ##'     only, and $run, $id, and $occ datasets are created before this
@@ -116,9 +112,17 @@
 ##' @import data.table
 ##' @export
 
+## method.combine should be empty by default to look for col.row if none
+## supplied. To disable, use method.combine="none"
 
-NMscanData <- function(file, col.row, cbind.by.filters,
-                       use.input, recover.rows,
+## rm use.input from NMdataConf
+
+## NMdecideOption define method.combine and remove chk in NMscanData
+
+## if merge by row, got to make sure that col.row can be used.
+
+NMscanData <- function(file, col.row, method.combine,
+                       recover.rows,
                        col.model="model", modelname, file.mod,
                        dir.data, quiet=FALSE, use.rds=TRUE,
                        as.fun, col.id="ID", tab.count=FALSE,
@@ -152,9 +156,6 @@ NMscanData <- function(file, col.row, cbind.by.filters,
     if(!file.exists(file)) messageWrap(paste0("Model file ",file," does not exist."),fun.msg=stop)
     dir <- dirname(file)
 
-    if(!missing(cbind.by.filters) && !is.logical(cbind.by.filters)){
-        stop("If supplied, cbind.by.filters must be logical.")
-    }
 
     ## for easier passing of the argument
     if(missing(dir.data)) dir.data <- NULL
@@ -164,8 +165,6 @@ NMscanData <- function(file, col.row, cbind.by.filters,
     check.time <- NMdataDecideOption("check.time",check.time)
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     modelname <- NMdataDecideOption("modelname",modelname)
-    if(missing(use.input)) use.input <- NULL
-    use.input <- NMdataDecideOption("use.input",use.input)
     if(missing(recover.rows)) recover.rows <- NULL
     recover.rows <- NMdataDecideOption("recover.rows",recover.rows)
 
@@ -184,67 +183,53 @@ NMscanData <- function(file, col.row, cbind.by.filters,
     } else {
         include.model <- FALSE
     }
-
     
     runname <- modelname(file)
     ## file.mod is treated later if we need the input control stream
     
-    ### combination of arguments
+### combination of arguments
     if(!is.null(dir.data)&&!is.null(file.mod)){
         messageWrap("Only use one of dir.data and file.mod. The aim is to find the input data file, so either give the directory (dir.data) in which it is, and the filename will be taken from the lst file, or help finding the .mod file using the file.mod argument. Using both is redundant.",fun.msg=stop)
     }
 
-    
-### cbind.by.filters and col.row - specification of merging method
-    search.col.row <- FALSE
-    do.cbind.by.filters <- FALSE
-    merge.by.row <- FALSE
-
-    
-if(use.input){
-### method not specified
-        ## simplest function call - default
-        if( missing(cbind.by.filters) && missing(col.row) ){
-            do.cbind.by.filters <- TRUE
-            search.col.row <- TRUE
-            col.row <- NULL
-        } else if(missing(cbind.by.filters) && !missing(col.row) && is.null(col.row) ){
-            do.cbind.by.filters <- TRUE
-
-
-### method specified
-            ## cbind.by.filters specified - col.row can be NULL too
-        } else if(!missing(cbind.by.filters) && cbind.by.filters && (missing(col.row) || is.null(col.row))){
-            do.cbind.by.filters <- TRUE
-        } else if(!missing(cbind.by.filters) && !cbind.by.filters && (missing(col.row) || is.null(col.row))){
-            use.input <- FALSE
-            ## col.row specified
-        } else if(missing(cbind.by.filters) && !missing(col.row) && !is.null(col.row) ){
-            merge.by.row <- TRUE
-            ## cbind.by.filters and col.row specified
-        } else if(!cbind.by.filters && !missing(col.row) && !is.null(col.row) ){
-            merge.by.row <- TRUE
-
-### redundant specification
-        } else if(cbind.by.filters && !missing(col.row) && !is.null(col.row) ){
-            stop("cbind.by.filters cannot be TRUE and col.row non-NULL at the same time.")
-        } else {
-            messageWrap("A non-recognized combination of cbind.by.filters and col.row. Please see the documenation of those two arguments.",fun.msg=stop)
-        }
-
-        cbind.by.filters <- do.cbind.by.filters
-        rm(do.cbind.by.filters)
-        if(cbind.by.filters && merge.by.row) {
-            stop("This is a bug. Please report.")
-        }
-    }
-
-### merging method found
-### now code must use search.col.row, cbind.by.filters and merge.by.row
-
     if(missing(col.row)||(!is.null(col.row)&&is.na(col.row))||(is.character(col.row)&&any(col.row==""))) {
         col.row <- NULL
     }
+
+    
+### specification of merging method
+    search.col.row <- FALSE
+    cbind.by.filters <- FALSE
+    merge.by.row <- FALSE
+
+    if(missing(col.row)) col.row <- NULL
+    col.row <- NMdataDecideOption("col.row",col.row)
+
+    if(missing(method.combine)) method.combine <- NULL
+    
+    if(is.null(method.combine)){
+        ## method not specified
+        search.col.row <- TRUE
+    }
+    method.combine <- NMdataDecideOption("method.combine",method.combine)
+
+    if(method.combine=="filters"){
+        use.input <- TRUE
+        cbind.by.filters <- TRUE
+    }
+    if(method.combine=="col.row"){
+        use.input <- TRUE
+        cbind.by.filters <- FALSE
+        merge.by.row <- TRUE
+    }
+    if(method.combine=="none"){
+        use.input <- FALSE
+        cbind.by.filters <- FALSE
+        merge.by.row <- FALSE
+    }
+    
+### merging method found
+### now code must use search.col.row, cbind.by.filters and merge.by.row
 
 ###  Section end: Process arguments 
 
@@ -264,7 +249,7 @@ if(use.input){
     data <- tables$data
     overview.tables <- tables$meta
 
-    
+
     fun.has.row <- function(names) do.call(c,lapply(names,function(name)col.row%in%colnames(data[[name]])))
     overview.tables[,has.row:=fun.has.row(name)]
     overview.tables[,maxLength:=nrow==max(nrow)]
@@ -274,20 +259,17 @@ if(use.input){
 ### combine full tables into one
     tabs.full <- which(overview.tables$full.length)
 
-    
+
     if(use.input && merge.by.row) {
         
         if(any(overview.tables[,full.length])&&!overview.tables[,sum(has.row)]) {
-            ## warning("col.row not found in any full-length (not firstonly) output tables. Input data will not be used. See arguments col.row and cbind.by.filters.")
-            ## use.input <- FALSE
             messageWrap("col.row not found in any full-length (not firstonly) output tables. Correct or disable.",fun.msg=stop)
         }
     }
-    
+
     tab.row <- NULL
-    ##    tab.vars <- NULL
     dt.vars <- NULL
-    
+
     if(any(overview.tables[,full.length])) {
         
         ## there might be a little bit to save by reducing the columns before cbind.
@@ -316,12 +298,8 @@ if(use.input){
                                    ,source="NMscanData"
                                    ,level="row"
                                     ))
-        
-        ## tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="output",level="row"))
-        ## tab.vars[var=="nmout",source:="NMscanData"]
-        ## tab.vars[var=="nmout",level:=NA_character_]
     } 
-    
+
 
 ### combine idlevel tables into one
     tab.idlevel <- NULL
@@ -348,7 +326,7 @@ if(use.input){
     ## use.input.row means if we will merge row-wise output data onto
     ## input data. Even if FALSE, we can still merge idlevel data
     ## onto input dataif no row-wise output exists.
-    
+
     ## use.input.row <- use.input
 
     if(use.input && is.null(dir.data)) {
@@ -368,7 +346,7 @@ if(use.input){
         use.rows <- FALSE
     }
 
-    
+
     if(use.input&&!any(tables$meta$full.length)) {
         ## data.input
         ## meta.data 
@@ -396,11 +374,9 @@ if(use.input){
         
         tab.row[,nmout:=FALSE]
     }
-    
+
     if(use.input&&any(tables$meta$full.length)) {
         ## if(!quiet) messageWrap("Searching for input data.")
-
-        
         
         data.input <- NMscanInput(file,file.mod=file.mod,
                                   dir.data=dir.data, quiet=TRUE,
@@ -416,12 +392,12 @@ if(use.input){
         if(search.col.row){
             
             dia <- suppressWarnings(NMscanInput(file,file.mod=file.mod,
-                               dir.data=dir.data,
-                               quiet=TRUE,use.rds=use.rds,
-                               applyFilters=FALSE,
-                               details=TRUE,
-                               col.id=col.id,
-                               as.fun=identity))
+                                                dir.data=dir.data,
+                                                quiet=TRUE,use.rds=use.rds,
+                                                applyFilters=FALSE,
+                                                details=TRUE,
+                                                col.id=col.id,
+                                                as.fun=identity))
             
             cols.row.input <- colnames(dia$data)[dia$data[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 
@@ -436,7 +412,7 @@ if(use.input){
                 msg0 <- "\nInput data columns will be appended to output data. However, it is recommended to use a unique row identifier (typically a counter but only required to be unique for each row) for a robust merge of input and output data. See argument col.row."
             }
             msg <- paste0(msg0,"\n",
-                          "To skip this check, please specify either col.row (recommended) or cbind.by.filters.")
+                          "To skip this check, please specify a value in method.combine argument.")
             messageWrap(msg,fun.msg=message)
             cat("\n")
         }
@@ -525,50 +501,39 @@ if(use.input){
 
 
 #### Section start: Add idlevel data ####
-    
+    ## if merge.by.row==TRUE, col.row is the prefered col to merge by. col.row or col.id must be present.
+
+    ## If cbind.by.filters, we merge by col.id.
+
+    ## col.row is only acceptable to
+    ## merge by if merge.by.row==TRUE
+
     skip.idlevel <- FALSE
     if(!is.null(tab.idlevel)) {
+
         ## If we use input or row-level output, we will not use DV from idlevel
         if( (use.input || use.rows) && "DV"%in%colnames(tab.idlevel)){
             tab.idlevel[,DV:=NULL]
         }
-        ## col.id must be in tab.row, or we can't do this
-        if(!is.null(tab.row)&&!all(col.id%in%colnames(tab.row))) {
-            warning("col.id not found in row-specific input or output data. Idlevel output data cannot be combined with other data.")
-            skip.idlevel <- TRUE
-        }
-        ## remember all(NULL) is TRUE. So if col.id and/or col.row are
-        ## used, all their values must be in tab.row.
         
-        if(!skip.idlevel && !is.null(tab.row) && all(!col.id%in%colnames(tab.idlevel)) && all(!col.row%in%colnames(tab.idlevel))) {
-            
-            warning("Idlevel output data found. But the table(s) contains neither col.id nor col.row. Merging is not supported in this case, so the idlevel table(s) will not be used.")
-            skip.idlevel <- TRUE
-        }
-### here, merge by those of col.row and col.id that are present in both tab.row and tab.idlevel
-        ## col.id is in tab.row (known from above)
-        if(!skip.idlevel && !is.null(tab.row) && (!all(col.id%in%colnames(tab.row)))) {
-            warning("idlevel table is found but col.id is not found in input or all-rows output tables, so the idlevel data cannot be merged. Anyway, how does this make sense, is a idlevel table written for a non-population model?")
-            skip.idlevel <- TRUE
-        }
+        cols.merge.idlevel <- col.id
+        if(merge.by.row) cols.merge.idlevel <- c(col.id,col.row)
         
-        ## if col.id is not in tab.idlevel but col.row is, get col.id and discard row.
-        if(!skip.idlevel && !is.null(tab.row) && !all(col.id%in%colnames(tab.idlevel))) {
-            
-            tab.idlevel <- mergeCheck(tab.idlevel[,setdiff(colnames(tab.idlevel),col.id),with=F],tab.row[,c(col.row,col.id),with=F],by=col.row,as.fun=identity)
-            tab.idlevel[,(col.row):=NULL]
+        cols.common.row.id <- intersect(colnames(tab.row),colnames(tab.idlevel))
+        if(!any(cols.merge.idlevel%in%cols.common.row.id)){
+            warning("subject-level output data cannot be combined with other data. To make use of subject-level output: If method.combine=filters, col.id must be in row-specific input or output data. If method.combine=row, col.id or col.row must be in row-specific input or output data.")
+            skip.idlevel <- TRUE
         }
 
-        ## so col.id is in both tab.row and tab.idlevel. merge by col.id
+        ## if col.row is in cols.merge.row.id, merge by col.row only.
+        
         ## We want everything that is not in output row-data. We want it even if in input data. But give a warning if it varies in input.
         if(!skip.idlevel) {
             ## The very special case where we don't use input and
             ## there is no row-level data.
             if(!use.input && !use.rows) {
-                ##  cbind of idlevel and that's it")
-                tab.row <- Reduce(cbind,tables$data[which(overview.tables$idlevel)])
-                tab.row <- tab.row[,unique(colnames(tab.row)),with=FALSE]
-                skip.idlevel <- FALSE
+                ## there's nothing else - so just return idlevel data
+                tab.row <- tab.idlevel
 
                 dt.vars.id1[,included:=TRUE]
                 dt.vars <- rbind(dt.vars,dt.vars.id1)
@@ -576,25 +541,36 @@ if(use.input){
                 tab.row[,nmout:=TRUE]
                 
             } else {
+
+                id.cols.not.new <- col.id
+                if(merge.by.row && all(col.row%in%colnames(tab.row))){
+                    ## fetch new ID column, merging by col.row. Then we will merge by
+                    ## ID.
+                    if(col.id%in%colnames(tab.idlevel)){
+                        tab.idlevel[,(col.id):=NULL]
+                    }
+                    
+                    tab.idlevel <- mergeCheck(tab.idlevel,unique(tab.row[,c(col.row,col.id),with=FALSE]),by=col.row)
+                    tab.idlevel[,(col.row):=NULL]
+                    id.cols.not.new <- c(col.row,col.id)
+                }
                 
                 ## use tab.vars for the subset
                 cols.to.use <- unique(c(col.id,setdiff(colnames(tab.idlevel),dt.vars[source=="output",variable])))
                 tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=F]
-                tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun=identity)
+                tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="data.table")
                 
                 dt.vars.id1[,included:=FALSE]
-                dt.vars.id1[variable%in%setdiff(cols.to.use,col.id),included:=TRUE]
+                dt.vars.id1[variable%in%setdiff(cols.to.use,id.cols.not.new),included:=TRUE]
 
                 dt.vars <- rbind(dt.vars,dt.vars.id1)
 
-                ## have to avoid an additional col.id here. Or maybe not. We are merging, so col.id comes from both.
-                ## tab.vars <- rbind(tab.vars,data.table(var=cols.to.use,source="output",level="idlevel"))
             }
         }
     }
 
 ### Section end: Add idlevel data
-    
+
     if(!use.rows && skip.idlevel) {
         messageWrap("No output data could be used. If enabled, try disabling use.input.",fun.msg=stop)
     }
@@ -619,7 +595,7 @@ if(use.input){
 ###  Section end: Recover rows
 
 #### Section start: Check file modification times ####
-    
+
     if(check.time){    
         if(!is.null(file.mod)) {
             mtime.mod <- file.mtime(file.mod)
@@ -649,9 +625,8 @@ if(use.input){
 ### Section end: Check file modification times
 
 
-    
 #### Section start: Format output ####
-    
+
     if(!is.null(col.model)) {
         
         tab.row[,c(col.model):=runname]
@@ -666,18 +641,17 @@ if(use.input){
     }
 
 
-    
 ### order columns in returned data
     if(order.columns){
         tab.row <- NMorderColumns(tab.row, col.row=col.row, as.fun=identity,
                                   alpha=FALSE, quiet=TRUE)
     }
-    
+
 ### order columns in variable table accordingly.
     dt.vars[included==TRUE,COLNUM:=match(variable,colnames(tab.row))]
     setorder(dt.vars,-included,COLNUM)
     dt.vars[,included:=NULL]    
-    
+
     tables$meta[,source:="output"]
     if(use.input){
         data.input$meta[,source:="input"]
@@ -686,14 +660,14 @@ if(use.input){
         tables.meta <- tables$meta
     }
     setcolorder(tables.meta,c("source","name","nrow","ncol"))
-        
-    
+
+
     ## tab.row <- runAsFun(tab.row,as.fun)
     ## tables.meta <- runAsFun(tables.meta,as.fun)
     tab.row <- as.fun(tab.row)
     tables.meta <- as.fun(tables.meta)
 
-    
+
 ### more meta information needed.
     meta <- list(
         ## call
@@ -726,7 +700,7 @@ if(use.input){
     setattr(tab.row,"meta",meta)
 
 ###  Section end: Format output
-    
+
     setattr(tab.row,"class",c("NMdata",class(tab.row)))
 
     if(!quiet){

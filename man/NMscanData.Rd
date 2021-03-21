@@ -7,8 +7,7 @@
 NMscanData(
   file,
   col.row,
-  cbind.by.filters,
-  use.input,
+  method.combine,
   recover.rows,
   col.model = "model",
   modelname,
@@ -30,24 +29,6 @@ NMscanData(
 \item{col.row}{A column with a unique value for each row. Such a
 column is recommended to use if possible. See cbind.by.filters
 and details as well.}
-
-\item{cbind.by.filters}{If TRUE, Nonmem data filtering is
-interpreted from lst file (restrictions apply), and after an
-imitated selection of rows, data columns will be appended to
-output data. This method relies on interpretation of Nonmem
-code, and it will not work in advanced use of IGNORE and
-ACCEPT statements in $INPUT. Consider using col.row instead,
-if possible. Default is TRUE if col.row is either missing or
-NULL. However, explicitly specifying cbind.by.filters is
-recommended if that is the intended behaviour. If not,
-NMscanData will search for potential columns to merge by and
-print information about it. See col.row (recommended method)
-as well.}
-
-\item{use.input}{Merge with columns in input data? Using this, you
-don't have to worry about remembering including all relevant
-variables in the output tables. Default is TRUE and can be
-configured using NMdataConf.}
 
 \item{recover.rows}{Include rows from input data files that do not
 exist in output tables? This will be added to the $row dataset
@@ -127,6 +108,19 @@ NMscanData. However, if data has been transfered from another
 system where Nonmem was run, these checks may not make sense,
 and you may not want to see these warnings. The default can be
 configured using NMdataConf.}
+
+\item{cbind.by.filters}{If TRUE, Nonmem data filtering is
+interpreted from lst file (restrictions apply), and after an
+imitated selection of rows, data columns will be appended to
+output data. This method relies on interpretation of Nonmem
+code, and it will not work in advanced use of IGNORE and
+ACCEPT statements in $INPUT. Consider using col.row instead,
+if possible. Default is TRUE if col.row is either missing or
+NULL. However, explicitly specifying cbind.by.filters is
+recommended if that is the intended behaviour. If not,
+NMscanData will search for potential columns to merge by and
+print information about it. See col.row (recommended method)
+as well.}
 }
 \description{
 This is a very general solution to automatically identifying, reading, and  merging all output and input data in a Nonmem model. The most important

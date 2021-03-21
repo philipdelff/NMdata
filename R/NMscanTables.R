@@ -70,7 +70,7 @@ NMscanTables <- function(file,details=F,as.fun=NULL,quiet=FALSE,tab.count=TRUE){
               ,ncol=NA_real_
                )]
 
-    meta.tabs.strange <- meta[firstonly+lastonly+firstlastonly>1]
+    meta.tabs.strange <- meta[(firstonly+lastonly+firstlastonly)>1]
     if(nrow(meta.tabs.strange)){
         warning("Table(s) seems to have more than one of the firstonly, lastonly and firstlastonly options. Does this make sense? Look at table(s): ",pastes(meta.tabs.strange[,name],collapse=", "))
     }
