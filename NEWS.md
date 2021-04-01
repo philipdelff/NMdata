@@ -1,3 +1,18 @@
+# NMdata 0.0.6.7
+The choice between data combination methods in NMscanData is now done in one
+argument, called method.combine. Before the method was decided based on values
+of two arguments, cbind.by.filters and col.row. A default value for col.row can
+now be set using NMdataConf and will not affect the data combination method.
+
+Other arguments which default values can now be modified using NMdataConf are:
+method.combine, col.flagn, col.flagc, use.input, recover.rows, col.model,
+modelname, file.mod, and check.time.
+
+## Bugfixes related to 
+- Class of return from NMorderData.
+- NA values in NMisNumeric. This bug would spill over to NMOrderColumns.
+
+
 # NMdata 0.0.6.6
 Central configuration mechanism implemented. The configuration
 function to use is NMdataConf. You can configure several options,

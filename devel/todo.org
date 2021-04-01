@@ -244,3 +244,8 @@ exactly these uses of ".". Anyway, no consequence to functionality.
      CLOSED: [2021-01-20 Wed 19:53]
 See how it's done in pmxtricks.  This is done. However, the datasets are not
 exported so it's not very important.
+** BUGS
+*** TODO NMorderColumns doesn't use first
+    Is it sorting at all?
+*** TODO NMscanData can't handle all rds with chars or something?
+*** TODO flagsCount makes no sense

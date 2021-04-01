@@ -194,7 +194,7 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
     }
 
     as.fun <- NMdataDecideOption("as.fun",as.fun)
-    data.input <- as.fun(data.input)
+
 
 
     if(details){
@@ -210,9 +210,11 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
         if(col.id%in%cnames.input) {
             meta[,nid:=data.input[,uniqueN(get(col.id))]]
         }
+        
+        data.input <- as.fun(data.input)
         return(list(data=data.input,meta=meta))
     }
     
-    
+    data.input <- as.fun(data.input)
     return(data.input)
 }

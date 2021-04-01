@@ -14,7 +14,7 @@ test_that("basic",{
        ,fileRef)
 })
 
-test_that("basic2",{
+test_that("nmdrop is an empty string - not allowed",{
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     ## not allowed
     expect_error(

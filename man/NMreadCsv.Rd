@@ -27,7 +27,7 @@ NMreadCsv(
 data.tables are wanted, use as.fun="data.table". The default can be
 configured using NMdataConf.}
 
-\item{...}{passed to read.csv}
+\item{...}{passed to fread.}
 }
 \description{
 This function is especially useful if the csv file was written

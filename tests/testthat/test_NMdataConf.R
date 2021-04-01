@@ -20,5 +20,7 @@ test_that("reset",{
 })
 
 test_that("unnamed argument",{
-    expect_error(NMdataConf("data.table"))
+    expect_error(
+        NMdataConf("data.table")
+    )
 })

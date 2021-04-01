@@ -45,7 +45,7 @@ NMisNumeric <- function(x){
     (!is.logical(x) &&
      !is.timestamp(x)) &&
         (is.numeric(x) ||
-         suppressWarnings(!any(is.na(as.numeric(as.character(x)[!as.character(x)%in%c(".","NA")]))))
+         suppressWarnings(!any(is.na(as.numeric(as.character(x)[!is.na(x)&!as.character(x)%in%c(".","NA")]))))
         )
 
 }
