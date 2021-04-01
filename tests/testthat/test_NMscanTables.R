@@ -11,7 +11,7 @@ test_that("Multiple output table formats",{
     fileRef <- "testReference/NMscanTables1.rds"
     file.lst <- system.file("examples/nonmem/xgxr003.lst",package="NMdata")
 
-    res.dt <- NMscanTables(file=file.lst,as.fun="none")
+    res.dt <- NMscanTables(file=file.lst,as.fun="data.table")
     expect_equal_to_reference(res.dt,fileRef,version=2)
 
     ## test that we have data.tables from using as.fun=none
@@ -29,7 +29,7 @@ test_that("Details table",{
     fileRef <- "testReference/NMscanTables2.rds"
     file.lst <- system.file("examples/nonmem/xgxr003.lst", package="NMdata")
 
-    res <- NMscanTables(file=file.lst,details=T,as.fun="none")
+    res <- NMscanTables(file=file.lst,details=T,as.fun="data.table")
 ### this will make trouble because meta data table contains absolute
 ### paths which is machine dependent. So removing path.
     res$meta[,file:=basename(file)]

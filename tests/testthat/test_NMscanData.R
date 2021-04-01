@@ -1,6 +1,6 @@
-library(devtools)
-setwd("tests/testthat")
-load_all("../../")
+## library(devtools)
+## setwd("tests/testthat")
+## load_all("../../")
 
 context("NMscanData")
 NMdata_filepath <- function(...) {
@@ -117,9 +117,6 @@ test_that("merge by filters or not",{
     expect_equal(res1,res2)
 })
 
-## right now, we get complaints because missing use.input is
-## interpreted as use.input=TRUE. But maybe here, missing should mean
-## that we skip input in this case.
 test_that("Only a firstonly without ID but with ROW",{
 ### This should work because ROW is in firstonly table.
     
@@ -131,8 +128,15 @@ test_that("Only a firstonly without ID but with ROW",{
 ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
     ## tabs <- NMscanTables(file.lst)
     ## tabs
+
+    ### impossible with filters
+    expect_error(
+        expect_warning(
+            NMscanData(file=file.lst,method.combine="filters",col.row="ROW",check.time = FALSE)
+                       )
+    )
     
-    res1 <- NMscanData(file=file.lst,col.row="ROW",check.time = FALSE)
+    res1 <- NMscanData(file=file.lst,method.combine="col.row",col.row="ROW",check.time = FALSE)
     fix.time(res1)
     expect_equal_to_reference(res1,fileRef,version=2)
     
@@ -264,7 +268,7 @@ test_that("recoverRows without a row identifier",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-    res1 <- NMscanData(file=file.lst,,method.combine="filters",recover.rows = T,as.fun="none",check.time = FALSE)
+    res1 <- NMscanData(file=file.lst,,method.combine="filters",recover.rows = T,as.fun="data.table",check.time = FALSE)
     dim(res1)
     res1[,table(nmout,DOSE)]
     fix.time(res1)
