@@ -8,7 +8,10 @@ Other arguments which default values can now be modified using NMdataConf are:
 method.combine, col.flagn, col.flagc, use.input, recover.rows, col.model,
 modelname, file.mod, and check.time.
 
-Bugfix related to class of return from NMorderData.
+## Bugfixes related to 
+- Class of return from NMorderData.
+- NA values in NMisNumeric. This bug would spill over to NMOrderColumns.
+
 
 # NMdata 0.0.6.6
 Central configuration mechanism implemented. The configuration

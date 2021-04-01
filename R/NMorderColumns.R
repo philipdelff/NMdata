@@ -91,6 +91,7 @@ NMorderColumns <- function(data,
     col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
     if(missing(col.nomtime)) col.nomtime <- NULL
     col.nomtime <- NMdataDecideOption("col.nomtime",col.nomtime)
+
     if(missing(col.row)) col.row <- NULL
     col.row <- NMdataDecideOption("col.row",col.row)
 

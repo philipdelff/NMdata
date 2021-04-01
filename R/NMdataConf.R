@@ -144,6 +144,9 @@ NMdataConfOptions <- function(name){
            }
           ,msg.not.allowed="as.fun must be a function"
           ,process=function(x){
+              if(is.character(x)&&length(x)==1&&x%in%c("none")){
+                  warning("as.fun=none is deprecated (still working but will be removed). Use as.fun=data.table.")
+              }
               if(is.character(x)&&length(x)==1&&x%in%c("none","data.table")){
                   return(identity)
               }
