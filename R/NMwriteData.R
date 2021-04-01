@@ -9,36 +9,43 @@
 ##' in the file argument.
 ##'
 ##' @param data The dataset to write to file for use in Nonmem.
-##' @param file The file to write to. The extension (everything after and
-##'     including last ".") is dropped. csv, rds and other standard file name
-##'     extensions are added.
+##' @param file The file to write to. The extension (everything after
+##'     and including last ".") is dropped. csv, rds and other
+##'     standard file name extensions are added.
 ##' @param write.csv Write to csv file?
 ##' @param write.RData In case you want to save to .RData object. Not
 ##'     recommended. Use write.rds instead.
 ##' @param write.rds write an rds file?
-##' @param script If provided, the object will be stamped with this script name
-##'     before saved to rds or Rdata. See ?stampObj.
+##' @param script If provided, the object will be stamped with this
+##'     script name before saved to rds or Rdata. See ?stampObj.
 ##' @param args.stamp A list of arguments to be passed to stampObj.
 ##' @param args.rds A list of arguments to be passed to saveRDS.
-##' @param col.flag Name of a numeric column with zero value for rows to include
-##'     in Nonmem run, non-zero for rows to skip. The argument is only used for
-##'     generating the proposed text to paste into the Nonmem control stream. To
-##'     skip this feature, use col.flag=NULL.
-##' @param nmdrop Only used for generation of proposed text for Nonmem control
-##'     stream. Columns to drop in Nonmem $DATA. This has two implications. One
-##'     is that the proposed $DATA indicates =DROP after the given column
-##'     names. The other that in case it is a non-numeric column, succeeding
-##'     columns can still be included.
-##' @param nmdir.data For the $DATA text proposal only. The path to the input
-##'     datafile to be used in the Nonmem $DATA section. Often, a relative path
-##'     to the actual Nonmem run is wanted here.
-##' @param capitalize.names For the $DATA text proposal only. If TRUE, the
-##'     suggested text for Nonmem will only contain capital letters in column
-##'     names. 
+##' @param col.flag Name of a numeric column with zero value for rows
+##'     to include in Nonmem run, non-zero for rows to skip. The
+##'     argument is only used for generating the proposed text to
+##'     paste into the Nonmem control stream. To skip this feature,
+##'     use col.flag=NULL.
+##' @param nmdrop Only used for generation of proposed text for Nonmem
+##'     control stream. Columns to drop in Nonmem $DATA. This has two
+##'     implications. One is that the proposed $DATA indicates =DROP
+##'     after the given column names. The other that in case it is a
+##'     non-numeric column, succeeding columns can still be included.
+##' @param nmdir.data For the $DATA text proposal only. The path to
+##'     the input datafile to be used in the Nonmem $DATA
+##'     section. Often, a relative path to the actual Nonmem run is
+##'     wanted here.
+##' @param nm.rename For the $DATA text proposal only. If you plan to
+##'     rename columns in Nonmem $DATA, NMwriteData can adjust the
+##'     suggested $DATA text. If you plan to use CONC as DV in Nonmem,
+##'     consider nm.rename=c(DV="CONC").
+##' @param capitalize.names For the $DATA text proposal only. If TRUE,
+##'     the suggested text for Nonmem will only contain capital
+##'     letters in column names.
 ##' @return Text for inclusion in Nonmem control stream, invisibly.
-##' @details When writing csv files, the file will be comma-separated. Because
-##'     Nonmem does not support quoted fields, you must avoid commas in
-##'     character fields. An error is returned if commas are found in strings.
+##' @details When writing csv files, the file will be
+##'     comma-separated. Because Nonmem does not support quoted
+##'     fields, you must avoid commas in character fields. An error is
+##'     returned if commas are found in strings.
 ##'
 ##' The user is provided with text to use in Nonmem. This lists names
 ##' of the data columns. Once a column is reached that Nonmem will not
@@ -50,7 +57,7 @@
 
 NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
                         write.rds=write.csv,script,args.stamp,
-                        args.rds,nmdrop,nmdir.data,col.flag="FLAG",
+                        args.rds,nmdrop,nmdir.data,col.flag="FLAG",nm.rename,
                         capitalize.names=FALSE){
 
     
@@ -173,7 +180,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     }
     
     ## drop .'s from names since they are not allowed in nonmem
-##    dt.num.ok[,name.nm:=gsub("\\.","",name.nm)]
+    ##    dt.num.ok[,name.nm:=gsub("\\.","",name.nm)]
     
     if(dt.num.ok[,any(!comma.ok)]){
         messageWrap(paste("You must avoid commas in data values. They will curropt the csv file, so get rid of them before saving data. Comma found in column(s):",paste(dt.num.ok[comma.ok==FALSE,col],sep=", ")),
@@ -201,7 +208,14 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
             warning("Elements in nmdrop not found as columns in data:",paste(drops.not.used,collapse=", "))
         }
     }
-
+    
+    ## apply nm.rename
+    if(!missing(nm.rename)){
+        names.rename <- names(nm.rename)
+        dt.num.ok[,name.rename:=names.rename[match(dt.num.ok[,col],nm.rename)]]
+        dt.num.ok[!is.na(name.rename),name.nm:=paste0(name.rename,"=",col)]
+    }
+    
     dt.num.ok[,include:=cumsum(!numeric.ok&!drop)<1]
 
     dt.num.ok[include==TRUE,occ.cum:=1:.N,by=name.nm]

@@ -148,7 +148,7 @@ NMscanData <- function(file, col.row, method.combine,
     variable <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
-
+    
 
 #### Section start: Process arguments  ####
 

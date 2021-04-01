@@ -37,7 +37,7 @@
 ##' @return a data.frame resulting from merging df1 and df2
 ##' @export
 
-mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,...){
+mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols.expect,...){
     
     name.df1 <- deparse(substitute(df1))
     name.df2 <- deparse(substitute(df2))
@@ -47,6 +47,9 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,...){
                     fun.msg=stop)
     }
 
+### check if sort is in ... That cannot be passed.
+    if("sort"%in%names(list(...))) messageWrap("sort is not meaningful in combination with mergeCheck because mergeCheck will preserve order of df1. Please drop sort argument.",fun.msg=stop)
+    
     ## if data is not data.tables, convert to data.tables
     stopifnot(is.data.frame(df1))
     stopifnot(is.data.frame(df2))
@@ -68,7 +71,7 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,...){
         cols.com.notby <- setdiff(cols.common,by)
         commoncols.found <- FALSE
         if(length(cols.com.notby)) {
-            messageWrap("df1 and df2 have common column names not being merged by.",
+            messageWrap(paste0("df1 and df2 have common column names not being merged by. This will create new column names in output. Common but not merged by: ",paste(cols.com.notby,collapse=","),"."),
                         fun.msg=fun.commoncols)
             commoncols.found <- TRUE
         }
@@ -108,11 +111,21 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,...){
     
 
 ###### check if new column names have been created
-    if(!all(colnames(df3) %in% c(colnames(df1),colnames(df2)))){
-        messageWrap("Merge created new column names. Apart from values of by, common columns were not found in df1 and df2, so this should not happen. Please inspect df1, df2 and result carefully.",
-                    fun.msg=warning)
-    }
+### it has already been checked whether there are common column names not used for by. So I believe this is redundant.
+    ## if(!all(colnames(df3) %in% c(colnames(df1),colnames(df2)))){
+    ##     messageWrap("Merge created new column names. Apart from values of by, common columns were not found in df1 and df2, so this should not happen. Please inspect df1, df2 and result carefully.",
+    ##                 fun.msg=warning)
+    ## }
 
+### checking number of new columns
+    if(!missing(ncols.expect)) {
+        df1[,(rowcol):=NULL]
+        n.newcols <- ncol(df3)-ncol(df1)
+        if(n.newcols!=ncols.expect) {
+            newcols <- setdiff(colnames(df3),colnames(df1))
+            messageWrap(sprintf("Number of new columns (%d) does not mactch the expected (%d). New columns are: %s.",n.newcols,ncols.expect,paste(newcols,", ")),fun.msg=stop)
+        }
+    }
     if(!df1.was.dt || !is.null(as.fun)){
         as.fun <- NMdataDecideOption("as.fun",as.fun)
         df3 <- as.fun(df3)

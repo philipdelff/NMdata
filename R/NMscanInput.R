@@ -58,7 +58,7 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
                         dir.data=NULL, applyFilters=FALSE, translate=TRUE,
                         details=FALSE, col.id="ID", quiet=FALSE, invert=FALSE,
                         as.fun=NULL) {
-
+    
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -139,7 +139,7 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
         type.file <- "rds"
         if(!quiet) message("Read rds input data file.")
         path.data.input <- path.data.input.rds
-        data.input <- readRDS(path.data.input)
+        data.input <- as.data.table(readRDS(path.data.input))
     } else {
         if(file.exists(path.data.input)){
             type.file <- "text"
@@ -208,7 +208,9 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
             file.mtime=file.mtime(path.data.input)
         )
         if(col.id%in%cnames.input) {
-            meta[,nid:=data.input[,uniqueN(get(col.id))]]
+            
+            meta$nid <-
+                data.input[,uniqueN(get(col.id))]
         }
         
         data.input <- as.fun(data.input)

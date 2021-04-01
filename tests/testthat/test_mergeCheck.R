@@ -90,3 +90,20 @@ test_that("duplicate column name",{
     )
     
 })
+
+library(data.table)
+library(devtools)
+load_all("~/wdirs/NMdata")
+
+dt1=data.table(a=1:3,b=3:5,c=letters[8:10])
+dt2=data.table(a=1:3,b=3:5,q=letters[8:10])
+mergeCheck(dt1,dt2,by="a")
+dtres=mergeCheck(dt1,dt2,by="a",fun.commoncols = message)
+dtres=mergeCheck(dt1,dt2,by="a",fun.commoncols = function(x)NULL)
+
+dt3 <- dt2[,!c("b")]
+
+
+compareCols(dt1,dt3,diff.only=FALSE)
+mergeCheck(dt1,dt3,by="a",ncols.expect = 1)
+

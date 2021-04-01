@@ -142,7 +142,7 @@ NMdataConfOptions <- function(name){
            ,is.allowed=function(x){
                is.function(x) || (length(x)==1 && is.character(x) && x%in%c("none","data.table"))
            }
-          ,msg.not.allowed="as.fun must be a function"
+          ,msg.not.allowed="as.fun must be a function or the string \"data.table\""
           ,process=function(x){
               if(is.character(x)&&length(x)==1&&x%in%c("none")){
                   warning("as.fun=none is deprecated (still working but will be removed). Use as.fun=data.table.")
