@@ -51,22 +51,38 @@ setnames(pk,
          )
 
 
-pk
 pk[,table(CMT,EVID)]
 
-pk[ID==1]
+## making up a predose sample just to use another exclusion flag
+samples.predose <- pk[ID%in%c(100,127)&NOMTIME==0]
+samples.predose[,`:=`(TIME=-1,DV=0.05,BLQ=1,EVID=0)]
+pk <- rbind(pk,samples.predose)
+
 indprofs <- ggIndProfs(pk,amt="AMT")
 ## ggwrite(indprofs,file="indprofs.pdf",onefile=T)
 
 ### handle LLOQ and set FLAGS
-dt.flags <- data.table(
-    FLAG=10,
-    flag="Below LLOQ",
-    condition=c("BLQ==1"))
+load_all("c:/Users/delff/working_copies/NMdata")
+dt.flags <- fread(text="FLAG,flag,condition
+    10,Below LLOQ,BLQ==1
+100,Pre-dose sample,TIME<0")
 
+### OK!
 pk <- flagsAssign(pk,dt.flags)
-tab.count <- flagsCount(pk,dt.flags)
+tab.count <- flagsCount(pk,dt.flags,by="EVID")
 tab.count
+
+if(F){
+    ## checking increasing flags
+    ### correct (but not what we want for this dataset) - predose are covered by LLOQ flag
+    pk2 <- flagsAssign(pk,dt.flags,flags.increasing=T)
+    tab.count2 <- flagsCount(pk2,dt.flags,flags.increasing=T,by="EVID")
+    tab.count2
+### forgetting EVID
+    tab.count3 <- flagsCount(pk,dt.flags)
+
+}
+
 
 pk <- pk[order(ID,TIME,CMT)]
 pk <- pk[DOSE>0]

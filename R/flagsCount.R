@@ -57,7 +57,9 @@
 
 flagsCount <- function(data,tab.flags,file,col.id="ID",
                        col.flagn,col.flagc,
-                       by=NULL,as.fun=NULL){
+                       by=NULL,as.fun=NULL, flags.increasing=FALSE,
+                       name.all.data="All available data",
+                       grp.incomp="EVID"){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -100,8 +102,19 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
         tab.flags.was.data.table <- FALSE
     }
 
-### check that tab.flags contains col.flagn and col.flagc and that data contains col.flagn
     cnames.data <- copy(colnames(data))
+    
+### check for incompatible groups (say doses and observations)
+    check.incomp <- setdiff(intersect(cnames.data,grp.incomp),by)
+    if(length(check.incomp)>0) {
+        covs.incomp <- findCovs(data[,check.incomp,with=FALSE])
+        if(length(check.incomp)>ncol(covs.incomp)){
+            cols.incomp <- setdiff(check.incomp,colnames(covs.incomp))
+            stop(sprintf("Incompatible data included. Column(s) %s is non-unique. Consider running on a subset of data or see argument grp.incomp.",paste(cols.incomp,sep=", ")))
+        }
+    }
+    
+### check that tab.flags contains col.flagn and col.flagc and that data contains col.flagn
     if(!col.flagn%in%cnames.data) messageWrap("data must contain a column with same name as value of col.flagn",fun.msg="stop")
     
     cnames.tab.flags <- copy(colnames(tab.flags))
@@ -129,38 +142,65 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     tab.flags <- tab.flags[FLAG!=0]
     ## The smaller the number, the earlier the condition is
     ## applied. This must match what flagsAssign does.
-    tab.flags <- tab.flags[order(FLAG)]
 
+    if(flags.increasing){
+        setorder(tab.flags,FLAG)
 
-    allres.l <- lapply(1:tab.flags[,.N],function(I){
-        resI <- data[FLAG==0|FLAG>tab.flags[I,FLAG],.(
-                                                        ##        resI <- data[FLAG>tab.flags[I,FLAG],.(
-                                                        N.left=uniqueN(ID),
-                                                        Nobs.left=.N)
-                    ,by=by]
-        resI[,FLAG:=tab.flags[I,FLAG]]
-        resI
-    })
+        allres.l <- lapply(1:tab.flags[,.N],function(I){
+            resI <- data[FLAG==0|FLAG>tab.flags[I,FLAG],.(
+                                                            N.left=uniqueN(ID),
+                                                            Nobs.left=.N)
+                        ,by=by]
+            resI[,FLAG:=tab.flags[I,FLAG]]
+            resI
+        })
+    } else {
+        setorder(tab.flags,-FLAG)
+
+        allres.l <- lapply(1:tab.flags[,.N],function(I){
+            resI <- data[FLAG==0|FLAG<tab.flags[I,FLAG],.(
+                                                            N.left=uniqueN(ID),
+                                                            Nobs.left=.N)
+                        ,by=by]
+            resI[,FLAG:=tab.flags[I,FLAG]]
+            resI
+        })
+        
+    }
+    
+
     allres0 <- rbindlist(allres.l)
 
 ### All data
-    
 
+    FLAG.alldata <- Inf
+    if(flags.increasing){
+        FLAG.alldata <- -FLAG.alldata
+    }
+    
     allres <- rbind(allres0,
                     ## this is all data - must be returned as first row.
                     data[,.(N.left=uniqueN(ID)
                            ,Nobs.left=.N
-                           ,FLAG=-Inf
+                           ,FLAG=FLAG.alldata
+                           ,alldata=TRUE
                             ),by=by]
                    ,fill=TRUE
                     )
 
-    setorder(allres,FLAG)
+    
+    
+    if(flags.increasing){
+        setorder(allres,FLAG)
+    } else {
+        setorder(allres,-FLAG)
+    }
+
     allres[,N.discarded:=c(NA,-diff(N.left)),by=by]
     
     
     allres[,Nobs.discarded:=c(NA,-diff(Nobs.left)),by=by]
-
+    
     
     allres <- rbind(allres,
                     ## this is the analysis set
@@ -169,23 +209,31 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     
     ##  tab.flags <- rbind(tab.flags,data.table(FLAG=-Inf,flag="All data"),fill=TRUE)
 ### this is how many N/obs are left after the flags/conditions are applied
-    
+    allres[is.na(alldata),alldata:=FALSE]
     allres <- mergeCheck(allres,rbind(tab.flags.0,tab.flags)[,.(FLAG,flag)],by="FLAG",all.x=T)
-    allres[FLAG==Inf,flag:="All data"]
-    allres[,notAll:=FLAG!=Inf]
+    allres[alldata==TRUE,flag:=name.all.data]
+    allres[,notAll:=alldata!=1]
     allres[,isFinal:=FLAG==0]
-    setorderv(allres,c(by,"notAll","isFinal","FLAG"))
 
+    allres[,FLAGSORT:=FLAG]
+    if(!flags.increasing){
+        allres[,FLAGSORT:=-FLAG]
+    } 
+    setorderv(allres,c(by,"notAll","isFinal","FLAGSORT"))
 
+    
 ### select columns to report, depending on argument
     allres[,`:=`(FLAG=NULL
                 ,notAll=NULL
-                ,isFinal=NULL)
+                ,isFinal=NULL
+                ,alldata=NULL
+                ,FLAGSORT=NULL
+                 )
            ]
-    
+
     setcolorder(allres,c(by,"flag","N.left","Nobs.left","N.discarded","Nobs.discarded"))
     setnames(allres,"flag",col.flagc)
-    
+
     if(!is.null(file)){
         fwrite(allres,file=file,quote=F,row.names=F)
         cat(paste0("Table written to ",file,"\n"))
@@ -195,6 +243,6 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
         as.fun <- NMdataDecideOption("as.fun",as.fun)
         allres <- as.fun(allres)
     }
-    
+
     return(allres)
 }

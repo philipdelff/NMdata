@@ -1,3 +1,4 @@
+
 ##' Extract columns that do not vary within variables in data
 ##'
 ##' This function provides an automated method to extract covariate-like

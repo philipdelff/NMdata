@@ -15,7 +15,8 @@ dependencies. This solution is being tested on pmxtricks.
     CLOSED: [2020-12-23 Wed 11:21]
 It is needed in NMdata but should it be exported from NMdata?
 Conclusion: export from pmxtricks, internal in NMdata.
-*** TODO Check assign by ref inside package
+*** DONE Check assign by ref inside package
+    CLOSED: [2021-04-02 Fri 11:18]
  copyOrNot <- function(data){
      data[,newcol:=1]
      }
@@ -81,6 +82,10 @@ A way to limit rows read into nonmem
 **** DONE Lastonly does the same as firstonly
      CLOSED: [2020-07-13 Mon 19:37]
 *** NMscanData
+**** TODO method.combine to merge.by.row
+     Since we only have and will only have two methods, this should be
+     a binary switch between the methods.
+**** TODO Check if col.row is being modified in Nonmem.
 **** TODO check overview.tables
 Either they must be firstonly, or they must be full.length.
 **** TODO Limitation: tables with EXCLUDE_BY
@@ -129,7 +134,8 @@ data. It should be based on tables in meta$tables.
 **** DONE Check if character variables contain commas
      CLOSED: [2020-09-19 Sat 09:52]
 This will cause trouble when writing csv
-**** TODO Use fwrite rather than write.csv
+**** DONE Use fwrite rather than write.csv
+     CLOSED: [2021-04-02 Fri 11:33]
 **** TODO Improve support for custom IGNORE/ACCEPT statements
 Support for both ignore and accept? A list?
 **** TODO Returned text should be a list of sections.
@@ -150,9 +156,17 @@ Not warning. Warning if standard variable?
 *** flagsAssign
 **** DONE Improve messages at each FLAG coding
      CLOSED: [2020-12-23 Wed 11:31]
-**** TODO Make sure we arrange back to original order
+**** DONE Make sure we arrange back to original order
 **** TODO Introduce a way to apply to a subset only?
 This could be EVID==0 or maybe one study in a meta analysis
+*** flagsCount
+**** DONE OK respect decreasing or increasing order.flags
+**** TODO add .cum of N and Nobs
+**** DONE add argument to name "all available data" in table. 
+**** DONE Add check on EVID - who wants to mix these?
+**** TODO allow skipping and disabling flags.
+***** For this we will need additional two columns - Nobs.matched and N.(entirely.)matched
+**** TODO The function could paste an explained overview to the terminal
 *** NMdataConf
 **** DONE Add support for add.name
      CLOSED: [2021-01-30 Sat 14:29]
@@ -162,11 +176,13 @@ This could be EVID==0 or maybe one study in a meta analysis
      CLOSED: [2021-01-28 Thu 22:17]
 **** TODO use.rds
 **** TODO quiet
-**** TODO col.row
+**** DONE col.row
+     CLOSED: [2021-04-02 Fri 11:34]
 This is two steps. 
 ***** A method.merge argument must be introduced in NMscanData
 ***** col.row can be non-NULL even if using cbind for combining data
-**** TODO order.columns
+**** DONE order.columns
+     CLOSED: [2021-04-02 Fri 11:35]
 ** Nonmem examples
 *** DONE Use FLAG
     CLOSED: [2020-06-29 Mon 21:28]
@@ -245,7 +261,3 @@ exactly these uses of ".". Anyway, no consequence to functionality.
 See how it's done in pmxtricks.  This is done. However, the datasets are not
 exported so it's not very important.
 ** BUGS
-*** TODO NMorderColumns doesn't use first
-    Is it sorting at all?
-*** TODO NMscanData can't handle all rds with chars or something?
-*** TODO flagsCount makes no sense

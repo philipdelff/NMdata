@@ -17,7 +17,6 @@
 ##' @param col.id The name of the subject ID column. Default is
 ##'     "ID". This column must contain unique subject identifiers. NA
 ##'     and empty strings are not allowed.
-##' @param col.dv The name of the data value column. Default is "DV".
 ##' @param return.all If TRUE, both the edited dataset and the table
 ##'     of flags are returned. If FALSE (default) only the edited
 ##'     dataset is returned.
@@ -28,7 +27,11 @@
 ##'     independently.
 ##' @return The dataset with flags added. See parameter flags.return
 ##'     as well.
-##' @details dt.flags must contain a column with numerical exclusion flags, one with character exclusion flags, and one with a expressions to evaluate for whether to apply the exclusion flag. The flags are applied sequentially, by increasing value of the numerical exclusion flag.
+##' @details dt.flags must contain a column with numerical exclusion
+##'     flags, one with character exclusion flags, and one with a
+##'     expressions to evaluate for whether to apply the exclusion
+##'     flag. The flags are applied sequentially, by increasing value
+##'     of the numerical exclusion flag.
 ##' @import data.table
 ##' @family DataCreate
 ##' @examples
@@ -45,8 +48,8 @@
 
 
 flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
-                        col.dv="DV", col.flagn, col.flagc,
-                        as.fun=NULL){
+                        col.flagn, col.flagc, as.fun=NULL,
+                        flags.increasing=FALSE){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -72,6 +75,7 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
     if(missing(col.flagc)) col.flagc <- NULL
     col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
     col.flagc <- NMdataDecideOption("col.flagc",col.flagc)
+
 ####### check args end ######
     
 ####### Check data ######
@@ -93,8 +97,6 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
     ## Check NA ids. I think this requires that col.id has length 1
     stopifnot(length(col.id)==1)
     if(data[,any(is.na(..col.id))]||is.character(data[,is.character(..col.id)])&&data[,any(..col.id=="")]) stop("col.id contains missing (NA's or empty strings). You must fix this first.")
-
-    if(!col.dv%in%datacols) stop(paste(col.dv,"does not exist. Please see argument col.dv."))
 
 ### data can contain a column named FLAG - but it is removed
     if(col.flagn%in%datacols) {
@@ -132,7 +134,7 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
 ### For here, FLAG and flag have to be generalized to match args. These are arg checks.
     ## maybe later? rename tab.flags columns to FLAG and flag
     
-##     if(!is.numeric(tab.flags[,get(col.flagn)])) stop("column FLAG in tab.flags must be numeric and non-negative")
+    ##     if(!is.numeric(tab.flags[,get(col.flagn)])) stop("column FLAG in tab.flags must be numeric and non-negative")
     if(!is.numeric(tab.flags[,get(col.flagn)])) stop(sprintf("column %s in tab.flags must be numeric and non-negative",col.flagn))
     if(any(tab.flags[,get(col.flagn)]<0)) stop(sprintf("column %s in tab.flags must be non-negative",col.flagn))
     if(!is.character(tab.flags[,get(col.flagc)])) stop(sprintf("column %s in tab.flags must be of type character",col.flagc))
@@ -185,7 +187,11 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
     
     ## If a FLAG is not zero and does not have a condition, it is not used.
     tab.flags <- tab.flags[FLAG==0|(!is.na(condition)&condition!="")]
-    tab.flags <- tab.flags[order(FLAG),]
+    if(flags.increasing){
+        setorder(tab.flags,FLAG)
+    } else {
+        setorder(tab.flags,-FLAG)
+    }
 
     tab.flags[,condition.used := paste0("FLAG==0&(",tab.flags[,condition],")")]
     tab.flags[FLAG==0,condition.used:=NA_character_]
@@ -201,10 +207,10 @@ flagsAssign <- function(data, tab.flags, return.all=F, col.id="ID",
     tab.flags[,NID:=NA_real_]
     for(fn in 1:tab.flags[,.N]){
         
-        messageWrap(
-            ## paste("Coding FLAG =",tab.flags[fn,FLAG],", flag =",tab.flags[fn,flag])
-            sprintf("Coding %s = %d, %s = %s",col.flagn,tab.flags[fn,FLAG],col.flagc,tab.flags[fn,flag])
-           ,fun.msg=message)
+        ##messageWrap(
+        ## this gets so clunky in messageWrap. Running message directly.
+        message(sprintf("Coding %s = %d, %s = %s",col.flagn,tab.flags[fn,FLAG],col.flagc,tab.flags[fn,flag]))
+        ##,fun.msg=message)
         ## find all affected columns
         is.matched <- try(with(data,eval(parse(text=tab.flags[fn,condition.used]))),silent=T)
         if("try-error"%in%class(is.matched)){
