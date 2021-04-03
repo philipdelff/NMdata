@@ -22,7 +22,7 @@
 ## Don't export. This is only being used by NMscanData at this point.
 
 NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=FALSE) {
-
+    
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     
     ## get mod/lst text in lines format
@@ -40,6 +40,8 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
         lines <- strsplit(text,split="\n")[[1]]
     }
 
+    
+
     ## If these are not NULL, it can make trouble in NMgetSection.
     file <- NULL
     text <- NULL
@@ -51,13 +53,14 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
     ## the single-chacter ones line @ or C. Here = is mandatory.
     conds.sc <- regmatches(text3, gregexpr(paste0("IGN(?:ORE)"," *= *[^ (+]"),text3))
     conds.sc <- do.call(c,conds.sc)
+### why is this 
     text3 <- gsub(paste0("IGNORE"," *= *[^ (+]"),"",text3)
 
     ## check if IGNORE or ACCEPT are found. If both found, it is an error. 
     any.accepts <- any(grepl("ACCEPT",text3))
     any.ignores <- any(grepl("IGN",text3))
     ## if no filters found, just return data as is
-    if(!any.accepts&&!any.ignores) return(data)
+    if(!any.accepts&&!any.ignores&length(conds.sc)==0) return(data)
     if(any.accepts&&any.ignores) stop("IGNORE and ACCEPT are not allowed together according to Nonmem documentation.")
     
     if(any.ignores) {
@@ -85,15 +88,23 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
         expressions.sc <- c(expressions.sc,paste0("!grepl(\"^ *[A-Za-z]\",",name.c1,")"))
         scs <- scs[!grepl("@",scs)]
     }
+
+    ##    regstring <- "^[a-zA-Z]"
+### other single character ignores can be any character - except for space
+    ##    regstring <- "[[:graph:]]"
+    ##  regstring <- "([[:punct:]]|[[:alpha:]])"
+    regstring <- "[[:punct:]]|[[:alpha:]]"
+
     
-    if(length(scs)&&grepl("^a-zA-Z",scs)) {
-        scs2 <- regmatches(scs,regexpr("^[a-zA-Z]",scs))
-        expressions.sc <- c(expressions.sc,paste0("!grepl('^",scs2,"\",",name.c1,")"))
-        scs <- scs[!grepl("^[a-zA-Z]",scs)]
+    if(length(scs)&&any(grepl(regstring,scs))) {
+        
+        scs2 <- regmatches(scs,regexpr(regstring,scs))
+        ## expressions.sc <- c(expressions.sc,paste0("!grepl('^",scs2,"\",",name.c1,")"))
+        ## expressions.sc <- c(expressions.sc,paste0("!grepl('^",scs2,"','",name.c1,"')"))
+        expressions.sc <- c(expressions.sc,paste0("!grepl('[",scs2,"]',`",name.c1,"`)"))
+        scs <- scs[!grepl(regstring,scs)]
     }
 
-    browser()
-    
     if(length(scs)) stop(paste0("Not all single-character IGNORE statements were translated. This is left: ",scs))
     
     ## translating expression-style ones
@@ -121,23 +132,29 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
     if(length(expressions.sc)) {
         conditions.all.sc <- paste0(expressions.sc,collapse="&")
     }
+    expressions.all <- NULL
     if(length(expressions.list)) {
-
         expressions.all <- paste0("(",paste(expressions.list,collapse=cond.combine),")")
     }
     
     if(invert) {
         
         conditions.all.sc <- paste("!(",conditions.all.sc,")")
-        expressions.all <- paste("!",expressions.all)
-        data <- as.data.table(data)[eval(parse(text=paste(conditions.all.sc,"|",expressions.all)))]
+        if(!is.null(expressions.all)){
+            expressions.all <- paste("!",expressions.all)
+            data <- as.data.table(data)[eval(parse(text=paste(conditions.all.sc,"|",expressions.all)))]
+        } else {
+            data <- as.data.table(data)[eval(parse(text=conditions.all.sc))]
+        }
         
     } else {
         ## apply sc first
         data <- as.data.table(data)[eval(parse(text=conditions.all.sc))]
         
         ## then lists
-        data <- as.data.table(data)[eval(parse(text=expressions.all))]
+        if(!is.null(expressions.all)){
+            data <- as.data.table(data)[eval(parse(text=expressions.all))]
+        }
     }
 
     data <- as.fun(data)

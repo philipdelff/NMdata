@@ -8,7 +8,10 @@ Other arguments which default values can now be modified using NMdataConf are:
 method.combine, col.flagn, col.flagc, use.input, recover.rows, col.model,
 modelname, file.mod, and check.time.
 
-New function: compareCols
+New function: compareCols. See the difference between presence and
+classes of columns in data sets. This is useful before rbind'ing or
+merging - or maybe when those throw an error, and you want to figure
+out why.
 
 mergeCheck now informs about common column names that are not used to
 merge by. These will create new column names, and it's often not
@@ -19,6 +22,7 @@ number of columns added to df1 against expectation.
 - Class of return from NMorderData.
 - NA values in NMisNumeric. This bug would spill over to NMOrderColumns.
 - Processing rds files including non-data.table objects.
+- Single-character data filters in Nonmem (say IGNORE=C)
 
 # NMdata 0.0.6.6
 Central configuration mechanism implemented. The configuration

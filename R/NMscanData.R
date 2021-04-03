@@ -333,7 +333,7 @@ NMscanData <- function(file, col.row, method.combine,
 
 ###  Section end: read all output tables and merge to max one idlevel and max one row
 
-
+    
 #### Section start: handle input data ####
     ## use.input.row means if we will merge row-wise output data onto
     ## input data. Even if FALSE, we can still merge idlevel data
