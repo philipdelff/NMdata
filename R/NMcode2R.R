@@ -9,7 +9,6 @@
 
 NMcode2R <- function(text){
 
-    ## browser()
 ### not there yet.
     ## preceed by begin of line, (, { or whitespace
     ## followed by end of line, (, { or whitespace

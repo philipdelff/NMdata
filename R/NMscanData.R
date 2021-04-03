@@ -609,7 +609,7 @@ NMscanData <- function(file, col.row, method.combine,
 #### Section start: Check file modification times ####
 
     if(check.time){    
-        if(!is.null(file.mod)) {
+        if(!is.null(file.mod)&file.exists(file.mod)) {
             mtime.mod <- file.mtime(file.mod)
             if(mtime.mod>file.mtime(file)){
                 messageWrap(paste0("input control stream (",file.mod,") is newer than output control stream (",file,") Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),

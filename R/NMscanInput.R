@@ -90,12 +90,12 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
     }
 
     ## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    
-    lines <- NMgetSection(file,section="INPUT",keepName=F)
+    lines <- NMgetSection(file,section="INPUT",keepName=FALSE,keepComments=FALSE,cleanSpaces=TRUE)
     if(is.null(lines)) {
-        lines <- NMgetSection(file,section="INPT",keepName=F)
+        lines <- NMgetSection(file,section="INPT",keepName=FALSE,keepComments=FALSE,cleanSpaces=TRUE)
     }
     if(is.null(lines)) {stop("Could not find $INPUT or $INPT section in control stream. Cannot interpret data. Is file really the path to a valid nonmem control stream?")}
-
+    
     ## get rid of redundant spaces
     line <- gsub(" +"," ",paste(lines,collapse=" "))
     line <- sub("^ ","",line)
@@ -106,6 +106,7 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
 
 ### this is to keep even dropped columns
     nms <- sub("(.*) *= *(DROP|SKIP)","\\1",nms)
+## For now, we just take the first name used in A=B labeling. 
     nms <- sub(".*=(.*)","\\1",nms)
 
 

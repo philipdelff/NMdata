@@ -91,6 +91,9 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
         expressions.sc <- c(expressions.sc,paste0("!grepl('^",scs2,"\",",name.c1,")"))
         scs <- scs[!grepl("^[a-zA-Z]",scs)]
     }
+
+    browser()
+    
     if(length(scs)) stop(paste0("Not all single-character IGNORE statements were translated. This is left: ",scs))
     
     ## translating expression-style ones

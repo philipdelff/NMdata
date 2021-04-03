@@ -110,7 +110,7 @@ print.summary_NMdata <- function(x,...){
     if("not"%in%colnames(vars.sum1)) vars.sum1[,not:=0]
     vars.sum1[,print.inc:=paste0(included,"/",sum(c(included,not),na.rm=T)),by=.(table)]
 
-
+    
     
     ## include level
     tabs.out[,tabn:=1:.N]
@@ -120,7 +120,8 @@ print.summary_NMdata <- function(x,...){
     ## order as treated in NMscanData
     setorder(vars.sum2,tabn,na.last=TRUE)
 
-    vars.sum2[,`:=`(tabn=NULL,idlevel=NULL,included=NULL,not=NULL)]
+    vars.sum2[,`:=`(tabn=NULL,idlevel=NULL,included=NULL)]
+    if("not"%in%colnames(vars.sum2)) vars.sum2[,not:=NULL]
     setnames(vars.sum2,"print.inc","used/total")
 
 
