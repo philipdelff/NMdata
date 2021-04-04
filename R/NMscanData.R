@@ -116,7 +116,7 @@
 ##' \itemize{
 ##'  \item{character TIME}{If Nonmem is used to translate DAY and a charater TIME column, TIME has to be available in an output table. NMscanData does not do the translation to numeric.}
 ##'  \item{RECORDS}{The RECORDS option to limit the part of the input data being used is not searched for. Using merge.by.row=TRUE will work unaffectedly.}
-##'  \item{NULL}{The NULL argument to specify missing value string in input data is not respected. If delimited input data is read (as opposed to rds files), missing values are assumed to be represented by dots (.).
+##'  \item{NULL}{The NULL argument to specify missing value string in input data is not respected. If delimited input data is read (as opposed to rds files), missing values are assumed to be represented by dots (.).}
 ##' }
 ##'
 ##' 
@@ -133,7 +133,7 @@
 
 ## if merge by row, got to make sure that col.row can be used.
 
-NMscanData <- function(file, col.row, method.combine,
+NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
                        recover.rows,
                        col.model="model", modelname, file.mod,
                        dir.data, quiet=FALSE, use.rds=TRUE,
@@ -211,34 +211,20 @@ NMscanData <- function(file, col.row, method.combine,
     
 ### specification of merging method
     search.col.row <- FALSE
-    cbind.by.filters <- FALSE
-    merge.by.row <- FALSE
 
     if(missing(col.row)) col.row <- NULL
     col.row <- NMdataDecideOption("col.row",col.row)
 
-    if(missing(method.combine)) method.combine <- NULL
+    if(missing(merge.by.row)) merge.by.row <- NULL
     
-    if(is.null(method.combine)){
+    if(is.null(merge.by.row)){
         ## method not specified
         search.col.row <- TRUE
     }
-    method.combine <- NMdataDecideOption("method.combine",method.combine)
+    merge.by.row <- NMdataDecideOption("merge.by.row",merge.by.row)
 
-    if(method.combine=="filters"){
-        use.input <- TRUE
-        cbind.by.filters <- TRUE
-    }
-    if(method.combine=="col.row"){
-        use.input <- TRUE
-        cbind.by.filters <- FALSE
-        merge.by.row <- TRUE
-    }
-    if(method.combine=="none"){
-        use.input <- FALSE
-        cbind.by.filters <- FALSE
-        merge.by.row <- FALSE
-    }
+    cbind.by.filters <- !merge.by.row
+
     
 ### merging method found
 ### now code must use search.col.row, cbind.by.filters and merge.by.row
@@ -532,8 +518,9 @@ NMscanData <- function(file, col.row, method.combine,
         if(merge.by.row) cols.merge.idlevel <- c(col.id,col.row)
         
         cols.common.row.id <- intersect(colnames(tab.row),colnames(tab.idlevel))
+        
         if(!any(cols.merge.idlevel%in%cols.common.row.id)){
-            warning("subject-level output data cannot be combined with other data. To make use of subject-level output: If method.combine=filters, col.id must be in row-specific input or output data. If method.combine=row, col.id or col.row must be in row-specific input or output data.")
+            messageWrap("subject-level output data cannot be combined with other data. To make use of subject-level output: If method.combine=filters, col.id must be in row-specific input or output data. If method.combine=row, col.id or col.row must be in row-specific input or output data.",fun.msg=warning)
             skip.idlevel <- TRUE
         }
 

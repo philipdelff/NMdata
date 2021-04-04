@@ -12,7 +12,10 @@ flagsCount(
   col.flagn,
   col.flagc,
   by = NULL,
-  as.fun = NULL
+  as.fun = NULL,
+  flags.increasing = FALSE,
+  name.all.data = "All available data",
+  grp.incomp = "EVID"
 )
 }
 \arguments{

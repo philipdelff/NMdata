@@ -7,7 +7,8 @@
 NMscanData(
   file,
   col.row,
-  method.combine,
+  use.input = TRUE,
+  merge.by.row,
   recover.rows,
   col.model = "model",
   modelname,
@@ -147,6 +148,16 @@ the recommended method is using a unique row identifier in both
 input data and at least one output data file (not a FIRSTONLY or
 LASTONLY table). Supply the name of this column using the col.row
 argument.
+
+Limitations. A number of Nonmem features are not supported. Most
+of this can be overcome by using merge.by.row=TRUE. Incomplete
+list of known limitations:
+
+\itemize{
+ \item{character TIME}{If Nonmem is used to translate DAY and a charater TIME column, TIME has to be available in an output table. NMscanData does not do the translation to numeric.}
+ \item{RECORDS}{The RECORDS option to limit the part of the input data being used is not searched for. Using merge.by.row=TRUE will work unaffectedly.}
+ \item{NULL}{The NULL argument to specify missing value string in input data is not respected. If delimited input data is read (as opposed to rds files), missing values are assumed to be represented by dots (.).}
+}
 }
 \seealso{
 Other DataRead: 

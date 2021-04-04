@@ -41,3 +41,14 @@ test_that("Duplicate columns in input data",{
     inpdat <- expect_warning(NMscanInput(file=file.lst))
     
 })
+
+test_that("single-char ignore",{
+    fileRef <- "testReference/NMscanInput4.rds"
+    file.lst <- system.file("examples/nonmem/estim_debug.lst", package="NMdata")
+
+    inpdat <- NMscanInput(file=file.lst,applyFilters=T,file.mod=function(x)sub("\\.lst$",".ctl",x))
+    expect_equal(nrow(inpdat),98)
+    
+    expect_equal_to_reference(inpdat,fileRef,version=2)
+
+})

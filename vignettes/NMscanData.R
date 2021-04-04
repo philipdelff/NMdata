@@ -24,7 +24,7 @@ NMdataConf(check.time=FALSE)
 
 ## ----eval=TRUE----------------------------------------------------------------
 res0 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                   cbind.by.filters=TRUE)
+                   merge.by.row=FALSE)
 class(res0)
 
 ## ----eval=TRUE----------------------------------------------------------------

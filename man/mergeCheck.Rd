@@ -4,7 +4,15 @@
 \alias{mergeCheck}
 \title{Merge, order, and check resulting rows and columns.}
 \usage{
-mergeCheck(df1, df2, by, as.fun = NULL, fun.commoncols = base::warning, ...)
+mergeCheck(
+  df1,
+  df2,
+  by,
+  as.fun = NULL,
+  fun.commoncols = base::warning,
+  ncols.expect,
+  ...
+)
 }
 \arguments{
 \item{df1}{A data.fram with the number of rows must should be

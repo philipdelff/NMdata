@@ -9,10 +9,10 @@ flagsAssign(
   tab.flags,
   return.all = F,
   col.id = "ID",
-  col.dv = "DV",
   col.flagn,
   col.flagc,
-  as.fun = NULL
+  as.fun = NULL,
+  flags.increasing = FALSE
 )
 }
 \arguments{
@@ -30,8 +30,6 @@ dataset is returned.}
 \item{col.id}{The name of the subject ID column. Default is
 "ID". This column must contain unique subject identifiers. NA
 and empty strings are not allowed.}
-
-\item{col.dv}{The name of the data value column. Default is "DV".}
 
 \item{col.flagn}{The name of the column containing the numerical
 flag values in tab.flags. This will be added to data. Default
@@ -56,7 +54,11 @@ The aim with this function is to take a (say PK) dataset and a
 pre-specified table of flags, assign the flags automatically.
 }
 \details{
-dt.flags must contain a column with numerical exclusion flags, one with character exclusion flags, and one with a expressions to evaluate for whether to apply the exclusion flag. The flags are applied sequentially, by increasing value of the numerical exclusion flag.
+dt.flags must contain a column with numerical exclusion
+    flags, one with character exclusion flags, and one with a
+    expressions to evaluate for whether to apply the exclusion
+    flag. The flags are applied sequentially, by increasing value
+    of the numerical exclusion flag.
 }
 \examples{
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))

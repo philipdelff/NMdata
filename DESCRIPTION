@@ -1,7 +1,7 @@
 Package: NMdata
 Type: Package
 Title: Prepare data for and get data from Nonmem
-Version: 0.0.6.7
+Version: 0.0.6.7.901
 Author: Philip Delff <philip@delff.dk>
 Maintainer: Philip Delff <philip@delff.dk>
 Description: Efficient tools to automatically retrieve data from Nonmem. And for easy preparation of fully documented Nonmem datasets.

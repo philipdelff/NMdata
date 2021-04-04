@@ -71,7 +71,7 @@ test_that("Interpret IGNORE statement",{
     ## res <- NMscanData(file=file.lst)
     ## res <- NMscanData(file=file.lst)
 
-    res <- NMscanData(file=file.lst,method.combine="filters",check.time = FALSE)
+    res <- NMscanData(file=file.lst,merge.by.row=FALSE,check.time = FALSE)
     fix.time(res)
     ## names(res$row)
     
@@ -86,8 +86,8 @@ test_that("List of ACCEPT statements and vs separate statements",{
 
     NMgetSection(file1.lst,section="PROBLEM")
     NMgetSection(file2.lst,section="PROBLEM")
-    res1 <- NMscanData(file=file1.lst,method.combine="filters",col.model=NULL,check.time = FALSE)
-    res2 <- NMscanData(file=file2.lst,method.combine="filters",col.model=NULL,check.time = FALSE) 
+    res1 <- NMscanData(file=file1.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE)
+    res2 <- NMscanData(file=file2.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE) 
     setattr(res1,"meta",NULL)
     setattr(res2,"meta",NULL)
     expect_identical(res1,res2)
@@ -102,8 +102,8 @@ test_that("merge by filters or not",{
 
     ## NMgetSection(file1.lst,section="PROBLEM")
     ## NMgetSection(file2.lst,section="PROBLEM")
-    res1 <- NMscanData(file=file1.lst,method.combine="filters",col.model=NULL,check.time = FALSE)
-    res2 <- NMscanData(file=file2.lst,method.combine="filters",col.model=NULL,check.time = FALSE)
+    res1 <- NMscanData(file=file1.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE)
+    res2 <- NMscanData(file=file2.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE)
 
     setcolorder(res1,colnames(res2))
 
@@ -132,11 +132,11 @@ test_that("Only a firstonly without ID but with ROW",{
     ### impossible with filters
     expect_error(
         expect_warning(
-            NMscanData(file=file.lst,method.combine="filters",col.row="ROW",check.time = FALSE)
+            NMscanData(file=file.lst,merge.by.row=FALSE,col.row="ROW",check.time = FALSE)
                        )
     )
-    
-    res1 <- NMscanData(file=file.lst,method.combine="col.row",col.row="ROW",check.time = FALSE)
+    ## load_all()
+    res1 <- NMscanData(file=file.lst,merge.by.row=TRUE,col.row="ROW",check.time = FALSE)
     fix.time(res1)
     expect_equal_to_reference(res1,fileRef,version=2)
     
@@ -194,7 +194,7 @@ test_that("FO and row-level output. No ID, no row. cbind.by.filters=T",{
     
     ## tabs <- NMscanTables(file=file.lst)
     res1 <- expect_warning(
-        NMscanData(file=file.lst,method.combine="filters",check.time = FALSE)
+        NMscanData(file=file.lst,merge.by.row=FALSE,check.time = FALSE)
     )
     fix.time(res1)
     summary(res1)$variables
@@ -224,7 +224,7 @@ test_that("Only a firstonly without ID but with ROW",{
 ###### Why are we not getting an error or warning here? Because col.row is available?
     res1 <- expect_error(
         expect_warning(
-            NMscanData(file=file.lst,method.combine="filters",check.time = FALSE)
+            NMscanData(file=file.lst,merge.by.row=FALSE,check.time = FALSE)
         )
     )
 
@@ -232,7 +232,7 @@ test_that("Only a firstonly without ID but with ROW",{
 ## tabs
 })
 
-test_that("Only a firstonly without ID but with ROW. Using method.combine=merge.by.row.",{
+test_that("Only a firstonly without ID but with ROW. Using merge.by.row=TRUE.",{
 ### ROW is used to recover firstonly data.
 
     fileRef <- "testReference/NMscanData15b.rds"
@@ -245,7 +245,7 @@ test_that("Only a firstonly without ID but with ROW. Using method.combine=merge.
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-    res1 <- NMscanData(file=file.lst,col.row="ROW",method.combine="col.row",check.time = FALSE)
+    res1 <- NMscanData(file=file.lst,col.row="ROW",merge.by.row=TRUE,check.time = FALSE)
     
     fix.time(res1)
     expect_equal_to_reference(
@@ -268,7 +268,7 @@ test_that("recoverRows without a row identifier",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-    res1 <- NMscanData(file=file.lst,,method.combine="filters",recover.rows = T,as.fun="data.table",check.time = FALSE)
+    res1 <- NMscanData(file=file.lst,,merge.by.row=FALSE,recover.rows = T,as.fun="data.table",check.time = FALSE)
     dim(res1)
     res1[,table(nmout,DOSE)]
     fix.time(res1)
@@ -289,7 +289,7 @@ test_that("use as.fun to get a data.frame",{
     NMgetSection(file.lst,section="DATA")
     NMgetSection(file.lst,section="TABLE")
 
-    res1 <- NMscanData(file=file.lst,method.combine="filters",recover.rows = T,as.fun=as.data.frame,check.time = FALSE)
+    res1 <- NMscanData(file=file.lst,merge.by.row=FALSE,recover.rows = T,as.fun=as.data.frame,check.time = FALSE)
     dim(res1)
     class(res1)
     with(res1,table(nmout,DOSE))
@@ -317,7 +317,7 @@ test_that("use as.fun to get a tibble",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-    res1 <- NMscanData(file=file.lst,method.combine="filters",recover.rows = T,as.fun=tibble::as_tibble,check.time = FALSE)
+    res1 <- NMscanData(file=file.lst,merge.by.row=FALSE,recover.rows = T,as.fun=tibble::as_tibble,check.time = FALSE)
     dim(res1)
     class(res1)
 
@@ -374,7 +374,7 @@ test_that("Duplicate columns in input data",{
 
     ## load_all("../../")
     ## debugonce(NMscanData)
-    res <- expect_warning(NMscanData(file=file.lst,method.combine="filters",check.time = FALSE))
+    res <- expect_warning(NMscanData(file=file.lst,merge.by.row=FALSE,check.time = FALSE))
     fix.time(res)
     ## names(res$row)
     

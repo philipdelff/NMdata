@@ -59,8 +59,8 @@ dim(pk3)
 ## -----------------------------------------------------------------------------
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds", package="NMdata"))
 dt.flags <- fread(text="FLAG,flag,condition
-10,Negative time,TIME<0
-20,Below LLOQ,BLQ==1")
+100,Negative time,EVID==0&TIME<0
+10,Below LLOQ,EVID==0&BLQ==1")
 
 pk <- flagsAssign(pk,dt.flags)
 
@@ -71,9 +71,9 @@ dt.flags2 <- fread(text="FLAG2,flag2,condition
 pk <- flagsAssign(pk,dt.flags2,col.flagn="FLAG2",col.flagc="flag2")
 
 ## -----------------------------------------------------------------------------
-tab.count <- flagsCount(data=pk,tab.flags=dt.flags)
+tab.count <- flagsCount(data=pk[EVID==0],tab.flags=dt.flags)
 print(tab.count)
-tab.count2 <- flagsCount(data=pk,tab.flags=dt.flags2,col.flagn="FLAG2",col.flagc="flag2")
+tab.count2 <- flagsCount(data=pk[EVID==0],tab.flags=dt.flags2,col.flagn="FLAG2",col.flagc="flag2")
 print(tab.count2)
 
 ## -----------------------------------------------------------------------------

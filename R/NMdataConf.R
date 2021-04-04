@@ -219,11 +219,11 @@ NMdataConfOptions <- function(name){
            ,process=identity
         )
        ,
-        method.combine=list(
-            default="filters"
+        merge.by.row=list(
+            default=FALSE
             ## has to be length 1 character 
-           ,is.allowed=function(x)is.character(x) && length(x)==1 && x%in%c("filters","col.row","none")
-           ,msg.not.allowed="method.combine must be character and one of filters, col.row, and none."
+           ,is.allowed=function(x)is.logical(x) 
+           ,msg.not.allowed="merge.by.row must be TRUE or FALSE."
            ,process=identity
         )
        ,
