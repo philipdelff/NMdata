@@ -44,7 +44,8 @@ With load_all():
 https://doi.org/10.1208/s12248-012-9387-9
 ** Function improvements
 *** NMreplacepart
-**** TODO [#A] Support for multiple sections
+**** DONE [#A] Support for multiple sections
+     CLOSED: [2021-04-05 Mon 12:06]
 Instead of the section argument, NMreplacepart must accept newlines as a named
 list.
 *** NMextractText

@@ -7,6 +7,7 @@
 flagsAssign(
   data,
   tab.flags,
+  subset.data,
   col.flagn,
   col.flagc,
   flags.increasing = FALSE,
@@ -20,6 +21,12 @@ flagsAssign(
 columns: FLAG, flag, condition. Condition is disregarded for
 FLAG==0. FLAG must be numeric and non-negative, flag and
 condition are characters.}
+
+\item{subset.data}{An optional string that provides a subset of
+data to assign flags to. A common example is
+subset=\"EVID==0\" to only assign to observations. Numerical
+and character flags will be missing in rows that are not
+matched by this subset.}
 
 \item{col.flagn}{The name of the column containing the numerical
 flag values in tab.flags. This will be added to data. Default

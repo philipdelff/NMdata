@@ -76,6 +76,7 @@ NMgetSection(system.file("examples/nonmem/run001.lst", package="NMdata"),section
 \seealso{
 Other Nonmem: 
 \code{\link{NMextractText}()},
+\code{\link{NMreplacePart}()},
 \code{\link{NMtransFilters}()},
 \code{\link{NMwriteData}()}
 }

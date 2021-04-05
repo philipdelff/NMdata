@@ -49,6 +49,7 @@ This is not bulletproof. A statement like ACCEPT=(DOSE 10) which in
 Other Nonmem: 
 \code{\link{NMextractText}()},
 \code{\link{NMgetSection}()},
+\code{\link{NMreplacePart}()},
 \code{\link{NMwriteData}()}
 }
 \concept{Nonmem}

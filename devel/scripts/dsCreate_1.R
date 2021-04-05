@@ -67,7 +67,7 @@ dt.flags <- fread(text="FLAG,flag,condition
     10,Below LLOQ,BLQ==1
 100,Pre-dose sample,TIME<0")
 
-load_all("c:/Users/delff/working_copies/NMdata")
+## load_all("c:/Users/delff/working_copies/NMdata")
 ### OK!
 pk <- flagsAssign(pk,subset.data="EVID==0",tab.flags=dt.flags)
 tab.count <- flagsCount(pk,dt.flags,by="EVID")
@@ -92,10 +92,12 @@ pk <- NMorderColumns(pk)
 colnames(pk)
 dim(pk)
 
-NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),write.rds=F)
+text <- NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),write.rds=F)
+
+NMreplacePart(path="C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr001.mod",list.sections=text["INPUT"])
 
 ## same, but with rds
-NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write.rds=T,args.rds=list(version=2))
+text2 <- NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write.rds=T,args.rds=list(version=2))
 
 
 ## need to updata nonmem models
@@ -114,6 +116,21 @@ NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write
 
 ## a version with duplicated column names for testing
 pk2 <- cbind(pk,pk[,.(DOSE)])
-NMwriteData(pk2,file=file.path(NMdata_filepath(),"examples/data/xgxr3.csv"),write.rds=T,args.rds=list(version=2))
+text3 <- NMwriteData(pk2,file=file.path(NMdata_filepath(),"examples/data/xgxr3.csv"),write.rds=T,args.rds=list(version=2))
 
 
+
+dt.files <- data.table(path=list.files(file.path(NMdata_filepath(),"examples/nonmem"),pattern="\\.mod$",full.names=T))
+dt.files[,mod:=basename(path)]
+dt.files[,ROW:=1:.N]
+dt.files[,DATA:=paste(NMgetSection(path,section="DATA"),collapse=" "),by=.(ROW)]
+dt.files[,file:={strings=strsplit(DATA," ")
+    list(strings[[1]][grepl("\\.csv",strings[[1]])])
+},by=.(ROW)]
+dt.files
+
+## lapply(dt.files[file=="../data/xgxr1.csv",path],
+##        NMreplacePart,list.sections=text["INPUT"])
+
+## lapply(dt.files[file=="../data/xgxr1.csv",path],
+##        NMundoReplace)

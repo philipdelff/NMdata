@@ -52,7 +52,7 @@
 ##' @export
 
 
-flagsAssign <- function(data, subset.data, tab.flags, col.flagn, col.flagc,
+flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
                         flags.increasing=FALSE, as.fun=NULL){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -261,7 +261,7 @@ flagsAssign <- function(data, subset.data, tab.flags, col.flagn, col.flagc,
     setnames(data.flags,c("FLAG","flag"),c(col.flagn,col.flagc))
     ## setnames(tab.flags,c("FLAG","flag"),c(col.flagn,col.flagc))
     if(backed.up.old.flags){
-        data.flags <- mergeCheck(data.flags,flags.orig.data.flags,by=col.row)
+        data.flags <- mergeCheck(data.flags,flags.orig.data,by=col.row)
     }
 
     ## add the data where flags have not been assigned

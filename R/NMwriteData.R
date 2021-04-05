@@ -237,18 +237,24 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
         nmfile <- file.path(nmdir.data,basename(nmfile))
     }
 
-    text.nm <- c(
-        strwrap(
-            paste0("$INPUT ",paste(colnames.nm,collapse=" "))
-        )
-       ,paste0("$DATA ", nmfile)
-       ,paste0("IGN=@")
+    text.nm.input <- strwrap(
+        paste0("$INPUT ",paste(colnames.nm,collapse=" "))
     )
+    text.nm.data <- c(paste0("$DATA ", nmfile)
+                     ,paste0("IGN=@")
+                      )
+
     if(!is.null(col.flag)&&col.flag%in%colnames.nm){
-        text.nm <- c(text.nm,
-                     paste0("IGNORE=(",col.flag,".NE.0)")
-                     )
+        text.nm.data <- c(text.nm.data,
+                          paste0("IGNORE=(",col.flag,".NE.0)")
+                          )
     }
+    
+    text.nm <- c(
+        text.nm.input
+       ,text.nm.data
+    )
+
 
     message(
         paste0("Nonmem data file:\n",file,"\n",
@@ -288,6 +294,6 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     } else {
         cat("\nData returned but not written to file(s).\n")
     }
-    invisible(text.nm)
+    invisible(list(INPUT=text.nm.input,DATA=text.nm.data))
 
 }

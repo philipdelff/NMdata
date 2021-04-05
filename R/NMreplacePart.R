@@ -3,20 +3,24 @@
 ##' Just give the section name, the new lines and the file path, and the
 ##' "$section", and the input to Nonmem will be updated.
 ##'
-##' @param path The run to edit. If a directory is given, the file is assumed to
-##'     be called input.txt in that folder.
-##' @param section The name of the section to update. Example: section="EST" to
-##'     edit the sections starting by $EST. See NMgetSection
-##' @param newlines The new text (including "$SECTION"). Better be broken into
-##'     lines in a character vector since this is simply past to
-##'     writeLines.
-##' @param newpath path to new run. If missing, path is used. If NULL, output is
-##'     returned rather than written.
-##' @param backup In case you are overwriting the old file, do you want to
-##'     backup the file (to say, backup_input.txt)?
+##' @param path The run to edit. If a directory is given, the file is
+##'     assumed to be called input.txt in that folder.
+##' @param section The name of the section to update. Example:
+##'     section="EST" to edit the sections starting by $EST. See
+##'     NMgetSection
+##' @param newlines The new text (including "$SECTION"). Better be
+##'     broken into lines in a character vector since this is simply
+##'     past to writeLines.
+##' @param list.sections Named list of new sections, each element
+##'     containing a section. Names must be section names, contents of
+##'     each element are the new section lines for each section.
+##' @param newpath path to new run. If missing, path is used. If NULL,
+##'     output is returned rather than written.
+##' @param backup In case you are overwriting the old file, do you
+##'     want to backup the file (to say, backup_run001.mod)?
 ##' @param blank.append Append a blank line to output?
-##' @param test Want to see the resulting input.txt and not write it to disk?
-##'     Default is FALSE.
+##' @param test Want to see the resulting input.txt and not write it
+##'     to disk?  Default is FALSE.
 ##'
 ##' @details The new file will be written with unix-style line endings.
 ##' @family Nonmem
@@ -31,8 +35,10 @@
 NMreplacePart <- function(path,section,newlines,list.sections,newpath,
                           backup=TRUE,blank.append=TRUE,test=FALSE){
 
-#### Section start: handle arguments ####
 
+    
+#### Section start: handle arguments ####
+    
     path <- filePathSimple(path)
     file <- path
     if(dir.exists(path)) file <- file.path(path,"input.txt")
@@ -46,28 +52,42 @@ NMreplacePart <- function(path,section,newlines,list.sections,newpath,
     }
 
     ## supply either section and newlines or a list
-    if( (!missing(section)&&!missing(newlines)) ||
-        !missing(list.sections)
-       ){
+    if(!( (!missing(section)&&!missing(newlines)) ||
+          !missing(list.sections)
+    )
+    ){
         stop("Either both section and newlines or list.sections must be supplied.")
     }
     if(missing(list.sections)){
         ## this must be list, not as.list. as.list would translate multiple lines into multiple sections.
-        list.section=list(newlines)
-        names(list.section) <- section
+        list.sections=list(newlines)
+        names(list.sections) <- section
     }
     
 ###  Section end: handle arguments
-  
+    
 
     ## see below why we need to read the lines for now
     lines <- readLines(file)
 
     ## put this part in a function to be sequentially applied for all elements in list.
     replaceOnePart <- function(lines,section,newlines){
-        ## make sure section is capital and starts with $.
+        
+        ## make sure section is capital and does not start with $.
+        section <- gsub(" ","",section)
+        ## if(!grepl("^\\$",section)){
+        ##     section <- paste0("$",section)
+        ## }
+        section <- sub("^\\$","",section)
+        section <- toupper(section)
 
         ## make sure newlines start with $SECTION
+        newlines <- sub("^ +","",newlines)
+### doesn't work. For now, user has to supply newlines including a valid $SECTION start.
+        ## if(grepl(paste0("^\\",section),newlines,ignore.case=T)){
+        ##     newlines <-
+        ##         sub("^([^ ]+)(\\s.*)","\\1",newlines,perl=TRUE)
+        ## }
         
         if(blank.append) newlines <- c(newlines,"")
         
@@ -100,6 +120,9 @@ NMreplacePart <- function(path,section,newlines,list.sections,newpath,
         ##  function end
         newlines
     }
+    
+    newlines <- lines
+    for (I in 1:length(list.sections)) newlines <- replaceOnePart(lines=newlines,section=names(list.sections)[I],newlines=list.sections[[I]])
     
     if(is.null(newpath)) return(newlines)
     

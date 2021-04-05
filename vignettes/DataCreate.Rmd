@@ -173,7 +173,7 @@ dt.flags <- fread(text="FLAG,flag,condition
 100,Negative time,EVID==0&TIME<0
 10,Below LLOQ,EVID==0&BLQ==1")
 
-pk <- flagsAssign(pk,dt.flags)
+pk <- flagsAssign(pk,tab.flags=dt.flags)
 ```
 
 Your first question may be why `fread` is used to create a data.table
