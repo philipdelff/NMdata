@@ -134,3 +134,10 @@ dt.files
 
 ## lapply(dt.files[file=="../data/xgxr1.csv",path],
 ##        NMundoReplace)
+
+## lapply(dt.files[file=="../data/xgxr2.csv",path],
+##        NMreplacePart,list.sections=text2["INPUT"])
+
+## lapply(dt.files[file=="../data/xgxr3.csv",path],
+##        NMreplacePart,list.sections=text3["INPUT"])
+
