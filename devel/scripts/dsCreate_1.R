@@ -94,9 +94,9 @@ dim(pk)
 
 text <- NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),write.rds=F)
 ### with this one, we don't need to filter on FLAG
+NMwriteData(pk[FLAG==0],file=file.path(NMdata_filepath(),"examples/data/xgxr1_flag0.csv"),write.rds=F)
 
-
-NMreplacePart(path="C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr001.mod",list.sections=text["INPUT"])
+## NMreplacePart(path="C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr001.mod",list.sections=text["INPUT"])
 
 ## same, but with rds
 text2 <- NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write.rds=T,args.rds=list(version=2))
