@@ -25,6 +25,19 @@
 ##' @param by An optional column to group the counting by. This could
 ##'     be "STUDY", "DRUG", "EVID", or a combination of multiple
 ##'     columns.
+##' @param flags.increasing The flags are applied by either decreasing
+##'     (default) or increasing value of col.flagn. By using
+##'     decreasing order, you can easily adjust the Nonmem IGNORE
+##'     statement from IGNORE(FLAG.NE.0) to say IGNORE(FLAG.GT.10) if
+##'     BLQ's have FLAG=10, and you decide to include these in the
+##'     analysis.
+##' @param name.all.data What to call the total set of data before
+##'     applying exclusion flags. Default is "All available data".
+##' @param grp.incomp Column(s) that distinct incompatible subsets of
+##'     data. Default is "EVID" meaning that if different values of
+##'     EVID are found in data, the function will return an
+##'     error. This is a safeguard not to mix data unintentionally
+##'     when counting flags. 
 ##' @param as.fun The default is to return a data.table if input data
 ##'     is a data.table, and return a data.frame for all other input
 ##'     classes. Pass a function in as.fun to convert to something
@@ -36,9 +49,12 @@
 ##'     observations and subjects resulting from the flag, "retained"
 ##'     means the numbers that are left after application of the
 ##'     flag. The default is "both" which will report both.
-##' @details Notice number of subjects in N.discarded mode can be
+##' @details This function is used to count flags as assigned by the
+##'     flagsAssign function.
+##'
+##' Notice number of subjects in N.discarded mode can be
 ##'     misunderstood. If two is reported, it can mean that the
-##'     remining one observation of these two subjects are discarded
+##'     remaining one observation of these two subjects are discarded
 ##'     due to this flag. The majority of the samples can have been
 ##'     discarded by earlier flags.
 ##' @import data.table
@@ -51,24 +67,26 @@
 ##' condition=c("BLQ==1"))
 ##' pk <- flagsAssign(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
 ##' unique(pk[,c("flagn","flagc","flagn")])
-##' flagsCount(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
+##' flagsCount(pk[EVID==0],dt.flags,col.flagn="flagn",col.flagc="flagc")
 ##' @export
 
 
 flagsCount <- function(data,tab.flags,file,col.id="ID",
                        col.flagn,col.flagc,
-                       by=NULL,as.fun=NULL, flags.increasing=FALSE,
+                       by=NULL, flags.increasing=FALSE,
                        name.all.data="All available data",
-                       grp.incomp="EVID"){
+                       grp.incomp="EVID",as.fun=NULL){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     FLAG <- NULL
+    FLAGSORT <- NULL
     ID <- NULL
     N.discarded <- NULL
     N.left <- NULL
     Nobs.discarded <- NULL
     Nobs.left <- NULL
+    alldata <- NULL
     flag <- NULL
     notAll <- NULL
     isFinal <- NULL

@@ -69,6 +69,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     include <- NULL
     numeric.ok <- NULL
     occ.cum <- NULL
+    name.rename <- NULL
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 

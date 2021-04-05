@@ -27,7 +27,7 @@
 ##' @export
 
 
-NMreadTab <- function(file,quiet=TRUE,tab.count=TRUE,as.fun=NULL,method=1,...) {
+NMreadTab <- function(file,quiet=TRUE,tab.count=TRUE,as.fun=NULL,...) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -73,15 +73,7 @@ NMreadTab <- function(file,quiet=TRUE,tab.count=TRUE,as.fun=NULL,method=1,...) {
         message("Making sure everything is numeric")
     }
 
-    if(method==1){
-        cnames <- colnames(dt1)
-        for (col in cnames) {
-            set(dt1, j=col, value=as.numeric(dt1[[col]]))
-        }
-    }
-    if(method==2){
-        dt1[,(cnames):=lapply(.SD,as.numeric)]
-    }
+    dt1[,(cnames):=lapply(.SD,as.numeric)]
 
     dt1 <- as.fun(dt1)
     

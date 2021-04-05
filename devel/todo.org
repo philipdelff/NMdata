@@ -32,6 +32,7 @@ With load_all():
 1: 1      1
 
 ** New functions
+*** TODO function to replace file name extension
 *** DONE summary.NMdata
     CLOSED: [2020-12-23 Wed 11:22]
 *** DONE NMgetSection
@@ -84,7 +85,8 @@ A way to limit rows read into nonmem
 **** DONE Lastonly does the same as firstonly
      CLOSED: [2020-07-13 Mon 19:37]
 *** NMscanData
-**** TODO [#A] method.combine to merge.by.row
+**** DONE method.combine to merge.by.row
+     CLOSED: [2021-04-04 Sun 23:17]
      Since we only have and will only have two methods, this should be
      a binary switch between the methods.
 **** TODO [#B] Check if col.row is being modified in Nonmem.
@@ -159,8 +161,11 @@ Not warning. Warning if standard variable?
 **** DONE Improve messages at each FLAG coding
      CLOSED: [2020-12-23 Wed 11:31]
 **** DONE Make sure we arrange back to original order
-**** TODO Introduce a way to apply to a subset only?
+**** DONE [#A] Introduce a way to apply to a subset only
+     CLOSED: [2021-04-05 Mon 09:42]
 This could be EVID==0 or maybe one study in a meta analysis
+
+It's fairly easy to implement. Paste in front of the expression.use column.
 *** flagsCount
 **** DONE OK respect decreasing or increasing order.flags
 **** TODO [#B] add .cum of N and Nobs
@@ -185,6 +190,8 @@ This is two steps.
 ***** col.row can be non-NULL even if using cbind for combining data
 **** DONE order.columns
      CLOSED: [2021-04-02 Fri 11:35]
+*** summary.NMdata
+**** TODO [#A] Rethink and tidy up message
 ** Nonmem examples
 *** DONE Use FLAG
     CLOSED: [2020-06-29 Mon 21:28]

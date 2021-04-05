@@ -37,6 +37,11 @@ make sure this is not happening and use
 fun.commoncols=stop. If you want nothing to happen, you can do
 fun.commoncols=NULL.}
 
+\item{ncols.expect}{If you want to include a check of the number
+of columns being added to the dimensions of df1. So if
+ncols.expect=1, the resulting data must have exactly one
+column more than df1 - if not, an error will be returned.}
+
 \item{...}{additional arguments passed to merge. If all is among
 them, an error will be returned.}
 }

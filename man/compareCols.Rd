@@ -27,15 +27,15 @@ check may be overly rigorous. Many classes are compitable
 enough (say numeric and integer), at compareCols doesn't take
 this into account.}
 
+\item{diff.only}{Don't report columns where no difference
+found.}
+
 \item{fun.class}{the function that will be run on each column to
 check for differences. base::class is default. Notice that the
 alternative base::typeof is different in certain ways. For
 instance, typeof will not report a difference on numeric vs
 difftime. You could basically submit any function that takes a
 vector and returns a single value.}
-
-\item{quietIfEqual}{Don't report columns where no difference
-found.}
 }
 \description{
 Useful interactive tool when merging or binding objects

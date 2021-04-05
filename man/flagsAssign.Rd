@@ -7,12 +7,10 @@
 flagsAssign(
   data,
   tab.flags,
-  return.all = F,
-  col.id = "ID",
   col.flagn,
   col.flagc,
-  as.fun = NULL,
-  flags.increasing = FALSE
+  flags.increasing = FALSE,
+  as.fun = NULL
 )
 }
 \arguments{
@@ -23,14 +21,6 @@ columns: FLAG, flag, condition. Condition is disregarded for
 FLAG==0. FLAG must be numeric and non-negative, flag and
 condition are characters.}
 
-\item{return.all}{If TRUE, both the edited dataset and the table
-of flags are returned. If FALSE (default) only the edited
-dataset is returned.}
-
-\item{col.id}{The name of the subject ID column. Default is
-"ID". This column must contain unique subject identifiers. NA
-and empty strings are not allowed.}
-
 \item{col.flagn}{The name of the column containing the numerical
 flag values in tab.flags. This will be added to data. Default
 value is FLAG and can be configured using NMdataConf.}
@@ -38,6 +28,13 @@ value is FLAG and can be configured using NMdataConf.}
 \item{col.flagc}{The name of the column containing the character
 flag values in tab.flags. This will be added to data. Default
 value is flag and can be configured using NMdataConf.}
+
+\item{flags.increasing}{The flags are applied by either decreasing
+(default) or increasing value of col.flagn. By using
+decreasing order, you can easily adjust the Nonmem IGNORE
+statement from IGNORE(FLAG.NE.0) to say IGNORE(FLAG.GT.10) if
+BLQ's have FLAG=10, and you decide to include these in the
+analysis.}
 
 \item{as.fun}{The default is to return data.tables if input data
 is a data.table, and return a data.frame for all other input
@@ -69,7 +66,7 @@ dt.flags <- data.frame(
 )
 pk <- flagsAssign(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
 unique(pk[,c("flagn","flagc","BLQ")])
-flagsCount(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
+flagsCount(pk[EVID==0],dt.flags,col.flagn="flagn",col.flagc="flagc")
 }
 \seealso{
 Other DataCreate: 

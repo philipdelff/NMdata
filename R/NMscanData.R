@@ -19,8 +19,20 @@
 ##'     NMdataConf. See dir.data too.
 ##' @param col.id The name of the subject ID variable, default is
 ##'     "ID".
+##' @param use.input Should the input data be added to the output
+##'     data. Only column names that are not found in output data will
+##'     be retrieved from the input data. See merge.by.row too.
+##' @param merge.by.row If use.input=TRUE, this argument determines
+##'     the method by which the input data is added to output
+##'     data. The default method (merge.by.row=FALSE) is to interpret
+##'     the Nonmem code to immitate the data filtering (IGNORE and
+##'     ACCEPT statements), but the recommended method is
+##'     merge.by.row=TRUE which means that data will be merged by a
+##'     unique row identifier. The row identifier must be present in
+##'     input and at least one full length output data table. See
+##'     argument col.row too.
 ##' @param col.row A column with a unique value for each row. Such a
-##'     column is recommended to use if possible. See cbind.by.filters
+##'     column is recommended to use if possible. See merge.by.row
 ##'     and details as well.
 ##' @param recover.rows Include rows from input data files that do not
 ##'     exist in output tables? This will be added to the $row dataset
@@ -60,18 +72,6 @@
 ##'     something else. If data.tables are wanted, use
 ##'     as.fun="data.table". The default can be configured using
 ##'     NMdataConf.
-##' @param cbind.by.filters If TRUE, Nonmem data filtering is
-##'     interpreted from lst file (restrictions apply), and after an
-##'     imitated selection of rows, data columns will be appended to
-##'     output data. This method relies on interpretation of Nonmem
-##'     code, and it will not work in advanced use of IGNORE and
-##'     ACCEPT statements in $INPUT. Consider using col.row instead,
-##'     if possible. Default is TRUE if col.row is either missing or
-##'     NULL. However, explicitly specifying cbind.by.filters is
-##'     recommended if that is the intended behaviour. If not,
-##'     NMscanData will search for potential columns to merge by and
-##'     print information about it. See col.row (recommended method)
-##'     as well.
 ##' @param tab.count Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. Especially for
 ##'     NMscanData output it can be meaningless because multiple
@@ -220,9 +220,12 @@ NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
     if(is.null(merge.by.row)){
         ## method not specified
         search.col.row <- TRUE
+    } else {
+        if(isTRUE(merge.by.row)&!use.input){
+            stop("merge.by.row cannot be TRUE when use.input is FALSE.")
+        }
     }
-    merge.by.row <- NMdataDecideOption("merge.by.row",merge.by.row)
-
+   merge.by.row <- NMdataDecideOption("merge.by.row",merge.by.row)
     cbind.by.filters <- !merge.by.row
 
     

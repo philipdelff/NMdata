@@ -16,7 +16,7 @@
 ##'     check may be overly rigorous. Many classes are compitable
 ##'     enough (say numeric and integer), at compareCols doesn't take
 ##'     this into account.
-##' @param quietIfEqual Don't report columns where no difference
+##' @param diff.only Don't report columns where no difference
 ##'     found.
 ##' @param fun.class the function that will be run on each column to
 ##'     check for differences. base::class is default. Notice that the
@@ -25,19 +25,28 @@
 ##'     difftime. You could basically submit any function that takes a
 ##'     vector and returns a single value.
 ##' @family DataWrangling
+##' @export
+
 
 
 ## tecnically, this function compares classes of elements in
 ## lists. However, in relation NMdata, this will most of the time be
 ## columns in data.frames.
 
-### Needs a little more testing. Don't export yet.
 
 
 compareCols <- function(...,keepNames=T,testEqual=F,diff.only=TRUE,fun.class=base::class){
-    ## Compares the names of the contents of lists (can be
-    ## data.frames). This is useful when combining datasets to get an
-    ## overview of compatibility.
+
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+
+    value <- NULL
+  element <- NULL
+nu <- NULL
+    . <- function() NULL
+
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+
+
     
     dots <- list(...)
     ndots <- length(dots) 

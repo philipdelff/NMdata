@@ -12,10 +12,10 @@ flagsCount(
   col.flagn,
   col.flagc,
   by = NULL,
-  as.fun = NULL,
   flags.increasing = FALSE,
   name.all.data = "All available data",
-  grp.incomp = "EVID"
+  grp.incomp = "EVID",
+  as.fun = NULL
 )
 }
 \arguments{
@@ -47,6 +47,22 @@ flag and can be configured using NMdataConf.}
 be "STUDY", "DRUG", "EVID", or a combination of multiple
 columns.}
 
+\item{flags.increasing}{The flags are applied by either decreasing
+(default) or increasing value of col.flagn. By using
+decreasing order, you can easily adjust the Nonmem IGNORE
+statement from IGNORE(FLAG.NE.0) to say IGNORE(FLAG.GT.10) if
+BLQ's have FLAG=10, and you decide to include these in the
+analysis.}
+
+\item{name.all.data}{What to call the total set of data before
+applying exclusion flags. Default is "All available data".}
+
+\item{grp.incomp}{Column(s) that distinct incompatible subsets of
+data. Default is "EVID" meaning that if different values of
+EVID are found in data, the function will return an
+error. This is a safeguard not to mix data unintentionally
+when counting flags.}
+
 \item{as.fun}{The default is to return a data.table if input data
 is a data.table, and return a data.frame for all other input
 classes. Pass a function in as.fun to convert to something
@@ -67,9 +83,12 @@ different reasons. And how many are left after each exclusion
 flag.
 }
 \details{
+This function is used to count flags as assigned by the
+    flagsAssign function.
+
 Notice number of subjects in N.discarded mode can be
     misunderstood. If two is reported, it can mean that the
-    remining one observation of these two subjects are discarded
+    remaining one observation of these two subjects are discarded
     due to this flag. The majority of the samples can have been
     discarded by earlier flags.
 }
@@ -81,7 +100,7 @@ dt.flags <- data.frame(
 condition=c("BLQ==1"))
 pk <- flagsAssign(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
 unique(pk[,c("flagn","flagc","flagn")])
-flagsCount(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
+flagsCount(pk[EVID==0],dt.flags,col.flagn="flagn",col.flagc="flagc")
 }
 \seealso{
 Other DataCreate: 

@@ -24,25 +24,25 @@ pk <- pk[CYCLE==1]
 pk <- pk[,!c("IPRED")]
 pk[,trtact := factor(TRTACT, levels = unique(TRTACT))]
 
+if(F){
+    ggplot(data = pk, aes(x     = NOMTIME,
+                          y     = LIDV,
+                          group = DOSE
+                         ,color = trtact)
+           ) +
+        xgx_geom_ci(conf_level = 0.95) +
+        xgx_scale_y_log10() 
 
-ggplot(data = pk, aes(x     = NOMTIME,
-                      y     = LIDV,
-                      group = DOSE
-                     ,color = trtact)
-       ) +
-                             xgx_geom_ci(conf_level = 0.95) +
-                             xgx_scale_y_log10() 
 
-
-ggplot(data = pk, aes(x     = TIME,
-                      y     = LIDV,
-                      group = ID
-                     ,color = trtact)
-       ) +
-    geom_line()+geom_point()+
-    xgx_scale_y_log10() +
-    facet_wrap(~trtact)
-    
+    ggplot(data = pk, aes(x     = TIME,
+                          y     = LIDV,
+                          group = ID
+                         ,color = trtact)
+           ) +
+        geom_line()+geom_point()+
+        xgx_scale_y_log10() +
+        facet_wrap(~trtact)
+}    
 
 ## rename
 setnames(pk,
@@ -62,19 +62,20 @@ indprofs <- ggIndProfs(pk,amt="AMT")
 ## ggwrite(indprofs,file="indprofs.pdf",onefile=T)
 
 ### handle LLOQ and set FLAGS
-load_all("c:/Users/delff/working_copies/NMdata")
+
 dt.flags <- fread(text="FLAG,flag,condition
     10,Below LLOQ,BLQ==1
 100,Pre-dose sample,TIME<0")
 
+load_all("c:/Users/delff/working_copies/NMdata")
 ### OK!
-pk <- flagsAssign(pk,dt.flags)
+pk <- flagsAssign(pk,subset.data="EVID==0",tab.flags=dt.flags)
 tab.count <- flagsCount(pk,dt.flags,by="EVID")
 tab.count
 
 if(F){
     ## checking increasing flags
-    ### correct (but not what we want for this dataset) - predose are covered by LLOQ flag
+### correct (but not what we want for this dataset) - predose are covered by LLOQ flag
     pk2 <- flagsAssign(pk,dt.flags,flags.increasing=T)
     tab.count2 <- flagsCount(pk2,dt.flags,flags.increasing=T,by="EVID")
     tab.count2

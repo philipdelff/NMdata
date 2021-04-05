@@ -28,8 +28,22 @@ NMscanData(
 (.mod or .lst)}
 
 \item{col.row}{A column with a unique value for each row. Such a
-column is recommended to use if possible. See cbind.by.filters
+column is recommended to use if possible. See merge.by.row
 and details as well.}
+
+\item{use.input}{Should the input data be added to the output
+data. Only column names that are not found in output data will
+be retrieved from the input data. See merge.by.row too.}
+
+\item{merge.by.row}{If use.input=TRUE, this argument determines
+the method by which the input data is added to output
+data. The default method (merge.by.row=FALSE) is to interpret
+the Nonmem code to immitate the data filtering (IGNORE and
+ACCEPT statements), but the recommended method is
+merge.by.row=TRUE which means that data will be merged by a
+unique row identifier. The row identifier must be present in
+input and at least one full length output data table. See
+argument col.row too.}
 
 \item{recover.rows}{Include rows from input data files that do not
 exist in output tables? This will be added to the $row dataset
@@ -109,19 +123,6 @@ NMscanData. However, if data has been transfered from another
 system where Nonmem was run, these checks may not make sense,
 and you may not want to see these warnings. The default can be
 configured using NMdataConf.}
-
-\item{cbind.by.filters}{If TRUE, Nonmem data filtering is
-interpreted from lst file (restrictions apply), and after an
-imitated selection of rows, data columns will be appended to
-output data. This method relies on interpretation of Nonmem
-code, and it will not work in advanced use of IGNORE and
-ACCEPT statements in $INPUT. Consider using col.row instead,
-if possible. Default is TRUE if col.row is either missing or
-NULL. However, explicitly specifying cbind.by.filters is
-recommended if that is the intended behaviour. If not,
-NMscanData will search for potential columns to merge by and
-print information about it. See col.row (recommended method)
-as well.}
 }
 \description{
 This is a very general solution to automatically identifying, reading, and  merging all output and input data in a Nonmem model. The most important
