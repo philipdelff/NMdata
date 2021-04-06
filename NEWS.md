@@ -1,12 +1,15 @@
-# NMdata 0.0.6.7
-The choice between data combination methods in NMscanData is now done in one
-argument, called method.combine. Before the method was decided based on values
-of two arguments, cbind.by.filters and col.row. A default value for col.row can
-now be set using NMdataConf and will not affect the data combination method.
+# NMdata 0.0.7
+The choice between data combination methods in NMscanData is now done
+in one argument, called method.combine. Before the method was decided
+based on values of two arguments, cbind.by.filters and col.row. A
+default value for col.row can now be set using NMdataConf and will not
+affect the data combination method.
 
-Other arguments which default values can now be modified using NMdataConf are:
-method.combine, col.flagn, col.flagc, use.input, recover.rows, col.model,
-modelname, file.mod, and check.time.
+Other arguments which default values can now be modified using
+NMdataConf are: method.combine, col.flagn, col.flagc, use.input,
+recover.rows, col.model, modelname, file.mod, and check.time.
+
+flagsAssign and flagsCount
 
 New function: compareCols. See the difference between presence and
 classes of columns in data sets. This is useful before rbind'ing or
