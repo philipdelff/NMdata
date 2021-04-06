@@ -451,13 +451,13 @@ NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
         } else {
             ## !cbind.by.filters
             if(is.null(col.row)) {
-                messageWrap("when use.input=TRUE and cbind.by.filters=FALSE, col.row cannot be NULL, NA, or empty.",fun.msg=stop)
+                messageWrap("when use.input=TRUE and merge.by.row=TRUE, col.row cannot be NULL, NA, or empty.",fun.msg=stop)
             }
 ### merging by col.row
             ## Has this check already been done?
             if(col.row%in%cnames.input) {
                 if(data.input$data[,any(duplicated(get(col.row)))]) {
-                    messageWrap("use.input=TRUE and cbind.by.filters=FALSE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and cbind.by.filters=FALSE.",fun.msg=stop)
+                    messageWrap("use.input=TRUE and merge.by.row=TRUE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and merge.by.row=TRUE.",fun.msg=stop)
                 }
             } else {
                 warning("use.input is TRUE, but col.row not found in _input_ data. Only output data used.")

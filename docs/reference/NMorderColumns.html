@@ -74,7 +74,7 @@ details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.7.905</span>
       </span>
     </div>
 
@@ -150,9 +150,10 @@ details.</p>
   lower.last = <span class='fl'>FALSE</span>,
   chars.last = <span class='fl'>TRUE</span>,
   alpha = <span class='fl'>TRUE</span>,
-  col.ntime = <span class='st'>"NOMTIME"</span>,
-  col.row = <span class='st'>"ROW"</span>,
+  <span class='kw'>col.nomtime</span>,
+  <span class='kw'>col.row</span>,
   <span class='kw'>col.flagn</span>,
+  col.dv = <span class='st'>"DV"</span>,
   as.fun = <span class='kw'>NULL</span>,
   quiet = <span class='fl'>FALSE</span>
 )</pre>
@@ -203,22 +204,29 @@ last. NA's must be NA or ".".</p></td>
 order priority applied.</p></td>
     </tr>
     <tr>
-      <th>col.ntime</th>
-      <td><p>The name of the column containing nominal time. If
-given, it will put the column quite far left, just after row
-counter and ID.</p></td>
+      <th>col.nomtime</th>
+      <td><p>The name of the column containing nominal
+time. If given, it will put the column quite far left, just
+after row counter and ID. Default value is NOMTIME and can be
+configured with NMdataConf.</p></td>
     </tr>
     <tr>
       <th>col.row</th>
-      <td><p>A row counter column. This will be the first column in
-the dataset. Technically, you can use it for whatever column
-you want first.</p></td>
+      <td><p>A row counter column. This will be the first column
+in the dataset. Technically, you can use it for whatever
+column you want first. Default value is ROW and can be
+configured with NMdataConf.</p></td>
     </tr>
     <tr>
       <th>col.flagn</th>
       <td><p>The name of the column containing numerical flag
 values for data row omission. Default value is FLAG and can be
 configured with NMdataConf.</p></td>
+    </tr>
+    <tr>
+      <th>col.dv</th>
+      <td><p>a vector of column names to put early to represent
+dependent variable(s). Default is DV.</p></td>
     </tr>
     <tr>
       <th>as.fun</th>

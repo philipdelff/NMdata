@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.7.905</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2021-03-02 using NMdata 0.0.6.6.</p>
+<p>Built 2021-04-06 using NMdata 0.0.6.7.905.</p>
 <div id="general-nmdata-questions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general-nmdata-questions" class="anchor"></a>General <code>NMdata</code> questions</h2>
@@ -145,17 +145,17 @@
 <div id="so-nmdata-uses-data-table--does-that-mean-variables-are-modified-by-reference" class="section level3">
 <h3 class="hasAnchor">
 <a href="#so-nmdata-uses-data-table--does-that-mean-variables-are-modified-by-reference" class="anchor"></a>So NMdata uses data.table. Does that mean variables are modified by reference?</h3>
-<p>NMdata does not modify variables in your workspace by reference, so don’t worry. NMdata definitely modify variables by reference internally but this will never affect your workspace. This has a slight performance price, but using <code>NMdata</code> must be easy for R user at all levels of experience. If you don’t understand what this is all about, you’re fine.</p>
+<p>NMdata definitely modify variables by reference internally but this will never affect your workspace. It might improve speed to go all the way, and modify by reference in the user workspace, but using <code>NMdata</code> must be easy for R users at all levels of experience. If you don’t understand what this is all about, you’re fine.</p>
 </div>
 <div id="i-want-to-use-a-tool-from-nmdata-but-how-does-it-integrate-with-dplyr-or-data-table" class="section level3">
 <h3 class="hasAnchor">
 <a href="#i-want-to-use-a-tool-from-nmdata-but-how-does-it-integrate-with-dplyr-or-data-table" class="anchor"></a>I want to use a tool from NMdata, but how does it integrate with dplyr or data.table?</h3>
-<p>Every function in <code>NMdata</code> has an argument called <code>as.fun</code>. You can provide a function in this argument which will be applied to data before returnin it.</p>
+<p>Every function in <code>NMdata</code> has an argument called <code>as.fun</code>. You can provide a function in this argument which will be applied to data before returning it.</p>
 <p>You can get a tibble if you work with <code>dplyr</code>/<code>tidyverse</code> tools:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="kw">...</span>, as.fun = <span class="kw">tibble</span>::<span class="kw"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span>)
 </pre></div>
-<p>Under the hood, <code>NMdata</code> is implemented in <code>data.table</code>, and in fact the default is to convert to <code>data.frame</code> before returning the output. So if you want <code>data.table</code>, use <code>"data.table"</code> (notice as a character string, not a function) to avoid the conversion</p>
+<p>Under the hood, <code>NMdata</code> is implemented in <code>data.table</code>, and in fact the default is to convert to <code>data.frame</code> before returning the output. So if you want to have <code>data.table</code>’s back, use <code>as.fun="data.table"</code> (notice as a character string, not a function) to avoid the conversion</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="kw">...</span>, as.fun = <span class="st">"data.table"</span>)
 </pre></div>
@@ -167,7 +167,17 @@
 <span class="co">## for data.table</span>
 <span class="fu">NMdataConfig</span>(as.fun = <span class="st">"data.table"</span>)
 </pre></div>
-<p>And all <code>NMdata</code> functions (that return data) should now return tibbles or data.tables. If you use <code>NMdataConfig</code> to control this, for reproducibility please do so explicitly in your script and not in your <code>.Rprofile</code> or similar.</p>
+<p>All <code>NMdata</code> functions (that return data) should now return tibbles or data.tables. If you use <code>NMdataConfig</code> to control this, for reproducibility please do so explicitly in your script and not in your <code>.Rprofile</code> or similar.</p>
+</div>
+<div id="the-help-of-an-nmdata-function-says-i-have-to-pass-a-data-frame--can-i-use-a-tibble-or-data-table" class="section level3">
+<h3 class="hasAnchor">
+<a href="#the-help-of-an-nmdata-function-says-i-have-to-pass-a-data-frame--can-i-use-a-tibble-or-data-table" class="anchor"></a>The help of an NMdata function says I have to pass a data.frame. Can I use a tibble or data.table?</h3>
+<p>Absolutely. data.table’s and tibble’s are data.frame’s, and data.frame in the documentation refers to any of these structures (that technically inherit from the data.frame class).</p>
+</div>
+<div id="the-result-i-am-getting-back-from-an-nmdata-function-doesnt-print-to-the-r-console--why" class="section level3">
+<h3 class="hasAnchor">
+<a href="#the-result-i-am-getting-back-from-an-nmdata-function-doesnt-print-to-the-r-console--why" class="anchor"></a>The result I am getting back from an NMdata function doesn’t print to the R console. Why?</h3>
+<p>This may happen when you work with data.tables - and only when working with data.tables. This will be fixed in near future. For now, you may have to print the data.table a couple of times before you see a result in the R terminal.</p>
 </div>
 <div id="can-i-request-a-feature" class="section level3">
 <h3 class="hasAnchor">

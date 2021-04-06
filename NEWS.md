@@ -1,25 +1,48 @@
 # NMdata 0.0.7
+This is a major upgrade from 0.0.6.6 featuring many improvements and
+bug fixes. Everyone is strongly encouraged to upgrade.
+
 The choice between data combination methods in NMscanData is now done
-in one argument, called method.combine. Before the method was decided
+in one argument, called merge.by.row. Before the method was decided
 based on values of two arguments, cbind.by.filters and col.row. A
 default value for col.row can now be set using NMdataConf and will not
 affect the data combination method.
 
 Other arguments which default values can now be modified using
-NMdataConf are: method.combine, col.flagn, col.flagc, use.input,
+NMdataConf are: merge.by.row, col.flagn, col.flagc, use.input,
 recover.rows, col.model, modelname, file.mod, and check.time.
 
-flagsAssign and flagsCount
+The tools to assign and cound exclusion flags, flagsAssign and
+flagsCount, have been improved. They now support working on a subset
+of data (say samples only), and the order (increasing/decreasing) of
+the exclusion flags is optional. The printing of the count of
+exclusion flags has been improved.
 
-New function: compareCols. See the difference between presence and
-classes of columns in data sets. This is useful before rbind'ing or
-merging - or maybe when those throw an error, and you want to figure
-out why.
+NMgetSection and NMwriteSection are new functions that can be used to
+extract sections from and write sections to Nonmem control
+streams. NMwriteData now returns a list of sections that can be passed
+directly to NMwriteSection, in order to update control streams to read
+the updated data file correctly.
+
+compareCols is a very useful new data creation tool. See the
+difference between presence and classes of columns in data sets. This
+is useful before rbind'ing or merging - or maybe when those throw an
+error, and you want to figure out why.
+
+renameByContents is a function that can rename columns which contents
+match a given criterion. In combination with the provided NMisNumeric,
+this can be used to rename (say to lowercase) columns that Nonmem
+cannot interpret (as numeric).
 
 mergeCheck now informs about common column names that are not used to
 merge by. These will create new column names, and it's often not
 intended. An argument has been added (ncols.expected) to check the
 number of columns added to df1 against expectation.
+
+egdt is a new function for expanding grids of data.tables. This is
+quite technical, and it fills a whole when constructing data with
+data.tables. It mimicks the behavior of merge.data.frame on objects
+with no common columns.
 
 ## Bugfixes related to 
 - Class of return from NMorderData.

@@ -9,16 +9,14 @@
 ##'     returns the new one.
 ##' @param invert.test Rename those where FALSE is returned from
 ##'     fun.test.
+##' @param as.fun The default is to return data as a data.frame. Pass
+##'     a function (say tibble::as_tibble) in as.fun to convert to
+##'     something else. If data.tables are wanted, use
+##'     as.fun="data.table". The default can be configured using
+##'     NMdataConf.
+##' @export
 
-
-### don't export yet.
-
-## renames column names based on column contents.
-## should check whether new column names are in use already
-
-## as.fun return needed
-
-renameByContents <- function(data,fun.test,fun.rename,invert.test=FALSE){
+renameByContents <- function(data,fun.test,fun.rename,invert.test=FALSE,as.fun){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -29,6 +27,9 @@ renameByContents <- function(data,fun.test,fun.rename,invert.test=FALSE){
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
+    if(missing(as.fun)) as.fun <- NULL
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    
     dt <- as.data.table(data)
     dt.res <- dt[,lapply(.SD,fun.test)]
     dt.res.l <- melt(dt.res,measure.vars=colnames(dt.res))
@@ -48,5 +49,8 @@ dups.renames <- dt.res.l[value==TRUE][,.N,by="variable.new"][N>1,variable.new]
     
     cols.to.rename <- dt.res.l[value==TRUE,as.character(variable)]
     setnames(dt,cols.to.rename,fun.rename)
+
+    dt <- as.fun(dt)
+    
     return(dt)
 }

@@ -74,7 +74,7 @@ flag." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.7.905</span>
       </span>
     </div>
 
@@ -151,6 +151,9 @@ flag.</p>
   <span class='kw'>col.flagn</span>,
   <span class='kw'>col.flagc</span>,
   by = <span class='kw'>NULL</span>,
+  flags.increasing = <span class='fl'>FALSE</span>,
+  name.all.data = <span class='st'>"All available data"</span>,
+  grp.incomp = <span class='st'>"EVID"</span>,
   as.fun = <span class='kw'>NULL</span>
 )</pre>
 
@@ -200,6 +203,28 @@ be "STUDY", "DRUG", "EVID", or a combination of multiple
 columns.</p></td>
     </tr>
     <tr>
+      <th>flags.increasing</th>
+      <td><p>The flags are applied by either decreasing
+(default) or increasing value of col.flagn. By using
+decreasing order, you can easily adjust the Nonmem IGNORE
+statement from IGNORE(FLAG.NE.0) to say IGNORE(FLAG.GT.10) if
+BLQ's have FLAG=10, and you decide to include these in the
+analysis.</p></td>
+    </tr>
+    <tr>
+      <th>name.all.data</th>
+      <td><p>What to call the total set of data before
+applying exclusion flags. Default is "All available data".</p></td>
+    </tr>
+    <tr>
+      <th>grp.incomp</th>
+      <td><p>Column(s) that distinct incompatible subsets of
+data. Default is "EVID" meaning that if different values of
+EVID are found in data, the function will return an
+error. This is a safeguard not to mix data unintentionally
+when counting flags.</p></td>
+    </tr>
+    <tr>
       <th>as.fun</th>
       <td><p>The default is to return a data.table if input data
 is a data.table, and return a data.frame for all other input
@@ -219,9 +244,11 @@ using NMdataConf.</p></td>
     flag. The default is "both" which will report both.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Notice number of subjects in N.discarded mode can be
+    <p>This function is used to count flags as assigned by the
+    flagsAssign function.</p>
+<p>Notice number of subjects in N.discarded mode can be
     misunderstood. If two is reported, it can mean that the
-    remining one observation of these two subjects are discarded
+    remaining one observation of these two subjects are discarded
     due to this flag. The majority of the samples can have been
     discarded by earlier flags.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -243,15 +270,14 @@ using NMdataConf.</p></td>
   flagc=<span class='st'>"Below LLOQ"</span>,
 condition=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"BLQ==1"</span>))
 <span class='kw'>pk</span> <span class='op'>&lt;-</span> <span class='fu'><a href='flagsAssign.html'>flagsAssign</a></span>(<span class='kw'>pk</span>,<span class='kw'>dt.flags</span>,col.flagn=<span class='st'>"flagn"</span>,col.flagc=<span class='st'>"flagc"</span>)
-</div><div class='output co'>#&gt; <span class='message'>In flagsAssign(pk, dt.flags, col.flagn = "flagn", col.flagc = "flagc") : Coding</span>
-#&gt; <span class='message'>flagn = 10, flagc = Below LLOQ</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='kw'>pk</span>[,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"flagn"</span>,<span class='st'>"flagc"</span>,<span class='st'>"flagn"</span>)])
+</div><div class='output co'>#&gt; <span class='message'>Coding flagn = 10, flagc = Below LLOQ</span></div><div class='input'><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/duplicated.html'>unique</a></span>(<span class='kw'>pk</span>[,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"flagn"</span>,<span class='st'>"flagc"</span>,<span class='st'>"flagn"</span>)])
 </div><div class='output co'>#&gt;    flagn        flagc flagn
 #&gt; 1:     0 Analysis set     0
-#&gt; 2:    10   Below LLOQ    10</div><div class='input'><span class='fu'>flagsCount</span>(<span class='kw'>pk</span>,<span class='kw'>dt.flags</span>,col.flagn=<span class='st'>"flagn"</span>,col.flagc=<span class='st'>"flagc"</span>)
-</div><div class='output co'>#&gt;           flagc N.left Nobs.left N.discarded Nobs.discarded
-#&gt; 1:         &lt;NA&gt;    150      1500          NA             NA
-#&gt; 2:   Below LLOQ    150       905           0            595
-#&gt; 3: Analysis set    150       905          NA             NA</div></pre>
+#&gt; 2:    NA         &lt;NA&gt;    NA</div><div class='input'><span class='fu'>flagsCount</span>(<span class='kw'>pk</span>[<span class='kw'>EVID</span><span class='op'>==</span><span class='fl'>0</span>],<span class='kw'>dt.flags</span>,col.flagn=<span class='st'>"flagn"</span>,col.flagc=<span class='st'>"flagc"</span>)
+</div><div class='output co'>#&gt;                 flagc N.left Nobs.left N.discarded Nobs.discarded
+#&gt; 1: All available data    150      1352          NA             NA
+#&gt; 2:         Below LLOQ      0         0         150           1352
+#&gt; 3:       Analysis set      0         0          NA             NA</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

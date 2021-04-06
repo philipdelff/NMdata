@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Clean and standardize file system paths — filePathSimple • NMdata</title>
+<title>Rename columns matching properties of data contents — renameByContents • NMdata</title>
 
 
 <!-- jquery -->
@@ -39,12 +39,9 @@
 
 
 
-<meta property="og:title" content="Clean and standardize file system paths — filePathSimple" />
-<meta property="og:description" content="Use this to tidy up paths. Combines pieces of a path like
-    file.path(). The function is intended to return a canonical
-    path format, i.e. paths that can be compared by simple string
-    comparisson. Redundant /'s removed. normalizePath is used to
-    possibly shorten path." />
+<meta property="og:title" content="Rename columns matching properties of data contents — renameByContents" />
+<meta property="og:description" content="For instance, lowercase all columns that Nonmem
+    cannot interpret (as numeric)." />
 
 
 
@@ -134,33 +131,50 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Clean and standardize file system paths</h1>
+    <h1>Rename columns matching properties of data contents</h1>
     
-    <div class="hidden name"><code>filePathSimple.Rd</code></div>
+    <div class="hidden name"><code>renameByContents.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Use this to tidy up paths. Combines pieces of a path like
-    file.path(). The function is intended to return a canonical
-    path format, i.e. paths that can be compared by simple string
-    comparisson. Redundant /'s removed. normalizePath is used to
-    possibly shorten path.</p>
+    <p>For instance, lowercase all columns that Nonmem
+    cannot interpret (as numeric).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>filePathSimple</span>(<span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>renameByContents</span>(<span class='kw'>data</span>, <span class='kw'>fun.test</span>, <span class='kw'>fun.rename</span>, invert.test = <span class='fl'>FALSE</span>, <span class='kw'>as.fun</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>additional arguments passed to file.path().</p></td>
+      <th>data</th>
+      <td><p>data.frame in which to rename columns</p></td>
+    </tr>
+    <tr>
+      <th>fun.test</th>
+      <td><p>Function that returns TRUE for columns to be
+renamed.</p></td>
+    </tr>
+    <tr>
+      <th>fun.rename</th>
+      <td><p>Function that takes the existing column name and
+returns the new one.</p></td>
+    </tr>
+    <tr>
+      <th>invert.test</th>
+      <td><p>Rename those where FALSE is returned from
+fun.test.</p></td>
+    </tr>
+    <tr>
+      <th>as.fun</th>
+      <td><p>The default is to return data as a data.frame. Pass
+a function (say tibble::as_tibble) in as.fun to convert to
+something else. If data.tables are wanted, use
+as.fun="data.table". The default can be configured using
+NMdataConf.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A (character) file path</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Clean and standardize file system paths — filePathSimple • NMdata</title>
+<title>replace ($)sections of a nonmem control stream — NMreplacePart • NMdata</title>
 
 
 <!-- jquery -->
@@ -39,12 +39,9 @@
 
 
 
-<meta property="og:title" content="Clean and standardize file system paths — filePathSimple" />
-<meta property="og:description" content="Use this to tidy up paths. Combines pieces of a path like
-    file.path(). The function is intended to return a canonical
-    path format, i.e. paths that can be compared by simple string
-    comparisson. Redundant /'s removed. normalizePath is used to
-    possibly shorten path." />
+<meta property="og:title" content="replace ($)sections of a nonmem control stream — NMreplacePart" />
+<meta property="og:description" content="Just give the section name, the new lines and the file path, and the
+&quot;$section&quot;, and the input to Nonmem will be updated." />
 
 
 
@@ -134,34 +131,89 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Clean and standardize file system paths</h1>
+    <h1>replace ($)sections of a nonmem control stream</h1>
     
-    <div class="hidden name"><code>filePathSimple.Rd</code></div>
+    <div class="hidden name"><code>NMreplacePart.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Use this to tidy up paths. Combines pieces of a path like
-    file.path(). The function is intended to return a canonical
-    path format, i.e. paths that can be compared by simple string
-    comparisson. Redundant /'s removed. normalizePath is used to
-    possibly shorten path.</p>
+    <p>Just give the section name, the new lines and the file path, and the
+"$section", and the input to Nonmem will be updated.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>filePathSimple</span>(<span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>NMreplacePart</span>(
+  <span class='kw'>file</span>,
+  <span class='kw'>section</span>,
+  <span class='kw'>newlines</span>,
+  <span class='kw'>list.sections</span>,
+  <span class='kw'>newfile</span>,
+  backup = <span class='fl'>TRUE</span>,
+  blank.append = <span class='fl'>TRUE</span>,
+  test = <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>additional arguments passed to file.path().</p></td>
+      <th>file</th>
+      <td><p>File path to the model (control stream) to edit.</p></td>
+    </tr>
+    <tr>
+      <th>section</th>
+      <td><p>The name of the section to update. Example:
+section="EST" to edit the sections starting by $EST. See
+NMgetSection</p></td>
+    </tr>
+    <tr>
+      <th>newlines</th>
+      <td><p>The new text (including "$SECTION"). Better be
+broken into lines in a character vector since this is simply
+past to writeLines.</p></td>
+    </tr>
+    <tr>
+      <th>list.sections</th>
+      <td><p>Named list of new sections, each element
+containing a section. Names must be section names, contents of
+each element are the new section lines for each section.</p></td>
+    </tr>
+    <tr>
+      <th>newfile</th>
+      <td><p>path to new run. If missing, path is used. If NULL,
+output is returned rather than written.</p></td>
+    </tr>
+    <tr>
+      <th>backup</th>
+      <td><p>In case you are overwriting the old file, do you
+want to backup the file (to say, backup_run001.mod)?</p></td>
+    </tr>
+    <tr>
+      <th>blank.append</th>
+      <td><p>Append a blank line to output?</p></td>
+    </tr>
+    <tr>
+      <th>test</th>
+      <td><p>Want to see the resulting input.txt and not write it
+to disk?  Default is FALSE.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>A (character) file path</p>
+    <p>The new file will be written with unix-style line endings.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
+    <div class='dont-index'><p>Other Nonmem: 
+<code><a href='NMextractText.html'>NMextractText</a>()</code>,
+<code><a href='NMgetSection.html'>NMgetSection</a>()</code>,
+<code><a href='NMtransFilters.html'>NMtransFilters</a>()</code>,
+<code><a href='NMwriteData.html'>NMwriteData</a>()</code></p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>newlines</span> <span class='op'>&lt;-</span> <span class='st'>"$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"</span>
+<span class='fu'>NMreplacePart</span>(file=<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"examples/nonmem/run001.mod"</span>, package = <span class='st'>"NMdata"</span>),
+section=<span class='st'>"EST"</span>, newlines=<span class='kw'>newlines</span>,newfile=<span class='kw'>NULL</span>)
+</div><div class='output co'>#&gt; <span class='error'>Error in NMreplacePart(file = system.file("examples/nonmem/run001.mod",     package = "NMdata"), section = "EST", newlines = newlines,     newfile = NULL): unused arguments (file = system.file("examples/nonmem/run001.mod", package = "NMdata"), newfile = NULL)</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

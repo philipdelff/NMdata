@@ -104,17 +104,15 @@ fast. If you are noticing some circumstances where `NMdata` seems
 slow, I am very curious to hear about it.
 
 ### So NMdata uses data.table. Does that mean variables are modified by reference? 
-NMdata does not modify variables in your workspace by reference, so
-don't worry. NMdata definitely modify variables by reference
-internally but this will never affect your workspace. This has a
-slight performance price, but using `NMdata` must be easy for R user
+NMdata definitely modify variables by reference
+internally but this will never affect your workspace. It might improve speed to go all the way, and modify by reference in the user workspace, but using `NMdata` must be easy for R users
 at all levels of experience.  If you don't understand what this is all
 about, you're fine.
 
 ### I want to use a tool from NMdata, but how does it integrate with dplyr or data.table?
 Every function in `NMdata` has an argument called `as.fun`. You
 can provide a function in this argument which will be applied to data
-before returnin it.
+before returning it.
 
 You can get a tibble if you work with `dplyr`/`tidyverse` tools: 
 
@@ -124,7 +122,7 @@ NMscanData(...,as.fun=tibble::as_tibble)
 
 Under the hood, `NMdata` is implemented in `data.table`, and in fact the
 default is to convert to `data.frame` before returning the output. So
-if you want `data.table`, use `"data.table"` (notice as a character string, not a function) to avoid the conversion
+if you want to have `data.table`'s back, use `as.fun="data.table"` (notice as a character string, not a function) to avoid the conversion
 
 ```{r,eval=F}
 NMscanData(...,as.fun="data.table")
@@ -143,10 +141,20 @@ NMdataConfig(as.fun=tibble::as_tibble)
 NMdataConfig(as.fun="data.table")
 ```
 
-And all `NMdata` functions (that return data) should now return tibbles or
+All `NMdata` functions (that return data) should now return tibbles or
 data.tables. If you use `NMdataConfig` to control this, for reproducibility
 please do so explicitly in your script and not in your `.Rprofile` or similar.
 
+### The help of an NMdata function says I have to pass a data.frame. Can I use a tibble or data.table?
+Absolutely. data.table's and tibble's are data.frame's, and data.frame
+in the documentation refers to any of these structures (that
+technically inherit from the data.frame class).
+
+### The result I am getting back from an NMdata function doesn't print to the R console. Why?
+This may happen when you work with data.tables - and only when working
+with data.tables. This will be fixed in near future. For now, you may
+have to print the data.table a couple of times before you see a result
+in the R terminal.
 
 ### Can I request a feature?
 Please open an issue on [github](https://github.com/philipdelff/NMdata/issues).

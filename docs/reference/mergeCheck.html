@@ -75,7 +75,7 @@ merge and ensures that exactly this and nothing else happened." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.7.905</span>
       </span>
     </div>
 
@@ -145,7 +145,15 @@ created. For this very common type of (simple) merges, mergeCheck does the
 merge and ensures that exactly this and nothing else happened.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mergeCheck</span>(<span class='kw'>df1</span>, <span class='kw'>df2</span>, <span class='kw'>by</span>, as.fun = <span class='kw'>NULL</span>, fun.commoncols = <span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/warning.html'>warning</a></span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>mergeCheck</span>(
+  <span class='kw'>df1</span>,
+  <span class='kw'>df2</span>,
+  <span class='kw'>by</span>,
+  as.fun = <span class='kw'>NULL</span>,
+  fun.commoncols = <span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/warning.html'>warning</a></span>,
+  <span class='kw'>ncols.expect</span>,
+  <span class='kw'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -181,6 +189,13 @@ happens. If using mergeCheck in a function, you may want to
 make sure this is not happening and use
 fun.commoncols=stop. If you want nothing to happen, you can do
 fun.commoncols=NULL.</p></td>
+    </tr>
+    <tr>
+      <th>ncols.expect</th>
+      <td><p>If you want to include a check of the number
+of columns being added to the dimensions of df1. So if
+ncols.expect=1, the resulting data must have exactly one
+column more than df1 - if not, an error will be returned.</p></td>
     </tr>
     <tr>
       <th>...</th>

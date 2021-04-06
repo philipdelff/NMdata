@@ -7,4 +7,6 @@ NMdata.Rproj
 doc
 vignettes/NMscanData.pdf
 vignettes/NMscanData.html
-inst/examples/nonmem/modelfit_dir.*
+inst/examples/nonmem/modelfit_dir*
+inst/examples/nonmem/trashed_*
+inst/examples/nonmem/backup_*

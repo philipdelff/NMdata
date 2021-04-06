@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Clean and standardize file system paths — filePathSimple • NMdata</title>
+<title>Compare elements in lists with aim of combining — compareCols • NMdata</title>
 
 
 <!-- jquery -->
@@ -39,12 +39,11 @@
 
 
 
-<meta property="og:title" content="Clean and standardize file system paths — filePathSimple" />
-<meta property="og:description" content="Use this to tidy up paths. Combines pieces of a path like
-    file.path(). The function is intended to return a canonical
-    path format, i.e. paths that can be compared by simple string
-    comparisson. Redundant /'s removed. normalizePath is used to
-    possibly shorten path." />
+<meta property="og:title" content="Compare elements in lists with aim of combining — compareCols" />
+<meta property="og:description" content="Useful interactive tool when merging or binding objects
+together. It lists the names of elements that differ in presence
+or class across multiple datasets. Before running rbind, you may want
+to check the compatibility of the data." />
 
 
 
@@ -134,33 +133,65 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Clean and standardize file system paths</h1>
+    <h1>Compare elements in lists with aim of combining</h1>
     
-    <div class="hidden name"><code>filePathSimple.Rd</code></div>
+    <div class="hidden name"><code>compareCols.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Use this to tidy up paths. Combines pieces of a path like
-    file.path(). The function is intended to return a canonical
-    path format, i.e. paths that can be compared by simple string
-    comparisson. Redundant /'s removed. normalizePath is used to
-    possibly shorten path.</p>
+    <p>Useful interactive tool when merging or binding objects
+together. It lists the names of elements that differ in presence
+or class across multiple datasets. Before running rbind, you may want
+to check the compatibility of the data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>filePathSimple</span>(<span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>compareCols</span>(
+  <span class='kw'>...</span>,
+  keepNames = <span class='kw'>T</span>,
+  testEqual = <span class='kw'>F</span>,
+  diff.only = <span class='fl'>TRUE</span>,
+  fun.class = <span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/class.html'>class</a></span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>additional arguments passed to file.path().</p></td>
+      <td><p>objects which element names to compare</p></td>
+    </tr>
+    <tr>
+      <th>keepNames</th>
+      <td><p>If TRUE, the original dataset names are used in
+reported table. If not, generic x1, x2,... are used. The
+latter may be preferred for readability.</p></td>
+    </tr>
+    <tr>
+      <th>testEqual</th>
+      <td><p>Do you just want a TRUE/FALSE to whether the
+names of the two objects are the same? Default is FALSE which
+means to return an overview for interactive use. You might
+want to use TRUE in programming. However, notice that this
+check may be overly rigorous. Many classes are compitable
+enough (say numeric and integer), at compareCols doesn't take
+this into account.</p></td>
+    </tr>
+    <tr>
+      <th>diff.only</th>
+      <td><p>Don't report columns where no difference
+found.</p></td>
+    </tr>
+    <tr>
+      <th>fun.class</th>
+      <td><p>the function that will be run on each column to
+check for differences. base::class is default. Notice that the
+alternative base::typeof is different in certain ways. For
+instance, typeof will not report a difference on numeric vs
+difftime. You could basically submit any function that takes a
+vector and returns a single value.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A (character) file path</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

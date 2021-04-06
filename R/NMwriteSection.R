@@ -26,12 +26,12 @@
 ##' 
 ##' @examples
 ##' newlines <- "$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"
-##' NMreplacePart(file=system.file("examples/nonmem/run001.mod", package = "NMdata"),
+##' NMwriteSection(file=system.file("examples/nonmem/run001.mod", package = "NMdata"),
 ##' section="EST", newlines=newlines,newfile=NULL)
 ##' @export
 
 
-NMreplacePart <- function(file,section,newlines,list.sections,newfile,
+NMwriteSection <- function(file,section,newlines,list.sections,newfile,
                           backup=TRUE,blank.append=TRUE,test=FALSE){
 
 

@@ -35,6 +35,8 @@ theme_set(theme_bw()+theme(legend.position="bottom"))
 Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
 
+Sorry, this document needs to be updated after a number of improvements and modifications up to the 0.0.7 release. Not all examples in the document work at the moment. This will be updated soon.
+
 ## Introduction
 Nonmem has quite a number of restrictions on the format of the input data, and
 problems with the data set is a very common reason for Nonmem not to behave as
@@ -321,7 +323,7 @@ functions - will work on `data.frame`'s, `tibble`'s and other
 
 ```{r}
 res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                   col.row="ROW",quiet=TRUE,as.fun="data.table")
+                   col.row="ROW",merge.by.row=TRUE,quiet=TRUE,as.fun="data.table")
 res1$trtact <- reorder(res1$trtact,res1$DOSE)
 ## with data.table, create a new column representing ID-level Cmax
 res1[,Cmax:=max(IPRED),by=.(ID)]

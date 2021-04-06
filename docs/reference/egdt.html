@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Clean and standardize file system paths — filePathSimple • NMdata</title>
+<title>Expand grid of data.tables — egdt • NMdata</title>
 
 
 <!-- jquery -->
@@ -39,12 +39,8 @@
 
 
 
-<meta property="og:title" content="Clean and standardize file system paths — filePathSimple" />
-<meta property="og:description" content="Use this to tidy up paths. Combines pieces of a path like
-    file.path(). The function is intended to return a canonical
-    path format, i.e. paths that can be compared by simple string
-    comparisson. Redundant /'s removed. normalizePath is used to
-    possibly shorten path." />
+<meta property="og:title" content="Expand grid of data.tables — egdt" />
+<meta property="og:description" content="Expand grid of data.tables" />
 
 
 
@@ -134,34 +130,64 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Clean and standardize file system paths</h1>
+    <h1>Expand grid of data.tables</h1>
     
-    <div class="hidden name"><code>filePathSimple.Rd</code></div>
+    <div class="hidden name"><code>egdt.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Use this to tidy up paths. Combines pieces of a path like
-    file.path(). The function is intended to return a canonical
-    path format, i.e. paths that can be compared by simple string
-    comparisson. Redundant /'s removed. normalizePath is used to
-    possibly shorten path.</p>
+    <p>Expand grid of data.tables</p>
     </div>
 
-    <pre class="usage"><span class='fu'>filePathSimple</span>(<span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>egdt</span>(<span class='kw'>dt1</span>, <span class='kw'>dt2</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>additional arguments passed to file.path().</p></td>
+      <th>dt1</th>
+      <td><p>a data.table.</p></td>
+    </tr>
+    <tr>
+      <th>dt2</th>
+      <td><p>another data.table.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A (character) file path</p>
+    <p>a data.table that expands combinations of rows in dt1 and
+    dt2.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p>Merging works mostly similarly for data.table and
+    data.table. However, for data.table the merge must be done by
+    one or more columns. This means that the convenient way to
+    expand all combinations of all rows in two data.frames is not
+    available for data.tables. This functions provides that
+    functionality.</p>
+<p>egdt is not very fast.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>df1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(a=<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>,b=<span class='fl'>3</span><span class='op'>:</span><span class='fl'>4</span>)
+<span class='kw'>df2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(c=<span class='fl'>5</span><span class='op'>:</span><span class='fl'>6</span>,d=<span class='fl'>7</span><span class='op'>:</span><span class='fl'>8</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/merge.html'>merge</a></span>(<span class='kw'>df1</span>,<span class='kw'>df2</span>)
+</div><div class='output co'>#&gt;   a b c d
+#&gt; 1 1 3 5 7
+#&gt; 2 2 4 5 7
+#&gt; 3 1 3 6 8
+#&gt; 4 2 4 6 8</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://r-datatable.com'>data.table</a></span>)
+<span class='co'>## This is not possible</span>
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/merge.html'>merge</a></span>(<span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html'>as.data.table</a></span>(<span class='kw'>df1</span>),<span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html'>as.data.table</a></span>(<span class='kw'>df2</span>),allow.cartesian=<span class='fl'>TRUE</span>)
+}
+<span class='co'>## Use egdt instead</span>
+<span class='fu'>egdt</span>(<span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html'>as.data.table</a></span>(<span class='kw'>df1</span>),<span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html'>as.data.table</a></span>(<span class='kw'>df2</span>))
+</div><div class='output co'>#&gt;    a b c d
+#&gt; 1: 1 3 5 7
+#&gt; 2: 1 3 6 8
+#&gt; 3: 2 4 5 7
+#&gt; 4: 2 4 6 8</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.7.905</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2021-03-02 using NMdata 0.0.6.6.</p>
+<p>Built 2021-04-06 using NMdata 0.0.6.7.905.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -130,7 +130,7 @@
 <p>Try <code>NMscanData</code> on any model:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="kw">res0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),
-                   cbind.by.filters=<span class="fl">TRUE</span>)
+                   merge.by.row=<span class="fl">FALSE</span>)
 <span class="co">#&gt; Model:  xgxr001 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Tables, number of columns in tables, and their detail level:</span>
@@ -158,6 +158,19 @@
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="kw">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),
                    col.row=<span class="st">"ROW"</span>,quiet=<span class="fl">TRUE</span>)
+<span class="co">#&gt; In NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"), :</span>
+<span class="co">#&gt; Input data columns will be appended to output data. However, column(s) were</span>
+<span class="co">#&gt; identified as unique identifiers, present in both input and output data. If</span>
+<span class="co">#&gt; this column or one of these columns is not modified by the Nonmem run,</span>
+<span class="co">#&gt; consider using this in col.row for a robust merge of input and output data.</span>
+<span class="co">#&gt; Candidate columns: ROW To skip this check, please use merge.by.row=TRUE or</span>
+<span class="co">#&gt; merge.by.row=FALSE.</span>
+<span class="co">#&gt; In col.row = "ROW", quiet = TRUE) : Input data columns will be appended to</span>
+<span class="co">#&gt; output data. However, column(s) were identified as unique identifiers, present</span>
+<span class="co">#&gt; in both input and output data. If this column or one of these columns is not</span>
+<span class="co">#&gt; modified by the Nonmem run, consider using this in col.row for a robust merge</span>
+<span class="co">#&gt; of input and output data. Candidate columns: ROW To skip this check, please</span>
+<span class="co">#&gt; use merge.by.row=TRUE or merge.by.row=FALSE.</span>
 <span class="kw">res0</span> <span class="op">&lt;-</span> <span class="kw">res0</span>[,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res1</span>),<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setops.html">setdiff</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res0</span>),<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res1</span>)))]
 <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/all.equal.data.table.html">all.equal</a></span>(<span class="kw">res0</span>,<span class="kw">res1</span>,check.attributes=<span class="fl">FALSE</span>)
 <span class="co">#&gt; [1] TRUE</span>
@@ -201,6 +214,20 @@
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="kw">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>, package=<span class="st">"NMdata"</span>),
                    col.row=<span class="st">"ROW"</span>,recover.rows=<span class="fl">TRUE</span>)
+<span class="co">#&gt; In NMscanData(system.file("examples/nonmem/xgxr014.lst", package = "NMdata"), :</span>
+<span class="co">#&gt; Input data columns will be appended to output data. However, column(s) were</span>
+<span class="co">#&gt; identified as unique identifiers, present in both input and output data. If</span>
+<span class="co">#&gt; this column or one of these columns is not modified by the Nonmem run,</span>
+<span class="co">#&gt; consider using this in col.row for a robust merge of input and output data.</span>
+<span class="co">#&gt; Candidate columns: ROW To skip this check, please use merge.by.row=TRUE or</span>
+<span class="co">#&gt; merge.by.row=FALSE.</span>
+<span class="co">#&gt; In col.row = "ROW", recover.rows = TRUE) : Input data columns will be appended</span>
+<span class="co">#&gt; to output data. However, column(s) were identified as unique identifiers,</span>
+<span class="co">#&gt; present in both input and output data. If this column or one of these columns</span>
+<span class="co">#&gt; is not modified by the Nonmem run, consider using this in col.row for a robust</span>
+<span class="co">#&gt; merge of input and output data. Candidate columns: ROW To skip this check,</span>
+<span class="co">#&gt; please use merge.by.row=TRUE or merge.by.row=FALSE.</span>
+<span class="co">#&gt; </span>
 <span class="co">#&gt; Model:  xgxr014 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Tables, number of columns in tables, and their detail level:</span>
@@ -210,12 +237,12 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Numbers of ID's and rows in data</span>
 <span class="co">#&gt;       N From input data only From output tables</span>
-<span class="co">#&gt;  N.rows                  595                905</span>
+<span class="co">#&gt;  N.rows                  597                905</span>
 <span class="co">#&gt;   N.ids                    0                150</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Distribution of rows on event types</span>
 <span class="co">#&gt;  EVID From input data only From output tables</span>
-<span class="co">#&gt;     0                  595                755</span>
+<span class="co">#&gt;     0                  597                755</span>
 <span class="co">#&gt;     1                    0                150</span>
 <span class="co">## now we have a data.table</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="kw">res2</span>)
@@ -240,9 +267,11 @@
 <span class="co">## this is just a long-format representation of</span>
 <span class="co">## with(res1,table(nmout,flag)) using data.table.</span>
 <span class="kw">res2</span>[,<span class="kw">.N</span>,by=<span class="fu">.</span>(<span class="kw">nmout</span>,<span class="kw">flag</span>)]
-<span class="co">#&gt;    nmout         flag   N</span>
-<span class="co">#&gt; 1:  TRUE Analysis set 905</span>
-<span class="co">#&gt; 2: FALSE   Below LLOQ 595</span>
+<span class="co">#&gt;    nmout            flag   N</span>
+<span class="co">#&gt; 1:  TRUE          Dosing 150</span>
+<span class="co">#&gt; 2:  TRUE    Analysis set 755</span>
+<span class="co">#&gt; 3: FALSE      Below LLOQ 595</span>
+<span class="co">#&gt; 4: FALSE Pre-dose sample   2</span>
 </pre></div>
 <p>So 905 rows were part of the analysis. The <code>recover.rows</code> argument can be used independently of whether <code>col.row</code> is used.</p>
 </div>
@@ -257,9 +286,36 @@
 <span class="co">## notice fill is an option to rbind with data.table</span>
 <span class="kw">res1.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),
                      col.row=<span class="st">"ROW"</span>,quiet=<span class="fl">TRUE</span>)
+<span class="co">#&gt; In NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"), :</span>
+<span class="co">#&gt; Input data columns will be appended to output data. However, column(s) were</span>
+<span class="co">#&gt; identified as unique identifiers, present in both input and output data. If</span>
+<span class="co">#&gt; this column or one of these columns is not modified by the Nonmem run,</span>
+<span class="co">#&gt; consider using this in col.row for a robust merge of input and output data.</span>
+<span class="co">#&gt; Candidate columns: ROW To skip this check, please use merge.by.row=TRUE or</span>
+<span class="co">#&gt; merge.by.row=FALSE.</span>
+<span class="co">#&gt; In col.row = "ROW", quiet = TRUE) : Input data columns will be appended to</span>
+<span class="co">#&gt; output data. However, column(s) were identified as unique identifiers, present</span>
+<span class="co">#&gt; in both input and output data. If this column or one of these columns is not</span>
+<span class="co">#&gt; modified by the Nonmem run, consider using this in col.row for a robust merge</span>
+<span class="co">#&gt; of input and output data. Candidate columns: ROW To skip this check, please</span>
+<span class="co">#&gt; use merge.by.row=TRUE or merge.by.row=FALSE.</span>
 <span class="kw">res2.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>, package=<span class="st">"NMdata"</span>),
                      col.row=<span class="st">"ROW"</span>,modelname=<span class="st">"single-compartment"</span>,
                      quiet=<span class="fl">TRUE</span>)
+<span class="co">#&gt; In NMscanData(system.file("examples/nonmem/xgxr014.lst", package = "NMdata"), :</span>
+<span class="co">#&gt; Input data columns will be appended to output data. However, column(s) were</span>
+<span class="co">#&gt; identified as unique identifiers, present in both input and output data. If</span>
+<span class="co">#&gt; this column or one of these columns is not modified by the Nonmem run,</span>
+<span class="co">#&gt; consider using this in col.row for a robust merge of input and output data.</span>
+<span class="co">#&gt; Candidate columns: ROW To skip this check, please use merge.by.row=TRUE or</span>
+<span class="co">#&gt; merge.by.row=FALSE.</span>
+<span class="co">#&gt; In col.row = "ROW", modelname = "single-compartment", quiet = TRUE) : Input</span>
+<span class="co">#&gt; data columns will be appended to output data. However, column(s) were</span>
+<span class="co">#&gt; identified as unique identifiers, present in both input and output data. If</span>
+<span class="co">#&gt; this column or one of these columns is not modified by the Nonmem run,</span>
+<span class="co">#&gt; consider using this in col.row for a robust merge of input and output data.</span>
+<span class="co">#&gt; Candidate columns: ROW To skip this check, please use merge.by.row=TRUE or</span>
+<span class="co">#&gt; merge.by.row=FALSE.</span>
 <span class="kw">res.mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/rbindlist.html">rbind</a></span>(<span class="kw">res1.m</span>,<span class="kw">res2.m</span>,fill=<span class="kw">T</span>)
 <span class="kw">res.mult.mean</span> <span class="op">&lt;-</span> <span class="kw">res.mult</span>[<span class="kw">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">&amp;</span><span class="kw">nmout</span><span class="op">==</span><span class="fl">TRUE</span>,
                           <span class="fu">.</span>(gmPRED=<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="kw">PRED</span>)))),
@@ -326,7 +382,7 @@
 <span class="co">#&gt;     variable           table     source level COLNUM</span>
 <span class="co">#&gt;  1:      ROW xgxr001_res.txt     output   row      1</span>
 <span class="co">#&gt;  2:       ID           input      input   row      2</span>
-<span class="co">#&gt;  3:  NOMTIME           input      input   row      3</span>
+<span class="co">#&gt;  3:     TIME           input      input   row      3</span>
 <span class="co">#&gt; ---                                                 </span>
 <span class="co">#&gt; 40:    model            &lt;NA&gt; NMscanData model     40</span>
 <span class="co">#&gt; 41:      ROW           input      input   row     NA</span>

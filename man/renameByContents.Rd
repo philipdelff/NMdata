@@ -4,7 +4,7 @@
 \alias{renameByContents}
 \title{Rename columns matching properties of data contents}
 \usage{
-renameByContents(data, fun.test, fun.rename, invert.test = FALSE)
+renameByContents(data, fun.test, fun.rename, invert.test = FALSE, as.fun)
 }
 \arguments{
 \item{data}{data.frame in which to rename columns}
@@ -17,6 +17,12 @@ returns the new one.}
 
 \item{invert.test}{Rename those where FALSE is returned from
 fun.test.}
+
+\item{as.fun}{The default is to return data as a data.frame. Pass
+a function (say tibble::as_tibble) in as.fun to convert to
+something else. If data.tables are wanted, use
+as.fun="data.table". The default can be configured using
+NMdataConf.}
 }
 \description{
 For instance, lowercase all columns that Nonmem

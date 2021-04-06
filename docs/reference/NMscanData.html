@@ -79,7 +79,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.7.905</span>
       </span>
     </div>
 
@@ -156,8 +156,8 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
     <pre class="usage"><span class='fu'>NMscanData</span>(
   <span class='kw'>file</span>,
   <span class='kw'>col.row</span>,
-  <span class='kw'>cbind.by.filters</span>,
-  <span class='kw'>use.input</span>,
+  use.input = <span class='fl'>TRUE</span>,
+  <span class='kw'>merge.by.row</span>,
   <span class='kw'>recover.rows</span>,
   col.model = <span class='st'>"model"</span>,
   <span class='kw'>modelname</span>,
@@ -183,30 +183,26 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
     <tr>
       <th>col.row</th>
       <td><p>A column with a unique value for each row. Such a
-column is recommended to use if possible. See cbind.by.filters
+column is recommended to use if possible. See merge.by.row
 and details as well.</p></td>
     </tr>
     <tr>
-      <th>cbind.by.filters</th>
-      <td><p>If TRUE, Nonmem data filtering is
-interpreted from lst file (restrictions apply), and after an
-imitated selection of rows, data columns will be appended to
-output data. This method relies on interpretation of Nonmem
-code, and it will not work in advanced use of IGNORE and
-ACCEPT statements in $INPUT. Consider using col.row instead,
-if possible. Default is TRUE if col.row is either missing or
-NULL. However, explicitly specifying cbind.by.filters is
-recommended if that is the intended behaviour. If not,
-NMscanData will search for potential columns to merge by and
-print information about it. See col.row (recommended method)
-as well.</p></td>
+      <th>use.input</th>
+      <td><p>Should the input data be added to the output
+data. Only column names that are not found in output data will
+be retrieved from the input data. See merge.by.row too.</p></td>
     </tr>
     <tr>
-      <th>use.input</th>
-      <td><p>Merge with columns in input data? Using this, you
-don't have to worry about remembering including all relevant
-variables in the output tables. Default is TRUE and can be
-configured using NMdataConf.</p></td>
+      <th>merge.by.row</th>
+      <td><p>If use.input=TRUE, this argument determines
+the method by which the input data is added to output
+data. The default method (merge.by.row=FALSE) is to interpret
+the Nonmem code to immitate the data filtering (IGNORE and
+ACCEPT statements), but the recommended method is
+merge.by.row=TRUE which means that data will be merged by a
+unique row identifier. The row identifier must be present in
+input and at least one full length output data table. See
+argument col.row too.</p></td>
     </tr>
     <tr>
       <th>recover.rows</th>
@@ -328,6 +324,15 @@ the recommended method is using a unique row identifier in both
 input data and at least one output data file (not a FIRSTONLY or
 LASTONLY table). Supply the name of this column using the col.row
 argument.</p>
+<p>Limitations. A number of Nonmem features are not supported. Most
+of this can be overcome by using merge.by.row=TRUE. Incomplete
+list of known limitations:</p>
+<ul>
+<li><p>character TIMEIf Nonmem is used to translate DAY and a charater TIME column, TIME has to be available in an output table. NMscanData does not do the translation to numeric.</p></li>
+<li><p>RECORDSThe RECORDS option to limit the part of the input data being used is not searched for. Using merge.by.row=TRUE will work unaffectedly.</p></li>
+<li><p>NULLThe NULL argument to specify missing value string in input data is not respected. If delimited input data is read (as opposed to rds files), missing values are assumed to be represented by dots (.).</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other DataRead: 

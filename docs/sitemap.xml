@@ -4,6 +4,12 @@
     <loc>https://philipdelff.github.io/NMdata/index.html</loc>
   </url>
   <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/compareCols.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/egdt.html</loc>
+  </url>
+  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/filePathSimple.html</loc>
   </url>
   <url>
@@ -64,10 +70,16 @@
     <loc>https://philipdelff.github.io/NMdata/reference/NMwriteData.html</loc>
   </url>
   <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMwriteSection.html</loc>
+  </url>
+  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/objInfo.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/print.summary_NMdata.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/renameByContents.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/stampObj.html</loc>

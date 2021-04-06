@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.7.905</span>
       </span>
     </div>
 
@@ -97,7 +97,8 @@
 
     
     
-<p>Built 2021-03-02 using NMdata 0.0.6.6.</p>
+<p>Built 2021-04-06 using NMdata 0.0.6.7.905.</p>
+<p>Sorry, this document needs to be updated after a number of improvements and modifications up to the 0.0.7 release. Not all examples in the document work at the moment. This will be updated soon.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -116,9 +117,9 @@
 <p>Merges are a very common source of data creation bugs. As simple as they may seem, merges likely leave you with an unexpected number of rows, some repeated or some omitted. Merges are very powerful and flexible, and when preparing a data set, they are fundamental. However, many merges for dataset creation are of the specific and simple kind where columns are added to an existing dataset. In this situation the rows that come out of the merge are the exact same as in one of the existing datasets. Say we want to add a covariate from a <code>dt.cov</code>. Imagine we just assume that all subjects are represented with one row each in <code>dt.cov</code>, and so we expect the number of rows to be unchanged from <code>pk</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk</span>)
-<span class="co">#&gt; [1] 1500   24</span>
+<span class="co">#&gt; [1] 1502   24</span>
 <span class="co">## the number of unique values of ID in pk</span>
-<span class="kw">pk</span>[, <span class="fu">uniqueN</span>(<span class="kw">ID</span>)]
+<span class="kw">pk</span>[, <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">uniqueN</a></span>(<span class="kw">ID</span>)]
 <span class="co">#&gt; [1] 150</span>
 <span class="kw">pk</span>[, <span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span>(<span class="kw">ID</span>)]
 <span class="co">#&gt; [1]  31 180</span>
@@ -126,41 +127,41 @@
 <span class="kw">dt.cov</span>
 <span class="co">#&gt;     ID COV</span>
 <span class="co">#&gt;  1: 31   2</span>
-<span class="co">#&gt;  2: 32   3</span>
+<span class="co">#&gt;  2: 32   4</span>
 <span class="co">#&gt;  3: 33   4</span>
 <span class="co">#&gt;  4: 34   2</span>
-<span class="co">#&gt;  5: 35   5</span>
+<span class="co">#&gt;  5: 35   2</span>
 <span class="co">#&gt;  6: 36   5</span>
-<span class="co">#&gt;  7: 37   3</span>
-<span class="co">#&gt;  8: 38   3</span>
+<span class="co">#&gt;  7: 37   2</span>
+<span class="co">#&gt;  8: 38   5</span>
 <span class="co">#&gt;  9: 39   2</span>
-<span class="co">#&gt; 10: 40   4</span>
-<span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>)
+<span class="co">#&gt; 10: 40   1</span>
+<span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk2</span>)
 <span class="co">#&gt; [1] 100  25</span>
 <span class="co">## now as expected</span>
-<span class="kw">pk3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>, all.x = <span class="fl">TRUE</span>)
+<span class="kw">pk3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>, all.x = <span class="fl">TRUE</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk3</span>)
-<span class="co">#&gt; [1] 1500   25</span>
+<span class="co">#&gt; [1] 1502   25</span>
 </pre></div>
 <p>So when creating <code>pk2</code> we lost a lot of rows because we forgot the <code>all.x</code> option. And also as we shall now see, just checking the resulting dimensions is not enough.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="kw">dt.cov2</span>
 <span class="co">#&gt;       ID COV</span>
-<span class="co">#&gt;   1:  31   2</span>
-<span class="co">#&gt;   2:  31   2</span>
-<span class="co">#&gt;   3:  32   3</span>
+<span class="co">#&gt;   1:  31   3</span>
+<span class="co">#&gt;   2:  31   3</span>
+<span class="co">#&gt;   3:  32   1</span>
 <span class="co">#&gt;   4:  33   1</span>
-<span class="co">#&gt;   5:  34   3</span>
+<span class="co">#&gt;   5:  34   5</span>
 <span class="co">#&gt;  ---        </span>
 <span class="co">#&gt; 146: 175   5</span>
-<span class="co">#&gt; 147: 176   2</span>
-<span class="co">#&gt; 148: 177   5</span>
-<span class="co">#&gt; 149: 178   5</span>
-<span class="co">#&gt; 150: 179   2</span>
-<span class="kw">pk4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov2</span>, by = <span class="st">"ID"</span>)
+<span class="co">#&gt; 147: 176   5</span>
+<span class="co">#&gt; 148: 177   1</span>
+<span class="co">#&gt; 149: 178   1</span>
+<span class="co">#&gt; 150: 179   5</span>
+<span class="kw">pk4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov2</span>, by = <span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk4</span>)
-<span class="co">#&gt; [1] 1500   25</span>
+<span class="co">#&gt; [1] 1502   25</span>
 <span class="co">## we now have twice as many rows for this subject</span>
 <span class="kw">pk</span>[<span class="kw">ID</span> <span class="op">==</span> <span class="fl">31</span>, <span class="kw">.N</span>]
 <span class="co">#&gt; [1] 10</span>
@@ -172,7 +173,7 @@
 <span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/try.html">try</a></span>(<span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>))
 <span class="co">#&gt; Warning in mergeCheck(pk, dt.cov, by = "ID"): Rows disappeared during merge.</span>
 <span class="co">#&gt; Warning in mergeCheck(pk, dt.cov, by = "ID"): </span>
-<span class="co">#&gt; nrow(pk): 1500</span>
+<span class="co">#&gt; nrow(pk): 1502</span>
 <span class="co">#&gt; nrow(dt.cov): 10</span>
 <span class="co">#&gt; nrow(merged.df): 100</span>
 <span class="co">#&gt; Error in mergeCheck(pk, dt.cov, by = "ID") : </span>
@@ -180,7 +181,7 @@
 <span class="co">## now as expected</span>
 <span class="kw">pk3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>, all.x = <span class="fl">TRUE</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk3</span>)
-<span class="co">#&gt; [1] 1500   25</span>
+<span class="co">#&gt; [1] 1502   25</span>
 </pre></div>
 <p>The result always has the same row order as the <code>x1</code> argument.</p>
 <p>Another problem that the programmer may not realize during a merge is that column names are shared across <code>x1</code> and <code>x2</code> (in addition to columns that are being merged by). This will silently create colmn names like <code>col.x</code> and <code>col.y</code> in the output. <code>mergeCheck</code> will by default give a warning if that happens.</p>
@@ -200,26 +201,27 @@
 <p>The function that applies inclusion/excluasion rules is called <code>flagsAssign</code>, and it takes a dataset and a data.frame with rules as arguments.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(file = <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/data/xgxr2.rds"</span>, package = <span class="st">"NMdata"</span>))
-<span class="kw">dt.flags</span> <span class="op">&lt;-</span> <span class="fu">fread</span>(text = <span class="st">"FLAG,flag,condition
-10,Negative time,TIME&lt;0
-20,Below LLOQ,BLQ==1"</span>)
+<span class="kw">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span>(text = <span class="st">"FLAG,flag,condition
+100,Negative time,EVID==0&amp;TIME&lt;0
+10,Below LLOQ,EVID==0&amp;BLQ==1"</span>)
 
-<span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsAssign.html">flagsAssign</a></span>(<span class="kw">pk</span>, <span class="kw">dt.flags</span>)
-<span class="co">#&gt; In flagsAssign(pk, dt.flags) : Data contains FLAG already. This is overwritten</span>
-<span class="co">#&gt; In flagsAssign(pk, dt.flags) : Data contains flag already. This is overwritten</span>
-<span class="co">#&gt; In flagsAssign(pk, dt.flags) : Coding FLAG = 10, flag = Negative time</span>
-<span class="co">#&gt; In flagsAssign(pk, dt.flags) : Coding FLAG = 20, flag = Below LLOQ</span>
+<span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsAssign.html">flagsAssign</a></span>(<span class="kw">pk</span>, tab.flags = <span class="kw">dt.flags</span>)
+<span class="co">#&gt; In flagsAssign(pk, tab.flags = dt.flags) : Data contains FLAG already. This is</span>
+<span class="co">#&gt; overwritten</span>
+<span class="co">#&gt; In flagsAssign(pk, tab.flags = dt.flags) : Data contains flag already. This is</span>
+<span class="co">#&gt; overwritten</span>
+<span class="co">#&gt; Coding FLAG = 100, flag = Negative time</span>
+<span class="co">#&gt; Coding FLAG = 10, flag = Below LLOQ</span>
 </pre></div>
 <p>Your first question may be why <code>fread</code> is used to create a data.table (like <code>read.csv</code> to create a data.frame). The reason is that this way, we can write the information line by line. If you have ten lines in the dataset above and do <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame(FLAG=...,flag=...,condition=...)</a></code> it gets impossible to read what elements of the three columns that correspond.</p>
 <p><code>flagsAssign</code> applies the conditions sequentially and by increasing value of <code>FLAG</code>. <code>FLAG=0</code> means that the observation is included in the analysis. You can use any expression that can be evaluated within the data.frame. In this case, <code>BLQ</code> has to exist in <code>pk</code>.</p>
 <p>Actually, the evaluated expressions are slightly different from what is written in the table above. <code>flagsAssign</code> will prepend the condition that <code>FLAG==0</code> in order for the conditions to be sequential. Again, the omission will be attributed to the first condition matched.</p>
 <p>What rows to omit from a dataset can vary from one analysis to another. Hence, the aim with the chosen design is that the inclusion criteria can be changed and applied to overwrite an existing inclusion/exclusion selection. For another analysis we want to include the observations below LLOQ, so we create a different exclusion flag for that one:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw">dt.flags2</span> <span class="op">&lt;-</span> <span class="fu">fread</span>(text = <span class="st">"FLAG2,flag2,condition
+<span class="kw">dt.flags2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span>(text = <span class="st">"FLAG2,flag2,condition
 10,Negative time,TIME&lt;0"</span>)
 
 <span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsAssign.html">flagsAssign</a></span>(<span class="kw">pk</span>, <span class="kw">dt.flags2</span>, col.flagn = <span class="st">"FLAG2"</span>, col.flagc = <span class="st">"flag2"</span>)
-<span class="co">#&gt; In flagsAssign(pk, dt.flags2, col.flagn = "FLAG2", col.flagc = "flag2") :</span>
 <span class="co">#&gt; Coding FLAG2 = 10, flag2 = Negative time</span>
 </pre></div>
 </div>
@@ -228,20 +230,20 @@
 <a href="#summarize-data-exclusions" class="anchor"></a>Summarize data exclusions</h3>
 <p>An overview of the number of observations disregarded due to the different conditions is then obtained using <code>flagsCount</code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="kw">tab.count</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsCount.html">flagsCount</a></span>(data = <span class="kw">pk</span>, tab.flags = <span class="kw">dt.flags</span>)
+<span class="kw">tab.count</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsCount.html">flagsCount</a></span>(data = <span class="kw">pk</span>[<span class="kw">EVID</span> <span class="op">==</span> <span class="fl">0</span>], tab.flags = <span class="kw">dt.flags</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">tab.count</span>)
-<span class="co">#&gt;             flag N.left Nobs.left N.discarded Nobs.discarded</span>
-<span class="co">#&gt; 1:          &lt;NA&gt;    150      1500          NA             NA</span>
-<span class="co">#&gt; 2: Negative time    150      1500           0              0</span>
-<span class="co">#&gt; 3:    Below LLOQ    150       905           0            595</span>
-<span class="co">#&gt; 4:  Analysis set    150       905          NA             NA</span>
-<span class="kw">tab.count2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsCount.html">flagsCount</a></span>(data = <span class="kw">pk</span>, tab.flags = <span class="kw">dt.flags2</span>, col.flagn = <span class="st">"FLAG2"</span>, 
-    col.flagc = <span class="st">"flag2"</span>)
+<span class="co">#&gt;                  flag N.left Nobs.left N.discarded Nobs.discarded</span>
+<span class="co">#&gt; 1: All available data    150      1352          NA             NA</span>
+<span class="co">#&gt; 2:      Negative time    150      1350           0              2</span>
+<span class="co">#&gt; 3:         Below LLOQ    131       755          19            595</span>
+<span class="co">#&gt; 4:       Analysis set    131       755          NA             NA</span>
+<span class="kw">tab.count2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsCount.html">flagsCount</a></span>(data = <span class="kw">pk</span>[<span class="kw">EVID</span> <span class="op">==</span> <span class="fl">0</span>], tab.flags = <span class="kw">dt.flags2</span>, 
+    col.flagn = <span class="st">"FLAG2"</span>, col.flagc = <span class="st">"flag2"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">tab.count2</span>)
-<span class="co">#&gt;            flag2 N.left Nobs.left N.discarded Nobs.discarded</span>
-<span class="co">#&gt; 1:          &lt;NA&gt;    150      1500          NA             NA</span>
-<span class="co">#&gt; 2: Negative time    150      1500           0              0</span>
-<span class="co">#&gt; 3:  Analysis set    150      1500          NA             NA</span>
+<span class="co">#&gt;                 flag2 N.left Nobs.left N.discarded Nobs.discarded</span>
+<span class="co">#&gt; 1: All available data    150      1352          NA             NA</span>
+<span class="co">#&gt; 2:      Negative time      0         0         150           1352</span>
+<span class="co">#&gt; 3:       Analysis set      0         0          NA             NA</span>
 </pre></div>
 <p><code>flagsCount</code> includes a <code>file</code> option to save the the table right away.</p>
 </div>
@@ -258,7 +260,7 @@
 <div class="sourceCode" id="cb8"><pre class="downlit">
 <span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMorderColumns.html">NMorderColumns</a></span>(<span class="kw">pk</span>)
 <span class="co">#&gt; Warning: In NMorderColumns(pk) : These standard nonmem columns were not found in data:</span>
-<span class="co">#&gt; MDV</span>
+<span class="co">#&gt; nomtime II ADDL SS MDV</span>
 </pre></div>
 </div>
 <div id="writing-data-to-files" class="section level3">
@@ -270,8 +272,8 @@
 <span class="co">#&gt; Nonmem data file:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; For NonMem:</span>
-<span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span>
-<span class="co">#&gt; FLAG2 PART PROFDAY PROFTIME WEIGHTB EFF0</span>
+<span class="co">#&gt; $INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE FLAG2</span>
+<span class="co">#&gt; NOMTIME PART PROFDAY PROFTIME WEIGHTB eff0</span>
 <span class="co">#&gt; $DATA </span>
 <span class="co">#&gt; IGN=@</span>
 <span class="co">#&gt; IGNORE=(FLAG.NE.0)</span>
@@ -292,7 +294,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-03-02 06:59:56 EST"</span>
+<span class="co">#&gt; [1] "2021-04-06 11:57:13 EDT"</span>
 </pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit">
@@ -302,7 +304,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-03-02 06:59:56 EST"</span>
+<span class="co">#&gt; [1] "2021-04-06 11:57:13 EDT"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span>
@@ -316,19 +318,20 @@
 <p>In a proper PK/PD analysis we need to explore the data at multiple variability levels. What we looked at above is at dosing and sampling level (one row per dosing or sampling event). <code>NMdata</code> provides very useful functions to extract information at other levels of variability. Before extracting the subject-level information we will add an individual exposure measure to the dataset. We will use the empirical Bayes’ estimate of the individual maximum concentration. This is derived as the maximum prediction across the sample times - it may be better to simulate the model at a richer time scale to get better precision. Again, we make use of <code>data.table</code> but feel free to use what you prefer. <code>findCovs</code> - like other <code>NMdata</code> functions - will work on <code>data.frame</code>’s, <code>tibble</code>’s and other <code>data.frame</code>-like classes (classes that inherit from <code>data.frame</code>).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="kw">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, 
-    package = <span class="st">"NMdata"</span>), col.row = <span class="st">"ROW"</span>, quiet = <span class="fl">TRUE</span>, as.fun = <span class="st">"data.table"</span>)
+    package = <span class="st">"NMdata"</span>), col.row = <span class="st">"ROW"</span>, merge.by.row = <span class="fl">TRUE</span>, 
+    quiet = <span class="fl">TRUE</span>, as.fun = <span class="st">"data.table"</span>)
 <span class="co">#&gt; Warning: In NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"), :</span>
 <span class="co">#&gt; input control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpoZjlQZ/temp_libpath54f4506538ef/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/Rtmpc5N4fg/temp_libpath8afc63b07ee0/NMdata/examples/nonmem/xgxr001.mod)</span>
 <span class="co">#&gt; is newer than output control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpoZjlQZ/temp_libpath54f4506538ef/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/Rtmpc5N4fg/temp_libpath8afc63b07ee0/NMdata/examples/nonmem/xgxr001.lst)</span>
 <span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
 <span class="co">#&gt; edited, this can corrupt results.</span>
-<span class="co">#&gt; In col.row = "ROW", quiet = TRUE, as.fun = "data.table") : input control</span>
-<span class="co">#&gt; stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpoZjlQZ/temp_libpath54f4506538ef/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; In col.row = "ROW", merge.by.row = TRUE, quiet = TRUE, as.fun = "data.table")</span>
+<span class="co">#&gt; : input control stream</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/Rtmpc5N4fg/temp_libpath8afc63b07ee0/NMdata/examples/nonmem/xgxr001.mod)</span>
 <span class="co">#&gt; is newer than output control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpoZjlQZ/temp_libpath54f4506538ef/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/Rtmpc5N4fg/temp_libpath8afc63b07ee0/NMdata/examples/nonmem/xgxr001.lst)</span>
 <span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
 <span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span>(<span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span>, <span class="kw">res1</span><span class="op">$</span><span class="kw">DOSE</span>)
@@ -339,7 +342,7 @@
 <span class="co">## One row per value of cols.id.</span>
 <span class="kw">res1.id</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/findCovs.html">findCovs</a></span>(<span class="kw">res1</span>, cols.id = <span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">res1.id</span>)
-<span class="co">#&gt; [1] 150  27</span>
+<span class="co">#&gt; [1] 150  26</span>
 <span class="fu">ggplot</span>(<span class="kw">res1.id</span>, <span class="fu">aes</span>(<span class="kw">WEIGHTB</span>, <span class="kw">Cmax</span><span class="op">/</span><span class="kw">DOSE</span>, colour = <span class="kw">trtact</span>)) <span class="op">+</span> <span class="fu">geom_point</span>() <span class="op">+</span> 
     <span class="fu">labs</span>(x = <span class="st">"Bodyweight at baseline (kg)"</span>)
 </pre></div>
@@ -353,25 +356,25 @@
 <p>The simplest use of <code>findCovs</code> is to get variables that are constant across the whole dataset:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit">
 <span class="fu"><a href="../reference/findCovs.html">findCovs</a></span>(<span class="kw">res1</span>)
-<span class="co">#&gt;   FLAG STUDY    TVKA  TVV2    TVCL    TVV3     TVQ      V3       Q BLQ CYCLE</span>
-<span class="co">#&gt; 1    0     1 0.18116 0.042 0.72491 0.17857 8813700 0.17857 8813700   0     1</span>
-<span class="co">#&gt;   PART PROFDAY nmout TIMEUNIT         flag   model</span>
-<span class="co">#&gt; 1    1       1  TRUE    Hours Analysis set xgxr001</span>
+<span class="co">#&gt;    FLAG STUDY   TVKA  TVV2    TVCL    TVV3     TVQ      V3       Q BLQ CYCLE</span>
+<span class="co">#&gt; 1:    0     1 0.1812 0.042 0.72457 0.17848 2307400 0.17848 2307400   0     1</span>
+<span class="co">#&gt;    PART PROFDAY nmout TIMEUNIT   model</span>
+<span class="co">#&gt; 1:    1       1  TRUE    Hours xgxr001</span>
 </pre></div>
 <p>Let’s take a look at what is in the <code>res1.id</code> generated above. It is a mix of variables that vary at subject level and variables that are constant across the full dataset.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">res1.id</span>)
-<span class="co">#&gt; [1] 150  27</span>
+<span class="co">#&gt; [1] 150  26</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">res1.id</span>, <span class="fl">2</span>)
-<span class="co">#&gt;   ID FLAG STUDY    TVKA  TVV2    TVCL    TVV3     TVQ      KA    V2      CL</span>
-<span class="co">#&gt; 1 31    0     1 0.18116 0.042 0.72491 0.17857 8813700 0.18116 0.042 0.72491</span>
-<span class="co">#&gt; 2 32    0     1 0.18116 0.042 0.72491 0.17857 8813700 0.18116 0.042 0.72491</span>
-<span class="co">#&gt;        V3       Q BLQ CYCLE DOSE PART PROFDAY WEIGHTB   eff0 nmout TIMEUNIT</span>
-<span class="co">#&gt; 1 0.17857 8813700   0     1    3    1       1  87.031 56.461  TRUE    Hours</span>
-<span class="co">#&gt; 2 0.17857 8813700   0     1    3    1       1 100.620 45.096  TRUE    Hours</span>
-<span class="co">#&gt;   TRTACT         flag trtact   model Cmax</span>
-<span class="co">#&gt; 1   3 mg Analysis set   3 mg xgxr001    0</span>
-<span class="co">#&gt; 2   3 mg Analysis set   3 mg xgxr001    0</span>
+<span class="co">#&gt;    ID FLAG STUDY   TVKA  TVV2    TVCL    TVV3     TVQ     KA    V2      CL</span>
+<span class="co">#&gt; 1: 31    0     1 0.1812 0.042 0.72457 0.17848 2307400 0.1812 0.042 0.72457</span>
+<span class="co">#&gt; 2: 32    0     1 0.1812 0.042 0.72457 0.17848 2307400 0.1812 0.042 0.72457</span>
+<span class="co">#&gt;         V3       Q BLQ CYCLE DOSE PART PROFDAY WEIGHTB   EFF0 nmout TIMEUNIT</span>
+<span class="co">#&gt; 1: 0.17848 2307400   0     1    3    1       1  87.031 56.461  TRUE    Hours</span>
+<span class="co">#&gt; 2: 0.17848 2307400   0     1    3    1       1 100.620 45.096  TRUE    Hours</span>
+<span class="co">#&gt;    TRTACT trtact   model Cmax</span>
+<span class="co">#&gt; 1:   3 mg   3 mg xgxr001    0</span>
+<span class="co">#&gt; 2:   3 mg   3 mg xgxr001    0</span>
 </pre></div>
 <p><code>findCovs</code> has a counterpart in <code>findVars</code> which finds variables that do vary within constant values of optional <code>cols.id</code> columns. To get only the ones that vary within the dataset (i.e. they are truely subject-level variables and not say a study number if we only have one study), we can do</p>
 <div class="sourceCode" id="cb16"><pre class="downlit">
@@ -379,9 +382,9 @@
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">res1.id2</span>)
 <span class="co">#&gt; [1] 150  10</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">res1.id2</span>, <span class="fl">2</span>)
-<span class="co">#&gt;   ID      KA    V2      CL DOSE WEIGHTB   eff0 TRTACT trtact Cmax</span>
-<span class="co">#&gt; 1 31 0.18116 0.042 0.72491    3  87.031 56.461   3 mg   3 mg    0</span>
-<span class="co">#&gt; 2 32 0.18116 0.042 0.72491    3 100.620 45.096   3 mg   3 mg    0</span>
+<span class="co">#&gt;    ID     KA    V2      CL DOSE WEIGHTB   EFF0 TRTACT trtact Cmax</span>
+<span class="co">#&gt; 1: 31 0.1812 0.042 0.72457    3  87.031 56.461   3 mg   3 mg    0</span>
+<span class="co">#&gt; 2: 32 0.1812 0.042 0.72457    3 100.620 45.096   3 mg   3 mg    0</span>
 </pre></div>
 <p><code>findVars</code> supports the cols.id argument too. So you can use <code><a href="../reference/findVars.html">findVars(res1,cols.id="ID")</a></code> to find variables that are non-constant within (at least one value of) ID. <code>cols.id</code> can be of arbitrary length.</p>
 <p>Of course, we most often know what covariates or other subject-level variables to look at, and we would not search for them after running a nonmem model. But in the situation where you are looking at someone else’s work or you are doing a meta analysis across models where the data has been coded slightly differently, these simple tools can be very useful. Or if you like writing generic wrapper functions, you may find this very handy. Also, remember that if a variable is returned by these functions, you know that they fullfill the variability requirement. We know that variables in <code>res1.id</code> above do not vary within <code>ID</code>, meaning that no <code>ID</code> has more than one value of the variable. <code>NA</code> counts as any other value, so if a value is returned for subject in <code>res1.id</code>, this subject does not have <code>NA</code>’s in <code>res1</code>.</p>

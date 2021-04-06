@@ -78,7 +78,7 @@ in the file argument." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.7.905</span>
       </span>
     </div>
 
@@ -162,7 +162,9 @@ in the file argument.</p>
   <span class='kw'>args.rds</span>,
   <span class='kw'>nmdrop</span>,
   <span class='kw'>nmdir.data</span>,
-  col.flag = <span class='st'>"FLAG"</span>
+  col.flag = <span class='st'>"FLAG"</span>,
+  <span class='kw'>nm.rename</span>,
+  capitalize.names = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -227,6 +229,19 @@ argument is only used for generating the proposed text to
 paste into the Nonmem control stream. To skip this feature,
 use col.flag=NULL.</p></td>
     </tr>
+    <tr>
+      <th>nm.rename</th>
+      <td><p>For the $DATA text proposal only. If you plan to
+rename columns in Nonmem $DATA, NMwriteData can adjust the
+suggested $DATA text. If you plan to use CONC as DV in Nonmem,
+consider nm.rename=c(DV="CONC").</p></td>
+    </tr>
+    <tr>
+      <th>capitalize.names</th>
+      <td><p>For the $DATA text proposal only. If TRUE,
+the suggested text for Nonmem will only contain capital
+letters in column names.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -246,7 +261,8 @@ be able to read as a numeric and column is not in nmdrop, the list is stopped.</
     <div class='dont-index'><p>Other Nonmem: 
 <code><a href='NMextractText.html'>NMextractText</a>()</code>,
 <code><a href='NMgetSection.html'>NMgetSection</a>()</code>,
-<code><a href='NMtransFilters.html'>NMtransFilters</a>()</code></p></div>
+<code><a href='NMtransFilters.html'>NMtransFilters</a>()</code>,
+<code><a href='NMwriteSection.html'>NMwriteSection</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

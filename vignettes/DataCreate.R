@@ -92,7 +92,7 @@ objInfo(pk)
 
 ## -----------------------------------------------------------------------------
 res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                   col.row="ROW",quiet=TRUE,as.fun="data.table")
+                   col.row="ROW",merge.by.row=TRUE,quiet=TRUE,as.fun="data.table")
 res1$trtact <- reorder(res1$trtact,res1$DOSE)
 ## with data.table, create a new column representing ID-level Cmax
 res1[,Cmax:=max(IPRED),by=.(ID)]

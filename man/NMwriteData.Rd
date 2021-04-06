@@ -93,7 +93,7 @@ be able to read as a numeric and column is not in nmdrop, the list is stopped.
 Other Nonmem: 
 \code{\link{NMextractText}()},
 \code{\link{NMgetSection}()},
-\code{\link{NMreplacePart}()},
-\code{\link{NMtransFilters}()}
+\code{\link{NMtransFilters}()},
+\code{\link{NMwriteSection}()}
 }
 \concept{Nonmem}
