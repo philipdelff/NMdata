@@ -5,19 +5,18 @@
 \title{replace ($)sections of a nonmem control stream}
 \usage{
 NMreplacePart(
-  path,
+  file,
   section,
   newlines,
   list.sections,
-  newpath,
+  newfile,
   backup = TRUE,
   blank.append = TRUE,
   test = FALSE
 )
 }
 \arguments{
-\item{path}{The run to edit. If a directory is given, the file is
-assumed to be called input.txt in that folder.}
+\item{file}{File path to the model (control stream) to edit.}
 
 \item{section}{The name of the section to update. Example:
 section="EST" to edit the sections starting by $EST. See
@@ -31,7 +30,7 @@ past to writeLines.}
 containing a section. Names must be section names, contents of
 each element are the new section lines for each section.}
 
-\item{newpath}{path to new run. If missing, path is used. If NULL,
+\item{newfile}{path to new run. If missing, path is used. If NULL,
 output is returned rather than written.}
 
 \item{backup}{In case you are overwriting the old file, do you
@@ -51,8 +50,8 @@ The new file will be written with unix-style line endings.
 }
 \examples{
 newlines <- "$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"
-NMreplacePart(path=pmxtricks_filepath("examples/nonmem/run001.mod"),
-section="EST", newlines=newlines)
+NMreplacePart(file=system.file("examples/nonmem/run001.mod", package = "NMdata"),
+section="EST", newlines=newlines,newfile=NULL)
 }
 \seealso{
 Other Nonmem: 

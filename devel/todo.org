@@ -42,6 +42,10 @@ With load_all():
 **** TODO Implement checks in pmxtricks todo
 **** TODO Implement more checks
 https://doi.org/10.1208/s12248-012-9387-9
+**** Additional checks
+***** TODO Having NA in FLAG is dangerous
+      It makes it unclear how the filter will work
+***** TODO AMT>0 for EVID=0 is not allowed (I believe)
 ** Function improvements
 *** NMreplacepart
 **** DONE [#A] Support for multiple sections

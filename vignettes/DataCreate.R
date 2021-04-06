@@ -90,3 +90,33 @@ objInfo(pk)
 pk <- stampObj(pk,script="vignettes/DataCreate.Rmd",Description="A PK dataset used for examples.")
 objInfo(pk)
 
+## -----------------------------------------------------------------------------
+res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
+                   col.row="ROW",quiet=TRUE,as.fun="data.table")
+res1$trtact <- reorder(res1$trtact,res1$DOSE)
+## with data.table, create a new column representing ID-level Cmax
+res1[,Cmax:=max(IPRED),by=.(ID)]
+## findCovs picks the columns that do not vary within cols.id. One row
+## per value of cols.id.
+res1.id <- findCovs(res1,cols.id="ID")
+dim(res1.id)
+ggplot(res1.id,aes(WEIGHTB,Cmax/DOSE,colour=trtact))+
+    geom_point()+
+    labs(x="Bodyweight at baseline (kg)")
+
+## -----------------------------------------------------------------------------
+## we have no occasion variability in this data
+## res1.id.occ <- findCovs(res1,cols.id=c("ID","OCC"))
+
+## -----------------------------------------------------------------------------
+findCovs(res1)
+
+## -----------------------------------------------------------------------------
+dim(res1.id)
+head(res1.id,2)
+
+## -----------------------------------------------------------------------------
+res1.id2 <- findVars(res1.id)
+dim(res1.id2)
+head(res1.id2,2)
+

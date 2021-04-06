@@ -3,8 +3,7 @@
 ##' Just give the section name, the new lines and the file path, and the
 ##' "$section", and the input to Nonmem will be updated.
 ##'
-##' @param path The run to edit. If a directory is given, the file is
-##'     assumed to be called input.txt in that folder.
+##' @param file File path to the model (control stream) to edit.
 ##' @param section The name of the section to update. Example:
 ##'     section="EST" to edit the sections starting by $EST. See
 ##'     NMgetSection
@@ -14,7 +13,7 @@
 ##' @param list.sections Named list of new sections, each element
 ##'     containing a section. Names must be section names, contents of
 ##'     each element are the new section lines for each section.
-##' @param newpath path to new run. If missing, path is used. If NULL,
+##' @param newfile path to new run. If missing, path is used. If NULL,
 ##'     output is returned rather than written.
 ##' @param backup In case you are overwriting the old file, do you
 ##'     want to backup the file (to say, backup_run001.mod)?
@@ -27,27 +26,24 @@
 ##' 
 ##' @examples
 ##' newlines <- "$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"
-##' NMreplacePart(path=pmxtricks_filepath("examples/nonmem/run001.mod"),
-##' section="EST", newlines=newlines)
+##' NMreplacePart(file=system.file("examples/nonmem/run001.mod", package = "NMdata"),
+##' section="EST", newlines=newlines,newfile=NULL)
 ##' @export
 
 
-NMreplacePart <- function(path,section,newlines,list.sections,newpath,
+NMreplacePart <- function(file,section,newlines,list.sections,newfile,
                           backup=TRUE,blank.append=TRUE,test=FALSE){
 
 
     
 #### Section start: handle arguments ####
     
-    path <- filePathSimple(path)
-    file <- path
-    if(dir.exists(path)) file <- file.path(path,"input.txt")
+    file <- filePathSimple(file)
     stopifnot(file.exists(file))
 
-    if(missing(newpath)) newpath <- path
-    if(!is.null(newpath)){
-        newfile <- filePathSimple(newpath)
-        if(dir.exists(newpath)) newfile <- file.path(newpath,"input.txt")
+    if(missing(newfile)) newfile <- file
+    if(!is.null(newfile)){
+        newfile <- filePathSimple(newfile)
         stopifnot(file.exists(newfile))
     }
 
@@ -124,7 +120,7 @@ NMreplacePart <- function(path,section,newlines,list.sections,newpath,
     newlines <- lines
     for (I in 1:length(list.sections)) newlines <- replaceOnePart(lines=newlines,section=names(list.sections)[I],newlines=list.sections[[I]])
     
-    if(is.null(newpath)) return(newlines)
+    if(is.null(newfile)) return(newlines)
     
     if(file==newfile && backup ) file.copy (file,
                                             sub("(.+/)([^/].+$)","\\1backup_\\2",x=file)

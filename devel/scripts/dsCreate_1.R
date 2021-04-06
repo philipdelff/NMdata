@@ -3,7 +3,7 @@ library(xgxr)
 library(data.table)
 library(ggplot2)
 
-### what is pmxtricks used for?
+### pmxtricks is only used for individual plotting, so it's not necessary. 
 ## we need to ensure a specific version of pmxtricks is used. 0.0.7 is a candidate
 
 library(pmxtricks)
@@ -67,11 +67,16 @@ dt.flags <- fread(text="FLAG,flag,condition
     10,Below LLOQ,BLQ==1
 100,Pre-dose sample,TIME<0")
 
-## load_all("c:/Users/delff/working_copies/NMdata")
+pk[EVID==1,FLAG:=0]
+pk[EVID==1,flag:="Dosing"]
+load_all("c:/Users/delff/working_copies/NMdata")
 ### OK!
 pk <- flagsAssign(pk,subset.data="EVID==0",tab.flags=dt.flags)
 tab.count <- flagsCount(pk,dt.flags,by="EVID")
 tab.count
+
+pk[,any(is.na(FLAG)),by=.(EVID)]
+
 
 if(F){
     ## checking increasing flags
@@ -96,25 +101,9 @@ text <- NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv
 ### with this one, we don't need to filter on FLAG
 NMwriteData(pk[FLAG==0],file=file.path(NMdata_filepath(),"examples/data/xgxr1_flag0.csv"),write.rds=F)
 
-## NMreplacePart(path="C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr001.mod",list.sections=text["INPUT"])
-
 ## same, but with rds
 text2 <- NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write.rds=T,args.rds=list(version=2))
 NMwriteData(pk[FLAG==0],file=file.path(NMdata_filepath(),"examples/data/xgxr2_flag0.csv"),write.rds=T,args.rds=list(version=2))
-
-## need to updata nonmem models
-### $INPUT is independent of xgxr1 or xgxr2
-### need to be modified. Some examples (xgxr002 and more?) have modified $INPUT for DROP and renaming.
-## lapply(
-##     list.files(
-##         NMdata_filepath("examples/nonmem")
-##        ,pattern=".*\\.mod$"
-##        ,full.names=TRUE
-##     ),
-##     NMreplacePart,section="INPUT",
-##     newlines="$INPUT ROW ID NOMTIME TIME EVID CMT AMT DV BLQ CYCLE DOSE FLAG PART PROFDAY PROFTIME STUDY WEIGHTB"
-## )
-
 
 ## a version with duplicated column names for testing
 pk2 <- cbind(pk,pk[,.(DOSE)])

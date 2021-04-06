@@ -68,7 +68,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
-
+    
     
 ##################### CHECKS START ######################
 
@@ -104,12 +104,10 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     if(col.flagn%in%datacols) {
         ## message("Data contains FLAG already. This is overwritten")
         messageWrap(sprintf("Data contains %s already. This is overwritten",col.flagn),fun.msg=message)
-        data[,(col.flagn):=NULL]
     }
     if(col.flagc%in%datacols) {
         ## message("Data contains flag already. This is overwritten")
         messageWrap(sprintf("Data contains %s already. This is overwritten",col.flagc),fun.msg=message)
-        data[,(col.flagc):=NULL]
     }
     
 ##### End Check data #######
@@ -145,9 +143,11 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
         messageWrap(sprintf("Duplicate values not allowed in tab.flags columns %s, %s, and condition.",col.flagn,col.flagc),stop)
     }
 
+    
+    
 ##### check subset
-    ### TODO check for " *" which should work like " " but will give
-    ### an error for now.
+### TODO check for " *" which should work like " " but will give
+### an error for now.
     if(missing(subset.data) ||
        is.null(subset.data) ||
        is.character(subset.data) && length(subset.data)==1 && subset.data==""
@@ -173,19 +173,39 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     col.row <- tmpcol(data)
     data[,(col.row):=1:.N ]
 
-#### 
+#### We will not touch the data not matched by the subset
+    data.noflags <- data[eval(parse(text=paste("!",subsetAND,"1")))]
+    data.flags <- data[eval(parse(text=paste(subsetAND,"1")))]
+
+    
 
     ## we want to use columns FLAG and flag. So if these exist in
     ## data, copy for backup
     backed.up.old.flags <- FALSE
-    if(any(c("FLAG","flag")%in%colnames(data))){
-        backed.up.old.flags <- TRUE
-        cols.pick <- c(col.row,intersect(c("FLAG","flag"),colnames(data)))
-        flags.orig.data <- data[,cols.pick,with=FALSE]
-        data[,FLAG:=NULL]
-        data[,flag:=NULL]
+    if(any(c("FLAG","flag")%in%colnames(data.flags))){
+        cols.pick <- c(col.row,intersect(c("FLAG","flag"),colnames(data.flags)))
+        ## we only want to keep FLAG and flag if col.flagc and flagn are oter columns. If col.flagn and col.flagc will be called FLAG and flag, they should overwrite the ecxisting anyway.
+        cols.pick <- setdiff(cols.pick,c(col.flagn,col.flagc))
+        if(length(cols.pick)>0){
+            backed.up.old.flags <- TRUE
+            flags.orig.data <- data.flags[,cols.pick,with=FALSE]
+        }
+        if("FLAG"%in%colnames(data.flags)){
+            data.flags[,FLAG:=NULL]
+        }
+        if("flag"%in%colnames(data.flags)){
+            data.flags[,flag:=NULL]
+        }
+        
     }
 
+    if(col.flagn%in%colnames(data.flags)){
+        data.flags[,(col.flagn):=NULL]
+    }
+    if(col.flagc%in%colnames(data.flags)){
+        data.flags[,(col.flagc):=NULL]
+    }
+    
     
     ## rename tab.flags columns to flag and FLAG
     setnames(tab.flags,c(col.flagn,col.flagc),c("FLAG","flag"))
@@ -216,8 +236,6 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     tab.flags <- tab.flags[FLAG!=0]
     
 ### assigning the flags
-    data.noflags <- data[eval(parse(text=paste("!",subsetAND,"1")))]
-    data.flags <- data[eval(parse(text=paste(subsetAND,"1")))]
     
     data.flags[,FLAG:=0]
     
@@ -246,7 +264,8 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     ## tab.flags.0[,Nmatched:=data.flags[FLAG==0,.N]]
     
     tab.flags <- rbind(tab.flags,tab.flags.0,fill=T)
-
+    
+    
 ### check that all data.flags$FLAG have a value matching tab.flags$FLAG. Then merge on the flag values.
     if(any(is.na(data.flags[,FLAG]))) {
         ## stop("NA's found in data.flags$FLAG after assigning FLAGS. Bug in flagsAssign?")

@@ -413,7 +413,7 @@ NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
                 msg0 <- "\nInput data columns will be appended to output data. However, it is recommended to use a unique row identifier (typically a counter but only required to be unique for each row) for a robust merge of input and output data. See argument col.row."
             }
             msg <- paste0(msg0,"\n",
-                          "To skip this check, please specify a value in method.combine argument.")
+                          "To skip this check, please use merge.by.row=TRUE or merge.by.row=FALSE.")
             messageWrap(msg,fun.msg=message)
             cat("\n")
         }
