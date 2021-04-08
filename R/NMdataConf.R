@@ -192,7 +192,7 @@ NMdataConfOptions <- function(name){
         )
        ,
         col.nomtime=list(
-            default="nomtime"
+            default="NOMTIME"
            ,is.allowed=function(x) (is.character(x) && length(x)==1)
            ,msg.not.allowed="col.nomtime must be a character vector of length 1."
            ,process=identity
