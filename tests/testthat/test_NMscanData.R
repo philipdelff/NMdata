@@ -28,7 +28,7 @@ test_that("basic",{
     ## file.lst <- "../../inst/examples/nonmem/run001.lst"
     ## file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
-## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+    ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
     res1 <- NMscanData(file=file.lst,quiet=T,order.columns = F)
     ## dim(res1)
@@ -130,11 +130,11 @@ test_that("Only a firstonly without ID but with ROW",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-    ### impossible with filters
+### impossible with filters
     expect_error(
         expect_warning(
             NMscanData(file=file.lst,merge.by.row=FALSE,col.row="ROW",check.time = FALSE)
-                       )
+        )
     )
     ## load_all()
     res1 <- NMscanData(file=file.lst,merge.by.row=TRUE,col.row="ROW",check.time = FALSE)
@@ -229,8 +229,8 @@ test_that("Only a firstonly without ID but with ROW",{
         )
     )
 
-##    tabs=NMscanTables(file=file.lst)
-## tabs
+    ##    tabs=NMscanTables(file=file.lst)
+    ## tabs
 })
 
 test_that("Only a firstonly without ID but with ROW. Using merge.by.row=TRUE.",{
@@ -361,8 +361,8 @@ test_that("dir structure with input.txt/output.txt",{
     unNMdata(res1)
     unNMdata(res1dir)
     colnames(res1[,!("model")])==
-    colnames(res1dir[,!("model")])
-## this test isn't ready. How do I execute the input.txt/output.txt model?
+        colnames(res1dir[,!("model")])
+    ## this test isn't ready. How do I execute the input.txt/output.txt model?
     ##expect_equal(res1[,!("model")],res1dir[,!("model")])
 
     NMdataConf(as.fun=NULL)
@@ -385,3 +385,18 @@ test_that("Duplicate columns in input data",{
     
     expect_equal_to_reference(res,fileRef,version=2)
 })
+
+
+### this is not a real test. Need to be able to test how the merges were performed. 
+## test_that("col.row and merge.by.row=TRUE from NMdataConf",{
+##     load_all("../../")
+    
+##     NMdataConf(reset=TRUE)
+##     NMdataConf(col.row="ROW", merge.by.row=TRUE)
+##     NMdataConf()
+
+##     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
+
+    
+##     res1 <- NMscanData(file=file.lst)
+## })

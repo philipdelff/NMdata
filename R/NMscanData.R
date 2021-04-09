@@ -127,8 +127,6 @@
 ## method.combine should be empty by default to look for col.row if none
 ## supplied. To disable, use method.combine="none"
 
-## rm use.input from NMdataConf
-
 ## NMdecideOption define method.combine and remove chk in NMscanData
 
 ## if merge by row, got to make sure that col.row can be used.
@@ -217,18 +215,18 @@ NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
 
     if(missing(merge.by.row)) merge.by.row <- NULL
     
-    if(is.null(merge.by.row)){
-        ## method not specified
-        search.col.row <- TRUE
-    } else {
-        if(isTRUE(merge.by.row)&!use.input){
-            stop("merge.by.row cannot be TRUE when use.input is FALSE.")
-        }
+
+    if(!is.null(merge.by.row)&&isTRUE(merge.by.row)&&!use.input){
+        stop("merge.by.row cannot be TRUE when use.input is FALSE.")
     }
-   merge.by.row <- NMdataDecideOption("merge.by.row",merge.by.row)
+    merge.by.row.arg <- merge.by.row
+    merge.by.row <- NMdataDecideOption("merge.by.row",merge.by.row)
     cbind.by.filters <- !merge.by.row
 
-    
+    if(is.null(merge.by.row.arg) && !merge.by.row){
+        search.col.row <- TRUE
+    }
+
 ### merging method found
 ### now code must use search.col.row, cbind.by.filters and merge.by.row
 
@@ -322,7 +320,7 @@ NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
 
 ###  Section end: read all output tables and merge to max one idlevel and max one row
 
-    
+
 #### Section start: handle input data ####
     ## use.input.row means if we will merge row-wise output data onto
     ## input data. Even if FALSE, we can still merge idlevel data
