@@ -22,6 +22,25 @@ pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 class(pk)
 
 ## ----include=FALSE------------------------------------------------------------
+pk.reduced <- copy(pk)
+pk.reduced <- pk.reduced[1:(.N%/%2)]
+pk.reduced[,CYCLE:=NULL]
+pk.reduced[,AMT:=as.character(AMT)]
+
+## ----eval=FALSE---------------------------------------------------------------
+#  compareCols(pk,pk.reduced)
+
+## ----include=FALSE------------------------------------------------------------
+pktmp <- copy(pk)
+pktmp[,TRTACT:=NULL]
+
+## -----------------------------------------------------------------------------
+pk.renamed <- renameByContents(data=pktmp,fun.test=NMisNumeric,fun.rename = tolower, invert.test = TRUE)
+
+## ----eval=FALSE---------------------------------------------------------------
+#  compareCols(pktmp,pk.renamed)
+
+## ----include=FALSE------------------------------------------------------------
 dt.cov <- pk[,.(ID=unique(ID)[1:10])]
 dt.cov[,COV:=sample(1:5,size=10,replace=TRUE)]
 
@@ -43,7 +62,6 @@ pk3 <- merge(pk,dt.cov,by="ID",all.x=TRUE)
 dim(pk3)
 
 ## -----------------------------------------------------------------------------
-dt.cov2
 pk4 <- merge(pk,dt.cov2,by="ID")
 dim(pk4)
 ## we now have twice as many rows for this subject
@@ -59,28 +77,31 @@ dim(pk3)
 ## -----------------------------------------------------------------------------
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds", package="NMdata"))
 dt.flags <- fread(text="FLAG,flag,condition
-100,Negative time,EVID==0&TIME<0
-10,Below LLOQ,EVID==0&BLQ==1")
+10,Below LLOQ,EVID==0&BLQ==1
+100,Negative time,EVID==0&TIME<0")
 
-pk <- flagsAssign(pk,tab.flags=dt.flags)
-
-## -----------------------------------------------------------------------------
-dt.flags2 <- fread(text="FLAG2,flag2,condition
-10,Negative time,TIME<0")
-
-pk <- flagsAssign(pk,dt.flags2,col.flagn="FLAG2",col.flagc="flag2")
+pk <- flagsAssign(pk,tab.flags=dt.flags,subset.data="EVID==0")
+pk[EVID==1,FLAG:=0]
+pk[EVID==1,flag:="Dosing"]
 
 ## -----------------------------------------------------------------------------
 tab.count <- flagsCount(data=pk[EVID==0],tab.flags=dt.flags)
 print(tab.count)
-tab.count2 <- flagsCount(data=pk[EVID==0],tab.flags=dt.flags2,col.flagn="FLAG2",col.flagc="flag2")
-print(tab.count2)
 
 ## -----------------------------------------------------------------------------
 pk <- NMorderColumns(pk)
 
 ## -----------------------------------------------------------------------------
 NMwriteData(pk)
+
+## ----eval=FALSE---------------------------------------------------------------
+#  NMwriteSection("run001.mod","INPUT","$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE FLAG2 NOMTIME PART PROFDAY PROFTIME WEIGHTB eff0")
+
+## -----------------------------------------------------------------------------
+text.nm <- NMwriteData(pk)
+
+## ----eval=FALSE---------------------------------------------------------------
+#  NMwriteSection("run001.mod",list.sections=text.nm["INPUT"])
 
 ## -----------------------------------------------------------------------------
 pk <- stampObj(pk,script="vignettes/DataCreate.Rmd")

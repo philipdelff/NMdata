@@ -10,7 +10,8 @@ affect the data combination method.
 
 Other arguments which default values can now be modified using
 NMdataConf are: merge.by.row, col.flagn, col.flagc, use.input,
-recover.rows, col.model, modelname, file.mod, and check.time.
+recover.rows, col.model, modelname, file.mod, and check.time, quiet,
+use.rds.
 
 The tools to assign and cound exclusion flags, flagsAssign and
 flagsCount, have been improved. They now support working on a subset

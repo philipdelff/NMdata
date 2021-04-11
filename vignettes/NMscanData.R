@@ -81,13 +81,15 @@ res2[,.N,by=.(nmout,flag)]
 
 ## -----------------------------------------------------------------------------
 NMdataConf(as.fun="data.table")
+NMdataConf(col.row="ROW")
+NMdataConf(merge.by.row=TRUE)
 
 ## -----------------------------------------------------------------------------
 ## notice fill is an option to rbind with data.table
 res1.m <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                     col.row="ROW",quiet=TRUE)
+                     quiet=TRUE)
 res2.m <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
-                     col.row="ROW",modelname="single-compartment",
+                     modelname="single-compartment",
                      quiet=TRUE)
 res.mult <- rbind(res1.m,res2.m,fill=T)
 res.mult.mean <- res.mult[EVID==0&nmout==TRUE,

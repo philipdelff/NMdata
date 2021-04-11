@@ -2,7 +2,7 @@
 ##'
 ##' @param text the Nonmem code.
 ##' @details You probably want to run this on text obtained by using
-##'     the NMgetSection function.
+##'     the NMreadSection function.
 
 ### This function is exported from pmxtricks. It is included in NMdata not to
 ### depend on pmxtricks. However, please align.

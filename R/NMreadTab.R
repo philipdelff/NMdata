@@ -8,26 +8,29 @@
 ##' table file alone.
 ##'
 ##' @param file path to NONMEM table file
-##' @param quiet logical stating whether or not information is printed about
-##'     what is being done.
-##' @param tab.count Nonmem includes a counter of tables in the written data
-##'     files. These are often not useful. However, if tab.count is TRUE
-##'     (default), this will be carried forward and added as a column called
-##'     TABLENO.
-##' @param as.fun The default is to return data as a data.frame. Pass a function
-##'     (say tibble::as_tibble) in as.fun to convert to something else. If
-##'     data.tables are wanted, use as.fun="data.table". The default can be
-##'     configured using NMdataConf.
+##' @param quiet logical stating whether or not information is prignted
+##'     about what is being done. Default can be configured using
+##'     NMdataConf.
+##' @param tab.count Nonmem includes a counter of tables in the
+##'     written data files. These are often not useful. However, if
+##'     tab.count is TRUE (default), this will be carried forward and
+##'     added as a column called TABLENO.
+##' @param as.fun The default is to return data as a data.frame. Pass
+##'     a function (say tibble::as_tibble) in as.fun to convert to
+##'     something else. If data.tables are wanted, use
+##'     as.fun="data.table". The default can be configured using
+##'     NMdataConf.
 ##' @param ... Arguments passed to fread.
 ##' @return The Nonmem table data.
 ##' @details The actual reading of data is based on
-##'     data.table::fread. Generally, the function is fast thanks to data.table.
+##'     data.table::fread. Generally, the function is fast thanks to
+##'     data.table.
 ##' @import data.table
 ##' @family DataRead
 ##' @export
 
 
-NMreadTab <- function(file,quiet=TRUE,tab.count=TRUE,as.fun=NULL,...) {
+NMreadTab <- function(file,tab.count=TRUE,quiet,as.fun,...) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -41,7 +44,11 @@ NMreadTab <- function(file,quiet=TRUE,tab.count=TRUE,as.fun=NULL,...) {
     if(!is.character(file)) stop("file should be a character string",call.=F)
     if(!file.exists(file)) stop("argument file is not a path to an existing file.",call.=F)
 
+    if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
+
+    if(missing(quiet)) quiet <- NULL
+    quiet <- NMdataDecideOption("quiet",quiet)
     
     if(!quiet){
         message("Reading data using fread")

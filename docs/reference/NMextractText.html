@@ -41,7 +41,7 @@
 
 <meta property="og:title" content="Versatile text extractor from Nonmem (input or output) control streams — NMextractText" />
 <meta property="og:description" content="If you want to extract input sections like $PROBLEM, $DATA etc,
-see NMgetSection. This function is more general and can be used to
+see NMreadSection. This function is more general and can be used to
 extract eg result sections." />
 
 
@@ -74,7 +74,7 @@ extract eg result sections." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.7.905</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7</span>
       </span>
     </div>
 
@@ -139,7 +139,7 @@ extract eg result sections." />
 
     <div class="ref-description">
     <p>If you want to extract input sections like $PROBLEM, $DATA etc,
-see NMgetSection. This function is more general and can be used to
+see NMreadSection. This function is more general and can be used to
 extract eg result sections.</p>
     </div>
 
@@ -257,17 +257,17 @@ how lines should be separated.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function is planned to get a more general name and
-    then be called by NMgetSection.</p>
+    then be called by NMreadSection.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Nonmem: 
-<code><a href='NMgetSection.html'>NMgetSection</a>()</code>,
+<code><a href='NMreadSection.html'>NMreadSection</a>()</code>,
 <code><a href='NMtransFilters.html'>NMtransFilters</a>()</code>,
 <code><a href='NMwriteData.html'>NMwriteData</a>()</code>,
 <code><a href='NMwriteSection.html'>NMwriteSection</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='NMgetSection.html'>NMgetSection</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"examples/nonmem/run001.lst"</span>, package = <span class='st'>"NMdata"</span>),section=<span class='st'>"DATA"</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='NMreadSection.html'>NMreadSection</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"examples/nonmem/run001.lst"</span>, package = <span class='st'>"NMdata"</span>),section=<span class='st'>"DATA"</span>)
 </div><div class='output co'>#&gt; [1] "$DATA      PK.csv IGNORE=@ IGNORE=(PKFL.EQ.0)"      
 #&gt; [2] "            IGNORE=(TRTPN.EQ.1) IGNORE=(TRTPN.EQ.3)"
 #&gt; [3] "            IGNORE=(TRTPN.EQ.4)"                    </div></pre>

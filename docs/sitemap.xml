@@ -40,9 +40,6 @@
     <loc>https://philipdelff.github.io/NMdata/reference/NMextractText.html</loc>
   </url>
   <url>
-    <loc>https://philipdelff.github.io/NMdata/reference/NMgetSection.html</loc>
-  </url>
-  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMisNumeric.html</loc>
   </url>
   <url>
@@ -50,6 +47,9 @@
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMreadCsv.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMreadSection.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMreadTab.html</loc>

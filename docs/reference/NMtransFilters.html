@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.7.905</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7</span>
       </span>
     </div>
 
@@ -139,15 +139,7 @@
     <p>Translate filters in Nonmem and apply to data</p>
     </div>
 
-    <pre class="usage"><span class='fu'>NMtransFilters</span>(
-  <span class='kw'>data</span>,
-  <span class='kw'>file</span>,
-  <span class='kw'>text</span>,
-  <span class='kw'>lines</span>,
-  invert = <span class='fl'>FALSE</span>,
-  as.fun = <span class='kw'>NULL</span>,
-  quiet = <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>NMtransFilters</span>(<span class='kw'>data</span>, <span class='kw'>file</span>, <span class='kw'>text</span>, <span class='kw'>lines</span>, invert = <span class='fl'>FALSE</span>, <span class='kw'>as.fun</span>, <span class='kw'>quiet</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -160,7 +152,7 @@ NMscanInput.</p></td>
     <tr>
       <th>file</th>
       <td><p>Path to mod/lst file. Only one of file, text, or lines to be
-given. See ?NMgetSection for understanding when to use, file, text, or
+given. See ?NMreadSection for understanding when to use, file, text, or
 lines.</p></td>
     </tr>
     <tr>
@@ -199,7 +191,7 @@ errors. Default is FALSE.</p></td>
 
     <div class='dont-index'><p>Other Nonmem: 
 <code><a href='NMextractText.html'>NMextractText</a>()</code>,
-<code><a href='NMgetSection.html'>NMgetSection</a>()</code>,
+<code><a href='NMreadSection.html'>NMreadSection</a>()</code>,
 <code><a href='NMwriteData.html'>NMwriteData</a>()</code>,
 <code><a href='NMwriteSection.html'>NMwriteSection</a>()</code></p></div>
 

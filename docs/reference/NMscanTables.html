@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.7.905</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7</span>
       </span>
     </div>
 
@@ -139,7 +139,7 @@
     <p>read all output data tables in nonmem run</p>
     </div>
 
-    <pre class="usage"><span class='fu'>NMscanTables</span>(<span class='kw'>file</span>, details = <span class='kw'>F</span>, as.fun = <span class='kw'>NULL</span>, quiet = <span class='fl'>FALSE</span>, tab.count = <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>NMscanTables</span>(<span class='kw'>file</span>, details = <span class='kw'>F</span>, <span class='kw'>as.fun</span>, <span class='kw'>quiet</span>, tab.count = <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -165,7 +165,7 @@ configured using NMdataConf.</p></td>
       <th>quiet</th>
       <td><p>The default is to give some information along the way on what
 data is found. But consider setting this to TRUE for non-interactive
-use.</p></td>
+use. Default can be configured using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>tab.count</th>

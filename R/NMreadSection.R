@@ -36,12 +36,12 @@
 ##' @return character vector with extracted lines.
 ##' @family Nonmem
 ##' @examples
-##' NMgetSection(system.file("examples/nonmem/run001.lst", package="NMdata"),section="DATA")
+##' NMreadSection(system.file("examples/nonmem/run001.lst", package="NMdata"),section="DATA")
 ##'
 ##' @export
 
 
-NMgetSection <- function(file=NULL, lines=NULL, text=NULL, section, return="text",
+NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="text",
                          keepEmpty=FALSE, keepName=TRUE,
                          keepComments=TRUE, asOne=TRUE,
                          simplify=TRUE, cleanSpaces=FALSE, ...){
@@ -59,6 +59,13 @@ NMgetSection <- function(file=NULL, lines=NULL, text=NULL, section, return="text
                   ## we only consider the model definition, not results.
                   type="mod",
                   ...)
+    
+}
+
+#' @describeIn NMreadSection Old function name for NMreadSection
+NMgetSection <- function(...){
+    message("NMgetSection has been renamed. Please use NMreadSection instead.")
+    NMreadSection(...)
     
 }
 

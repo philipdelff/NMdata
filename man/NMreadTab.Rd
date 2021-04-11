@@ -4,23 +4,25 @@
 \alias{NMreadTab}
 \title{Read an output table file from NONMEM}
 \usage{
-NMreadTab(file, quiet = TRUE, tab.count = TRUE, as.fun = NULL, ...)
+NMreadTab(file, tab.count = TRUE, quiet, as.fun, ...)
 }
 \arguments{
 \item{file}{path to NONMEM table file}
 
-\item{quiet}{logical stating whether or not information is printed about
-what is being done.}
+\item{tab.count}{Nonmem includes a counter of tables in the
+written data files. These are often not useful. However, if
+tab.count is TRUE (default), this will be carried forward and
+added as a column called TABLENO.}
 
-\item{tab.count}{Nonmem includes a counter of tables in the written data
-files. These are often not useful. However, if tab.count is TRUE
-(default), this will be carried forward and added as a column called
-TABLENO.}
+\item{quiet}{logical stating whether or not information is prignted
+about what is being done. Default can be configured using
+NMdataConf.}
 
-\item{as.fun}{The default is to return data as a data.frame. Pass a function
-(say tibble::as_tibble) in as.fun to convert to something else. If
-data.tables are wanted, use as.fun="data.table". The default can be
-configured using NMdataConf.}
+\item{as.fun}{The default is to return data as a data.frame. Pass
+a function (say tibble::as_tibble) in as.fun to convert to
+something else. If data.tables are wanted, use
+as.fun="data.table". The default can be configured using
+NMdataConf.}
 
 \item{...}{Arguments passed to fread.}
 }
@@ -37,7 +39,8 @@ table file alone.
 }
 \details{
 The actual reading of data is based on
-    data.table::fread. Generally, the function is fast thanks to data.table.
+    data.table::fread. Generally, the function is fast thanks to
+    data.table.
 }
 \seealso{
 Other DataRead: 

@@ -14,5 +14,5 @@ Translate NM $PK, $PRED sections or other Nonmem code to R code
 }
 \details{
 You probably want to run this on text obtained by using
-    the NMgetSection function.
+    the NMreadSection function.
 }

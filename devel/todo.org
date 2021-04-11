@@ -52,6 +52,10 @@ https://doi.org/10.1208/s12248-012-9387-9
      CLOSED: [2021-04-05 Mon 12:06]
 Instead of the section argument, NMreplacepart must accept newlines as a named
 list.
+*** compareCols
+**** TODO rows are not being sorted correctly.
+     Seems not to prioritize columns that only exist in one of the
+     data.tables.
 *** NMextractText
 **** TODO reduce lines and text to one argument
 The information is sufficient when taking into account the linesep
@@ -140,6 +144,8 @@ See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
 is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMwriteData
+**** TODO Include a randomly generated ID in meta data that we can check files against?
+**** TODO When writing a CSV, write meta data to separate file
 **** DONE Check if character variables contain commas
      CLOSED: [2020-09-19 Sat 09:52]
 This will cause trouble when writing csv
@@ -160,6 +166,8 @@ Nonmem.
      CLOSED: [2020-09-19 Sat 09:27]
 Not warning. Warning if standard variable?
 *** NMordercolumns
+**** DONE Don't warn about missing SS, ADDL, II
+     CLOSED: [2021-04-11 Sun 12:08]
 **** DONE Polish
      CLOSED: [2020-12-23 Wed 11:31]
 *** flagsAssign
@@ -274,3 +282,4 @@ exactly these uses of ".". Anyway, no consequence to functionality.
 See how it's done in pmxtricks.  This is done. However, the datasets are not
 exported so it's not very important.
 ** BUGS
+*** TODO Often, messages from messageWrap (I think) get printed twice

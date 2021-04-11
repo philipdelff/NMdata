@@ -20,7 +20,7 @@ NMwriteSection(
 
 \item{section}{The name of the section to update. Example:
 section="EST" to edit the sections starting by $EST. See
-NMgetSection}
+NMreadSection}
 
 \item{newlines}{The new text (including "$SECTION"). Better be
 broken into lines in a character vector since this is simply
@@ -56,7 +56,7 @@ section="EST", newlines=newlines,newfile=NULL)
 \seealso{
 Other Nonmem: 
 \code{\link{NMextractText}()},
-\code{\link{NMgetSection}()},
+\code{\link{NMreadSection}()},
 \code{\link{NMtransFilters}()},
 \code{\link{NMwriteData}()}
 }

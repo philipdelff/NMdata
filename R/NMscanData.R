@@ -21,7 +21,8 @@
 ##'     "ID".
 ##' @param use.input Should the input data be added to the output
 ##'     data. Only column names that are not found in output data will
-##'     be retrieved from the input data. See merge.by.row too.
+##'     be retrieved from the input data. Default is TRUE which can be
+##'     modified using NMdataConf. See merge.by.row too.
 ##' @param merge.by.row If use.input=TRUE, this argument determines
 ##'     the method by which the input data is added to output
 ##'     data. The default method (merge.by.row=FALSE) is to interpret
@@ -32,8 +33,8 @@
 ##'     input and at least one full length output data table. See
 ##'     argument col.row too.
 ##' @param col.row A column with a unique value for each row. Such a
-##'     column is recommended to use if possible. See merge.by.row
-##'     and details as well.
+##'     column is recommended to use if possible. See merge.by.row and
+##'     details as well.
 ##' @param recover.rows Include rows from input data files that do not
 ##'     exist in output tables? This will be added to the $row dataset
 ##'     only, and $run, $id, and $occ datasets are created before this
@@ -58,7 +59,7 @@
 ##'     (except for .rds instead of say .csv) as the input data file
 ##'     mentioned in the Nonmem control stream, should this be used
 ##'     instead? The default is yes, and NMwriteData will create this
-##'     by default too.
+##'     by default too. Default can be configured using NMdataConf.
 ##' @param dir.data The data directory can only be read from the
 ##'     control stream (.mod) and not from the output file (.lst). So
 ##'     if you only have the output control stream, use dir.data to
@@ -66,7 +67,7 @@
 ##'     provided, the .mod file is not used at all.
 ##' @param quiet The default is to give some information along the way
 ##'     on what data is found. But consider setting this to TRUE for
-##'     non-interactive use.
+##'     non-interactive use. Default can be configured using NMdataConf.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
@@ -131,10 +132,10 @@
 
 ## if merge by row, got to make sure that col.row can be used.
 
-NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
+NMscanData <- function(file, col.row, use.input, merge.by.row,
                        recover.rows,
                        col.model="model", modelname, file.mod,
-                       dir.data, quiet=FALSE, use.rds=TRUE,
+                       dir.data, quiet, use.rds,
                        as.fun, col.id="ID", tab.count=FALSE,
                        order.columns=TRUE, check.time) {
 
@@ -172,12 +173,17 @@ NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
     if(missing(file.mod)) file.mod <- NULL
     if(missing(check.time)) check.time <- NULL
     if(missing(as.fun)) as.fun <- NULL
+    if(missing(quiet)) quiet <- NULL
+    if(missing(use.rds)) use.rds <- NULL
+    
     check.time <- NMdataDecideOption("check.time",check.time)
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     modelname <- NMdataDecideOption("modelname",modelname)
     if(missing(recover.rows)) recover.rows <- NULL
     recover.rows <- NMdataDecideOption("recover.rows",recover.rows)
-
+    quiet <- NMdataDecideOption("quiet",quiet)
+    use.rds <- NMdataDecideOption("use.rds",use.rds)
+    
     if(missing(col.model)) {
         include.model <- TRUE
         col.model <- NMdataDecideOption("col.model",NULL)
@@ -208,6 +214,9 @@ NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
 
     
 ### specification of merging method
+    if(missing(use.input)) use.input <- NULL
+    use.input <- NMdataDecideOption("use.input",use.input)
+
     search.col.row <- FALSE
 
     if(missing(col.row)) col.row <- NULL
@@ -235,8 +244,7 @@ NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
 
 #### Section start: read all output tables and merge to max one firstonly and max one row ####
 
-    ## if(!quiet) messageWrap("Scanning for output tables.")
-    tables <- NMscanTables(file,details=T,tab.count=tab.count,quiet=TRUE,as.fun=identity)
+    tables <- NMscanTables(file,details=T,tab.count=tab.count,quiet=TRUE,as.fun="data.table")
 
     rows.flo <- tables$meta[firstlastonly==TRUE]
     if(rows.flo[,.N]>0) {
@@ -353,7 +361,7 @@ NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
                                   dir.data=dir.data,quiet=TRUE,
                                   use.rds=use.rds,
                                   applyFilters=cbind.by.filters,
-                                  as.fun=identity,
+                                  as.fun="data.table",
                                   col.id=col.id,
                                   details=TRUE)
         
@@ -381,7 +389,7 @@ NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
                                   dir.data=dir.data, quiet=TRUE,
                                   use.rds=use.rds,
                                   applyFilters=cbind.by.filters,
-                                  as.fun=identity,
+                                  as.fun="data.table",
                                   col.id=col.id,
                                   details=TRUE)
         
@@ -396,7 +404,7 @@ NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
                                                 applyFilters=FALSE,
                                                 details=TRUE,
                                                 col.id=col.id,
-                                                as.fun=identity))
+                                                as.fun="data.table"))
             
             cols.row.input <- colnames(dia$data)[dia$data[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 
@@ -404,6 +412,7 @@ NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
 
             cols.row.both <- intersect(cols.row.input,cols.row.output)
             if(length(cols.row.both)){
+                
                 msg0 <- paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in both input and output data. If this column or one of these columns is not modified by the Nonmem run, consider using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.both,collapse=", "))
             } else if(length(cols.row.input)) {
                 msg0 <- paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in input data. If this column or one of these columns is not modified by the Nonmem run, consider adding it to a row-level output table and using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.input,collapse=", "))
@@ -489,7 +498,7 @@ NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
                 ## tab.vars <- rbind(tab.vars,
                 ## data.table(var=setdiff(colnames(data.input$data),colnames(tab.row)),source="input",level="row"))
                 
-                tab.row <- mergeCheck(tab.row,data.input$data[,c(col.row,setdiff(colnames(data.input$data),colnames(tab.row))),with=FALSE],by=col.row,all.x=T,as.fun=identity)
+                tab.row <- mergeCheck(tab.row,data.input$data[,c(col.row,setdiff(colnames(data.input$data),colnames(tab.row))),with=FALSE],by=col.row,all.x=T,as.fun="data.table")
                 
             }
             
@@ -583,7 +592,7 @@ NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
         if(cbind.by.filters) {
             data.recover <- NMscanInput(file,quiet=TRUE,use.rds=use.rds,
                                         applyFilters=cbind.by.filters,
-                                        invert=T,as.fun=identity,
+                                        invert=T,as.fun="data.table",
                                         details=FALSE)
         } else {
             data.recover <- data.input$data[!get(col.row)%in%tab.row[,get(col.row)]]
@@ -643,7 +652,7 @@ NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
 
 ### order columns in returned data
     if(order.columns){
-        tab.row <- NMorderColumns(tab.row, col.row=col.row, as.fun=identity,
+        tab.row <- NMorderColumns(tab.row, col.row=col.row, as.fun="data.table",
                                   alpha=FALSE, quiet=TRUE)
     }
 
@@ -662,8 +671,6 @@ NMscanData <- function(file, col.row, use.input=TRUE, merge.by.row,
     setcolorder(tables.meta,c("source","name","nrow","ncol"))
 
 
-    ## tab.row <- runAsFun(tab.row,as.fun)
-    ## tables.meta <- runAsFun(tables.meta,as.fun)
     tab.row <- as.fun(tab.row)
     tables.meta <- as.fun(tables.meta)
 

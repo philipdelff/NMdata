@@ -2,7 +2,7 @@
 ##' @param data An input data object. Could be read with NMreadCsv or
 ##'     NMscanInput.
 ##' @param file Path to mod/lst file. Only one of file, text, or lines to be
-##'     given. See ?NMgetSection for understanding when to use, file, text, or
+##'     given. See ?NMreadSection for understanding when to use, file, text, or
 ##'     lines.
 ##' @param text The mod/lst as characters.
 ##' @param lines The mod/lst as character, line by line.
@@ -21,8 +21,11 @@
 
 ## Don't export. This is only being used by NMscanData at this point.
 
-NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=FALSE) {
+NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     
+    if(missing(quiet)) quiet <- NULL
+    quiet <- NMdataDecideOption("quiet",quiet)
+    if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     
     ## get mod/lst text in lines format
@@ -42,11 +45,11 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun=NULL,quiet=F
 
     
 
-    ## If these are not NULL, it can make trouble in NMgetSection.
+    ## If these are not NULL, it can make trouble in NMreadSection.
     file <- NULL
     text <- NULL
     
-    text2 <- NMgetSection(lines=lines,section="DATA",keepComments=F)
+    text2 <- NMreadSection(lines=lines,section="DATA",keepComments=F)
     text3 <- sub(";.*$","",text2)
 
     ## replace the allowed IGN with IGNORE

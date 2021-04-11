@@ -6,16 +6,16 @@
 \usage{
 NMscanInput(
   file,
-  use.rds = TRUE,
-  file.mod = NULL,
+  use.rds,
+  file.mod,
   dir.data = NULL,
   applyFilters = FALSE,
   translate = TRUE,
   details = FALSE,
   col.id = "ID",
-  quiet = FALSE,
+  quiet,
   invert = FALSE,
-  as.fun = NULL
+  as.fun
 )
 }
 \arguments{

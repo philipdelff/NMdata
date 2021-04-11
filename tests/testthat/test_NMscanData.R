@@ -43,7 +43,8 @@ test_that("basic",{
 test_that("Modifications to column names in $INPUT",{
 
     fileRef <- "testReference/NMscanData2.rds"
-
+    ## res.ref <- readRDS(fileRef)
+    
     file.lst <- NMdata_filepath("examples/nonmem/xgxr002.lst")
 
     res <- NMscanData(file=file.lst,check.time = FALSE)

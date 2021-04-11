@@ -4,7 +4,7 @@
 \alias{NMscanTables}
 \title{read all output data tables in nonmem run}
 \usage{
-NMscanTables(file, details = F, as.fun = NULL, quiet = FALSE, tab.count = TRUE)
+NMscanTables(file, details = F, as.fun, quiet, tab.count = TRUE)
 }
 \arguments{
 \item{file}{the nonmem file to read (normally .mod or .lst)}
@@ -20,7 +20,7 @@ configured using NMdataConf.}
 
 \item{quiet}{The default is to give some information along the way on what
 data is found. But consider setting this to TRUE for non-interactive
-use.}
+use. Default can be configured using NMdataConf.}
 
 \item{tab.count}{Nonmem includes a counter of tables in the written data
 files. These are often not useful. However, if tab.count is TRUE

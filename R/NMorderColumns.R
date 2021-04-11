@@ -82,7 +82,7 @@ NMorderColumns <- function(data,
                            col.flagn,
                            col.dv="DV",
                            as.fun=NULL,
-                           quiet=FALSE){
+                           quiet){
 
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -99,7 +99,9 @@ NMorderColumns <- function(data,
     col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
     if(missing(col.nomtime)) col.nomtime <- NULL
     col.nomtime <- NMdataDecideOption("col.nomtime",col.nomtime)
-
+    if(missing(quiet)) quiet <- NULL
+    quiet <- NMdataDecideOption("quiet",quiet)
+    
     if(missing(col.row)) col.row <- NULL
     col.row <- NMdataDecideOption("col.row",col.row)
 
@@ -122,7 +124,7 @@ NMorderColumns <- function(data,
     nms <- names(data)
     nms.dup <- nms[duplicated(nms)]
     if(!quiet && length(nms.dup)) messageWrap(paste0("Duplicated column names:\n",paste(nms.dup,collapse=", ")),fun.msg=warning)
-    missing <- setdiff(setdiff(first1,"RATE"),nms)
+    missing <- setdiff(setdiff(first1,c("II","ADDL","RATE","SS")),nms)
     if(!quiet && length(missing)) messageWrap(paste0("These standard nonmem columns were not found in data:\n",paste(missing,collapse="\n")),fun.msg=warning)
 
     first <- c(first1,first)

@@ -16,7 +16,7 @@ NMorderColumns(
   col.flagn,
   col.dv = "DV",
   as.fun = NULL,
-  quiet = FALSE
+  quiet
 )
 }
 \arguments{

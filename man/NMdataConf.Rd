@@ -49,9 +49,28 @@ flagsAssign, flagsCount.
 flag values for data row omission. Default value is FLAG. Used
 by flagsAssign, flagsCount.
 
+\item{col.model} The name of the column that will hold the name of
+the model. See modelname too (which defines the values that the
+column will hold).
+
+\item{col.nomtime} The name of the column holding nominal
+time. This is only used for sorting columns by NMorderColumns.
+
+\item{col.row} The name of the column containing a unique row
+identifier. This is used by NMscanData when merge.by.row=TRUE, and
+by NMorderColumns (row counter will be first column in data).
+
+\item{merge.by.row} Adjust the default combine method in
+NMscanData.
+
+\item{quiet} For non-interactive scripts, you can switch off the
+chatty behavior once and for all using this setting.
+
 \item{use.input} In NMscanData, merge with columns in input data?
 Using this, you don't have to worry about remembering including
 all relevant variables in the output tables. Default is TRUE.
+
+\item{use.rds} Affects NMscanData, NMscanInput, and NMreadCsv. 
 
 \item{recover.rows} In NMscanData, Include rows from input data
     files that do not exist in output tables? This will be added

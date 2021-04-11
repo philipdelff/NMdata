@@ -7,15 +7,15 @@
 NMscanData(
   file,
   col.row,
-  use.input = TRUE,
+  use.input,
   merge.by.row,
   recover.rows,
   col.model = "model",
   modelname,
   file.mod,
   dir.data,
-  quiet = FALSE,
-  use.rds = TRUE,
+  quiet,
+  use.rds,
   as.fun,
   col.id = "ID",
   tab.count = FALSE,
@@ -28,12 +28,13 @@ NMscanData(
 (.mod or .lst)}
 
 \item{col.row}{A column with a unique value for each row. Such a
-column is recommended to use if possible. See merge.by.row
-and details as well.}
+column is recommended to use if possible. See merge.by.row and
+details as well.}
 
 \item{use.input}{Should the input data be added to the output
 data. Only column names that are not found in output data will
-be retrieved from the input data. See merge.by.row too.}
+be retrieved from the input data. Default is TRUE which can be
+modified using NMdataConf. See merge.by.row too.}
 
 \item{merge.by.row}{If use.input=TRUE, this argument determines
 the method by which the input data is added to output
@@ -83,13 +84,13 @@ provided, the .mod file is not used at all.}
 
 \item{quiet}{The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
-non-interactive use.}
+non-interactive use. Default can be configured using NMdataConf.}
 
 \item{use.rds}{If an rds file is found with the exact same name
 (except for .rds instead of say .csv) as the input data file
 mentioned in the Nonmem control stream, should this be used
 instead? The default is yes, and NMwriteData will create this
-by default too.}
+by default too. Default can be configured using NMdataConf.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to

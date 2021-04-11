@@ -54,10 +54,10 @@
 ##' @family DataRead
 ##' @export
 
-NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
+NMscanInput <- function(file, use.rds, file.mod,
                         dir.data=NULL, applyFilters=FALSE, translate=TRUE,
-                        details=FALSE, col.id="ID", quiet=FALSE, invert=FALSE,
-                        as.fun=NULL) {
+                        details=FALSE, col.id="ID", quiet, invert=FALSE,
+                        as.fun) {
     
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -71,7 +71,13 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
 
     if(missing(file)) file <- NULL
     file.find.data <- file
-
+    if(missing(as.fun)) as.fun <- NULL
+    if(missing(file.mod)) file.mod <- NULL
+    if(missing(quiet)) quiet <- NULL
+    quiet <- NMdataDecideOption("quiet",quiet)
+    if(missing(use.rds)) use.rds <- NULL
+    use.rds <- NMdataDecideOption("use.rds",use.rds)    
+    
     if(!is.null(file.mod) && !is.null(dir.data)) {
         messageWrap("Both file.mod and dir.data are non-NULL. Not allowed.",
                     fun.msg=stop)
@@ -90,9 +96,9 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
     }
 
     ## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    
-    lines <- NMgetSection(file,section="INPUT",keepName=FALSE,keepComments=FALSE,cleanSpaces=TRUE)
+    lines <- NMreadSection(file,section="INPUT",keepName=FALSE,keepComments=FALSE,cleanSpaces=TRUE)
     if(is.null(lines)) {
-        lines <- NMgetSection(file,section="INPT",keepName=FALSE,keepComments=FALSE,cleanSpaces=TRUE)
+        lines <- NMreadSection(file,section="INPT",keepName=FALSE,keepComments=FALSE,cleanSpaces=TRUE)
     }
     if(is.null(lines)) {stop("Could not find $INPUT or $INPT section in control stream. Cannot interpret data. Is file really the path to a valid nonmem control stream?")}
     
@@ -115,9 +121,9 @@ NMscanInput <- function(file, use.rds=TRUE, file.mod=NULL,
 ### containing the data. Since it is to be used in a FORTRAN OPEN statement,
 ### this name may not include embedded commas, semi-colons, parentheses, or
 ### spaces.
-    lines.data <- NMgetSection(file.find.data,section="DATA",keepName=F,keepComments=F,keepEmpty=F)
+    lines.data <- NMreadSection(file.find.data,section="DATA",keepName=F,keepComments=F,keepEmpty=F)
     if(is.null(lines.data)) {
-        lines.data <- NMgetSection(file.find.data,section="INFILE",keepName=F,keepComments=F,keepEmpty=F)
+        lines.data <- NMreadSection(file.find.data,section="INFILE",keepName=F,keepComments=F,keepEmpty=F)
     }
     if(is.null(lines.data)) stop("Could not find $DATA or $INFILE section in nonmem model. Please check the lst file.")
 

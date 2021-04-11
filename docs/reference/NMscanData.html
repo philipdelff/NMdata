@@ -79,7 +79,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6.7.905</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7</span>
       </span>
     </div>
 
@@ -156,15 +156,15 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
     <pre class="usage"><span class='fu'>NMscanData</span>(
   <span class='kw'>file</span>,
   <span class='kw'>col.row</span>,
-  use.input = <span class='fl'>TRUE</span>,
+  <span class='kw'>use.input</span>,
   <span class='kw'>merge.by.row</span>,
   <span class='kw'>recover.rows</span>,
   col.model = <span class='st'>"model"</span>,
   <span class='kw'>modelname</span>,
   <span class='kw'>file.mod</span>,
   <span class='kw'>dir.data</span>,
-  quiet = <span class='fl'>FALSE</span>,
-  use.rds = <span class='fl'>TRUE</span>,
+  <span class='kw'>quiet</span>,
+  <span class='kw'>use.rds</span>,
   <span class='kw'>as.fun</span>,
   col.id = <span class='st'>"ID"</span>,
   tab.count = <span class='fl'>FALSE</span>,
@@ -183,14 +183,15 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
     <tr>
       <th>col.row</th>
       <td><p>A column with a unique value for each row. Such a
-column is recommended to use if possible. See merge.by.row
-and details as well.</p></td>
+column is recommended to use if possible. See merge.by.row and
+details as well.</p></td>
     </tr>
     <tr>
       <th>use.input</th>
       <td><p>Should the input data be added to the output
 data. Only column names that are not found in output data will
-be retrieved from the input data. See merge.by.row too.</p></td>
+be retrieved from the input data. Default is TRUE which can be
+modified using NMdataConf. See merge.by.row too.</p></td>
     </tr>
     <tr>
       <th>merge.by.row</th>
@@ -254,7 +255,7 @@ provided, the .mod file is not used at all.</p></td>
       <th>quiet</th>
       <td><p>The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
-non-interactive use.</p></td>
+non-interactive use. Default can be configured using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>use.rds</th>
@@ -262,7 +263,7 @@ non-interactive use.</p></td>
 (except for .rds instead of say .csv) as the input data file
 mentioned in the Nonmem control stream, should this be used
 instead? The default is yes, and NMwriteData will create this
-by default too.</p></td>
+by default too. Default can be configured using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>as.fun</th>

@@ -6,7 +6,7 @@
 ##' @param file File path to the model (control stream) to edit.
 ##' @param section The name of the section to update. Example:
 ##'     section="EST" to edit the sections starting by $EST. See
-##'     NMgetSection
+##'     NMreadSection
 ##' @param newlines The new text (including "$SECTION"). Better be
 ##'     broken into lines in a character vector since this is simply
 ##'     past to writeLines.
@@ -87,7 +87,7 @@ NMwriteSection <- function(file,section,newlines,list.sections,newfile,
         
         if(blank.append) newlines <- c(newlines,"")
         
-        idx.dlines <- NMgetSection(lines=lines,section=section,return="idx",keepEmpty=T,
+        idx.dlines <- NMreadSection(lines=lines,section=section,return="idx",keepEmpty=T,
                                    keepName=T,keepComments=T,asOne=T,
                                    cleanSpaces=F)
 

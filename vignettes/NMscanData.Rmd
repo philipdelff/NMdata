@@ -242,21 +242,25 @@ by `NMdataConf`. If you don't, the column will be called `model`, and
 the model name taken from the `lst` file name (say, `xgxr001`).  In
 the following we use this to compare population predictions from two
 different models. We read them again just to show the use of the
-argument to name the models ourselves. Remember, we configure `NMdata`'s 
-`as.fun` option so we are working with `data.table` and we
-easily stack with `rbind` (`rbind.data.table`) filling in `NA`'s.
+argument to name the models ourselves. Remember, we configure
+`NMdata`'s `as.fun` option so we are working with `data.table` and we
+easily stack with `rbind` (`rbind.data.table`) filling in `NA`'s. We
+add a couple of options to specify how input and output data are to be
+combined.
 
 ```{r}
 NMdataConf(as.fun="data.table")
+NMdataConf(col.row="ROW")
+NMdataConf(merge.by.row=TRUE)
 ```
 
 
 ```{r}
 ## notice fill is an option to rbind with data.table
 res1.m <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                     col.row="ROW",quiet=TRUE)
+                     quiet=TRUE)
 res2.m <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
-                     col.row="ROW",modelname="single-compartment",
+                     modelname="single-compartment",
                      quiet=TRUE)
 res.mult <- rbind(res1.m,res2.m,fill=T)
 res.mult.mean <- res.mult[EVID==0&nmout==TRUE,

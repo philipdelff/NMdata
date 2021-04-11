@@ -4,22 +4,14 @@
 \alias{NMtransFilters}
 \title{Translate filters in Nonmem and apply to data}
 \usage{
-NMtransFilters(
-  data,
-  file,
-  text,
-  lines,
-  invert = FALSE,
-  as.fun = NULL,
-  quiet = FALSE
-)
+NMtransFilters(data, file, text, lines, invert = FALSE, as.fun, quiet)
 }
 \arguments{
 \item{data}{An input data object. Could be read with NMreadCsv or
 NMscanInput.}
 
 \item{file}{Path to mod/lst file. Only one of file, text, or lines to be
-given. See ?NMgetSection for understanding when to use, file, text, or
+given. See ?NMreadSection for understanding when to use, file, text, or
 lines.}
 
 \item{text}{The mod/lst as characters.}
@@ -48,7 +40,7 @@ This is not bulletproof. A statement like ACCEPT=(DOSE 10) which in
 \seealso{
 Other Nonmem: 
 \code{\link{NMextractText}()},
-\code{\link{NMgetSection}()},
+\code{\link{NMreadSection}()},
 \code{\link{NMwriteData}()},
 \code{\link{NMwriteSection}()}
 }

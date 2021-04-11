@@ -5,7 +5,7 @@
 ##'     behavior must depend on properties of the output.
 ##' @param quiet The default is to give some information along the way on what
 ##'     data is found. But consider setting this to TRUE for non-interactive
-##'     use.
+##'     use. Default can be configured using NMdataConf.
 ##' @param tab.count Nonmem includes a counter of tables in the written data
 ##'     files. These are often not useful. However, if tab.count is TRUE
 ##'     (default), this will be carried forward and added as a column called
@@ -21,7 +21,7 @@
 ##' @import data.table
 ##' @export
 
-NMscanTables <- function(file,details=F,as.fun=NULL,quiet=FALSE,tab.count=TRUE){
+NMscanTables <- function(file,details=F,as.fun,quiet,tab.count=TRUE){
 
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
@@ -34,6 +34,12 @@ NMscanTables <- function(file,details=F,as.fun=NULL,quiet=FALSE,tab.count=TRUE){
 
 ###  Section end: Dummy variables, only not to get NOTE's in pacakge checks ####
 
+
+    if(missing(quiet)) quiet <- NULL
+    quiet <- NMdataDecideOption("quiet",quiet)
+    if(missing(as.fun)) as.fun <- NULL
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    
     dir <- dirname(file)
     extract.info <- function(x,NAME,default){
         r1 <- regexpr(paste0(NAME," *= *[^ ]*"),x,ignore.case=T)
@@ -45,9 +51,9 @@ NMscanTables <- function(file,details=F,as.fun=NULL,quiet=FALSE,tab.count=TRUE){
         info
     }
     
-    lines.table <- NMgetSection(file,section="TABLE",keepName=F,
-                                keepComments=F,keepEmpty=F,asOne=F,
-                                simplify=F)
+    lines.table <- NMreadSection(file,section="TABLE",keepName=F,
+                                 keepComments=F,keepEmpty=F,asOne=F,
+                                 simplify=F)
     if(length(lines.table)==0) {
         messageWrap("No TABLE sections found in control stream. Please inspect the control stream.",
                     fun.msg=stop)
@@ -79,7 +85,7 @@ NMscanTables <- function(file,details=F,as.fun=NULL,quiet=FALSE,tab.count=TRUE){
     for(I in 1:nrow(meta)){
         if(!file.exists(meta[I,file])) stop(paste0("NMscanTables: File not found: ",meta[I,file],". Did you copy the lst file but forgot table
 file?"))
-        tables[[I]] <- NMreadTab(meta[I,file],quiet=T,tab.count=tab.count,showProgress=FALSE,as.fun=identity)
+        tables[[I]] <- NMreadTab(meta[I,file],quiet=TRUE,tab.count=tab.count,showProgress=FALSE,as.fun=identity)
         dim.tmp <- dim(tables[[I]])
         meta[I,nrow:=dim.tmp[1]]
         meta[I,ncol:=dim.tmp[2]]
@@ -112,9 +118,6 @@ file?"))
     
     names(tables) <- meta[,name]
 
-    
-    ## tables <- lapply(tables,runAsFun,as.fun=as.fun)
-    ## meta <- runAsFun(meta,as.fun=as.fun)
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     tables <- lapply(tables,as.fun)
     meta <- as.fun(meta)

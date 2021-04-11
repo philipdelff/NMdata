@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Translate NM $PK, $PRED sections or other Nonmem code to R code — NMcode2R • NMdata</title>
+<title>extract sections of Nonmem control streams — NMreadSection • NMdata</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="Translate NM $PK, $PRED sections or other Nonmem code to R code — NMcode2R" />
-<meta property="og:description" content="Translate NM $PK, $PRED sections or other Nonmem code to R code" />
+<meta property="og:title" content="extract sections of Nonmem control streams — NMreadSection" />
+<meta property="og:description" content="This is a very commonly used wrapper for the input part of the
+model file. Look NMextractText for more general functionality
+suitable for the results part too." />
 
 
 
@@ -130,31 +132,127 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Translate NM $PK, $PRED sections or other Nonmem code to R code</h1>
+    <h1>extract sections of Nonmem control streams</h1>
     
-    <div class="hidden name"><code>NMcode2R.Rd</code></div>
+    <div class="hidden name"><code>NMreadSection.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Translate NM $PK, $PRED sections or other Nonmem code to R code</p>
+    <p>This is a very commonly used wrapper for the input part of the
+model file. Look NMextractText for more general functionality
+suitable for the results part too.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>NMcode2R</span>(<span class='kw'>text</span>)</pre>
+    <pre class="usage"><span class='fu'>NMreadSection</span>(
+  file = <span class='kw'>NULL</span>,
+  lines = <span class='kw'>NULL</span>,
+  text = <span class='kw'>NULL</span>,
+  <span class='kw'>section</span>,
+  return = <span class='st'>"text"</span>,
+  keepEmpty = <span class='fl'>FALSE</span>,
+  keepName = <span class='fl'>TRUE</span>,
+  keepComments = <span class='fl'>TRUE</span>,
+  asOne = <span class='fl'>TRUE</span>,
+  simplify = <span class='fl'>TRUE</span>,
+  cleanSpaces = <span class='fl'>FALSE</span>,
+  <span class='kw'>...</span>
+)
+
+<span class='fu'>NMgetSection</span>(<span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>file</th>
+      <td><p>A file path to read from. Normally a .mod or .lst. See
+lines also.</p></td>
+    </tr>
+    <tr>
+      <th>lines</th>
+      <td><p>Text lines to process. This is an alternative to
+using the file argument.</p></td>
+    </tr>
+    <tr>
       <th>text</th>
-      <td><p>the Nonmem code.</p></td>
+      <td><p>Use this argument if the text to process is one long
+character string, and indicate the line seperator with the
+linesep argument (handled by NMextractText). Use only one of
+file, lines, and text.</p></td>
+    </tr>
+    <tr>
+      <th>section</th>
+      <td><p>The name of section to extract. Examples: "INPUT",
+"PK", "TABLE", etc.</p></td>
+    </tr>
+    <tr>
+      <th>return</th>
+      <td><p>If "text", plain text lines are returned. If "idx",
+matching line numbers are returned. "text" is default.</p></td>
+    </tr>
+    <tr>
+      <th>keepEmpty</th>
+      <td><p>Keep empty lines in output? Default is FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>keepName</th>
+      <td><p>Keep the section name in output (say, "$PROBLEM")
+Default is TRUE. It can only be FALSE, if return"idx".</p></td>
+    </tr>
+    <tr>
+      <th>keepComments</th>
+      <td><p>Keep comment lines?</p></td>
+    </tr>
+    <tr>
+      <th>asOne</th>
+      <td><p>If multiple hits, concatenate into one. This will
+most often be relevant with name="TABLE". If FALSE, a list
+will be returned, each element representing a table. Default
+is TRUE. So if you want to process the tables separately, you
+probably want FALSE here.</p></td>
+    </tr>
+    <tr>
+      <th>simplify</th>
+      <td><p>If asOne=FALSE, do you want the result to be
+simplified if only one table is found? Default is TRUE which
+is desirable for interactive analysis. For programming, you
+probably want FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>cleanSpaces</th>
+      <td><p>If TRUE, leading and trailing are removed, and
+multiplied succeeding white spaces are reduced to single white
+spaces.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional arguments passed to NMextractText</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>You probably want to run this on text obtained by using
-    the NMreadSection function.</p>
+    <p>character vector with extracted lines.</p>
+    <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
 
+    
+<ul>
+<li><p><code>NMgetSection</code>: Old function name for NMreadSection</p></li>
+</ul>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other Nonmem: 
+<code><a href='NMextractText.html'>NMextractText</a>()</code>,
+<code><a href='NMtransFilters.html'>NMtransFilters</a>()</code>,
+<code><a href='NMwriteData.html'>NMwriteData</a>()</code>,
+<code><a href='NMwriteSection.html'>NMwriteSection</a>()</code></p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>NMreadSection</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"examples/nonmem/run001.lst"</span>, package=<span class='st'>"NMdata"</span>),section=<span class='st'>"DATA"</span>)
+</div><div class='output co'>#&gt; [1] "$DATA      PK.csv IGNORE=@ IGNORE=(PKFL.EQ.0)"      
+#&gt; [2] "            IGNORE=(TRTPN.EQ.1) IGNORE=(TRTPN.EQ.3)"
+#&gt; [3] "            IGNORE=(TRTPN.EQ.4)"                    </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

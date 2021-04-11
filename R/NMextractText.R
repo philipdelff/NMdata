@@ -1,7 +1,7 @@
 ##' Versatile text extractor from Nonmem (input or output) control streams
 ##'
 ##' If you want to extract input sections like $PROBLEM, $DATA etc,
-##' see NMgetSection. This function is more general and can be used to
+##' see NMreadSection. This function is more general and can be used to
 ##' extract eg result sections.
 ##'
 ##' @param file A file path to read from. Normally a .mod or .lst. See
@@ -46,10 +46,10 @@
 ##'     how lines should be separated.
 ##' @return character vector with extracted lines.
 ##' @details This function is planned to get a more general name and
-##'     then be called by NMgetSection.
+##'     then be called by NMreadSection.
 ##' @family Nonmem
 ##' @examples
-##' NMgetSection(system.file("examples/nonmem/run001.lst", package = "NMdata"),section="DATA")
+##' NMreadSection(system.file("examples/nonmem/run001.lst", package = "NMdata"),section="DATA")
 ##' @export
 
 

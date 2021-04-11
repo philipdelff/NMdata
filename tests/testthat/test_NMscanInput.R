@@ -11,7 +11,8 @@ test_that("basic",{
 
     ## res1 <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")
     ### using as.data.table for as.fun is not recommended but still allowed
-    res1 <- NMscanInput(file=file.lst,applyFilters = T,as.fun=as.data.table)
+    res1 <-
+        NMscanInput(file=file.lst,applyFilters = T,as.fun=as.data.table)
 
     expect_equal_to_reference(res1,fileRef,version=2)
 })

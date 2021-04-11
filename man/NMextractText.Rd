@@ -83,19 +83,19 @@ character vector with extracted lines.
 }
 \description{
 If you want to extract input sections like $PROBLEM, $DATA etc,
-see NMgetSection. This function is more general and can be used to
+see NMreadSection. This function is more general and can be used to
 extract eg result sections.
 }
 \details{
 This function is planned to get a more general name and
-    then be called by NMgetSection.
+    then be called by NMreadSection.
 }
 \examples{
-NMgetSection(system.file("examples/nonmem/run001.lst", package = "NMdata"),section="DATA")
+NMreadSection(system.file("examples/nonmem/run001.lst", package = "NMdata"),section="DATA")
 }
 \seealso{
 Other Nonmem: 
-\code{\link{NMgetSection}()},
+\code{\link{NMreadSection}()},
 \code{\link{NMtransFilters}()},
 \code{\link{NMwriteData}()},
 \code{\link{NMwriteSection}()}
