@@ -130,10 +130,11 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
             messageWrap(sprintf("Number of new columns (%d) does not mactch the expected (%d). New columns are: %s.",n.newcols,ncols.expect,paste(newcols,", ")),fun.msg=stop)
         }
     }
-    if(!df1.was.dt || !is.null(as.fun)){
-        as.fun <- NMdataDecideOption("as.fun",as.fun)
-        df3 <- as.fun(df3)
-    }
+
+    if(df1.was.dt && is.null(as.fun)) as.fun <- "data.table"
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    df3 <- as.fun(df3)
+    
     
     df3
 }
