@@ -32,7 +32,7 @@ With load_all():
 1: 1      1
 
 ** New functions
-*** TODO function to replace file name extension
+*** TODO function to replace file name extension - fnExtension
 *** DONE summary.NMdata
     CLOSED: [2020-12-23 Wed 11:22]
 *** DONE NMgetSection
@@ -194,8 +194,10 @@ It's fairly easy to implement. Paste in front of the expression.use column.
      CLOSED: [2021-01-28 Thu 22:17]
 **** DONE recover.rows
      CLOSED: [2021-01-28 Thu 22:17]
-**** TODO use.rds
-**** TODO quiet
+**** DONE use.rds
+     CLOSED: [2021-04-11 Sun 15:59]
+**** DONE quiet
+     CLOSED: [2021-04-11 Sun 15:59]
 **** DONE col.row
      CLOSED: [2021-04-02 Fri 11:34]
 This is two steps. 
@@ -282,4 +284,3 @@ exactly these uses of ".". Anyway, no consequence to functionality.
 See how it's done in pmxtricks.  This is done. However, the datasets are not
 exported so it's not very important.
 ** BUGS
-*** TODO Often, messages from messageWrap (I think) get printed twice

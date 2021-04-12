@@ -112,7 +112,7 @@ NMscanInput <- function(file, use.rds, file.mod,
 
 ### this is to keep even dropped columns
     nms <- sub("(.*) *= *(DROP|SKIP)","\\1",nms)
-## For now, we just take the first name used in A=B labeling. 
+    ## For now, we just take the first name used in A=B labeling. 
     nms <- sub(".*=(.*)","\\1",nms)
 
 
@@ -165,43 +165,43 @@ NMscanInput <- function(file, use.rds, file.mod,
     if(translate){
 ### cnames.input is the names of columns as in input data file
         cnames.input <- colnames(data.input)
-    }
-    ## More column names can be specified in the nonmem control stream
-    ## than actually found in the input data. We will simply disregard
-    ## them.
-    if(length(nms)>length(cnames.input)){
-        nms <- nms[1:length(cnames.input)]
-        messageWrap("More column names specified in Nonmem $INPUT than found in data file. The additional names have been disregarded.",fun.msg=warning)
-    }
-    
-    cnames.input[1:length(nms)] <- nms
-    colnames(data.input) <- cnames.input
-
-    ## check for unique column names
-    if(any(duplicated(cnames.input))) {
-        nms2 <- cnames.input[-(1:length(nms))]
-        if(any(duplicated(nms))){
-            messageWrap(paste("Duplicated variable names declared in nonmem $INPUT section. Only first will be used:",paste(nms[duplicated(nms)],collapse=", ")),fun.msg=warning)
-            ## nms.u <- unique(nms)
-        } 
-        if(length(nms2)&&any(duplicated(nms2))){
-            messageWrap(paste("Duplicated variable names detected in input data not processed by Nonmem. Only first will be used:",paste(nms2[duplicated(nms2)],collapse=", ")),fun.msg=warning)
-            ## nms2.u <- unique(nms2)
+        
+        ## More column names can be specified in the nonmem control stream
+        ## than actually found in the input data. We will simply disregard
+        ## them.
+        if(length(nms)>length(cnames.input)){
+            nms <- nms[1:length(cnames.input)]
+            messageWrap("More column names specified in Nonmem $INPUT than found in data file. The additional names have been disregarded.",fun.msg=warning)
         }
-        nms.cross <- c(unique(nms),unique(nms2))
-        if(any(duplicated(nms.cross))){
-            
-            messageWrap(paste("The same variable names are found in input variables as read by nonmem and the rest of input data file. Please look at column names in input data and the $INPUT section in nonmem control stream. Only the first occurrence of the columns will be used:",paste(unique(nms.cross[duplicated(nms.cross)]),collapse=", ")),fun.msg=warning)
-        }
+        
+        cnames.input[1:length(nms)] <- nms
+        colnames(data.input) <- cnames.input
 
+        ## check for unique column names
+        if(any(duplicated(cnames.input))) {
+            nms2 <- cnames.input[-(1:length(nms))]
+            if(any(duplicated(nms))){
+                messageWrap(paste("Duplicated variable names declared in nonmem $INPUT section. Only first will be used:",paste(nms[duplicated(nms)],collapse=", ")),fun.msg=warning)
+                ## nms.u <- unique(nms)
+            } 
+            if(length(nms2)&&any(duplicated(nms2))){
+                messageWrap(paste("Duplicated variable names detected in input data not processed by Nonmem. Only first will be used:",paste(nms2[duplicated(nms2)],collapse=", ")),fun.msg=warning)
+                ## nms2.u <- unique(nms2)
+            }
+            nms.cross <- c(unique(nms),unique(nms2))
+            if(any(duplicated(nms.cross))){
+                
+                messageWrap(paste("The same variable names are found in input variables as read by nonmem and the rest of input data file. Please look at column names in input data and the $INPUT section in nonmem control stream. Only the first occurrence of the columns will be used:",paste(unique(nms.cross[duplicated(nms.cross)]),collapse=", ")),fun.msg=warning)
+            }
 #### Reduce to unique column names
-        
-        data.input <- data.input[,unique(cnames.input),with=F]
-        
+            
+            data.input <- data.input[,unique(cnames.input),with=F]
+            
+        }
     }
 
     as.fun <- NMdataDecideOption("as.fun",as.fun)
-
+    
 
 
     if(details){
