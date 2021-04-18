@@ -54,7 +54,8 @@ https://doi.org/10.1208/s12248-012-9387-9
 Instead of the section argument, NMreplacepart must accept newlines as a named
 list.
 *** compareCols
-**** TODO [#A] rows are not being sorted correctly.
+**** DONE rows are not being sorted correctly.
+     CLOSED: [2021-04-18 Sun 14:38]
      Seems not to prioritize columns that only exist in one of the
      data.tables.
 **** DONE Bug for diff.only=FALSE
@@ -65,7 +66,7 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMtransInput
-**** TODO [#B] A=B labels should be matched against reserved variable names
+**** TODO [#A] A=B labels should be matched against reserved variable names
 ***** Easiest would be to copy data to have acces using both names
 **** DONE Names of variables must be taken from lst, not mod
      CLOSED: [2020-06-06 Sat 23:43]
@@ -151,6 +152,7 @@ data. It should be based on tables in meta$tables.
 *** NMwriteData
 **** TODO [#B] Include a randomly generated ID in meta data that we can check files against?
 **** TODO [#A] When writing a CSV, write meta data to separate file
+**** TODO [#A] Support for pseudonyms
 **** DONE Check if character variables contain commas
      CLOSED: [2020-09-19 Sat 09:52]
 This will cause trouble when writing csv
@@ -158,7 +160,8 @@ This will cause trouble when writing csv
      CLOSED: [2021-04-02 Fri 11:33]
 **** TODO [#B] Improve support for custom IGNORE/ACCEPT statements
 Support for both ignore and accept? A list?
-**** TODO [#B] Returned text should be a list of sections.
+**** DONE [#B] Returned text should be a list of sections.
+     CLOSED: [2021-04-18 Sun 14:39]
 Ultimately, NMreplacePart must accept this as argument.
 **** DONE The Nonmem instructions should not include character variables
      CLOSED: [2020-09-17 Thu 22:13]

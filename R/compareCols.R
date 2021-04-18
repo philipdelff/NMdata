@@ -35,8 +35,7 @@
 
 
 
-compareCols <- function(...,keepNames=T,testEqual=F,diff.only=TRUE,fun.class=base::class){
-
+compareCols <- function(...,keepNames=T,testEqual=F,diff.only=TRUE,fun.class=base::class,quiet=FALSE,as.fun=NULL){
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     value <- NULL
@@ -45,7 +44,7 @@ compareCols <- function(...,keepNames=T,testEqual=F,diff.only=TRUE,fun.class=bas
     . <- function() NULL
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
-
+    
     dots <- list(...)
     ndots <- length(dots) 
     if(ndots<2) stop("At least two objects must be supplied")
@@ -54,11 +53,17 @@ compareCols <- function(...,keepNames=T,testEqual=F,diff.only=TRUE,fun.class=bas
     } else {
         names.dots <- paste0("x",seq(ndots))
     }
+    names(dots) <- names.dots
+    
+    df1.was.dt <- is.data.table(dots[[1]])
+    if(df1.was.dt && is.null(as.fun)) as.fun <- "data.table"
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
 
     getClasses <- function(x){
         cls <- lapply(x,fun.class)
         data.table(element=names(cls),class=as.character(unlist(cls)))
     }
+    
     cols <- lapply(dots,getClasses)
     for(n in 1:ndots) setnames(cols[[n]],"class",names.dots[n])
 
@@ -66,7 +71,8 @@ compareCols <- function(...,keepNames=T,testEqual=F,diff.only=TRUE,fun.class=bas
     dt.cols <- Reduce(function(...)merge(...,by="element",all=T),cols)
 
     dt.cols.l <- melt(dt.cols,id.vars="element")
-    nu.classes <- dt.cols.l[,.(nu=uniqueN(value),n=.N),by=.(element)]
+    
+    nu.classes <- dt.cols.l[!is.na(value),.(nu=uniqueN(value),n=.N),by=.(element)]
 
     ## merge back on
     dt.cols <- mergeCheck(dt.cols,nu.classes,by="element")
@@ -78,11 +84,22 @@ compareCols <- function(...,keepNames=T,testEqual=F,diff.only=TRUE,fun.class=bas
 
     if(diff.only) dt.cols <- dt.cols[n<ndots|nu>1]
 ### this one orders by number of occurance, unique classses, element name
-    dt.cols <- dt.cols[order(-n,-nu,element)][,!c("nu","n")]
 
+    
+    setorder(dt.cols,n,-nu,element)
+    cols.rm <- c("nu","n")
+    dt.cols[,(cols.rm):=NULL]
+    
+    
 ### what about a summary of dimensions of the supplied datasets? We do that in the separate "dims" function.
     
-    return(dt.cols)
+    if(!quiet) {
+        message("Dimensions:")
+        print(dims(list=dots))
+    }
+    message("\nOverview of columns:")
+    print(dt.cols)
+    invisible(as.fun(dt.cols))
 
 }
 
