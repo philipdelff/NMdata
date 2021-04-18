@@ -73,7 +73,7 @@ pre-specified table of flags, assign the flags automatically." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.0.901</span>
       </span>
     </div>
 
@@ -238,12 +238,11 @@ independently.</p></td>
 </div><div class='output co'>#&gt; <span class='message'>Coding flagn = 10, flagc = Below LLOQ</span></div><div class='input'><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/duplicated.html'>unique</a></span>(<span class='kw'>pk</span>[,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"flagn"</span>,<span class='st'>"flagc"</span>,<span class='st'>"BLQ"</span>)])
 </div><div class='output co'>#&gt;    flagn        flagc BLQ
 #&gt; 1:     0 Analysis set   0
-#&gt; 2:    NA         &lt;NA&gt;   1
-#&gt; 3:    NA         &lt;NA&gt;   0</div><div class='input'><span class='fu'><a href='flagsCount.html'>flagsCount</a></span>(<span class='kw'>pk</span>[<span class='kw'>EVID</span><span class='op'>==</span><span class='fl'>0</span>],<span class='kw'>dt.flags</span>,col.flagn=<span class='st'>"flagn"</span>,col.flagc=<span class='st'>"flagc"</span>)
+#&gt; 2:    10   Below LLOQ   1</div><div class='input'><span class='fu'><a href='flagsCount.html'>flagsCount</a></span>(<span class='kw'>pk</span>[<span class='kw'>EVID</span><span class='op'>==</span><span class='fl'>0</span>],<span class='kw'>dt.flags</span>,col.flagn=<span class='st'>"flagn"</span>,col.flagc=<span class='st'>"flagc"</span>)
 </div><div class='output co'>#&gt;                 flagc N.left Nobs.left N.discarded Nobs.discarded
 #&gt; 1: All available data    150      1352          NA             NA
-#&gt; 2:         Below LLOQ      0         0         150           1352
-#&gt; 3:       Analysis set      0         0          NA             NA</div></pre>
+#&gt; 2:         Below LLOQ    131       755          19            597
+#&gt; 3:       Analysis set    131       755          NA             NA</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

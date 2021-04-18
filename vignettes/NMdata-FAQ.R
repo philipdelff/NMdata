@@ -13,7 +13,7 @@ knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 
 ## ----eval=FALSE---------------------------------------------------------------
 #  library(remotes)
-#  install_github("philipdelff/NMdata@v0.0.6.6")
+#  install_github("philipdelff/NMdata@v0.0.7")
 #  library(NMdata)
 
 ## ----eval=F-------------------------------------------------------------------
@@ -27,6 +27,9 @@ knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 #  NMdataConfig(as.fun=tibble::as_tibble)
 #  ## for data.table
 #  NMdataConfig(as.fun="data.table")
+
+## ----eval=FALSE---------------------------------------------------------------
+#  NMdataConfig(file.mod=function(file) fnExtension(file,".cfg"))
 
 ## ----eval=FALSE---------------------------------------------------------------
 #  NMdataConfig(file.mod=function(file) file.path(dirname(file),"input.txt"))

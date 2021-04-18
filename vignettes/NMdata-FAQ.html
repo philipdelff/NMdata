@@ -315,7 +315,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<p>Built 2021-04-06 using NMdata 0.0.6.7.905.</p>
+<p>Built 2021-04-18 using NMdata 0.0.7.</p>
 <div id="general-nmdata-questions" class="section level2">
 <h2>General <code>NMdata</code> questions</h2>
 <div id="how-do-i-install-nmdata" class="section level3">
@@ -324,12 +324,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(remotes)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">install_github</span>(<span class="st">&quot;philipdelff/NMdata&quot;</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">library</span>(NMdata)</span></code></pre></div>
-<p>In a production environment, use a <a href="https://github.com/philipdelff/NMdata/releases">github release</a> To install <code>NMdata 0.0.6.6</code> release, do</p>
+<p>In a production environment, use a <a href="https://github.com/philipdelff/NMdata/releases">github release</a> To install <code>NMdata 0.0.7</code> release, do (notice “<span class="citation">@v</span>”:)</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">library</span>(remotes)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">install_github</span>(<span class="st">&quot;philipdelff/NMdata@v0.0.6.6&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">install_github</span>(<span class="st">&quot;philipdelff/NMdata@v0.0.7&quot;</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="kw">library</span>(NMdata)</span></code></pre></div>
-<p>Please make sure to check for latest version on (<a href="https://github.com/philipdelff/NMdata/releases" class="uri">https://github.com/philipdelff/NMdata/releases</a>)</p>
-<p>If you need to archive a script that is dependent on a feature or bug fix which is only in the master branch, request a release.</p>
+<p>This example is not automatically updated to latest available release. Please make sure to check for latest version on (<a href="https://github.com/philipdelff/NMdata/releases" class="uri">https://github.com/philipdelff/NMdata/releases</a>)</p>
+<p>If you need to archive a script that is dependent on a feature or bug fix which is only in the master branch, you can request a release.</p>
 </div>
 <div id="what-about-nmdata-dependencies" class="section level3">
 <h3>What about NMdata dependencies?</h3>
@@ -348,11 +348,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="why-is-nmdata-fast" class="section level3">
 <h3>Why is NMdata fast?</h3>
-<p><code>NMdata</code> is generally fast - all thanks to the incredible <code>data.table</code> package. If you don’t use <code>data.table</code> already, it may even seem extremely fast. If you are noticing some circumstances where <code>NMdata</code> seems slow, I am very curious to hear about it.</p>
+<p><code>NMdata</code> is generally fast - all thanks to the incredible <code>data.table</code> package. If you don’t use <code>data.table</code> already, <code>NMdata</code> may even seem extremely fast. If you are noticing some circumstances where <code>NMdata</code> seems slow, I am very curious to hear about it.</p>
 </div>
 <div id="so-nmdata-uses-data.table.-does-that-mean-variables-are-modified-by-reference" class="section level3">
 <h3>So NMdata uses data.table. Does that mean variables are modified by reference?</h3>
-<p>NMdata definitely modify variables by reference internally but this will never affect your workspace. It might improve speed to go all the way, and modify by reference in the user workspace, but using <code>NMdata</code> must be easy for R users at all levels of experience. If you don’t understand what this is all about, you’re fine.</p>
+<p><code>NMdata</code> definitely modify variables by reference internally but this will never affect your workspace. It might improve speed to go all the way, and modify by reference in the user workspace, but using <code>NMdata</code> must be easy for R users at all levels of experience. If you don’t understand what this is all about, you’re fine.</p>
 </div>
 <div id="i-want-to-use-a-tool-from-nmdata-but-how-does-it-integrate-with-dplyr-or-data.table" class="section level3">
 <h3>I want to use a tool from NMdata, but how does it integrate with dplyr or data.table?</h3>
@@ -391,12 +391,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h2>Questions specific to data reading tools</h2>
 <div id="what-if-i-dont-use-psn-and-my-control-stream-files-are-named-differently" class="section level3">
 <h3>What if I don’t use PSN, and my control stream files are named differently?</h3>
-<p><code>NMscanData</code> needs the path to the output control stream (technically, the input control stream will work too, but this is not recommended). It has no requirement to the naming of the output control stream. In order to find the input data, it needs the input control stream as well, and it will automatically find it based on the output control stream path and an assumed naming convention based on PSN (which is that the output control stream file name ends in <code>.lst</code> and the input control stream is located next to it ending in <code>.mod</code>). This naming convention can easily be configured using the <code>file.mod</code> option.</p>
-<p>Another commonly used file structure is to have each run in a separate folder carrying the model name/number. Say the input control stream is always called <code>input.txt</code> and located next to the output control stream called <code>output.txt</code>, you can use</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">NMdataConfig</span>(<span class="dt">file.mod =</span> <span class="cf">function</span>(file) <span class="kw">file.path</span>(<span class="kw">dirname</span>(file), </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    <span class="st">&quot;input.txt&quot;</span>))</span></code></pre></div>
+<p><code>NMscanData</code> needs the path to the output control stream (technically, the input control stream will work too, but this is not recommended). It has no requirement to the naming of the output control stream. In order to find the input data, it needs the input control stream as well, and it will automatically find it based on the output control stream path and an assumed naming convention based on PSN (which is that the output control stream file name ends in <code>.lst</code> and the input control stream is located next to it ending in <code>.mod</code>). This naming convention can easily be configured using the <code>file.mod</code> option. If you input control streams are ending with <code>.cfg</code>, you can do</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">NMdataConfig</span>(<span class="dt">file.mod =</span> <span class="cf">function</span>(file) <span class="kw">fnExtension</span>(file, <span class="st">&quot;.cfg&quot;</span>))</span></code></pre></div>
+<p>where <code>fnExtension</code> is a very simple function in <code>NMdata</code> which covers this exact purpose. Feel free to use any other tools to put together a function that translates from list file name to input control stream file name.</p>
+<p>Another commonly used file structure is to have each run in a separate folder carrying the model name/number. Say the input control stream is always called <code>input.txt</code> and located next to the list file called <code>output.txt</code>, you can use</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">NMdataConfig</span>(<span class="dt">file.mod =</span> <span class="cf">function</span>(file) <span class="kw">file.path</span>(<span class="kw">dirname</span>(file), </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>    <span class="st">&quot;input.txt&quot;</span>))</span></code></pre></div>
 <p><code>NMscanData</code> reads the name of the model and adds it to a column in the returned data. If the name of the directory is the model name, you can do the following as well:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">NMdataConfig</span>(<span class="dt">modelname =</span> <span class="cf">function</span>(file) <span class="kw">basename</span>(<span class="kw">dirname</span>(<span class="kw">normalizePath</span>(file))))</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">NMdataConfig</span>(<span class="dt">modelname =</span> <span class="cf">function</span>(file) <span class="kw">basename</span>(<span class="kw">dirname</span>(<span class="kw">normalizePath</span>(file))))</span></code></pre></div>
 <p>Feel free to modify the function to omit parts of the string or add to it.</p>
 </div>
 <div id="what-is-input-and-output-data" class="section level3">

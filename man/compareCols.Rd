@@ -9,7 +9,9 @@ compareCols(
   keepNames = T,
   testEqual = F,
   diff.only = TRUE,
-  fun.class = base::class
+  fun.class = base::class,
+  quiet = FALSE,
+  as.fun = NULL
 )
 }
 \arguments{

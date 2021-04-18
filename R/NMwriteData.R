@@ -76,15 +76,19 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
 #### Section start: Process arguments ####
 
     stopifnot(is.data.frame(data)) ## data.out <- as.data.frame(data)
-    if(missing(file)) file <- NULL
+    if(missing(file)){
+        file <- NULL
+    } else {
+#### check file name for compatibility with replacing extension
+        if(!grepl("\\..+$",file)) stop("Cannot replace extension on filename. Choose a file name that ends in an extension, like \"file.csv\" or \"file.rds\".")
+    }
+    
     if(is.null(file)) {
         write.csv=FALSE
         write.RData=FALSE
         write.rds=FALSE
     }
 
-#### check file name for compatibility with replacing extension
-    if(!grepl("\\..+$",file)) stop("Cannot replace extension on filename. Choose a file name that ends in an extension, like \"file.csv\" or \"file.rds\".")
     
 ### stamp arguments
     doStamp <- TRUE

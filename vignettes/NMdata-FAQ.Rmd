@@ -35,18 +35,20 @@ library(NMdata)
 
 In a production environment, use a [github
 release](https://github.com/philipdelff/NMdata/releases) To install
-`NMdata 0.0.6.6` release, do
+`NMdata 0.0.7` release, do (notice "@v":)
 
 ```{r,eval=FALSE}
 library(remotes)
-install_github("philipdelff/NMdata@v0.0.6.6")
+install_github("philipdelff/NMdata@v0.0.7")
 library(NMdata)
 ```
 
-Please make sure to check for latest version on (https://github.com/philipdelff/NMdata/releases)
+This example is not automatically updated to latest available
+release. Please make sure to check for latest version on
+(https://github.com/philipdelff/NMdata/releases)
 
 If you need to archive a script that is dependent on a feature or bug
-fix which is only in the master branch, request a release. 
+fix which is only in the master branch, you can request a release. 
 
 
 ### What about NMdata dependencies?
@@ -99,14 +101,14 @@ you many hours of frustration.
 
 ### Why is NMdata fast?
 `NMdata` is generally fast - all thanks to the incredible `data.table`
-package. If you don't use `data.table` already, it may even seem extremely
+package. If you don't use `data.table` already, `NMdata` may even seem extremely
 fast. If you are noticing some circumstances where `NMdata` seems
 slow, I am very curious to hear about it.
 
 ### So NMdata uses data.table. Does that mean variables are modified by reference? 
-NMdata definitely modify variables by reference
+`NMdata` definitely modify variables by reference
 internally but this will never affect your workspace. It might improve speed to go all the way, and modify by reference in the user workspace, but using `NMdata` must be easy for R users
-at all levels of experience.  If you don't understand what this is all
+at all levels of experience. If you don't understand what this is all
 about, you're fine.
 
 ### I want to use a tool from NMdata, but how does it integrate with dplyr or data.table?
@@ -183,12 +185,17 @@ output control stream path and an assumed naming convention based on
 PSN (which is that the output control stream file name ends in `.lst` and the
 input control stream is located next to it ending in `.mod`). This naming
 convention can easily be configured using the `file.mod`
-option. 
+option. If you input control streams are ending with `.cfg`, you can do
+
+```{r,eval=FALSE}
+NMdataConfig(file.mod=function(file) fnExtension(file,".cfg"))
+```
+where `fnExtension` is a very simple function in `NMdata` which covers this exact purpose. Feel free to use any other tools to put together a function that translates from list file name to input control stream file name.
 
 Another commonly used file structure is to have each run in a separate
 folder carrying the model name/number. Say the input control stream is
 always called `input.txt` and 
-located next to the output control stream called `output.txt`, you can use
+located next to the list file called `output.txt`, you can use
 
 ```{r,eval=FALSE}
 NMdataConfig(file.mod=function(file) file.path(dirname(file),"input.txt"))

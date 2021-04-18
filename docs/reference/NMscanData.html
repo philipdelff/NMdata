@@ -79,7 +79,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.0.901</span>
       </span>
     </div>
 
@@ -163,6 +163,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
   <span class='kw'>modelname</span>,
   <span class='kw'>file.mod</span>,
   <span class='kw'>dir.data</span>,
+  translate.input = <span class='fl'>TRUE</span>,
   <span class='kw'>quiet</span>,
   <span class='kw'>use.rds</span>,
   <span class='kw'>as.fun</span>,
@@ -252,10 +253,17 @@ tell in which directory to find the data file. If dir.data is
 provided, the .mod file is not used at all.</p></td>
     </tr>
     <tr>
+      <th>translate.input</th>
+      <td><p>Default is TRUE, meaning that input data
+column names are translated according to $INPUT section in
+nonmem listing file.</p></td>
+    </tr>
+    <tr>
       <th>quiet</th>
       <td><p>The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
-non-interactive use. Default can be configured using NMdataConf.</p></td>
+non-interactive use. Default can be configured using
+NMdataConf.</p></td>
     </tr>
     <tr>
       <th>use.rds</th>

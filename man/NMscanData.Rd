@@ -14,6 +14,7 @@ NMscanData(
   modelname,
   file.mod,
   dir.data,
+  translate.input = TRUE,
   quiet,
   use.rds,
   as.fun,
@@ -82,9 +83,14 @@ if you only have the output control stream, use dir.data to
 tell in which directory to find the data file. If dir.data is
 provided, the .mod file is not used at all.}
 
+\item{translate.input}{Default is TRUE, meaning that input data
+column names are translated according to $INPUT section in
+nonmem listing file.}
+
 \item{quiet}{The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
-non-interactive use. Default can be configured using NMdataConf.}
+non-interactive use. Default can be configured using
+NMdataConf.}
 
 \item{use.rds}{If an rds file is found with the exact same name
 (except for .rds instead of say .csv) as the input data file

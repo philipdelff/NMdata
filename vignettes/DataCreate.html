@@ -315,7 +315,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<p>Built 2021-04-11 using NMdata 0.0.6.7.905.</p>
+<p>Built 2021-04-18 using NMdata 0.0.7.</p>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>Getting the data ready for modeling is a crucial but underrated task. Mistakes during the process of combining data sets, defining time variables etc. can lead to anything from difficulties during modeling and need for revisiting data set creation to a lot of wasted time working with an erroneos data set. Avoiding those mistakes by integrating checks into the data creation process is a must.</p>
@@ -356,15 +356,15 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a><span class="co">## dt.cov has a covariate for some of the subjects</span></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>dt.cov</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="co">#&gt;     ID COV</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="co">#&gt;  1: 31   2</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a><span class="co">#&gt;  2: 32   2</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a><span class="co">#&gt;  3: 33   4</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="co">#&gt;  1: 31   5</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a><span class="co">#&gt;  2: 32   1</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a><span class="co">#&gt;  3: 33   3</span></span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a><span class="co">#&gt;  4: 34   1</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a><span class="co">#&gt;  5: 35   3</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a><span class="co">#&gt;  6: 36   3</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a><span class="co">#&gt;  5: 35   2</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a><span class="co">#&gt;  6: 36   4</span></span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a><span class="co">#&gt;  7: 37   2</span></span>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a><span class="co">#&gt;  8: 38   1</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a><span class="co">#&gt;  9: 39   3</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a><span class="co">#&gt;  9: 39   2</span></span>
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a><span class="co">#&gt; 10: 40   2</span></span>
 <span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a>pk2 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>)</span>
 <span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a><span class="kw">dim</span>(pk2)</span>
@@ -451,7 +451,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>Columns that cannot be converted to numeric are put in the back, while column bearing standard Nonmem variable names like <code>ID</code>, <code>TIME</code>, <code>EVID</code> etc. will be pulled up front. You can of course add column names to prioritize to front (<code>first</code>) or back (<code>last</code>). See <code>?NMorderColumns</code> for more options.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">NMorderColumns</span>(pk)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="co">#&gt; Warning: In NMorderColumns(pk) : These standard nonmem columns were not found in data:</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="co">#&gt; II ADDL SS MDV</span></span></code></pre></div>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="co">#&gt; MDV</span></span></code></pre></div>
 <p>Notice, <code>NMdata</code> detected the exclusion flag and suggests to include it in <code>$DATA</code>.</p>
 </div>
 <div id="writing-data-to-files" class="section level3">
@@ -501,7 +501,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;vignettes/DataCreate.Rmd&quot;</span></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true"></a><span class="co">#&gt; $CreationTime</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2021-04-11 11:29:39 EDT&quot;</span></span></code></pre></div>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2021-04-18 14:55:14 EDT&quot;</span></span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a>pk &lt;-<span class="st"> </span><span class="kw">stampObj</span>(pk, <span class="dt">script =</span> <span class="st">&quot;vignettes/DataCreate.Rmd&quot;</span>, <span class="dt">Description =</span> <span class="st">&quot;A PK dataset used for examples.&quot;</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="kw">objInfo</span>(pk)</span>
@@ -509,7 +509,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;vignettes/DataCreate.Rmd&quot;</span></span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a><span class="co">#&gt; $CreationTime</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2021-04-11 11:29:39 EDT&quot;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;2021-04-18 14:55:14 EDT&quot;</span></span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true"></a><span class="co">#&gt; $Description</span></span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;A PK dataset used for examples.&quot;</span></span></code></pre></div>
