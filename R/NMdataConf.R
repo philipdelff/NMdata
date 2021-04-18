@@ -185,7 +185,7 @@ NMdataConfOptions <- function(name){
         )
        ,
         file.mod=list(
-            default=function(file) sub("\\.lst *$","\\.mod",file)
+            default=function(file) fnExtension(file,ext=".mod")
             ## has to be length 1 character or function
            ,is.allowed=function(x) is.function(x) || (length(x)==1 && is.character(x))
            ,msg.not.allowed="file.mod must be a function or a character of length 1"
@@ -196,7 +196,7 @@ NMdataConfOptions <- function(name){
         )
        ,
         modelname=list(
-            default=function(file) sub("\\.lst$","",basename(sub(" $","",file)))
+            default=function(file) fnExtension(basename(file),"")
             ## has to be length 1 character or function
            ,is.allowed=function(x) is.function(x) || (length(x)==1 && is.character(x))
            ,msg.not.allowed="modelname must be either a function or a character."

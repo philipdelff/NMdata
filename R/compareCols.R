@@ -40,14 +40,12 @@ compareCols <- function(...,keepNames=T,testEqual=F,diff.only=TRUE,fun.class=bas
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     value <- NULL
-  element <- NULL
-nu <- NULL
+    element <- NULL
+    nu <- NULL
     . <- function() NULL
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
-
-    
     dots <- list(...)
     ndots <- length(dots) 
     if(ndots<2) stop("At least two objects must be supplied")
@@ -79,7 +77,7 @@ nu <- NULL
     ## sorting options. By diff, alpha. Or by diff, location in first df?
 
     if(diff.only) dt.cols <- dt.cols[n<ndots|nu>1]
-    ### this one orders by number of occurance, unique classses, element name
+### this one orders by number of occurance, unique classses, element name
     dt.cols <- dt.cols[order(-n,-nu,element)][,!c("nu","n")]
 
 ### what about a summary of dimensions of the supplied datasets? We do that in the separate "dims" function.

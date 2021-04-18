@@ -59,7 +59,6 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
                         write.rds=write.csv,script,args.stamp,
                         args.rds,nmdrop,nmdir.data,col.flag="FLAG",nm.rename,
                         capitalize.names=FALSE){
-
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -83,6 +82,9 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
         write.RData=FALSE
         write.rds=FALSE
     }
+
+#### check file name for compatibility with replacing extension
+    if(!grepl("\\..+$",file)) stop("Cannot replace extension on filename. Choose a file name that ends in an extension, like \"file.csv\" or \"file.rds\".")
     
 ### stamp arguments
     doStamp <- TRUE
@@ -129,10 +131,10 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
 ### this function is used to replace .csv or whatever ending is used
 ### to .rds, .RData etc. file is path, ext is extension without .,
 ### e.g. "rds".
-    transFileName <- function(file,ext){
-        file.new <- sub("\\.[^\\.]+$",paste0(".",ext),file)
-        file.new
-    }
+    ## transFileName <- function(file,ext){
+    ##     file.new <- sub("\\.[^\\.]+$",paste0(".",ext),file)
+    ##     file.new
+    ## }
     
     
     ## we must not quote. ID is often a character. If quoted, nonmem
@@ -264,8 +266,8 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     
     written <- FALSE
     if(write.csv){
+        file.csv <- fnExtension(file,".csv")
         ## opt.orig <- options(scipen=15)
-        file.csv <- transFileName(file,"csv")
         ## write.csv(data,na=".",quote=quote,row.names=FALSE,file=file.csv)
         fwrite      (data,na=".",quote=quote,row.names=FALSE,file=file.csv,scipen=0)
         ## options(opt.orig)
@@ -273,18 +275,14 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     }
     if(write.RData){
         name.data <- deparse(substitute(data))
-        if(!grepl("\\..+$",file)) stop("filename could not be translated to .RData. Choose a .csv file name.")
-        file.RData <- transFileName(file,"RData")
+        file.RData <- fnExtension(file,".RData")
         if(doStamp) data <- do.call(stampObj,append(list(data=data,writtenTo=file.RData),args.stamp))
         assign(name.data,data)
         save(list=name.data,file=file.RData)
         written <- TRUE
     }
     if(write.rds){
-        ## A dot and then something is needed in the name for us to be able to
-        ## translate
-        if(!grepl("\\..+$",file)) stop("filename could not be translated to .rds. Choose a .csv file name.")
-        file.rds <- transFileName(file,"rds")
+        file.rds <- fnExtension(file,".rds")
         if(doStamp) data <- do.call(stampObj,append(list(data=data,writtenTo=file.rds),args.stamp))
         do.call(saveRDS,append(list(object=data,file=file.rds),args.rds))
         written <- TRUE

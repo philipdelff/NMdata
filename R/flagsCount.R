@@ -93,7 +93,10 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     . <- function() NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
-    
+
+    if(missing(as.fun)) as.fun <- NULL
+    as.fun.arg <- as.fun
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
     if(missing(file)) file <- NULL
     if(missing(col.flagn)) col.flagn <- NULL
     if(missing(col.flagc)) col.flagc <- NULL
@@ -257,10 +260,10 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
         cat(paste0("Table written to ",file,"\n"))
     }
 
-    if(!data.was.data.table || !is.null(as.fun) ) {
-        as.fun <- NMdataDecideOption("as.fun",as.fun)
-        allres <- as.fun(allres)
-    }
+    
+    if(data.was.data.table && is.null(as.fun.arg)) as.fun <- "data.table"
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    data <- as.fun(data)
 
     return(allres)
 }

@@ -65,9 +65,13 @@
 ##'     if you only have the output control stream, use dir.data to
 ##'     tell in which directory to find the data file. If dir.data is
 ##'     provided, the .mod file is not used at all.
+##' @param translate.input Default is TRUE, meaning that input data
+##'     column names are translated according to $INPUT section in
+##'     nonmem listing file.
 ##' @param quiet The default is to give some information along the way
 ##'     on what data is found. But consider setting this to TRUE for
-##'     non-interactive use. Default can be configured using NMdataConf.
+##'     non-interactive use. Default can be configured using
+##'     NMdataConf.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
@@ -135,7 +139,7 @@
 NMscanData <- function(file, col.row, use.input, merge.by.row,
                        recover.rows,
                        col.model="model", modelname, file.mod,
-                       dir.data, quiet, use.rds,
+                       dir.data, translate.input=TRUE, quiet, use.rds,
                        as.fun, col.id="ID", tab.count=FALSE,
                        order.columns=TRUE, check.time) {
 
@@ -353,17 +357,21 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         use.rows <- FALSE
     }
 
-
+    if(use.input){
+        data.input <- NMscanInput(file
+                                 ,file.mod=file.mod
+                                 ,dir.data=dir.data
+                                 ,quiet=TRUE
+                                 ,translate=translate.input
+                                 ,use.rds=use.rds
+                                 ,applyFilters=cbind.by.filters
+                                 ,as.fun="data.table"
+                                 ,col.id=col.id
+                                 ,details=TRUE)
+    }
     if(use.input&&!any(tables$meta$full.length)) {
         ## data.input
         ## meta.data 
-        data.input <- NMscanInput(file,file.mod=file.mod,
-                                  dir.data=dir.data,quiet=TRUE,
-                                  use.rds=use.rds,
-                                  applyFilters=cbind.by.filters,
-                                  as.fun="data.table",
-                                  col.id=col.id,
-                                  details=TRUE)
         
         tab.row <- copy(data.input$data)
         setattr(tab.row,"file",NULL)
@@ -385,14 +393,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(use.input&&any(tables$meta$full.length)) {
         ## if(!quiet) messageWrap("Searching for input data.")
         
-        data.input <- NMscanInput(file,file.mod=file.mod,
-                                  dir.data=dir.data, quiet=TRUE,
-                                  use.rds=use.rds,
-                                  applyFilters=cbind.by.filters,
-                                  as.fun="data.table",
-                                  col.id=col.id,
-                                  details=TRUE)
-        
         cnames.input <- colnames(data.input$data)
 
         ## if no method is specified, search for possible col.row to help the user
@@ -400,7 +400,9 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             
             dia <- suppressWarnings(NMscanInput(file,file.mod=file.mod,
                                                 dir.data=dir.data,
-                                                quiet=TRUE,use.rds=use.rds,
+                                                quiet=TRUE
+                                               ,translate=translate.input
+                                               ,use.rds=use.rds,
                                                 applyFilters=FALSE,
                                                 details=TRUE,
                                                 col.id=col.id,
@@ -590,10 +592,13 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         
         skip.recover <- FALSE
         if(cbind.by.filters) {
-            data.recover <- NMscanInput(file,quiet=TRUE,use.rds=use.rds,
-                                        applyFilters=cbind.by.filters,
-                                        invert=T,as.fun="data.table",
-                                        details=FALSE)
+            data.recover <- NMscanInput(file,quiet=TRUE
+                                       ,use.rds=use.rds
+                                       ,applyFilters=cbind.by.filters
+                                       ,translate=translate.input
+                                       ,invert=T
+                                       ,as.fun="data.table"
+                                       ,details=FALSE)
         } else {
             data.recover <- data.input$data[!get(col.row)%in%tab.row[,get(col.row)]]
         }

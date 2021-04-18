@@ -32,12 +32,13 @@ With load_all():
 1: 1      1
 
 ** New functions
-*** TODO function to replace file name extension - fnExtension
+*** DONE function to replace file name extension - fnExtension
+    CLOSED: [2021-04-18 Sun 12:06]
 *** DONE summary.NMdata
     CLOSED: [2020-12-23 Wed 11:22]
 *** DONE NMgetSection
     CLOSED: [2020-12-23 Wed 11:25]
-*** TODO A function to check data
+*** TODO [#B] A function to check data
 **** TODO Find previously used code
 **** TODO Implement checks in pmxtricks todo
 **** TODO Implement more checks
@@ -48,14 +49,16 @@ https://doi.org/10.1208/s12248-012-9387-9
 ***** TODO AMT>0 for EVID=0 is not allowed (I believe)
 ** Function improvements
 *** NMreplacepart
-**** DONE [#A] Support for multiple sections
+**** DONE Support for multiple sections
      CLOSED: [2021-04-05 Mon 12:06]
 Instead of the section argument, NMreplacepart must accept newlines as a named
 list.
 *** compareCols
-**** TODO rows are not being sorted correctly.
+**** TODO [#A] rows are not being sorted correctly.
      Seems not to prioritize columns that only exist in one of the
      data.tables.
+**** DONE Bug for diff.only=FALSE
+     CLOSED: [2021-04-18 Sun 12:16]
 *** NMextractText
 **** TODO reduce lines and text to one argument
 The information is sufficient when taking into account the linesep
@@ -94,6 +97,8 @@ A way to limit rows read into nonmem
 **** DONE Lastonly does the same as firstonly
      CLOSED: [2020-07-13 Mon 19:37]
 *** NMscanData
+**** DONE intro translate.input argument
+     CLOSED: [2021-04-18 Sun 11:22]
 **** DONE method.combine to merge.by.row
      CLOSED: [2021-04-04 Sun 23:17]
      Since we only have and will only have two methods, this should be
@@ -144,8 +149,8 @@ See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
 is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMwriteData
-**** TODO Include a randomly generated ID in meta data that we can check files against?
-**** TODO When writing a CSV, write meta data to separate file
+**** TODO [#B] Include a randomly generated ID in meta data that we can check files against?
+**** TODO [#A] When writing a CSV, write meta data to separate file
 **** DONE Check if character variables contain commas
      CLOSED: [2020-09-19 Sat 09:52]
 This will cause trouble when writing csv
@@ -181,7 +186,7 @@ This could be EVID==0 or maybe one study in a meta analysis
 It's fairly easy to implement. Paste in front of the expression.use column.
 *** flagsCount
 **** DONE OK respect decreasing or increasing order.flags
-**** TODO [#B] add .cum of N and Nobs
+**** TODO [#A] add .cum of N and Nobs
 **** DONE add argument to name "all available data" in table. 
 **** DONE Add check on EVID - who wants to mix these?
 **** TODO [#B] allow skipping and disabling flags.
@@ -269,7 +274,8 @@ replaced a couple of calls to . by list. Not sure why this happens for
 exactly these uses of ".". Anyway, no consequence to functionality.
 *** DONE Drop filepath_NMdata
     CLOSED: [2020-12-22 Tue 19:01]
-*** TODO [#A] Release 0.0.7
+*** DONE [#A] Release 0.0.7
+    CLOSED: [2021-04-18 Sun 11:22]
 **** DONE Go through all manuals and update according to new config system
      CLOSED: [2021-01-30 Sat 14:35]
 **** Update vignettes
@@ -284,3 +290,7 @@ exactly these uses of ".". Anyway, no consequence to functionality.
 See how it's done in pmxtricks.  This is done. However, the datasets are not
 exported so it's not very important.
 ** BUGS
+*** DONE flagsCount does not print data.table
+    CLOSED: [2021-04-12 Mon 16:03]
+*** DONE flagsAssign cannot handle missing subset
+    CLOSED: [2021-04-12 Mon 16:03]

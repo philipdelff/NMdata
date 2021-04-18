@@ -73,6 +73,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
 ##################### CHECKS START ######################
 
 ####### check args ######
+    if(missing(as.fun)) as.fun <- NULL
     as.fun.arg <- as.fun
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     if(missing(col.flagn)) col.flagn <- NULL
@@ -94,10 +95,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
         data <- as.data.table(data)
     }
 
-    
-    
     datacols <- copy(colnames(data))
-    
 
     
 ### data can contain a column named FLAG - but it is removed
@@ -174,9 +172,15 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     data[,(col.row):=1:.N ]
 
 #### We will not touch the data not matched by the subset
-    data.noflags <- data[eval(parse(text=paste("!",subsetAND,"1")))]
-    data.flags <- data[eval(parse(text=paste(subsetAND,"1")))]
-
+    ## data.noflags <- data[eval(parse(text=paste("!",subsetAND,"1")))]
+    ## data.flags <- data[eval(parse(text=paste(subsetAND,"1")))]
+    if(subset.data==""){
+        data.flags <- copy(data)
+        data.noflags <- NULL
+    } else {
+        data.flags <- data[eval(parse(text=subset.data))]
+        data.noflags <- data[eval(parse(text=paste0("!(",subset.data,")")))]
+    }
     
 
     ## we want to use columns FLAG and flag. So if these exist in
@@ -292,21 +296,13 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     ## order columns
     
     setcolorder(data,datacols)
-    
-    if(!data.was.data.table || !is.null(as.fun.arg) ) {
-        data <- as.fun(data)
-        ## tab.flags <- as.fun(tab.flags)
-    }
 
     
-    ## if(return.all){
-    ##     if(!tab.flags.was.data.table || !is.null(as.fun.arg) ) {
-    ##         tab.flags <- as.fun(tab.flags,as.fun)
-    ##     }
-    ##     return(list(data,tab.flags))
-    ## } else {
+    if(data.was.data.table && is.null(as.fun.arg)) as.fun <- "data.table"
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    data <- as.fun(data)
+    
     return(data)
-    ##    }
 
 }
 
