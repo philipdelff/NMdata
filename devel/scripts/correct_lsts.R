@@ -1,13 +1,13 @@
-library(remotes)
-install_github("philipdelff/pmxtricks")
-library(pmxtricks)
+## library(remotes)
+## install_github("philipdelff/pmxtricks")
+## library(pmxtricks)
 
-lsts <- list.files(NMdata_filepath("examples/nonmem"),pattern="xgxr.*\\.lst$",full.names=TRUE)
+lsts <- list.files(system.file("examples/nonmem",package="NMdata"),pattern="xgxr.*\\.lst$",full.names=TRUE)
 
 ## backup
-for(lst in lsts){
-    file.copy(lst,file.path("~/tmp",basename(lst)))
-}
+## for(lst in lsts){
+##     file.copy(lst,file.path("~/tmp",basename(lst)))
+## }
 
 
 for (lst in lsts){
