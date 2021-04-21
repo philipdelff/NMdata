@@ -19,7 +19,8 @@
 ##'     interpreted. Also, nested conditions are not supported altogether.
 ##' @family Nonmem
 
-## Don't export. This is only being used by NMscanData at this point.
+## Don't export. This is only being used by NMscanInput at this point.
+
 
 NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     

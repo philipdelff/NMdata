@@ -38,7 +38,7 @@ With load_all():
     CLOSED: [2020-12-23 Wed 11:22]
 *** DONE NMgetSection
     CLOSED: [2020-12-23 Wed 11:25]
-*** TODO [#B] A function to check data
+*** TODO [#B] A function to check data - NMcheckData
 **** TODO Find previously used code
 **** TODO Implement checks in pmxtricks todo
 **** TODO Implement more checks
@@ -47,7 +47,12 @@ https://doi.org/10.1208/s12248-012-9387-9
 ***** TODO Having NA in FLAG is dangerous
       It makes it unclear how the filter will work
 ***** TODO AMT>0 for EVID=0 is not allowed (I believe)
+*** TODO [#B] A that defines NULL variables
+    Risk now is that arguments are set to NULL
+    Export to parent. Not sure check allows though...
 ** Function improvements
+*** NMextractDataFile
+**** TODO [#B] Add support for windows absolute paths
 *** NMreplacepart
 **** DONE Support for multiple sections
      CLOSED: [2021-04-05 Mon 12:06]
@@ -65,23 +70,27 @@ list.
 The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
-*** NMtransInput
-**** TODO [#A] A=B labels should be matched against reserved variable names
-***** Easiest would be to copy data to have acces using both names
-**** DONE Names of variables must be taken from lst, not mod
-     CLOSED: [2020-06-06 Sat 23:43]
-mod should only be used for path to dataset.
-**** DONE Add support for absolute paths
-     CLOSED: [2020-06-09 Tue 23:22]
-**** DONE SKIP like DROP
-     CLOSED: [2020-06-15 Mon 21:36]
-**** TODO TIME and related columns
-I still don't really understand the documentation on this, but it doesnt seem
-too hard to implement. It should NOT only be interpreted when the A=B format is used in
-$INPUT. If something is called TIME, it must be checked for format.
-**** DONE .mod files should be accepted as the file argument
-     CLOSED: [2020-09-17 Thu 15:19]
-     Maybe file can be missing/NULL if file.mod is given.
+*** NMscanInput
+**** Pseudonyms A=B
+***** TODO [#C] A=B pseudonym labels should be matched against reserved variable names
+***** TODO [#B] copy data to have acces using both names
+****** Edit these lines in NMscanInput
+       ## For now, we just take the first name used in A=B labeling. 
+       nms <- sub(".*=(.*)","\\1",nms)
+***** DONE Names of variables must be taken from lst, not mod
+      CLOSED: [2020-06-06 Sat 23:43]
+ mod should only be used for path to dataset.
+***** DONE Add support for absolute paths
+      CLOSED: [2020-06-09 Tue 23:22]
+***** DONE SKIP like DROP
+      CLOSED: [2020-06-15 Mon 21:36]
+***** TODO TIME and related columns
+ I still don't really understand the documentation on this, but it doesnt seem
+ too hard to implement. It should NOT only be interpreted when the A=B format is used in
+ $INPUT. If something is called TIME, it must be checked for format.
+***** DONE .mod files should be accepted as the file argument
+      CLOSED: [2020-09-17 Thu 15:19]
+      Maybe file can be missing/NULL if file.mod is given.
 *** NMtransFilters
 **** DONE Replace single = with ==
      CLOSED: [2020-06-15 Mon 21:05]

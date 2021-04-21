@@ -95,7 +95,15 @@ compareCols(pktmp,pk.renamed)
 
 
 
-### Automated checks of merge results Merges are a very common source of data creation bugs. As simple as they may seem, merges likely leave you with an unexpected number of rows, some repeated or some omitted. `mergeCheck` provides a merge which is restricted to the specific kind where the rows that come out of the merge are the exact same as in one of the existing datasets, only columns added from the second dataset. This limitation of the scope of the merge allows for a high degree of automated checks of consistency of the results.
+### Automated checks of merge results 
+Merges are a very common source of data creation bugs. As simple as
+they may seem, merges likely leave you with an unexpected number of
+rows, some repeated or some omitted. `mergeCheck` provides a merge
+which is restricted to the specific kind where the rows that come out
+of the merge are the exact same as in one of the existing datasets,
+only columns added from the second dataset. This limitation of the
+scope of the merge allows for a high degree of automated checks of
+consistency of the results.
 
 
 ```{r,include=FALSE}
@@ -427,3 +435,4 @@ requirement. We know that variables in `res1.id` above do not vary
 within `ID`, meaning that no `ID` has more than one value of the
 variable. `NA` counts as any other value, so if a value is returned
 for subject in `res1.id`, this subject does not have `NA`'s in `res1`.
+

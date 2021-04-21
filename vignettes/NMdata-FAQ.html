@@ -315,7 +315,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<p>Built 2021-04-18 using NMdata 0.0.7.</p>
+<p>Built 2021-04-20 using NMdata 0.0.7.0.901.</p>
 <div id="general-nmdata-questions" class="section level2">
 <h2>General <code>NMdata</code> questions</h2>
 <div id="how-do-i-install-nmdata" class="section level3">
@@ -341,8 +341,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>While many other tools available provide plotting functions, <code>NMdata</code> focuses on getting the data ready for smooth Nonmem experience (by checking as much as possible first), get the resulting data out of Nonmem and a little processing.</p>
 <p>If you are building tools that process data from Nonmem, you may find very valuable tools here. I have not seen as generic and flexible a Nonmem data reader elsewhere.</p>
 </div>
-<div id="i-use-another-tool-that-automatically-reads-my-data.-should-i-be-interested-in-nndata" class="section level3">
-<h3>I use another tool that automatically reads my data. Should I be interested in NNdata?</h3>
+<div id="i-use-another-tool-that-automatically-reads-my-data.-should-i-be-interested-in-nmdata" class="section level3">
+<h3>I use another tool that automatically reads my data. Should I be interested in NMdata?</h3>
 <p>The data creation tools in <code>NMdata</code> may still be interesting. If another tool is working well for a project, you may not have any reason to use <code>NMscanData</code> (the Nonmem data reader in <code>NMdata</code>) for it. However, a lot of the time those tools have certain requirements to how datasets are constructed and especially how data is exported from Nonmem (<code>$TABLE</code>). If a Nonmem run does not live up to those requirements, and you want to look at the run results, <code>NMscanData</code> will let you do that without you having to “correct” your <code>$TABLE</code> statements and wait for Nonmem to run again.</p>
 <p>Also, in other cases <code>NMscanData</code> can save you a lot of time and frustration even if you have your own routines that make <code>NMdata</code> unnecessary. If you want to read your old Nonmem runs that were done a little differently, someone else’s work, or you want to quickly read a lot of runs done by different people for a meta analysis, <code>NMscanData</code> can save you a lot of work, time and frustration. And a meta analysis of a large number of models implemented by different people over the years? That’s a candy store for <code>NMscanData</code>. Here, <code>NMdata</code> can save you many hours of frustration.</p>
 </div>
@@ -375,7 +375,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="the-result-i-am-getting-back-from-an-nmdata-function-doesnt-print-to-the-r-console.-why" class="section level3">
 <h3>The result I am getting back from an NMdata function doesn’t print to the R console. Why?</h3>
-<p>This may happen when you work with data.tables - and only when working with data.tables. This will be fixed in near future. For now, you may have to print the data.table a couple of times before you see a result in the R terminal.</p>
+<p>This should have been taken care of in most recent NMdata releases. This was something that could happen in earlier versions when working with data.tables - and only when working with data.tables. If you experience this in a &gt;0.0.7 version, pleae file a bug. You would have to print the data.table a couple of times before you see a result in the R terminal.</p>
 </div>
 <div id="can-i-request-a-feature" class="section level3">
 <h3>Can I request a feature?</h3>

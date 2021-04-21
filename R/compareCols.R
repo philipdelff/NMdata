@@ -16,14 +16,22 @@
 ##'     check may be overly rigorous. Many classes are compitable
 ##'     enough (say numeric and integer), at compareCols doesn't take
 ##'     this into account.
-##' @param diff.only Don't report columns where no difference
-##'     found.
+##' @param diff.only Don't report columns where no difference found.
 ##' @param fun.class the function that will be run on each column to
 ##'     check for differences. base::class is default. Notice that the
 ##'     alternative base::typeof is different in certain ways. For
 ##'     instance, typeof will not report a difference on numeric vs
 ##'     difftime. You could basically submit any function that takes a
 ##'     vector and returns a single value.
+##' @param quiet The default is to give some information along the way
+##'     on what data is found. But consider setting this to TRUE for
+##'     non-interactive use. Default can be configured using
+##'     NMdataConf.
+##' @param as.fun A function that will be run un the result before
+##'     returning. If first input data set is a data.table, the
+##'     default is to return a data.table, if not the default is to
+##'     return a data.frame. Use whatever to get what fits in with
+##'     your workflow. Default can be configured with NMdataConf.
 ##' @family DataWrangling
 ##' @export
 
@@ -35,7 +43,7 @@
 
 
 
-compareCols <- function(...,keepNames=T,testEqual=F,diff.only=TRUE,fun.class=base::class,quiet=FALSE,as.fun=NULL){
+compareCols <- function(...,keepNames=T,testEqual=F,diff.only=TRUE,fun.class=base::class,quiet,as.fun=NULL){
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     value <- NULL
@@ -44,7 +52,9 @@ compareCols <- function(...,keepNames=T,testEqual=F,diff.only=TRUE,fun.class=bas
     . <- function() NULL
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
-    
+
+    if(missing(quiet)) quiet <- NULL
+    quiet <- NMdataDecideOption("quiet",quiet)
     dots <- list(...)
     ndots <- length(dots) 
     if(ndots<2) stop("At least two objects must be supplied")

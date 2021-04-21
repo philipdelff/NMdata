@@ -181,11 +181,11 @@ NMscanInput <- function(file, use.rds, file.mod,
         if(any(duplicated(cnames.input))) {
             nms2 <- cnames.input[-(1:length(nms))]
             if(any(duplicated(nms))){
-                messageWrap(paste("Duplicated variable names declared in nonmem $INPUT section. Only first will be used:",paste(nms[duplicated(nms)],collapse=", ")),fun.msg=warning)
+                messageWrap(paste("Duplicated variable names declared in nonmem $INPUT section. Only first of the columns will be used:",paste(nms[duplicated(nms)],collapse=", ")),fun.msg=warning)
                 ## nms.u <- unique(nms)
             } 
             if(length(nms2)&&any(duplicated(nms2))){
-                messageWrap(paste("Duplicated variable names detected in input data not processed by Nonmem. Only first will be used:",paste(nms2[duplicated(nms2)],collapse=", ")),fun.msg=warning)
+                messageWrap(paste("Duplicated variable names detected in input data not processed by Nonmem. Only first of the columns will be used:",paste(nms2[duplicated(nms2)],collapse=", ")),fun.msg=warning)
                 ## nms2.u <- unique(nms2)
             }
             nms.cross <- c(unique(nms),unique(nms2))

@@ -10,7 +10,7 @@ compareCols(
   testEqual = F,
   diff.only = TRUE,
   fun.class = base::class,
-  quiet = FALSE,
+  quiet,
   as.fun = NULL
 )
 }
@@ -29,8 +29,7 @@ check may be overly rigorous. Many classes are compitable
 enough (say numeric and integer), at compareCols doesn't take
 this into account.}
 
-\item{diff.only}{Don't report columns where no difference
-found.}
+\item{diff.only}{Don't report columns where no difference found.}
 
 \item{fun.class}{the function that will be run on each column to
 check for differences. base::class is default. Notice that the
@@ -38,6 +37,17 @@ alternative base::typeof is different in certain ways. For
 instance, typeof will not report a difference on numeric vs
 difftime. You could basically submit any function that takes a
 vector and returns a single value.}
+
+\item{quiet}{The default is to give some information along the way
+on what data is found. But consider setting this to TRUE for
+non-interactive use. Default can be configured using
+NMdataConf.}
+
+\item{as.fun}{A function that will be run un the result before
+returning. If first input data set is a data.table, the
+default is to return a data.table, if not the default is to
+return a data.frame. Use whatever to get what fits in with
+your workflow. Default can be configured with NMdataConf.}
 }
 \description{
 Useful interactive tool when merging or binding objects

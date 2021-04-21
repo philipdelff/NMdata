@@ -77,7 +77,7 @@ If you are building tools that process data from Nonmem, you may find
 very valuable tools here. I have not seen as generic and flexible a
 Nonmem data reader elsewhere.
 
-### I use another tool that automatically reads my data. Should I be interested in NNdata?
+### I use another tool that automatically reads my data. Should I be interested in NMdata?
 The data creation tools in `NMdata` may still be interesting. If
 another tool is working well for a project, you may not have any
 reason to use `NMscanData` (the Nonmem data reader in `NMdata`) for
@@ -153,8 +153,8 @@ in the documentation refers to any of these structures (that
 technically inherit from the data.frame class).
 
 ### The result I am getting back from an NMdata function doesn't print to the R console. Why?
-This may happen when you work with data.tables - and only when working
-with data.tables. This will be fixed in near future. For now, you may
+This should have been taken care of in most recent NMdata releases. This was something that could happen in earlier versions when working with data.tables - and only when working
+with data.tables. If you experience this in a >0.0.7 version, pleae file a bug. You would
 have to print the data.table a couple of times before you see a result
 in the R terminal.
 
