@@ -130,16 +130,6 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     }
     
 ###  Section end: Process arguments
-
-
-### this function is used to replace .csv or whatever ending is used
-### to .rds, .RData etc. file is path, ext is extension without .,
-### e.g. "rds".
-    ## transFileName <- function(file,ext){
-    ##     file.new <- sub("\\.[^\\.]+$",paste0(".",ext),file)
-    ##     file.new
-    ## }
-    
     
     ## we must not quote. ID is often a character. If quoted, nonmem
     ## will not be able to read. So avoid commas in strings.
@@ -152,18 +142,8 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     data.dt <- copy(as.data.table(data))
 
     ## Check if character variables contain commas
-    ## This would cause trouble when writing csv
-    
-    
+    ## This would cause trouble when writing csv    
     has.no.comma <- data.dt[,lapply(.SD,function(x){is.numeric(x)||!any(grepl(",",as.character(x)))})]
-
-    
-    ## OK if numeric, or all but "" and "NA" interprets as numeric
-    ## as.num.ok <- data.dt[,lapply(.SD,function(x)
-    ##     is.numeric(x) &&
-    ##     !is.timestamp(x)||
-    ##     suppressWarnings(!any(is.na(as.numeric(as.character(x)[!as.character(x)%in%c("","NA")])))))
-    ##     ]
 
     as.num.ok <- data.dt[,lapply(.SD,NMisNumeric)]
 
