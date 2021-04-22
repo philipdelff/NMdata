@@ -9,6 +9,7 @@
 ### To be used internally so far - don't export
 
 NMextractDataFile <- function(file,dir.data=NULL){
+    
     ## get input data file name. Nonmem manual says:
 ###  The first character string appearing after $DATA is the name of the file
 ### containing the data. Since it is to be used in a FORTRAN OPEN statement,
@@ -22,26 +23,27 @@ NMextractDataFile <- function(file,dir.data=NULL){
 
     ## pick $DATA and the next string
     lines.data2 <- paste(lines.data,collapse=" ")
-    path.data.input <- sub(" *([^ ]+) +.*","\\1",lines.data2)
+    string.path.data <- sub(" *([^ ]+) +.*","\\1",lines.data2)
 
     if(is.null(dir.data)) {
         pathIsAbs <- function(path) grepl("(^/|^[a-z]:/)",path,perl = TRUE)
-        if(!pathIsAbs(path.data.input)) {
-            path.data.input <- filePathSimple(dirname(file),path.data.input)
+        if(!pathIsAbs(string.path.data)) {
+            path.data <- filePathSimple(dirname(file),string.path.data)
         }
     } else {
-        path.data.input <- filePathSimple(dir.data,basename(path.data.input))
+        path.data <- filePathSimple(dir.data,basename(string.path.data))
     }
 
     ## path.data.input.rds <- sub("^(.+)\\..+$","\\1.rds",path.data.input)
-    path.data.input.rds <- fnExtension(path.data.input,".rds")
+    path.data.rds <- fnExtension(path.data,".rds")
 
-    exists.file <- file.exists(path.data.input)
-    exists.file.rds <- file.exists(path.data.input.rds)
+    exists.file <- file.exists(path.data)
+    exists.file.rds <- file.exists(path.data.rds)
 
-    return(list(path=path.data.input
-               ,path.rds=path.data.input.rds
+    return(list(path=path.data
+               ,path.rds=path.data.rds
                ,exists.file=exists.file
-               ,exists.file.rds=exists.file.rds))
+               ,exists.file.rds=exists.file.rds
+               ,string=string.path.data))
 
 }

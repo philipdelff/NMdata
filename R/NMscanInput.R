@@ -113,47 +113,64 @@ NMscanInput <- function(file, use.rds, file.mod,
 ### this is to keep even dropped columns
     nms <- sub("(.*) *= *(DROP|SKIP)","\\1",nms)
     ## For now, we just take the first name used in A=B labeling. 
+    renamed.from <- NULL
+    renamed.to <- NULL
+    renamed.from <- sub("(.*)=(.*)","\\1",nms[grepl(".*=.*",nms)])
+    renamed.to <- sub("(.*)=(.*)","\\2",nms[grepl(".*=.*",nms)])
     nms <- sub(".*=(.*)","\\1",nms)
 
+#### Section start: This part is now handled by NMextractDataFile ####
+    if(F){
 
-    ## get input data file name. Nonmem manual says:
+        ## get input data file name. Nonmem manual says:
 ###  The first character string appearing after $DATA is the name of the file
 ### containing the data. Since it is to be used in a FORTRAN OPEN statement,
 ### this name may not include embedded commas, semi-colons, parentheses, or
 ### spaces.
-    lines.data <- NMreadSection(file.find.data,section="DATA",keepName=F,keepComments=F,keepEmpty=F)
-    if(is.null(lines.data)) {
-        lines.data <- NMreadSection(file.find.data,section="INFILE",keepName=F,keepComments=F,keepEmpty=F)
-    }
-    if(is.null(lines.data)) stop("Could not find $DATA or $INFILE section in nonmem model. Please check the lst file.")
-
-    ## pick $DATA and the next string
-    lines.data2 <- paste(lines.data,collapse=" ")
-    path.data.input <- sub(" *([^ ]+) +.*","\\1",lines.data2)
-
-    if(is.null(dir.data)) {
-        pathIsAbs <- function(path) grepl("(^/|^[a-z]:/)",path,perl = TRUE)
-        if(!pathIsAbs(path.data.input)) {
-            path.data.input <- filePathSimple(dirname(file),path.data.input)
+        lines.data <- NMreadSection(file.find.data,section="DATA",keepName=F,keepComments=F,keepEmpty=F)
+        if(is.null(lines.data)) {
+            lines.data <- NMreadSection(file.find.data,section="INFILE",keepName=F,keepComments=F,keepEmpty=F)
         }
-    } else {
-        path.data.input <- filePathSimple(dir.data,basename(path.data.input))
-    }
+        if(is.null(lines.data)) stop("Could not find $DATA or $INFILE section in nonmem model. Please check the lst file.")
 
-    path.data.input.rds <- sub("^(.+)\\..+$","\\1.rds",path.data.input)
+        ## pick $DATA and the next string
+        lines.data2 <- paste(lines.data,collapse=" ")
+        path.data.input <- sub(" *([^ ]+) +.*","\\1",lines.data2)
+
+        if(is.null(dir.data)) {
+            pathIsAbs <- function(path) grepl("(^/|^[a-z]:/)",path,perl = TRUE)
+            if(!pathIsAbs(path.data.input)) {
+                path.data.input <- filePathSimple(dirname(file),path.data.input)
+            }
+        } else {
+            path.data.input <- filePathSimple(dir.data,basename(path.data.input))
+        }
+
+        path.data.input.rds <- sub("^(.+)\\..+$","\\1.rds",path.data.input)
+    }
+    info.datafile <- NMextractDataFile(file=file.find.data,dir.data)
+    
+    
+###  Section end: This part is now handled by NMextractDataFile
+
     type.file <- NA_character_
-    if(use.rds && file.exists(path.data.input.rds)){
+    ## if(use.rds && file.exists(path.data.input.rds)){
+    if(use.rds && info.datafile$exists.file.rds){
         type.file <- "rds"
         if(!quiet) message("Read rds input data file.")
-        path.data.input <- path.data.input.rds
+        ## path.data.input <- path.data.input.rds
+        path.data.input <- info.datafile$path.rds
         data.input <- as.data.table(readRDS(path.data.input))
     } else {
-        if(file.exists(path.data.input)){
+        ##if(file.exists(path.data.input)){
+        if(file.exists(info.datafile$path)){
             type.file <- "text"
             if(!quiet) message("Read delimited text input data file.")
-            data.input <- NMreadCsv(path.data.input,as.fun=identity)
+            ## data.input <- NMreadCsv(path.data.input,as.fun=identity)
+            data.input <- info.datafile$path
         } else {
-            stop(paste("Input data file not found. Was expecting to find",path.data.input))
+            ## stop(paste("Input data file not found. Was expecting to find",path.data.input))
+            stop(paste("Input data file not found. Was expecting to find",info.datafile$path))
         }
     }
 
@@ -162,9 +179,9 @@ NMscanInput <- function(file, use.rds, file.mod,
         data.input <- NMtransFilters(data.input,file=file,invert=invert,quiet=quiet,as.fun=identity)
     }
 
+    cnames.input <- colnames(data.input)
     if(translate){
 ### cnames.input is the names of columns as in input data file
-        cnames.input <- colnames(data.input)
         
         ## More column names can be specified in the nonmem control stream
         ## than actually found in the input data. We will simply disregard
@@ -177,6 +194,13 @@ NMscanInput <- function(file, use.rds, file.mod,
         cnames.input[1:length(nms)] <- nms
         colnames(data.input) <- cnames.input
 
+        ## add the pseudonyms
+        if(!is.null(renamed.from)){
+            data.input <- cbind(data.input,
+                                setnames(data.input[,c(renamed.to),with=FALSE],old=renamed.to,new=renamed.from)
+                                )
+        }
+        
         ## check for unique column names
         if(any(duplicated(cnames.input))) {
             nms2 <- cnames.input[-(1:length(nms))]
