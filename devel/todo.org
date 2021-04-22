@@ -160,8 +160,10 @@ is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMwriteData
 **** TODO [#B] Include a randomly generated ID in meta data that we can check files against?
-**** TODO [#A] When writing a CSV, write meta data to separate file
-**** TODO [#A] Support for pseudonyms
+**** TODO [#B] When writing a CSV, write meta data to separate file
+**** DONE Support for pseudonyms
+     CLOSED: [2021-04-21 Wed 23:16]
+     It's called nm.rename. You can only add A in A=B.
 **** DONE Check if character variables contain commas
      CLOSED: [2020-09-19 Sat 09:52]
 This will cause trouble when writing csv
@@ -191,8 +193,11 @@ Not warning. Warning if standard variable?
 **** DONE Improve messages at each FLAG coding
      CLOSED: [2020-12-23 Wed 11:31]
 **** DONE Make sure we arrange back to original order
-**** DONE [#A] Introduce a way to apply to a subset only
+**** DONE Introduce a way to apply to a subset only
      CLOSED: [2021-04-05 Mon 09:42]
+     - State "DELEGATED"  from "CANCELED"   [2021-04-21 Wed 16:46]
+     - State "CANCELED"   from "DELEGATED"  [2021-04-21 Wed 16:46]
+     - State "DELEGATED"  from "DONE"       [2021-04-21 Wed 16:46]
 This could be EVID==0 or maybe one study in a meta analysis
 
 It's fairly easy to implement. Paste in front of the expression.use column.
@@ -286,7 +291,7 @@ replaced a couple of calls to . by list. Not sure why this happens for
 exactly these uses of ".". Anyway, no consequence to functionality.
 *** DONE Drop filepath_NMdata
     CLOSED: [2020-12-22 Tue 19:01]
-*** DONE [#A] Release 0.0.7
+*** DONE Release 0.0.7
     CLOSED: [2021-04-18 Sun 11:22]
 **** DONE Go through all manuals and update according to new config system
      CLOSED: [2021-01-30 Sat 14:35]
