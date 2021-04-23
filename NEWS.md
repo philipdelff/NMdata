@@ -1,3 +1,12 @@
+# NMdata 0.0.7.1
+compareCols generalized to the single data set case. 
+
+Support for pseudonyms when translating input data column names based
+on nonmem control stream. Now by default, the column will be returned
+with both peudonyms as column names.
+
+new function - fnExtension
+
 # NMdata 0.0.7
 This is a major upgrade from 0.0.6.6 featuring many improvements and
 bug fixes. Everyone is strongly encouraged to upgrade.

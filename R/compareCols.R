@@ -16,7 +16,10 @@
 ##'     check may be overly rigorous. Many classes are compitable
 ##'     enough (say numeric and integer), at compareCols doesn't take
 ##'     this into account.
-##' @param diff.only Don't report columns where no difference found.
+##' @param diff.only If TRUE, don't report columns where no difference
+##'     found. Default is TRUE if number of data sets supplied is
+##'     greater than one. If only one data set is supplied, the full
+##'     list of columns is shown by default.
 ##' @param fun.class the function that will be run on each column to
 ##'     check for differences. base::class is default. Notice that the
 ##'     alternative base::typeof is different in certain ways. For
@@ -56,9 +59,12 @@ compareCols <- function(...,keepNames=T,testEqual=F,diff.only=TRUE,fun.class=bas
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
     dots <- list(...)
-    ndots <- length(dots) 
-    if(ndots<2) stop("At least two objects must be supplied")
+    ndots <- length(dots)
+    if(ndots==0) stop("No data supplied.")
+    if(ndots==1&&missing(diff.only)) diff.only <- FALSE
+    
     if(keepNames){
+        
         names.dots <- setdiff(as.character(match.call(expand.dots=T)),as.character(match.call(expand.dots=F)))
     } else {
         names.dots <- paste0("x",seq(ndots))
@@ -105,10 +111,16 @@ compareCols <- function(...,keepNames=T,testEqual=F,diff.only=TRUE,fun.class=bas
     
     if(!quiet) {
         message("Dimensions:")
-        print(dims(list=dots))
+        print(dims(list.data=dots))
     }
     message("\nOverview of columns:")
-    print(dt.cols)
+    if(nrow(dt.cols)==0&&ndots==1){
+        message("Only one data set supplied.\n")
+    } else if(nrow(dt.cols)==0&&ndots>1){
+        message("No differences.\n")
+    } else {
+        print(dt.cols)
+    }
     invisible(as.fun(dt.cols))
 
 }

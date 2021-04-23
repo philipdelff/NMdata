@@ -74,7 +74,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
 
     
 #### Section start: Process arguments ####
-
+    
     stopifnot(is.data.frame(data)) ## data.out <- as.data.frame(data)
     if(missing(file)){
         file <- NULL
