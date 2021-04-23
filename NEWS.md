@@ -1,11 +1,24 @@
 # NMdata 0.0.7.1
 compareCols generalized to the single data set case. 
 
+mergeCheck has improved warnings when checks fail. This should in most
+cases provide information for the user to get a good idea what needs
+to be resolved for the merge to work as expected.
+
 Support for pseudonyms when translating input data column names based
 on nonmem control stream. Now by default, the column will be returned
 with both peudonyms as column names.
 
-new function - fnExtension
+new function - fnExtension is a simple function to replace the
+extension of a file name (say from file.mod to file.lst)
+
+NMscanData now has an argument, translate.input, which can be used to
+skip the translation of column names according to $DATA in the listing
+file. This can be necessary if input data has changed and hence $DATA
+is outdated since last model run.
+
+## Bugfixes
+- Correct ordering of rows in compareCols
 
 # NMdata 0.0.7
 This is a major upgrade from 0.0.6.6 featuring many improvements and

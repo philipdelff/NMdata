@@ -84,31 +84,52 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
 
     if(nrow(df1)) {
         ## df1 is not NULL
-        reorder <- T
+        reorder <- TRUE
         df1[,(rowcol):=1:nrow(df1)]
     } else {
-        reorder <- F
+        reorder <- FALSE
     }
     
     df3 <- merge(df1,df2,by=by,sort=FALSE,...)
-    if(reorder){
-        rows.disappeared <- !(all(df1[,get(rowcol)]%in%df3[,get(rowcol)]))
+
+    rows.disappeared <- !(all(df1[,get(rowcol)]%in%df3[,get(rowcol)]))
+    rows.created <- !(all(df3[,get(rowcol)]%in%df1[,get(rowcol)]))
+    rows.number.changed <- nrow(df1)!=nrow(df3)
+
+    if(any(c(rows.disappeared,rows.created,rows.number.changed))){
+
+        if(rows.number.changed && !rows.disappeared && !rows.created){
+            warning("Number of rows changed during merge.\n")
+        }
         if(rows.disappeared) warning("Rows disappeared during merge.\n")
-        rows.created <- !(all(df3[,get(rowcol)]%in%df1[,get(rowcol)]))
         if(rows.created) warning("New rows appeared during merge.\n")
-        rows.number.changed <- nrow(df1)!=nrow(df3)
-        if(!rows.disappeared&&!rows.created){
-            if(rows.number.changed) warning("Number of rows changed during merge.\n")
-        }
         
-        if(any(c(rows.disappeared,rows.created,rows.number.changed))){
+        ## warning(paste0("\nnrow(",name.df1,"): "),nrow(df1),"\n",
+        ##         paste0("nrow(",name.df2,"): "),nrow(df2),"\n",
+        ##         paste0("nrow(",name.df3,"): "),nrow(df3),"\n")
 
-            warning(paste0("\nnrow(",name.df1,"): "),nrow(df1),"\n",
-                    paste0("nrow(",name.df2,"): "),nrow(df2),"\n",
-                    paste0("nrow(",name.df3,"): "),nrow(df3),"\n")
 
-            stop("Merge added and/or removed rows.")
-        }
+        dims.rep <- dims(list.data=setNames(list(df1,df2,df3),c(name.df1,name.df2,"result")))
+        warning(
+            "\n",paste0(capture.output(dims.rep), collapse = "\n"),"\n"
+        )
+        
+        
+        dtcheck <- merge(df1[,.N,by=by],
+                         df3[,.N,by=by]
+                        ,by=by,all=T,suffixes=c(".df1",".result")
+                         )
+        dtcheck[is.na(N.df1),N.df1:=0]
+        dtcheck[is.na(N.result),N.result:=0]
+        dtcheck <- dtcheck[N.df1!=N.result]
+
+        warning("Overview of values of by where number of rows in df1 changes:\n",
+                      paste0(capture.output(dtcheck), collapse = "\n"))
+        
+        stop("Merge added and/or removed rows.")
+    }
+
+    if(reorder){
         df3 <- setorderv(df3,rowcol)
         df3[,(rowcol):=NULL]
     }

@@ -53,7 +53,7 @@ https://doi.org/10.1208/s12248-012-9387-9
 ** Function improvements
 *** NMextractDataFile
 **** TODO [#B] Add support for windows absolute paths
-*** NMreplacepart
+*** NMwriteSection
 **** DONE Support for multiple sections
      CLOSED: [2021-04-05 Mon 12:06]
 Instead of the section argument, NMreplacepart must accept newlines as a named
@@ -171,7 +171,7 @@ This will cause trouble when writing csv
      CLOSED: [2021-04-02 Fri 11:33]
 **** TODO [#B] Improve support for custom IGNORE/ACCEPT statements
 Support for both ignore and accept? A list?
-**** DONE [#B] Returned text should be a list of sections.
+**** DONE Returned text should be a list of sections.
      CLOSED: [2021-04-18 Sun 14:39]
 Ultimately, NMreplacePart must accept this as argument.
 **** DONE The Nonmem instructions should not include character variables
