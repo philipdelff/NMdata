@@ -81,9 +81,9 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     FLAG <- NULL
     FLAGSORT <- NULL
     ID <- NULL
-    N.discarded <- NULL
+    N.discard <- NULL
     N.left <- NULL
-    Nobs.discarded <- NULL
+    Nobs.discard <- NULL
     Nobs.left <- NULL
     alldata <- NULL
     flag <- NULL
@@ -216,15 +216,15 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
         setorder(allres,-FLAG)
     }
 
-    allres[,N.discarded:=c(NA,-diff(N.left)),by=by]
+    allres[,N.discard:=c(NA,-diff(N.left)),by=by]
     
     
-    allres[,Nobs.discarded:=c(NA,-diff(Nobs.left)),by=by]
+    allres[,Nobs.discard:=c(NA,-diff(Nobs.left)),by=by]
     
     
     allres <- rbind(allres,
                     ## this is the analysis set
-                    data[FLAG==0,.(FLAG=0,N.left=uniqueN(get(col.id)),Nobs.left=.N,N.discarded=NA,Nobs.discarded=NA),by=by],
+                    data[FLAG==0,.(FLAG=0,N.left=uniqueN(get(col.id)),Nobs.left=.N,N.discard=NA,Nobs.discard=NA),by=by],
                     fill=T)
     
     ##  tab.flags <- rbind(tab.flags,data.table(FLAG=-Inf,flag="All data"),fill=TRUE)
@@ -241,17 +241,25 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     } 
     setorderv(allres,c(by,"notAll","isFinal","FLAGSORT"))
 
-    
+    allres[,N.discard.0:=N.discard]
+    allres[is.na(N.discard),N.discard.0:=0]
+    allres[,N.disc.cum:=cumsum(N.discard.0)]
+    allres[,Nobs.discard.0:=Nobs.discard]
+    allres[is.na(Nobs.discard),Nobs.discard.0:=0]
+    allres[,Nobs.disc.cum:=cumsum(Nobs.discard.0)]
+
 ### select columns to report, depending on argument
     allres[,`:=`(FLAG=NULL
                 ,notAll=NULL
                 ,isFinal=NULL
                 ,alldata=NULL
                 ,FLAGSORT=NULL
+                ,N.discard.0=NULL
+                ,Nobs.discard.0=NULL
                  )
            ]
 
-    setcolorder(allres,c(by,"flag","N.left","Nobs.left","N.discarded","Nobs.discarded"))
+    setcolorder(allres,c(by,"flag","N.left","Nobs.left","N.discard","N.disc.cum","Nobs.discard","Nobs.disc.cum"))
     setnames(allres,"flag",col.flagc)
 
     if(!is.null(file)){
