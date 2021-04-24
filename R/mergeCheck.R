@@ -103,11 +103,6 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
         }
         if(rows.disappeared) warning("Rows disappeared during merge.\n")
         if(rows.created) warning("New rows appeared during merge.\n")
-        
-        ## warning(paste0("\nnrow(",name.df1,"): "),nrow(df1),"\n",
-        ##         paste0("nrow(",name.df2,"): "),nrow(df2),"\n",
-        ##         paste0("nrow(",name.df3,"): "),nrow(df3),"\n")
-
 
         dims.rep <- dims(list.data=setNames(list(df1,df2,df3),c(name.df1,name.df2,"result")))
         warning(
@@ -133,14 +128,6 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
         df3 <- setorderv(df3,rowcol)
         df3[,(rowcol):=NULL]
     }
-    
-
-###### check if new column names have been created
-### it has already been checked whether there are common column names not used for by. So I believe this is redundant.
-    ## if(!all(colnames(df3) %in% c(colnames(df1),colnames(df2)))){
-    ##     messageWrap("Merge created new column names. Apart from values of by, common columns were not found in df1 and df2, so this should not happen. Please inspect df1, df2 and result carefully.",
-    ##                 fun.msg=warning)
-    ## }
 
 ### checking number of new columns
     if(!missing(ncols.expect)) {
