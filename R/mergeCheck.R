@@ -1,11 +1,15 @@
 ##' Merge, order, and check resulting rows and columns.
 ##'
-##' This function is a useful wrapper for merges where df1 will be extended with
-##' columns from df2, i.e. all rows in df1 are retained, and no new rows can be
-##' created. For this very common type of (simple) merges, mergeCheck does the
-##' merge and ensures that exactly this and nothing else happened. 
+##' This function is a useful wrapper for merges where df1 will be
+##' extended with columns from df2, i.e. all rows in df1 are retained,
+##' and no new rows can be created. For this very common type of
+##' (simple) merges, mergeCheck does the merge and ensures that
+##' exactly this and nothing else happened. Notice, mergeCheck passes
+##' the hard work to merge.data.table, the contributions lies in
+##' checking that the results are consistent with the simple merge
+##' described above.
 ##'
-##' @param df1 A data.fram with the number of rows must should be
+##' @param df1 A data.frame with the number of rows must should be
 ##'     obtained from the merge. The resulting data.frame will be
 ##'     ordered like df1.
 ##' @param df2 A data.frame that will be merged onto df1.
@@ -45,6 +49,13 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
     
     name.df1 <- deparse(substitute(df1))
     name.df2 <- deparse(substitute(df2))
+    ## in some cases where data.frames are built inside the mergeCheck
+    ## call, names can turn out with multiple elements. We must avoid
+    ## that.
+    if(length(name.df1)!=1) name.df1 <- "df1"
+    if(length(name.df2)!=1) name.df2 <- "df2"
+
+    
     name.df3 <- "merged.df"
     if("all"%in%names(list(...))) {
         messageWrap("option all not supported. mergeCheck is for merges that are intended to result in column additions to df1, that's all.",
@@ -108,8 +119,10 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
         ##         paste0("nrow(",name.df2,"): "),nrow(df2),"\n",
         ##         paste0("nrow(",name.df3,"): "),nrow(df3),"\n")
 
-
-        dims.rep <- dims(list.data=setNames(list(df1,df2,df3),c(name.df1,name.df2,"result")))
+        
+        dims.rep <- dims(list.data=
+                             setNames(list(df1,df2,df3),c(name.df1,name.df2,name.df3))
+                         )
         warning(
             "\n",paste0(capture.output(dims.rep), collapse = "\n"),"\n"
         )

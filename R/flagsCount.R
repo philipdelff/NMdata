@@ -11,8 +11,7 @@
 ##' @param file A file to write the table of flag counts to. Will
 ##'     probably be removed and put in a separate function.
 ##' @param col.id The name of the subject ID column. Default is
-##'     "ID".@param col.id The name of the subject ID column. Default
-##'     is "ID".
+##'     "ID".
 ##' @param col.flagn The name of the column containing the numerical
 ##'     flag values in tab.flags. This will be added to data. Use the
 ##'     same as when flagsAssign was called (if that was
@@ -169,7 +168,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
 
         allres.l <- lapply(1:tab.flags[,.N],function(I){
             resI <- data[FLAG==0|FLAG>tab.flags[I,FLAG],.(
-                                                            N.left=uniqueN(ID),
+                                                            N.left=uniqueN(get(col.id)),
                                                             Nobs.left=.N)
                         ,by=by]
             resI[,FLAG:=tab.flags[I,FLAG]]
@@ -180,7 +179,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
 
         allres.l <- lapply(1:tab.flags[,.N],function(I){
             resI <- data[FLAG==0|FLAG<tab.flags[I,FLAG],.(
-                                                            N.left=uniqueN(ID),
+                                                            N.left=uniqueN(get(col.id)),
                                                             Nobs.left=.N)
                         ,by=by]
             resI[,FLAG:=tab.flags[I,FLAG]]
@@ -201,7 +200,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     
     allres <- rbind(allres0,
                     ## this is all data - must be returned as first row.
-                    data[,.(N.left=uniqueN(ID)
+                    data[,.(N.left=uniqueN(get(col.id))
                            ,Nobs.left=.N
                            ,FLAG=FLAG.alldata
                            ,alldata=TRUE
@@ -225,7 +224,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     
     allres <- rbind(allres,
                     ## this is the analysis set
-                    data[FLAG==0,.(FLAG=0,N.left=uniqueN(ID),Nobs.left=.N,N.discarded=NA,Nobs.discarded=NA),by=by],
+                    data[FLAG==0,.(FLAG=0,N.left=uniqueN(get(col.id)),Nobs.left=.N,N.discarded=NA,Nobs.discarded=NA),by=by],
                     fill=T)
     
     ##  tab.flags <- rbind(tab.flags,data.table(FLAG=-Inf,flag="All data"),fill=TRUE)
