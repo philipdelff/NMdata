@@ -166,7 +166,6 @@ NMscanInput <- function(file, use.rds, file.mod,
         if(file.exists(info.datafile$path)){
             type.file <- "text"
             if(!quiet) message("Read delimited text input data file.")
-            ## data.input <- NMreadCsv(path.data.input,as.fun=identity)
             path.data.input <- info.datafile$path
             data.input <- NMreadCsv(path.data.input,as.fun="data.table")
         } else {

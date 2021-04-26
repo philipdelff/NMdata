@@ -19,7 +19,7 @@
 ##' \itemize{
 ##' 
 ##' \item{as.fun} A function that will be applied to data returned by various
-##' data reading functions (NMscanData, NMreadTab, NMreadCSV, NMscanInput,
+##' data reading functions (NMscanData, NMreadTab, NMreadCsv, NMscanInput,
 ##' NMscanTables). Also, data processing functions like mergeCheck, findCovs,
 ##' findVars, flagsAssign, flagsCount take this into account, but slightly
 ##' differently. For these functions that take data as arguments, the as.fun
@@ -70,7 +70,7 @@
 ##' Using this, you don't have to worry about remembering including
 ##' all relevant variables in the output tables. Default is TRUE.
 ##'
-##' \item{use.rds} Affects NMscanData, NMscanInput, and NMreadCsv. 
+##' \item{use.rds} Affects NMscanData and NMscanInput. 
 ##'
 ##' \item{recover.rows} In NMscanData, Include rows from input data
 ##'     files that do not exist in output tables? This will be added
