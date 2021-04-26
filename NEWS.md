@@ -7,18 +7,26 @@ to be resolved for the merge to work as expected.
 
 Support for pseudonyms when translating input data column names based
 on nonmem control stream. Now by default, the column will be returned
-with both peudonyms as column names.
+(doubled) with both peudonyms as column names.
 
 new function - fnExtension is a simple function to replace the
 extension of a file name (say from file.mod to file.lst)
+
+new function - dims is a simple function that returns a table of the
+dimensions of multiple data sets. It is used by multiple other
+functions in the package and may be useful on its own. However,
+compareCols reports this information too (by calling dims).
 
 NMscanData now has an argument, translate.input, which can be used to
 skip the translation of column names according to $DATA in the listing
 file. This can be necessary if input data has changed and hence $DATA
 is outdated since last model run.
 
+flagsCount now reports cumulative counts of discards too.
+
 ## Bugfixes
 - Correct ordering of rows in compareCols
+- flagsCount now reports numbers of discarded subjects as intended.
 
 # NMdata 0.0.7
 This is a major upgrade from 0.0.6.6 featuring many improvements and

@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.0.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1</span>
       </span>
     </div>
 
@@ -133,6 +133,25 @@
       
     </div>
 
+    <div id="nmdata-0071" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.7.1">
+<a href="#nmdata-0071" class="anchor"></a>NMdata 0.0.7.1</h1>
+<p>compareCols generalized to the single data set case.</p>
+<p>mergeCheck has improved warnings when checks fail. This should in most cases provide information for the user to get a good idea what needs to be resolved for the merge to work as expected.</p>
+<p>Support for pseudonyms when translating input data column names based on nonmem control stream. Now by default, the column will be returned (doubled) with both peudonyms as column names.</p>
+<p>new function - fnExtension is a simple function to replace the extension of a file name (say from file.mod to file.lst)</p>
+<p>new function - dims is a simple function that returns a table of the dimensions of multiple data sets. It is used by multiple other functions in the package and may be useful on its own. However, compareCols reports this information too (by calling dims).</p>
+<p>NMscanData now has an argument, translate.input, which can be used to skip the translation of column names according to $DATA in the listing file. This can be necessary if input data has changed and hence $DATA is outdated since last model run.</p>
+<p>flagsCount now reports cumulative counts of discards too.</p>
+<div id="bugfixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bugfixes" class="anchor"></a>Bugfixes</h2>
+<ul>
+<li>Correct ordering of rows in compareCols</li>
+<li>flagsCount now reports numbers of discarded subjects as intended.</li>
+</ul>
+</div>
+</div>
     <div id="nmdata-007" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.7">
 <a href="#nmdata-007" class="anchor"></a>NMdata 0.0.7</h1>
@@ -195,9 +214,9 @@
 <p>Documentation has been upgraded with a pkgdown site.</p>
 <p>New vignette on data set creation tools in NMdata.</p>
 <p>New FAQ vignette.</p>
-<div id="bugfixes" class="section level2">
+<div id="bugfixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bugfixes" class="anchor"></a>Bugfixes</h2>
+<a href="#bugfixes-1" class="anchor"></a>Bugfixes</h2>
 <p>NMtransInput now supports the case where additional unused column names are given in $INPUT than actually found in $DATA. A warning will be given.</p>
 </div>
 </div>

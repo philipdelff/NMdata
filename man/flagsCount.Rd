@@ -29,8 +29,7 @@ FLAG==0.}
 probably be removed and put in a separate function.}
 
 \item{col.id}{The name of the subject ID column. Default is
-"ID".@param col.id The name of the subject ID column. Default
-is "ID".}
+"ID".}
 
 \item{col.flagn}{The name of the column containing the numerical
 flag values in tab.flags. This will be added to data. Use the

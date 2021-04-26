@@ -42,10 +42,20 @@
 ##'     back to a data.frame before returning.
 ##' @family DataCreate
 ##' @import data.table
+##' @importFrom utils capture.output
+##' @importFrom stats setNames
 ##' @return a data.frame resulting from merging df1 and df2
 ##' @export
 
 mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols.expect,...){
+
+
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+
+    N.result <- NULL
+    N.df1 <- NULL
+
+###  Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
     name.df1 <- deparse(substitute(df1))
     name.df2 <- deparse(substitute(df2))
@@ -133,7 +143,7 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
         dtcheck <- dtcheck[N.df1!=N.result]
 
         warning("Overview of values of by where number of rows in df1 changes:\n",
-                      paste0(capture.output(dtcheck), collapse = "\n"))
+                paste0(capture.output(dtcheck), collapse = "\n"))
         
         stop("Merge added and/or removed rows.")
     }

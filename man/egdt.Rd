@@ -24,9 +24,7 @@ Merging works mostly similarly for data.table and
     one or more columns. This means that the convenient way to
     expand all combinations of all rows in two data.frames is not
     available for data.tables. This functions provides that
-    functionality.
-
-egdt is not very fast.
+    functionality. It always returns data.tables.
 }
 \examples{
 df1 <- data.frame(a=1:2,b=3:4)

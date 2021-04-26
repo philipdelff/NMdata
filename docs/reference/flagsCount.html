@@ -74,7 +74,7 @@ flag." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.0.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1</span>
       </span>
     </div>
 
@@ -178,8 +178,7 @@ probably be removed and put in a separate function.</p></td>
     <tr>
       <th>col.id</th>
       <td><p>The name of the subject ID column. Default is
-"ID".@param col.id The name of the subject ID column. Default
-is "ID".</p></td>
+"ID".</p></td>
     </tr>
     <tr>
       <th>col.flagn</th>
@@ -274,10 +273,14 @@ condition=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
 </div><div class='output co'>#&gt;    flagn        flagc flagn
 #&gt; 1:     0 Analysis set     0
 #&gt; 2:    10   Below LLOQ    10</div><div class='input'><span class='fu'>flagsCount</span>(<span class='kw'>pk</span>[<span class='kw'>EVID</span><span class='op'>==</span><span class='fl'>0</span>],<span class='kw'>dt.flags</span>,col.flagn=<span class='st'>"flagn"</span>,col.flagc=<span class='st'>"flagc"</span>)
-</div><div class='output co'>#&gt;                 flagc N.left Nobs.left N.discarded Nobs.discarded
-#&gt; 1: All available data    150      1352          NA             NA
-#&gt; 2:         Below LLOQ    131       755          19            597
-#&gt; 3:       Analysis set    131       755          NA             NA</div></pre>
+</div><div class='output co'>#&gt;                 flagc N.left Nobs.left N.discard N.disc.cum Nobs.discard
+#&gt; 1: All available data    150      1352        NA          0           NA
+#&gt; 2:         Below LLOQ    131       755        19         19          597
+#&gt; 3:       Analysis set    131       755        NA         19           NA
+#&gt;    Nobs.disc.cum
+#&gt; 1:             0
+#&gt; 2:           597
+#&gt; 3:           597</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

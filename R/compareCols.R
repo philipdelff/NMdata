@@ -46,11 +46,11 @@
 
 
 
-compareCols <- function(...,keepNames=T,testEqual=F,diff.only=TRUE,fun.class=base::class,quiet,as.fun=NULL){
+compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,fun.class=base::class,quiet,as.fun=NULL){
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     value <- NULL
-    element <- NULL
+    column <- NULL
     nu <- NULL
     . <- function() NULL
 
@@ -77,21 +77,21 @@ compareCols <- function(...,keepNames=T,testEqual=F,diff.only=TRUE,fun.class=bas
 
     getClasses <- function(x){
         cls <- lapply(x,fun.class)
-        data.table(element=names(cls),class=as.character(unlist(cls)))
+        data.table(column=names(cls),class=as.character(unlist(cls)))
     }
     
     cols <- lapply(dots,getClasses)
     for(n in 1:ndots) setnames(cols[[n]],"class",names.dots[n])
 
     
-    dt.cols <- Reduce(function(...)merge(...,by="element",all=T),cols)
+    dt.cols <- Reduce(function(...)merge(...,by="column",all=T),cols)
 
-    dt.cols.l <- melt(dt.cols,id.vars="element")
+    dt.cols.l <- melt(dt.cols,id.vars="column")
     
-    nu.classes <- dt.cols.l[!is.na(value),.(nu=uniqueN(value),n=.N),by=.(element)]
+    nu.classes <- dt.cols.l[!is.na(value),.(nu=uniqueN(value),n=.N),by=.(column)]
 
     ## merge back on
-    dt.cols <- mergeCheck(dt.cols,nu.classes,by="element")
+    dt.cols <- mergeCheck(dt.cols,nu.classes,by="column")
 
     if(testEqual) return(dt.cols[n<ndots|nu>1,.N]==0)
 
@@ -99,10 +99,10 @@ compareCols <- function(...,keepNames=T,testEqual=F,diff.only=TRUE,fun.class=bas
     ## sorting options. By diff, alpha. Or by diff, location in first df?
 
     if(diff.only) dt.cols <- dt.cols[n<ndots|nu>1]
-### this one orders by number of occurance, unique classses, element name
+### this one orders by number of occurance, unique classses, column name
 
     
-    setorder(dt.cols,n,-nu,element)
+    setorder(dt.cols,n,-nu,column)
     cols.rm <- c("nu","n")
     dt.cols[,(cols.rm):=NULL]
     

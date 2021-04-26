@@ -51,4 +51,4 @@ test_that("messy names",{
     
     expect_equal_to_reference(res1,fileRef)
 
-)
+})

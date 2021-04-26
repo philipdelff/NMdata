@@ -75,7 +75,7 @@ to check the compatibility of the data." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.0.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1</span>
       </span>
     </div>
 
@@ -147,11 +147,11 @@ to check the compatibility of the data.</p>
 
     <pre class="usage"><span class='fu'>compareCols</span>(
   <span class='kw'>...</span>,
-  keepNames = <span class='kw'>T</span>,
-  testEqual = <span class='kw'>F</span>,
+  keepNames = <span class='fl'>TRUE</span>,
+  testEqual = <span class='fl'>FALSE</span>,
   diff.only = <span class='fl'>TRUE</span>,
   fun.class = <span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/class.html'>class</a></span>,
-  quiet = <span class='fl'>FALSE</span>,
+  <span class='kw'>quiet</span>,
   as.fun = <span class='kw'>NULL</span>
 )</pre>
 
@@ -180,8 +180,10 @@ this into account.</p></td>
     </tr>
     <tr>
       <th>diff.only</th>
-      <td><p>Don't report columns where no difference
-found.</p></td>
+      <td><p>If TRUE, don't report columns where no difference
+found. Default is TRUE if number of data sets supplied is
+greater than one. If only one data set is supplied, the full
+list of columns is shown by default.</p></td>
     </tr>
     <tr>
       <th>fun.class</th>
@@ -192,8 +194,27 @@ instance, typeof will not report a difference on numeric vs
 difftime. You could basically submit any function that takes a
 vector and returns a single value.</p></td>
     </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>The default is to give some information along the way
+on what data is found. But consider setting this to TRUE for
+non-interactive use. Default can be configured using
+NMdataConf.</p></td>
+    </tr>
+    <tr>
+      <th>as.fun</th>
+      <td><p>A function that will be run un the result before
+returning. If first input data set is a data.table, the
+default is to return a data.table, if not the default is to
+return a data.frame. Use whatever to get what fits in with
+your workflow. Default can be configured with NMdataConf.</p></td>
+    </tr>
     </table>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other DataWrangling: 
+<code><a href='dims.html'>dims</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -57,8 +57,8 @@
 
 NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
                         write.rds=write.csv,script,args.stamp,
-                        args.rds,nmdrop,nmdir.data,col.flag="FLAG",nm.rename,
-                        capitalize.names=FALSE){
+                        args.rds,nmdrop,nmdir.data,col.flag="FLAG",
+                        nm.rename,capitalize.names=FALSE){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -274,7 +274,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     if(written){
         cat("\nData file(s) written.\n")
     } else {
-        cat("\nData returned but not written to file(s).\n")
+        cat("\nData not written to file(s).\n")
     }
     invisible(list(INPUT=text.nm.input,DATA=text.nm.data))
 

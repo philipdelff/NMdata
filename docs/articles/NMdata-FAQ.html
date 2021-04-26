@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.0.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2021-04-18 using NMdata 0.0.7.0.901.</p>
+<p>Built 2021-04-25 using NMdata 0.0.7.1.</p>
 <div id="general-nmdata-questions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general-nmdata-questions" class="anchor"></a>General <code>NMdata</code> questions</h2>
@@ -110,10 +110,10 @@
 <span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"philipdelff/NMdata"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://philipdelff.github.io/NMdata">NMdata</a></span>)
 </pre></div>
-<p>In a production environment, use a <a href="https://github.com/philipdelff/NMdata/releases">github release</a> To install <code>NMdata 0.0.7</code> release, do (notice “<span class="citation">@v</span>”:)</p>
+<p>In a production environment, use a <a href="https://github.com/philipdelff/NMdata/releases">github release</a> To install <code>NMdata 0.0.7.1</code> release, do (notice “<span class="citation">@v</span>”:)</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://remotes.r-lib.org">remotes</a></span>)
-<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"philipdelff/NMdata@v0.0.7"</span>)
+<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"philipdelff/NMdata@v0.0.7.1"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://philipdelff.github.io/NMdata">NMdata</a></span>)
 </pre></div>
 <p>This example is not automatically updated to latest available release. Please make sure to check for latest version on (<a href="https://github.com/philipdelff/NMdata/releases" class="uri">https://github.com/philipdelff/NMdata/releases</a>)</p>
@@ -131,9 +131,9 @@
 <p>While many other tools available provide plotting functions, <code>NMdata</code> focuses on getting the data ready for smooth Nonmem experience (by checking as much as possible first), get the resulting data out of Nonmem and a little processing.</p>
 <p>If you are building tools that process data from Nonmem, you may find very valuable tools here. I have not seen as generic and flexible a Nonmem data reader elsewhere.</p>
 </div>
-<div id="i-use-another-tool-that-automatically-reads-my-data--should-i-be-interested-in-nndata" class="section level3">
+<div id="i-use-another-tool-that-automatically-reads-my-data--should-i-be-interested-in-nmdata" class="section level3">
 <h3 class="hasAnchor">
-<a href="#i-use-another-tool-that-automatically-reads-my-data--should-i-be-interested-in-nndata" class="anchor"></a>I use another tool that automatically reads my data. Should I be interested in NNdata?</h3>
+<a href="#i-use-another-tool-that-automatically-reads-my-data--should-i-be-interested-in-nmdata" class="anchor"></a>I use another tool that automatically reads my data. Should I be interested in NMdata?</h3>
 <p>The data creation tools in <code>NMdata</code> may still be interesting. If another tool is working well for a project, you may not have any reason to use <code>NMscanData</code> (the Nonmem data reader in <code>NMdata</code>) for it. However, a lot of the time those tools have certain requirements to how datasets are constructed and especially how data is exported from Nonmem (<code>$TABLE</code>). If a Nonmem run does not live up to those requirements, and you want to look at the run results, <code>NMscanData</code> will let you do that without you having to “correct” your <code>$TABLE</code> statements and wait for Nonmem to run again.</p>
 <p>Also, in other cases <code>NMscanData</code> can save you a lot of time and frustration even if you have your own routines that make <code>NMdata</code> unnecessary. If you want to read your old Nonmem runs that were done a little differently, someone else’s work, or you want to quickly read a lot of runs done by different people for a meta analysis, <code>NMscanData</code> can save you a lot of work, time and frustration. And a meta analysis of a large number of models implemented by different people over the years? That’s a candy store for <code>NMscanData</code>. Here, <code>NMdata</code> can save you many hours of frustration.</p>
 </div>
@@ -177,7 +177,7 @@
 <div id="the-result-i-am-getting-back-from-an-nmdata-function-doesnt-print-to-the-r-console--why" class="section level3">
 <h3 class="hasAnchor">
 <a href="#the-result-i-am-getting-back-from-an-nmdata-function-doesnt-print-to-the-r-console--why" class="anchor"></a>The result I am getting back from an NMdata function doesn’t print to the R console. Why?</h3>
-<p>This may happen when you work with data.tables - and only when working with data.tables. This will be fixed in near future. For now, you may have to print the data.table a couple of times before you see a result in the R terminal.</p>
+<p>This should have been taken care of in most recent NMdata releases. This was something that could happen in earlier versions when working with data.tables - and only when working with data.tables. If you experience this in a &gt;0.0.7 version, pleae file a bug. You would have to print the data.table a couple of times before you see a result in the R terminal.</p>
 </div>
 <div id="can-i-request-a-feature" class="section level3">
 <h3 class="hasAnchor">

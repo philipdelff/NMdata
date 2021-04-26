@@ -85,6 +85,10 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     N.left <- NULL
     Nobs.discard <- NULL
     Nobs.left <- NULL
+    N.disc.cum <- NULL
+    N.discard.0 <- NULL
+    Nobs.disc.cum <- NULL
+    Nobs.discard.0 <- NULL
     alldata <- NULL
     flag <- NULL
     notAll <- NULL

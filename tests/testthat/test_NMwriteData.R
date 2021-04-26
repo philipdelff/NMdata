@@ -11,9 +11,11 @@ test_that("basic",{
 
     res1 <- NMwriteData(pk,file=system.file("examples/data/xgxr1.csv",package="NMdata"),
                         write.rds=F,write.csv=F,nmdir.data="/example")
-    res1
+    ## lapply(res1,print)
+    ## lapply(readRDS(fileRef),print)
+
     expect_equal_to_reference(
-res1
+        res1
        ,fileRef)
 })
 
@@ -34,9 +36,9 @@ test_that("Dropping a column in Nonmem",{
     fileRef <- "testReference/NMwriteData_2.rds"
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     res2 <- NMwriteData(pk,file=system.file("examples/data/xgxr1.csv",package="NMdata"),
-                    write.rds=F,write.csv=F,
-                    nmdrop="PART",
-                    nmdir.data="/example")
+                        write.rds=F,write.csv=F,
+                        nmdrop="PART",
+                        nmdir.data="/example")
 
     expect_equal_to_reference(
         res2
@@ -47,11 +49,12 @@ test_that("Dropping a column in Nonmem",{
     fileRef <- "testReference/NMwriteData_3.rds"
 
     res2b <- NMwriteData(pk,file=system.file("examples/data/xgxr1.csv",package="NMdata"),
-                    write.rds=F,write.csv=F,
-                    nmdrop="CYCLE",
-                    nmdir.data="/example")
+                         write.rds=F,write.csv=F,
+                         nmdrop="CYCLE",
+                         nmdir.data="/example")
+
     expect_equal_to_reference(
-    res2b,
+        res2b,
         file=fileRef
     )
 

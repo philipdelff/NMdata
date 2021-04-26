@@ -15,7 +15,7 @@ mergeCheck(
 )
 }
 \arguments{
-\item{df1}{A data.fram with the number of rows must should be
+\item{df1}{A data.frame with the number of rows must should be
 obtained from the merge. The resulting data.frame will be
 ordered like df1.}
 
@@ -49,10 +49,14 @@ them, an error will be returned.}
 a data.frame resulting from merging df1 and df2
 }
 \description{
-This function is a useful wrapper for merges where df1 will be extended with
-columns from df2, i.e. all rows in df1 are retained, and no new rows can be
-created. For this very common type of (simple) merges, mergeCheck does the
-merge and ensures that exactly this and nothing else happened.
+This function is a useful wrapper for merges where df1 will be
+extended with columns from df2, i.e. all rows in df1 are retained,
+and no new rows can be created. For this very common type of
+(simple) merges, mergeCheck does the merge and ensures that
+exactly this and nothing else happened. Notice, mergeCheck passes
+the hard work to merge.data.table, the contributions lies in
+checking that the results are consistent with the simple merge
+described above.
 }
 \details{
 Besides merging and checking rows, mergeCheck makes sure

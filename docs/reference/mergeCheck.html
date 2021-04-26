@@ -40,10 +40,14 @@
 
 
 <meta property="og:title" content="Merge, order, and check resulting rows and columns. — mergeCheck" />
-<meta property="og:description" content="This function is a useful wrapper for merges where df1 will be extended with
-columns from df2, i.e. all rows in df1 are retained, and no new rows can be
-created. For this very common type of (simple) merges, mergeCheck does the
-merge and ensures that exactly this and nothing else happened." />
+<meta property="og:description" content="This function is a useful wrapper for merges where df1 will be
+extended with columns from df2, i.e. all rows in df1 are retained,
+and no new rows can be created. For this very common type of
+(simple) merges, mergeCheck does the merge and ensures that
+exactly this and nothing else happened. Notice, mergeCheck passes
+the hard work to merge.data.table, the contributions lies in
+checking that the results are consistent with the simple merge
+described above." />
 
 
 
@@ -75,7 +79,7 @@ merge and ensures that exactly this and nothing else happened." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.0.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1</span>
       </span>
     </div>
 
@@ -139,10 +143,14 @@ merge and ensures that exactly this and nothing else happened." />
     </div>
 
     <div class="ref-description">
-    <p>This function is a useful wrapper for merges where df1 will be extended with
-columns from df2, i.e. all rows in df1 are retained, and no new rows can be
-created. For this very common type of (simple) merges, mergeCheck does the
-merge and ensures that exactly this and nothing else happened.</p>
+    <p>This function is a useful wrapper for merges where df1 will be
+extended with columns from df2, i.e. all rows in df1 are retained,
+and no new rows can be created. For this very common type of
+(simple) merges, mergeCheck does the merge and ensures that
+exactly this and nothing else happened. Notice, mergeCheck passes
+the hard work to merge.data.table, the contributions lies in
+checking that the results are consistent with the simple merge
+described above.</p>
     </div>
 
     <pre class="usage"><span class='fu'>mergeCheck</span>(
@@ -160,7 +168,7 @@ merge and ensures that exactly this and nothing else happened.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>df1</th>
-      <td><p>A data.fram with the number of rows must should be
+      <td><p>A data.frame with the number of rows must should be
 obtained from the merge. The resulting data.frame will be
 ordered like df1.</p></td>
     </tr>

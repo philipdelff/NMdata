@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>read all output data tables in nonmem run — NMscanTables • NMdata</title>
+<title>Extract the data file used in a control stream — NMextractDataFile • NMdata</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="read all output data tables in nonmem run — NMscanTables" />
-<meta property="og:description" content="read all output data tables in nonmem run" />
+<meta property="og:title" content="Extract the data file used in a control stream — NMextractDataFile" />
+<meta property="og:description" content="Extract the data file used in a control stream" />
 
 
 
@@ -130,64 +130,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>read all output data tables in nonmem run</h1>
+    <h1>Extract the data file used in a control stream</h1>
     
-    <div class="hidden name"><code>NMscanTables.Rd</code></div>
+    <div class="hidden name"><code>NMextractDataFile.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>read all output data tables in nonmem run</p>
+    <p>Extract the data file used in a control stream</p>
     </div>
 
-    <pre class="usage"><span class='fu'>NMscanTables</span>(<span class='kw'>file</span>, details = <span class='kw'>F</span>, <span class='kw'>as.fun</span>, <span class='kw'>quiet</span>, tab.count = <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>NMextractDataFile</span>(<span class='kw'>file</span>, dir.data = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>file</th>
-      <td><p>the nonmem file to read (normally .mod or .lst)</p></td>
+      <td><p>The input control stream or the list file.</p></td>
     </tr>
     <tr>
-      <th>details</th>
-      <td><p>If TRUE, metadata is added to output. In this case, you get a
-list. Typically, this is mostly useful if programming up functions which
-behavior must depend on properties of the output.</p></td>
-    </tr>
-    <tr>
-      <th>as.fun</th>
-      <td><p>The default is to return data as a data.frame. Pass a function
-(say tibble::as_tibble) in as.fun to convert to something else. If
-data.tables are wanted, use as.fun="data.table". The default can be
-configured using NMdataConf.</p></td>
-    </tr>
-    <tr>
-      <th>quiet</th>
-      <td><p>The default is to give some information along the way on what
-data is found. But consider setting this to TRUE for non-interactive
-use. Default can be configured using NMdataConf.</p></td>
-    </tr>
-    <tr>
-      <th>tab.count</th>
-      <td><p>Nonmem includes a counter of tables in the written data
-files. These are often not useful. However, if tab.count is TRUE
-(default), this will be carried forward and added as a column called
-TABLENO.</p></td>
+      <th>dir.data</th>
+      <td><p>See NMscanInput. If used, only the file name
+mentioned in $DATA is used. This file name is looked for in
+dir.data. If dir.data is NULL (default), the path is either
+absolute (only unix paths starting in / are supported.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A list of all the tables as data.frames. If details=TRUE, this is in
-    one element, called data, and meta is another element. If not, only the
-    element corresponding to data is returned.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other DataRead: 
-<code><a href='NMreadCsv.html'>NMreadCsv</a>()</code>,
-<code><a href='NMreadTab.html'>NMreadTab</a>()</code>,
-<code><a href='NMscanData.html'>NMscanData</a>()</code>,
-<code><a href='NMscanInput.html'>NMscanInput</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

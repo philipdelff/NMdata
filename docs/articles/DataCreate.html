@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.0.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2021-04-18 using NMdata 0.0.7.0.901.</p>
+<p>Built 2021-04-25 using NMdata 0.0.7.1.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -137,9 +137,10 @@
 <span class="fu"><a href="../reference/compareCols.html">compareCols</a></span>(<span class="kw">pktmp</span>, <span class="kw">pk.renamed</span>)
 </pre></div>
 </div>
-<div id="automated-checks-of-merge-results-merges-are-a-very-common-source-of-data-creation-bugs--as-simple-as-they-may-seem-merges-likely-leave-you-with-an-unexpected-number-of-rows-some-repeated-or-some-omitted--mergecheck-provides-a-merge-which-is-restricted-to-the-specific-kind-where-the-rows-that-come-out-of-the-merge-are-the-exact-same-as-in-one-of-the-existing-datasets-only-columns-added-from-the-second-dataset--this-limitation-of-the-scope-of-the-merge-allows-for-a-high-degree-of-automated-checks-of-consistency-of-the-results-" class="section level3">
+<div id="automated-checks-of-merge-results" class="section level3">
 <h3 class="hasAnchor">
-<a href="#automated-checks-of-merge-results-merges-are-a-very-common-source-of-data-creation-bugs--as-simple-as-they-may-seem-merges-likely-leave-you-with-an-unexpected-number-of-rows-some-repeated-or-some-omitted--mergecheck-provides-a-merge-which-is-restricted-to-the-specific-kind-where-the-rows-that-come-out-of-the-merge-are-the-exact-same-as-in-one-of-the-existing-datasets-only-columns-added-from-the-second-dataset--this-limitation-of-the-scope-of-the-merge-allows-for-a-high-degree-of-automated-checks-of-consistency-of-the-results-" class="anchor"></a>Automated checks of merge results Merges are a very common source of data creation bugs. As simple as they may seem, merges likely leave you with an unexpected number of rows, some repeated or some omitted. <code>mergeCheck</code> provides a merge which is restricted to the specific kind where the rows that come out of the merge are the exact same as in one of the existing datasets, only columns added from the second dataset. This limitation of the scope of the merge allows for a high degree of automated checks of consistency of the results.</h3>
+<a href="#automated-checks-of-merge-results" class="anchor"></a>Automated checks of merge results</h3>
+<p>Merges are a very common source of data creation bugs. As simple as they may seem, merges likely leave you with an unexpected number of rows, some repeated or some omitted. <code>mergeCheck</code> provides a merge which is restricted to the specific kind where the rows that come out of the merge are the exact same as in one of the existing datasets, only columns added from the second dataset. This limitation of the scope of the merge allows for a high degree of automated checks of consistency of the results.</p>
 <p>Say we want to add a covariate from a <code>dt.cov</code>. Imagine we just assume that all subjects are represented with one row each in <code>dt.cov</code>, and so we expect the number of rows to be unchanged from <code>pk</code>. But we see that only when remembering <code>all.x=T</code>, we get the dimensions we had expected (we do not checked that we get the <em>right</em> rows, only that we get the <em>right number</em> of rows):</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk</span>)
@@ -152,16 +153,16 @@
 <span class="co">## dt.cov has a covariate for some of the subjects</span>
 <span class="kw">dt.cov</span>
 <span class="co">#&gt;     ID COV</span>
-<span class="co">#&gt;  1: 31   2</span>
-<span class="co">#&gt;  2: 32   2</span>
-<span class="co">#&gt;  3: 33   2</span>
-<span class="co">#&gt;  4: 34   5</span>
-<span class="co">#&gt;  5: 35   5</span>
-<span class="co">#&gt;  6: 36   3</span>
-<span class="co">#&gt;  7: 37   4</span>
-<span class="co">#&gt;  8: 38   4</span>
-<span class="co">#&gt;  9: 39   2</span>
-<span class="co">#&gt; 10: 40   3</span>
+<span class="co">#&gt;  1: 31   3</span>
+<span class="co">#&gt;  2: 32   3</span>
+<span class="co">#&gt;  3: 33   4</span>
+<span class="co">#&gt;  4: 34   1</span>
+<span class="co">#&gt;  5: 35   1</span>
+<span class="co">#&gt;  6: 36   2</span>
+<span class="co">#&gt;  7: 37   1</span>
+<span class="co">#&gt;  8: 38   5</span>
+<span class="co">#&gt;  9: 39   5</span>
+<span class="co">#&gt; 10: 40   1</span>
 <span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk2</span>)
 <span class="co">#&gt; [1] 100  25</span>
@@ -186,9 +187,23 @@
 <span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/try.html">try</a></span>(<span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>))
 <span class="co">#&gt; Warning in mergeCheck(pk, dt.cov, by = "ID"): Rows disappeared during merge.</span>
 <span class="co">#&gt; Warning in mergeCheck(pk, dt.cov, by = "ID"): </span>
-<span class="co">#&gt; nrow(pk): 1502</span>
-<span class="co">#&gt; nrow(dt.cov): 10</span>
-<span class="co">#&gt; nrow(merged.df): 100</span>
+<span class="co">#&gt;         data nrows ncols</span>
+<span class="co">#&gt; 1:        pk  1502    25</span>
+<span class="co">#&gt; 2:    dt.cov    10     2</span>
+<span class="co">#&gt; 3: merged.df   100    26</span>
+<span class="co">#&gt; Warning in mergeCheck(pk, dt.cov, by = "ID"): Overview of values of by where number of rows in df1 changes:</span>
+<span class="co">#&gt;       ID N.df1 N.result</span>
+<span class="co">#&gt;   1:  41    10        0</span>
+<span class="co">#&gt;   2:  42    10        0</span>
+<span class="co">#&gt;   3:  43    10        0</span>
+<span class="co">#&gt;   4:  44    10        0</span>
+<span class="co">#&gt;   5:  45    10        0</span>
+<span class="co">#&gt;  ---                   </span>
+<span class="co">#&gt; 136: 176    10        0</span>
+<span class="co">#&gt; 137: 177    10        0</span>
+<span class="co">#&gt; 138: 178    10        0</span>
+<span class="co">#&gt; 139: 179    10        0</span>
+<span class="co">#&gt; 140: 180    10        0</span>
 <span class="co">#&gt; Error in mergeCheck(pk, dt.cov, by = "ID") : </span>
 <span class="co">#&gt;   Merge added and/or removed rows.</span>
 <span class="co">## now as expected</span>
@@ -241,11 +256,16 @@
 <div class="sourceCode" id="cb9"><pre class="downlit">
 <span class="kw">tab.count</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsCount.html">flagsCount</a></span>(data = <span class="kw">pk</span>[<span class="kw">EVID</span> <span class="op">==</span> <span class="fl">0</span>], tab.flags = <span class="kw">dt.flags</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">tab.count</span>)
-<span class="co">#&gt;                  flag N.left Nobs.left N.discarded Nobs.discarded</span>
-<span class="co">#&gt; 1: All available data    150      1352          NA             NA</span>
-<span class="co">#&gt; 2:      Negative time    150      1350           0              2</span>
-<span class="co">#&gt; 3:         Below LLOQ    131       755          19            595</span>
-<span class="co">#&gt; 4:       Analysis set    131       755          NA             NA</span>
+<span class="co">#&gt;                  flag N.left Nobs.left N.discard N.disc.cum Nobs.discard</span>
+<span class="co">#&gt; 1: All available data    150      1352        NA          0           NA</span>
+<span class="co">#&gt; 2:      Negative time    150      1350         0          0            2</span>
+<span class="co">#&gt; 3:         Below LLOQ    131       755        19         19          595</span>
+<span class="co">#&gt; 4:       Analysis set    131       755        NA         19           NA</span>
+<span class="co">#&gt;    Nobs.disc.cum</span>
+<span class="co">#&gt; 1:             0</span>
+<span class="co">#&gt; 2:             2</span>
+<span class="co">#&gt; 3:           597</span>
+<span class="co">#&gt; 4:           597</span>
 </pre></div>
 <p><code>flagsCount</code> includes a <code>file</code> argument to save the the table right away.</p>
 </div>
@@ -281,7 +301,7 @@
 <span class="co">#&gt; IGN=@</span>
 <span class="co">#&gt; IGNORE=(FLAG.NE.0)</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Data returned but not written to file(s).</span>
+<span class="co">#&gt; Data not written to file(s).</span>
 </pre></div>
 <p>If a file name had been provided, the data would have been written, and the path to the data file would have been included in the message written back to the user. There are several arguments that will affect the proposed text for the Nonmem run, see <code><a href="../reference/NMwriteData.html">?NMwriteData</a></code>.</p>
 </div>
@@ -305,7 +325,7 @@
 <span class="co">#&gt; IGN=@</span>
 <span class="co">#&gt; IGNORE=(FLAG.NE.0)</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Data returned but not written to file(s).</span>
+<span class="co">#&gt; Data not written to file(s).</span>
 </pre></div>
 <p>NMwriteData invisibly returns a list of sections (<code>$INPUT</code> and <code>$DATA</code>). <code>NMwriteSection</code> can use these directly. So to write only the <code>$INPUT</code> section to <code>run001.mod</code>, we do the following. Please notice the single brackets in <code>text.nm["INPUT"]</code> which mean that we still send a list to <code>NMwriteSection</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit">
@@ -325,7 +345,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-04-18 14:57:43 EDT"</span>
+<span class="co">#&gt; [1] "2021-04-25 21:34:45 EDT"</span>
 </pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit">
@@ -335,7 +355,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-04-18 14:57:43 EDT"</span>
+<span class="co">#&gt; [1] "2021-04-25 21:34:45 EDT"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span>
@@ -351,6 +371,14 @@
 <span class="kw">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, 
     package = <span class="st">"NMdata"</span>), col.row = <span class="st">"ROW"</span>, merge.by.row = <span class="fl">TRUE</span>, 
     quiet = <span class="fl">TRUE</span>, as.fun = <span class="st">"data.table"</span>)
+<span class="co">#&gt; Warning: In NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"),</span>
+<span class="co">#&gt; col.row = "ROW", merge.by.row = TRUE, quiet = TRUE, as.fun = "data.table") :</span>
+<span class="co">#&gt; input control stream</span>
+<span class="co">#&gt; (C:/Users/delff/software/R/R-4.0.2/library/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; is newer than output control stream</span>
+<span class="co">#&gt; (C:/Users/delff/software/R/R-4.0.2/library/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
+<span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span>(<span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span>, <span class="kw">res1</span><span class="op">$</span><span class="kw">DOSE</span>)
 <span class="co">## with data.table, create a new column representing ID-level</span>
 <span class="co">## Cmax</span>
