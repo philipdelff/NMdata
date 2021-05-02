@@ -1,3 +1,18 @@
+# NMdata 0.0.7.2
+NMreadCsv, NMscanInput, and NMscanData take argument args.fread. The
+contents of this list are passed as arguments to `fread` when reading
+csv files. This should only be needed in rare cases but offers full
+flexibility to match structure of csv files. Default contents of
+args.fread can be controlled using NMdataConf.
+
+NMwriteData updated with more concise message.
+
+## Bugfixes
+- In the special case where only one data set is given, compareCols
+  used to sort the list of columns in an irrelevant way. Now no
+  reordering is done but the list will match the column order in the
+  data set.
+
 # NMdata 0.0.7.1
 compareCols generalized to the single data set case. 
 

@@ -1,10 +1,10 @@
 Package: NMdata
 Type: Package
-Title: Efficient tools for data preparation and post-processing in PK/PD modelings
-Version: 0.0.7.1
+Title: Efficient tools for data preparation and post-processing in PK/PD modeling
+Version: 0.0.7.1.902
 Author: Philip Delff <philip@delff.dk>
 Maintainer: Philip Delff <philip@delff.dk>
-Description: Efficient tools to automatically retrieve data from Nonmem. And for easy preparation of tracable Nonmem datasets.
+Description: Efficient tools to automatically retrieve data from Nonmem. And for easy preparation of traceable Nonmem datasets.
 License: MIT + file LICENSE
 RoxygenNote: 7.1.1
 Roxygen: list(roclets=c("collate", "namespace", "rd", "vignette"))

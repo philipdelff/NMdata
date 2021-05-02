@@ -140,7 +140,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                        recover.rows,
                        col.model="model", modelname, file.mod,
                        dir.data, translate.input=TRUE, quiet, use.rds,
-                       as.fun, col.id="ID", tab.count=FALSE,
+                       args.fread, as.fun, col.id="ID", tab.count=FALSE,
                        order.columns=TRUE, check.time) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -179,7 +179,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(missing(as.fun)) as.fun <- NULL
     if(missing(quiet)) quiet <- NULL
     if(missing(use.rds)) use.rds <- NULL
-    
+    if(missing(args.fread)) args.fread <- NULL
+
     check.time <- NMdataDecideOption("check.time",check.time)
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     modelname <- NMdataDecideOption("modelname",modelname)
@@ -187,6 +188,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     recover.rows <- NMdataDecideOption("recover.rows",recover.rows)
     quiet <- NMdataDecideOption("quiet",quiet)
     use.rds <- NMdataDecideOption("use.rds",use.rds)
+    args.fread <- NMdataDecideOption("args.fread",args.fread)
     
     if(missing(col.model)) {
         include.model <- TRUE
@@ -365,6 +367,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                  ,translate=translate.input
                                  ,use.rds=use.rds
                                  ,applyFilters=cbind.by.filters
+                                 ,args.fread=args.fread
                                  ,as.fun="data.table"
                                  ,col.id=col.id
                                  ,details=TRUE)
@@ -398,15 +401,16 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         ## if no method is specified, search for possible col.row to help the user
         if(search.col.row){
             
-            dia <- suppressWarnings(NMscanInput(file,file.mod=file.mod,
-                                                dir.data=dir.data,
-                                                quiet=TRUE
+            dia <- suppressWarnings(NMscanInput(file,file.mod=file.mod
+                                               ,dir.data=dir.data
+                                               ,quiet=TRUE
                                                ,translate=translate.input
-                                               ,use.rds=use.rds,
-                                                applyFilters=FALSE,
-                                                details=TRUE,
-                                                col.id=col.id,
-                                                as.fun="data.table"))
+                                               ,use.rds=use.rds
+                                               ,applyFilters=FALSE
+                                               ,args.fread=args.fread
+                                               ,details=TRUE
+                                               ,col.id=col.id
+                                               ,as.fun="data.table"))
             
             cols.row.input <- colnames(dia$data)[dia$data[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 
@@ -596,6 +600,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                        ,use.rds=use.rds
                                        ,applyFilters=cbind.by.filters
                                        ,translate=translate.input
+                                       ,args.fread=args.fread
                                        ,invert=T
                                        ,as.fun="data.table"
                                        ,details=FALSE)

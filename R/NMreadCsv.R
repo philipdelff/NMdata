@@ -18,11 +18,13 @@
 ##' @seealso NMwriteData
 ##' @export
 
-NMreadCsv <- function(file,na.strings=".",header=TRUE,as.fun=NULL,...){
+NMreadCsv <- function(file,args.fread,as.fun=NULL){
 
     as.fun <- NMdataDecideOption("as.fun",as.fun)
+    if(missing(args.fread)) args.fread <- NULL
+    args.fread <- NMdataDecideOption("args.fread",args.fread)
     
-    dt <- fread(file=file,na.strings=na.strings,header=header,...)
+    dt <- do.call(fread,c(list(file=file),args.fread))
 
     dt <- as.fun(dt)
 

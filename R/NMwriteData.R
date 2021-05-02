@@ -49,7 +49,9 @@
 ##'
 ##' The user is provided with text to use in Nonmem. This lists names
 ##' of the data columns. Once a column is reached that Nonmem will not
-##' be able to read as a numeric and column is not in nmdrop, the list is stopped.
+##' be able to read as a numeric and column is not in nmdrop, the list
+##' is stopped. Only exception is TIME which is not tested for whether
+##' character or not.
 ##' 
 ##' @family Nonmem
 ##' @export
@@ -58,7 +60,7 @@
 NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
                         write.rds=write.csv,script,args.stamp,
                         args.rds,nmdrop,nmdir.data,col.flag="FLAG",
-                        nm.rename,capitalize.names=FALSE){
+                        nm.rename,capitalize.names=FALSE,allow.char.TIME=TRUE){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -75,7 +77,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     
 #### Section start: Process arguments ####
     
-    stopifnot(is.data.frame(data)) ## data.out <- as.data.frame(data)
+    stopifnot(is.data.frame(data)) 
     if(missing(file)){
         file <- NULL
     } else {
@@ -130,29 +132,25 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     }
     
 ###  Section end: Process arguments
-    
-    ## we must not quote. ID is often a character. If quoted, nonmem
-    ## will not be able to read. So avoid commas in strings.
-    quote <- FALSE
-    
-    ## only report numerics to user. But this is not good enough. Only report
-    ## until first character. Moreover, it's not this easy. Variables may be
-    ## character but still be interpretable as numeric. Often ID is like this.
-### we use data.table. Remember to transform back and forth.
+
     data.dt <- copy(as.data.table(data))
 
     ## Check if character variables contain commas
     ## This would cause trouble when writing csv    
     has.no.comma <- data.dt[,lapply(.SD,function(x){is.numeric(x)||!any(grepl(",",as.character(x)))})]
 
+    ## only report numerics to user.
+    ## Only report until first not interpretable as numeric. 
     as.num.ok <- data.dt[,lapply(.SD,NMisNumeric)]
 
     
     ## Allow TIME even if non-numeric. 
+if(allow.char.TIME){
     if("TIME"%in%colnames(data.dt) &&
        as.num.ok[,TIME==FALSE]) {
         as.num.ok[,TIME:=TRUE]
     }
+}
     
     dt.num.ok <- data.table(
         col=colnames(as.num.ok)
@@ -241,21 +239,12 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
        ,text.nm.data
     )
 
-
-    message(
-        paste0("Nonmem data file:\n",file,"\n",
-               "For NonMem:\n",
-               paste(text.nm,collapse="\n")
-               ))
-    
-    written <- FALSE
+    files.written=c()
     if(write.csv){
         file.csv <- fnExtension(file,".csv")
-        ## opt.orig <- options(scipen=15)
-        ## write.csv(data,na=".",quote=quote,row.names=FALSE,file=file.csv)
-        fwrite      (data,na=".",quote=quote,row.names=FALSE,file=file.csv,scipen=0)
+        fwrite      (data,na=".",quote=quote,row.names=FALSE,scipen=0,file=file.csv)
+        files.written <- c(files.written,file.csv)
         ## options(opt.orig)
-        written <- TRUE
     }
     if(write.RData){
         name.data <- deparse(substitute(data))
@@ -263,19 +252,30 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
         if(doStamp) data <- do.call(stampObj,append(list(data=data,writtenTo=file.RData),args.stamp))
         assign(name.data,data)
         save(list=name.data,file=file.RData)
-        written <- TRUE
+        files.written <- c(files.written,file.RData)
     }
     if(write.rds){
         file.rds <- fnExtension(file,".rds")
         if(doStamp) data <- do.call(stampObj,append(list(data=data,writtenTo=file.rds),args.stamp))
         do.call(saveRDS,append(list(object=data,file=file.rds),args.rds))
-        written <- TRUE
+        files.written <- c(files.written,file.rds)
     }
-    if(written){
-        cat("\nData file(s) written.\n")
-    } else {
-        cat("\nData not written to file(s).\n")
-    }
+    written <- length(files.written)>0
+if(written){
+    message(
+        paste0("Data witten to file:\n",paste(files.written,collapse="\n"))
+    )
+} else {
+   message(
+        paste0("Data _not_ witten to any files.")
+    )
+
+}
+    
+    message("For NonMem:\n",
+               paste(text.nm,collapse="\n"))
+   
+    
     invisible(list(INPUT=text.nm.input,DATA=text.nm.data))
 
 }

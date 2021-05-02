@@ -155,7 +155,13 @@ NMdataConf <- function(...){
 NMdataConfOptions <- function(name){
 
     all.options <- list(
-        
+        args.fread=list(
+            default=list(na.strings=".",header=TRUE)
+           ,is.allowed=is.list
+           ,msg.not.allowed="args.fread must be a list of named arguments."
+           ,process=identity
+        )
+       ,
         as.fun=list(
             default=as.data.frame
            ,is.allowed=function(x){

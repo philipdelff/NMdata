@@ -38,6 +38,7 @@ With load_all():
     CLOSED: [2020-12-23 Wed 11:22]
 *** DONE NMgetSection
     CLOSED: [2020-12-23 Wed 11:25]
+*** TODO Summary of the columns - right now hidden in metadata
 *** TODO [#B] A function to check data - NMcheckData
 **** TODO Find previously used code
 **** TODO Implement checks in pmxtricks todo
@@ -47,12 +48,12 @@ https://doi.org/10.1208/s12248-012-9387-9
 ***** TODO Having NA in FLAG is dangerous
       It makes it unclear how the filter will work
 ***** TODO AMT>0 for EVID=0 is not allowed (I believe)
-*** TODO [#B] A that defines NULL variables
+*** TODO [#B] A function that defines NULL variables
     Risk now is that arguments are set to NULL
     Export to parent. Not sure check allows though...
 ** Function improvements
 *** NMextractDataFile
-**** TODO [#B] Add support for windows absolute paths
+**** TODO [#A] Add support for windows absolute paths
 *** NMwriteSection
 **** DONE Support for multiple sections
      CLOSED: [2021-04-05 Mon 12:06]
@@ -113,7 +114,7 @@ A way to limit rows read into nonmem
      CLOSED: [2021-04-04 Sun 23:17]
      Since we only have and will only have two methods, this should be
      a binary switch between the methods.
-**** TODO [#B] Check if col.row is being modified in Nonmem.
+**** TODO [#A] Check if col.row is being modified in Nonmem.
 **** TODO [#B] check overview.tables
 Either they must be firstonly, or they must be full.length.
 **** TODO [#B] Limitation: tables with EXCLUDE_BY
@@ -160,7 +161,7 @@ is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMwriteData
 **** TODO [#B] Include a randomly generated ID in meta data that we can check files against?
-**** TODO [#B] When writing a CSV, write meta data to separate file
+**** TODO [#A] When writing a CSV, write meta data to separate file
 **** DONE Support for pseudonyms
      CLOSED: [2021-04-21 Wed 23:16]
      It's called nm.rename. You can only add A in A=B.
@@ -203,12 +204,14 @@ This could be EVID==0 or maybe one study in a meta analysis
 It's fairly easy to implement. Paste in front of the expression.use column.
 *** flagsCount
 **** DONE OK respect decreasing or increasing order.flags
-**** TODO [#A] add .cum of N and Nobs
+**** DONE add .cum of N and Nobs
+     CLOSED: [2021-04-26 Mon 10:01]
 **** DONE add argument to name "all available data" in table. 
 **** DONE Add check on EVID - who wants to mix these?
 **** TODO [#B] allow skipping and disabling flags.
 ***** For this we will need additional two columns - Nobs.matched and N.(entirely.)matched
 **** TODO [#B] The function could paste an explained overview to the terminal
+**** TODO [#A] Add save argument to align with other functions
 *** NMdataConf
 **** DONE Add support for add.name
      CLOSED: [2021-01-30 Sat 14:29]

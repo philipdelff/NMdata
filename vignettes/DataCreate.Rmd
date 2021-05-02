@@ -183,10 +183,8 @@ The implementation in `NMdata` is based on sequentially checking
 exclusion conditions. This means we can summarize how many records and
 subjects were excluded from the analysis due to the different
 criteria. The information is represented in one numerical column for
-Nonmem, and one (equivalent) column for the rest of us in the
-resulting data. 
-
-
+Nonmem, and one (value-to-value corresponding) character column for
+the rest of us in the resulting data.
 
 ### Assign and count flags
 For use in Nonmem, the easiest is that inclusion/exclusion is
@@ -200,8 +198,11 @@ The function that applies inclusion/excluasion rules is called
 `flagsAssign`, and it takes a dataset and a data.frame with rules as
 arguments.
 
-```{r}
+```{r,include=F}
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds", package="NMdata"))
+pk[`:=`(FLAG=NULL,flag=NULL)]
+```
+```{r}
 dt.flags <- fread(text="FLAG,flag,condition
 10,Below LLOQ,EVID==0&BLQ==1
 100,Negative time,EVID==0&TIME<0")
@@ -225,15 +226,23 @@ the data.frame. In this case, `BLQ` has to exist in `pk`.
 
 In `Nonmem`, you can include `IGNORE=(FLAG.NE.0)` in `$DATA` or `$INFILE`.
 
-Again, the omission will be attributed to the first condition matched. Default is to apply the conditions by the order of decreasing numerical flag value. There is an argument if you prefer the opposite. However, what cannot be modified is that 0 is the numerical value for rows that are not matched by any conditions.
+Again, the omission will be attributed to the first condition
+matched. Default is to apply the conditions by the order of decreasing
+numerical flag value. There is an argument if you prefer the
+opposite. However, what cannot be modified is that 0 is the numerical
+value for rows that are not matched by any conditions.
 
 
 What rows to omit from a dataset can vary from one analysis to
 another. Hence, the aim with the chosen design is that the inclusion
 criteria can be changed and applied to overwrite an existing
 inclusion/exclusion selection. For another analysis we want to include
-the observations below LLOQ. We have two options. Either we simply change the `IGNORE` statement given above to `IGNORE=(FLAG.LT.10)`, or you create a different exclusion flag
-for that one. If you prefer to create a new set of exclusion flags, just use new names for the numerical and the character flag columns so you don't overwrite the old ones. See help of `flagsAssign` and `flagsCount` for how.
+the observations below LLOQ. We have two options. Either we simply
+change the `IGNORE` statement given above to `IGNORE=(FLAG.LT.10)`, or
+you create a different exclusion flag for that one. If you prefer to
+create a new set of exclusion flags, just use new names for the
+numerical and the character flag columns so you don't overwrite the
+old ones. See help of `flagsAssign` and `flagsCount` for how.
 
 
 ### Summarize data exclusions
@@ -254,19 +263,17 @@ Once you have your dataset in place, `NMdata` provides a few useful
 functions. At this point, ideally you check your data for any
 inconsistency. If you miss an inconsistency, you need to wait for Nonmem
 to finish if the inconsistency is not fatal for Nonmem's ability to
-run the model. Then, you may still not realize and continue working
-with Nonmem to build the model before you realize that something is
-wrong. `NMdata` is still ways from providing a sufficient set of tests
-to run, but still these checks are useful and easy and cheap to run.
+run the model. Then, you may or may not realize the inconcisteny quickly. `NMdata` is still ways from providing a sufficient set of tests
+to run, but already includes some checks that are useful and easy to run.
 
 ### Automated ordering of columns
 The order of columns in Nonmem is important for two reasons. One is
 that a character in a variable read into Nonmem will make the run
 fail. The other is that there are restrictions on the number of
 variables you can read into Nonmem, depending on the
-version. `NMcolOrders` tries to put the used columns first, and
+version. `NMorderColumns` tries to put the used columns first, and
 other or maybe even unusable columns in the back of the dataset. It
-does so by a mix of recognition or column names and analysis of the
+does so by a mix of recognition of column names and analysis of the
 column contents. 
 
 Columns that cannot be converted to numeric are put in the back, while
@@ -279,7 +286,8 @@ more options.
 pk <- NMorderColumns(pk)
 ```
 
-Notice, `NMdata` detected the exclusion flag and suggests to include it in `$DATA`.
+We may want to add `MDV` and rerun `NMorderColumns`.
+
 
 ### Writing data to files
 For the final step of writing the dataset, `NMwriteData` is
@@ -292,6 +300,7 @@ streams.
 ```{r}
 NMwriteData(pk)
 ```
+Notice, `NMwriteData` detected the exclusion flag and suggests to include it in `$DATA`.
 
 If a file name had been provided, the data would have been written,
 and the path to the data file would have been included in the message

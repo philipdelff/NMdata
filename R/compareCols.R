@@ -101,8 +101,9 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,fun.cl
     if(diff.only) dt.cols <- dt.cols[n<ndots|nu>1]
 ### this one orders by number of occurance, unique classses, column name
 
-    
-    setorder(dt.cols,n,-nu,column)
+    if(ndots>1){
+        setorder(dt.cols,n,-nu,column)
+    }
     cols.rm <- c("nu","n")
     dt.cols[,(cols.rm):=NULL]
     

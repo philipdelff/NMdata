@@ -56,7 +56,8 @@
 
 NMscanInput <- function(file, use.rds, file.mod,
                         dir.data=NULL, applyFilters=FALSE, translate=TRUE,
-                        details=FALSE, col.id="ID", quiet, invert=FALSE,
+                        details=FALSE, col.id="ID", quiet, args.fread,
+                        invert=FALSE,
                         as.fun) {
     
 
@@ -77,6 +78,8 @@ NMscanInput <- function(file, use.rds, file.mod,
     quiet <- NMdataDecideOption("quiet",quiet)
     if(missing(use.rds)) use.rds <- NULL
     use.rds <- NMdataDecideOption("use.rds",use.rds)    
+    if(missing(args.fread)) args.fread <- NULL
+    args.fread <- NMdataDecideOption("args.fread",args.fread)
     
     if(!is.null(file.mod) && !is.null(dir.data)) {
         messageWrap("Both file.mod and dir.data are non-NULL. Not allowed.",
@@ -167,7 +170,7 @@ NMscanInput <- function(file, use.rds, file.mod,
             type.file <- "text"
             if(!quiet) message("Read delimited text input data file.")
             path.data.input <- info.datafile$path
-            data.input <- NMreadCsv(path.data.input,as.fun="data.table")
+            data.input <- NMreadCsv(path.data.input,args.fread=args.fread,as.fun="data.table")
         } else {
             ## stop(paste("Input data file not found. Was expecting to find",path.data.input))
             stop(paste("Input data file not found. Was expecting to find",info.datafile$path))
