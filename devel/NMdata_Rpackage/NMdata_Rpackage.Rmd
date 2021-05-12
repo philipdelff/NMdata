@@ -17,6 +17,10 @@ library(knitr)
 opts_chunk$set(fig.path='figure/beamer-',fig.align='center',fig.show='hold',size='footnotesize')
 
 library(ggplot2)
+theme_set(theme_bw(base_size=14)+
+          theme(legend.position="bottom")+
+          theme(strip.background =element_rect(fill="#ff9dff"))
+          )
 library(data.table)
 unloadNamespace("NMdata")
 
@@ -40,8 +44,14 @@ set.seed(1121)   # make the results repeatable
 
 ```
 
-<!-- \section{Introduction} -->
 # Introduction
+
+<!-- ## Motivation -->
+
+<!-- PK/PD modeling is technically extremely heavy. We want to do provide clarity to decision making, but spend a lot of our time in deep mud. -->
+
+<!-- `NMdata` is my humble experience collected in efficient functions that fill some holes and help with some of the most annoying design -->
+
 ## What is NMdata?
 NMdata is an R package that can help
 
@@ -120,16 +130,16 @@ NMdataConf(as.fun="data.table")
 
 Three vignettes are available
 
-* DataCreate
-* NMscanData
-* FAQ
+* [Data creation tools](https://philipdelff.github.io/NMdata/articles/DataCreate.html)
+* [Automated and general reader of Nonmem data](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
+* [FAQ](https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html)
 
 <!-- dplyr users, please see FAQ for how to make all NMdata functions return tibbles. -->
 
-A quick overview
+For a quick overview (after installation):
 
 ```(R,eval=F)
-help(pacakage="NMdata")
+help(package="NMdata")
 ```
 
 <!-- prepare example data behind the scenes -->
@@ -156,6 +166,7 @@ pk.reduced[,AMT:=as.character(AMT)]
 
 ## compareCols
 A slightly modified version of the `pk` dataset has been created.
+
 * `CYCLE` has been removed, and
 * `AMT` has been recoded to character
 
@@ -170,12 +181,15 @@ Before merging or stacking, we may want to recode `AMT` in one of the datasets t
 ::: columns
 
 :::: column 
-The model estimation step is heavily dependent (and in
-Nonmem almost entirely based) on numeric data values.  The source data
+* The model estimation step is heavily dependent (and in
+Nonmem almost entirely based) on numeric data values.  
+* The source data
 will often contain character variables, i.e. columns with non-numeric
 data values.
+* If the column names reflect whether the values are numeric, double-checking can be avoided. 
+* `renameByContents` renames columns if a function of their contents returns `TRUE`.
 
-If the column names reflect whether the values are numeric, double-checking can be avoided. `renameByContents` renames columns if a function of their contents returns `TRUE`.
+`NMisNumeric`
 
 - `NMisNumeric` is a function that tests if the contents are numeric to `Nonmem`. 
 - Subject ID `"1039"` (character class) will be a numeric in Nonmem, `"1-039"` will not. 
@@ -184,20 +198,24 @@ If the column names reflect whether the values are numeric, double-checking can 
 :::: 
 
 :::: column
+\footnotesize
 ```{r,include=FALSE}
 pk.old <- copy(pk)
 ```
 
 ```{r}
-pk <- renameByContents(data=pk,fun.test=NMisNumeric,fun.rename = tolower, invert.test = TRUE)
+pk <- renameByContents(data=pk,
+                       fun.test=NMisNumeric,
+                       fun.rename = tolower,
+                       invert.test = TRUE)
 ```
 
-
-`compareCols` shows that three columns were renamed:
+`compareCols` shows that four columns were renamed:
 
 ```{r}
 compareCols(pk.old,pk)
 ```
+\normalsize
 ::::
 
 :::
@@ -210,8 +228,8 @@ compareCols(pk.old,pk)
 * Merges are a very common source of data creation bugs. 
 * As simple as they may seem, merges likely leave you with an unexpected number of
 rows, some repeated or some omitted. 
-* `mergeCheck` provides a merge
-which is **restricted** to the specific kind where 
+* `mergeCheck` is a wrapper of `merge` 
+which only accepts the results if 
 
 **The rows that come out
 of the merge are the exact same as in one of the existing datasets,
@@ -231,6 +249,7 @@ what you expect.
 **mergeCheck is not a new implementation of merge. It's an implementation of checks.**
 
 Does that make it slower?
+
 - If you don't use data.table already, `mergeCheck` is likely to be way faster than what you use already. 
 - The checking overlay should be neglegible.
 - If checks fail, an additional merge is done to help user identify problems. This may cost significant additional time but is likely to save you coding and (at least) the same calculation time anyway.
@@ -238,12 +257,9 @@ Does that make it slower?
 
 ## mergeCheck
 ```{r,include=FALSE}
-dt.cov <- pk[,.(ID=unique(ID)[1:10])]
-dt.cov[,COV:=sample(1:5,size=10,replace=TRUE)]
-
-dt.cov2 <- pk[,.(ID=unique(ID))]
-dt.cov2[,COV:=sample(1:5,size=.N,replace=TRUE)]
-dt.cov2 <- dt.cov2[c(1,1:(.N-1))]
+dt.cov <- pk[,.(ID=unique(ID))]
+dt.cov[,COV:=sample(1:5,size=.N,replace=TRUE)]
+dt.cov <- dt.cov[c(1,1:(.N-1))]
 ```
 
 Say we want to add a covariate from a
@@ -251,24 +267,25 @@ Say we want to add a covariate from a
 
 ::: columns
 :::: column
+\footnotesize
 Without `mergeCheck`:
 ```{r}
 ## The resulting dimensions are correct
-pk4 <- merge(pk,dt.cov2,by="ID")
-dims(pk,dt.cov2,pk4)
+pk4 <- merge(pk,dt.cov,by="ID")
+dims(pk,dt.cov,pk4)
 
 ## But we now have twice as many rows for this subject
 dims(pk[ID==31],pk4[ID==31])
 ```
 :::
-
 :::: column
+\footnotesize
 `mergeCheck` captures this and suggests what is wrong
 ```{r}
-try(mergeCheck(pk,dt.cov2,by="ID"))
+try(mergeCheck(pk,dt.cov,by="ID"))
 ```
 ::::
-
+\normalsize
 :::
 
 ## Exclusion flags
@@ -303,6 +320,11 @@ the data.frame. In this case, `BLQ` has to exist in `pk`.
 ::::
 
 :::: column
+\footnotesize
+```{r,include=FALSE}
+pk[,`:=`(FLAG=NULL,flag=NULL)]
+```
+
 ```{r}
 dt.flags <- fread(text="FLAG,flag,condition
 10,Below LLOQ,EVID==0&BLQ==1
@@ -341,15 +363,15 @@ In order to ensure that we can reliably recreate (by merge) output with input da
 The identifier should be
 
 * Numeric
-- For Nonmem to be able to read it
+  - For Nonmem to be able to read it
 * Integer
-- To avoid risk of rounding
-- It is _not_ a problem if represented as a `double` in `R`
+  - To avoid risk of rounding
+  - It is _not_ a problem if represented as a `double` in `R`
 
 * Increasing
-- Not strictly necessary
-- Avoid confusion
-- May be useful for post-processing to have a single column to order by
+  - Not strictly necessary
+  - Avoid confusion
+  - May be useful for post-processing to have a single column to order by
 
 ::::
 :::: column
@@ -390,15 +412,19 @@ column contents to sort the columns. `NMorderColumns` does not sort rows, nor do
 ::::
 :::: column
 <!-- Use print.data.table to get top and bottom with correct row numbers -->
+\footnotesize
 ```{r}
 pk.old <- copy(pk)
 pk <- NMorderColumns(pk,first="WEIGHTB")
 ```
+\normalsize
 We may want to add `MDV` and rerun `NMorderColumns`.
+\footnotesize
 ```{r}
 data.table(old=colnames(pk.old),new=colnames(pk))
 ```
 ::::
+\normalsize
 :::
 
 ## NMwriteData
@@ -727,28 +753,42 @@ available elsewhere.
 
 
 ## Data read building blocks
-<!-- %% NMscanTables -->
-<!-- %% NMreadTab -->
-<!-- %% NMscanInput -->
-<!-- %%% mention translate function -->
-<!-- %% NMreadCsv -->
 
-# Data processing
-## findCovs, findVars
+`NMscanData` uses a few simpler functions to read all the data it can find. These functions may be useful when you don't want the full automatic package provided by `NMscanData`.
 
-# Todo
-<!-- %% if you want to contribute, this is important -->
-<!-- %%% testing - please use the package and provide feedback  -->
-<!-- %%% Improved communication -->
-<!-- %%%% A tidyverse workflow -->
-<!-- %%% or if you want to provide code... -->
-<!-- %%%% A function to test data for concistency and compatibility with Nonmem -->
-<!-- %%%% Improved overview of results from NMscanData -->
+* `NMreadTab`
+  - Fast read and format output tables from Nonmem. 
+  - Handles the "`TABLE NO.`" counter
+* `NMscanTables` (uses `NMreadTab`)
+  - Given a control stream or list file, read all output tables
+* `NMreadCsv` 
+  - Fast read delimited (input data) files 
+* `NMscanInput` (uses `NMreadCSV`)
+  - Given a control stream or list file, read input data.
+  - Optionally reads and applies Nonmem ignore/accept statements
+  - Optionally translates column names according to names used in Nonmem
+
+<!-- # Data processing -->
+<!-- ## findCovs, findVars -->
+
+## Todo
+* The next milestone is submitting the package to CRAN
+  - Little left on the todo list before submission
+* The following would be great help in making NMdata more accessible and useful
+  - Testing - please use the package and provide feedback
+  - Review of documentation, vignettes, and descriptions/explanations on website
+  - A tidyverse workflow for a new vignette
+* Or if you want to provide code... 
+  - A function to test data for concistency and compatibility with Nonmem
+  - Improved overview of results from NMscanData
+  - ?
 <!-- %%%% automatic saving of meta data with csv files -->
 <!-- %%%% check that row identifier is not modified by Nonmem -->
 <!-- %%%% documentation of columnns -->
 
 # Summary
+
+
 
 # Other tools
 ## pmxtricks
