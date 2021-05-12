@@ -60,11 +60,12 @@ NMextractText <- function(file, lines, text, section, char.section,
                           simplify=TRUE, cleanSpaces=FALSE,
                           type="mod", linesep="\n"){
 
+    
 
     if(sum(c(!missing(file)&&!is.null(file),
-           !missing(lines)&&!is.null(lines),
-           !missing(text)&&!is.null(text)
-           ))!=1) stop("Exactly one of file, lines, or text must be supplied")
+             !missing(lines)&&!is.null(lines),
+             !missing(text)&&!is.null(text)
+             ))!=1) stop("Exactly one of file, lines, or text must be supplied")
     if(!missing(file)&&!is.null(file)) {
         if(!file.exists(file)) stop("When using the file argument, file has to point to an existing file.")
         lines <- readLines(file,warn=FALSE)

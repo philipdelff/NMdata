@@ -26,7 +26,7 @@
 ##'     is TRUE. So if you want to process the tables separately, you
 ##'     probably want FALSE here.
 ##' @param simplify If asOne=FALSE, do you want the result to be
-##'     simplified if only one table is found? Default is TRUE which
+##'     simplified if only one section is found? Default is TRUE which
 ##'     is desirable for interactive analysis. For programming, you
 ##'     probably want FALSE.
 ##' @param cleanSpaces If TRUE, leading and trailing are removed, and
@@ -42,23 +42,56 @@
 
 
 NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="text",
-                         keepEmpty=FALSE, keepName=TRUE,
-                         keepComments=TRUE, asOne=TRUE,
-                         simplify=TRUE, cleanSpaces=FALSE, ...){
+                          keepEmpty=FALSE, keepName=TRUE,
+                          keepComments=TRUE, asOne=TRUE,
+                          simplify=TRUE, cleanSpaces=FALSE, ...){
+
+    if(missing(section)||is.null(section)){
+        section="."
+        asOne=FALSE
+        simplify=FALSE
+        keepName.arg <- keepName
+        keepName=TRUE
+        
+    }
     
-    NMextractText(file=file, lines=lines, text=text, section=section,
-                  ## this wrapper is especially made for "$" sections
-                  char.section="\\$",
-                  return=return,
-                  keepEmpty=keepEmpty,
-                  keepName=keepName,
-                  keepComments=keepComments,
-                  asOne=asOne,
-                  simplify=simplify,
-                  cleanSpaces=cleanSpaces,
-                  ## we only consider the model definition, not results.
-                  type="mod",
-                  ...)
+    res <- NMextractText(file=file, lines=lines, text=text, section=section,
+                         ## this wrapper is especially made for "$" sections
+                         char.section="\\$",
+                         return=return,
+                         keepEmpty=keepEmpty,
+                         keepName=keepName,
+                         keepComments=keepComments,
+                         asOne=asOne,
+                         simplify=simplify,
+                         cleanSpaces=cleanSpaces,
+                         ## we only consider the model definition, not results.
+                         type="mod",
+                         ...)
+
+    
+    if(section=="."){
+        names(res) <-
+            unlist(
+                lapply(res,function(x) sub("\\$([^ ]+)","\\1",strsplit(x[1]," ")[[1]][1]))
+            )
+        
+        res2 <- lapply(unique(names(res)),function(x)do.call(c,res[names(res)==x]))
+        names(res2) <- unique(names(res))
+        res2 <- lapply(res2,function(x){names(x) <- NULL
+            x}
+            )
+        if(keepName.arg==FALSE){
+            
+            names.res2 <- names(res2)
+            res2 <- lapply(1:length(res2),function(x)sub(paste0(" *\\$",names.res2[x]," *"),"",res2[[x]]))
+            names(res2) <- names.res2
+        }
+
+        res <- res2
+    }
+    
+    res
     
 }
 

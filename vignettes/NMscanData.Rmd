@@ -127,7 +127,7 @@ use `data.table::setcolorder` but we are sticking to base R here.
 
 ```{r,eval=TRUE}
 res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                   col.row="ROW",quiet=TRUE)
+                   col.row="ROW",merge.by.row=TRUE,quiet=TRUE)
 res0 <- res0[,c(colnames(res1),setdiff(colnames(res0),colnames(res1)))]
 all.equal(res0,res1,check.attributes=FALSE)
 ```
@@ -430,7 +430,7 @@ handle, there is a good chance you will never run into any of them, as
 they are mostly quite rare. If you do, reach out to me, and we'll
 figure it out.
 
-### Input file must exist and be unmodified since model run
+### Input data file must exist and be unmodified since model run
 If merging with input data, the input data must be available as was
 when the model was run. If you want to avoid this potential issue,
 `Nonmem` can be run in a wrapper script that either copies the input
@@ -442,7 +442,7 @@ Nested `ACCEPT` and `IGNORE` statements are not supported at this
 point. The resulting number of rows after applying filters is checked
 against row-level output table dimensions (if any available). In other
 words, you have to be unlucky to run into trouble without an
-error. But it is alway recommended to use a unique row identifier in
+error. But it is always recommended to use a unique row identifier in
 both input and output tables in order to avoid relying on
 interpretation of `Nonmem` code.
 
@@ -453,7 +453,7 @@ identifier.
 ### Character time variables not interpreted
 `Nonmem` supports a clocktime input format for a column called TIME in
 input data. Based on a day counter and a character ("00:00") clock
-format, `Nonmem` can calculate the individual time since first
+format, `Nonmem` (or rather, `NM-TRAN`) can calculate the individual time since first
 record. This behaviour is not mimicked by NMscanData, and the only
 ways to get TIME in this case are to either include it in an output
 `TABLE` or to code the translation yourself after calling

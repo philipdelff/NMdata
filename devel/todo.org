@@ -38,7 +38,9 @@ With load_all():
     CLOSED: [2020-12-23 Wed 11:22]
 *** DONE NMgetSection
     CLOSED: [2020-12-23 Wed 11:25]
-*** TODO Summary of the columns - right now hidden in metadata
+*** TODO [#A] Summary of the columns - columns?
+    right now hidden in metadata
+*** TODO [#A] Summary of tables - tables?
 *** TODO [#B] A function to check data - NMcheckData
 **** TODO Find previously used code
 **** TODO Implement checks in pmxtricks todo
@@ -161,6 +163,7 @@ is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMwriteData
 **** TODO [#B] Include a randomly generated ID in meta data that we can check files against?
+**** TODO [#A] Add support for custom fwrite arguments
 **** TODO [#A] When writing a CSV, write meta data to separate file
 **** DONE Support for pseudonyms
      CLOSED: [2021-04-21 Wed 23:16]
@@ -230,6 +233,8 @@ This is two steps.
 ***** col.row can be non-NULL even if using cbind for combining data
 **** DONE order.columns
      CLOSED: [2021-04-02 Fri 11:35]
+*** stampObj
+**** TODO [#A] Include output filename in stamp
 *** summary.NMdata
 **** TODO [#A] Rethink and tidy up message
 ** Nonmem examples

@@ -7,6 +7,9 @@ args.fread can be controlled using NMdataConf.
 
 NMwriteData updated with more concise message.
 
+NMreadSection now returns all sections if argument section is missing
+or equals NULL or ".".
+
 ## Bugfixes
 - In the special case where only one data set is given, compareCols
   used to sort the list of columns in an irrelevant way. Now no

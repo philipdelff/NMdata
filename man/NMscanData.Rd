@@ -17,6 +17,7 @@ NMscanData(
   translate.input = TRUE,
   quiet,
   use.rds,
+  args.fread,
   as.fun,
   col.id = "ID",
   tab.count = FALSE,

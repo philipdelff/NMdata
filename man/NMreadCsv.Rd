@@ -4,28 +4,19 @@
 \alias{NMreadCsv}
 \title{read csv data that is written to be read by nonmem}
 \usage{
-NMreadCsv(
-  file,
-  na.strings = ".",
-  header = TRUE,
-  stringsAsFactors = FALSE,
-  as.fun = NULL,
-  ...
-)
+NMreadCsv(file, args.fread, as.fun = NULL)
 }
 \arguments{
 \item{file}{The file to read. Must be pure text.}
-
-\item{na.strings}{See read.table}
-
-\item{header}{See read.table.}
-
-\item{stringsAsFactors}{See read.table.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass a function
 (say tibble::as_tibble) in as.fun to convert to something else. If
 data.tables are wanted, use as.fun="data.table". The default can be
 configured using NMdataConf.}
+
+\item{na.strings}{See data.table::fread.}
+
+\item{header}{See data.table::fread.}
 
 \item{...}{passed to fread.}
 }

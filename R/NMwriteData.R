@@ -101,12 +101,13 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
             stop("args.stamp must be a list of arguments.")
         }
     }
+    
     if(missing(script)){
         doStamp <- FALSE
     } else {
         args.stamp$script <- script
-        doStamp <- TRUE
     }
+
     
 ### rds arguments
     if(!missing(args.rds) && !write.rds ){
@@ -145,12 +146,12 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
 
     
     ## Allow TIME even if non-numeric. 
-if(allow.char.TIME){
-    if("TIME"%in%colnames(data.dt) &&
-       as.num.ok[,TIME==FALSE]) {
-        as.num.ok[,TIME:=TRUE]
+    if(allow.char.TIME){
+        if("TIME"%in%colnames(data.dt) &&
+           as.num.ok[,TIME==FALSE]) {
+            as.num.ok[,TIME:=TRUE]
+        }
     }
-}
     
     dt.num.ok <- data.table(
         col=colnames(as.num.ok)
@@ -242,13 +243,15 @@ if(allow.char.TIME){
     files.written=c()
     if(write.csv){
         file.csv <- fnExtension(file,".csv")
-        fwrite      (data,na=".",quote=quote,row.names=FALSE,scipen=0,file=file.csv)
+        fwrite      (data,na=".",quote=FALSE,row.names=FALSE,scipen=0,file=file.csv)
         files.written <- c(files.written,file.csv)
         ## options(opt.orig)
     }
     if(write.RData){
         name.data <- deparse(substitute(data))
         file.RData <- fnExtension(file,".RData")
+        ## args.stamp.1 <- args.stamp
+        ## args.stamp.1$file <- file.rds
         if(doStamp) data <- do.call(stampObj,append(list(data=data,writtenTo=file.RData),args.stamp))
         assign(name.data,data)
         save(list=name.data,file=file.RData)
@@ -256,6 +259,8 @@ if(allow.char.TIME){
     }
     if(write.rds){
         file.rds <- fnExtension(file,".rds")
+        ## args.stamp.1 <- args.stamp
+        ## args.stamp.1$file <- file.rds
         if(doStamp) data <- do.call(stampObj,append(list(data=data,writtenTo=file.rds),args.stamp))
         do.call(saveRDS,append(list(object=data,file=file.rds),args.rds))
         files.written <- c(files.written,file.rds)

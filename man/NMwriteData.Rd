@@ -17,7 +17,8 @@ NMwriteData(
   nmdir.data,
   col.flag = "FLAG",
   nm.rename,
-  capitalize.names = FALSE
+  capitalize.names = FALSE,
+  allow.char.TIME = TRUE
 )
 }
 \arguments{
@@ -87,7 +88,9 @@ When writing csv files, the file will be
 
 The user is provided with text to use in Nonmem. This lists names
 of the data columns. Once a column is reached that Nonmem will not
-be able to read as a numeric and column is not in nmdrop, the list is stopped.
+be able to read as a numeric and column is not in nmdrop, the list
+is stopped. Only exception is TIME which is not tested for whether
+character or not.
 }
 \seealso{
 Other Nonmem: 

@@ -27,6 +27,7 @@ knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 
 ```{r,setup,include=F}
 library(NMdata)
+## NMdataConf(as.fun="data.table")
 library(data.table)
 library(ggplot2)
 theme_set(theme_bw()+theme(legend.position="bottom"))
@@ -36,11 +37,25 @@ Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
 
 ## Introduction
-Getting the data ready for modeling is a crucial but underrated task. Mistakes during the process of combining data sets, defining time variables etc. can lead to anything from difficulties during modeling and need for revisiting data set creation to a lot of wasted time working with an erroneos data set. Avoiding those mistakes by integrating checks into the data creation process is a must.
+Getting data ready for modeling is a crucial and tedious but often
+underestimated task. Mistakes during the process of combining data
+sets, defining time variables etc. can lead to difficulties during
+modeling, need for revisiting data set creation, and in the worst case
+where the errors are not quickly realized, a lot of wasted time
+working with an erroneos data set. Avoiding those mistakes by
+integrating checks into the data creation process is a must.
 
-Furthermore, Nonmem has quite a number of restrictions on the format of the input data, and problems with the data set is a very common reason for Nonmem not to behave as expected. When this happens, you easily waste a lot time on debugging. `NMdata` includes some simple functions to prevent these situations.
+Furthermore, Nonmem has quite a number of restrictions on the format
+of the input data, and problems with the data set is a very common
+reason for Nonmem not to behave as expected. When this happens,
+debugging can be time-consuming. `NMdata` includes some simple
+functions to prevent these situations.
 
-This vignette uses `data.table` syntax for the little bit of data manipulation performed. However, you don't need to use data.table _at all_ to use these tools or any tool in `NMdata`. The reason why the functions return data.table objects is that the data set is a `data.table` to begin with
+This vignette uses `data.table` syntax for the little bit of data
+manipulation performed. However, you don't need to use data.table _at
+all_ to use these tools or any tool in `NMdata`. The reason why the
+functions return data.table objects is that the data set is a
+`data.table` to begin with
 
 ```{r}
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
@@ -200,7 +215,7 @@ arguments.
 
 ```{r,include=F}
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds", package="NMdata"))
-pk[`:=`(FLAG=NULL,flag=NULL)]
+pk[,`:=`(FLAG=NULL,flag=NULL)]
 ```
 ```{r}
 dt.flags <- fread(text="FLAG,flag,condition

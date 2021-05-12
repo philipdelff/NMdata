@@ -1,4 +1,4 @@
-##' Translate NM $PK, $PRED sections or other Nonmem code to R code
+##' Translate Nonmem $PK, $PRED sections or other Nonmem code to R code
 ##'
 ##' @param text the Nonmem code.
 ##' @details You probably want to run this on text obtained by using

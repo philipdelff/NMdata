@@ -14,6 +14,7 @@ NMscanInput(
   details = FALSE,
   col.id = "ID",
   quiet,
+  args.fread,
   invert = FALSE,
   as.fun
 )

@@ -22,7 +22,7 @@ pk <- pkpd[CMT %in% 1:2]
 pk <- pk[CYCLE==1]
 
 pk <- pk[,!c("IPRED")]
-pk[,trtact := factor(TRTACT, levels = unique(TRTACT))]
+pk[,trtact := factor(TRTACT, levels = sort(unique(TRTACT)))]
 
 if(F){
     ggplot(data = pk, aes(x     = NOMTIME,

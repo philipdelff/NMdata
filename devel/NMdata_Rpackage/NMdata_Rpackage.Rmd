@@ -1,0 +1,765 @@
+---
+title: Optimize and automize a pharmacometrics workflow using NMdata
+author: Philip Delff
+date: April, 2021
+fontsize: 8pt
+output: 
+ beamer_presentation:
+  slide_level: 2
+  toc: true
+classoption: "aspectratio=169"
+---
+
+
+```{r,include=FALSE}
+
+library(knitr)
+opts_chunk$set(fig.path='figure/beamer-',fig.align='center',fig.show='hold',size='footnotesize')
+
+library(ggplot2)
+library(data.table)
+unloadNamespace("NMdata")
+
+                                        # some setup
+options(width=60)  # make the printing fit on the page
+set.seed(1121)   # make the results repeatable
+```
+
+<!-- Supposedly this chunk option should activate a profile but it doesn't work -->
+<!-- ,class.source="smaller" -->
+```{css, echo=FALSE}
+.watch-out {
+  background-color: lightpink;
+  border: 3px solid red;
+  font-weight: bold;
+}
+.smaller {
+  background-color: lightgreen;
+  font-size: 4pt;
+}
+
+```
+
+<!-- \section{Introduction} -->
+# Introduction
+## What is NMdata?
+NMdata is an R package that can help
+
+*  Creating event-based data sets for PK/PD modeling
+*  Keeping Nonmem code updated to match contents of datasets
+*  Read all output data and combine with input data from Nonmem runs
+-  You only supply output list file (.lst), and the reader is very flexible and automated
+
+NMdata is developed with high degree of flexibility in mind
+
+* No tools in NMdata requires other NMdata tools to be used
+* NMdata comes with a configuration tool that can be used to tailor default behaviour to the user's system configuration and preferences.
+
+
+
+## What is NMdata not?
+
+
+* A plotting package
+
+* A tool to retrieve details about model runs
+
+* A calculation or simulation toolbox
+* A "silo" that requires you to do things in a certain way.
+
+
+
+## Who can find NMdata useful?
+
+* The data set creation tools are relevant no matter the estimation and simulations tools.
+
+* Nonmem users will find additional tools for handling the exchange of data between R and Nonmem.
+
+
+## Overview of NMdata functionality
+* Data creation
+- Checking of compatibility of data.frames.
+- Merge with automated checks 
+
+* Nonmem control stream editing
+
+* Retrieve data from Nonmem
+
+
+
+## About the author
+* Pharmacometrician with experience from biostatistics
+
+* Background in engineering, experience as system administrator, 15 years of R experience
+
+* Very concerned with code robustness and ensuring data consistency.
+
+* Authored an R package on safe data transfer from SAS to R and one on survival analysis. 
+
+I hate being stuck in leg work and having too little time for modeling,
+reflection, and understanding key questions. `NMdata` is a big help for
+me personally in freeing time to more high-level tasks.
+
+
+# Getting started
+## Getting started
+
+```{r,load-NMdata,echo=TRUE,message=TRUE}
+library(NMdata)
+```
+
+```{r,load-all-NMdata,include=FALSE}
+library(devtools)
+load_all("c:/Users/delff/working_copies/NMdata")
+```
+
+```{r}
+NMdataConf(as.fun="data.table")
+```
+
+
+Three vignettes are available
+
+* DataCreate
+* NMscanData
+* FAQ
+
+<!-- dplyr users, please see FAQ for how to make all NMdata functions return tibbles. -->
+
+A quick overview
+
+```(R,eval=F)
+help(pacakage="NMdata")
+```
+
+<!-- prepare example data behind the scenes -->
+```{r,prep-data,include=FALSE}
+pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+pk[,trtact:=NULL]
+## will create this in the example
+pk[,ROW:=NULL]
+
+pk.reduced <- copy(pk)
+pk.reduced <- pk.reduced[1:(.N%/%2)]
+pk.reduced[,CYCLE:=NULL]
+pk.reduced[,AMT:=as.character(AMT)]
+```
+
+# Data set creation
+
+## Compare compatibility of data sets for rbind and merge
+
+
+* In order to rbind or merge data sets, they must be compatible in presence and equally importantly, of the classes of the common columns.
+* compareCols provides an overview of these properties for any number of data sets. 
+* By default, only descripancies are returned. Using diff.only=FALSE will give the complete list of columns in the two datasets.
+
+## compareCols
+A slightly modified version of the `pk` dataset has been created.
+* `CYCLE` has been removed, and
+* `AMT` has been recoded to character
+
+```{r,compareCols,class.source="smaller"}
+compareCols(pk,pk.reduced)
+```
+
+Before merging or stacking, we may want to recode `AMT` in one of the datasets to get the class we need, and decide what to do about the missing `CYCLE` in one of the datasets (if OK, values are filled with `NA`).
+
+<!-- %%% renameByContents.R -->
+## Rename columns based on contents
+::: columns
+
+:::: column 
+The model estimation step is heavily dependent (and in
+Nonmem almost entirely based) on numeric data values.  The source data
+will often contain character variables, i.e. columns with non-numeric
+data values.
+
+If the column names reflect whether the values are numeric, double-checking can be avoided. `renameByContents` renames columns if a function of their contents returns `TRUE`.
+
+- `NMisNumeric` is a function that tests if the contents are numeric to `Nonmem`. 
+- Subject ID `"1039"` (character class) will be a numeric in Nonmem, `"1-039"` will not. 
+- We invert that, and those that Nonmem cannot interpret as numeric become lowercase. 
+
+:::: 
+
+:::: column
+```{r,include=FALSE}
+pk.old <- copy(pk)
+```
+
+```{r}
+pk <- renameByContents(data=pk,fun.test=NMisNumeric,fun.rename = tolower, invert.test = TRUE)
+```
+
+
+`compareCols` shows that three columns were renamed:
+
+```{r}
+compareCols(pk.old,pk)
+```
+::::
+
+:::
+
+<!-- %%% list additional small function -->
+<!-- %% dims -->
+
+## Automated checking of merges
+
+* Merges are a very common source of data creation bugs. 
+* As simple as they may seem, merges likely leave you with an unexpected number of
+rows, some repeated or some omitted. 
+* `mergeCheck` provides a merge
+which is **restricted** to the specific kind where 
+
+**The rows that come out
+of the merge are the exact same as in one of the existing datasets,
+only columns added from the second dataset**
+
+* This limitation of the
+scope of the merge allows for a high degree of automated checks of
+consistency of the results.
+
+* This is not to say that merges beyond the scope of `mergeCheck` are
+relevant or necessary. But if `mergeCheck` covers your needs, it's a
+real time saver in terms of automated checks that you are getting
+what you expect.
+
+* `mergeCheck` uses `merge.data.table`. The addition is the checks that the result is in accordance with the restrictions. This means
+
+**mergeCheck is not a new implementation of merge. It's an implementation of checks.**
+
+Does that make it slower?
+- If you don't use data.table already, `mergeCheck` is likely to be way faster than what you use already. 
+- The checking overlay should be neglegible.
+- If checks fail, an additional merge is done to help user identify problems. This may cost significant additional time but is likely to save you coding and (at least) the same calculation time anyway.
+
+
+## mergeCheck
+```{r,include=FALSE}
+dt.cov <- pk[,.(ID=unique(ID)[1:10])]
+dt.cov[,COV:=sample(1:5,size=10,replace=TRUE)]
+
+dt.cov2 <- pk[,.(ID=unique(ID))]
+dt.cov2[,COV:=sample(1:5,size=.N,replace=TRUE)]
+dt.cov2 <- dt.cov2[c(1,1:(.N-1))]
+```
+
+Say we want to add a covariate from a
+`dt.cov`.  We expect the number of rows to be unchanged from `pk`. `mergeCheck` requires that we get all and only the _same_ rows:
+
+::: columns
+:::: column
+Without `mergeCheck`:
+```{r}
+## The resulting dimensions are correct
+pk4 <- merge(pk,dt.cov2,by="ID")
+dims(pk,dt.cov2,pk4)
+
+## But we now have twice as many rows for this subject
+dims(pk[ID==31],pk4[ID==31])
+```
+:::
+
+:::: column
+`mergeCheck` captures this and suggests what is wrong
+```{r}
+try(mergeCheck(pk,dt.cov2,by="ID"))
+```
+::::
+
+:::
+
+## Exclusion flags
+
+* It is good practice not to discard records from a dataset but to flag
+them and omit them in model estimation. 
+
+* When reporting the analysis,
+we also need to account for how many data records were discarded due
+to which criteria. 
+
+* The implementation in `NMdata` is based on sequentially checking
+exclusion conditions.
+
+* The information is represented in one numerical column for
+Nonmem, and one (value-to-value corresponding) character column for
+the rest of us in the resulting data.
+
+## FlagsAssign
+::: columns
+:::: column
+* `flagsAssign` applies the conditions sequentially and by increasing or decreasing
+value of `FLAG`. 
+
+* `FLAG=0` means that none of the conditions were met and row is kept in analysis.  This cannot be changed.
+
+* You can use any expression that can be evaluated _row-wise_ within
+the data.frame. In this case, `BLQ` has to exist in `pk`.
+
+* In `Nonmem`, you can include `IGNORE=(FLAG.NE.0)` in `$DATA` or `$INFILE`.
+
+::::
+
+:::: column
+```{r}
+dt.flags <- fread(text="FLAG,flag,condition
+10,Below LLOQ,EVID==0&BLQ==1
+100,Negative time,EVID==0&TIME<0")
+
+pk <- flagsAssign(pk,tab.flags=dt.flags,subset.data="EVID==0")
+pk[EVID==1,FLAG:=0]
+pk[EVID==1,flag:="Dosing"]
+```
+::::
+
+:::
+
+## `flagsCount`
+* An overview of the number of observations disregarded due to the
+different conditions is then obtained using `flagsCount`:
+
+* `flagsCount` includes a `file` argument to save the the table right
+away.
+
+```{r}
+tab.count <- flagsCount(data=pk[EVID==0],tab.flags=dt.flags)
+print(tab.count)
+```
+
+
+
+
+# Finalize data for Nonmem 
+## Advice: always include a unique row identifier
+In order to ensure that we can reliably recreate (by merge) output with input data, a numeric unique row identifier is needed. 
+
+::: columns
+:::: column
+
+The identifier should be
+
+* Numeric
+- For Nonmem to be able to read it
+* Integer
+- To avoid risk of rounding
+- It is _not_ a problem if represented as a `double` in `R`
+
+* Increasing
+- Not strictly necessary
+- Avoid confusion
+- May be useful for post-processing to have a single column to order by
+
+::::
+:::: column
+
+
+```{r}
+setorder(pk,ID,EVID,TIME)
+pk[,ROW:=1:.N]
+```
+::::
+:::
+
+NMscanData will most often work even if you don't include a row
+identifier. But this will rely on interpretation of Nonmem code.
+
+## NMorderColumns
+::: columns
+:::: column
+The order of columns in Nonmem is important for two reasons. 
+
+* Character in a variable read into Nonmem will make the run
+fail
+* The number of
+variables you can read into Nonmem is restricted 
+
+Uses a mix of recognition of column names and analysis of the
+column contents to sort the columns. `NMorderColumns` does not sort rows, nor does it modify any contents of columns.
+
+
+* First: Standard columns (`ID`, `TIME`, `EVID` etc.) and usable columns first
+
+* Columns that cannot be converted to numeric are put in the back
+
+* Additional columns to place earlier (argument `first`) or late (`last`) can be specified. 
+
+* See `?NMorderColumns` for more options.
+
+::::
+:::: column
+<!-- Use print.data.table to get top and bottom with correct row numbers -->
+```{r}
+pk.old <- copy(pk)
+pk <- NMorderColumns(pk,first="WEIGHTB")
+```
+We may want to add `MDV` and rerun `NMorderColumns`.
+```{r}
+data.table(old=colnames(pk.old),new=colnames(pk))
+```
+::::
+:::
+
+## NMwriteData
+::: columns
+:::: column
+
+For the final step of writing the dataset, `NMwriteData` is
+provided. 
+* Checks character variables for Nonmem compatibility (commas not allowed)
+* writes a csv file with appropriate options for Nonmem compatibility
+* Default is to also write an rds file for R 
+  - Contents identical to R object including all information (such as factor levels) which cannot be saved in csv. 
+
+* If you use `NMscanData` to read Nonmem results,  this information can be used automatically. 
+
+* Provides a proposal for text to include in the
+`$INPUT` and `$DATA` sections of the Nonmem control
+streams. 
+
+::::
+:::: column
+
+These are the only steps involved between the supplied data set and the written csv.
+
+* `scipen` is small to maximize precision.
+
+```{r,eval=FALSE}
+file.csv <- fnExtension(file,".csv")
+fwrite(data,na=".",quote=FALSE,row.names=FALSE,scipen=0,file=file.csv)
+```
+
+```{r}
+NMwriteData(pk,file="derived/pk.csv")
+```
+
+* `NMwriteData` detected the exclusion flag and suggests to include it in `$DATA`.
+
+* If a file name had been provided, paths to the data files message returned.
+
+
+::::
+:::
+
+
+## Update Nonmem control streams
+Several arguments modify the proposed text
+the proposed text for the Nonmem run, see `?NMwriteData`.
+```{r}
+nmCode <- NMwriteData(pk,file="derived/pk.csv",write.csv=FALSE,nmdir.data="../derived",nmdrop="PROFDAY",nm.rename=c(CONC="DV"))
+
+```
+
+```{r,eval=FALSE}
+## example: pick run1*.mod
+models <- list.files("../models",pattern="run1.+\\.mod$",full.names=T)
+## update $INPUT and $DATA
+lapply(models,NMwriteSection,list.sections=nmCode)
+## update $INPUT 
+lapply(models,
+       NMwriteSection,section="INPUT",newlines=nmCode$INPUT)
+```
+
+`NMextractDataFile` takes a control stream/list file and extracts the file name. You can use this to identify the model runs to update.
+
+
+## Automated documentation of data
+<!-- How meta data is integrated -->
+If the argument `script` is supplied to `NMwriteData`, a little meta information is attached to the saved `rds` object.
+```{r}
+NMwriteData(pk,file="derived/pk.csv",script = "NMdata_Rpackage.Rmd")
+pknm <- readRDS("derived/pk.rds")
+objInfo(pknm)
+```
+`NMwriteData` uses `stampObj` which you can use on any R object to attach similar meta information. Additional arguments (essentially anything) can be passed to `stampObj` using the argument `args.stamp`.
+
+`stampObj` and `objInfo` write and read an "attribute" called `objInfo`.
+
+```{r}
+names(attributes(pknm))
+## objInfo is a very simple function
+identical(objInfo(pknm),
+          attributes(pknm)$objInfo)
+```
+
+# Configuration of NMdata defaults
+## NMdataConf
+```{r,eval=FALSE}
+NMdataConf(as.fun="data.table"
+           ## this is the default value
+          ,col.row="ROW"
+           ## This is recommended, but not default - for now
+          ,merge.by.row=TRUE
+           ## You may want to switch this when script is final
+          ,quiet=FALSE)
+```
+`NMdataConf` supports changing many default argument values, simplifying coding. Other commonly used settings in `NMdataConf` are
+
+- `as.fun`: a function to apply to all objects before returning them from `NMdata` functions. If you use `dplyr/tidyverse`, do 
+```{r,eval=FALSE}
+library(tibble)
+NMdataConf(as.fun="as_tibble")
+```
+
+- `recover.rows`: Should `NMscanData` Include rows not processed by Nonmem? (default `FALSE`).
+
+- `use.input`: Should `NMscanData` combine (output data) with input data? (default `TRUE`)
+
+- `file.mod`: A function that translates the list file path to the input control stream file path. Default is to replace extension with `.mod`.
+
+- `check.time`: Default is `TRUE`, meaning that output (list file and tables) are expected to newer than input (control stream and input data). If say you copy files between systems, this check may not make sense.
+
+Notice, values are reset when `library(NMdata)` or `NMdataConf(reset=TRUE)` are called. See all currently used values by `NMdataConf()`.
+
+# Retrieving data from Nonmem runs 
+
+## NMscanData
+`NMscanData` is an automated and general reader of Nonmem data. It returns one combined data set.
+
+- Read and combine output tables
+- If wanted, read input data and restore variables that were not
+  output from the `Nonmem` model
+- If wanted, also restore rows from input data that were disregarded
+  in `Nonmem` (e.g. observations or subjects that are not part of the
+  analysis)
+- Multiple checks for consistency 
+
+```{r}
+file1.lst <- system.file("examples/nonmem/xgxr001.lst", package="NMdata")
+res0 <- NMscanData(file1.lst,merge.by.row=FALSE)
+class(res0)
+```
+<!-- Recommend unique row identifier -->
+
+Using a unique row identifier for merging data is highly recommended:
+```{r}
+file1.lst <- system.file("examples/nonmem/xgxr001.lst", package="NMdata")
+res1 <- NMscanData(file1.lst,merge.by.row=TRUE)
+class(res0)
+```
+
+## Why not use `options()`?
+`R` has a system for handling settings. `NMdata` does not use that.
+
+* Main reason: `NMdataConf` can check both setting/argument names and values for consistency. 
+```{r}
+try(NMdataConf(asfun=tibble::as_tibble))
+try(NMdataConf(use.input="FALSE"))
+```
+
+* A few extra features are available with `NMdataConf`:
+  - Reset all settings: `NMdataConf(reset=TRUE)` 
+  - Reset individual settings: `NMdataConf(use.input=NULL, as.fun=NULL)`
+  - Retrieve all current settings: `NMdataConf()`
+
+
+## NMscanData
+```{r,include=FALSE}
+## trtact is a character. Make it a factor with levels ordered by
+## numerical dose level.
+res1$trtact <- reorder(res1$trtact,res1$DOSE)
+```
+\footnotesize
+:::::::::::::: {.columns}
+::: {.column width="45%"}
+<!-- ::: columns -->
+<!-- :::: column -->
+```{r,aplot,eval=FALSE}
+## We are going to use data.table
+res1.dt <- as.data.table(res1)
+## Derive geometric mean pop predictions by
+## treatment and nominal sample time. Only
+## use sample records.
+res1.mean <-
+    res1.dt[EVID==0,
+            .(gmPRED=exp(mean(log(PRED)))),
+            by=.(trtact,NOMTIME)]
+## plot individual observations and geometric
+## mean pop predictions. Split (facet) by treatment.
+ggplot(subset(res1,EVID==0))+
+    geom_point(aes(TIME,DV))+
+    geom_line(aes(NOMTIME,gmPRED),
+              data=res1.mean,colour="red")+
+    scale_y_log10()+
+    facet_wrap(~trtact,scales="free_y",ncol=2)+
+    labs(x="Hours since administration",
+         y="Concentration (ng/mL)")
+```
+<!-- :::: -->
+<!-- :::: column -->
+
+:::
+::: {.column width="55%"}
+
+\normalsize
+
+```{r,aplot,echo=FALSE,eval=TRUE,out.width="105%"}
+```
+
+<!-- :::: -->
+<!-- ::: -->
+
+:::
+::::::::::::::
+
+## Recover discarded rows
+
+```{r}
+NMdataConf(as.fun="data.table")
+```
+
+```{r,meanbydose}
+res2 <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
+                   col.row="ROW",recover.rows=TRUE)
+## now we have a data.table
+class(res2)
+## Derive another data.table with geometric mean pop predictions by
+## treatment and nominal sample time. Only use sample records.
+res2.mean <- res2[EVID==0&nmout==TRUE,
+                  .(gmPRED=exp(mean(log(PRED)))),
+                  by=.(trtact,NOMTIME)]
+## plot individual observations and geometric mean pop
+## predictions. Split by treatment.
+ggplot(res2[EVID==0])+
+    geom_point(aes(TIME,DV,colour=flag))+
+    geom_line(aes(NOMTIME,gmPRED),data=res2.mean)+
+    scale_y_log10()+
+    facet_wrap(~trtact,scales="free_y")+
+    labs(x="Hours since administration",y="Concentration (ng/mL)")
+```
+
+## Compare models
+```{r}
+NMdataConf(as.fun="data.table")
+NMdataConf(col.row="ROW")
+NMdataConf(merge.by.row=TRUE)
+```
+
+
+```{r}
+## notice fill is an option to rbind with data.table
+res1.m <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
+                     quiet=TRUE)
+res2.m <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
+                     modelname="single-compartment",
+                     quiet=TRUE)
+res.mult <- rbind(res1.m,res2.m,fill=T)
+res.mult.mean <- res.mult[EVID==0&nmout==TRUE,
+                          .(gmPRED=exp(mean(log(PRED)))),
+                          by=.(model,trtact,NOMTIME)]
+
+ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+
+    geom_line()+
+    scale_y_log10()+
+    facet_wrap(~trtact,scales="free_y")
+```
+
+## Preserve all input data properties
+By default, NMscanData will look for an rds file next to the csv file (same file name, only extension .rds different). 
+
+* If this is found, it will be read, providing an enriched (e.g. conserving factor levels and any other information).
+
+* There is no checks of consistency of `rds` file against delimited file read by `Nonmem`.
+
+* You get the rds automatically if using `NMwriteData`.
+ 
+* Disable looking for the rds by argument `use.rds=FALSE`. 
+
+* Default value of `use.rds` can be modified with `NMdataConf`.
+
+
+
+## What should I do for my models to be compatible with NMscanData?
+* The answer to this should be as close to "nothing" as possible -
+that's more or less the aim of the function. 
+
+* (As always) you just have to make
+sure that the information that you need is present in input data and
+output data. 
+
+* No need to output information that is unchanged from
+input, but make sure to output what you need (like `IPRED`, `CWRES`, `CL`,
+`ETA1` etc which cannot be found in input). Always output the row identifier!
+
+* Some of these values can be
+found from other files generated by `Nonmem` but notice: `NMscanData` uses
+only input and output data.
+
+* Including a unique row identifier in both input and
+output data is the most robust way to combine the tables. 
+
+* In `firstonly` tables, include the subject ID or the row identifier. 
+
+* Everything
+will most likely work even if you don't 
+  - I would not take "most likely" when I can just as well have robustness.
+
+
+## Limitations
+Even if limitations of NMscanData may be several, they are all rare. There is a very good chance you will never run into any of them. 
+
+* If merging with input data, the input data must be available as was
+when the model was run. 
+  - Option 1: "Freeze" model runs together with data. `NMfreezeModels` does that and will be included in `NMdata` after a little more testing.
+  - Option 2 (platform-dependent): `Nonmem` can be run in a wrapper script that either copies the input
+data, or runs `NMscanData` and saves the output in a compressed file
+format (like `rds`). 
+
+* Not all data filter statements implemented. Nested `ACCEPT` and `IGNORE` statements are not supported at this
+point. The resulting number of rows after applying filters is checked
+against row-level output table dimensions (if any available).  It is always recommended to use a unique row identifier in
+both input and output tables in order to avoid relying on
+interpretation of `Nonmem` code.
+
+* The `RECORDS` and `NULL` options in `$DATA` are not implemented. If using
+`RECORDS`, please use the `col.row` option to merge by a unique row
+identifier.
+
+* Character time variables not interpreted. If you need this, we can implement it relatively easily.
+
+* Only output tables returning either all rows or one row per
+subject can be merged with input. Tables written with options like
+`FIRSTLASTONLY` (two rows per subject) and `OBSONLY` are disregarded
+with a warning (you can read them with `NMscanTables`). `LASTONLY` is
+treated like `FIRSTONLY`, i.e. as ID-level information if not
+available elsewhere.
+
+
+## Data read building blocks
+<!-- %% NMscanTables -->
+<!-- %% NMreadTab -->
+<!-- %% NMscanInput -->
+<!-- %%% mention translate function -->
+<!-- %% NMreadCsv -->
+
+# Data processing
+## findCovs, findVars
+
+# Todo
+<!-- %% if you want to contribute, this is important -->
+<!-- %%% testing - please use the package and provide feedback  -->
+<!-- %%% Improved communication -->
+<!-- %%%% A tidyverse workflow -->
+<!-- %%% or if you want to provide code... -->
+<!-- %%%% A function to test data for concistency and compatibility with Nonmem -->
+<!-- %%%% Improved overview of results from NMscanData -->
+<!-- %%%% automatic saving of meta data with csv files -->
+<!-- %%%% check that row identifier is not modified by Nonmem -->
+<!-- %%%% documentation of columnns -->
+
+# Summary
+
+# Other tools
+## pmxtricks
+A more diverse package 
+
+- `ggIndProfs`: Individual plots, including indication of doses
+- `ggwrite`: Saves images in sizes made for powerpoint, including stamps (time, source, output filename). It can save multiple plots at once as one file (pdf) or multiple files. 
+
+
+## NMfreeze
+
+## "secure" model reader
+
+

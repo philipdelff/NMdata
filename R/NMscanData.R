@@ -214,18 +214,16 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         messageWrap("Only use one of dir.data and file.mod. The aim is to find the input data file, so either give the directory (dir.data) in which it is, and the filename will be taken from the lst file, or help finding the .mod file using the file.mod argument. Using both is redundant.",fun.msg=stop)
     }
 
-    if(missing(col.row)||(!is.null(col.row)&&is.na(col.row))||(is.character(col.row)&&any(col.row==""))) {
-        col.row <- NULL
-    }
-
-    
 ### specification of merging method
     if(missing(use.input)) use.input <- NULL
     use.input <- NMdataDecideOption("use.input",use.input)
 
     search.col.row <- FALSE
 
-    if(missing(col.row)) col.row <- NULL
+    if(missing(col.row)||(!is.null(col.row)&&is.na(col.row))||(is.character(col.row)&&any(col.row==""))) {
+        col.row <- NULL
+    }
+    
     col.row <- NMdataDecideOption("col.row",col.row)
 
     if(missing(merge.by.row)) merge.by.row <- NULL
