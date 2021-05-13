@@ -661,6 +661,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 ### order columns in returned data
     if(order.columns){
         tab.row <- NMorderColumns(tab.row, col.row=col.row, as.fun="data.table",
+                                  last=c("model","nmout"),
                                   alpha=FALSE, quiet=TRUE)
     }
 

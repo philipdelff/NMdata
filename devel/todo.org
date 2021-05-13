@@ -30,7 +30,10 @@ With load_all():
 > dt1
    a newcol
 1: 1      1
-
+*** TODO messageWrap internal/external
+    The mentioning of where a message comes from is only useful if a
+    function is called from other functions. Possible to distinguish
+    somehow?
 ** New functions
 *** DONE function to replace file name extension - fnExtension
     CLOSED: [2021-04-18 Sun 12:06]

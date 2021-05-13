@@ -136,9 +136,10 @@ Three vignettes are available
 
 <!-- dplyr users, please see FAQ for how to make all NMdata functions return tibbles. -->
 
-For a quick overview (after installation):
+For a quick overview (after installation), do:
 
-```(R,eval=F)
+<!-- Would be good to show a truncated output here -->
+```(r,eval=F)
 help(package="NMdata")
 ```
 
@@ -345,11 +346,19 @@ different conditions is then obtained using `flagsCount`:
 * `flagsCount` includes a `file` argument to save the the table right
 away.
 
+```{r,include=F}
+opts <- options(width=100)
+```
+
+\footnotesize
 ```{r}
 tab.count <- flagsCount(data=pk[EVID==0],tab.flags=dt.flags)
 print(tab.count)
 ```
 
+```{r,include=F}
+options(opts)
+```
 
 
 
@@ -473,7 +482,8 @@ NMwriteData(pk,file="derived/pk.csv")
 Several arguments modify the proposed text
 the proposed text for the Nonmem run, see `?NMwriteData`.
 ```{r}
-nmCode <- NMwriteData(pk,file="derived/pk.csv",write.csv=FALSE,nmdir.data="../derived",nmdrop="PROFDAY",nm.rename=c(CONC="DV"))
+nmCode <- NMwriteData(pk,file="derived/pk.csv",write.csv=FALSE,
+                      nmdir.data="../derived",nmdrop="PROFDAY",nm.rename=c(CONC="DV"))
 
 ```
 
@@ -487,45 +497,62 @@ lapply(models,
        NMwriteSection,section="INPUT",newlines=nmCode$INPUT)
 ```
 
-`NMextractDataFile` takes a control stream/list file and extracts the file name. You can use this to identify the model runs to update.
+`NMextractDataFile` takes a control stream/list file and extracts the input data file name/path. You can use this to identify the model runs to update.
 
 
 ## Automated documentation of data
 <!-- How meta data is integrated -->
 If the argument `script` is supplied to `NMwriteData`, a little meta information is attached to the saved `rds` object.
+
+\footnotesize
+
 ```{r}
 NMwriteData(pk,file="derived/pk.csv",script = "NMdata_Rpackage.Rmd")
 pknm <- readRDS("derived/pk.rds")
 objInfo(pknm)
 ```
+
+\normalsize
+
 `NMwriteData` uses `stampObj` which you can use on any R object to attach similar meta information. Additional arguments (essentially anything) can be passed to `stampObj` using the argument `args.stamp`.
 
 `stampObj` and `objInfo` write and read an "attribute" called `objInfo`.
 
-```{r}
-names(attributes(pknm))
-## objInfo is a very simple function
-identical(objInfo(pknm),
-          attributes(pknm)$objInfo)
-```
-
 # Configuration of NMdata defaults
 ## NMdataConf
+::: columns
+
+:::: column
+
+* `NMdataConf` supports changing many default argument values, simplifying coding. 
+
+* Notice, values are reset when `library(NMdata)` or `NMdataConf(reset=TRUE)` are called. 
+
+* See all currently used values by `NMdataConf()`.
+
+::::
+
+:::: column
+My initialization of scripts often contain this: 
 ```{r,eval=FALSE}
+library(NMdata)
 NMdataConf(as.fun="data.table"
-           ## this is the default value
+### this is the default value
           ,col.row="ROW"
-           ## This is recommended, but not default - for now
+### Recommended but _right now_ not default
           ,merge.by.row=TRUE
-           ## You may want to switch this when script is final
+### You can switch this when script is final
           ,quiet=FALSE)
 ```
-`NMdataConf` supports changing many default argument values, simplifying coding. Other commonly used settings in `NMdataConf` are
 
-- `as.fun`: a function to apply to all objects before returning them from `NMdata` functions. If you use `dplyr/tidyverse`, do 
+::::
+:::
+Other commonly used settings in `NMdataConf` are
+
+- `as.fun`: a function to apply to all objects before returning them from `NMdata` functions. If you use `dplyr/tidyverse`, do (notice, no quotes!):
 ```{r,eval=FALSE}
 library(tibble)
-NMdataConf(as.fun="as_tibble")
+NMdataConf(as.fun=tibble::as_tibble)
 ```
 
 - `recover.rows`: Should `NMscanData` Include rows not processed by Nonmem? (default `FALSE`).
@@ -535,35 +562,6 @@ NMdataConf(as.fun="as_tibble")
 - `file.mod`: A function that translates the list file path to the input control stream file path. Default is to replace extension with `.mod`.
 
 - `check.time`: Default is `TRUE`, meaning that output (list file and tables) are expected to newer than input (control stream and input data). If say you copy files between systems, this check may not make sense.
-
-Notice, values are reset when `library(NMdata)` or `NMdataConf(reset=TRUE)` are called. See all currently used values by `NMdataConf()`.
-
-# Retrieving data from Nonmem runs 
-
-## NMscanData
-`NMscanData` is an automated and general reader of Nonmem data. It returns one combined data set.
-
-- Read and combine output tables
-- If wanted, read input data and restore variables that were not
-  output from the `Nonmem` model
-- If wanted, also restore rows from input data that were disregarded
-  in `Nonmem` (e.g. observations or subjects that are not part of the
-  analysis)
-- Multiple checks for consistency 
-
-```{r}
-file1.lst <- system.file("examples/nonmem/xgxr001.lst", package="NMdata")
-res0 <- NMscanData(file1.lst,merge.by.row=FALSE)
-class(res0)
-```
-<!-- Recommend unique row identifier -->
-
-Using a unique row identifier for merging data is highly recommended:
-```{r}
-file1.lst <- system.file("examples/nonmem/xgxr001.lst", package="NMdata")
-res1 <- NMscanData(file1.lst,merge.by.row=TRUE)
-class(res0)
-```
 
 ## Why not use `options()`?
 `R` has a system for handling settings. `NMdata` does not use that.
@@ -578,6 +576,55 @@ try(NMdataConf(use.input="FALSE"))
   - Reset all settings: `NMdataConf(reset=TRUE)` 
   - Reset individual settings: `NMdataConf(use.input=NULL, as.fun=NULL)`
   - Retrieve all current settings: `NMdataConf()`
+
+
+# Retrieving data from Nonmem runs 
+
+## NMscanData
+`NMscanData` is an automated and general reader of Nonmem data. It returns one combined data set.
+
+- Read and combine output tables
+- If wanted, read input data and restore variables that were not
+  output from the `Nonmem` model
+- If wanted, also restore rows from input data that were disregarded
+  in `Nonmem` (e.g. observations or subjects that are not part of the
+  analysis)
+- Multiple checks for consistency 
+
+\pause
+\footnotesize
+```{r}
+```
+::: columns
+:::: column
+```{r}
+file1.lst <- system.file("examples/nonmem/xgxr001.lst",
+                         package="NMdata")
+res0 <- NMscanData(file1.lst,merge.by.row=FALSE)
+```
+::::
+\pause
+:::: column
+```{r}
+class(res0)
+dims(res0)
+head(res0,n=2)
+```
+\normalsize
+::::
+:::
+
+## Remember the unique row identifier
+<!-- Recommend unique row identifier -->
+Using a unique row identifier for merging data is highly recommended:
+
+\footnotesize
+```{r}
+file1.lst <- system.file("examples/nonmem/xgxr001.lst", package="NMdata")
+res1 <- NMscanData(file1.lst,merge.by.row=TRUE)
+class(res0)
+```
+\normalsize
 
 
 ## NMscanData
@@ -637,7 +684,7 @@ NMdataConf(as.fun="data.table")
 
 ```{r,meanbydose}
 res2 <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
-                   col.row="ROW",recover.rows=TRUE)
+                   merge.by.row=TRUE,recover.rows=TRUE)
 ## now we have a data.table
 class(res2)
 ## Derive another data.table with geometric mean pop predictions by
@@ -719,7 +766,7 @@ output data is the most robust way to combine the tables.
 
 * Everything
 will most likely work even if you don't 
-  - I would not take "most likely" when I can just as well have robustness.
+  - I would not take "most likely" when robustness is available.
 
 
 ## Limitations
@@ -774,9 +821,11 @@ available elsewhere.
 ## Todo
 * The next milestone is submitting the package to CRAN
   - Little left on the todo list before submission
+* Abstract submitted to ACoP
 * The following would be great help in making NMdata more accessible and useful
   - Testing - please use the package and provide feedback
   - Review of documentation, vignettes, and descriptions/explanations on website
+  - Graphical representations and illustrations. A hexagon is needed!
   - A tidyverse workflow for a new vignette
 * Or if you want to provide code... 
   - A function to test data for concistency and compatibility with Nonmem

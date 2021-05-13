@@ -98,6 +98,8 @@ print.summary_NMdata <- function(x,...){
         tabs.out <- as.data.table(tabs.out)
     }
 
+    
+    
     vars[,included:=!is.na(COLNUM)]
     vars <- mergeCheck(vars,data.table(included=c(TRUE,FALSE),
                                        ## inc=factor(c("included","not"),levels=c("included","not"))),
@@ -106,8 +108,7 @@ print.summary_NMdata <- function(x,...){
 
 
     vars.sum <- vars[source!="NMscanData"][,.N,by=.(table,inc)]
-    vars.sum1 <- dcast(vars.sum,table~inc,value.var="N")
-    if("not"%in%colnames(vars.sum1)) vars.sum1[,not:=0]
+    vars.sum1 <- dcast(vars.sum,table~inc,value.var="N",fill=0)
     vars.sum1[,print.inc:=paste0(included,"/",sum(c(included,not),na.rm=T)),by=.(table)]
 
     
