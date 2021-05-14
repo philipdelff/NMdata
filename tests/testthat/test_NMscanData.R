@@ -11,13 +11,13 @@ NMdata_filepath <- function(...) {
 fix.time <- function(x){
     meta.x <- attr(x,"meta")
     ## meta.x$time.call <- as.POSIXct("2020-02-01 00:01:01",tz="UTC")
-    meta.x$time.call <- NULL
-    meta.x$file.lst <- NULL
-    meta.x$file.input <- NULL
-    meta.x$mtime.input <- NULL
-    meta.x$mtime.lst <- NULL
-    meta.x$tables$file <- NULL
-    meta.x$tables$file.mtime <- NULL
+    meta.x$details$time.call <- NULL
+    meta.x$details$file.lst <- NULL
+    meta.x$details$file.input <- NULL
+    meta.x$details$mtime.input <- NULL
+    meta.x$details$mtime.lst <- NULL
+    meta.x$details$tables$details$file <- NULL
+    meta.x$details$tables$file.mtime <- NULL
     setattr(x,"meta",meta.x)
 }
 
@@ -36,6 +36,8 @@ test_that("basic",{
     fix.time(res1)
     
     expect_equal_to_reference(res1,fileRef,version=2)
+## without meta
+##    expect_equal(unNMdata(res1),unNMdata(readRDS(fileRef)))
     ## data.table(attributes(readRDS(fileRef))$meta$variables$variable,attributes(res1)$meta$variables$variable)
 })
 
@@ -50,6 +52,8 @@ test_that("Modifications to column names in $INPUT",{
     res <- NMscanData(file=file.lst,check.time = FALSE)
     fix.time(res)
     expect_equal_to_reference(res,fileRef,version=2)
+    ## without meta
+    ## expect_equal(unNMdata(res),unNMdata(readRDS(fileRef)))
 })
 
 
@@ -63,6 +67,8 @@ test_that("Multiple output table formats",{
     fix.time(res)
     
     expect_equal_to_reference(res,fileRef,version=2)
+    ## without meta
+    ## expect_equal(unNMdata(res),unNMdata(readRDS(fileRef)))
 })
 
 test_that("Interpret IGNORE statement",{
@@ -77,6 +83,8 @@ test_that("Interpret IGNORE statement",{
     ## names(res$row)
     
     expect_equal_to_reference(res,fileRef,version=2)
+    ## without meta
+    ## expect_equal(unNMdata(res),unNMdata(readRDS(fileRef)))
 })
 
 
@@ -141,7 +149,8 @@ test_that("Only a firstonly without ID but with ROW",{
     res1 <- NMscanData(file=file.lst,merge.by.row=TRUE,col.row="ROW",check.time = FALSE)
     fix.time(res1)
     expect_equal_to_reference(res1,fileRef,version=2)
-    
+    ## without meta
+    ## expect_equal(unNMdata(res1),unNMdata(readRDS(fileRef)))    
 })
 
 
@@ -345,7 +354,7 @@ test_that("dir structure with input.txt/output.txt",{
     
     filedir.lst <- NMdata_filepath("examples/nonmem/xgxr001dir/output.txt")
     res1dir <- NMscanData(filedir.lst,check.time = FALSE)
-    expect_equal(attr(res1dir,"meta")$model,"xgxr001dir")
+    expect_equal(attr(res1dir,"meta")$details$model,"xgxr001dir")
     umod <- unique(res1dir[,model])
     expect_equal(length(umod),1)
     expect_equal(umod,"xgxr001dir")
@@ -401,3 +410,15 @@ test_that("Duplicate columns in input data",{
     
 ##     res1 <- NMscanData(file=file.lst)
 ## })
+
+
+test_that("Modifying row identifier",{
+    NMdataConf(reset=TRUE)
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr016.lst")
+
+    res <-
+        expect_error(
+            NMscanData(file=file.lst,merge.by.row=TRUE,check.time = FALSE)
+        )
+
+})

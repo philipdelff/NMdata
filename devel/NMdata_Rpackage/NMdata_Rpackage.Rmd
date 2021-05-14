@@ -143,6 +143,8 @@ For a quick overview (after installation), do:
 help(package="NMdata")
 ```
 
+All functions and their arguments are documented in their help files. 
+
 <!-- prepare example data behind the scenes -->
 ```{r,prep-data,include=FALSE}
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
@@ -628,24 +630,28 @@ class(res0)
 
 
 ## NMscanData
-```{r,include=FALSE}
-## trtact is a character. Make it a factor with levels ordered by
-## numerical dose level.
-res1$trtact <- reorder(res1$trtact,res1$DOSE)
-```
+\framesubtitle{Example: quickly get from a list file to looking at the model}
+
+<!-- ```{r,include=FALSE} -->
+<!-- ## trtact is a character. Make it a factor with levels ordered by -->
+<!-- ## numerical dose level. -->
+<!-- # res1$trtact <- reorder(res1$trtact,res1$DOSE) -->
+<!-- ``` -->
+
 \footnotesize
 :::::::::::::: {.columns}
 ::: {.column width="45%"}
 <!-- ::: columns -->
 <!-- :::: column -->
 ```{r,aplot,eval=FALSE}
-## We are going to use data.table
-res1.dt <- as.data.table(res1)
+## Using data.table for easy summarize
+res1 <- NMscanData(file1.lst,merge.by.row=TRUE,
+                   as.fun="data.table",quiet=TRUE)
 ## Derive geometric mean pop predictions by
 ## treatment and nominal sample time. Only
 ## use sample records.
 res1.mean <-
-    res1.dt[EVID==0,
+    res1[EVID==0,
             .(gmPRED=exp(mean(log(PRED)))),
             by=.(trtact,NOMTIME)]
 ## plot individual observations and geometric
@@ -678,15 +684,23 @@ ggplot(subset(res1,EVID==0))+
 
 ## Recover discarded rows
 
-```{r}
+:::::::::::::: {.columns}
+::: {.column width="45%"}
+
+```{r,include=FALSE}
 NMdataConf(as.fun="data.table")
+system.file("examples/nonmem/xgxr014.lst", package="NMdata")
 ```
 
+\footnotesize
 ```{r,meanbydose}
-res2 <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
+res2 <- NMscanData(file1.lst,
                    merge.by.row=TRUE,recover.rows=TRUE)
-## now we have a data.table
-class(res2)
+```
+:::
+::: {.column width="55%"}
+
+```{r,echo=FALSE,out.width="105%"}
 ## Derive another data.table with geometric mean pop predictions by
 ## treatment and nominal sample time. Only use sample records.
 res2.mean <- res2[EVID==0&nmout==TRUE,
@@ -698,25 +712,32 @@ ggplot(res2[EVID==0])+
     geom_point(aes(TIME,DV,colour=flag))+
     geom_line(aes(NOMTIME,gmPRED),data=res2.mean)+
     scale_y_log10()+
-    facet_wrap(~trtact,scales="free_y")+
+    facet_wrap(~trtact,scales="free_y",ncol=2)+
     labs(x="Hours since administration",y="Concentration (ng/mL)")
 ```
+:::
+::::::::::::::
 
 ## Compare models
+:::::::::::::: {.columns}
+::: {.column width="45%"}
+\footnotesize
 ```{r}
 NMdataConf(as.fun="data.table")
 NMdataConf(col.row="ROW")
 NMdataConf(merge.by.row=TRUE)
 ```
 
-
-```{r}
+```{r,compmodels,eval=F}
 ## notice fill is an option to rbind with data.table
-res1.m <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                     quiet=TRUE)
-res2.m <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
-                     modelname="single-compartment",
-                     quiet=TRUE)
+lst.1 <- system.file("examples/nonmem/xgxr001.lst",
+                     package="NMdata")
+lst.2 <- system.file("examples/nonmem/xgxr014.lst",
+                     package="NMdata")
+res1.m <- NMscanData(lst.1,quiet=TRUE)
+res2.m <- NMscanData(lst.2,quiet=TRUE,
+                     modelname="single-compartment")
+
 res.mult <- rbind(res1.m,res2.m,fill=T)
 res.mult.mean <- res.mult[EVID==0&nmout==TRUE,
                           .(gmPRED=exp(mean(log(PRED)))),
@@ -725,8 +746,18 @@ res.mult.mean <- res.mult[EVID==0&nmout==TRUE,
 ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+
     geom_line()+
     scale_y_log10()+
-    facet_wrap(~trtact,scales="free_y")
+    facet_wrap(~trtact,scales="free_y",ncol=2)
 ```
+
+:::
+::: {.column width="55%"}
+\normalsize
+```{r,compmodels,eval=T,echo=FALSE,out.width="105%"}
+```
+
+:::
+::::::::::::::
+
 
 ## Preserve all input data properties
 By default, NMscanData will look for an rds file next to the csv file (same file name, only extension .rds different). 
@@ -741,7 +772,7 @@ By default, NMscanData will look for an rds file next to the csv file (same file
 
 * Default value of `use.rds` can be modified with `NMdataConf`.
 
-
+## The NMdata class
 
 ## What should I do for my models to be compatible with NMscanData?
 * The answer to this should be as close to "nothing" as possible -
@@ -847,7 +878,7 @@ A more diverse package
 - `ggwrite`: Saves images in sizes made for powerpoint, including stamps (time, source, output filename). It can save multiple plots at once as one file (pdf) or multiple files. 
 
 
-## NMfreeze
+## NMfreezeModels
 
 ## "secure" model reader
 

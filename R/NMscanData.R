@@ -460,11 +460,16 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
             
         } else {
+##### these checks should be in checkColRow
+
             ## !cbind.by.filters
-            if(is.null(col.row)) {
-                messageWrap("when use.input=TRUE and merge.by.row=TRUE, col.row cannot be NULL, NA, or empty.",fun.msg=stop)
-            }
+
+            checkColRow(col.row,file)
+            ## if(is.null(col.row)) {
+            ##     messageWrap("when use.input=TRUE and merge.by.row=TRUE, col.row cannot be NULL, NA, or empty.",fun.msg=stop)
+            ## }
 ### merging by col.row
+
             ## Has this check already been done?
             if(col.row%in%cnames.input) {
                 if(data.input$data[,any(duplicated(get(col.row)))]) {
@@ -483,7 +488,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                 warning("use.input is TRUE, but col.row not found in _output_ data. Only output data used.")
                 use.input <- FALSE
             }
-            
+
+##### end: these checks should be in checkColRow            
 
             if(use.input) {
                 
@@ -681,11 +687,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 
     tab.row <- as.fun(tab.row)
-    tables.meta <- as.fun(tables.meta)
-
-
-### more meta information needed.
-    meta <- list(
+    tables.meta <- tables.meta
+    details <- list(
         ## call
         call=deparse(sys.call()),
         ## time of NMscanData call
@@ -703,16 +706,23 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         ## if available: path to input data
         file.input=NA_character_,
         ## if available: mtime of input data
-        mtime.input=NA_character_,
-        variables=as.fun(dt.vars),
-        tables=tables.meta
+        mtime.input=NA_character_
     )
-
+    
     ## if available: file info for input data
     if(use.input){
-        meta$file.input <- data.input$meta[,file]
-        meta$mtime.input <- data.input$meta[,file.mtime]
+        details$file.input <- data.input$meta[,file]
+        details$mtime.input <- data.input$meta[,file.mtime]
     }
+    
+### more meta information needed.
+    meta <- list(
+       details=details
+       ,tables=tables.meta
+       ,columns=dt.vars
+        )
+
+
     setattr(tab.row,"meta",meta)
 
 ###  Section end: Format output

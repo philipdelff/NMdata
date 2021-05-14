@@ -119,7 +119,8 @@ A way to limit rows read into nonmem
      CLOSED: [2021-04-04 Sun 23:17]
      Since we only have and will only have two methods, this should be
      a binary switch between the methods.
-**** TODO [#A] Check if col.row is being modified in Nonmem.
+**** DONE [#A] Check if col.row is being modified in Nonmem.
+     CLOSED: [2021-05-14 Fri 13:24]
 **** TODO [#B] check overview.tables
 Either they must be firstonly, or they must be full.length.
 **** TODO [#B] Limitation: tables with EXCLUDE_BY

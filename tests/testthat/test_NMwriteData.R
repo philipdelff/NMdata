@@ -54,7 +54,8 @@ test_that("Dropping a column in Nonmem",{
                          nmdir.data="/example")
 
     expect_equal_to_reference(
-        res2b,
+        res2b
+       ,
         file=fileRef
     )
 

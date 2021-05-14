@@ -10,7 +10,7 @@
 ##' @import data.table
 ##' @export
 summary.NMdata <- function(object,...){
-
+    
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     EVID <- NULL
@@ -42,9 +42,9 @@ summary.NMdata <- function(object,...){
     N.ids.nmout <- s1$N.ids1[nmout==TRUE,N.ids]
     if(length(N.ids.nmout)==0) N.ids.nmout <- 0
     s1$N.ids <- rbind(
-        data.table(NMOUT="From output tables",N.ids=N.ids.nmout)
+        data.table(NMOUT="Output tables",N.ids=N.ids.nmout)
        ,
-        data.table(NMOUT="From input data only",N.ids=sum(
+        data.table(NMOUT="Input data only",N.ids=sum(
                                                     ! data[nmout==FALSE,unique(ID)] %in% data[nmout==TRUE,unique(ID)]
                                                 )
                    )
@@ -69,7 +69,7 @@ summary.NMdata <- function(object,...){
 ##' @import data.table
 ##' @export
 print.summary_NMdata <- function(x,...){
-
+    
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     . <- NULL
@@ -88,7 +88,7 @@ print.summary_NMdata <- function(x,...){
 
     
     if(!"summary_NMdata"%in%class(x)) stop("list does not seem to be of class NMdata")
-    vars <- copy(x$variables)
+    vars <- copy(x$columns)
     if(!is.data.table(vars)){
         vars <- as.data.table(vars)
     }
@@ -129,7 +129,7 @@ print.summary_NMdata <- function(x,...){
     
 
 #### other info to include. 
-    dt.nmout <- data.table(nmout=c(TRUE,FALSE),NMOUT=c("From output tables","From input data only"))
+    dt.nmout <- data.table(nmout=c(TRUE,FALSE),NMOUT=c("Output tables","Input only"))
 
     ## how many ids (broken down on output vs. input-only)
     
@@ -149,7 +149,7 @@ print.summary_NMdata <- function(x,...){
     ## model name
     cat("Model: ",x$model,"\n")
     
-    cat("\nTables, number of columns in tables, and their detail level:\n")
+    cat("\nTables, their number of columns and detail levels:\n")
     print(vars.sum2,row.names=FALSE)
 
     cat("\nNumbers of ID's and rows in data\n")
