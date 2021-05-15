@@ -38,14 +38,14 @@ test_that("messy names",{
         compareCols(
             data.table(variable=c("CPDVG","CMDVG","efef"))
            ,
-            data.table(variable=c("CPDVG","CMDVG"),compound=c("VX-548","VRT-420"))
+            data.table(variable=c("CPDVG","CMDVG"),compound=c("C-1","C-2"))
         )
         ## now, clean because of keepNames=F
         ,
         compareCols(
             data.table(variable=c("CPDVG","CMDVG","efef"))
            ,
-            data.table(variable=c("CPDVG","CMDVG"),compound=c("VX-548","VRT-420"))
+            data.table(variable=c("CPDVG","CMDVG"),compound=c("C-1","C-2"))
            ,keepNames=FALSE)
     )
     

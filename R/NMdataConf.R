@@ -159,7 +159,24 @@ NMdataConfOptions <- function(name){
             default=list(na.strings=".",header=TRUE)
            ,is.allowed=is.list
            ,msg.not.allowed="args.fread must be a list of named arguments."
-           ,process=identity
+           ,process=function(x){
+               if("file"%in%names(x)){
+                   stop("args.fread cannot contain file.")
+               }
+               x
+           }
+        )
+       ,
+        args.fwrite=list(
+            default=list(na=".",quote=FALSE,row.names=FALSE,scipen=0)
+           ,is.allowed=is.list
+           ,msg.not.allowed="args.fread must be a list of named arguments."
+           ,process=function(x){
+               if("file"%in%names(x)){
+                   stop("args.fwrite cannot contain file.")
+               }
+               x
+           }
         )
        ,
         as.fun=list(

@@ -12,6 +12,7 @@ NMwriteData(
   write.rds = write.csv,
   script,
   args.stamp,
+  args.fwrite,
   args.rds,
   nmdrop,
   nmdir.data,

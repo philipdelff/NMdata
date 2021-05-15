@@ -58,7 +58,7 @@
 
 
 NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
-                        write.rds=write.csv,script,args.stamp,
+                        write.rds=write.csv,script,args.stamp,args.fwrite,
                         args.rds,nmdrop,nmdir.data,col.flag="FLAG",
                         nm.rename,capitalize.names=FALSE,allow.char.TIME=TRUE){
     
@@ -76,6 +76,9 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
 
     
 #### Section start: Process arguments ####
+
+    if(missing(args.fwrite)) args.fwrite <- NULL
+    args.fread <- NMdataDecideOption("args.fwrite",args.fwrite)
     
     stopifnot(is.data.frame(data)) 
     if(missing(file)){
@@ -243,15 +246,21 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     files.written=c()
     if(write.csv){
         file.csv <- fnExtension(file,".csv")
-        fwrite      (data,na=".",quote=FALSE,row.names=FALSE,scipen=0,file=file.csv)
+
+        do.call(fwrite,c(list(file=file.csv),args.fwrite))
+        ## fwrite      (data,na=".",quote=FALSE,row.names=FALSE,scipen=0,file=file.csv)
         files.written <- c(files.written,file.csv)
-        ## options(opt.orig)
+        if(doStamp){
+            data.meta.csv <- objInfo(do.call(stampObj,append(list(data=data,writtenTo=file.csv),args.stamp)))
+            data.meta.csv <- data.table(parameter=names(data.meta.csv)
+                                       ,value=unlist(lapply(data.meta.csv,as.character)))
+            file.csv.meta <- paste0(fnExtension(file.csv,ext=""),"_meta.txt")
+            fwrite(data.meta.csv,file=file.csv.meta,quote=TRUE,row.names=FALSE,sep=",")
+        }
     }
     if(write.RData){
         name.data <- deparse(substitute(data))
         file.RData <- fnExtension(file,".RData")
-        ## args.stamp.1 <- args.stamp
-        ## args.stamp.1$file <- file.rds
         if(doStamp) data <- do.call(stampObj,append(list(data=data,writtenTo=file.RData),args.stamp))
         assign(name.data,data)
         save(list=name.data,file=file.RData)
@@ -259,27 +268,25 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     }
     if(write.rds){
         file.rds <- fnExtension(file,".rds")
-        ## args.stamp.1 <- args.stamp
-        ## args.stamp.1$file <- file.rds
         if(doStamp) data <- do.call(stampObj,append(list(data=data,writtenTo=file.rds),args.stamp))
         do.call(saveRDS,append(list(object=data,file=file.rds),args.rds))
         files.written <- c(files.written,file.rds)
     }
     written <- length(files.written)>0
-if(written){
-    message(
-        paste0("Data witten to file:\n",paste(files.written,collapse="\n"))
-    )
-} else {
-   message(
-        paste0("Data _not_ witten to any files.")
-    )
+    if(written){
+        message(
+            paste0("Data witten to file:\n",paste(files.written,collapse="\n"))
+        )
+    } else {
+        message(
+            paste0("Data _not_ witten to any files.")
+        )
 
-}
+    }
     
     message("For NonMem:\n",
-               paste(text.nm,collapse="\n"))
-   
+            paste(text.nm,collapse="\n"))
+    
     
     invisible(list(INPUT=text.nm.input,DATA=text.nm.data))
 

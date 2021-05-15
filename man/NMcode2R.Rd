@@ -2,7 +2,7 @@
 % Please edit documentation in R/NMcode2R.R
 \name{NMcode2R}
 \alias{NMcode2R}
-\title{Translate NM $PK, $PRED sections or other Nonmem code to R code}
+\title{Translate Nonmem $PK, $PRED sections or other Nonmem code to R code}
 \usage{
 NMcode2R(text)
 }
@@ -10,7 +10,7 @@ NMcode2R(text)
 \item{text}{the Nonmem code.}
 }
 \description{
-Translate NM $PK, $PRED sections or other Nonmem code to R code
+Translate Nonmem $PK, $PRED sections or other Nonmem code to R code
 }
 \details{
 You probably want to run this on text obtained by using

@@ -41,9 +41,11 @@ With load_all():
     CLOSED: [2020-12-23 Wed 11:22]
 *** DONE NMgetSection
     CLOSED: [2020-12-23 Wed 11:25]
-*** TODO [#A] Summary of the columns - columns?
+*** DONE Summary of the columns - NMinfo
+    CLOSED: [2021-05-14 Fri 15:38]
     right now hidden in metadata
-*** TODO [#A] Summary of tables - tables?
+*** DONE Summary of tables - NMinfo
+    CLOSED: [2021-05-14 Fri 15:38]
 *** TODO [#B] A function to check data - NMcheckData
 **** TODO Find previously used code
 **** TODO Implement checks in pmxtricks todo
@@ -58,7 +60,10 @@ https://doi.org/10.1208/s12248-012-9387-9
     Export to parent. Not sure check allows though...
 ** Function improvements
 *** NMextractDataFile
-**** TODO [#A] Add support for windows absolute paths
+**** DONE Add support for windows absolute paths
+     CLOSED: [2021-05-14 Fri 16:11]
+     I don't think this was ever an issue. The regular expression used
+     should match both unix and windows absolute paths.
 *** NMwriteSection
 **** DONE Support for multiple sections
      CLOSED: [2021-04-05 Mon 12:06]
@@ -119,8 +124,8 @@ A way to limit rows read into nonmem
      CLOSED: [2021-04-04 Sun 23:17]
      Since we only have and will only have two methods, this should be
      a binary switch between the methods.
-**** DONE [#A] Check if col.row is being modified in Nonmem.
-     CLOSED: [2021-05-14 Fri 13:24]
+**** DONE Check if col.row is being modified in Nonmem.
+     CLOSED: [2021-05-14 Fri 15:39]
 **** TODO [#B] check overview.tables
 Either they must be firstonly, or they must be full.length.
 **** TODO [#B] Limitation: tables with EXCLUDE_BY
@@ -167,8 +172,10 @@ is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMwriteData
 **** TODO [#B] Include a randomly generated ID in meta data that we can check files against?
-**** TODO [#A] Add support for custom fwrite arguments
-**** TODO [#A] When writing a CSV, write meta data to separate file
+**** DONE Add support for custom fwrite arguments
+     CLOSED: [2021-05-14 Fri 21:01]
+**** DONE When writing a CSV, write meta data to separate file
+     CLOSED: [2021-05-14 Fri 17:53]
 **** DONE Support for pseudonyms
      CLOSED: [2021-04-21 Wed 23:16]
      It's called nm.rename. You can only add A in A=B.
@@ -218,7 +225,8 @@ It's fairly easy to implement. Paste in front of the expression.use column.
 **** TODO [#B] allow skipping and disabling flags.
 ***** For this we will need additional two columns - Nobs.matched and N.(entirely.)matched
 **** TODO [#B] The function could paste an explained overview to the terminal
-**** TODO [#A] Add save argument to align with other functions
+**** DONE Add save argument to align with other functions
+     CLOSED: [2021-05-14 Fri 16:17]
 *** NMdataConf
 **** DONE Add support for add.name
      CLOSED: [2021-01-30 Sat 14:29]
@@ -238,7 +246,10 @@ This is two steps.
 **** DONE order.columns
      CLOSED: [2021-04-02 Fri 11:35]
 *** stampObj
-**** TODO [#A] Include output filename in stamp
+**** CANCELED Include output filename in stamp
+     CLOSED: [2021-05-14 Fri 21:02]
+This belong in write functions. stampObj does support extra
+arguments. NMdata calls this "writtenTo".
 *** summary.NMdata
 **** TODO [#A] Rethink and tidy up message
 ** Nonmem examples

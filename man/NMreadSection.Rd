@@ -54,7 +54,7 @@ is TRUE. So if you want to process the tables separately, you
 probably want FALSE here.}
 
 \item{simplify}{If asOne=FALSE, do you want the result to be
-simplified if only one table is found? Default is TRUE which
+simplified if only one section is found? Default is TRUE which
 is desirable for interactive analysis. For programming, you
 probably want FALSE.}
 

@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ---- include = FALSE-------------------------------------
 knitr::opts_chunk$set(
                       collapse = TRUE
                      ,comment = "#>"
@@ -9,31 +9,31 @@ knitr::opts_chunk$set(
 ## this change data.table syntax. I think we can do without.
 ## knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 
-## ----eval=TRUE,include=FALSE--------------------------------------------------
+## ----eval=TRUE,include=FALSE------------------------------
 ## library(devtools)
 ## load_all("C:/Users/delff/working_copies/NMdata")
 
-## ----setup,include=T----------------------------------------------------------
+## ----setup,include=T--------------------------------------
 library(NMdata)
 library(data.table)
 library(ggplot2)
 theme_set(theme_bw()+theme(legend.position="bottom"))
 
-## ----setup2,include=F---------------------------------------------------------
+## ----setup2,include=F-------------------------------------
 NMdataConf(check.time=FALSE)
 
-## ----eval=TRUE----------------------------------------------------------------
+## ----eval=TRUE--------------------------------------------
 res0 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
                    merge.by.row=FALSE)
 class(res0)
 
-## ----eval=TRUE----------------------------------------------------------------
+## ----eval=TRUE--------------------------------------------
 res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                   col.row="ROW",quiet=TRUE)
+                   col.row="ROW",merge.by.row=TRUE,quiet=TRUE)
 res0 <- res0[,c(colnames(res1),setdiff(colnames(res0),colnames(res1)))]
 all.equal(res0,res1,check.attributes=FALSE)
 
-## ----eval=TRUE----------------------------------------------------------------
+## ----eval=TRUE--------------------------------------------
 ## trtact is a character. Make it a factor with levels ordered by
 ## numerical dose level.
 res1$trtact <- reorder(res1$trtact,res1$DOSE)
@@ -52,10 +52,10 @@ ggplot(subset(res1,EVID==0))+
     facet_wrap(~trtact,scales="free_y")+
     labs(x="Hours since administration",y="Concentration (ng/mL)")
 
-## -----------------------------------------------------------------------------
+## ---------------------------------------------------------
 NMdataConf(as.fun="data.table")
 
-## ----meanbydose---------------------------------------------------------------
+## ----meanbydose-------------------------------------------
 res2 <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
                    col.row="ROW",recover.rows=TRUE)
 ## now we have a data.table
@@ -74,17 +74,17 @@ ggplot(res2[EVID==0])+
     facet_wrap(~trtact,scales="free_y")+
     labs(x="Hours since administration",y="Concentration (ng/mL)")
 
-## -----------------------------------------------------------------------------
+## ---------------------------------------------------------
 ## this is just a long-format representation of
 ## with(res1,table(nmout,flag)) using data.table.
 res2[,.N,by=.(nmout,flag)]
 
-## -----------------------------------------------------------------------------
+## ---------------------------------------------------------
 NMdataConf(as.fun="data.table")
 NMdataConf(col.row="ROW")
 NMdataConf(merge.by.row=TRUE)
 
-## -----------------------------------------------------------------------------
+## ---------------------------------------------------------
 ## notice fill is an option to rbind with data.table
 res1.m <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
                      quiet=TRUE)
@@ -101,13 +101,13 @@ ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+
     scale_y_log10()+
     facet_wrap(~trtact,scales="free_y")
 
-## ----eval=FALSE---------------------------------------------------------------
+## ----eval=FALSE-------------------------------------------
 #  out2in <- function(file) file.path(dirname(file),"input.txt")
 #  res <- NMscanData("path/to/output.txt",file.mod=out2in)
 
-## ----eval=FALSE---------------------------------------------------------------
+## ----eval=FALSE-------------------------------------------
 #  NMdataConf(file.mod=out2in)
 
-## -----------------------------------------------------------------------------
+## ---------------------------------------------------------
 print(attributes(res1.m)$meta$variables,topn=3)
 

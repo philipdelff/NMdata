@@ -10,11 +10,28 @@ NMwriteData updated with more concise message.
 NMreadSection now returns all sections if argument section is missing
 or equals NULL or ".".
 
+NMinfo is a new function that provides meta data, processed by as.fun.
+
+If merge.by.row=TRUE, NMscanData now checks if col.row seems to be
+changed in the Nonmem code. If that is the case, an error is returned.
+
+save argument added to flagsCount function to align with other
+functions.
+
+NMwriteData now writes meta data to a txt file when writing csv
+file. NMreadCsv looks for this info and attaches it if found.
+
+NMwriteData takes the argument args.fwrite - a list of arguments
+passed to fwrite. This is aligned with args.fread used by
+NMreadCsv. Defaults can be configured using NMdataConf.
+
 ## Bugfixes
 - In the special case where only one data set is given, compareCols
   used to sort the list of columns in an irrelevant way. Now no
   reordering is done but the list will match the column order in the
   data set.
+- In the NMdata summary, the number of columns from input data are now
+  calculated correctly.
 
 # NMdata 0.0.7.1
 compareCols generalized to the single data set case. 

@@ -15,6 +15,7 @@ flagsCount(
   flags.increasing = FALSE,
   name.all.data = "All available data",
   grp.incomp = "EVID",
+  save = TRUE,
   as.fun = NULL
 )
 }
@@ -28,8 +29,7 @@ FLAG==0.}
 \item{file}{A file to write the table of flag counts to. Will
 probably be removed and put in a separate function.}
 
-\item{col.id}{The name of the subject ID column. Default is
-"ID".}
+\item{col.id}{The name of the subject ID column. Default is "ID".}
 
 \item{col.flagn}{The name of the column containing the numerical
 flag values in tab.flags. This will be added to data. Use the
@@ -61,6 +61,9 @@ data. Default is "EVID" meaning that if different values of
 EVID are found in data, the function will return an
 error. This is a safeguard not to mix data unintentionally
 when counting flags.}
+
+\item{save}{Save file? Default is TRUE, meaning that a file will
+be written if file argument is supplied.}
 
 \item{as.fun}{The default is to return a data.table if input data
 is a data.table, and return a data.frame for all other input

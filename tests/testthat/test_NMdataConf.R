@@ -24,3 +24,15 @@ test_that("unnamed argument",{
         NMdataConf("data.table")
     )
 })
+
+test_that("unknown argument",{
+    expect_error(
+        NMdataConf(asfun="data.table")
+    )
+})
+
+test_that("unknown value",{
+    expect_error(
+        NMdataConf(as.fun="datatable")
+    )
+})

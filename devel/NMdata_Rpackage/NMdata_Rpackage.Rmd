@@ -520,6 +520,8 @@ objInfo(pknm)
 
 `stampObj` and `objInfo` write and read an "attribute" called `objInfo`.
 
+THE SAME INFORMATION IS WRITTEN TO PK_META.TXT WHEN PK.CSV IS WRITTEN
+
 # Configuration of NMdata defaults
 ## NMdataConf
 ::: columns

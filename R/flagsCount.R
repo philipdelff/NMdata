@@ -10,8 +10,7 @@
 ##'     FLAG==0.
 ##' @param file A file to write the table of flag counts to. Will
 ##'     probably be removed and put in a separate function.
-##' @param col.id The name of the subject ID column. Default is
-##'     "ID".
+##' @param col.id The name of the subject ID column. Default is "ID".
 ##' @param col.flagn The name of the column containing the numerical
 ##'     flag values in tab.flags. This will be added to data. Use the
 ##'     same as when flagsAssign was called (if that was
@@ -36,7 +35,9 @@
 ##'     data. Default is "EVID" meaning that if different values of
 ##'     EVID are found in data, the function will return an
 ##'     error. This is a safeguard not to mix data unintentionally
-##'     when counting flags. 
+##'     when counting flags.
+##' @param save Save file? Default is TRUE, meaning that a file will
+##'     be written if file argument is supplied.
 ##' @param as.fun The default is to return a data.table if input data
 ##'     is a data.table, and return a data.frame for all other input
 ##'     classes. Pass a function in as.fun to convert to something
@@ -74,7 +75,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
                        col.flagn,col.flagc,
                        by=NULL, flags.increasing=FALSE,
                        name.all.data="All available data",
-                       grp.incomp="EVID",as.fun=NULL){
+                       grp.incomp="EVID",save=TRUE,as.fun=NULL){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -266,7 +267,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     setcolorder(allres,c(by,"flag","N.left","Nobs.left","N.discard","N.disc.cum","Nobs.discard","Nobs.disc.cum"))
     setnames(allres,"flag",col.flagc)
 
-    if(!is.null(file)){
+    if(!is.null(file)&&save){
         fwrite(allres,file=file,quote=F,row.names=F)
         cat(paste0("Table written to ",file,"\n"))
     }
