@@ -63,6 +63,11 @@ to summarize number of subjects in data.}
 \item{quiet}{Default is to inform a little, but TRUE is useful for
 non-interactive stuff.}
 
+\item{args.fread}{List of arguments passed to fread. Notice that
+except for "input" and "file", you need to supply all
+arguments to fread if you use this argument. Default values
+can be configured using NMdataConf.}
+
 \item{invert}{If TRUE, the data rows that are dismissed by the Nonmem data
 filters (ACCEPT and IGNORE) and only this will be returned. Only used if
 applyFilters is TRUE.}

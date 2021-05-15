@@ -41,6 +41,11 @@ script name before saved to rds or Rdata. See ?stampObj.}
 
 \item{args.stamp}{A list of arguments to be passed to stampObj.}
 
+\item{args.fwrite}{List of arguments passed to fwrite. Notice that
+except for "x" and "file", you need to supply all arguments to
+fwrite if you use this argument. Default values can be
+configured using NMdataConf.}
+
 \item{args.rds}{A list of arguments to be passed to saveRDS.}
 
 \item{nmdrop}{Only used for generation of proposed text for Nonmem
@@ -68,6 +73,11 @@ consider nm.rename=c(DV="CONC").}
 \item{capitalize.names}{For the $DATA text proposal only. If TRUE,
 the suggested text for Nonmem will only contain capital
 letters in column names.}
+
+\item{allow.char.TIME}{For the $DATA text proposal only. Assume
+Nonmem can read TIME even if it can't be translated to
+numeric. This is necessary if using the 00:00 format. Default
+is TRUE.}
 }
 \value{
 Text for inclusion in Nonmem control stream, invisibly.

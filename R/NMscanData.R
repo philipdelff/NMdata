@@ -72,6 +72,10 @@
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using
 ##'     NMdataConf.
+##' @param args.fread List of arguments passed to when reading _input_
+##'     data. Notice that except for "input" and "file", you need to
+##'     supply all arguments to fread if you use this
+##'     argument. Default values can be configured using NMdataConf.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use

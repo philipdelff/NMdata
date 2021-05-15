@@ -19,6 +19,10 @@
 ##' @param script If provided, the object will be stamped with this
 ##'     script name before saved to rds or Rdata. See ?stampObj.
 ##' @param args.stamp A list of arguments to be passed to stampObj.
+##' @param args.fwrite List of arguments passed to fwrite. Notice that
+##'     except for "x" and "file", you need to supply all arguments to
+##'     fwrite if you use this argument. Default values can be
+##'     configured using NMdataConf.
 ##' @param args.rds A list of arguments to be passed to saveRDS.
 ##' @param col.flag Name of a numeric column with zero value for rows
 ##'     to include in Nonmem run, non-zero for rows to skip. The
@@ -41,6 +45,10 @@
 ##' @param capitalize.names For the $DATA text proposal only. If TRUE,
 ##'     the suggested text for Nonmem will only contain capital
 ##'     letters in column names.
+##' @param allow.char.TIME For the $DATA text proposal only. Assume
+##'     Nonmem can read TIME even if it can't be translated to
+##'     numeric. This is necessary if using the 00:00 format. Default
+##'     is TRUE.
 ##' @return Text for inclusion in Nonmem control stream, invisibly.
 ##' @details When writing csv files, the file will be
 ##'     comma-separated. Because Nonmem does not support quoted

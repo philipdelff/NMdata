@@ -99,6 +99,11 @@ mentioned in the Nonmem control stream, should this be used
 instead? The default is yes, and NMwriteData will create this
 by default too. Default can be configured using NMdataConf.}
 
+\item{args.fread}{List of arguments passed to when reading _input_
+data. Notice that except for "input" and "file", you need to
+supply all arguments to fread if you use this
+argument. Default values can be configured using NMdataConf.}
+
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use

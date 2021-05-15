@@ -16,8 +16,8 @@ fix.time <- function(x){
     meta.x$details$file.input <- NULL
     meta.x$details$mtime.input <- NULL
     meta.x$details$mtime.lst <- NULL
-    meta.x$details$tables$details$file <- NULL
-    meta.x$details$tables$file.mtime <- NULL
+    meta.x$tables$file <- NULL
+    meta.x$tables$file.mtime <- NULL
     setattr(x,"meta",meta.x)
 }
 

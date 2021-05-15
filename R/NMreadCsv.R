@@ -4,15 +4,17 @@
 ##' using NMwriteData.
 ##' 
 ##' @param file The file to read. Must be pure text.
-##' @param na.strings See data.table::fread.
-##' @param header See data.table::fread.
-##' @param as.fun The default is to return data as a data.frame. Pass a function
-##'     (say tibble::as_tibble) in as.fun to convert to something else. If
-##'     data.tables are wanted, use as.fun="data.table". The default can be
-##'     configured using NMdataConf.
-##' @param ... passed to fread.
-##' @details This is just a shortcut to fread so you don't have to remember how
-##'     to read the data that was exported for nonmem.
+##' @param args.fread List of arguments passed to fread. Notice that
+##'     except for "input" and "file", you need to supply all
+##'     arguments to fread if you use this argument. Default values
+##'     can be configured using NMdataConf.
+##' @param as.fun The default is to return data as a data.frame. Pass
+##'     a function (say tibble::as_tibble) in as.fun to convert to
+##'     something else. If data.tables are wanted, use
+##'     as.fun="data.table". The default can be configured using
+##'     NMdataConf.
+##' @details This is just a shortcut to fread so you don't have to
+##'     remember how to read the data that was exported for nonmem.
 ##' @importFrom data.table fread
 ##' @family DataRead
 ##' @seealso NMwriteData
