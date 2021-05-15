@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.906</span>
       </span>
     </div>
 
@@ -133,6 +133,26 @@
       
     </div>
 
+    <div id="nmdata-0072" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.7.2">
+<a href="#nmdata-0072" class="anchor"></a>NMdata 0.0.7.2</h1>
+<p>NMreadCsv, NMscanInput, and NMscanData take argument args.fread. The contents of this list are passed as arguments to <code>fread</code> when reading csv files. This should only be needed in rare cases but offers full flexibility to match structure of csv files. Default contents of args.fread can be controlled using NMdataConf.</p>
+<p>NMwriteData updated with more concise message.</p>
+<p>NMreadSection now returns all sections if argument section is missing or equals NULL or “.”.</p>
+<p>NMinfo is a new function that provides meta data, processed by as.fun.</p>
+<p>If merge.by.row=TRUE, NMscanData now checks if col.row seems to be changed in the Nonmem code. If that is the case, an error is returned.</p>
+<p>save argument added to flagsCount function to align with other functions.</p>
+<p>NMwriteData now writes meta data to a txt file when writing csv file. NMreadCsv looks for this info and attaches it if found.</p>
+<p>NMwriteData takes the argument args.fwrite - a list of arguments passed to fwrite. This is aligned with args.fread used by NMreadCsv. Defaults can be configured using NMdataConf.</p>
+<div id="bugfixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bugfixes" class="anchor"></a>Bugfixes</h2>
+<ul>
+<li>In the special case where only one data set is given, compareCols used to sort the list of columns in an irrelevant way. Now no reordering is done but the list will match the column order in the data set.</li>
+<li>In the NMdata summary, the number of columns from input data are now calculated correctly.</li>
+</ul>
+</div>
+</div>
     <div id="nmdata-0071" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.7.1">
 <a href="#nmdata-0071" class="anchor"></a>NMdata 0.0.7.1</h1>
@@ -143,9 +163,9 @@
 <p>new function - dims is a simple function that returns a table of the dimensions of multiple data sets. It is used by multiple other functions in the package and may be useful on its own. However, compareCols reports this information too (by calling dims).</p>
 <p>NMscanData now has an argument, translate.input, which can be used to skip the translation of column names according to $DATA in the listing file. This can be necessary if input data has changed and hence $DATA is outdated since last model run.</p>
 <p>flagsCount now reports cumulative counts of discards too.</p>
-<div id="bugfixes" class="section level2">
+<div id="bugfixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bugfixes" class="anchor"></a>Bugfixes</h2>
+<a href="#bugfixes-1" class="anchor"></a>Bugfixes</h2>
 <ul>
 <li>Correct ordering of rows in compareCols</li>
 <li>flagsCount now reports numbers of discarded subjects as intended.</li>
@@ -214,9 +234,9 @@
 <p>Documentation has been upgraded with a pkgdown site.</p>
 <p>New vignette on data set creation tools in NMdata.</p>
 <p>New FAQ vignette.</p>
-<div id="bugfixes-1" class="section level2">
+<div id="bugfixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bugfixes-1" class="anchor"></a>Bugfixes</h2>
+<a href="#bugfixes-2" class="anchor"></a>Bugfixes</h2>
 <p>NMtransInput now supports the case where additional unused column names are given in $INPUT than actually found in $DATA. A warning will be given.</p>
 </div>
 </div>

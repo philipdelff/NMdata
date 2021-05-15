@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Clean and standardize file system paths — filePathSimple • NMdata</title>
+<title>Get metadata from an NMdata object — NMinfo • NMdata</title>
 
 
 <!-- jquery -->
@@ -39,12 +39,9 @@
 
 
 
-<meta property="og:title" content="Clean and standardize file system paths — filePathSimple" />
-<meta property="og:description" content="Use this to tidy up paths. Combines pieces of a path like
-    file.path(). The function is intended to return a canonical
-    path format, i.e. paths that can be compared by simple string
-    comparisson. Redundant /'s removed. normalizePath is used to
-    possibly shorten path." />
+<meta property="og:title" content="Get metadata from an NMdata object — NMinfo" />
+<meta property="og:description" content="Extract metadata such as info on tables, columns and further
+details in your favorite class" />
 
 
 
@@ -134,33 +131,46 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Clean and standardize file system paths</h1>
+    <h1>Get metadata from an NMdata object</h1>
     
-    <div class="hidden name"><code>filePathSimple.Rd</code></div>
+    <div class="hidden name"><code>NMinfo.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Use this to tidy up paths. Combines pieces of a path like
-    file.path(). The function is intended to return a canonical
-    path format, i.e. paths that can be compared by simple string
-    comparisson. Redundant /'s removed. normalizePath is used to
-    possibly shorten path.</p>
+    <p>Extract metadata such as info on tables, columns and further
+details in your favorite class</p>
     </div>
 
-    <pre class="usage"><span class='fu'>filePathSimple</span>(<span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>NMinfo</span>(<span class='kw'>data</span>, <span class='kw'>info</span>, <span class='kw'>as.fun</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>additional arguments passed to file.path().</p></td>
+      <th>data</th>
+      <td><p>An object of class NMdata (a result of NMscanData)</p></td>
+    </tr>
+    <tr>
+      <th>info</th>
+      <td><p>If not passed, all the metadata is returned. You can
+use "details", "tables", or "columns" to get only these
+subsets. If info is "tables" or "columns"</p></td>
+    </tr>
+    <tr>
+      <th>as.fun</th>
+      <td><p>The default is to return data as a data.frame. Pass
+a function (say tibble::as_tibble) in as.fun to convert to
+something else. If data.tables are wanted, use
+as.fun="data.table". The default can be configured using
+NMdataConf.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A (character) file path</p>
+    <p>A table of class as defined by as.fun in case info is
+    "columns" or "tables". A list if info missing or equal to
+    "details".</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.906</span>
       </span>
     </div>
 
@@ -155,6 +155,7 @@
   details = <span class='fl'>FALSE</span>,
   col.id = <span class='st'>"ID"</span>,
   <span class='kw'>quiet</span>,
+  <span class='kw'>args.fread</span>,
   invert = <span class='fl'>FALSE</span>,
   <span class='kw'>as.fun</span>
 )</pre>
@@ -222,6 +223,13 @@ to summarize number of subjects in data.</p></td>
       <th>quiet</th>
       <td><p>Default is to inform a little, but TRUE is useful for
 non-interactive stuff.</p></td>
+    </tr>
+    <tr>
+      <th>args.fread</th>
+      <td><p>List of arguments passed to fread. Notice that
+except for "input" and "file", you need to supply all
+arguments to fread if you use this argument. Default values
+can be configured using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>invert</th>

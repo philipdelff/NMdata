@@ -73,7 +73,7 @@ using NMwriteData." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.906</span>
       </span>
     </div>
 
@@ -141,14 +141,7 @@ using NMwriteData." />
 using NMwriteData.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>NMreadCsv</span>(
-  <span class='kw'>file</span>,
-  na.strings = <span class='st'>"."</span>,
-  header = <span class='fl'>TRUE</span>,
-  stringsAsFactors = <span class='fl'>FALSE</span>,
-  as.fun = <span class='kw'>NULL</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>NMreadCsv</span>(<span class='kw'>file</span>, <span class='kw'>args.fread</span>, as.fun = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,34 +151,26 @@ using NMwriteData.</p>
       <td><p>The file to read. Must be pure text.</p></td>
     </tr>
     <tr>
-      <th>na.strings</th>
-      <td><p>See read.table</p></td>
-    </tr>
-    <tr>
-      <th>header</th>
-      <td><p>See read.table.</p></td>
-    </tr>
-    <tr>
-      <th>stringsAsFactors</th>
-      <td><p>See read.table.</p></td>
+      <th>args.fread</th>
+      <td><p>List of arguments passed to fread. Notice that
+except for "input" and "file", you need to supply all
+arguments to fread if you use this argument. Default values
+can be configured using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>as.fun</th>
-      <td><p>The default is to return data as a data.frame. Pass a function
-(say tibble::as_tibble) in as.fun to convert to something else. If
-data.tables are wanted, use as.fun="data.table". The default can be
-configured using NMdataConf.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>passed to fread.</p></td>
+      <td><p>The default is to return data as a data.frame. Pass
+a function (say tibble::as_tibble) in as.fun to convert to
+something else. If data.tables are wanted, use
+as.fun="data.table". The default can be configured using
+NMdataConf.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This is just a shortcut to fread so you don't have to remember how
-    to read the data that was exported for nonmem.</p>
+    <p>This is just a shortcut to fread so you don't have to
+    remember how to read the data that was exported for nonmem.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>NMwriteData</p>

@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.906</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2021-04-25 using NMdata 0.0.7.1.</p>
+<p>Built 2021-05-14 using NMdata 0.0.7.1.906.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -131,22 +131,22 @@
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="kw">res0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),
                    merge.by.row=<span class="fl">FALSE</span>)
-<span class="co">#&gt; Model:  xgxr001 </span>
+<span class="co">#&gt; Model:  </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Tables, number of columns in tables, and their detail level:</span>
+<span class="co">#&gt; Tables, their number of columns and detail levels:</span>
 <span class="co">#&gt;            table used/total level</span>
 <span class="co">#&gt;  xgxr001_res.txt      16/16   row</span>
-<span class="co">#&gt;            input      22/22   row</span>
+<span class="co">#&gt;            input      22/24   row</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Numbers of ID's and rows in data</span>
-<span class="co">#&gt;       N From output tables From input data only</span>
-<span class="co">#&gt;  N.rows                905                    0</span>
-<span class="co">#&gt;   N.ids                150                    0</span>
+<span class="co">#&gt;       N Output tables Input data only</span>
+<span class="co">#&gt;  N.rows           905               0</span>
+<span class="co">#&gt;   N.ids           150               0</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Distribution of rows on event types</span>
-<span class="co">#&gt;  EVID From output tables</span>
-<span class="co">#&gt;     0                755</span>
-<span class="co">#&gt;     1                150</span>
+<span class="co">#&gt;  EVID Output tables</span>
+<span class="co">#&gt;     0           755</span>
+<span class="co">#&gt;     1           150</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="kw">res0</span>)
 <span class="co">#&gt; [1] "NMdata"     "data.frame"</span>
 </pre></div>
@@ -157,14 +157,7 @@
 <p>The default method of interpreting <code>Nonmem</code> code is not recommended. It is the default because it does not rely on assumptions about the input data and hence very generic. It happens that this dataset and one of the output tables contain a unique row identifier (a row counter in the column called <code>ROW</code>). If we skipped the <code>cbind.by.filters</code> above, <code>NMscanData</code> would figure this out and recommend merging by this column. This is what we will now do using the <code>col.row</code> argument. The following demonstrates that we get the same result from the two methods. When using <code>col.row</code>, the row identifier is the first column in the returned data. This is why the columns in <code>res0</code> are reordered accordingly before the comparison. The way the reordering of columns is done is a bit involved. It makes sure that if any columns in <code>res0</code> are not in <code>res1</code>, these are not dismissed. It would be much easier to use <code><a href="https://Rdatatable.gitlab.io/data.table/reference/setcolorder.html">data.table::setcolorder</a></code> but we are sticking to base R here.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="kw">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),
-                   col.row=<span class="st">"ROW"</span>,quiet=<span class="fl">TRUE</span>)
-<span class="co">#&gt; In NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"),</span>
-<span class="co">#&gt; col.row = "ROW", quiet = TRUE) : Input data columns will be appended to output</span>
-<span class="co">#&gt; data. However, column(s) were identified as unique identifiers, present in</span>
-<span class="co">#&gt; both input and output data. If this column or one of these columns is not</span>
-<span class="co">#&gt; modified by the Nonmem run, consider using this in col.row for a robust merge</span>
-<span class="co">#&gt; of input and output data. Candidate columns: ROW To skip this check, please</span>
-<span class="co">#&gt; use merge.by.row=TRUE or merge.by.row=FALSE.</span>
+                   col.row=<span class="st">"ROW"</span>,merge.by.row=<span class="fl">TRUE</span>,quiet=<span class="fl">TRUE</span>)
 <span class="kw">res0</span> <span class="op">&lt;-</span> <span class="kw">res0</span>[,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res1</span>),<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setops.html">setdiff</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res0</span>),<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">res1</span>)))]
 <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/all.equal.data.table.html">all.equal</a></span>(<span class="kw">res0</span>,<span class="kw">res1</span>,check.attributes=<span class="fl">FALSE</span>)
 <span class="co">#&gt; [1] TRUE</span>
@@ -216,22 +209,22 @@
 <span class="co">#&gt; of input and output data. Candidate columns: ROW To skip this check, please</span>
 <span class="co">#&gt; use merge.by.row=TRUE or merge.by.row=FALSE.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Model:  xgxr014 </span>
+<span class="co">#&gt; Model:  </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Tables, number of columns in tables, and their detail level:</span>
+<span class="co">#&gt; Tables, their number of columns and detail levels:</span>
 <span class="co">#&gt;            table used/total level</span>
 <span class="co">#&gt;  xgxr014_res.txt      12/12   row</span>
-<span class="co">#&gt;            input      22/22   row</span>
+<span class="co">#&gt;            input      22/24   row</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Numbers of ID's and rows in data</span>
-<span class="co">#&gt;       N From input data only From output tables</span>
-<span class="co">#&gt;  N.rows                  597                905</span>
-<span class="co">#&gt;   N.ids                    0                150</span>
+<span class="co">#&gt;       N Input only Output tables Input data only</span>
+<span class="co">#&gt;  N.rows        597           905               0</span>
+<span class="co">#&gt;   N.ids          0           150               0</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Distribution of rows on event types</span>
-<span class="co">#&gt;  EVID From input data only From output tables</span>
-<span class="co">#&gt;     0                  597                755</span>
-<span class="co">#&gt;     1                    0                150</span>
+<span class="co">#&gt;  EVID Input only Output tables</span>
+<span class="co">#&gt;     0        597           755</span>
+<span class="co">#&gt;     1          0           150</span>
 <span class="co">## now we have a data.table</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="kw">res2</span>)
 <span class="co">#&gt; [1] "NMdata"     "data.table" "data.frame"</span>
@@ -342,14 +335,7 @@
 <p>Notice that the summary text printed to the <code>R</code> terminal by <code>NMscanData</code> tells how many columns are included from the available tables. Also, within the resulting object, you can find a detailed table of all variables available, and whether they are included or not.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span>(<span class="kw">res1.m</span>)<span class="op">$</span><span class="kw">meta</span><span class="op">$</span><span class="kw">variables</span>,topn=<span class="fl">3</span>)
-<span class="co">#&gt;     variable           table     source level COLNUM</span>
-<span class="co">#&gt;  1:      ROW xgxr001_res.txt     output   row      1</span>
-<span class="co">#&gt;  2:       ID           input      input   row      2</span>
-<span class="co">#&gt;  3:  NOMTIME           input      input   row      3</span>
-<span class="co">#&gt; ---                                                 </span>
-<span class="co">#&gt; 40:    model            &lt;NA&gt; NMscanData model     40</span>
-<span class="co">#&gt; 41:      ROW           input      input   row     NA</span>
-<span class="co">#&gt; 42:       DV           input      input   row     NA</span>
+<span class="co">#&gt; NULL</span>
 </pre></div>
 </div>
 <div id="the-building-blocks" class="section level2">
@@ -373,21 +359,21 @@
 <h2 class="hasAnchor">
 <a href="#limitations" class="anchor"></a>Limitations</h2>
 <p>Even if there are a few limitations to what models <code>NMscanData</code> can handle, there is a good chance you will never run into any of them, as they are mostly quite rare. If you do, reach out to me, and we’ll figure it out.</p>
-<div id="input-file-must-exist-and-be-unmodified-since-model-run" class="section level3">
+<div id="input-data-file-must-exist-and-be-unmodified-since-model-run" class="section level3">
 <h3 class="hasAnchor">
-<a href="#input-file-must-exist-and-be-unmodified-since-model-run" class="anchor"></a>Input file must exist and be unmodified since model run</h3>
+<a href="#input-data-file-must-exist-and-be-unmodified-since-model-run" class="anchor"></a>Input data file must exist and be unmodified since model run</h3>
 <p>If merging with input data, the input data must be available as was when the model was run. If you want to avoid this potential issue, <code>Nonmem</code> can be run in a wrapper script that either copies the input data, or runs <code>NMscanData</code> and saves the output in a compressed file format (like <code>rds</code> or <code>zip</code>).</p>
 </div>
 <div id="not-all-data-filter-statements-implemented" class="section level3">
 <h3 class="hasAnchor">
 <a href="#not-all-data-filter-statements-implemented" class="anchor"></a>Not all data filter statements implemented</h3>
-<p>Nested <code>ACCEPT</code> and <code>IGNORE</code> statements are not supported at this point. The resulting number of rows after applying filters is checked against row-level output table dimensions (if any available). In other words, you have to be unlucky to run into trouble without an error. But it is alway recommended to use a unique row identifier in both input and output tables in order to avoid relying on interpretation of <code>Nonmem</code> code.</p>
+<p>Nested <code>ACCEPT</code> and <code>IGNORE</code> statements are not supported at this point. The resulting number of rows after applying filters is checked against row-level output table dimensions (if any available). In other words, you have to be unlucky to run into trouble without an error. But it is always recommended to use a unique row identifier in both input and output tables in order to avoid relying on interpretation of <code>Nonmem</code> code.</p>
 <p>The <code>RECORDS</code> and <code>NULL</code> options in <code>$DATA</code> are not implemented. If using <code>RECORDS</code>, please use the <code>col.row</code> option to merge by a unique row identifier.</p>
 </div>
 <div id="character-time-variables-not-interpreted" class="section level3">
 <h3 class="hasAnchor">
 <a href="#character-time-variables-not-interpreted" class="anchor"></a>Character time variables not interpreted</h3>
-<p><code>Nonmem</code> supports a clocktime input format for a column called TIME in input data. Based on a day counter and a character (“00:00”) clock format, <code>Nonmem</code> can calculate the individual time since first record. This behaviour is not mimicked by NMscanData, and the only ways to get TIME in this case are to either include it in an output <code>TABLE</code> or to code the translation yourself after calling <code>NMscanData</code>. Of course, this is on the todo list.</p>
+<p><code>Nonmem</code> supports a clocktime input format for a column called TIME in input data. Based on a day counter and a character (“00:00”) clock format, <code>Nonmem</code> (or rather, <code>NM-TRAN</code>) can calculate the individual time since first record. This behaviour is not mimicked by NMscanData, and the only ways to get TIME in this case are to either include it in an output <code>TABLE</code> or to code the translation yourself after calling <code>NMscanData</code>. Of course, this is on the todo list.</p>
 </div>
 <div id="some-table-options-not-supported" class="section level3">
 <h3 class="hasAnchor">

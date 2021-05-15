@@ -74,7 +74,7 @@ flag." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.906</span>
       </span>
     </div>
 
@@ -154,6 +154,7 @@ flag.</p>
   flags.increasing = <span class='fl'>FALSE</span>,
   name.all.data = <span class='st'>"All available data"</span>,
   grp.incomp = <span class='st'>"EVID"</span>,
+  save = <span class='fl'>TRUE</span>,
   as.fun = <span class='kw'>NULL</span>
 )</pre>
 
@@ -177,8 +178,7 @@ probably be removed and put in a separate function.</p></td>
     </tr>
     <tr>
       <th>col.id</th>
-      <td><p>The name of the subject ID column. Default is
-"ID".</p></td>
+      <td><p>The name of the subject ID column. Default is "ID".</p></td>
     </tr>
     <tr>
       <th>col.flagn</th>
@@ -222,6 +222,11 @@ data. Default is "EVID" meaning that if different values of
 EVID are found in data, the function will return an
 error. This is a safeguard not to mix data unintentionally
 when counting flags.</p></td>
+    </tr>
+    <tr>
+      <th>save</th>
+      <td><p>Save file? Default is TRUE, meaning that a file will
+be written if file argument is supplied.</p></td>
     </tr>
     <tr>
       <th>as.fun</th>

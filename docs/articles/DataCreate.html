@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.906</span>
       </span>
     </div>
 
@@ -97,12 +97,12 @@
 
     
     
-<p>Built 2021-04-25 using NMdata 0.0.7.1.</p>
+<p>Built 2021-05-14 using NMdata 0.0.7.1.906.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>Getting the data ready for modeling is a crucial but underrated task. Mistakes during the process of combining data sets, defining time variables etc. can lead to anything from difficulties during modeling and need for revisiting data set creation to a lot of wasted time working with an erroneos data set. Avoiding those mistakes by integrating checks into the data creation process is a must.</p>
-<p>Furthermore, Nonmem has quite a number of restrictions on the format of the input data, and problems with the data set is a very common reason for Nonmem not to behave as expected. When this happens, you easily waste a lot time on debugging. <code>NMdata</code> includes some simple functions to prevent these situations.</p>
+<p>Getting data ready for modeling is a crucial and tedious but often underestimated task. Mistakes during the process of combining data sets, defining time variables etc. can lead to difficulties during modeling, need for revisiting data set creation, and in the worst case where the errors are not quickly realized, a lot of wasted time working with an erroneos data set. Avoiding those mistakes by integrating checks into the data creation process is a must.</p>
+<p>Furthermore, Nonmem has quite a number of restrictions on the format of the input data, and problems with the data set is a very common reason for Nonmem not to behave as expected. When this happens, debugging can be time-consuming. <code>NMdata</code> includes some simple functions to prevent these situations.</p>
 <p>This vignette uses <code>data.table</code> syntax for the little bit of data manipulation performed. However, you don’t need to use data.table <em>at all</em> to use these tools or any tool in <code>NMdata</code>. The reason why the functions return data.table objects is that the data set is a <code>data.table</code> to begin with</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(file = <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/data/xgxr2.rds"</span>, package = <span class="st">"NMdata"</span>))
@@ -153,16 +153,16 @@
 <span class="co">## dt.cov has a covariate for some of the subjects</span>
 <span class="kw">dt.cov</span>
 <span class="co">#&gt;     ID COV</span>
-<span class="co">#&gt;  1: 31   3</span>
-<span class="co">#&gt;  2: 32   3</span>
+<span class="co">#&gt;  1: 31   5</span>
+<span class="co">#&gt;  2: 32   4</span>
 <span class="co">#&gt;  3: 33   4</span>
-<span class="co">#&gt;  4: 34   1</span>
-<span class="co">#&gt;  5: 35   1</span>
-<span class="co">#&gt;  6: 36   2</span>
-<span class="co">#&gt;  7: 37   1</span>
+<span class="co">#&gt;  4: 34   5</span>
+<span class="co">#&gt;  5: 35   5</span>
+<span class="co">#&gt;  6: 36   5</span>
+<span class="co">#&gt;  7: 37   5</span>
 <span class="co">#&gt;  8: 38   5</span>
 <span class="co">#&gt;  9: 39   5</span>
-<span class="co">#&gt; 10: 40   1</span>
+<span class="co">#&gt; 10: 40   3</span>
 <span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk2</span>)
 <span class="co">#&gt; [1] 100  25</span>
@@ -221,23 +221,18 @@
 <h2 class="hasAnchor">
 <a href="#exclusion-flags" class="anchor"></a>Exclusion flags</h2>
 <p>It is good practice not to discard records from a dataset but to flag them and omit them in model estimation. When reporting the analysis, we also need to account for how many data records were discarded due to which criteria. A couple of functons in <code>NMdata</code> help you do this in a way that is easy to integrate with Nonmem.</p>
-<p>The implementation in <code>NMdata</code> is based on sequentially checking exclusion conditions. This means we can summarize how many records and subjects were excluded from the analysis due to the different criteria. The information is represented in one numerical column for Nonmem, and one (equivalent) column for the rest of us in the resulting data.</p>
+<p>The implementation in <code>NMdata</code> is based on sequentially checking exclusion conditions. This means we can summarize how many records and subjects were excluded from the analysis due to the different criteria. The information is represented in one numerical column for Nonmem, and one (value-to-value corresponding) character column for the rest of us in the resulting data.</p>
 <div id="assign-and-count-flags" class="section level3">
 <h3 class="hasAnchor">
 <a href="#assign-and-count-flags" class="anchor"></a>Assign and count flags</h3>
 <p>For use in Nonmem, the easiest is that inclusion/exclusion is determined by a single column in data - we call that column <code>FLAG</code> here, but any column name can be used. <code>FLAG</code> obviously draws on information from other columns such as <code>TIME</code>, <code>DV</code>, and many others, depending on your dataset and your way of working.</p>
 <p>The function that applies inclusion/excluasion rules is called <code>flagsAssign</code>, and it takes a dataset and a data.frame with rules as arguments.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(file = <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/data/xgxr2.rds"</span>, package = <span class="st">"NMdata"</span>))
 <span class="kw">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span>(text = <span class="st">"FLAG,flag,condition
 10,Below LLOQ,EVID==0&amp;BLQ==1
 100,Negative time,EVID==0&amp;TIME&lt;0"</span>)
 
 <span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsAssign.html">flagsAssign</a></span>(<span class="kw">pk</span>, tab.flags = <span class="kw">dt.flags</span>, subset.data = <span class="st">"EVID==0"</span>)
-<span class="co">#&gt; In flagsAssign(pk, tab.flags = dt.flags, subset.data = "EVID==0") : Data</span>
-<span class="co">#&gt; contains FLAG already. This is overwritten</span>
-<span class="co">#&gt; In flagsAssign(pk, tab.flags = dt.flags, subset.data = "EVID==0") : Data</span>
-<span class="co">#&gt; contains flag already. This is overwritten</span>
 <span class="co">#&gt; Coding FLAG = 100, flag = Negative time</span>
 <span class="co">#&gt; Coding FLAG = 10, flag = Below LLOQ</span>
 <span class="kw">pk</span>[<span class="kw">EVID</span> <span class="op">==</span> <span class="fl">1</span>, <span class="fu">`:=`</span>(<span class="kw">FLAG</span>, <span class="fl">0</span>)]
@@ -273,18 +268,18 @@
 <div id="finalize-data-format-and-write-to-file" class="section level2">
 <h2 class="hasAnchor">
 <a href="#finalize-data-format-and-write-to-file" class="anchor"></a>Finalize data format and write to file</h2>
-<p>Once you have your dataset in place, <code>NMdata</code> provides a few useful functions. At this point, ideally you check your data for any inconsistency. If you miss an inconsistency, you need to wait for Nonmem to finish if the inconsistency is not fatal for Nonmem’s ability to run the model. Then, you may still not realize and continue working with Nonmem to build the model before you realize that something is wrong. <code>NMdata</code> is still ways from providing a sufficient set of tests to run, but still these checks are useful and easy and cheap to run.</p>
+<p>Once you have your dataset in place, <code>NMdata</code> provides a few useful functions. At this point, ideally you check your data for any inconsistency. If you miss an inconsistency, you need to wait for Nonmem to finish if the inconsistency is not fatal for Nonmem’s ability to run the model. Then, you may or may not realize the inconcisteny quickly. <code>NMdata</code> is still ways from providing a sufficient set of tests to run, but already includes some checks that are useful and easy to run.</p>
 <div id="automated-ordering-of-columns" class="section level3">
 <h3 class="hasAnchor">
 <a href="#automated-ordering-of-columns" class="anchor"></a>Automated ordering of columns</h3>
-<p>The order of columns in Nonmem is important for two reasons. One is that a character in a variable read into Nonmem will make the run fail. The other is that there are restrictions on the number of variables you can read into Nonmem, depending on the version. <code>NMcolOrders</code> tries to put the used columns first, and other or maybe even unusable columns in the back of the dataset. It does so by a mix of recognition or column names and analysis of the column contents.</p>
+<p>The order of columns in Nonmem is important for two reasons. One is that a character in a variable read into Nonmem will make the run fail. The other is that there are restrictions on the number of variables you can read into Nonmem, depending on the version. <code>NMorderColumns</code> tries to put the used columns first, and other or maybe even unusable columns in the back of the dataset. It does so by a mix of recognition of column names and analysis of the column contents.</p>
 <p>Columns that cannot be converted to numeric are put in the back, while column bearing standard Nonmem variable names like <code>ID</code>, <code>TIME</code>, <code>EVID</code> etc. will be pulled up front. You can of course add column names to prioritize to front (<code>first</code>) or back (<code>last</code>). See <code><a href="../reference/NMorderColumns.html">?NMorderColumns</a></code> for more options.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMorderColumns.html">NMorderColumns</a></span>(<span class="kw">pk</span>)
 <span class="co">#&gt; Warning: In NMorderColumns(pk) : These standard nonmem columns were not found in data:</span>
 <span class="co">#&gt; MDV</span>
 </pre></div>
-<p>Notice, <code>NMdata</code> detected the exclusion flag and suggests to include it in <code>$DATA</code>.</p>
+<p>We may want to add <code>MDV</code> and rerun <code>NMorderColumns</code>.</p>
 </div>
 <div id="writing-data-to-files" class="section level3">
 <h3 class="hasAnchor">
@@ -292,17 +287,15 @@
 <p>For the final step of writing the dataset, <code>NMwriteData</code> is provided. Most importantly, it writes a csv file with appropriate options for Nonmem to read it as well as possible. It can also write an rds for R with equal contents (or RData if you prefer), but with the rds including all information (such as factor levels) which cannot be saved in csv. If you should use <code>NMscanData</code> to read Nonmem results, this information can be used automatically. It also provides a proposal for text to include in the <code>$INPUT</code> and <code>$DATA</code> sections of the Nonmem control streams.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit">
 <span class="fu"><a href="../reference/NMwriteData.html">NMwriteData</a></span>(<span class="kw">pk</span>)
-<span class="co">#&gt; Nonmem data file:</span>
-<span class="co">#&gt; </span>
+<span class="co">#&gt; Data _not_ witten to any files.</span>
 <span class="co">#&gt; For NonMem:</span>
 <span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span>
 <span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB eff0</span>
 <span class="co">#&gt; $DATA </span>
 <span class="co">#&gt; IGN=@</span>
 <span class="co">#&gt; IGNORE=(FLAG.NE.0)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Data not written to file(s).</span>
 </pre></div>
+<p>Notice, <code>NMwriteData</code> detected the exclusion flag and suggests to include it in <code>$DATA</code>.</p>
 <p>If a file name had been provided, the data would have been written, and the path to the data file would have been included in the message written back to the user. There are several arguments that will affect the proposed text for the Nonmem run, see <code><a href="../reference/NMwriteData.html">?NMwriteData</a></code>.</p>
 </div>
 <div id="updating-nonmem-control-streams-to-read-new-data-file" class="section level3">
@@ -316,16 +309,13 @@
 <p>But in fact, we can go a step further and take the information straight from NMwriteData</p>
 <div class="sourceCode" id="cb13"><pre class="downlit">
 <span class="kw">text.nm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMwriteData.html">NMwriteData</a></span>(<span class="kw">pk</span>)
-<span class="co">#&gt; Nonmem data file:</span>
-<span class="co">#&gt; </span>
+<span class="co">#&gt; Data _not_ witten to any files.</span>
 <span class="co">#&gt; For NonMem:</span>
 <span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span>
 <span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB eff0</span>
 <span class="co">#&gt; $DATA </span>
 <span class="co">#&gt; IGN=@</span>
 <span class="co">#&gt; IGNORE=(FLAG.NE.0)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Data not written to file(s).</span>
 </pre></div>
 <p>NMwriteData invisibly returns a list of sections (<code>$INPUT</code> and <code>$DATA</code>). <code>NMwriteSection</code> can use these directly. So to write only the <code>$INPUT</code> section to <code>run001.mod</code>, we do the following. Please notice the single brackets in <code>text.nm["INPUT"]</code> which mean that we still send a list to <code>NMwriteSection</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit">
@@ -345,7 +335,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-04-25 21:34:45 EDT"</span>
+<span class="co">#&gt; [1] "2021-05-14 23:55:26 EDT"</span>
 </pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit">
@@ -355,7 +345,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-04-25 21:34:45 EDT"</span>
+<span class="co">#&gt; [1] "2021-05-14 23:55:26 EDT"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span>
@@ -374,9 +364,9 @@
 <span class="co">#&gt; Warning: In NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"),</span>
 <span class="co">#&gt; col.row = "ROW", merge.by.row = TRUE, quiet = TRUE, as.fun = "data.table") :</span>
 <span class="co">#&gt; input control stream</span>
-<span class="co">#&gt; (C:/Users/delff/software/R/R-4.0.2/library/NMdata/examples/nonmem/xgxr001.mod)</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpAbRq4q/temp_libpath75445fa0475a/NMdata/examples/nonmem/xgxr001.mod)</span>
 <span class="co">#&gt; is newer than output control stream</span>
-<span class="co">#&gt; (C:/Users/delff/software/R/R-4.0.2/library/NMdata/examples/nonmem/xgxr001.lst)</span>
+<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpAbRq4q/temp_libpath75445fa0475a/NMdata/examples/nonmem/xgxr001.lst)</span>
 <span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
 <span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span>(<span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span>, <span class="kw">res1</span><span class="op">$</span><span class="kw">DOSE</span>)
@@ -391,7 +381,7 @@
 <span class="fu">ggplot</span>(<span class="kw">res1.id</span>, <span class="fu">aes</span>(<span class="kw">WEIGHTB</span>, <span class="kw">Cmax</span><span class="op">/</span><span class="kw">DOSE</span>, colour = <span class="kw">trtact</span>)) <span class="op">+</span> <span class="fu">geom_point</span>() <span class="op">+</span> 
     <span class="fu">labs</span>(x = <span class="st">"Bodyweight at baseline (kg)"</span>)
 </pre></div>
-<p><img src="DataCreate_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
+<p><img src="DataCreate_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
 <p><code>cols.id</code> can be longer than one. Include a study column, a treatment column to support cross-over, or a model column if you are comparing model fits (see below how to do this very easily).</p>
 <p>If your model includes occasion variability, you probably also want to look at</p>
 <div class="sourceCode" id="cb18"><pre class="downlit">
@@ -403,8 +393,8 @@
 <span class="fu"><a href="../reference/findCovs.html">findCovs</a></span>(<span class="kw">res1</span>)
 <span class="co">#&gt;    FLAG STUDY   TVKA  TVV2    TVCL    TVV3     TVQ      V3       Q BLQ CYCLE</span>
 <span class="co">#&gt; 1:    0     1 0.1812 0.042 0.72457 0.17848 2307400 0.17848 2307400   0     1</span>
-<span class="co">#&gt;    PART PROFDAY nmout TIMEUNIT   model</span>
-<span class="co">#&gt; 1:    1       1  TRUE    Hours xgxr001</span>
+<span class="co">#&gt;    PART PROFDAY TIMEUNIT   model nmout</span>
+<span class="co">#&gt; 1:    1       1    Hours xgxr001  TRUE</span>
 </pre></div>
 <p>Let’s take a look at what is in the <code>res1.id</code> generated above. It is a mix of variables that vary at subject level and variables that are constant across the full dataset.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit">
@@ -414,12 +404,12 @@
 <span class="co">#&gt;    ID FLAG STUDY   TVKA  TVV2    TVCL    TVV3     TVQ     KA    V2      CL</span>
 <span class="co">#&gt; 1: 31    0     1 0.1812 0.042 0.72457 0.17848 2307400 0.1812 0.042 0.72457</span>
 <span class="co">#&gt; 2: 32    0     1 0.1812 0.042 0.72457 0.17848 2307400 0.1812 0.042 0.72457</span>
-<span class="co">#&gt;         V3       Q BLQ CYCLE DOSE PART PROFDAY WEIGHTB   EFF0 nmout TIMEUNIT</span>
-<span class="co">#&gt; 1: 0.17848 2307400   0     1    3    1       1  87.031 56.461  TRUE    Hours</span>
-<span class="co">#&gt; 2: 0.17848 2307400   0     1    3    1       1 100.620 45.096  TRUE    Hours</span>
-<span class="co">#&gt;    TRTACT trtact   model Cmax</span>
-<span class="co">#&gt; 1:   3 mg   3 mg xgxr001    0</span>
-<span class="co">#&gt; 2:   3 mg   3 mg xgxr001    0</span>
+<span class="co">#&gt;         V3       Q BLQ CYCLE DOSE PART PROFDAY WEIGHTB   EFF0 TIMEUNIT TRTACT</span>
+<span class="co">#&gt; 1: 0.17848 2307400   0     1    3    1       1  87.031 56.461    Hours   3 mg</span>
+<span class="co">#&gt; 2: 0.17848 2307400   0     1    3    1       1 100.620 45.096    Hours   3 mg</span>
+<span class="co">#&gt;    trtact   model nmout Cmax</span>
+<span class="co">#&gt; 1:   3 mg xgxr001  TRUE    0</span>
+<span class="co">#&gt; 2:   3 mg xgxr001  TRUE    0</span>
 </pre></div>
 <p><code>findCovs</code> has a counterpart in <code>findVars</code> which finds variables that do vary within constant values of optional <code>cols.id</code> columns. To get only the ones that vary within the dataset (i.e. they are truely subject-level variables and not say a study number if we only have one study), we can do</p>
 <div class="sourceCode" id="cb21"><pre class="downlit">

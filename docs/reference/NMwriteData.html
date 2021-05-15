@@ -78,7 +78,7 @@ in the file argument." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.906</span>
       </span>
     </div>
 
@@ -159,12 +159,14 @@ in the file argument.</p>
   write.rds = <span class='kw'>write.csv</span>,
   <span class='kw'>script</span>,
   <span class='kw'>args.stamp</span>,
+  <span class='kw'>args.fwrite</span>,
   <span class='kw'>args.rds</span>,
   <span class='kw'>nmdrop</span>,
   <span class='kw'>nmdir.data</span>,
   col.flag = <span class='st'>"FLAG"</span>,
   <span class='kw'>nm.rename</span>,
-  capitalize.names = <span class='fl'>FALSE</span>
+  capitalize.names = <span class='fl'>FALSE</span>,
+  allow.char.TIME = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -201,6 +203,13 @@ script name before saved to rds or Rdata. See ?stampObj.</p></td>
     <tr>
       <th>args.stamp</th>
       <td><p>A list of arguments to be passed to stampObj.</p></td>
+    </tr>
+    <tr>
+      <th>args.fwrite</th>
+      <td><p>List of arguments passed to fwrite. Notice that
+except for "x" and "file", you need to supply all arguments to
+fwrite if you use this argument. Default values can be
+configured using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>args.rds</th>
@@ -242,6 +251,13 @@ consider nm.rename=c(DV="CONC").</p></td>
 the suggested text for Nonmem will only contain capital
 letters in column names.</p></td>
     </tr>
+    <tr>
+      <th>allow.char.TIME</th>
+      <td><p>For the $DATA text proposal only. Assume
+Nonmem can read TIME even if it can't be translated to
+numeric. This is necessary if using the 00:00 format. Default
+is TRUE.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -255,7 +271,9 @@ letters in column names.</p></td>
     returned if commas are found in strings.</p>
 <p>The user is provided with text to use in Nonmem. This lists names
 of the data columns. Once a column is reached that Nonmem will not
-be able to read as a numeric and column is not in nmdrop, the list is stopped.</p>
+be able to read as a numeric and column is not in nmdrop, the list
+is stopped. Only exception is TIME which is not tested for whether
+character or not.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Nonmem: 
