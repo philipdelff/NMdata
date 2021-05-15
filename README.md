@@ -1,4 +1,5 @@
 # NMdata
+### A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
 NMdata provides data creation and data handling tools for
 pharmacometrics (PK/PD modeling). The tools are created around the use
 of Nonmem for estimation or simulation. Data set creation tools may be

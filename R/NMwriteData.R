@@ -71,7 +71,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
                         nm.rename,capitalize.names=FALSE,allow.char.TIME=TRUE){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
-
+    
     TIME <- NULL 
     name.nm <- NULL
     comma.ok <- NULL
@@ -255,7 +255,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     if(write.csv){
         file.csv <- fnExtension(file,".csv")
 
-        do.call(fwrite,c(list(file=file.csv),args.fwrite))
+        do.call(fwrite,append(list(x=data,file=file.csv),args.fwrite))
         ## fwrite      (data,na=".",quote=FALSE,row.names=FALSE,scipen=0,file=file.csv)
         files.written <- c(files.written,file.csv)
         if(doStamp){

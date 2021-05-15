@@ -42,9 +42,9 @@ summary.NMdata <- function(object,...){
     N.ids.nmout <- s1$N.ids1[nmout==TRUE,N.ids]
     if(length(N.ids.nmout)==0) N.ids.nmout <- 0
     s1$N.ids <- rbind(
-        data.table(NMOUT="Output tables",N.ids=N.ids.nmout)
+        data.table(NMOUT="Output",N.ids=N.ids.nmout)
        ,
-        data.table(NMOUT="Input data only",N.ids=sum(
+        data.table(NMOUT="Input only",N.ids=sum(
                                                     ! data[nmout==FALSE,unique(ID)] %in% data[nmout==TRUE,unique(ID)]
                                                 )
                    )
@@ -129,11 +129,10 @@ print.summary_NMdata <- function(x,...){
     
 
 #### other info to include. 
-    dt.nmout <- data.table(nmout=c(TRUE,FALSE),NMOUT=c("Output tables","Input only"))
+    dt.nmout <- data.table(nmout=c(TRUE,FALSE),NMOUT=c("Output","Input only"))
 
     ## how many ids (broken down on output vs. input-only)
     
-    ## n1 <- merge(x$N.rows,x$N.ids,by="nmout")
     n2 <- melt(x$N.rows,id.vars="nmout",variable.name="N")
     n3 <- mergeCheck(n2,dt.nmout,by="nmout",all.x=TRUE)
     n4 <- dcast(n3,N~NMOUT,value.var="value")
@@ -147,12 +146,12 @@ print.summary_NMdata <- function(x,...){
     
 
     ## model name
-    cat("Model: ",x$model,"\n")
+    cat("Model: ",x$details$model,"\n")
     
     cat("\nTables, their number of columns and detail levels:\n")
     print(vars.sum2,row.names=FALSE)
 
-    cat("\nNumbers of ID's and rows in data\n")
+    cat("\nNumbers of rows and subjects\n")
     print(n5,row.names=FALSE,...)
 
     

@@ -10,6 +10,16 @@ output:
 classoption: "aspectratio=169"
 ---
 
+<!-- TODO: -->
+<!-- Motivation -->
+<!-- Describe testing framework -->
+<!-- Pretty up -->
+<!-- Tools for programming -->
+<!--  - egdt -->
+<!--  - findCovs -->
+<!--  - findVars -->
+<!--  - NMreadSection -->
+<!--  - NMextractText -->
 
 ```{r,include=FALSE}
 
@@ -721,6 +731,8 @@ ggplot(res2[EVID==0])+
 ::::::::::::::
 
 ## Compare models
+\framesubtitle{Example: Renaming and combining models by `rbind`}
+
 :::::::::::::: {.columns}
 ::: {.column width="45%"}
 \footnotesize
@@ -748,13 +760,16 @@ res.mult.mean <- res.mult[EVID==0&nmout==TRUE,
 ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+
     geom_line()+
     scale_y_log10()+
+    geom_point(aes(TIME,DV),data=res1.m,
+               alpha=.5,colour="grey")+
+    labs(x="Hours since administration",y="Concentration (ng/mL)")+
     facet_wrap(~trtact,scales="free_y",ncol=2)
 ```
 
 :::
 ::: {.column width="55%"}
 \normalsize
-```{r,compmodels,eval=T,echo=FALSE,out.width="105%"}
+```{r,compmodels,eval=T,echo=FALSE,out.width="105%",warning=FALSE}
 ```
 
 :::
@@ -762,11 +777,14 @@ ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+
 
 
 ## Preserve all input data properties
-By default, NMscanData will look for an rds file next to the csv file (same file name, only extension .rds different). 
+::: columns
+:::: column
+By default, `NMscanData` will look for an rds file next to the csv file (same file name, only extension .rds different). 
 
 * If this is found, it will be read, providing an enriched (e.g. conserving factor levels and any other information).
 
-* There is no checks of consistency of `rds` file against delimited file read by `Nonmem`.
+* There are no checks of consistency of `rds` file against delimited file read by `Nonmem`.
+ - I am interested in ideas on how to do this. If we can avoid reading the csv file, it would be highly prefered.
 
 * You get the rds automatically if using `NMwriteData`.
  
@@ -774,7 +792,48 @@ By default, NMscanData will look for an rds file next to the csv file (same file
 
 * Default value of `use.rds` can be modified with `NMdataConf`.
 
+::::
+:::: column
+Notice, the plots are correctly ordered by doses - because they are ordered as a factor.
+```{r}
+lst <- system.file("examples/nonmem/xgxr014.lst",
+                   package="NMdata")
+res14 <- NMscanData(lst,quiet=TRUE)
+```
+
+```{r,echo=FALSE,out.width="105%"}
+## Derive another data.table with geometric mean pop predictions by
+## treatment and nominal sample time. Only use sample records.
+res.mean <- res14[EVID==0&nmout==TRUE,
+                  .(gmPRED=exp(mean(log(PRED)))),
+                  by=.(trtact,NOMTIME)]
+## plot individual observations and geometric mean pop
+## predictions. Split by treatment.
+ggplot(res14[EVID==0])+
+    geom_point(aes(TIME,DV,colour=flag))+
+    geom_line(aes(NOMTIME,gmPRED),data=res.mean)+
+    scale_y_log10()+
+    facet_wrap(~trtact,scales="free_y",ncol=2)+
+    labs(x="Hours since administration",y="Concentration (ng/mL)")
+
+```
+::::
+:::
+
 ## The NMdata class
+Most important message: an `NMdata` object can be used as if it weren't. `R` looks sequentially for "methods" matching the classes of an object.
+```{r}
+class(res1)
+```
+Methods defined for `NMdata`:
+* `summary`: The information that is written to the console if `quiet=FALSE`.
+
+This is the only behavior that is overwritten by the `NMdata` class. 
+
+Simple other methods like `rbind` and similar are defined by dropping the `NMdata` class and then perform the operation.
+
+`NMinfo` only works on `NMdata` objects.
+
 
 ## What should I do for my models to be compatible with NMscanData?
 * The answer to this should be as close to "nothing" as possible -
