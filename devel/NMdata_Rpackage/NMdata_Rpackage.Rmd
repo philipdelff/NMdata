@@ -63,22 +63,25 @@ set.seed(1121)   # make the results repeatable
 <!-- `NMdata` is my humble experience collected in efficient functions that fill some holes and help with some of the most annoying design -->
 
 ## What is NMdata?
-NMdata is an R package that can help
+::: columns
+:::: column
+### NMdata is 
+an R package that can help
 
 *  Creating event-based data sets for PK/PD modeling
 *  Keeping Nonmem code updated to match contents of datasets
 *  Read all output data and combine with input data from Nonmem runs
--  You only supply output list file (.lst), and the reader is very flexible and automated
+   - supply output list file (.lst), and the reader is very flexible and automated
 
-NMdata is developed with high degree of flexibility in mind
+designed to fit in to the user's setup and coding preferences
 
-* No tools in NMdata requires other NMdata tools to be used
 * NMdata comes with a configuration tool that can be used to tailor default behaviour to the user's system configuration and preferences.
 
+::::
 
+:::: column
 
-## What is NMdata not?
-
+### NMdata is not
 
 * A plotting package
 
@@ -86,8 +89,10 @@ NMdata is developed with high degree of flexibility in mind
 
 * A calculation or simulation toolbox
 * A "silo" that requires you to do things in a certain way.
+  - No tools in NMdata requires other NMdata tools to be used
 
-
+::::
+:::
 
 ## Who can find NMdata useful?
 
@@ -95,6 +100,38 @@ NMdata is developed with high degree of flexibility in mind
 
 * Nonmem users will find additional tools for handling the exchange of data between R and Nonmem.
 
+
+
+<!-- ## About the author -->
+<!-- * Pharmacometrician with experience from biostatistics -->
+
+<!-- * Background in engineering, experience as system administrator, 15 years of R experience -->
+
+<!-- * Very concerned with code robustness and ensuring data consistency. -->
+
+<!-- * Authored an R package on safe data transfer from SAS to R and one on survival analysis.  -->
+
+<!-- I hate being stuck in leg work and having too little time for modeling, -->
+<!-- reflection, and understanding key questions. `NMdata` is a big help for -->
+<!-- me personally in freeing time to more high-level tasks. -->
+
+## Motivation
+* As large a potential pharmacometrics has for illuminating the unknown in drug development, it is dangerously technical.
+
+* I hate being stuck in leg work and having too little time for modeling,
+reflection, and understanding key questions. `NMdata` is a big help for
+me personally in freeing time to more high-level tasks.
+
+* During the first 2-3 years I spent in pharmacometrics, I must have spent half the time coding, desparately trying to get Nonmem to behave and to understand the properties of the estimates I obtained.
+
+* Most of us develop our own ways to avoid some of the many difficulties in this proces. 
+
+* Due to change of job and therapeutic area, mine had to be refined. 
+
+* Being a fairly experienced R programmer, I generalized some of these methods and collected them in `NMdata`.
+
+* I have no intention of missioning these approaches to others. But if
+you find something interesting, feel free to take advantage.
 
 ## Overview of NMdata functionality
 * Data creation
@@ -107,20 +144,6 @@ NMdata is developed with high degree of flexibility in mind
 
 
 
-## About the author
-* Pharmacometrician with experience from biostatistics
-
-* Background in engineering, experience as system administrator, 15 years of R experience
-
-* Very concerned with code robustness and ensuring data consistency.
-
-* Authored an R package on safe data transfer from SAS to R and one on survival analysis. 
-
-I hate being stuck in leg work and having too little time for modeling,
-reflection, and understanding key questions. `NMdata` is a big help for
-me personally in freeing time to more high-level tasks.
-
-
 # Getting started
 ## Getting started
 
@@ -130,8 +153,13 @@ library(NMdata)
 
 ```{r,load-all-NMdata,include=FALSE}
 library(devtools)
-load_all("c:/Users/delff/working_copies/NMdata")
+load_all()
 ```
+
+```{r,include=FALSE}
+NMdataConf(check.time=FALSE)
+```
+
 
 ```{r}
 NMdataConf(as.fun="data.table")
@@ -171,7 +199,6 @@ pk.reduced[,AMT:=as.character(AMT)]
 # Data set creation
 
 ## Compare compatibility of data sets for rbind and merge
-
 
 * In order to rbind or merge data sets, they must be compatible in presence and equally importantly, of the classes of the common columns.
 * compareCols provides an overview of these properties for any number of data sets. 
@@ -612,7 +639,7 @@ try(NMdataConf(use.input="FALSE"))
 ::: columns
 :::: column
 ```{r}
-file1.lst <- system.file("examples/nonmem/xgxr001.lst",
+file1.lst <- system.file("examples/nonmem/xgxr003.lst",
                          package="NMdata")
 res0 <- NMscanData(file1.lst,merge.by.row=FALSE)
 ```
@@ -910,9 +937,23 @@ available elsewhere.
 <!-- # Data processing -->
 <!-- ## findCovs, findVars -->
 
+## How is `NMdata` qualified?
+
+`NMdata` includes >60 "unit tests" where results of function calls
+with different datasets and arguments are compared to expected
+results.
+
+Tests are consistently run before any release of the package.
+
+The tests are crucial in making sure that fixing one bug or
+introducing a new feature does not introduce new bugs.
+
+If you have a specific example you want to make sure is tested in the
+package, we will include the test in the package.
+
 ## Todo
 * The next milestone is submitting the package to CRAN
-  - Little left on the todo list before submission
+  - Aiming for end of June
 * Abstract submitted to ACoP
 * The following would be great help in making NMdata more accessible and useful
   - Testing - please use the package and provide feedback

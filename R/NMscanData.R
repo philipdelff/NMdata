@@ -292,7 +292,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 ### get all names from this and then select unique to get a table with the included variables
         list.vars <- lapply(data[which(overview.tables$maxLength)],names)
         list.vars <- lapply(list.vars,as.data.table)
-        list.vars <- lapply(seq_along(list.vars),function(n)list.vars[[n]][,table:=names(list.vars)[n]])
+        list.vars <- lapply(seq_along(list.vars),function(n)list.vars[[n]][,file:=names(list.vars)[n]])
         dt.vars1 <- rbindlist(list.vars)
         setnames(dt.vars1,c("V1"),"variable")
         ## notice the selection of names in dt.vars and tab.row must be identical
@@ -308,7 +308,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         
         dt.vars <- rbind(dt.vars,
                          data.table(variable="nmout"
-                                   ,table=NA_character_
+                                   ,file=NA_character_
                                    ,included=TRUE 
                                    ,source="NMscanData"
                                    ,level="row"
@@ -325,7 +325,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 ### get all names from this and then select unique to get a table with the included variables
         list.vars.id <- lapply(data[which(overview.tables$idlevel)],names)
         list.vars.id <- lapply(list.vars.id,as.data.table)
-        list.vars.id <- lapply(seq_along(list.vars.id),function(n)list.vars.id[[n]][,table:=names(list.vars.id)[n]])
+        list.vars.id <- lapply(seq_along(list.vars.id),function(n)list.vars.id[[n]][,file:=names(list.vars.id)[n]])
         dt.vars.id1 <- rbindlist(list.vars.id)
         setnames(dt.vars.id1,c("V1"),"variable")
         ## notice the selection of names in dt.vars.id and tab.row must be identical
@@ -383,10 +383,11 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         setattr(tab.row,"type.file",NULL)
         setattr(tab.row,"mtime.file",NULL)
 
+        
         dt.vars <- rbind(dt.vars,
                          data.table(
                              variable=colnames(tab.row)
-                            ,table="input"
+                            ,file=data.input$meta[,name]
                             ,included=TRUE
                             ,source="input"
                             ,level="row")
@@ -443,7 +444,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             
             dt.vars1 <- data.table(
                 variable=colnames(data.input$data)
-               ,table="input"
+               ,file=data.input$meta[,name]
                ,source="input"
                ,level="row")
 
@@ -499,7 +500,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                 
                 dt.vars1 <- data.table(
                     variable=colnames(data.input$data)
-                   ,table="input"
+                   ,file=data.input$meta[,name]
                    ,source="input"
                    ,level="row"
                 )
@@ -509,9 +510,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                          ]
 
                 dt.vars <- rbind(dt.vars,dt.vars1)
-                ## tab.vars <- rbind(tab.vars,
-                ## data.table(var=setdiff(colnames(data.input$data),colnames(tab.row)),source="input",level="row"))
-                
                 tab.row <- mergeCheck(tab.row,data.input$data[,c(col.row,setdiff(colnames(data.input$data),colnames(tab.row))),with=FALSE],by=col.row,all.x=T,as.fun="data.table")
                 
             }
@@ -660,7 +658,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         
         dt.vars <- rbind(dt.vars,
                          data.table(variable=col.model
-                                   ,table=NA_character_
+                                   ,file=NA_character_
                                    ,included=TRUE 
                                    ,source="NMscanData"
                                    ,level="model"

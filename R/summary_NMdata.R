@@ -102,31 +102,29 @@ print.summary_NMdata <- function(x,...){
     
     vars[,included:=!is.na(COLNUM)]
     vars <- mergeCheck(vars,data.table(included=c(TRUE,FALSE),
-                                       ## inc=factor(c("included","not"),levels=c("included","not"))),
                                        inc=c("included","not")),
                        by="included")
 
-
-    vars.sum <- vars[source!="NMscanData"][,.N,by=.(table,inc)]
-    vars.sum1 <- dcast(vars.sum,table~inc,value.var="N",fill=0)
-    vars.sum1[,print.inc:=paste0(included,"/",sum(c(included,not),na.rm=T)),by=.(table)]
-
+#### edit here when meta columns info structure changes
     
+    vars.sum <- vars[source!="NMscanData"][,.N,by=.(file,inc)]
+    vars.sum1 <- dcast(vars.sum,file~inc,value.var="N",fill=0)
+    vars.sum1[,print.inc:=paste0(included,"/",sum(c(included,not),na.rm=T)),by=.(file)]
     
     ## include level
     tabs.out[,tabn:=1:.N]
-    vars.sum2 <- mergeCheck(vars.sum1,tabs.out[,.(table=name,idlevel,tabn)],by="table",all.x=T)
+    vars.sum2 <- mergeCheck(vars.sum1,tabs.out[,.(file=name,source,idlevel,tabn)],by="file",all.x=T)
+    vars.sum2[source=="input",file:=paste(file,"(input)")]
     vars.sum2[,level:="row"]
     vars.sum2[idlevel==TRUE,level:="ID"]
     ## order as treated in NMscanData
     setorder(vars.sum2,tabn,na.last=TRUE)
-
+    vars.sum2[,source:=NULL]
+    
     vars.sum2[,`:=`(tabn=NULL,idlevel=NULL,included=NULL)]
     if("not"%in%colnames(vars.sum2)) vars.sum2[,not:=NULL]
-    setnames(vars.sum2,"print.inc","used/total")
+    setnames(vars.sum2,c("print.inc"),c("used/total"))
 
-
-    
 
 #### other info to include. 
     dt.nmout <- data.table(nmout=c(TRUE,FALSE),NMOUT=c("Output","Input only"))
@@ -148,7 +146,7 @@ print.summary_NMdata <- function(x,...){
     ## model name
     cat("Model: ",x$details$model,"\n")
     
-    cat("\nTables, their number of columns and detail levels:\n")
+    cat("\nUsed tables, numbers of columns and detail levels:\n")
     print(vars.sum2,row.names=FALSE)
 
     cat("\nNumbers of rows and subjects\n")

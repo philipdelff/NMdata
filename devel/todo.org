@@ -118,6 +118,10 @@ A way to limit rows read into nonmem
 **** DONE Lastonly does the same as firstonly
      CLOSED: [2020-07-13 Mon 19:37]
 *** NMscanData
+**** TODO [#A] Add support for merge.by.row="ifAvailable"
+**** DONE input file name in meta columns
+     CLOSED: [2021-05-15 Sat 21:05]
+***** table column should be called file
 **** DONE intro translate.input argument
      CLOSED: [2021-04-18 Sun 11:22]
 **** DONE method.combine to merge.by.row
@@ -251,7 +255,8 @@ This is two steps.
 This belong in write functions. stampObj does support extra
 arguments. NMdata calls this "writtenTo".
 *** summary.NMdata
-**** TODO [#A] Rethink and tidy up message
+**** DONE Rethink and tidy up message
+     CLOSED: [2021-05-15 Sat 21:06]
 ** Nonmem examples
 *** DONE Use FLAG
     CLOSED: [2020-06-29 Mon 21:28]
