@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.906</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.907</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2021-05-15 using NMdata 0.0.7.1.906.</p>
+<p>Built 2021-05-15 using NMdata 0.0.7.1.907.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -153,16 +153,16 @@
 <span class="co">## dt.cov has a covariate for some of the subjects</span>
 <span class="kw">dt.cov</span>
 <span class="co">#&gt;     ID COV</span>
-<span class="co">#&gt;  1: 31   5</span>
-<span class="co">#&gt;  2: 32   5</span>
-<span class="co">#&gt;  3: 33   3</span>
-<span class="co">#&gt;  4: 34   1</span>
-<span class="co">#&gt;  5: 35   1</span>
-<span class="co">#&gt;  6: 36   3</span>
-<span class="co">#&gt;  7: 37   3</span>
+<span class="co">#&gt;  1: 31   2</span>
+<span class="co">#&gt;  2: 32   1</span>
+<span class="co">#&gt;  3: 33   4</span>
+<span class="co">#&gt;  4: 34   2</span>
+<span class="co">#&gt;  5: 35   3</span>
+<span class="co">#&gt;  6: 36   5</span>
+<span class="co">#&gt;  7: 37   1</span>
 <span class="co">#&gt;  8: 38   2</span>
-<span class="co">#&gt;  9: 39   5</span>
-<span class="co">#&gt; 10: 40   3</span>
+<span class="co">#&gt;  9: 39   1</span>
+<span class="co">#&gt; 10: 40   4</span>
 <span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">pk2</span>)
 <span class="co">#&gt; [1] 100  25</span>
@@ -335,7 +335,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-05-15 09:54:56 EDT"</span>
+<span class="co">#&gt; [1] "2021-05-15 22:10:22 EDT"</span>
 </pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit">
@@ -345,7 +345,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-05-15 09:54:56 EDT"</span>
+<span class="co">#&gt; [1] "2021-05-15 22:10:22 EDT"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span>
@@ -361,14 +361,6 @@
 <span class="kw">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, 
     package = <span class="st">"NMdata"</span>), col.row = <span class="st">"ROW"</span>, merge.by.row = <span class="fl">TRUE</span>, 
     quiet = <span class="fl">TRUE</span>, as.fun = <span class="st">"data.table"</span>)
-<span class="co">#&gt; Warning: In NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"),</span>
-<span class="co">#&gt; col.row = "ROW", merge.by.row = TRUE, quiet = TRUE, as.fun = "data.table") :</span>
-<span class="co">#&gt; input control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpAbRq4q/temp_libpath75444d907fde/NMdata/examples/nonmem/xgxr001.mod)</span>
-<span class="co">#&gt; is newer than output control stream</span>
-<span class="co">#&gt; (C:/Users/delff/AppData/Local/Temp/RtmpAbRq4q/temp_libpath75444d907fde/NMdata/examples/nonmem/xgxr001.lst)</span>
-<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
-<span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span>(<span class="kw">res1</span><span class="op">$</span><span class="kw">trtact</span>, <span class="kw">res1</span><span class="op">$</span><span class="kw">DOSE</span>)
 <span class="co">## with data.table, create a new column representing ID-level</span>
 <span class="co">## Cmax</span>

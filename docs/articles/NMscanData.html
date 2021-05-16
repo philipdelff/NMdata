@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.906</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.907</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2021-05-15 using NMdata 0.0.7.1.906.</p>
+<p>Built 2021-05-15 using NMdata 0.0.7.1.907.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -131,22 +131,22 @@
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="kw">res0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),
                    merge.by.row=<span class="fl">FALSE</span>)
-<span class="co">#&gt; Model:  </span>
+<span class="co">#&gt; Model:  xgxr001 </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Tables, their number of columns and detail levels:</span>
-<span class="co">#&gt;            table used/total level</span>
-<span class="co">#&gt;  xgxr001_res.txt      16/16   row</span>
-<span class="co">#&gt;            input      22/24   row</span>
+<span class="co">#&gt; Used tables, numbers of columns and detail levels:</span>
+<span class="co">#&gt;               file used/total level</span>
+<span class="co">#&gt;    xgxr001_res.txt      16/16   row</span>
+<span class="co">#&gt;  xgxr1.csv (input)      22/24   row</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Numbers of ID's and rows in data</span>
-<span class="co">#&gt;       N Output tables Input data only</span>
-<span class="co">#&gt;  N.rows           905               0</span>
-<span class="co">#&gt;   N.ids           150               0</span>
+<span class="co">#&gt; Numbers of rows and subjects</span>
+<span class="co">#&gt;       N Output Input only</span>
+<span class="co">#&gt;  N.rows    905          0</span>
+<span class="co">#&gt;   N.ids    150          0</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Distribution of rows on event types</span>
-<span class="co">#&gt;  EVID Output tables</span>
-<span class="co">#&gt;     0           755</span>
-<span class="co">#&gt;     1           150</span>
+<span class="co">#&gt;  EVID Output</span>
+<span class="co">#&gt;     0    755</span>
+<span class="co">#&gt;     1    150</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="kw">res0</span>)
 <span class="co">#&gt; [1] "NMdata"     "data.frame"</span>
 </pre></div>
@@ -209,22 +209,22 @@
 <span class="co">#&gt; of input and output data. Candidate columns: ROW To skip this check, please</span>
 <span class="co">#&gt; use merge.by.row=TRUE or merge.by.row=FALSE.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Model:  </span>
+<span class="co">#&gt; Model:  xgxr014 </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Tables, their number of columns and detail levels:</span>
-<span class="co">#&gt;            table used/total level</span>
-<span class="co">#&gt;  xgxr014_res.txt      12/12   row</span>
-<span class="co">#&gt;            input      22/24   row</span>
+<span class="co">#&gt; Used tables, numbers of columns and detail levels:</span>
+<span class="co">#&gt;               file used/total level</span>
+<span class="co">#&gt;    xgxr014_res.txt      12/12   row</span>
+<span class="co">#&gt;  xgxr2.rds (input)      22/24   row</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Numbers of ID's and rows in data</span>
-<span class="co">#&gt;       N Input only Output tables Input data only</span>
-<span class="co">#&gt;  N.rows        597           905               0</span>
-<span class="co">#&gt;   N.ids          0           150               0</span>
+<span class="co">#&gt; Numbers of rows and subjects</span>
+<span class="co">#&gt;       N Input only Output</span>
+<span class="co">#&gt;  N.rows        597    905</span>
+<span class="co">#&gt;   N.ids          0    150</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Distribution of rows on event types</span>
-<span class="co">#&gt;  EVID Input only Output tables</span>
-<span class="co">#&gt;     0        597           755</span>
-<span class="co">#&gt;     1          0           150</span>
+<span class="co">#&gt;  EVID Input only Output</span>
+<span class="co">#&gt;     0        597    755</span>
+<span class="co">#&gt;     1          0    150</span>
 <span class="co">## now we have a data.table</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="kw">res2</span>)
 <span class="co">#&gt; [1] "NMdata"     "data.table" "data.frame"</span>
