@@ -238,7 +238,10 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     }
     merge.by.row.arg <- merge.by.row
     merge.by.row <- NMdataDecideOption("merge.by.row",merge.by.row)
-    cbind.by.filters <- !merge.by.row
+
+### in case merge.by.row=="ifAvailable", we need to check if
+### col.row is avilable in both input and output
+    
 
     if(is.null(merge.by.row.arg) && !merge.by.row){
         search.col.row <- TRUE
@@ -274,10 +277,10 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 ### combine full tables into one
     tabs.full <- which(overview.tables$full.length)
 
-
-    if(use.input && merge.by.row) {
-        
-        if(any(overview.tables[,full.length])&&!overview.tables[,sum(has.row)]) {
+    col.row.in.output <- any(overview.tables[,full.length]) && overview.tables[,sum(has.row)]
+    
+    if(use.input && is.logical(merge.by.row) && merge.by.row) {
+        if(any(overview.tables[,full.length])&&!col.row.in.output) {
             messageWrap("col.row not found in any full-length (not firstonly) output tables. Correct or disable.",fun.msg=stop)
         }
     }
@@ -338,11 +341,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 
 #### Section start: handle input data ####
-    ## use.input.row means if we will merge row-wise output data onto
-    ## input data. Even if FALSE, we can still merge idlevel data
-    ## onto input dataif no row-wise output exists.
-
-    ## use.input.row <- use.input
 
     if(use.input && is.null(dir.data)) {
         
@@ -368,16 +366,28 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                  ,quiet=TRUE
                                  ,translate=translate.input
                                  ,use.rds=use.rds
-                                 ,applyFilters=cbind.by.filters
+                                 ,applyFilters=FALSE
                                  ,args.fread=args.fread
                                  ,as.fun="data.table"
                                  ,col.id=col.id
                                  ,details=TRUE)
-    }
-    if(use.input&&!any(tables$meta$full.length)) {
-        ## data.input
-        ## meta.data 
+
+        cnames.input <- copy(colnames(data.input$data))
+        col.row.in.input <- !is.null(col.row) && col.row %in% cnames.input 
+        if(merge.by.row=="ifAvailable"){
+            merge.by.row <- col.row.in.input && col.row.in.output
+        }
         
+        cbind.by.filters <- !merge.by.row
+        ## if cbind.by.filters, we have to filter input data now.
+        if(cbind.by.filters){
+            data.input <- NMtransFilters(data.input,file=file,as.fun="data.table",quiet=TRUE)
+        }
+    }
+
+    
+    if(use.input&&!any(tables$meta$full.length)) {
+        ## copying so we can modify tab.row        
         tab.row <- copy(data.input$data)
         setattr(tab.row,"file",NULL)
         setattr(tab.row,"type.file",NULL)
@@ -398,8 +408,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
     if(use.input&&any(tables$meta$full.length)) {
         ## if(!quiet) messageWrap("Searching for input data.")
-        
-        cnames.input <- colnames(data.input$data)
 
         ## if no method is specified, search for possible col.row to help the user
         if(search.col.row){
@@ -465,15 +473,11 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
             
         } else {
-##### these checks should be in checkColRow
-
-            ## !cbind.by.filters
-
-            checkColRow(col.row,file)
-            ## if(is.null(col.row)) {
-            ##     messageWrap("when use.input=TRUE and merge.by.row=TRUE, col.row cannot be NULL, NA, or empty.",fun.msg=stop)
-            ## }
 ### merging by col.row
+
+            ## checking for available value and for whether it's being modified in Nonmem
+            checkColRow(col.row,file)
+
 
             ## Has this check already been done?
             if(col.row%in%cnames.input) {
@@ -548,28 +552,33 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
         ## if col.row is in cols.merge.row.id, merge by col.row only.
         
-        ## We want everything that is not in output row-data. We want it even if in input data. But give a warning if it varies in input.
+        ## We want everything that is not in output row-data. We want
+        ## it even if in input data. But give a warning if it varies
+        ## in input.
         if(!skip.idlevel) {
-            ## The very special case where we don't use input and
-            ## there is no row-level data.
+
             if(!use.input && !use.rows) {
+                ## The very special case where we don't use input and
+                ## there is no row-level data.
+                
                 ## there's nothing else - so just return idlevel data
                 tab.row <- tab.idlevel
 
                 dt.vars.id1[,included:=TRUE]
                 dt.vars <- rbind(dt.vars,dt.vars.id1)
-                ## tab.vars <- rbind(tab.vars,data.table(var=colnames(tab.row),source="output",level="idlevel"))
                 tab.row[,nmout:=TRUE]
                 
             } else {
-
+                ## there is row-level data to combine with
                 id.cols.not.new <- col.id
-                if(merge.by.row && all(col.row%in%colnames(tab.row))){
+                if(merge.by.row && all(col.row%in%colnames(tab.idlevel))){
                     ## fetch new ID column, merging by col.row. Then we will merge by
                     ## ID.
                     if(col.id%in%colnames(tab.idlevel)){
                         tab.idlevel[,(col.id):=NULL]
                     }
+                    ##:ess-bp-start::conditional@:##
+browser(expr={TRUE})##:ess-bp-end:##
                     
                     tab.idlevel <- mergeCheck(tab.idlevel,unique(tab.row[,c(col.row,col.id),with=FALSE]),by=col.row)
                     tab.idlevel[,(col.row):=NULL]
@@ -705,6 +714,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         input.used=use.input,
         ## was input recovered?
         rows.recovered=recover.rows,
+        ## input and output merged? (or cbind after filters?)
+merge.by.row=merge.by.row,
         ## if available: path to input data
         file.input=NA_character_,
         ## if available: mtime of input data
@@ -719,10 +730,10 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     
 ### more meta information needed.
     meta <- list(
-       details=details
+        details=details
        ,tables=tables.meta
        ,columns=dt.vars
-        )
+    )
 
 
     setattr(tab.row,"meta",meta)

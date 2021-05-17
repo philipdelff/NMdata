@@ -44,11 +44,18 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
         lines <- strsplit(text,split="\n")[[1]]
     }
 
-    
-
     ## If these are not NULL, it can make trouble in NMreadSection.
     file <- NULL
     text <- NULL
+
+### if data is a list of data and meta, we need to split it out and
+### remember to update meta.
+    details <- FALSE
+    if(is.list(data) && !is.data.frame(data)){
+        data.meta <- data$meta
+        data <- data$data
+        details <- TRUE
+    }
     
     text2 <- NMreadSection(lines=lines,section="DATA",keepComments=F)
     text3 <- sub(";.*$","",text2)
@@ -160,8 +167,12 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
             data <- as.data.table(data)[eval(parse(text=expressions.all))]
         }
     }
-
+        
     data <- as.fun(data)
-
+    if(details) {
+        data.meta$nrow <- nrow(data)
+        data <- list(data=data,meta=data.meta)
+    }
+    
     data
 }
