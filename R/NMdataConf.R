@@ -17,7 +17,18 @@
 ##' Parameters that can be controlled are:
 ##'
 ##' \itemize{
-##' 
+##'
+##' \item{args.fread} Arguments passed to fread when reading _input_
+##' data files (fread options for reading Nonmem output tables cannot
+##' be configured at this point). If you change this, you are starting
+##' from scratch, except from file. This means that existing default
+##' argument values are all disregarded.
+##'
+##' \item{args.fwrite} Arguments passed to fwrite when writing csv
+##' files (NMwriteData). If you use this, you have to supply all
+##' arguments you want to use with fwrite, except for x (the data) and
+##' file.
+##'
 ##' \item{as.fun} A function that will be applied to data returned by various
 ##' data reading functions (NMscanData, NMreadTab, NMreadCsv, NMscanInput,
 ##' NMscanTables). Also, data processing functions like mergeCheck, findCovs,
@@ -29,6 +40,11 @@
 ##' as.fun=tibble::as_tibble. If you want data.table, use as.fun="data.table"
 ##' (not a function).
 ##'
+##' \item{check.time} Logical, applies to NMscanData only. NMscanData by
+##' defaults checks if output control stream is newer than input control stream
+##' and input data. Set this to FALSE if you are in an environment where time
+##' stamps cannot be relied on.
+##' 
 ##' \item{file.mod} A function that will derive the path to the input control
 ##' stream based on the path to the output control stream. Technically, it can
 ##' be a string too, but when using NMdataConf, this would make little sense
@@ -79,10 +95,6 @@
 ##'     nmout will be TRUE when the row was found in output tables,
 ##'     and FALSE when not. Default is FALSE.
 ##' 
-##' \item{check.time} Logical, applies to NMscanData only. NMscanData by
-##' defaults checks if output control stream is newer than input control stream
-##' and input data. Set this to FALSE if you are in an environment where time
-##' stamps cannot be relied on.
 ##'
 ##' }
 ##' @details Recommendation: Use
@@ -170,7 +182,7 @@ NMdataConfOptions <- function(name){
         args.fwrite=list(
             default=list(na=".",quote=FALSE,row.names=FALSE,scipen=0)
            ,is.allowed=is.list
-           ,msg.not.allowed="args.fread must be a list of named arguments."
+           ,msg.not.allowed="args.fwrite must be a list of named arguments."
            ,process=function(x){
                if("file"%in%names(x)){
                    stop("args.fwrite cannot contain file.")
@@ -243,17 +255,17 @@ NMdataConfOptions <- function(name){
            ,process=identity
         )
        ,
-        col.flagn=list(
-            default="FLAG"
-           ,is.allowed=function(x) (is.character(x) && length(x)==1)
-           ,msg.not.allowed="col.flagn must be a character vector of length 1."
-           ,process=identity
-        )
-       ,
         col.flagc=list(
             default="flag"
            ,is.allowed=function(x) (is.character(x) && length(x)==1)
            ,msg.not.allowed="col.flagc must be a character vector of length 1."
+           ,process=identity
+        )
+       ,
+        col.flagn=list(
+            default="FLAG"
+           ,is.allowed=function(x) (is.character(x) && length(x)==1)
+           ,msg.not.allowed="col.flagn must be a character vector of length 1."
            ,process=identity
         )
        ,

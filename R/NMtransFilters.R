@@ -170,7 +170,11 @@ NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
         
     data <- as.fun(data)
     if(details) {
-        data.meta$nrow <- nrow(data)
+        ## number of rows used to be reported as after filtering. But
+        ##        that makes limited sense since it's just the number
+        ##        of rows in output. Plus, it would make nrow depend
+        ##        on whether we user merge.by.row or not.
+        ##        data.meta$nrow <- nrow(data)
         data <- list(data=data,meta=data.meta)
     }
     

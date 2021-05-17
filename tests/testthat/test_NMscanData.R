@@ -370,8 +370,8 @@ test_that("dir structure with input.txt/output.txt",{
 
     unNMdata(res1)
     unNMdata(res1dir)
-    colnames(res1[,!("model")])==
-        colnames(res1dir[,!("model")])
+    ## colnames(res1[,!("model")])==
+    ##     colnames(res1dir[,!("model")])
     ## this test isn't ready. How do I execute the input.txt/output.txt model?
     ##expect_equal(res1[,!("model")],res1dir[,!("model")])
 

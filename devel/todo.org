@@ -35,6 +35,9 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
+*** TODO [#B] NMtranslate
+    Translate column names according to Nonmem. Take the code from
+    NMscanInput.
 *** DONE function to replace file name extension - fnExtension
     CLOSED: [2021-04-18 Sun 12:06]
 *** DONE summary.NMdata

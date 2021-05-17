@@ -381,6 +381,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         cbind.by.filters <- !merge.by.row
         ## if cbind.by.filters, we have to filter input data now.
         if(cbind.by.filters){
+            
             data.input <- NMtransFilters(data.input,file=file,as.fun="data.table",quiet=TRUE)
         }
     }
@@ -444,7 +445,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         
         if(cbind.by.filters) {
             
-            if(!is.null(tab.row)&nrow(data.input$data)!=nrow(tab.row)) {
+            if(!is.null(tab.row) && nrow(data.input$data)!=nrow(tab.row)) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.                
                 messageWrap("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted. For info on what limitations of this function, see ?NMtransFilters. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or manually merge output from NMscanTables() and NMscanInput().",fun.msg=stop)
             }
@@ -577,8 +578,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                     if(col.id%in%colnames(tab.idlevel)){
                         tab.idlevel[,(col.id):=NULL]
                     }
-                    ##:ess-bp-start::conditional@:##
-browser(expr={TRUE})##:ess-bp-end:##
                     
                     tab.idlevel <- mergeCheck(tab.idlevel,unique(tab.row[,c(col.row,col.id),with=FALSE]),by=col.row)
                     tab.idlevel[,(col.row):=NULL]
@@ -715,7 +714,7 @@ browser(expr={TRUE})##:ess-bp-end:##
         ## was input recovered?
         rows.recovered=recover.rows,
         ## input and output merged? (or cbind after filters?)
-merge.by.row=merge.by.row,
+        merge.by.row=merge.by.row,
         ## if available: path to input data
         file.input=NA_character_,
         ## if available: mtime of input data

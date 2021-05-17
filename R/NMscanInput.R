@@ -127,36 +127,7 @@ NMscanInput <- function(file, use.rds, file.mod,
     nms <- sub(".*=(.*)","\\1",nms)
 
 #### Section start: This part is now handled by NMextractDataFile ####
-    if(F){
-
-        ## get input data file name. Nonmem manual says:
-###  The first character string appearing after $DATA is the name of the file
-### containing the data. Since it is to be used in a FORTRAN OPEN statement,
-### this name may not include embedded commas, semi-colons, parentheses, or
-### spaces.
-        lines.data <- NMreadSection(file.find.data,section="DATA",keepName=F,keepComments=F,keepEmpty=F)
-        if(is.null(lines.data)) {
-            lines.data <- NMreadSection(file.find.data,section="INFILE",keepName=F,keepComments=F,keepEmpty=F)
-        }
-        if(is.null(lines.data)) stop("Could not find $DATA or $INFILE section in nonmem model. Please check the lst file.")
-
-        ## pick $DATA and the next string
-        lines.data2 <- paste(lines.data,collapse=" ")
-        path.data.input <- sub(" *([^ ]+) +.*","\\1",lines.data2)
-
-        if(is.null(dir.data)) {
-            pathIsAbs <- function(path) grepl("(^/|^[a-z]:/)",path,perl = TRUE)
-            if(!pathIsAbs(path.data.input)) {
-                path.data.input <- filePathSimple(dirname(file),path.data.input)
-            }
-        } else {
-            path.data.input <- filePathSimple(dir.data,basename(path.data.input))
-        }
-
-        path.data.input.rds <- sub("^(.+)\\..+$","\\1.rds",path.data.input)
-    }
     info.datafile <- NMextractDataFile(file=file.find.data,dir.data)
-    
     
 ###  Section end: This part is now handled by NMextractDataFile
 

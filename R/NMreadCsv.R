@@ -5,7 +5,7 @@
 ##' 
 ##' @param file The file to read. Must be pure text.
 ##' @param args.fread List of arguments passed to fread. Notice that
-##'     except for "input" and "file", you need to supply all
+##'     except for "file", you need to supply all
 ##'     arguments to fread if you use this argument. Default values
 ##'     can be configured using NMdataConf.
 ##' @param as.fun The default is to return data as a data.frame. Pass
