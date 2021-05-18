@@ -107,33 +107,8 @@ NMscanInput <- function(file, use.rds, file.mod,
 
     }
 
-    ## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    
-    lines <- NMreadSection(file,section="INPUT",keepName=FALSE,keepComments=FALSE,cleanSpaces=TRUE)
-    if(is.null(lines)) {
-        lines <- NMreadSection(file,section="INPT",keepName=FALSE,keepComments=FALSE,cleanSpaces=TRUE)
-    }
-    if(is.null(lines)) {stop("Could not find $INPUT or $INPT section in control stream. Cannot interpret data. Is file really the path to a valid nonmem control stream?")}
-    
-    ## names can be separated by , or " " or both. So one , between alphanumerics is replaced by a single space
-    lines <- gsub("([[:alnum:]]) *, *([[:alnum:]])","\\1 \\2",lines)
-    ## get rid of redundant spaces
-    line <- gsub(" +"," ",paste(lines,collapse=" "))
-    line <- sub("^ ","",line)
-    line <- sub(" $","",line)
 
-### nms is the names of columns as in nonmem control stream
-    nms <- strsplit(line," ")[[1]]
-
-### this is to keep even dropped columns
-    nms <- sub("(.*) *= *(DROP|SKIP)","\\1",nms)
-    ## For now, we just take the first name used in A=B labeling. 
-    renamed.from <- NULL
-    renamed.to <- NULL
-    renamed.from <- sub("(.*)=(.*)","\\1",nms[grepl(".*=.*",nms)])
-    renamed.to <- sub("(.*)=(.*)","\\2",nms[grepl(".*=.*",nms)])
-    nms <- sub(".*=(.*)","\\1",nms)
-
-## identify the data file name and additional info
+    ## identify the data file name and additional info
     info.datafile <- NMextractDataFile(file=file.find.data,dir.data)
     
     type.file <- NA_character_
@@ -157,60 +132,21 @@ NMscanInput <- function(file, use.rds, file.mod,
         }
     }
 
-### filters must be applied here according to NM manual IV-1
+    
+### filters must be applied here according to NM manual IV-1. They are applied before translating column names.
     if(applyFilters){
         data.input <- NMtransFilters(data.input,file=file,invert=invert,quiet=quiet,as.fun=identity)
     }
 
-    cnames.input <- colnames(data.input)
+
     if(translate){
 ### cnames.input is the names of columns as in input data file
-        
-        ## More column names can be specified in the nonmem control stream
-        ## than actually found in the input data. We will simply disregard
-        ## them.
-        if(length(nms)>length(cnames.input)){
-            nms <- nms[1:length(cnames.input)]
-            messageWrap("More column names specified in Nonmem $INPUT than found in data file. The additional names have been disregarded.",fun.msg=warning)
-        }
-        
-        cnames.input[1:length(nms)] <- nms
-        colnames(data.input) <- cnames.input
-
-        ## add the pseudonyms
-        if(!is.null(renamed.from)){
-            data.input <- cbind(data.input,
-                                setnames(data.input[,c(renamed.to),with=FALSE],old=renamed.to,new=renamed.from)
-                                )
-        }
-        
-        ## check for unique column names
-        if(any(duplicated(cnames.input))) {
-            nms2 <- cnames.input[-(1:length(nms))]
-            if(any(duplicated(nms))){
-                messageWrap(paste("Duplicated variable names declared in nonmem $INPUT section. Only first of the columns will be used:",paste(nms[duplicated(nms)],collapse=", ")),fun.msg=warning)
-                ## nms.u <- unique(nms)
-            } 
-            if(length(nms2)&&any(duplicated(nms2))){
-                messageWrap(paste("Duplicated variable names detected in input data not processed by Nonmem. Only first of the columns will be used:",paste(nms2[duplicated(nms2)],collapse=", ")),fun.msg=warning)
-                ## nms2.u <- unique(nms2)
-            }
-            nms.cross <- c(unique(nms),unique(nms2))
-            if(any(duplicated(nms.cross))){
-                
-                messageWrap(paste("The same variable names are found in input variables as read by nonmem and the rest of input data file. Please look at column names in input data and the $INPUT section in nonmem control stream. Only the first occurrence of the columns will be used:",paste(unique(nms.cross[duplicated(nms.cross)]),collapse=", ")),fun.msg=warning)
-            }
-#### Reduce to unique column names
-            
-            data.input <- data.input[,unique(cnames.input),with=F]
-            
-        }
+        data.input <- NMtransInp(data.input,file)
     }
 
     as.fun <- NMdataDecideOption("as.fun",as.fun)
+
     
-
-
     if(details){
 
         meta <- data.table(
@@ -221,10 +157,9 @@ NMscanInput <- function(file, use.rds, file.mod,
             ncol=ncol(data.input),
             file.mtime=file.mtime(path.data.input)
         )
+        cnames.input <- colnames(data.input)
         if(col.id%in%cnames.input) {
-            
-            meta$nid <-
-                data.input[,uniqueN(get(col.id))]
+            meta$nid <- data.input[,uniqueN(get(col.id))]
         }
         
         data.input <- as.fun(data.input)

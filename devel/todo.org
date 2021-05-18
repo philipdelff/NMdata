@@ -85,9 +85,14 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMscanInput
+**** TODO [#B] Get number of subjects as before filtering
+Challenge is that the filters are applied before the cplumn names are
+changed. So we need access to the old data and know what column to
+look at - called col.id after the translations.
 **** Pseudonyms A=B
 ***** TODO [#C] A=B pseudonym labels should be matched against reserved variable names
-***** TODO [#B] copy data to have acces using both names
+***** DONE copy data to have acces using both names
+      CLOSED: [2021-05-17 Mon 22:51]
 ****** Edit these lines in NMscanInput
        ## For now, we just take the first name used in A=B labeling. 
        nms <- sub(".*=(.*)","\\1",nms)

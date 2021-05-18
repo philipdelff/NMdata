@@ -64,3 +64,10 @@ test_that(".mod with mix of space and , in $INPUT",{
     expect_equal_to_reference(colnames(inpdat),fileRef,version=2)
     
 })
+
+
+test_that("Erroneously basing a filter on translated column names",{
+    
+    expect_error(NMscanInput("testData/nonmem/min036mod.mod",applyFilters=TRUE))
+    
+})
