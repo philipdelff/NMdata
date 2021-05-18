@@ -135,7 +135,7 @@ NMscanInput <- function(file, use.rds, file.mod,
     
 ### filters must be applied here according to NM manual IV-1. They are applied before translating column names.
     if(applyFilters){
-        data.input <- NMtransFilters(data.input,file=file,invert=invert,quiet=quiet,as.fun=identity)
+        data.input <- NMapplyFilters(data.input,file=file,invert=invert,quiet=quiet,as.fun=identity)
     }
 
 

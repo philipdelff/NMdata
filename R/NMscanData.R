@@ -382,7 +382,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         ## if cbind.by.filters, we have to filter input data now.
         if(cbind.by.filters){
             
-            data.input <- NMtransFilters(data.input,file=file,as.fun="data.table",quiet=TRUE)
+            data.input <- NMapplyFilters(data.input,file=file,as.fun="data.table",quiet=TRUE)
         }
     }
 
@@ -446,7 +446,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         if(cbind.by.filters) {
             if(!is.null(tab.row) && nrow(data.input$data)!=nrow(tab.row)) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.                
-                messageWrap("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. Please check that input data hasn't changed since Nonmem was run, and that $INPUT section matches columns in input data. Also, NMdata may not be able to interpret your IGNORE/ACCEPT statements correctly (see ?NMtransFilters). Please consider including a unique row identifier in both input and output data if possible.",fun.msg=stop)
+                messageWrap("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. Please check that input data hasn't changed since Nonmem was run, and that $INPUT section matches columns in input data. Also, NMdata may not be able to interpret your IGNORE/ACCEPT statements correctly (see ?NMapplyFilters). Please consider including a unique row identifier in both input and output data if possible.",fun.msg=stop)
             }
 
             

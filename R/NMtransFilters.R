@@ -22,7 +22,7 @@
 ## Don't export. This is only being used by NMscanInput at this point.
 
 
-NMtransFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
+NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
