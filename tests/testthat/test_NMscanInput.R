@@ -53,3 +53,14 @@ test_that("single-char ignore",{
     expect_equal_to_reference(inpdat,fileRef,version=2)
 
 })
+
+
+
+test_that(".mod with mix of space and , in $INPUT",{
+    fileRef <- "testReference/NMscanInput5.rds"
+    file.lst <- "testData/nonmem/min036.mod"
+
+    inpdat <- NMscanInput(file=file.lst)
+    expect_equal_to_reference(colnames(inpdat),fileRef,version=2)
+    
+})

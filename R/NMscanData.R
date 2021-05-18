@@ -444,10 +444,9 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         }
         
         if(cbind.by.filters) {
-            
             if(!is.null(tab.row) && nrow(data.input$data)!=nrow(tab.row)) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.                
-                messageWrap("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. This is most likely because the filters implemented in the control stream are not correctly interpreted. For info on what limitations of this function, see ?NMtransFilters. At this point, all you can do to merge with input data is either adding a row identifier (always highly recommended) or manually merge output from NMscanTables() and NMscanInput().",fun.msg=stop)
+                messageWrap("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. Please check that input data hasn't changed since Nonmem was run, and that $INPUT section matches columns in input data. Also, NMdata may not be able to interpret your IGNORE/ACCEPT statements correctly (see ?NMtransFilters). Please consider including a unique row identifier in both input and output data if possible.",fun.msg=stop)
             }
 
             

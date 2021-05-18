@@ -74,7 +74,12 @@ NMscanInput <- function(file, use.rds, file.mod,
     
 ### the lst file only contains the name of the data file, not the path to it. So we need to find the .mod instead.
 
-    if(missing(file)) file <- NULL
+    if(missing(file)) {
+        stop("file is needed. If you want to use input control stream only, use that as file and ignore the file.mod argument.")
+    }
+    if(!file.exists(file)){
+        stop("file has to be a valid path to an existing file.")
+    }
     file.find.data <- file
     if(missing(as.fun)) as.fun <- NULL
     if(missing(file.mod)) file.mod <- NULL
@@ -109,6 +114,8 @@ NMscanInput <- function(file, use.rds, file.mod,
     }
     if(is.null(lines)) {stop("Could not find $INPUT or $INPT section in control stream. Cannot interpret data. Is file really the path to a valid nonmem control stream?")}
     
+    ## names can be separated by , or " " or both. So one , between alphanumerics is replaced by a single space
+    lines <- gsub("([[:alnum:]]) *, *([[:alnum:]])","\\1 \\2",lines)
     ## get rid of redundant spaces
     line <- gsub(" +"," ",paste(lines,collapse=" "))
     line <- sub("^ ","",line)
@@ -126,11 +133,9 @@ NMscanInput <- function(file, use.rds, file.mod,
     renamed.to <- sub("(.*)=(.*)","\\2",nms[grepl(".*=.*",nms)])
     nms <- sub(".*=(.*)","\\1",nms)
 
-#### Section start: This part is now handled by NMextractDataFile ####
+## identify the data file name and additional info
     info.datafile <- NMextractDataFile(file=file.find.data,dir.data)
     
-###  Section end: This part is now handled by NMextractDataFile
-
     type.file <- NA_character_
     ## if(use.rds && file.exists(path.data.input.rds)){
     if(use.rds && info.datafile$exists.file.rds){
