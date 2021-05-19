@@ -3,10 +3,12 @@
 ##' @param data.input the data to translate
 ##' @param file
 
-## don't export. An internal function used by NMscanInput
+## don't export. An internal function used by NMscanInput. 
 
 NMtransInp <- function(data,file){
 
+## data is assumed to be a data.table, and a data.table is returned.
+    
     ## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    
     lines <- NMreadSection(file,section="INPUT",keepName=FALSE,keepComments=FALSE,cleanSpaces=TRUE)
     if(is.null(lines)) {
@@ -23,7 +25,9 @@ NMtransInp <- function(data,file){
 
 ### nms is the names of columns as in nonmem control stream
     nms <- strsplit(line," ")[[1]]
-
+    nms0 <- nms
+    
+    
 ### this is to keep even dropped columns
     nms <- sub("(.*) *= *(DROP|SKIP)","\\1",nms)
     ## For now, we just take the first name used in A=B labeling. 
@@ -32,11 +36,14 @@ NMtransInp <- function(data,file){
     renamed.from <- sub("(.*)=(.*)","\\1",nms[grepl(".*=.*",nms)])
     renamed.to <- sub("(.*)=(.*)","\\2",nms[grepl(".*=.*",nms)])
     nms <- sub(".*=(.*)","\\1",nms)
-
+    ## this is the names as read. Keep them for reporting.
+    nms1 <- nms
+    
     ## More column names can be specified in the nonmem control stream
     ## than actually found in the input data. We will simply disregard
     ## them.
-    cnames.input <- colnames(data)
+    cnames.input.0 <- copy(colnames(data))
+    cnames.input <- copy(cnames.input.0)
     if(length(nms)>length(cnames.input)){
         nms <- nms[1:length(cnames.input)]
         messageWrap("More column names specified in Nonmem $INPUT than found in data file. The additional names have been disregarded.",fun.msg=warning)
@@ -72,5 +79,16 @@ NMtransInp <- function(data,file){
         data <- data[,unique(cnames.input),with=F]
     }
 
-    data
+        length.max <- max(length(cnames.input.0),
+                              length(nms0),
+                              length(nms1),
+                              length(colnames(data))
+                              )
+    dt.colnames <- data.table(input=c(cnames.input.0,rep(NA_character_,length.max-length(cnames.input.0))),
+                              nonmem=c(nms0,rep(NA_character_,length.max-length(nms0))),
+                              result=c(nms1,rep(NA_character_,length.max-length(nms1))),
+                              result.all=c(colnames(data),rep(NA_character_,length.max-length(colnames(data))))
+                              )
+
+    list(data=data,dt.colnames=dt.colnames)
 }

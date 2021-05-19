@@ -55,6 +55,13 @@
 ##'     linux system running Nonmem to a Windows or Mac running R), so this line
 ##'     is discarded. Columns that are dropped (using DROP or SKIP in $INPUT) in
 ##'     the model will be included in the output.
+##'
+##' It may not work if a column is dropped, and a new column is
+##' renamed to the same name. Say you have DV and CONC as the only two
+##' columns (not possible but illustrative), and in Nonmem you do
+##' DV=DROP DV. Not sure it will work in Nonmem, and it probably won't
+##' work in NMscanInput.
+##' 
 ##' @family DataRead
 ##' @export
 
@@ -131,19 +138,28 @@ NMscanInput <- function(file, use.rds, file.mod,
             stop(paste("Input data file not found. Was expecting to find",info.datafile$path))
         }
     }
-
+    data.input.0 <- copy(data.input)
     
 ### filters must be applied here according to NM manual IV-1. They are applied before translating column names.
     if(applyFilters){
         data.input <- NMapplyFilters(data.input,file=file,invert=invert,quiet=quiet,as.fun=identity)
     }
 
+    
 
     if(translate){
 ### cnames.input is the names of columns as in input data file
         data.input <- NMtransInp(data.input,file)
+        dt.colnames <- data.input$dt.colnames
+        data.input <- data.input$data
     }
 
+    
+    col.id.inp <- col.id
+    if(translate){
+        col.id.inp <- dt.colnames[result.all==col.id,input][1]
+    }
+    
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
     
@@ -151,15 +167,16 @@ NMscanInput <- function(file, use.rds, file.mod,
 
         meta <- data.table(
             file=path.data.input,
-            name=basename(path.data.input),
+            file.mtime=file.mtime(path.data.input),
             filetype=type.file,
-            nrow=nrow(data.input),
-            ncol=ncol(data.input),
-            file.mtime=file.mtime(path.data.input)
+            name=basename(path.data.input),
+            nrow=nrow(data.input.0),
+            ncol=ncol(data.input.0),
+            nid=NA_real_
         )
-        cnames.input <- colnames(data.input)
-        if(col.id%in%cnames.input) {
-            meta$nid <- data.input[,uniqueN(get(col.id))]
+        ##        cnames.input <- colnames(data.input)
+        if(col.id%in%dt.colnames[,result.all]) {
+            meta$nid <- data.input.0[,uniqueN(get(col.id.inp))]
         }
         
         data.input <- as.fun(data.input)

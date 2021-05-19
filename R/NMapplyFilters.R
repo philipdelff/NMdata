@@ -49,7 +49,8 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     text <- NULL
 
 ### if data is a list of data and meta, we need to split it out and
-### remember to update meta.
+### remember to update meta. This is needed for NMscanData, not
+### NMscanInput. We leave meta data untouched.
     details <- FALSE
     if(is.list(data) && !is.data.frame(data)){
         data.meta <- data$meta
@@ -170,11 +171,6 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
         
     data <- as.fun(data)
     if(details) {
-        ## number of rows used to be reported as after filtering. But
-        ##        that makes limited sense since it's just the number
-        ##        of rows in output. Plus, it would make nrow depend
-        ##        on whether we user merge.by.row or not.
-        ##        data.meta$nrow <- nrow(data)
         data <- list(data=data,meta=data.meta)
     }
     

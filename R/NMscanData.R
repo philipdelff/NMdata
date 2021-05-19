@@ -381,7 +381,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         cbind.by.filters <- !merge.by.row
         ## if cbind.by.filters, we have to filter input data now.
         if(cbind.by.filters){
-            
             data.input <- NMapplyFilters(data.input,file=file,as.fun="data.table",quiet=TRUE)
         }
     }
