@@ -1,5 +1,6 @@
 ---
-title: Optimize and automate key parts of a pharmacometrics workflow using NMdata
+title: |
+  NMdata: A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
 author: Philip Delff
 date: April, 2021
 fontsize: 8pt

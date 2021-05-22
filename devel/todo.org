@@ -132,6 +132,7 @@ A way to limit rows read into nonmem
 **** DONE Lastonly does the same as firstonly
      CLOSED: [2020-07-13 Mon 19:37]
 *** NMscanData
+**** TODO [#A] Check that no new values of col.row are found in output
 **** DONE Move time checks up
      CLOSED: [2021-05-22 Sat 00:18]
 Now, if number of rows don't match in input and output, the user don't

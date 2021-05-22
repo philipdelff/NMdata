@@ -76,7 +76,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={Optimize and automate key parts of a pharmacometrics workflow using NMdata},
+  pdftitle={NMdata: A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling},
   pdfauthor={Philip Delff},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
@@ -130,8 +130,8 @@
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
 
-\title{Optimize and automate key parts of a pharmacometrics workflow
-using NMdata}
+\title{NMdata: A fast R package for efficient data preparation,
+consistency-checking and post-processing in PK/PD modeling}
 \author{Philip Delff}
 \date{April, 2021}
 
@@ -1101,7 +1101,7 @@ little meta information is attached to the saved \texttt{rds} object.
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $CreationTime
-## [1] "2021-05-20 21:48:13 EDT"
+## [1] "2021-05-22 10:13:33 EDT"
 ## 
 ## $writtenTo
 ## [1] "derived/pk.rds"
@@ -1283,21 +1283,23 @@ It returns one combined data set.
 \end{Shaded}
 
 \begin{verbatim}
-## Model:  xgxr003 
+## Model:  xgxr003
+\end{verbatim}
+
+\begin{verbatim}
+## Input and output data combined by translation of Nonmem data filters (not recommended).
+\end{verbatim}
+
+\begin{verbatim}
 ## 
-## Used tables, numbers of columns and detail levels:
-##                  file used/total level
-##       xgxr003_res.txt        7/7   row
-##  xgxr003_res_vols.txt        3/7   row
-##    xgxr003_res_fo.txt        1/2    ID
-##     xgxr1.csv (input)      21/24   row
+## Used tables, contents shown as used/total:
+##                  file     rows columns     IDs
+##       xgxr003_res.txt  905/905     7/7 150/150
+##  xgxr003_res_vols.txt  905/905     3/7 150/150
+##    xgxr003_res_fo.txt  150/150     1/2 150/150
+##     xgxr1.csv (input) 905/1502   21/24 150/150
 ## 
-## Numbers of rows and subjects
-##       N Output Input only
-##  N.rows    905          0
-##   N.ids    150          0
-## 
-## Distribution of rows on event types
+## Distribution of rows on event types in returned data:
 ##  EVID Output
 ##     0    755
 ##     1    150
@@ -1369,18 +1371,14 @@ Using a unique row identifier for merging data is highly recommended:
 
 \begin{verbatim}
 ## Model:  xgxr001 
+## Input and output data merged by: ROW 
 ## 
-## Used tables, numbers of columns and detail levels:
-##               file used/total level
-##    xgxr001_res.txt      16/16   row
-##  xgxr1.csv (input)      22/24   row
+## Used tables, contents shown as used/total:
+##               file     rows columns     IDs
+##    xgxr001_res.txt  905/905   16/16 150/150
+##  xgxr1.csv (input) 905/1502   22/24 150/150
 ## 
-## Numbers of rows and subjects
-##       N Output Input only
-##  N.rows    905          0
-##   N.ids    150          0
-## 
-## Distribution of rows on event types
+## Distribution of rows on event types in returned data:
 ##  EVID Output
 ##     0    755
 ##     1    150
@@ -1456,18 +1454,14 @@ Using a unique row identifier for merging data is highly recommended:
 
 \begin{verbatim}
 ## Model:  xgxr001 
+## Input and output data merged by: ROW 
 ## 
-## Used tables, numbers of columns and detail levels:
-##               file used/total level
-##    xgxr001_res.txt      16/16   row
-##  xgxr1.csv (input)      22/24   row
+## Used tables, contents shown as used/total:
+##               file      rows columns     IDs
+##    xgxr001_res.txt   905/905   16/16 150/150
+##  xgxr1.csv (input) 1502/1502   22/24 150/150
 ## 
-## Numbers of rows and subjects
-##       N Input only Output
-##  N.rows        597    905
-##   N.ids          0    150
-## 
-## Distribution of rows on event types
+## Distribution of rows on event types in returned data:
 ##  EVID Input only Output
 ##     0        597    755
 ##     1          0    150

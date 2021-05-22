@@ -283,7 +283,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     written <- length(files.written)>0
     if(written){
         message(
-            paste0("Data witten to file:\n",paste(files.written,collapse="\n"))
+            paste0("Data written to file(s):\n",paste(files.written,collapse="\n"))
         )
     } else {
         message(
