@@ -372,6 +372,9 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                  ,col.id=col.id
                                  ,details=TRUE)
 
+    }
+    
+    if(use.input){
         cnames.input <- copy(colnames(data.input$data))
         col.row.in.input <- !is.null(col.row) && col.row %in% cnames.input 
         if(merge.by.row=="ifAvailable"){
@@ -713,6 +716,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         rows.recovered=recover.rows,
         ## input and output merged? (or cbind after filters?)
         merge.by.row=merge.by.row,
+        col.row=col.row,
         ## if available: path to input data
         file.input=NA_character_,
         ## if available: mtime of input data

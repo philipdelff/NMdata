@@ -45,8 +45,8 @@ summary.NMdata <- function(object,...){
         data.table(NMOUT="Output",N.ids=N.ids.nmout)
        ,
         data.table(NMOUT="Input only",N.ids=sum(
-                                                    ! data[nmout==FALSE,unique(ID)] %in% data[nmout==TRUE,unique(ID)]
-                                                )
+                                          ! data[nmout==FALSE,unique(ID)] %in% data[nmout==TRUE,unique(ID)]
+                                      )
                    )
     )
     s1$N.ids1 <- NULL
@@ -105,26 +105,42 @@ print.summary_NMdata <- function(x,...){
                                        inc=c("included","not")),
                        by="included")
 
-#### edit here when meta columns info structure changes
     
+    ## calc number of used and available columns
     vars.sum <- vars[source!="NMscanData"][,.N,by=.(file,inc)]
     vars.sum1 <- dcast(vars.sum,file~inc,value.var="N",fill=0)
     vars.sum1[,print.inc:=paste0(included,"/",sum(c(included,not),na.rm=T)),by=.(file)]
+    ## calc number of used and available rows
+    ## Since this is based on NMinfo(res,"columns"), we know the table is used
+    vars.sum1
+    NMinfo(res,"tables")
+
+    tabs.out[,tabn:=1:.N]
+    ## assuming that all ID's present somewhere in output is present in all output tables
+    tabs.out[source=="output",nid:=x$N.ids[NMOUT=="Output",N.ids]]
+    vars.sum2 <- mergeCheck(vars.sum1,tabs.out[,.(file=name,source,idlevel,tabn,nrow,nid)],by="file",all.x=T)
+
+    ## assuming that all available rows are used - not true if table not used.
+    vars.sum2[,nrow.used:=pmin(nrow,x$N.row[nmout==TRUE,N.rows])]
+    vars.sum2[,nid.used:=pmin(nid,x$N.id[,sum(N.ids)])]
+    vars.sum2[source=="input",file:=paste(file,"(input)")]
+
+    
+    vars.sum2[,IDs:=sprintf("%d/%d",nid.used,nid)]
+    vars.sum2[,rows:=sprintf("%d/%d",nrow.used,nrow)]
     
     ## include level
-    tabs.out[,tabn:=1:.N]
-    vars.sum2 <- mergeCheck(vars.sum1,tabs.out[,.(file=name,source,idlevel,tabn)],by="file",all.x=T)
-    vars.sum2[source=="input",file:=paste(file,"(input)")]
     vars.sum2[,level:="row"]
     vars.sum2[idlevel==TRUE,level:="ID"]
     ## order as treated in NMscanData
     setorder(vars.sum2,tabn,na.last=TRUE)
     vars.sum2[,source:=NULL]
-    
-    vars.sum2[,`:=`(tabn=NULL,idlevel=NULL,included=NULL)]
-    if("not"%in%colnames(vars.sum2)) vars.sum2[,not:=NULL]
-    setnames(vars.sum2,c("print.inc"),c("used/total"))
 
+    cols.rm=c("tabn","idlevel","included","nid.used","nid","nrow.used","nrow","level")
+    vars.sum2[,(cols.rm):=lapply(.SD,function(x)NULL),.SDcols=cols.rm]
+    if("not"%in%colnames(vars.sum2)) vars.sum2[,not:=NULL]
+    setnames(vars.sum2,c("print.inc"),c("columns"))
+    setcolorder(vars.sum2,c("file","rows","columns","IDs"))
 
 #### other info to include. 
     dt.nmout <- data.table(nmout=c(TRUE,FALSE),NMOUT=c("Output","Input only"))
@@ -142,16 +158,25 @@ print.summary_NMdata <- function(x,...){
     n5 <- rbind(n4,N.ids,fill=T)
     n5[is.na(n5)] <- 0
     
-
     ## model name
     cat("Model: ",x$details$model,"\n")
+
+    if(x$details$input.used){
+        if(x$details$merge.by.row){
+            cat("Input and output data merged by:",x$details$col.row,"\n")
+        } else {
+            cat("Input and output data combined by translation of Nonmem data filters (not recommended).\n")
+        }
+    } else {
+        cat("Input data not used.\n")
+    }
     
-    cat("\nUsed tables, numbers of columns and detail levels:\n")
+    cat("\nUsed tables, contents shown as used/total:\n")
     print(vars.sum2,row.names=FALSE)
 
-    cat("\nNumbers of rows and subjects\n")
-    print(n5,row.names=FALSE,...)
-
+    ## cat("\nNumbers of rows and subjects\n")
+    ## print(n5,row.names=FALSE,...)
+    cat("\n")
     
     if(any(!is.na(x$N.evids))){
         ## how many rows in output (broken down on EVID)
@@ -162,7 +187,7 @@ print.summary_NMdata <- function(x,...){
         evids2 <- dcast(evids1,EVID~NMOUT,value.var="N")
         evids2[is.na(evids2)] <- 0
         
-        cat("\nDistribution of rows on event types\n")
+        cat("Distribution of rows on event types in returned data:\n")
         print(evids2,row.names=FALSE)
     }        
 

@@ -1,12 +1,12 @@
 ---
-title: Optimize and automize a pharmacometrics workflow using NMdata
+title: Optimize and automate key parts of a pharmacometrics workflow using NMdata
 author: Philip Delff
 date: April, 2021
 fontsize: 8pt
 output: 
  beamer_presentation:
   slide_level: 2
-  toc: true
+  keep_tex: true
 classoption: "aspectratio=169"
 ---
 
@@ -54,26 +54,25 @@ set.seed(1121)   # make the results repeatable
 
 ```
 
+## Outline
+\tableofcontents[hideallsubsections]
+
+
 # Introduction
-
-<!-- ## Motivation -->
-
-<!-- PK/PD modeling is technically extremely heavy. We want to do provide clarity to decision making, but spend a lot of our time in deep mud. -->
-
-<!-- `NMdata` is my humble experience collected in efficient functions that fill some holes and help with some of the most annoying design -->
 
 ## What is NMdata?
 ::: columns
 :::: column
 ### NMdata is 
-an R package that can help
+
+An R package that can help
 
 *  Creating event-based data sets for PK/PD modeling
 *  Keeping Nonmem code updated to match contents of datasets
 *  Read all output data and combine with input data from Nonmem runs
-   - supply output list file (.lst), and the reader is very flexible and automated
+   - supply output list file (.lst), and the reader is very flexible and automated 
 
-designed to fit in to the user's setup and coding preferences
+Designed to fit in to the user's setup and coding preferences
 
 * NMdata comes with a configuration tool that can be used to tailor default behaviour to the user's system configuration and preferences.
 
@@ -94,12 +93,15 @@ designed to fit in to the user's setup and coding preferences
 ::::
 :::
 
-## Who can find NMdata useful?
+$$\vspace{.01in}$$
 
-* The data set creation tools are relevant no matter the estimation and simulations tools.
+The data creation tools should be relevant independently of estimation/simulation tool.
 
-* Nonmem users will find additional tools for handling the exchange of data between R and Nonmem.
+<!-- ## Who can find NMdata useful? -->
 
+<!-- * The data set creation tools are relevant no matter the estimation and simulations tools. -->
+
+<!-- * Nonmem users will find additional tools for handling the exchange of data between R and Nonmem. -->
 
 
 <!-- ## About the author -->
@@ -115,6 +117,13 @@ designed to fit in to the user's setup and coding preferences
 <!-- reflection, and understanding key questions. `NMdata` is a big help for -->
 <!-- me personally in freeing time to more high-level tasks. -->
 
+
+<!-- Lots of work missing on this one -->
+<!-- ## Motivation -->
+
+<!-- PK/PD modeling is technically extremely heavy. We want to do provide clarity to decision making, but spend a lot of our time in deep mud. -->
+
+<!-- `NMdata` is my humble experience collected in efficient functions that fill some holes and help with some of the most annoying design -->
 ## Motivation
 * As large a potential pharmacometrics has for illuminating the unknown in drug development, it is dangerously technical.
 
@@ -133,14 +142,16 @@ me personally in freeing time to more high-level tasks.
 * I have no intention of missioning these approaches to others. But if
 you find something interesting, feel free to take advantage.
 
-## Overview of NMdata functionality
-* Data creation
-- Checking of compatibility of data.frames.
-- Merge with automated checks 
 
-* Nonmem control stream editing
+<!-- This could become a good slide, but so far not ready at all -->
+<!-- ## Overview of NMdata functionality -->
+<!-- * Data creation -->
+<!-- - Checking of compatibility of data.frames. -->
+<!-- - Merge with automated checks  -->
 
-* Retrieve data from Nonmem
+<!-- * Nonmem control stream editing -->
+
+<!-- * Retrieve data from Nonmem -->
 
 
 
@@ -158,10 +169,6 @@ load_all()
 
 ```{r,include=FALSE}
 NMdataConf(check.time=FALSE)
-```
-
-
-```{r}
 NMdataConf(as.fun="data.table")
 ```
 
@@ -177,7 +184,7 @@ Three vignettes are available
 For a quick overview (after installation), do:
 
 <!-- Would be good to show a truncated output here -->
-```(r,eval=F)
+```{r,eval=F}
 help(package="NMdata")
 ```
 
@@ -199,12 +206,19 @@ pk.reduced[,AMT:=as.character(AMT)]
 # Data set creation
 
 ## Compare compatibility of data sets for rbind and merge
+::: columns
+:::: column
 
-* In order to rbind or merge data sets, they must be compatible in presence and equally importantly, of the classes of the common columns.
+* In order to rbind or merge data sets, they must be compatible in 
+  - presence of columns, depending of desired outcome
+  - equally importantly, the classes of the common columns.
 * compareCols provides an overview of these properties for any number of data sets. 
-* By default, only descripancies are returned. Using diff.only=FALSE will give the complete list of columns in the two datasets.
+  - By default, only descripancies are returned. 
+  - Using diff.only=FALSE will give the complete list of columns in the two datasets.
 
-## compareCols
+:::: 
+:::: column
+
 A slightly modified version of the `pk` dataset has been created.
 
 * `CYCLE` has been removed, and
@@ -214,22 +228,27 @@ A slightly modified version of the `pk` dataset has been created.
 compareCols(pk,pk.reduced)
 ```
 
+\vspace{12pt}
+
 Before merging or stacking, we may want to recode `AMT` in one of the datasets to get the class we need, and decide what to do about the missing `CYCLE` in one of the datasets (if OK, values are filled with `NA`).
+
+::::
+:::
+
 
 <!-- %%% renameByContents.R -->
 ## Rename columns based on contents
 ::: columns
-
 :::: column 
-* The model estimation step is heavily dependent (and in
-Nonmem almost entirely based) on numeric data values.  
+### renameByContents
+* Nonmem almost entirely relies on numeric data values.
 * The source data
 will often contain character variables, i.e. columns with non-numeric
-data values.
-* If the column names reflect whether the values are numeric, double-checking can be avoided. 
+data values. We want to use these and other non-numerics in post-processing.
+* If the column names reflect whether the values are numeric, mistakes and double-checking can be avoided. 
 * `renameByContents` renames columns if a function of their contents returns `TRUE`.
 
-`NMisNumeric`
+### `NMisNumeric`
 
 - `NMisNumeric` is a function that tests if the contents are numeric to `Nonmem`. 
 - Subject ID `"1039"` (character class) will be a numeric in Nonmem, `"1-039"` will not. 
@@ -284,9 +303,11 @@ relevant or necessary. But if `mergeCheck` covers your needs, it's a
 real time saver in terms of automated checks that you are getting
 what you expect.
 
+**mergeCheck is not a new implementation of merge. It's an implementation of checks.**
+
 * `mergeCheck` uses `merge.data.table`. The addition is the checks that the result is in accordance with the restrictions. This means
 
-**mergeCheck is not a new implementation of merge. It's an implementation of checks.**
+* The order of rows in the resulting data is always the same as the first dataset supplied.
 
 Does that make it slower?
 
@@ -296,6 +317,8 @@ Does that make it slower?
 
 
 ## mergeCheck
+\frametitle{Example: Would your standard checks of merges capture this?}
+
 ```{r,include=FALSE}
 dt.cov <- pk[,.(ID=unique(ID))]
 dt.cov[,COV:=sample(1:5,size=.N,replace=TRUE)]
@@ -307,8 +330,8 @@ Say we want to add a covariate from a
 
 ::: columns
 :::: column
+### Without `mergeCheck`
 \footnotesize
-Without `mergeCheck`:
 ```{r}
 ## The resulting dimensions are correct
 pk4 <- merge(pk,dt.cov,by="ID")
@@ -319,8 +342,10 @@ dims(pk[ID==31],pk4[ID==31])
 ```
 :::
 :::: column
+### `mergeCheck` throws an error
+...and suggests what is wrong
 \footnotesize
-`mergeCheck` captures this and suggests what is wrong
+
 ```{r}
 try(mergeCheck(pk,dt.cov,by="ID"))
 ```
@@ -328,13 +353,17 @@ try(mergeCheck(pk,dt.cov,by="ID"))
 \normalsize
 :::
 
-## Exclusion flags
+### Conclusion
+If you only want to add columns by a merge, `mergeCheck` does all the necessary checks for you.
 
-* It is good practice not to discard records from a dataset but to flag
+## Exclusion flags
+\frametitle{Keep track of data exclusions - don't discard!}
+
+* It is good practice not to discard unwanted records from a dataset but to flag
 them and omit them in model estimation. 
 
 * When reporting the analysis,
-we also need to account for how many data records were discarded due
+we need to account for how many data records were discarded due
 to which criteria. 
 
 * The implementation in `NMdata` is based on sequentially checking
@@ -342,7 +371,7 @@ exclusion conditions.
 
 * The information is represented in one numerical column for
 Nonmem, and one (value-to-value corresponding) character column for
-the rest of us in the resulting data.
+the rest of us.
 
 ## FlagsAssign
 ::: columns
@@ -354,6 +383,8 @@ value of `FLAG`.
 
 * You can use any expression that can be evaluated _row-wise_ within
 the data.frame. In this case, `BLQ` has to exist in `pk`.
+
+* If you need to evaluate a condition based on multiple rows (say inadequate dosing history for a subject), do that first, and include a column representing this condition.
 
 * In `Nonmem`, you can include `IGNORE=(FLAG.NE.0)` in `$DATA` or `$INFILE`.
 
@@ -391,24 +422,28 @@ opts <- options(width=100)
 
 \footnotesize
 ```{r}
-tab.count <- flagsCount(data=pk[EVID==0],tab.flags=dt.flags)
-print(tab.count)
+flagsCount(data=pk[EVID==0],tab.flags=dt.flags)
 ```
 
 ```{r,include=F}
 options(opts)
 ```
-
+Now pick the columns you want and format your table for the report.
 
 
 # Finalize data for Nonmem 
 ## Advice: always include a unique row identifier
-In order to ensure that we can reliably recreate (by merge) output with input data, a numeric unique row identifier is needed. 
 
 ::: columns
 :::: column
+### Why
+A unique identifier is needed in order to
 
-The identifier should be
+* Track rows in analysis data back to source data
+
+* Reliably combine (by merge) output with input data
+
+### The identifier should be
 
 * Numeric
   - For Nonmem to be able to read it
@@ -424,20 +459,22 @@ The identifier should be
 ::::
 :::: column
 
-
+### Sort rows and add a row counter with `data.table`
 ```{r}
-setorder(pk,ID,EVID,TIME)
+setorder(pk,ID,TIME,EVID)
 pk[,ROW:=1:.N]
 ```
 ::::
 :::
 
-NMscanData will most often work even if you don't include a row
-identifier. But this will rely on interpretation of Nonmem code.
+
+<!-- *`NMscanData` will most often work even if you don't include a row -->
+<!-- identifier. But this will rely on interpretation of Nonmem code. -->
 
 ## NMorderColumns
 ::: columns
 :::: column
+\vspace{12pt}
 The order of columns in Nonmem is important for two reasons. 
 
 * Character in a variable read into Nonmem will make the run
@@ -481,54 +518,94 @@ data.table(old=colnames(pk.old),new=colnames(pk))
 
 For the final step of writing the dataset, `NMwriteData` is
 provided. 
+
 * Checks character variables for Nonmem compatibility (commas not allowed)
 * writes a csv file with appropriate options for Nonmem compatibility
 * Default is to also write an rds file for R 
   - Contents identical to R object including all information (such as factor levels) which cannot be saved in csv. 
-
-* If you use `NMscanData` to read Nonmem results,  this information can be used automatically. 
+  - If you use `NMscanData` to read Nonmem results,  this information can be used automatically. 
 
 * Provides a proposal for text to include in the
 `$INPUT` and `$DATA` sections of the Nonmem control
 streams. 
 
-::::
-:::: column
-
+### The csv writer is very simple
 These are the only steps involved between the supplied data set and the written csv.
 
 * `scipen` is small to maximize precision.
 
+\footnotesize
 ```{r,eval=FALSE}
 file.csv <- fnExtension(file,".csv")
 fwrite(data,na=".",quote=FALSE,row.names=FALSE,scipen=0,file=file.csv)
 ```
+\normalsize 
 
+All arguments to `fwrite` can be modified using the `args.fwrite` argument.
+
+::::
+:::: column
+\footnotesize
 ```{r}
 NMwriteData(pk,file="derived/pk.csv")
 ```
+\normalsize 
+
+\vspace{12pt}
+
+* `NMwriteData` _Never_ modifies the data.
+
+* `eff0` is the last column in `pk` that `Nonmem` can make use of (remember `NMisNumeric` from earlier?)
 
 * `NMwriteData` detected the exclusion flag and suggests to include it in `$DATA`.
-
-* If a file name had been provided, paths to the data files message returned.
-
 
 ::::
 :::
 
 
 ## Update Nonmem control streams
-Several arguments modify the proposed text
-the proposed text for the Nonmem run, see `?NMwriteData`.
-```{r}
-nmCode <- NMwriteData(pk,file="derived/pk.csv",write.csv=FALSE,
-                      nmdir.data="../derived",nmdrop="PROFDAY",nm.rename=c(CONC="DV"))
+::: columns
+:::: column
 
+* `NMwriteSection` is a function that replaces sections (like $DATA or
+  $TABLE) of nonmem control streams.
+
+* `NMwriteData` returns a list that can be directly processed by
+  `NMwriteSection`
+
+* In `NMwriteData`, several arguments modify the proposed text
+the proposed text for the Nonmem run, see `?NMwriteData`.
+
+### Tips
+* `NMextractDataFile` takes a control stream/list file and extracts
+  the input data file name/path. You can use this to identify the
+  model runs in which to update `$DATA`.
+
+* `NMwriteData` is very useful for many other sections, like `$TABLE`,
+  or even `$PK`. But not `$THETA` and `$OMEAGE` (because they are
+  specific to each model).
+
+* `NMwriteData` by defaults saves a backup of the overwritten control
+  streams.
+
+* `NMwriteData` has a counterpart in `NMreadSection`
+
+::::
+:::: column
+
+\footnotesize
+```{r}
+nmCode <- NMwriteData(pk,file="derived/pk.csv",
+                      write.csv=FALSE,
+                      nmdir.data="../derived",
+                      nm.drop="PROFDAY",
+                      nm.rename=c(CONC="DV"))
 ```
 
 ```{r,eval=FALSE}
 ## example: pick run1*.mod
-models <- list.files("../models",pattern="run1.+\\.mod$",full.names=T)
+models <- list.files("../models",pattern="run1.+\\.mod$",
+                     full.names=T)
 ## update $INPUT and $DATA
 lapply(models,NMwriteSection,list.sections=nmCode)
 ## update $INPUT 
@@ -536,12 +613,16 @@ lapply(models,
        NMwriteSection,section="INPUT",newlines=nmCode$INPUT)
 ```
 
-`NMextractDataFile` takes a control stream/list file and extracts the input data file name/path. You can use this to identify the model runs to update.
+\normalsize
+
+::::
+:::
 
 
 ## Automated documentation of data
-<!-- How meta data is integrated -->
-If the argument `script` is supplied to `NMwriteData`, a little meta information is attached to the saved `rds` object.
+If the argument `script` is
+supplied to `NMwriteData`, a little meta information is attached to
+the saved `rds` object.
 
 \footnotesize
 
@@ -853,6 +934,7 @@ Most important message: an `NMdata` object can be used as if it weren't. `R` loo
 class(res1)
 ```
 Methods defined for `NMdata`:
+
 * `summary`: The information that is written to the console if `quiet=FALSE`.
 
 This is the only behavior that is overwritten by the `NMdata` class. 

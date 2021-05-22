@@ -25,6 +25,9 @@ NMwriteData takes the argument args.fwrite - a list of arguments
 passed to fwrite. This is aligned with args.fread used by
 NMreadCsv. Defaults can be configured using NMdataConf.
 
+Improved and shortened text to console from NMscanData
+(print.summary_NMdata).
+
 ## Bugfixes
 - In the special case where only one data set is given, compareCols
   used to sort the list of columns in an irrelevant way. Now no

@@ -35,7 +35,13 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
-*** TODO [#B] NMtranslate
+*** TODO [#B] NMcheckColNames
+**** return input column names and Nonmem interpretation for user to spot errors
+**** Bad name, what could we call it?
+*** TODO [#B] NMfreezeModels
+    Remember to add chmod and describe that only a flat dir structure is supported so far
+*** DONE NMtransInp
+    CLOSED: [2021-05-20 Thu 11:29]
     Translate column names according to Nonmem. Take the code from
     NMscanInput.
 *** DONE function to replace file name extension - fnExtension
@@ -130,8 +136,9 @@ A way to limit rows read into nonmem
 Now, if number of rows don't match in input and output, the user don't
 get warnings about time. This is bad because updates to input data is
 a likely reason.
-**** TODO [#A] Add support for merge.by.row="ifAvailable"
-**** TODO [#A] Make sure all options in NMdataConf are documented?
+**** DONE Add support for merge.by.row="ifAvailable"
+     CLOSED: [2021-05-20 Thu 11:29]
+**** TODO [#A] Make sure all options in NMdataConf are documented
 **** DONE input file name in meta columns
      CLOSED: [2021-05-15 Sat 21:05]
 ***** table column should be called file
@@ -268,8 +275,13 @@ This is two steps.
 This belong in write functions. stampObj does support extra
 arguments. NMdata calls this "writtenTo".
 *** summary.NMdata
-**** DONE Rethink and tidy up message
-     CLOSED: [2021-05-15 Sat 21:06]
+**** Rethink and tidy up message
+***** DONE Combine first two tables
+      CLOSED: [2021-05-20 Thu 23:22]
+***** DONE Add number of rows
+      CLOSED: [2021-05-20 Thu 23:22]
+***** TODO [#B] Add result row
+****** Number of columns has 0-2 extra columns
 ** Nonmem examples
 *** DONE Use FLAG
     CLOSED: [2020-06-29 Mon 21:28]

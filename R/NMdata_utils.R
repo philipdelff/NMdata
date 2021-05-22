@@ -6,13 +6,15 @@
 ##' @param prefix Passed to strwrap. Default is "\\n".
 ##' @param initial Passed to strwrap. Default is an empty string.
 ##' @param width Passed to strwrap. Default is 80.
-messageWrap <- function(..., fun.msg=message, prefix = "\n", initial = "", width=80){
+messageWrap <- function(..., fun.msg=message, prefix = "\n", initial = "", width=80,track.msg=FALSE){
     
     if(is.null(fun.msg)) invisible(return(NULL))
     
     parent.call <- sys.call(sys.nframe() - 1L)
 
-    list.args <- list(strwrap(paste("In",paste(deparse(parent.call),collapse=" "),":",...)
+    msg0 <- ""
+    if(track.msg) msg0 <- paste("In",paste(deparse(parent.call),collapse=" "),":")
+    list.args <- list(strwrap(paste0(msg0,...)
                              ,prefix = prefix
                              ,initial = initial
                              ,width=width)
