@@ -4,7 +4,14 @@
 \alias{messageWrap}
 \title{Pretty wrapping of lines in NMdata vignettes}
 \usage{
-messageWrap(..., fun.msg = message, prefix = "\\n", initial = "", width = 80)
+messageWrap(
+  ...,
+  fun.msg = message,
+  prefix = "\\n",
+  initial = "",
+  width = 80,
+  track.msg = FALSE
+)
 }
 \arguments{
 \item{...}{parameters to pass to strwrap}
@@ -18,6 +25,10 @@ NULL is invisibly returned.}
 \item{initial}{Passed to strwrap. Default is an empty string.}
 
 \item{width}{Passed to strwrap. Default is 80.}
+
+\item{track.msg}{If TRUE, the name of the function throwing the
+message/warning/error is mentioned. This is not default but
+useful when using function inside other functions.}
 }
 \description{
 Pretty wrapping of lines in NMdata vignettes

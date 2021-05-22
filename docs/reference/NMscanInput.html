@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.910</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.911</span>
       </span>
     </div>
 
@@ -254,6 +254,11 @@ configured using NMdataConf.</p></td>
     linux system running Nonmem to a Windows or Mac running R), so this line
     is discarded. Columns that are dropped (using DROP or SKIP in $INPUT) in
     the model will be included in the output.</p>
+<p>It may not work if a column is dropped, and a new column is
+renamed to the same name. Say you have DV and CONC as the only two
+columns (not possible but illustrative), and in Nonmem you do
+DV=DROP DV. Not sure it will work in Nonmem, and it probably won't
+work in NMscanInput.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other DataRead: 

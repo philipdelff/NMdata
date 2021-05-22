@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get dimensions of multiple objects — dims • NMdata</title>
+<title>translate the column names according to the $INPUT section of a control stream — NMtransInp • NMdata</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Get dimensions of multiple objects — dims" />
-<meta property="og:description" content="Get dimensions of multiple objects" />
+<meta property="og:title" content="translate the column names according to the $INPUT section of a control stream — NMtransInp" />
+<meta property="og:description" content="translate the column names according to the $INPUT section of a control stream" />
 
 
 
@@ -130,49 +130,30 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get dimensions of multiple objects</h1>
+    <h1>translate the column names according to the $INPUT section of a control stream</h1>
     
-    <div class="hidden name"><code>dims.Rd</code></div>
+    <div class="hidden name"><code>NMtransInp.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Get dimensions of multiple objects</p>
+    <p>translate the column names according to the $INPUT section of a control stream</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dims</span>(<span class='kw'>...</span>, <span class='kw'>list.data</span>, keepNames = <span class='fl'>TRUE</span>, as.fun = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>NMtransInp</span>(<span class='kw'>data</span>, <span class='kw'>file</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>data sets</p></td>
+      <th>data</th>
+      <td><p>the data to translate</p></td>
     </tr>
     <tr>
-      <th>list.data</th>
-      <td><p>As alternative to ..., you can supply the data
-sets in a list here.</p></td>
-    </tr>
-    <tr>
-      <th>keepNames</th>
-      <td><p>If TRUE, the original dataset names are used in
-reported table. If not, generic x1, x2,... are used. The
-latter may be preferred for readability in some cases.</p></td>
-    </tr>
-    <tr>
-      <th>as.fun</th>
-      <td><p>A function that will be run un the result before
-returning. If first input data set is a data.table, the
-default is to return a data.table, if not the default is to
-return a data.frame. Use whatever to get what fits in with
-your workflow. Default can be configured with NMdataConf.</p></td>
+      <th>file</th>
+      <td><p>the list file or control stream</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other DataWrangling: 
-<code><a href='compareCols.html'>compareCols</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

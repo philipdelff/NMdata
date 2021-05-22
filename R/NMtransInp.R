@@ -1,8 +1,8 @@
 ##' translate the column names according to the $INPUT section of a control stream
 ##'
-##' @param data.input the data to translate
-##' @param file
-
+##' @param data the data to translate
+##' @param file the list file or control stream 
+ 
 ## don't export. An internal function used by NMscanInput. 
 
 NMtransInp <- function(data,file){

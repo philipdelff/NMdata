@@ -37,6 +37,9 @@
     <loc>https://philipdelff.github.io/NMdata/reference/messageWrap.html</loc>
   </url>
   <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMapplyFilters.html</loc>
+  </url>
+  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMcode2R.html</loc>
   </url>
   <url>
@@ -76,7 +79,7 @@
     <loc>https://philipdelff.github.io/NMdata/reference/NMscanTables.html</loc>
   </url>
   <url>
-    <loc>https://philipdelff.github.io/NMdata/reference/NMtransFilters.html</loc>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMtransInp.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMwriteData.html</loc>

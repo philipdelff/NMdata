@@ -90,6 +90,12 @@ The line containing whom the license is issued to cannot be
     linux system running Nonmem to a Windows or Mac running R), so this line
     is discarded. Columns that are dropped (using DROP or SKIP in $INPUT) in
     the model will be included in the output.
+
+It may not work if a column is dropped, and a new column is
+renamed to the same name. Say you have DV and CONC as the only two
+columns (not possible but illustrative), and in Nonmem you do
+DV=DROP DV. Not sure it will work in Nonmem, and it probably won't
+work in NMscanInput.
 }
 \seealso{
 Other DataRead: 

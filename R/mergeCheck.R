@@ -30,6 +30,9 @@
 ##'     of columns being added to the dimensions of df1. So if
 ##'     ncols.expect=1, the resulting data must have exactly one
 ##'     column more than df1 - if not, an error will be returned.
+##' @param track.msg If using mergeCheck inside other functions, it
+##'     can be useful to use track.msg=TRUE. This will add information
+##'     to messages/warnings/errors that they came from mergCheck.
 ##' @param ... additional arguments passed to merge. If all is among
 ##'     them, an error will be returned.
 ##' @details Besides merging and checking rows, mergeCheck makes sure

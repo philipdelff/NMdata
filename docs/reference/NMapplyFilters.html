@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get dimensions of multiple objects — dims • NMdata</title>
+<title>Translate filters in Nonmem and apply to data — NMapplyFilters • NMdata</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Get dimensions of multiple objects — dims" />
-<meta property="og:description" content="Get dimensions of multiple objects" />
+<meta property="og:title" content="Translate filters in Nonmem and apply to data — NMapplyFilters" />
+<meta property="og:description" content="Translate filters in Nonmem and apply to data" />
 
 
 
@@ -130,49 +130,70 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get dimensions of multiple objects</h1>
+    <h1>Translate filters in Nonmem and apply to data</h1>
     
-    <div class="hidden name"><code>dims.Rd</code></div>
+    <div class="hidden name"><code>NMapplyFilters.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Get dimensions of multiple objects</p>
+    <p>Translate filters in Nonmem and apply to data</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dims</span>(<span class='kw'>...</span>, <span class='kw'>list.data</span>, keepNames = <span class='fl'>TRUE</span>, as.fun = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>NMapplyFilters</span>(<span class='kw'>data</span>, <span class='kw'>file</span>, <span class='kw'>text</span>, <span class='kw'>lines</span>, invert = <span class='fl'>FALSE</span>, <span class='kw'>as.fun</span>, <span class='kw'>quiet</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>data sets</p></td>
+      <th>data</th>
+      <td><p>An input data object. Could be read with NMreadCsv or
+NMscanInput.</p></td>
     </tr>
     <tr>
-      <th>list.data</th>
-      <td><p>As alternative to ..., you can supply the data
-sets in a list here.</p></td>
+      <th>file</th>
+      <td><p>Path to mod/lst file. Only one of file, text, or lines to be
+given. See ?NMreadSection for understanding when to use, file, text, or
+lines.</p></td>
     </tr>
     <tr>
-      <th>keepNames</th>
-      <td><p>If TRUE, the original dataset names are used in
-reported table. If not, generic x1, x2,... are used. The
-latter may be preferred for readability in some cases.</p></td>
+      <th>text</th>
+      <td><p>The mod/lst as characters.</p></td>
+    </tr>
+    <tr>
+      <th>lines</th>
+      <td><p>The mod/lst as character, line by line.</p></td>
+    </tr>
+    <tr>
+      <th>invert</th>
+      <td><p>Invert the filters? This means read what Nonmem would
+disregard, and disregard what Nonmem would read.</p></td>
     </tr>
     <tr>
       <th>as.fun</th>
-      <td><p>A function that will be run un the result before
-returning. If first input data set is a data.table, the
-default is to return a data.table, if not the default is to
-return a data.frame. Use whatever to get what fits in with
-your workflow. Default can be configured with NMdataConf.</p></td>
+      <td><p>The default is to return data as a data.frame. Pass a function
+(say tibble::as_tibble) in as.fun to convert to something else. If
+data.tables are wanted, use as.fun="data.table". The default can be
+configured using NMdataConf.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>Don't report information along the way if no warnings or
+errors. Default is FALSE.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This is not bulletproof. A statement like ACCEPT=(DOSE 10) which in
+    Nonmem means the same as ACCEPT=(DOSE==10) will not be correctly
+    interpreted. Also, nested conditions are not supported altogether.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other DataWrangling: 
-<code><a href='compareCols.html'>compareCols</a>()</code></p></div>
+    <div class='dont-index'><p>Other Nonmem: 
+<code><a href='NMextractText.html'>NMextractText</a>()</code>,
+<code><a href='NMreadSection.html'>NMreadSection</a>()</code>,
+<code><a href='NMwriteData.html'>NMwriteData</a>()</code>,
+<code><a href='NMwriteSection.html'>NMwriteSection</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

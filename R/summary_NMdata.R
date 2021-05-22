@@ -83,6 +83,14 @@ print.summary_NMdata <- function(x,...){
     idlevel <- NULL
     level <- NULL
     N <- NULL
+    nid <- NULL
+    NMOUT <- NULL
+    nrow.used <- NULL
+    nmout <- NULL
+    N.rows <- NULL
+    nid.used <- NULL
+    IDs <- NULL
+    rows <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
@@ -112,8 +120,6 @@ print.summary_NMdata <- function(x,...){
     vars.sum1[,print.inc:=paste0(included,"/",sum(c(included,not),na.rm=T)),by=.(file)]
     ## calc number of used and available rows
     ## Since this is based on NMinfo(res,"columns"), we know the table is used
-    vars.sum1
-    NMinfo(res,"tables")
 
     tabs.out[,tabn:=1:.N]
     ## assuming that all ID's present somewhere in output is present in all output tables
@@ -165,7 +171,7 @@ print.summary_NMdata <- function(x,...){
         if(x$details$merge.by.row){
             cat("Input and output data merged by:",x$details$col.row,"\n")
         } else {
-            cat("Input and output data combined by translation of Nonmem data filters (not recommended).\n")
+            message("Input and output data combined by translation of Nonmem data filters (not recommended).")
         }
     } else {
         cat("Input data not used.\n")

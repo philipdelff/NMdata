@@ -12,6 +12,7 @@ knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 
 ## ----setup,include=F--------------------------------------
 library(NMdata)
+NMdataConf(check.time=FALSE)
 ## NMdataConf(as.fun="data.table")
 library(data.table)
 library(ggplot2)

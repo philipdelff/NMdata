@@ -6,6 +6,10 @@
 ##' @param prefix Passed to strwrap. Default is "\\n".
 ##' @param initial Passed to strwrap. Default is an empty string.
 ##' @param width Passed to strwrap. Default is 80.
+##' @param track.msg If TRUE, the name of the function throwing the
+##'     message/warning/error is mentioned. This is not default but
+##'     useful when using function inside other functions.
+
 messageWrap <- function(..., fun.msg=message, prefix = "\n", initial = "", width=80,track.msg=FALSE){
     
     if(is.null(fun.msg)) invisible(return(NULL))
