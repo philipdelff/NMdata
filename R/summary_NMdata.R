@@ -120,14 +120,16 @@ print.summary_NMdata <- function(x,...){
     vars.sum1[,print.inc:=paste0(included,"/",sum(c(included,not),na.rm=T)),by=.(file)]
     ## calc number of used and available rows
     ## Since this is based on NMinfo(res,"columns"), we know the table is used
-
+    
+    
     tabs.out[,tabn:=1:.N]
     ## assuming that all ID's present somewhere in output is present in all output tables
     tabs.out[source=="output",nid:=x$N.ids[NMOUT=="Output",N.ids]]
     vars.sum2 <- mergeCheck(vars.sum1,tabs.out[,.(file=name,source,idlevel,tabn,nrow,nid)],by="file",all.x=T)
 
     ## assuming that all available rows are used - not true if table not used.
-    vars.sum2[,nrow.used:=pmin(nrow,x$N.row[nmout==TRUE,N.rows])]
+    vars.sum2[source=="output",nrow.used:=pmin(nrow,x$N.row[nmout==TRUE,N.rows])]
+    vars.sum2[source=="input",nrow.used:=pmin(nrow,x$N.row[,sum(N.rows)])]
     vars.sum2[,nid.used:=pmin(nid,x$N.id[,sum(N.ids)])]
     vars.sum2[source=="input",file:=paste(file,"(input)")]
 

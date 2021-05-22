@@ -132,13 +132,15 @@ A way to limit rows read into nonmem
 **** DONE Lastonly does the same as firstonly
      CLOSED: [2020-07-13 Mon 19:37]
 *** NMscanData
-**** TODO [#A] Move time checks up
+**** DONE Move time checks up
+     CLOSED: [2021-05-22 Sat 00:18]
 Now, if number of rows don't match in input and output, the user don't
 get warnings about time. This is bad because updates to input data is
 a likely reason.
 **** DONE Add support for merge.by.row="ifAvailable"
      CLOSED: [2021-05-20 Thu 11:29]
-**** TODO [#A] Make sure all options in NMdataConf are documented
+**** DONE Make sure all options in NMdataConf are documented
+     CLOSED: [2021-05-22 Sat 00:18]
 **** DONE input file name in meta columns
      CLOSED: [2021-05-15 Sat 21:05]
 ***** table column should be called file
