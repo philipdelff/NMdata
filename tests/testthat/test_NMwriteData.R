@@ -28,14 +28,14 @@ test_that("basic",{
        ,fileRef)
 })
 
-test_that("nmdrop is an empty string - not allowed",{
+test_that("nm.drop is an empty string - not allowed",{
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     ## not allowed
     expect_error(
         NMwriteData(pk
                    ,file=system.file("examples/data/xgxr1.csv",package="NMdata")
                    ,write.rds=F,write.csv=F
-                   ,nmdrop=""
+                   ,nm.drop=""
                     )
     )
 })
@@ -46,7 +46,7 @@ test_that("Dropping a column in Nonmem",{
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     res2 <- NMwriteData(pk,file=system.file("examples/data/xgxr1.csv",package="NMdata"),
                         write.rds=F,write.csv=F,
-                        nmdrop="PART",
+                        nm.drop="PART",
                         nmdir.data="/example")
     res2 <- fix.input(res2)
     
@@ -60,7 +60,7 @@ test_that("Dropping a column in Nonmem",{
 
     res2b <- NMwriteData(pk,file=system.file("examples/data/xgxr1.csv",package="NMdata"),
                          write.rds=F,write.csv=F,
-                         nmdrop="CYCLE",
+                         nm.drop="CYCLE",
                          nmdir.data="/example")
     res2b <- fix.input(res2b)
 
@@ -83,7 +83,7 @@ test_that("A comma in a character",{
     expect_error(
         NMwriteData(pk,file=system.file("examples/data/xgxr1.csv",package="NMdata"),
                     write.rds=F,write.csv=F,
-                    nmdrop="CYCLE")
+                    nm.drop="CYCLE")
     )
 
 })

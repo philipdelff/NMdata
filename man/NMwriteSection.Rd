@@ -55,9 +55,9 @@ section="EST", newlines=newlines,newfile=NULL)
 }
 \seealso{
 Other Nonmem: 
+\code{\link{NMapplyFilters}()},
 \code{\link{NMextractText}()},
 \code{\link{NMreadSection}()},
-\code{\link{NMtransFilters}()},
 \code{\link{NMwriteData}()}
 }
 \concept{Nonmem}

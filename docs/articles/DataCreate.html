@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.910</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.912</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2021-05-16 using NMdata 0.0.7.1.910.</p>
+<p>Built 2021-05-22 using NMdata 0.0.7.1.912.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -153,14 +153,14 @@
 <span class="co">## dt.cov has a covariate for some of the subjects</span>
 <span class="kw">dt.cov</span>
 <span class="co">#&gt;     ID COV</span>
-<span class="co">#&gt;  1: 31   3</span>
-<span class="co">#&gt;  2: 32   1</span>
-<span class="co">#&gt;  3: 33   3</span>
+<span class="co">#&gt;  1: 31   4</span>
+<span class="co">#&gt;  2: 32   3</span>
+<span class="co">#&gt;  3: 33   4</span>
 <span class="co">#&gt;  4: 34   1</span>
-<span class="co">#&gt;  5: 35   2</span>
-<span class="co">#&gt;  6: 36   3</span>
-<span class="co">#&gt;  7: 37   3</span>
-<span class="co">#&gt;  8: 38   1</span>
+<span class="co">#&gt;  5: 35   3</span>
+<span class="co">#&gt;  6: 36   1</span>
+<span class="co">#&gt;  7: 37   1</span>
+<span class="co">#&gt;  8: 38   4</span>
 <span class="co">#&gt;  9: 39   1</span>
 <span class="co">#&gt; 10: 40   2</span>
 <span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>)
@@ -185,13 +185,13 @@
 <p>As illustrated by these simple examples, even the simplest merges have to be rigorously checked, no exceptions. The function call <code><a href="../reference/mergeCheck.html">mergeCheck(x1,x2)</a></code> ensures that the result has exactly one of each rows from <code>x1</code> and nothing else. We can use <code>...</code> to pass additional arguments to merge. Here, we need <code>all.x</code> to include rows from <code>x1</code> where <code>ID</code> is not matched by a row in <code>dt.cov</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
 <span class="kw">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/try.html">try</a></span>(<span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span>(<span class="kw">pk</span>, <span class="kw">dt.cov</span>, by = <span class="st">"ID"</span>))
-<span class="co">#&gt; Warning in mergeCheck(pk, dt.cov, by = "ID"): Rows disappeared during merge.</span>
-<span class="co">#&gt; Warning in mergeCheck(pk, dt.cov, by = "ID"): </span>
+<span class="co">#&gt; Rows disappeared during merge.</span>
+<span class="co">#&gt; Overview of dimensions of input and output data:</span>
 <span class="co">#&gt;         data nrows ncols</span>
 <span class="co">#&gt; 1:        pk  1502    25</span>
 <span class="co">#&gt; 2:    dt.cov    10     2</span>
 <span class="co">#&gt; 3: merged.df   100    26</span>
-<span class="co">#&gt; Warning in mergeCheck(pk, dt.cov, by = "ID"): Overview of values of by where number of rows in df1 changes:</span>
+<span class="co">#&gt; Overview of values of by where number of rows in df1 changes:</span>
 <span class="co">#&gt;       ID N.df1 N.result</span>
 <span class="co">#&gt;   1:  41    10        0</span>
 <span class="co">#&gt;   2:  42    10        0</span>
@@ -276,8 +276,7 @@
 <p>Columns that cannot be converted to numeric are put in the back, while column bearing standard Nonmem variable names like <code>ID</code>, <code>TIME</code>, <code>EVID</code> etc. will be pulled up front. You can of course add column names to prioritize to front (<code>first</code>) or back (<code>last</code>). See <code><a href="../reference/NMorderColumns.html">?NMorderColumns</a></code> for more options.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="kw">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMorderColumns.html">NMorderColumns</a></span>(<span class="kw">pk</span>)
-<span class="co">#&gt; Warning: In NMorderColumns(pk) : These standard nonmem columns were not found in data:</span>
-<span class="co">#&gt; MDV</span>
+<span class="co">#&gt; Warning: These standard nonmem columns were not found in data: MDV</span>
 </pre></div>
 <p>We may want to add <code>MDV</code> and rerun <code>NMorderColumns</code>.</p>
 </div>
@@ -335,7 +334,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-05-16 23:20:58 EDT"</span>
+<span class="co">#&gt; [1] "2021-05-22 00:48:20 EDT"</span>
 </pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit">
@@ -345,7 +344,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-05-16 23:20:58 EDT"</span>
+<span class="co">#&gt; [1] "2021-05-22 00:48:20 EDT"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span>

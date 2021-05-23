@@ -18,6 +18,17 @@ Parameters that can be controlled are:
 
 \itemize{
 
+\item{args.fread} Arguments passed to fread when reading _input_
+data files (fread options for reading Nonmem output tables cannot
+be configured at this point). If you change this, you are starting
+from scratch, except from file. This means that existing default
+argument values are all disregarded.
+
+\item{args.fwrite} Arguments passed to fwrite when writing csv
+files (NMwriteData). If you use this, you have to supply all
+arguments you want to use with fwrite, except for x (the data) and
+file.
+
 \item{as.fun} A function that will be applied to data returned by various
 data reading functions (NMscanData, NMreadTab, NMreadCsv, NMscanInput,
 NMscanTables). Also, data processing functions like mergeCheck, findCovs,
@@ -29,25 +40,18 @@ functions is always adhered to. Pass an actual function, say
 as.fun=tibble::as_tibble. If you want data.table, use as.fun="data.table"
 (not a function).
 
-\item{file.mod} A function that will derive the path to the input control
-stream based on the path to the output control stream. Technically, it can
-be a string too, but when using NMdataConf, this would make little sense
-because it would direct all output control streams to the same input control
-streams.
-
-\item{modelname} A function that will translate the output control stream
-path to a model name. Default is to strip .lst, so /path/to/run1.lst will
-become run1. Technically, it can be a string too, but when using NMdataConf,
-this would make little sense because it would translate all output control
-streams model name.
-
-\item{col.flagn} The name of the column containing numerical flag
-values for data row omission. Default value is FLAG. Used by
-flagsAssign, flagsCount.
+\item{check.time} Logical, applies to NMscanData only. NMscanData by
+defaults checks if output control stream is newer than input control stream
+and input data. Set this to FALSE if you are in an environment where time
+stamps cannot be relied on.
 
 \item{col.flagc} The name of the column containing the character
 flag values for data row omission. Default value is FLAG. Used
 by flagsAssign, flagsCount.
+
+\item{col.flagn} The name of the column containing numerical flag
+values for data row omission. Default value is FLAG. Used by
+flagsAssign, flagsCount.
 
 \item{col.model} The name of the column that will hold the name of
 the model. See modelname too (which defines the values that the
@@ -60,17 +64,24 @@ time. This is only used for sorting columns by NMorderColumns.
 identifier. This is used by NMscanData when merge.by.row=TRUE, and
 by NMorderColumns (row counter will be first column in data).
 
+\item{file.mod} A function that will derive the path to the input control
+stream based on the path to the output control stream. Technically, it can
+be a string too, but when using NMdataConf, this would make little sense
+because it would direct all output control streams to the same input control
+streams.
+
 \item{merge.by.row} Adjust the default combine method in
 NMscanData.
 
+\item{modelname} A function that will translate the output control stream
+path to a model name. Default is to strip .lst, so /path/to/run1.lst will
+become run1. Technically, it can be a string too, but when using NMdataConf,
+this would make little sense because it would translate all output control
+streams model name.
+
+
 \item{quiet} For non-interactive scripts, you can switch off the
 chatty behavior once and for all using this setting.
-
-\item{use.input} In NMscanData, merge with columns in input data?
-Using this, you don't have to worry about remembering including
-all relevant variables in the output tables. Default is TRUE.
-
-\item{use.rds} Affects NMscanData and NMscanInput. 
 
 \item{recover.rows} In NMscanData, Include rows from input data
     files that do not exist in output tables? This will be added
@@ -79,10 +90,11 @@ all relevant variables in the output tables. Default is TRUE.
     nmout will be TRUE when the row was found in output tables,
     and FALSE when not. Default is FALSE.
 
-\item{check.time} Logical, applies to NMscanData only. NMscanData by
-defaults checks if output control stream is newer than input control stream
-and input data. Set this to FALSE if you are in an environment where time
-stamps cannot be relied on.
+\item{use.input} In NMscanData, merge with columns in input data?
+Using this, you don't have to worry about remembering including
+all relevant variables in the output tables. Default is TRUE.
+
+\item{use.rds} Affects NMscanData and NMscanInput. 
 
 }}
 }

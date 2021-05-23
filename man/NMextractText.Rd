@@ -95,8 +95,8 @@ NMreadSection(system.file("examples/nonmem/run001.lst", package = "NMdata"),sect
 }
 \seealso{
 Other Nonmem: 
+\code{\link{NMapplyFilters}()},
 \code{\link{NMreadSection}()},
-\code{\link{NMtransFilters}()},
 \code{\link{NMwriteData}()},
 \code{\link{NMwriteSection}()}
 }

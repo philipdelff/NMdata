@@ -75,6 +75,8 @@ NMscanInput <- function(file, use.rds, file.mod,
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     nid <- NULL
+    result.all <- NULL
+    input <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 

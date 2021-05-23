@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.910</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.912</span>
       </span>
     </div>
 
@@ -139,7 +139,14 @@
     <p>Pretty wrapping of lines in NMdata vignettes</p>
     </div>
 
-    <pre class="usage"><span class='fu'>messageWrap</span>(<span class='kw'>...</span>, fun.msg = <span class='kw'>message</span>, prefix = <span class='st'>"\n"</span>, initial = <span class='st'>""</span>, width = <span class='fl'>80</span>)</pre>
+    <pre class="usage"><span class='fu'>messageWrap</span>(
+  <span class='kw'>...</span>,
+  fun.msg = <span class='kw'>message</span>,
+  prefix = <span class='st'>"\n"</span>,
+  initial = <span class='st'>""</span>,
+  width = <span class='fl'>80</span>,
+  track.msg = <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -165,6 +172,12 @@ NULL is invisibly returned.</p></td>
     <tr>
       <th>width</th>
       <td><p>Passed to strwrap. Default is 80.</p></td>
+    </tr>
+    <tr>
+      <th>track.msg</th>
+      <td><p>If TRUE, the name of the function throwing the
+message/warning/error is mentioned. This is not default but
+useful when using function inside other functions.</p></td>
     </tr>
     </table>
 

@@ -14,7 +14,7 @@ NMwriteData(
   args.stamp,
   args.fwrite,
   args.rds,
-  nmdrop,
+  nm.drop,
   nmdir.data,
   col.flag = "FLAG",
   nm.rename,
@@ -48,7 +48,7 @@ configured using NMdataConf.}
 
 \item{args.rds}{A list of arguments to be passed to saveRDS.}
 
-\item{nmdrop}{Only used for generation of proposed text for Nonmem
+\item{nm.drop}{Only used for generation of proposed text for Nonmem
 control stream. Columns to drop in Nonmem $DATA. This has two
 implications. One is that the proposed $DATA indicates =DROP
 after the given column names. The other that in case it is a
@@ -99,15 +99,15 @@ When writing csv files, the file will be
 
 The user is provided with text to use in Nonmem. This lists names
 of the data columns. Once a column is reached that Nonmem will not
-be able to read as a numeric and column is not in nmdrop, the list
+be able to read as a numeric and column is not in nm.drop, the list
 is stopped. Only exception is TIME which is not tested for whether
 character or not.
 }
 \seealso{
 Other Nonmem: 
+\code{\link{NMapplyFilters}()},
 \code{\link{NMextractText}()},
 \code{\link{NMreadSection}()},
-\code{\link{NMtransFilters}()},
 \code{\link{NMwriteSection}()}
 }
 \concept{Nonmem}

@@ -77,7 +77,7 @@ variables that do not vary within unique combinations of these." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.910</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.912</span>
       </span>
     </div>
 
@@ -191,31 +191,19 @@ be configued using NMdataConf.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='NMscanData.html'>NMscanData</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"examples/nonmem/xgxr001.lst"</span>, package = <span class='st'>"NMdata"</span>))
-</div><div class='output co'>#&gt; <span class='message'>In NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata")) :</span>
-#&gt; <span class='message'>Input data columns will be appended to output data. However, column(s) were</span>
+</div><div class='output co'>#&gt; <span class='message'>Input data columns will be appended to output data. However, column(s) were</span>
 #&gt; <span class='message'>identified as unique identifiers, present in both input and output data. If</span>
 #&gt; <span class='message'>this column or one of these columns is not modified by the Nonmem run,</span>
 #&gt; <span class='message'>consider using this in col.row for a robust merge of input and output data.</span>
 #&gt; <span class='message'>Candidate columns: ROW To skip this check, please use merge.by.row=TRUE or</span>
-#&gt; <span class='message'>merge.by.row=FALSE.</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='warning'>Warning: In NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata")) :</span>
-#&gt; <span class='warning'>input control stream</span>
-#&gt; <span class='warning'>(C:/Users/delff/AppData/Local/Temp/RtmpAbRq4q/temp_libpath7544626ed2/NMdata/examples/nonmem/xgxr001.mod)</span>
-#&gt; <span class='warning'>is newer than output control stream</span>
-#&gt; <span class='warning'>(C:/Users/delff/AppData/Local/Temp/RtmpAbRq4q/temp_libpath7544626ed2/NMdata/examples/nonmem/xgxr001.lst)</span>
-#&gt; <span class='warning'>Seems like model has been edited since last run. If data sections have been</span>
-#&gt; <span class='warning'>edited, this can corrupt results.</span></div><div class='output co'>#&gt; Model:  xgxr001 
+#&gt; <span class='message'>merge.by.row=FALSE.</span></div><div class='output co'>#&gt; 
+#&gt; Model:  xgxr001 </div><div class='output co'>#&gt; <span class='message'>Input and output data combined by translation of Nonmem data filters (not recommended).</span></div><div class='output co'>#&gt; 
+#&gt; Used tables, contents shown as used/total:
+#&gt;               file     rows columns     IDs
+#&gt;    xgxr001_res.txt  905/905   16/16 150/150
+#&gt;  xgxr1.csv (input) 905/1502   22/24 150/150
 #&gt; 
-#&gt; Used tables, numbers of columns and detail levels:
-#&gt;               file used/total level
-#&gt;    xgxr001_res.txt      16/16   row
-#&gt;  xgxr1.csv (input)      22/24   row
-#&gt; 
-#&gt; Numbers of rows and subjects
-#&gt;       N Output Input only
-#&gt;  N.rows    905          0
-#&gt;   N.ids    150          0
-#&gt; 
-#&gt; Distribution of rows on event types
+#&gt; Distribution of rows on event types in returned data:
 #&gt;  EVID Output
 #&gt;     0    755
 #&gt;     1    150</div><div class='input'><span class='co'>### very common use</span>

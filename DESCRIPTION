@@ -1,7 +1,7 @@
 Package: NMdata
 Type: Package
 Title: Efficient data preparation, consistency-checking and post-processing in PK/PD modeling
-Version: 0.0.7.1.910
+Version: 0.0.7.1.912
 Author: Philip Delff <philip@delff.dk>
 Maintainer: Philip Delff <philip@delff.dk>
 Description: Efficient tools for preparation, checking and post-processing of data in PK/PD modeling, with a special focus on use of Nonmem. The aim is to save time on trivial tasks and avoid time-consuming errors. Implemented in data.table, but integratable with base or tidyverse.

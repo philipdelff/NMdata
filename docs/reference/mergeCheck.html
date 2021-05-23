@@ -79,7 +79,7 @@ described above." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.910</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.912</span>
       </span>
     </div>
 
@@ -160,6 +160,7 @@ described above.</p>
   as.fun = <span class='kw'>NULL</span>,
   fun.commoncols = <span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/warning.html'>warning</a></span>,
   <span class='kw'>ncols.expect</span>,
+  track.msg = <span class='fl'>FALSE</span>,
   <span class='kw'>...</span>
 )</pre>
 
@@ -204,6 +205,12 @@ fun.commoncols=NULL.</p></td>
 of columns being added to the dimensions of df1. So if
 ncols.expect=1, the resulting data must have exactly one
 column more than df1 - if not, an error will be returned.</p></td>
+    </tr>
+    <tr>
+      <th>track.msg</th>
+      <td><p>If using mergeCheck inside other functions, it
+can be useful to use track.msg=TRUE. This will add information
+to messages/warnings/errors that they came from mergCheck.</p></td>
     </tr>
     <tr>
       <th>...</th>

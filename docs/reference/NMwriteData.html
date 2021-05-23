@@ -78,7 +78,7 @@ in the file argument." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.910</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.912</span>
       </span>
     </div>
 
@@ -161,7 +161,7 @@ in the file argument.</p>
   <span class='kw'>args.stamp</span>,
   <span class='kw'>args.fwrite</span>,
   <span class='kw'>args.rds</span>,
-  <span class='kw'>nmdrop</span>,
+  <span class='kw'>nm.drop</span>,
   <span class='kw'>nmdir.data</span>,
   col.flag = <span class='st'>"FLAG"</span>,
   <span class='kw'>nm.rename</span>,
@@ -216,7 +216,7 @@ configured using NMdataConf.</p></td>
       <td><p>A list of arguments to be passed to saveRDS.</p></td>
     </tr>
     <tr>
-      <th>nmdrop</th>
+      <th>nm.drop</th>
       <td><p>Only used for generation of proposed text for Nonmem
 control stream. Columns to drop in Nonmem $DATA. This has two
 implications. One is that the proposed $DATA indicates =DROP
@@ -271,15 +271,15 @@ is TRUE.</p></td>
     returned if commas are found in strings.</p>
 <p>The user is provided with text to use in Nonmem. This lists names
 of the data columns. Once a column is reached that Nonmem will not
-be able to read as a numeric and column is not in nmdrop, the list
+be able to read as a numeric and column is not in nm.drop, the list
 is stopped. Only exception is TIME which is not tested for whether
 character or not.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Nonmem: 
+<code><a href='NMapplyFilters.html'>NMapplyFilters</a>()</code>,
 <code><a href='NMextractText.html'>NMextractText</a>()</code>,
 <code><a href='NMreadSection.html'>NMreadSection</a>()</code>,
-<code><a href='NMtransFilters.html'>NMtransFilters</a>()</code>,
 <code><a href='NMwriteSection.html'>NMwriteSection</a>()</code></p></div>
 
   </div>

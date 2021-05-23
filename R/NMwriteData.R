@@ -29,7 +29,7 @@
 ##'     argument is only used for generating the proposed text to
 ##'     paste into the Nonmem control stream. To skip this feature,
 ##'     use col.flag=NULL.
-##' @param nmdrop Only used for generation of proposed text for Nonmem
+##' @param nm.drop Only used for generation of proposed text for Nonmem
 ##'     control stream. Columns to drop in Nonmem $DATA. This has two
 ##'     implications. One is that the proposed $DATA indicates =DROP
 ##'     after the given column names. The other that in case it is a
@@ -57,7 +57,7 @@
 ##'
 ##' The user is provided with text to use in Nonmem. This lists names
 ##' of the data columns. Once a column is reached that Nonmem will not
-##' be able to read as a numeric and column is not in nmdrop, the list
+##' be able to read as a numeric and column is not in nm.drop, the list
 ##' is stopped. Only exception is TIME which is not tested for whether
 ##' character or not.
 ##' 
@@ -67,7 +67,7 @@
 
 NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
                         write.rds=write.csv,script,args.stamp,args.fwrite,
-                        args.rds,nmdrop,nmdir.data,col.flag="FLAG",
+                        args.rds,nm.drop,nmdir.data,col.flag="FLAG",
                         nm.rename,capitalize.names=FALSE,allow.char.TIME=TRUE){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -132,14 +132,14 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
         }
     }
 
-    if(missing(nmdrop)) {
-        nmdrop <- NULL
+    if(missing(nm.drop)) {
+        nm.drop <- NULL
     } else {
-        if(!is.null(nmdrop) && !is.character(nmdrop) ) {
-            stop("If supplied, nmdrop must be of type character.")
+        if(!is.null(nm.drop) && !is.character(nm.drop) ) {
+            stop("If supplied, nm.drop must be of type character.")
         }
-        if(any(is.na(nmdrop)|nmdrop=="")){
-            stop("nmdrop cannot contain empty strings and NA's.")
+        if(any(is.na(nm.drop)|nm.drop=="")){
+            stop("nm.drop cannot contain empty strings and NA's.")
         }
     }
     
@@ -197,12 +197,12 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
 
     ## apply DROP
     dt.num.ok[,drop:=FALSE]
-    if(!is.null(nmdrop)){
-        dt.num.ok[col%in%nmdrop,name.nm:=paste0(name.nm,"=DROP")]
-        dt.num.ok[col%in%nmdrop,drop:=TRUE]
-        drops.not.used <- nmdrop[!nmdrop%in%dt.num.ok[,col]]
+    if(!is.null(nm.drop)){
+        dt.num.ok[col%in%nm.drop,name.nm:=paste0(name.nm,"=DROP")]
+        dt.num.ok[col%in%nm.drop,drop:=TRUE]
+        drops.not.used <- nm.drop[!nm.drop%in%dt.num.ok[,col]]
         if(length(drops.not.used)){
-            warning("Elements in nmdrop not found as columns in data:",paste(drops.not.used,collapse=", "))
+            warning("Elements in nm.drop not found as columns in data:",paste(drops.not.used,collapse=", "))
         }
     }
     
@@ -283,7 +283,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     written <- length(files.written)>0
     if(written){
         message(
-            paste0("Data witten to file:\n",paste(files.written,collapse="\n"))
+            paste0("Data written to file(s):\n",paste(files.written,collapse="\n"))
         )
     } else {
         message(

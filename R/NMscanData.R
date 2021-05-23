@@ -372,6 +372,41 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                  ,col.id=col.id
                                  ,details=TRUE)
 
+    }
+
+
+#### Section start: Check file modification times ####
+
+    if(check.time){    
+        if(!is.null(file.mod)&file.exists(file.mod)) {
+            mtime.mod <- file.mtime(file.mod)
+            if(mtime.mod>file.mtime(file)){
+                messageWrap(paste0("input control stream (",file.mod,") is newer than output control stream (",file,") Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
+                            fun.msg=warning)
+            }
+            if(mtime.mod>max(tables$meta[,file.mtime])){
+                messageWrap(paste0("input control stream (",file.mod,") is newer than output tables. Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
+                            fun.msg=warning)
+            }
+        }
+
+        if(use.input) {
+            mtime.inp <- max(data.input$meta$file.mtime)
+            if(mtime.inp > file.mtime(file)){
+                messageWrap(paste0("input data (",data.input$meta$file,") is newer than output control stream (",file,") Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                            fun.msg=warning)
+            }
+            if(mtime.inp > max(tables$meta[,file.mtime])){
+                messageWrap(paste0("input data file (",data.input$meta$file,") is newer than output tables. Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                            fun.msg=warning)
+            }
+        }
+    }
+
+### Section end: Check file modification times
+    
+    
+    if(use.input){
         cnames.input <- copy(colnames(data.input$data))
         col.row.in.input <- !is.null(col.row) && col.row %in% cnames.input 
         if(merge.by.row=="ifAvailable"){
@@ -625,35 +660,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 ###  Section end: Recover rows
 
-#### Section start: Check file modification times ####
-
-    if(check.time){    
-        if(!is.null(file.mod)&file.exists(file.mod)) {
-            mtime.mod <- file.mtime(file.mod)
-            if(mtime.mod>file.mtime(file)){
-                messageWrap(paste0("input control stream (",file.mod,") is newer than output control stream (",file,") Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
-                            fun.msg=warning)
-            }
-            if(mtime.mod>max(tables$meta[,file.mtime])){
-                messageWrap(paste0("input control stream (",file.mod,") is newer than output tables. Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
-                            fun.msg=warning)
-            }
-        }
-
-        if(use.input) {
-            mtime.inp <- max(data.input$meta$file.mtime)
-            if(mtime.inp > file.mtime(file)){
-                messageWrap(paste0("input data (",data.input$meta$file,") is newer than output control stream (",file,") Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
-                            fun.msg=warning)
-            }
-            if(mtime.inp > max(tables$meta[,file.mtime])){
-                messageWrap(paste0("input data file (",data.input$meta$file,") is newer than output tables. Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
-                            fun.msg=warning)
-            }
-        }
-    }
-
-### Section end: Check file modification times
 
 
 #### Section start: Format output ####
@@ -713,6 +719,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         rows.recovered=recover.rows,
         ## input and output merged? (or cbind after filters?)
         merge.by.row=merge.by.row,
+        col.row=col.row,
         ## if available: path to input data
         file.input=NA_character_,
         ## if available: mtime of input data

@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.910</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.912</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2021-05-16 using NMdata 0.0.7.1.910.</p>
+<p>Built 2021-05-22 using NMdata 0.0.7.1.912.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -131,19 +131,15 @@
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="kw">res0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr001.lst"</span>, package=<span class="st">"NMdata"</span>),
                    merge.by.row=<span class="fl">FALSE</span>)
-<span class="co">#&gt; Model:  xgxr001 </span>
+<span class="co">#&gt; Model:  xgxr001</span>
+<span class="co">#&gt; Input and output data combined by translation of Nonmem data filters (not recommended).</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Used tables, numbers of columns and detail levels:</span>
-<span class="co">#&gt;               file used/total level</span>
-<span class="co">#&gt;    xgxr001_res.txt      16/16   row</span>
-<span class="co">#&gt;  xgxr1.csv (input)      22/24   row</span>
+<span class="co">#&gt; Used tables, contents shown as used/total:</span>
+<span class="co">#&gt;               file     rows columns     IDs</span>
+<span class="co">#&gt;    xgxr001_res.txt  905/905   16/16 150/150</span>
+<span class="co">#&gt;  xgxr1.csv (input) 905/1502   22/24 150/150</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Numbers of rows and subjects</span>
-<span class="co">#&gt;       N Output Input only</span>
-<span class="co">#&gt;  N.rows    905          0</span>
-<span class="co">#&gt;   N.ids    150          0</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Distribution of rows on event types</span>
+<span class="co">#&gt; Distribution of rows on event types in returned data:</span>
 <span class="co">#&gt;  EVID Output</span>
 <span class="co">#&gt;     0    755</span>
 <span class="co">#&gt;     1    150</span>
@@ -200,28 +196,16 @@
 </pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="kw">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/nonmem/xgxr014.lst"</span>, package=<span class="st">"NMdata"</span>),
-                   col.row=<span class="st">"ROW"</span>,recover.rows=<span class="fl">TRUE</span>)
-<span class="co">#&gt; In NMscanData(system.file("examples/nonmem/xgxr014.lst", package = "NMdata"),</span>
-<span class="co">#&gt; col.row = "ROW", recover.rows = TRUE) : Input data columns will be appended to</span>
-<span class="co">#&gt; output data. However, column(s) were identified as unique identifiers, present</span>
-<span class="co">#&gt; in both input and output data. If this column or one of these columns is not</span>
-<span class="co">#&gt; modified by the Nonmem run, consider using this in col.row for a robust merge</span>
-<span class="co">#&gt; of input and output data. Candidate columns: ROW To skip this check, please</span>
-<span class="co">#&gt; use merge.by.row=TRUE or merge.by.row=FALSE.</span>
-<span class="co">#&gt; </span>
+                   col.row=<span class="st">"ROW"</span>,merge.by.row=<span class="st">"ifAvailable"</span>,recover.rows=<span class="fl">TRUE</span>)
 <span class="co">#&gt; Model:  xgxr014 </span>
+<span class="co">#&gt; Input and output data merged by: ROW </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Used tables, numbers of columns and detail levels:</span>
-<span class="co">#&gt;               file used/total level</span>
-<span class="co">#&gt;    xgxr014_res.txt      12/12   row</span>
-<span class="co">#&gt;  xgxr2.rds (input)      22/24   row</span>
+<span class="co">#&gt; Used tables, contents shown as used/total:</span>
+<span class="co">#&gt;               file      rows columns     IDs</span>
+<span class="co">#&gt;    xgxr014_res.txt   905/905   12/12 150/150</span>
+<span class="co">#&gt;  xgxr2.rds (input) 1502/1502   22/24 150/150</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Numbers of rows and subjects</span>
-<span class="co">#&gt;       N Input only Output</span>
-<span class="co">#&gt;  N.rows        597    905</span>
-<span class="co">#&gt;   N.ids          0    150</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Distribution of rows on event types</span>
+<span class="co">#&gt; Distribution of rows on event types in returned data:</span>
 <span class="co">#&gt;  EVID Input only Output</span>
 <span class="co">#&gt;     0        597    755</span>
 <span class="co">#&gt;     1          0    150</span>

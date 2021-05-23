@@ -30,6 +30,9 @@
 ##'     of columns being added to the dimensions of df1. So if
 ##'     ncols.expect=1, the resulting data must have exactly one
 ##'     column more than df1 - if not, an error will be returned.
+##' @param track.msg If using mergeCheck inside other functions, it
+##'     can be useful to use track.msg=TRUE. This will add information
+##'     to messages/warnings/errors that they came from mergCheck.
 ##' @param ... additional arguments passed to merge. If all is among
 ##'     them, an error will be returned.
 ##' @details Besides merging and checking rows, mergeCheck makes sure
@@ -47,7 +50,7 @@
 ##' @return a data.frame resulting from merging df1 and df2
 ##' @export
 
-mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols.expect,...){
+mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols.expect,track.msg=FALSE,...){
 
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -69,11 +72,11 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
     name.df3 <- "merged.df"
     if("all"%in%names(list(...))) {
         messageWrap("option all not supported. mergeCheck is for merges that are intended to result in column additions to df1, that's all.",
-                    fun.msg=stop)
+                    fun.msg=stop,track.msg=track.msg)
     }
 
 ### check if sort is in ... That cannot be passed.
-    if("sort"%in%names(list(...))) messageWrap("sort is not meaningful in combination with mergeCheck because mergeCheck will preserve order of df1. Please drop sort argument.",fun.msg=stop)
+    if("sort"%in%names(list(...))) messageWrap("sort is not meaningful in combination with mergeCheck because mergeCheck will preserve order of df1. Please drop sort argument.",fun.msg=stop,track.msg=track.msg)
     
     ## if data is not data.tables, convert to data.tables
     stopifnot(is.data.frame(df1))
@@ -97,7 +100,7 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
         commoncols.found <- FALSE
         if(length(cols.com.notby)) {
             messageWrap(paste0("df1 and df2 have common column names not being merged by. This will create new column names in output. Common but not merged by: ",paste(cols.com.notby,collapse=","),"."),
-                        fun.msg=fun.commoncols)
+                        fun.msg=fun.commoncols,track.msg=track.msg)
             commoncols.found <- TRUE
         }
     }
@@ -120,19 +123,18 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
     if(any(c(rows.disappeared,rows.created,rows.number.changed))){
 
         if(rows.number.changed && !rows.disappeared && !rows.created){
-            warning("Number of rows changed during merge.\n")
+            messageWrap("Number of rows changed during merge.\n",fun.msg=message,track.msg=track.msg)
         }
-        if(rows.disappeared) warning("Rows disappeared during merge.\n")
-        if(rows.created) warning("New rows appeared during merge.\n")
+        if(rows.disappeared) messageWrap("Rows disappeared during merge.",fun.msg=message,track.msg=track.msg)
+        if(rows.created) messageWrap("New rows appeared during merge.",fun.msg=message,track.msg=track.msg)
         
         dims.rep <- dims(list.data=
                              setNames(list(df1,df2,df3),c(name.df1,name.df2,name.df3))
                          )
-
-        warning(
-            "\n",paste0(capture.output(dims.rep), collapse = "\n"),"\n"
-        )
         
+        message("Overview of dimensions of input and output data:\n",
+            paste0(capture.output(dims.rep), collapse = "\n"),"\n"
+        )
         
         dtcheck <- merge(df1[,.N,by=by],
                          df3[,.N,by=by]
@@ -142,7 +144,7 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
         dtcheck[is.na(N.result),N.result:=0]
         dtcheck <- dtcheck[N.df1!=N.result]
 
-        warning("Overview of values of by where number of rows in df1 changes:\n",
+        message("Overview of values of by where number of rows in df1 changes:\n",
                 paste0(capture.output(dtcheck), collapse = "\n"))
         
         stop("Merge added and/or removed rows.")
@@ -159,7 +161,7 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
         n.newcols <- ncol(df3)-ncol(df1)
         if(n.newcols!=ncols.expect) {
             newcols <- setdiff(colnames(df3),colnames(df1))
-            messageWrap(sprintf("Number of new columns (%d) does not mactch the expected (%d). New columns are: %s.",n.newcols,ncols.expect,paste(newcols,", ")),fun.msg=stop)
+            messageWrap(sprintf("Number of new columns (%d) does not mactch the expected (%d). New columns are: %s.",n.newcols,ncols.expect,paste(newcols,", ")),fun.msg=stop,track.msg=track.msg)
         }
     }
 

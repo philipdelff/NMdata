@@ -45,25 +45,13 @@
 ##' and input data. Set this to FALSE if you are in an environment where time
 ##' stamps cannot be relied on.
 ##' 
-##' \item{file.mod} A function that will derive the path to the input control
-##' stream based on the path to the output control stream. Technically, it can
-##' be a string too, but when using NMdataConf, this would make little sense
-##' because it would direct all output control streams to the same input control
-##' streams.
-##' 
-##' \item{modelname} A function that will translate the output control stream
-##' path to a model name. Default is to strip .lst, so /path/to/run1.lst will
-##' become run1. Technically, it can be a string too, but when using NMdataConf,
-##' this would make little sense because it would translate all output control
-##' streams model name.
+##' \item{col.flagc} The name of the column containing the character
+##' flag values for data row omission. Default value is FLAG. Used
+##' by flagsAssign, flagsCount.
 ##' 
 ##' \item{col.flagn} The name of the column containing numerical flag
 ##' values for data row omission. Default value is FLAG. Used by
 ##' flagsAssign, flagsCount.
-##' 
-##' \item{col.flagc} The name of the column containing the character
-##' flag values for data row omission. Default value is FLAG. Used
-##' by flagsAssign, flagsCount.
 ##'
 ##' \item{col.model} The name of the column that will hold the name of
 ##' the model. See modelname too (which defines the values that the
@@ -75,18 +63,25 @@
 ##' \item{col.row} The name of the column containing a unique row
 ##' identifier. This is used by NMscanData when merge.by.row=TRUE, and
 ##' by NMorderColumns (row counter will be first column in data).
-##'
+##' 
+##' \item{file.mod} A function that will derive the path to the input control
+##' stream based on the path to the output control stream. Technically, it can
+##' be a string too, but when using NMdataConf, this would make little sense
+##' because it would direct all output control streams to the same input control
+##' streams.
+##' 
 ##' \item{merge.by.row} Adjust the default combine method in
 ##' NMscanData.
 ##'
+##' \item{modelname} A function that will translate the output control stream
+##' path to a model name. Default is to strip .lst, so /path/to/run1.lst will
+##' become run1. Technically, it can be a string too, but when using NMdataConf,
+##' this would make little sense because it would translate all output control
+##' streams model name.
+##' 
+##' 
 ##' \item{quiet} For non-interactive scripts, you can switch off the
 ##' chatty behavior once and for all using this setting.
-##'
-##' \item{use.input} In NMscanData, merge with columns in input data?
-##' Using this, you don't have to worry about remembering including
-##' all relevant variables in the output tables. Default is TRUE.
-##'
-##' \item{use.rds} Affects NMscanData and NMscanInput. 
 ##'
 ##' \item{recover.rows} In NMscanData, Include rows from input data
 ##'     files that do not exist in output tables? This will be added
@@ -95,6 +90,11 @@
 ##'     nmout will be TRUE when the row was found in output tables,
 ##'     and FALSE when not. Default is FALSE.
 ##' 
+##' \item{use.input} In NMscanData, merge with columns in input data?
+##' Using this, you don't have to worry about remembering including
+##' all relevant variables in the output tables. Default is TRUE.
+##'
+##' \item{use.rds} Affects NMscanData and NMscanInput. 
 ##'
 ##' }
 ##' @details Recommendation: Use
@@ -219,28 +219,6 @@ NMdataConfOptions <- function(name){
            ,process=identity
         )
        ,
-        file.mod=list(
-            default=function(file) fnExtension(file,ext=".mod")
-            ## has to be length 1 character or function
-           ,is.allowed=function(x) is.function(x) || (length(x)==1 && is.character(x))
-           ,msg.not.allowed="file.mod must be a function or a character of length 1"
-           ,process=function(x) {
-               if(is.character(x)) return(function(file) x)
-               x
-           }
-        )
-       ,
-        modelname=list(
-            default=function(file) fnExtension(basename(file),"")
-            ## has to be length 1 character or function
-           ,is.allowed=function(x) is.function(x) || (length(x)==1 && is.character(x))
-           ,msg.not.allowed="modelname must be either a function or a character."
-           ,process=function(x) {
-               if(is.character(x)) return(function(file) x)
-               x
-           }
-        )
-       ,
         col.model=list(
             default="model"
            ,is.allowed=function(x) (is.character(x) && length(x)==1)
@@ -276,18 +254,48 @@ NMdataConfOptions <- function(name){
            ,process=identity
         )
        ,
+        file.mod=list(
+            default=function(file) fnExtension(file,ext=".mod")
+            ## has to be length 1 character or function
+           ,is.allowed=function(x) is.function(x) || (length(x)==1 && is.character(x))
+           ,msg.not.allowed="file.mod must be a function or a character of length 1"
+           ,process=function(x) {
+               if(is.character(x)) return(function(file) x)
+               x
+           }
+        )
+       ,
         merge.by.row=list(
             default=FALSE
             ## has to be length 1 character 
            ,is.allowed=function(x)is.logical(x) || (is.character(x) && length(x)==1 && x=="ifAvailable")
-           ,msg.not.allowed="merge.by.row must be TRUE or FALSE."
+           ,msg.not.allowed="merge.by.row must be logical or the string \"ifAvailable\"."
            ,process=identity
+        )
+       ,
+        modelname=list(
+            default=function(file) fnExtension(basename(file),"")
+            ## has to be length 1 character or function
+           ,is.allowed=function(x) is.function(x) || (length(x)==1 && is.character(x))
+           ,msg.not.allowed="modelname must be either a function or a character."
+           ,process=function(x) {
+               if(is.character(x)) return(function(file) x)
+               x
+           }
         )
        ,
         quiet=list(
             default=FALSE
            ,is.allowed=is.logical
            ,msg.not.allowed="quiet must be logical"
+           ,process=identity
+        )
+       ,
+        recover.rows=list(
+            default=FALSE
+            ## has to be length 1 character or function
+           ,is.allowed=is.logical
+           ,msg.not.allowed="recover.rows must be logical"
            ,process=identity
         )
        ,
@@ -304,15 +312,6 @@ NMdataConfOptions <- function(name){
            ,msg.not.allowed="use.rds must be logical"
            ,process=identity
         )
-       ,
-        recover.rows=list(
-            default=FALSE
-            ## has to be length 1 character or function
-           ,is.allowed=is.logical
-           ,msg.not.allowed="recover.rows must be logical"
-           ,process=identity
-        )
-
     )
 
     if(!missing(name)&&!is.null(name)){
