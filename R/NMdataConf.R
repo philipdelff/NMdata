@@ -269,7 +269,7 @@ NMdataConfOptions <- function(name){
             default=FALSE
             ## has to be length 1 character 
            ,is.allowed=function(x)is.logical(x) || (is.character(x) && length(x)==1 && x=="ifAvailable")
-           ,msg.not.allowed="merge.by.row must be TRUE or FALSE."
+           ,msg.not.allowed="merge.by.row must be logical or the string \"ifAvailable\"."
            ,process=identity
         )
        ,

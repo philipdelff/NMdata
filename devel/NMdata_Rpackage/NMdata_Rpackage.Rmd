@@ -159,6 +159,11 @@ you find something interesting, feel free to take advantage.
 # Getting started
 ## Getting started
 
+```{r,install-NMdata,message=FALSE}
+library(remotes)
+install_github("philipdelff/NMdata",upgrade="never")
+```
+
 ```{r,load-NMdata,echo=TRUE,message=TRUE}
 library(NMdata)
 ```
