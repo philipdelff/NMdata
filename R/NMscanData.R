@@ -34,7 +34,7 @@
 ##'     argument col.row too.
 ##' @param col.row A column with a unique value for each row. Such a
 ##'     column is recommended to use if possible. See merge.by.row and
-##'     details as well.
+##'     details as well. Default ("ROW") can be modified using NMdataConf.
 ##' @param recover.rows Include rows from input data files that do not
 ##'     exist in output tables? This will be added to the $row dataset
 ##'     only, and $run, $id, and $occ datasets are created before this

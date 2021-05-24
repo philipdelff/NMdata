@@ -57,7 +57,7 @@ NMdataConf(as.fun="data.table")
 
 ## ----meanbydose-------------------------------------------
 res2 <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
-                   col.row="ROW",recover.rows=TRUE)
+                   col.row="ROW",merge.by.row="ifAvailable",recover.rows=TRUE)
 ## now we have a data.table
 class(res2)
 ## Derive another data.table with geometric mean pop predictions by

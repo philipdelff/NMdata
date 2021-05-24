@@ -42,7 +42,7 @@
 ##'     rename columns in Nonmem $DATA, NMwriteData can adjust the
 ##'     suggested $DATA text. If you plan to use CONC as DV in Nonmem,
 ##'     consider nm.rename=c(DV="CONC").
-##' @param capitalize.names For the $DATA text proposal only. If TRUE,
+##' @param nm.capitalize For the $DATA text proposal only. If TRUE,
 ##'     the suggested text for Nonmem will only contain capital
 ##'     letters in column names.
 ##' @param allow.char.TIME For the $DATA text proposal only. Assume
@@ -68,7 +68,7 @@
 NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
                         write.rds=write.csv,script,args.stamp,args.fwrite,
                         args.rds,nm.drop,nmdir.data,col.flag="FLAG",
-                        nm.rename,capitalize.names=FALSE,allow.char.TIME=TRUE){
+                        nm.rename,nm.capitalize=FALSE,allow.char.TIME=TRUE){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
     
@@ -172,7 +172,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
 
     ## if wanted, use only capital letters for column names in Nonmem
     dt.num.ok[,name.nm:=col]
-    if(capitalize.names){
+    if(nm.capitalize){
         dt.num.ok[,name.nm:=toupper(name.nm)]
     }
     
