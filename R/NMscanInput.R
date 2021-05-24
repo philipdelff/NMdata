@@ -106,10 +106,8 @@ NMscanInput <- function(file, use.rds, file.mod,
     if(is.null(dir.data)) {
         
         file.mod <- NMdataDecideOption("file.mod",file.mod)
-
         file.find.data <- file.mod(file)
-        ## file.find.data <- getFileMod(file.lst=file,file.mod=file.mod)
-        
+
         if(!file.exists(file.find.data)) {
             messageWrap("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument. Input data not used.",fun.msg=warning)
         }
@@ -121,22 +119,18 @@ NMscanInput <- function(file, use.rds, file.mod,
     info.datafile <- NMextractDataFile(file=file.find.data,dir.data)
     
     type.file <- NA_character_
-    ## if(use.rds && file.exists(path.data.input.rds)){
     if(use.rds && info.datafile$exists.file.rds){
         type.file <- "rds"
         if(!quiet) message("Read rds input data file.")
-        ## path.data.input <- path.data.input.rds
         path.data.input <- info.datafile$path.rds
         data.input <- as.data.table(readRDS(path.data.input))
     } else {
-        ##if(file.exists(path.data.input)){
         if(file.exists(info.datafile$path)){
             type.file <- "text"
             if(!quiet) message("Read delimited text input data file.")
             path.data.input <- info.datafile$path
             data.input <- NMreadCsv(path.data.input,args.fread=args.fread,as.fun="data.table")
         } else {
-            ## stop(paste("Input data file not found. Was expecting to find",path.data.input))
             stop(paste("Input data file not found. Was expecting to find",info.datafile$path))
         }
     }
@@ -146,8 +140,6 @@ NMscanInput <- function(file, use.rds, file.mod,
     if(applyFilters){
         data.input <- NMapplyFilters(data.input,file=file,invert=invert,quiet=quiet,as.fun=identity)
     }
-
-    
 
     if(translate){
 ### cnames.input is the names of columns as in input data file
@@ -176,7 +168,6 @@ NMscanInput <- function(file, use.rds, file.mod,
             ncol=ncol(data.input.0),
             nid=NA_real_
         )
-        ##        cnames.input <- colnames(data.input)
         if(col.id%in%dt.colnames[,result.all]) {
             meta$nid <- data.input.0[,uniqueN(get(col.id.inp))]
         }
