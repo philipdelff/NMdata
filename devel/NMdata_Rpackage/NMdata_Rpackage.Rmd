@@ -179,7 +179,7 @@ NMdataConf(as.fun="data.table")
 ```
 
 
-Three vignettes are available
+Three vignettes are available so far (see "Vignettes" tab when visiting URL above):
 
 * [Data creation tools](https://philipdelff.github.io/NMdata/articles/DataCreate.html)
 * [Automated and general reader of Nonmem data](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
@@ -603,9 +603,12 @@ the proposed text for the Nonmem run, see `?NMwriteData`.
 ```{r}
 nmCode <- NMwriteData(pk,file="derived/pk.csv",
                       write.csv=FALSE,
+### arguments that tailors text for Nonmem
                       nmdir.data="../derived",
                       nm.drop="PROFDAY",
-                      nm.rename=c(CONC="DV"))
+                      nm.rename=c(CONC="DV"),
+                      ## PSN compatibility
+                      capitalize.names=TRUE)
 ```
 
 ```{r,eval=FALSE}
