@@ -222,8 +222,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(missing(use.input)) use.input <- NULL
     use.input <- NMdataDecideOption("use.input",use.input)
 
-    search.col.row <- FALSE
-
     if(missing(col.row)||(!is.null(col.row)&&is.na(col.row))||(is.character(col.row)&&any(col.row==""))) {
         col.row <- NULL
     }
@@ -239,13 +237,12 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     merge.by.row.arg <- merge.by.row
     merge.by.row <- NMdataDecideOption("merge.by.row",merge.by.row)
 
-### in case merge.by.row=="ifAvailable", we need to check if
-### col.row is avilable in both input and output
-    
-
-    if(is.null(merge.by.row.arg) && !merge.by.row){
-        search.col.row <- TRUE
-    }
+## For now, searching for a row identifier is disabled. This may belong in a separate function. 
+    search.col.row <- FALSE
+### notice, this can't be evaluated if merge.by.row=="ifAvailable"
+    ## if(is.null(merge.by.row.arg) && !merge.by.row){
+    ##     search.col.row <- TRUE
+    ## }
 
 ### merging method found
 ### now code must use search.col.row, cbind.by.filters and merge.by.row
@@ -409,6 +406,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(use.input){
         cnames.input <- copy(colnames(data.input$data))
         col.row.in.input <- !is.null(col.row) && col.row %in% cnames.input 
+### in case merge.by.row=="ifAvailable", we need to check if
+### col.row is avilable in both input and output
         if(merge.by.row=="ifAvailable"){
             merge.by.row <- col.row.in.input && col.row.in.output
         }
