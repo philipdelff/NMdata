@@ -279,7 +279,7 @@ test_that("recoverRows without a row identifier",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-    res1 <- NMscanData(file=file.lst,,merge.by.row=FALSE,recover.rows = T,as.fun="data.table",check.time = FALSE)
+    res1 <- NMscanData(file=file.lst,merge.by.row=FALSE,recover.rows = T,as.fun="data.table",check.time = FALSE)
     dim(res1)
     res1[,table(nmout,DOSE)]
     fix.time(res1)
@@ -421,4 +421,38 @@ test_that("Modifying row identifier",{
             NMscanData(file=file.lst,merge.by.row=TRUE,check.time = FALSE)
         )
 
+})
+
+test_that("mege.by.row=ifAvailable when available",{
+
+    fileRef <- "testReference/NMscanData21.rds"
+
+    file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
+    
+    res1 <- NMscanData(file=file.lst,merge.by.row="ifAvailable",check.time=FALSE)
+    ## dim(res1)
+
+    fix.time(res1)
+    
+    expect_equal_to_reference(res1,fileRef,version=2)
+
+})
+
+
+test_that("mege.by.row=ifAvailable when not available",{
+
+    fileRef <- "testReference/NMscanData22.rds"
+
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
+
+
+    res1 <- NMscanData(file=file.lst,merge.by.row="ifAvailable",recover.rows = T,as.fun="data.table",check.time = FALSE)
+    dim(res1)
+    res1[,table(nmout,DOSE)]
+    fix.time(res1)
+    
+    expect_equal_to_reference(
+        res1,fileRef,version=2
+    )
+    
 })
