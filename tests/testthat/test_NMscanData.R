@@ -1,6 +1,6 @@
 ## library(devtools)
 ## setwd("tests/testthat")
-## load_all("../../")
+## load_all()
 
 context("NMscanData")
 NMdata_filepath <- function(...) {
@@ -439,7 +439,7 @@ test_that("mege.by.row=ifAvailable when available",{
 })
 
 
-test_that("mege.by.row=ifAvailable when not available",{
+test_that("merge.by.row=ifAvailable when not available",{
 
     fileRef <- "testReference/NMscanData22.rds"
 
@@ -457,15 +457,27 @@ test_that("mege.by.row=ifAvailable when not available",{
     
 })
 
-test_that("mege.by.row=ifAvailable when not available",{
+test_that(" col.row does not exist, but merge.by.row==TRUE",{
 ### col.row does not exist, but merge.by.row==TRUE
 
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
-    ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
-
-    res1 <- NMscanData(file=file.lst,col.row="NONEXIST",merge.by.row=TRUE)
+    
+## error is that it's not in output. It's not in input either though
+    expect_error( NMscanData(file=file.lst,col.row="NONEXIST",merge.by.row=TRUE))
 
     
 }
 
+
+test_that("col.row is NULL, but merge.by.row==TRUE",{
 ### col.row is NULL, but merge.by.row==TRUE
+
+    file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
+     
+## error is that it's not in output. It's not in input either though
+    expect_error(
+        res1=NMscanData(file=file.lst,col.row=NULL,merge.by.row=TRUE)
+    )
+
+    
+}
