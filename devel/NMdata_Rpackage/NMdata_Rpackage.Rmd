@@ -608,7 +608,7 @@ nmCode <- NMwriteData(pk,file="derived/pk.csv",
                       nm.drop="PROFDAY",
                       nm.rename=c(CONC="DV"),
                       ## PSN compatibility
-                      capitalize.names=TRUE)
+                      nm.capitalize=TRUE)
 ```
 
 ```{r,eval=FALSE}
