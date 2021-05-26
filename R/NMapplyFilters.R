@@ -140,10 +140,13 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
         expressions.list <- paste0("!",expressions.list)
         cond.combine <- "&"
     }
-
+    
     if(length(expressions.sc)) {
         conditions.all.sc <- paste0(expressions.sc,collapse="&")
+    } else {
+         conditions.all.sc <- "TRUE"
     }
+    
     expressions.all <- NULL
     if(length(expressions.list)) {
         expressions.all <- paste0("(",paste(expressions.list,collapse=cond.combine),")")
