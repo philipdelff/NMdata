@@ -31,7 +31,7 @@ NMscanData(
 
 \item{col.row}{A column with a unique value for each row. Such a
 column is recommended to use if possible. See merge.by.row and
-details as well.}
+details as well. Default ("ROW") can be modified using NMdataConf.}
 
 \item{use.input}{Should the input data be added to the output
 data. Only column names that are not found in output data will

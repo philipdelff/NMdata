@@ -2,8 +2,10 @@
 title: |
   NMdata: A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
 author: Philip Delff
-date: April, 2021
+date: June, 2021
 fontsize: 8pt
+header-includes:
+   - \usepackage{adjustbox}
 output: 
  beamer_presentation:
   slide_level: 2
@@ -25,7 +27,7 @@ classoption: "aspectratio=169"
 ```{r,include=FALSE}
 
 library(knitr)
-opts_chunk$set(fig.path='figure/beamer-',fig.align='center',fig.show='hold',size='footnotesize')
+opts_chunk$set(fig.path='plots/',fig.align='center',fig.show='hold',size='footnotesize')
 
 library(ggplot2)
 theme_set(theme_bw(base_size=14)+
@@ -33,6 +35,7 @@ theme_set(theme_bw(base_size=14)+
           theme(strip.background =element_rect(fill="#ff9dff"))
           )
 library(data.table)
+unloadNamespace("pmxtricks")
 unloadNamespace("NMdata")
 
                                         # some setup
@@ -44,13 +47,13 @@ set.seed(1121)   # make the results repeatable
 <!-- ,class.source="smaller" -->
 ```{css, echo=FALSE}
 .watch-out {
-  background-color: lightpink;
-  border: 3px solid red;
-  font-weight: bold;
+	background-color: lightpink;
+	border: 3px solid red;
+	font-weight: bold;
 }
 .smaller {
-  background-color: lightgreen;
-  font-size: 4pt;
+	background-color: lightgreen;
+	font-size: 4pt;
 }
 
 ```
@@ -71,7 +74,7 @@ An R package that can help
 *  Creating event-based data sets for PK/PD modeling
 *  Keeping Nonmem code updated to match contents of datasets
 *  Read all output data and combine with input data from Nonmem runs
-   - supply output list file (.lst), and the reader is very flexible and automated 
+- supply output list file (.lst), and the reader is very flexible and automated 
 
 Designed to fit in to the user's setup and coding preferences
 
@@ -88,7 +91,8 @@ Designed to fit in to the user's setup and coding preferences
 * A tool to retrieve details about model runs
 
 * A calculation or simulation toolbox
-* A "silo" that requires you to do things in a certain way.
+
+* A "silo" that requires you to do things in a certain way
   - No tools in NMdata requires other NMdata tools to be used
 
 ::::
@@ -134,11 +138,13 @@ me personally in freeing time to more high-level tasks.
 
 * During the first 2-3 years I spent in pharmacometrics, I must have spent half the time coding, desparately trying to get Nonmem to behave and to understand the properties of the estimates I obtained.
 
-* Most of us develop our own ways to avoid some of the many difficulties in this proces. 
-
-* Due to change of job and therapeutic area, mine had to be refined. 
+* Most of us develop our own ways to avoid some of the many
+  difficulties in this process. This takes a lot of time and is most
+  often only because we don't have adequate tools at hand.
 
 * Being a fairly experienced R programmer, I generalized some of these methods and collected them in `NMdata`.
+
+* Almost every single line of code in the package is motivated by bad experiences. Errors, fear of errors, time wasted on debugging and double checking.
 
 * I have no intention of missioning these approaches to others. But if
 you find something interesting, feel free to take advantage.
@@ -159,7 +165,7 @@ you find something interesting, feel free to take advantage.
 # Getting started
 ## Getting started
 
-```{r,install-NMdata,message=FALSE}
+```{r,install-NMdata,eval=FALSE}
 library(remotes)
 install_github("philipdelff/NMdata",upgrade="never")
 ```
@@ -216,11 +222,11 @@ pk.reduced[,AMT:=as.character(AMT)]
 :::: column
 
 * In order to rbind or merge data sets, they must be compatible in 
-  - presence of columns, depending of desired outcome
-  - equally importantly, the classes of the common columns.
+- presence of columns, depending of desired outcome
+- equally importantly, the classes of the common columns.
 * compareCols provides an overview of these properties for any number of data sets. 
-  - By default, only descripancies are returned. 
-  - Using diff.only=FALSE will give the complete list of columns in the two datasets.
+- By default, only descripancies are returned. 
+- Using diff.only=FALSE will give the complete list of columns in the two datasets.
 
 :::: 
 :::: column
@@ -323,7 +329,7 @@ Does that make it slower?
 
 
 ## mergeCheck
-\frametitle{Example: Would your standard checks of merges capture this?}
+\framesubtitle{Example: Would your standard checks of merges capture this?}
 
 ```{r,include=FALSE}
 dt.cov <- pk[,.(ID=unique(ID))]
@@ -363,7 +369,7 @@ try(mergeCheck(pk,dt.cov,by="ID"))
 If you only want to add columns by a merge, `mergeCheck` does all the necessary checks for you.
 
 ## Exclusion flags
-\frametitle{Keep track of data exclusions - don't discard!}
+\framesubtitle{Keep track of data exclusions - don't discard!}
 
 * It is good practice not to discard unwanted records from a dataset but to flag
 them and omit them in model estimation. 
@@ -415,6 +421,7 @@ pk[EVID==1,flag:="Dosing"]
 
 :::
 
+
 ## `flagsCount`
 * An overview of the number of observations disregarded due to the
 different conditions is then obtained using `flagsCount`:
@@ -452,15 +459,15 @@ A unique identifier is needed in order to
 ### The identifier should be
 
 * Numeric
-  - For Nonmem to be able to read it
+- For Nonmem to be able to read it
 * Integer
-  - To avoid risk of rounding
-  - It is _not_ a problem if represented as a `double` in `R`
+- To avoid risk of rounding
+- It is _not_ a problem if represented as a `double` in `R`
 
 * Increasing
-  - Not strictly necessary
-  - Avoid confusion
-  - May be useful for post-processing to have a single column to order by
+- Not strictly necessary
+- Avoid confusion
+- May be useful for post-processing to have a single column to order by
 
 ::::
 :::: column
@@ -528,8 +535,8 @@ provided.
 * Checks character variables for Nonmem compatibility (commas not allowed)
 * writes a csv file with appropriate options for Nonmem compatibility
 * Default is to also write an rds file for R 
-  - Contents identical to R object including all information (such as factor levels) which cannot be saved in csv. 
-  - If you use `NMscanData` to read Nonmem results,  this information can be used automatically. 
+- Contents identical to R object including all information (such as factor levels) which cannot be saved in csv. 
+- If you use `NMscanData` to read Nonmem results,  this information can be used automatically. 
 
 * Provides a proposal for text to include in the
 `$INPUT` and `$DATA` sections of the Nonmem control
@@ -574,25 +581,25 @@ NMwriteData(pk,file="derived/pk.csv")
 :::: column
 
 * `NMwriteSection` is a function that replaces sections (like $DATA or
-  $TABLE) of nonmem control streams.
+$TABLE) of nonmem control streams.
 
 * `NMwriteData` returns a list that can be directly processed by
-  `NMwriteSection`
+`NMwriteSection`
 
 * In `NMwriteData`, several arguments modify the proposed text
 the proposed text for the Nonmem run, see `?NMwriteData`.
 
 ### Tips
 * `NMextractDataFile` takes a control stream/list file and extracts
-  the input data file name/path. You can use this to identify the
-  model runs in which to update `$DATA`.
+the input data file name/path. You can use this to identify the
+model runs in which to update `$DATA`.
 
 * `NMwriteData` is very useful for many other sections, like `$TABLE`,
-  or even `$PK`. But not `$THETA` and `$OMEAGE` (because they are
-  specific to each model).
+or even `$PK`. But not `$THETA` and `$OMEAGE` (because they are
+specific to each model).
 
 * `NMwriteData` by defaults saves a backup of the overwritten control
-  streams.
+streams.
 
 * `NMwriteData` has a counterpart in `NMreadSection`
 
@@ -629,98 +636,60 @@ lapply(models,
 
 
 ## Automated documentation of data
-If the argument `script` is
-supplied to `NMwriteData`, a little meta information is attached to
-the saved `rds` object.
+\framesubtitle{Ensure that the data can be traced back to the data generation script}
+
+::: columns
+:::: column
+* If the argument `script` is
+supplied to `NMwriteData`, a little meta information is saved together with the output file(s).
+
+* For csv files, the meta data is written to a txt file next to the csv file.
+
+* For rds files, the meta data is attached to the object saved in the
+`rds` file.
+- `stampObj` is used under the hood. You can use `stampObj` on any R object to attach similar meta information. 
+- Additional arguments (essentially anything) can be passed from `NMwriteData` to `stampObj` using the argument `args.stamp`.
+
+* `stampObj` and `objInfo` write and read an "attribute" called `objInfo`.
+
+:::: 
+:::: column
 
 \footnotesize
 
 ```{r}
-NMwriteData(pk,file="derived/pk.csv",script = "NMdata_Rpackage.Rmd")
-pknm <- readRDS("derived/pk.rds")
+NMwriteData(pk,file="derived/pk.csv",
+            script = "NMdata_Rpackage.Rmd",quiet=T)
+list.files("derived")
+## NMreadCsv reads the metadata .txt file if found
+pknm <- NMreadCsv("derived/pk.csv")
 objInfo(pknm)
-```
-
-\normalsize
-
-`NMwriteData` uses `stampObj` which you can use on any R object to attach similar meta information. Additional arguments (essentially anything) can be passed to `stampObj` using the argument `args.stamp`.
-
-`stampObj` and `objInfo` write and read an "attribute" called `objInfo`.
-
-THE SAME INFORMATION IS WRITTEN TO PK_META.TXT WHEN PK.CSV IS WRITTEN
-
-# Configuration of NMdata defaults
-## NMdataConf
-::: columns
-
-:::: column
-
-* `NMdataConf` supports changing many default argument values, simplifying coding. 
-
-* Notice, values are reset when `library(NMdata)` or `NMdataConf(reset=TRUE)` are called. 
-
-* See all currently used values by `NMdataConf()`.
-
-::::
-
-:::: column
-My initialization of scripts often contain this: 
-```{r,eval=FALSE}
-library(NMdata)
-NMdataConf(as.fun="data.table"
-### this is the default value
-          ,col.row="ROW"
-### Recommended but _right now_ not default
-          ,merge.by.row=TRUE
-### You can switch this when script is final
-          ,quiet=FALSE)
+## The .rds file contains the metadata already
+pknm2 <- readRDS("derived/pk.rds")
+objInfo(pknm2)
 ```
 
 ::::
 :::
-Other commonly used settings in `NMdataConf` are
 
-- `as.fun`: a function to apply to all objects before returning them from `NMdata` functions. If you use `dplyr/tidyverse`, do (notice, no quotes!):
-```{r,eval=FALSE}
-library(tibble)
-NMdataConf(as.fun=tibble::as_tibble)
-```
+\normalsize
 
-- `recover.rows`: Should `NMscanData` Include rows not processed by Nonmem? (default `FALSE`).
-
-- `use.input`: Should `NMscanData` combine (output data) with input data? (default `TRUE`)
-
-- `file.mod`: A function that translates the list file path to the input control stream file path. Default is to replace extension with `.mod`.
-
-- `check.time`: Default is `TRUE`, meaning that output (list file and tables) are expected to newer than input (control stream and input data). If say you copy files between systems, this check may not make sense.
-
-## Why not use `options()`?
-`R` has a system for handling settings. `NMdata` does not use that.
-
-* Main reason: `NMdataConf` can check both setting/argument names and values for consistency. 
-```{r}
-try(NMdataConf(asfun=tibble::as_tibble))
-try(NMdataConf(use.input="FALSE"))
-```
-
-* A few extra features are available with `NMdataConf`:
-  - Reset all settings: `NMdataConf(reset=TRUE)` 
-  - Reset individual settings: `NMdataConf(use.input=NULL, as.fun=NULL)`
-  - Retrieve all current settings: `NMdataConf()`
 
 
 # Retrieving data from Nonmem runs 
 
 ## NMscanData
-`NMscanData` is an automated and general reader of Nonmem data. It returns one combined data set.
+`NMscanData` is an automated and general reader of Nonmem. It returns
+one data set combining all information from input data and all output
+tables. Based on the list file (`.lst`) it will:
 
 - Read and combine output tables
 - If wanted, read input data and restore variables that were not
-  output from the `Nonmem` model
+output from the `Nonmem` model
 - If wanted, also restore rows from input data that were disregarded
-  in `Nonmem` (e.g. observations or subjects that are not part of the
-  analysis)
-- Multiple checks for consistency 
+in `Nonmem` (e.g. observations or subjects that are not part of the
+analysis)
+- Perform multiple consistency checks 
 
 \pause
 \footnotesize
@@ -781,8 +750,8 @@ res1 <- NMscanData(file1.lst,merge.by.row=TRUE,
 ## use sample records.
 res1.mean <-
     res1[EVID==0,
-            .(gmPRED=exp(mean(log(PRED)))),
-            by=.(trtact,NOMTIME)]
+         .(gmPRED=exp(mean(log(PRED)))),
+         by=.(trtact,NOMTIME)]
 ## plot individual observations and geometric
 ## mean pop predictions. Split (facet) by treatment.
 ggplot(subset(res1,EVID==0))+
@@ -826,7 +795,16 @@ system.file("examples/nonmem/xgxr014.lst", package="NMdata")
 res2 <- NMscanData(file1.lst,
                    merge.by.row=TRUE,recover.rows=TRUE)
 ```
+
+* No information is carried from output tables to recovered input data
+rows. For instance, it could make sense to merge back unique values
+within subjects (like subject level parameter estimates). Such
+"back-filling" must be done manually (easy with `data.table` or
+`dplyr`).
+
 :::
+
+
 ::: {.column width="55%"}
 
 ```{r,echo=FALSE,out.width="105%"}
@@ -901,17 +879,19 @@ By default, `NMscanData` will look for an rds file next to the csv file (same fi
 * If this is found, it will be read, providing an enriched (e.g. conserving factor levels and any other information).
 
 * There are no checks of consistency of `rds` file against delimited file read by `Nonmem`.
- - I am interested in ideas on how to do this. If we can avoid reading the csv file, it would be highly prefered.
+- I am interested in ideas on how to do this. If we can avoid reading the csv file, it would be highly prefered.
 
 * You get the rds automatically if using `NMwriteData`.
- 
+
 * Disable looking for the rds by argument `use.rds=FALSE`. 
 
 * Default value of `use.rds` can be modified with `NMdataConf`.
 
 ::::
 :::: column
-Notice, the plots are correctly ordered by doses - because they are ordered as a factor.
+Notice, the plots are correctly ordered by doses - because they are ordered by factor levels.
+
+\footnotesize
 ```{r}
 lst <- system.file("examples/nonmem/xgxr014.lst",
                    package="NMdata")
@@ -937,11 +917,13 @@ ggplot(res14[EVID==0])+
 ::::
 :::
 
+\normalsize
+
 ## The NMdata class
+::: columns
+:::: column
 Most important message: an `NMdata` object can be used as if it weren't. `R` looks sequentially for "methods" matching the classes of an object.
-```{r}
-class(res1)
-```
+
 Methods defined for `NMdata`:
 
 * `summary`: The information that is written to the console if `quiet=FALSE`.
@@ -950,7 +932,43 @@ This is the only behavior that is overwritten by the `NMdata` class.
 
 Simple other methods like `rbind` and similar are defined by dropping the `NMdata` class and then perform the operation.
 
-`NMinfo` only works on `NMdata` objects.
+* `NMinfo` lists metadata from `NMdata` objects and only works on `NMdata` objects.
+- `NMinfo(res1,"details")`: How was the data read and combined?
+- `NMinfo(res1,"tables")`: What tables were read and how?
+- `NMinfo(res1,"columns")`: What columns were read from what tables?
+::::
+
+:::: column
+\scriptsize
+```{r}
+class(res1)
+NMinfo(res1,"details")
+```
+::::
+
+:::
+
+## The NMdata class
+\framesubtitle{What data was read?}
+
+::: columns
+:::: column
+### Table-specific information
+\scriptsize
+```{r}
+NMinfo(res1,"tables")
+```
+
+::::
+:::: column
+### Column-specific information
+(The `nrows` and `topn` arguments are arguments to `print.data.table` to get a top and bottom snip of the table.)
+\footnotesize
+```{r}
+print(NMinfo(res1,"columns"),nrows=20,topn=10)
+```
+::::
+:::
 
 
 ## What should I do for my models to be compatible with NMscanData?
@@ -976,18 +994,20 @@ output data is the most robust way to combine the tables.
 
 * Everything
 will most likely work even if you don't 
-  - I would not take "most likely" when robustness is available.
+- I would not take "most likely" when robustness is available.
 
 
-## Limitations
-Even if limitations of NMscanData may be several, they are all rare. There is a very good chance you will never run into any of them. 
+## `NMscanData` limitations
+The most important limitation to have in mind is not related to `NMscanData` iteself
 
 * If merging with input data, the input data must be available as was
 when the model was run. 
-  - Option 1: "Freeze" model runs together with data. `NMfreezeModels` does that and will be included in `NMdata` after a little more testing.
-  - Option 2 (platform-dependent): `Nonmem` can be run in a wrapper script that either copies the input
+- Option 1: "Freeze" model runs together with data. `NMfreezeModels` does that and will be included in `NMdata` after a little more testing.
+- Option 2 (platform-dependent): `Nonmem` can be run in a wrapper script that either copies the input
 data, or runs `NMscanData` and saves the output in a compressed file
 format (like `rds`). 
+
+Even if limitations of `NMscanData` may be several, they are all rare. There is a very good chance you will never run into any of them. 
 
 * Not all data filter statements implemented. Nested `ACCEPT` and `IGNORE` statements are not supported at this
 point. The resulting number of rows after applying filters is checked
@@ -1014,54 +1034,145 @@ available elsewhere.
 `NMscanData` uses a few simpler functions to read all the data it can find. These functions may be useful when you don't want the full automatic package provided by `NMscanData`.
 
 * `NMreadTab`
-  - Fast read and format output tables from Nonmem. 
-  - Handles the "`TABLE NO.`" counter
+- Fast read and format output tables from Nonmem. 
+- Handles the "`TABLE NO.`" counter
 * `NMscanTables` (uses `NMreadTab`)
-  - Given a control stream or list file, read all output tables
+- Given a control stream or list file, read all output tables
 * `NMreadCsv` 
-  - Fast read delimited (input data) files 
+- Fast read delimited (input data) files 
 * `NMscanInput` (uses `NMreadCSV`)
-  - Given a control stream or list file, read input data.
-  - Optionally reads and applies Nonmem ignore/accept statements
-  - Optionally translates column names according to names used in Nonmem
+- Given a control stream or list file, read input data.
+- Optionally reads and applies Nonmem ignore/accept statements
+- Optionally translates column names according to names used in Nonmem
 
 <!-- # Data processing -->
 <!-- ## findCovs, findVars -->
 
+# Configuration of NMdata defaults
+## NMdataConf
+\framesubtitle{Tailor `NMdata` default behavior to your setup and preferences}
+::: columns
+
+:::: column
+
+* `NMdataConf` supports changing many default argument values, simplifying coding. 
+
+* Notice, values are reset when `library(NMdata)` or `NMdataConf(reset=TRUE)` are called. 
+
+* See all currently used values by `NMdataConf()`.
+
+::::
+
+:::: column
+My initialization of scripts often contain this: 
+```{r,eval=FALSE}
+library(NMdata)
+NMdataConf(as.fun="data.table"
+### this is the default value
+          ,col.row="ROW"
+### Recommended but _right now_ not default
+          ,merge.by.row=TRUE
+### You can switch this when script is final
+          ,quiet=FALSE)
+```
+
+::::
+:::
+Other commonly used settings in `NMdataConf` are
+
+- `as.fun`: a function to apply to all objects before returning them from `NMdata` functions. If you use `dplyr/tidyverse`, do (notice, no quotes!):
+```{r,eval=FALSE}
+library(tibble)
+NMdataConf(as.fun=tibble::as_tibble)
+```
+
+- `recover.rows`: Should `NMscanData` Include rows not processed by Nonmem? (default `FALSE`).
+
+- `use.input`: Should `NMscanData` combine (output data) with input data? (default `TRUE`)
+
+- `file.mod`: A function that translates the list file path to the input control stream file path. Default is to replace extension with `.mod`.
+
+- `check.time`: Default is `TRUE`, meaning that output (list file and tables) are expected to newer than input (control stream and input data). If say you copy files between systems, this check may not make sense.
+
+## Why does `NMdata` not use `options()`?
+`R` has a system for handling settings. `NMdata` does not use that.
+
+* Main reason: `NMdataConf` can check both setting/argument names and values for consistency. 
+```{r}
+try(NMdataConf(asfun=tibble::as_tibble))
+try(NMdataConf(use.input="FALSE"))
+```
+
+* A few extra features are available with `NMdataConf`:
+- Reset all settings: `NMdataConf(reset=TRUE)` 
+- Reset individual settings: `NMdataConf(use.input=NULL, as.fun=NULL)`
+- Retrieve all current settings: `NMdataConf()`
+
+# Submission to CRAN
+
 ## How is `NMdata` qualified?
 
-`NMdata` includes >60 "unit tests" where results of function calls
+* `NMdata` contains very little calculations (only exception may be `flagsAssign`/`flagsCount`)
+
+* Historic bugs have mostly resulted in uninformative errors due to
+  e.g. failure in processing text
+
+* `NMdata` includes >60 "unit tests" where results of function calls
 with different datasets and arguments are compared to expected
-results.
+results
 
-Tests are consistently run before any release of the package.
+* Tests are consistently run before any release of the package
 
-The tests are crucial in making sure that fixing one bug or
-introducing a new feature does not introduce new bugs.
+* The tests are crucial in making sure that fixing one bug or
+introducing a new feature does not introduce new bugs
 
-If you have a specific example you want to make sure is tested in the
-package, we will include the test in the package.
+* If you have a specific example you want to make sure is tested in the
+package, we will include the test in the package
 
-## Todo
+## Next steps for `NMdata`
 * The next milestone is submitting the package to CRAN
   - Aiming for end of June
 * Abstract submitted to ACoP
-* The following would be great help in making NMdata more accessible and useful
+* The following would be great help in making `NMdata` more accessible and useful
   - Testing - please use the package and provide feedback
   - Review of documentation, vignettes, and descriptions/explanations on website
   - Graphical representations and illustrations. A hexagon is needed!
   - A tidyverse workflow for a new vignette
-* Or if you want to provide code... 
-  - A function to test data for concistency and compatibility with Nonmem
-  - Improved overview of results from NMscanData
-  - ?
+  - If you have ideas you want to contribute, let's discuss!
+  
+* Before or after first version on CRAN
+  - `NMcheckData`: Check data syntax/format compatibility with Nonmem
+  - `NMfreezeModels`: Save Nonmem models with input data and all results to ensure reproducibility of output
+  - Function for comparison of `$DATA` and input data
+  
+* After first version on CRAN
+  - Functions for easy documentation of column contents (description,
+    units, 1:1 relationships between character and numeric columns)
+  
 <!-- %%%% automatic saving of meta data with csv files -->
 <!-- %%%% check that row identifier is not modified by Nonmem -->
 <!-- %%%% documentation of columnns -->
 
 # Summary
 
+* `renameByContents`
+* `compareCols`
+* `mergeCheck`
+* `flagsAssign`/`flagsCount`
+* `NMorderColumns`
+* (`NMcheckData`)
+* `NMwriteData`
+* `stampObj`/`objInfo` 
+* `NMreadSection`/`NMwriteSection`
+* `NMscanData`
+* `NMinfo`
+* `NMscanInput`, `NMreadCsv`
+* `NMscanTables`, `NMreadTab`
+* `NMdataConf`
+* (`NMfreezeModels`)
 
+
+The plan is submission to CRAN this month!
 
 # Other tools
 ## pmxtricks
@@ -1070,9 +1181,177 @@ A more diverse package
 - `ggIndProfs`: Individual plots, including indication of doses
 - `ggwrite`: Saves images in sizes made for powerpoint, including stamps (time, source, output filename). It can save multiple plots at once as one file (pdf) or multiple files. 
 
+```{r,eval=FALSE}
+library(remotes)
+install_github("philipdelff/pmxtricks",upgrade="never")
+library(pmxtricks)
+```
+
+```{r,include=FALSE}
+load_all("c:/Users/delff/working_copies/pmxtricks/")
+```
+
+
+## Individual profiles including observations, doses, and model predictions
+\footnotesize
+```{r,message=FALSE,warning=FALSE,out.height="75%"}
+pls1 <- ggIndProfs(res1,amt="AMT",grp="trtact",NPerSheet=36,labels="top-right",
+                   ylab="Concentration",ylab2="Dose")
+ggwrite(pls1[[5]],canvas="wide")
+```
+\normalsize
+
+## `ggwrite`: Flexible saving of tracable output
+::: columns
+:::: column
+`ggwrite` is a wrapper of `png` and `pdf` (and `dev.off`) with convenience features such as
+
+* Support for multiple plots at once
+  - saved as either multiple files, named by list element names if wanted (or just numbered)
+  - or a single pdf with one plot per page
+* Stamping with creation time, script name, and output name
+* "canvas" sizes made for powerpoint or full-screen display (see `?canvasSize`)
+* Custom canvases are very simple to create
+* Independent `save` and `show` arguments for very simple conditional behavior
+  - `save` defaults to `TRUE` if a filename is given
+  - `show` defaults to the inverse of `save`
+::::
+:::: column
+Save pls1, as one file and as multiple files, named by the dose levels.
+\footnotesize
+```{r,warning=FALSE,message=FALSE,results=FALSE,fig.show="hide"}
+writeOutput <- TRUE
+script <- "path/to/script.R"
+ggwrite(pls1,file="results/individual_profiles.png",
+        stamp=script,canvas="wide-screen",useNames=TRUE,
+        save=writeOutput)
+ggwrite(pls1,file="results/individual_profiles.pdf",
+        stamp=script,canvas="wide-screen",useNames=TRUE,
+        save=writeOutput,onefile=TRUE)
+```
+```{r}
+list.files("results")
+```
+::::
+:::
+
+* Showing a bottom-right snip of `results/individual_profiles_trtact300mg.png`:
+
+\begin{center}
+\adjustbox{trim={.5\width} {0\height} {0\width} {.7\height},clip}{
+	\includegraphics[width=\textwidth]{results/individual_profiles_trtact300mg.png}
+}
+\end{center}
+
+
+
+## `NMcheckData`: Check data syntax for Nonmem compatibility
+Aim: check data for all potential Nonmem compatibility issues and other obvious errors.
+\includegraphics[width=0.5in]{figures/worksign.png}
+
+::: columns
+:::: column
+
+* Currently checks for:
+  - Presence, no NA, and compatibility of `TIME`, `EVID`, `ID`, `CMT`
+  - DV must be NA at dosing events
+  - If available MDV and col.flagn must be numeric and non-missing
+  - EVID one of 0,1,2,3,4
+  - ID's are disjoint 
+  - TIME increasing within constant ID
+
+* Todo
+  - Many checks will be added and most of them are simple to implement
+  - Has to accept many more alternative ways to code the data
+  
+* It is experimental but safe
+  - `NMcheckData is a "look but don't touch" function, so worst case is output is confusing. 
+  - You could get a strange error due to "holes" in the function that
+    haven't yet been implemented.
+
+::::
+:::: column
+\footnotesize
+```{r}
+res.check <- NMcheckData(pk)
+res.check
+pkmod <- copy(pk)
+pkmod[,MDV:=as.numeric(is.na(DV))]
+pkmod[ID==33&EVID==1,CMT:=NA]
+res.check <- NMcheckData(pkmod)
+res.check
+```
+
+:::: 
+:::
+
+## What to do when Nonmem results seem meaningless
+:::::::::::::: {.columns}
+::: {.column width="85%"}
+Check of usual suspect: `$DATA`
+::: 
+::: {.column width="15%"}
+\includegraphics[width=.5in]{figures/worksign.png}
+::: 
+::::::::::::::
+
+
+* NMscanData will check modification times of input and output, and give warnings if the model seems to have been edited since last model run.
+* Even with these checks, there is a risk that the column names given in `$DATA` are wrong even if the estimation runs smoothly 
+  - either actually, because column used for estimation are not affected
+  - or apparently, because the wrong column labeling still gives a valid but nonsense dataset
+  
+* NMscanData already contains the functionality to provide a table input data column names, control stream column name specification, and resulting translation. 
+* Todo: a simple function (or function argument to say `NMscanInput`) that returns this info.
+* A more advanced idea is some automated guessing if mistakes were made. This is currently not on the todo list.
 
 ## NMfreezeModels
 
-## "secure" model reader
+:::::::::::::: {.columns}
+::: {.column width="85%"}
+In order to ensure reproducibility, any output has to be produced based on arvhived/frozen Nonmem models. 
+::: 
+::: {.column width="15%"}
+\includegraphics[width=.5in]{figures/worksign.png}
+::: 
+::::::::::::::
+
+The components that need to be "frozen" are 
+
+* Nonmem control streams
+* input data
+* estimation results (output tables, .lst, .ext etc.) 
+* simulation code (say mrgsolve scripts)
+* ?
+
+`NMfreezeModels` does freeze
+
+* input control streams
+* input data
+* all output tables
+* all nonmem results files
+
+Limitations
+
+* NMfreezeModels does not provide a solution for the simulation code at this point. I am very interested in how we can do this.
+* Only supports collections of models with one common input dataset
+* The permissions of the frozen folder should be read-only. However,
+  that means that once the freeze it's done, you can no longer add
+  code or descriptions. It all has to be handled in the freeze
+  procedure.
+
+
+## Safe model reader
+:::::::::::::: {.columns}
+::: {.column width="85%"}
+A function to read frozen Nonmem results and mrgsolve code to ensure that the right simulation model and parameter values are used
+::: 
+::: {.column width="15%"}
+\includegraphics[width=.5in]{figures/ideabulb.jpg}
+::: 
+::::::::::::::
+
+
+Obviously, this is closely related to the way mrgsolve code is frozen together with nonmem code.
 
 

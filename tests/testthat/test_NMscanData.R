@@ -466,7 +466,7 @@ test_that(" col.row does not exist, but merge.by.row==TRUE",{
     expect_error( NMscanData(file=file.lst,col.row="NONEXIST",merge.by.row=TRUE))
 
     
-}
+})
 
 
 test_that("col.row is NULL, but merge.by.row==TRUE",{
@@ -480,4 +480,4 @@ test_that("col.row is NULL, but merge.by.row==TRUE",{
     )
 
     
-}
+})

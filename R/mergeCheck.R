@@ -71,18 +71,22 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
     
     name.df3 <- "merged.df"
     if("all"%in%names(list(...))) {
-        messageWrap("option all not supported. mergeCheck is for merges that are intended to result in column additions to df1, that's all.",
+        messageWrap("option all not supported. mergeCheck is intended for merges that result in column additions to df1, that's all.",
                     fun.msg=stop,track.msg=track.msg)
     }
 
 ### check if sort is in ... That cannot be passed.
     if("sort"%in%names(list(...))) messageWrap("sort is not meaningful in combination with mergeCheck because mergeCheck will preserve order of df1. Please drop sort argument.",fun.msg=stop,track.msg=track.msg)
+
+### df1 cannot be of nrow==0. There would be no way to add columns to a zero row data set
+    if(nrow(df1)==0) messageWrap(paste(name.df1," has no rows. df1 must have existing rows so that values of the columns in by can be used for the merge."),fun.msg=stop,track.msg=track.msg)
     
     ## if data is not data.tables, convert to data.tables
     stopifnot(is.data.frame(df1))
     stopifnot(is.data.frame(df2))
     df1.was.dt <- TRUE
     if(is.data.table(df1)){
+        ## will add a row counter to df1, so better avoid editing by ref
         df1 <- copy(df1)
     } else {
         df1 <- as.data.table(df1)

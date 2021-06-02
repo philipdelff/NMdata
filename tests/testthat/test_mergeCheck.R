@@ -120,3 +120,15 @@ test_that("specifying expected number of new columns",{
 
 })
 
+
+test_that("Zero-row df1 must give an error",{
+
+    dt1=data.table(a=1:3,b=3:5,c=letters[8:10])[0]
+    dt2=data.table(a=1:3,b=3:5,q=letters[8:10])
+    dt3 <- dt2[,!c("b")]
+
+    ## compareCols(dt1,dt3,diff.only=FALSE)
+    expect_error(mergeCheck(dt1,dt3,by="a"))
+
+})
+

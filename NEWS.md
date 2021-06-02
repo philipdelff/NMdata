@@ -28,6 +28,9 @@ NMreadCsv. Defaults can be configured using NMdataConf.
 Improved and shortened text to console from NMscanData
 (print.summary_NMdata).
 
+mergeCheck will now throw an explained error if argument df1 has zero
+rows.
+
 ## Bugfixes
 - In the special case where only one data set is given, compareCols
   used to sort the list of columns in an irrelevant way. Now no

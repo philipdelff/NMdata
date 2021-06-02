@@ -18,8 +18,9 @@ NMwriteData(
   nmdir.data,
   col.flag = "FLAG",
   nm.rename,
-  capitalize.names = FALSE,
-  allow.char.TIME = TRUE
+  nm.capitalize = FALSE,
+  allow.char.TIME = TRUE,
+  quiet
 )
 }
 \arguments{
@@ -70,7 +71,7 @@ rename columns in Nonmem $DATA, NMwriteData can adjust the
 suggested $DATA text. If you plan to use CONC as DV in Nonmem,
 consider nm.rename=c(DV="CONC").}
 
-\item{capitalize.names}{For the $DATA text proposal only. If TRUE,
+\item{nm.capitalize}{For the $DATA text proposal only. If TRUE,
 the suggested text for Nonmem will only contain capital
 letters in column names.}
 
@@ -78,6 +79,11 @@ letters in column names.}
 Nonmem can read TIME even if it can't be translated to
 numeric. This is necessary if using the 00:00 format. Default
 is TRUE.}
+
+\item{quiet}{The default is to give some information along the way
+on what data is found. But consider setting this to TRUE for
+non-interactive use. Default can be configured using
+NMdataConf.}
 }
 \value{
 Text for inclusion in Nonmem control stream, invisibly.

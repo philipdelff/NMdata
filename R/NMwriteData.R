@@ -49,6 +49,10 @@
 ##'     Nonmem can read TIME even if it can't be translated to
 ##'     numeric. This is necessary if using the 00:00 format. Default
 ##'     is TRUE.
+##' @param quiet The default is to give some information along the way
+##'     on what data is found. But consider setting this to TRUE for
+##'     non-interactive use. Default can be configured using
+##'     NMdataConf.
 ##' @return Text for inclusion in Nonmem control stream, invisibly.
 ##' @details When writing csv files, the file will be
 ##'     comma-separated. Because Nonmem does not support quoted
@@ -68,7 +72,8 @@
 NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
                         write.rds=write.csv,script,args.stamp,args.fwrite,
                         args.rds,nm.drop,nmdir.data,col.flag="FLAG",
-                        nm.rename,nm.capitalize=FALSE,allow.char.TIME=TRUE){
+                        nm.rename,nm.capitalize=FALSE,allow.char.TIME=TRUE,
+                        quiet){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
     
@@ -102,6 +107,8 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
         write.rds=FALSE
     }
 
+    if(missing(quiet)) quiet <- NULL
+    quiet <- NMdataDecideOption("quiet",quiet)
     
 ### stamp arguments
     doStamp <- TRUE
@@ -281,20 +288,21 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
         files.written <- c(files.written,file.rds)
     }
     written <- length(files.written)>0
-    if(written){
-        message(
-            paste0("Data written to file(s):\n",paste(files.written,collapse="\n"))
-        )
-    } else {
-        message(
-            paste0("Data _not_ witten to any files.")
-        )
+    if(!quiet){
+        if(written){
+            message(
+                paste0("Data written to file(s):\n",paste(files.written,collapse="\n"))
+            )
+        } else {
+            message(
+                paste0("Data _not_ witten to any files.")
+            )
 
+        }
+        
+        message("For NonMem:\n",
+                paste(text.nm,collapse="\n"))
     }
-    
-    message("For NonMem:\n",
-            paste(text.nm,collapse="\n"))
-    
     
     invisible(list(INPUT=text.nm.input,DATA=text.nm.data))
 
