@@ -55,12 +55,10 @@ findVars <- function(data,cols.id=NULL,as.fun=NULL){
 
     if(rm.tmp) reduced[,(cols.id):=NULL]
 
-    if(!was.data.table || !is.null(as.fun) ) {
-        as.fun <- NMdataDecideOption("as.fun",as.fun)
-        reduced <- as.fun(reduced)
-    }
+    if(was.data.table && is.null(as.fun)) as.fun <- "data.table"
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    reduced <- as.fun(reduced)
 
     reduced
-
 }
 
