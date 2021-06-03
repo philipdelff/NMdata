@@ -74,7 +74,7 @@ extract eg result sections." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.912</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@ extract eg result sections." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -112,7 +112,7 @@ extract eg result sections." />
 </li>
 <li>
   <a href="https://github.com/philipdelff/NMdata">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -143,23 +143,23 @@ see NMreadSection. This function is more general and can be used to
 extract eg result sections.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>NMextractText</span>(
-  <span class='kw'>file</span>,
-  <span class='kw'>lines</span>,
-  <span class='kw'>text</span>,
-  <span class='kw'>section</span>,
-  <span class='kw'>char.section</span>,
-  char.end = <span class='kw'>char.section</span>,
-  return = <span class='st'>"text"</span>,
-  keepEmpty = <span class='fl'>FALSE</span>,
-  keepName = <span class='fl'>TRUE</span>,
-  keepComments = <span class='fl'>TRUE</span>,
-  asOne = <span class='fl'>TRUE</span>,
-  simplify = <span class='fl'>TRUE</span>,
-  cleanSpaces = <span class='fl'>FALSE</span>,
-  type = <span class='st'>"mod"</span>,
-  linesep = <span class='st'>"\n"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>NMextractText</span><span class='op'>(</span>
+  <span class='va'>file</span>,
+  <span class='va'>lines</span>,
+  <span class='va'>text</span>,
+  <span class='va'>section</span>,
+  <span class='va'>char.section</span>,
+  char.end <span class='op'>=</span> <span class='va'>char.section</span>,
+  return <span class='op'>=</span> <span class='st'>"text"</span>,
+  keepEmpty <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  keepName <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  keepComments <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  asOne <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  simplify <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  cleanSpaces <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  type <span class='op'>=</span> <span class='st'>"mod"</span>,
+  linesep <span class='op'>=</span> <span class='st'>"\n"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -267,7 +267,7 @@ how lines should be separated.</p></td>
 <code><a href='NMwriteSection.html'>NMwriteSection</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='NMreadSection.html'>NMreadSection</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"examples/nonmem/run001.lst"</span>, package = <span class='st'>"NMdata"</span>),section=<span class='st'>"DATA"</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='NMreadSection.html'>NMreadSection</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"examples/nonmem/run001.lst"</span>, package <span class='op'>=</span> <span class='st'>"NMdata"</span><span class='op'>)</span>,section<span class='op'>=</span><span class='st'>"DATA"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "$DATA      PK.csv IGNORE=@ IGNORE=(PKFL.EQ.0)"      
 #&gt; [2] "            IGNORE=(TRTPN.EQ.1) IGNORE=(TRTPN.EQ.3)"
 #&gt; [3] "            IGNORE=(TRTPN.EQ.4)"                    </div></pre>
@@ -286,7 +286,7 @@ how lines should be separated.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

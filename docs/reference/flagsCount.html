@@ -74,7 +74,7 @@ flag." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.912</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@ flag." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -112,7 +112,7 @@ flag." />
 </li>
 <li>
   <a href="https://github.com/philipdelff/NMdata">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -143,20 +143,20 @@ different reasons. And how many are left after each exclusion
 flag.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>flagsCount</span>(
-  <span class='kw'>data</span>,
-  <span class='kw'>tab.flags</span>,
-  <span class='kw'>file</span>,
-  col.id = <span class='st'>"ID"</span>,
-  <span class='kw'>col.flagn</span>,
-  <span class='kw'>col.flagc</span>,
-  by = <span class='kw'>NULL</span>,
-  flags.increasing = <span class='fl'>FALSE</span>,
-  name.all.data = <span class='st'>"All available data"</span>,
-  grp.incomp = <span class='st'>"EVID"</span>,
-  save = <span class='fl'>TRUE</span>,
-  as.fun = <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>flagsCount</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  <span class='va'>tab.flags</span>,
+  <span class='va'>file</span>,
+  col.id <span class='op'>=</span> <span class='st'>"ID"</span>,
+  <span class='va'>col.flagn</span>,
+  <span class='va'>col.flagc</span>,
+  by <span class='op'>=</span> <span class='cn'>NULL</span>,
+  flags.increasing <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  name.all.data <span class='op'>=</span> <span class='st'>"All available data"</span>,
+  grp.incomp <span class='op'>=</span> <span class='st'>"EVID"</span>,
+  save <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  as.fun <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -268,16 +268,16 @@ using NMdataConf.</p></td>
 <code><a href='tmpcol.html'>tmpcol</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>pk</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span>(file=<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"examples/data/xgxr2.rds"</span>,package=<span class='st'>"NMdata"</span>))
-<span class='kw'>dt.flags</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
-  flagn=<span class='fl'>10</span>,
-  flagc=<span class='st'>"Below LLOQ"</span>,
-condition=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"BLQ==1"</span>))
-<span class='kw'>pk</span> <span class='op'>&lt;-</span> <span class='fu'><a href='flagsAssign.html'>flagsAssign</a></span>(<span class='kw'>pk</span>,<span class='kw'>dt.flags</span>,col.flagn=<span class='st'>"flagn"</span>,col.flagc=<span class='st'>"flagc"</span>)
-</div><div class='output co'>#&gt; <span class='message'>Coding flagn = 10, flagc = Below LLOQ</span></div><div class='input'><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/duplicated.html'>unique</a></span>(<span class='kw'>pk</span>[,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"flagn"</span>,<span class='st'>"flagc"</span>,<span class='st'>"flagn"</span>)])
+    <pre class="examples"><div class='input'><span class='va'>pk</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span>file<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"examples/data/xgxr2.rds"</span>,package<span class='op'>=</span><span class='st'>"NMdata"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>dt.flags</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
+  flagn<span class='op'>=</span><span class='fl'>10</span>,
+  flagc<span class='op'>=</span><span class='st'>"Below LLOQ"</span>,
+condition<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"BLQ==1"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>pk</span> <span class='op'>&lt;-</span> <span class='fu'><a href='flagsAssign.html'>flagsAssign</a></span><span class='op'>(</span><span class='va'>pk</span>,<span class='va'>dt.flags</span>,col.flagn<span class='op'>=</span><span class='st'>"flagn"</span>,col.flagc<span class='op'>=</span><span class='st'>"flagc"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Coding flagn = 10, flagc = Below LLOQ</span></div><div class='input'><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/duplicated.html'>unique</a></span><span class='op'>(</span><span class='va'>pk</span><span class='op'>[</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"flagn"</span>,<span class='st'>"flagc"</span>,<span class='st'>"flagn"</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;    flagn        flagc flagn
 #&gt; 1:     0 Analysis set     0
-#&gt; 2:    10   Below LLOQ    10</div><div class='input'><span class='fu'>flagsCount</span>(<span class='kw'>pk</span>[<span class='kw'>EVID</span><span class='op'>==</span><span class='fl'>0</span>],<span class='kw'>dt.flags</span>,col.flagn=<span class='st'>"flagn"</span>,col.flagc=<span class='st'>"flagc"</span>)
+#&gt; 2:    10   Below LLOQ    10</div><div class='input'><span class='fu'>flagsCount</span><span class='op'>(</span><span class='va'>pk</span><span class='op'>[</span><span class='va'>EVID</span><span class='op'>==</span><span class='fl'>0</span><span class='op'>]</span>,<span class='va'>dt.flags</span>,col.flagn<span class='op'>=</span><span class='st'>"flagn"</span>,col.flagc<span class='op'>=</span><span class='st'>"flagc"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;                 flagc N.left Nobs.left N.discard N.disc.cum Nobs.discard
 #&gt; 1: All available data    150      1352        NA          0           NA
 #&gt; 2:         Below LLOQ    131       755        19         19          597
@@ -301,7 +301,7 @@ condition=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

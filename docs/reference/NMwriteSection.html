@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.912</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -111,7 +111,7 @@
 </li>
 <li>
   <a href="https://github.com/philipdelff/NMdata">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -141,16 +141,16 @@
 "$section", and the input to Nonmem will be updated.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>NMwriteSection</span>(
-  <span class='kw'>file</span>,
-  <span class='kw'>section</span>,
-  <span class='kw'>newlines</span>,
-  <span class='kw'>list.sections</span>,
-  <span class='kw'>newfile</span>,
-  backup = <span class='fl'>TRUE</span>,
-  blank.append = <span class='fl'>TRUE</span>,
-  test = <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>NMwriteSection</span><span class='op'>(</span>
+  <span class='va'>file</span>,
+  <span class='va'>section</span>,
+  <span class='va'>newlines</span>,
+  <span class='va'>list.sections</span>,
+  <span class='va'>newfile</span>,
+  backup <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  blank.append <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  test <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -210,9 +210,9 @@ to disk?  Default is FALSE.</p></td>
 <code><a href='NMwriteData.html'>NMwriteData</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>newlines</span> <span class='op'>&lt;-</span> <span class='st'>"$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"</span>
-<span class='fu'>NMwriteSection</span>(file=<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"examples/nonmem/run001.mod"</span>, package = <span class='st'>"NMdata"</span>),
-section=<span class='st'>"EST"</span>, newlines=<span class='kw'>newlines</span>,newfile=<span class='kw'>NULL</span>)
+    <pre class="examples"><div class='input'><span class='va'>newlines</span> <span class='op'>&lt;-</span> <span class='st'>"$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"</span>
+<span class='fu'>NMwriteSection</span><span class='op'>(</span>file<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"examples/nonmem/run001.mod"</span>, package <span class='op'>=</span> <span class='st'>"NMdata"</span><span class='op'>)</span>,
+section<span class='op'>=</span><span class='st'>"EST"</span>, newlines<span class='op'>=</span><span class='va'>newlines</span>,newfile<span class='op'>=</span><span class='cn'>NULL</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   [1] "$PROBLEM    PK"                                                                                                       
 #&gt;   [2] "$INPUT ROW ID NOMTIME TIME EVID CMT AMT DV BLQ CYCLE DOSE FLAG PART PROFDAY PROFTIME STUDY WEIGHTB"                   
 #&gt;   [3] ""                                                                                                                     
@@ -391,7 +391,7 @@ section=<span class='st'>"EST"</span>, newlines=<span class='kw'>newlines</span>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

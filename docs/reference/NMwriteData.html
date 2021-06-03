@@ -78,7 +78,7 @@ in the file argument." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.1.912</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2</span>
       </span>
     </div>
 
@@ -86,7 +86,7 @@ in the file argument." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -116,7 +116,7 @@ in the file argument." />
 </li>
 <li>
   <a href="https://github.com/philipdelff/NMdata">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -151,23 +151,24 @@ etc. are derived by replacing the extension to the filename given
 in the file argument.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>NMwriteData</span>(
-  <span class='kw'>data</span>,
-  <span class='kw'>file</span>,
-  write.csv = <span class='fl'>TRUE</span>,
-  write.RData = <span class='fl'>FALSE</span>,
-  write.rds = <span class='kw'>write.csv</span>,
-  <span class='kw'>script</span>,
-  <span class='kw'>args.stamp</span>,
-  <span class='kw'>args.fwrite</span>,
-  <span class='kw'>args.rds</span>,
-  <span class='kw'>nm.drop</span>,
-  <span class='kw'>nmdir.data</span>,
-  col.flag = <span class='st'>"FLAG"</span>,
-  <span class='kw'>nm.rename</span>,
-  capitalize.names = <span class='fl'>FALSE</span>,
-  allow.char.TIME = <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>NMwriteData</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  <span class='va'>file</span>,
+  write.csv <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  write.RData <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  write.rds <span class='op'>=</span> <span class='va'>write.csv</span>,
+  <span class='va'>script</span>,
+  <span class='va'>args.stamp</span>,
+  <span class='va'>args.fwrite</span>,
+  <span class='va'>args.rds</span>,
+  <span class='va'>nm.drop</span>,
+  <span class='va'>nmdir.data</span>,
+  col.flag <span class='op'>=</span> <span class='st'>"FLAG"</span>,
+  <span class='va'>nm.rename</span>,
+  nm.capitalize <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  allow.char.TIME <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>quiet</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -246,7 +247,7 @@ suggested $DATA text. If you plan to use CONC as DV in Nonmem,
 consider nm.rename=c(DV="CONC").</p></td>
     </tr>
     <tr>
-      <th>capitalize.names</th>
+      <th>nm.capitalize</th>
       <td><p>For the $DATA text proposal only. If TRUE,
 the suggested text for Nonmem will only contain capital
 letters in column names.</p></td>
@@ -257,6 +258,13 @@ letters in column names.</p></td>
 Nonmem can read TIME even if it can't be translated to
 numeric. This is necessary if using the 00:00 format. Default
 is TRUE.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>The default is to give some information along the way
+on what data is found. But consider setting this to TRUE for
+non-interactive use. Default can be configured using
+NMdataConf.</p></td>
     </tr>
     </table>
 
@@ -297,7 +305,7 @@ character or not.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
