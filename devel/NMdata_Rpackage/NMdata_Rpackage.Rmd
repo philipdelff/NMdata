@@ -1,6 +1,7 @@
 ---
 title: |
-  NMdata: A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
+ ![](image_2021_06_07T20_32_08_398Z.png){width=1in}  
+ NMdata: A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
 author: Philip Delff
 date: June, 2021
 fontsize: 8pt
@@ -162,7 +163,7 @@ you find something interesting, feel free to take advantage.
 
 
 
-# Getting started
+
 ## Getting started
 
 ```{r,install-NMdata,eval=FALSE}
@@ -226,7 +227,7 @@ pk.reduced[,AMT:=as.character(AMT)]
 - equally importantly, the classes of the common columns.
 * compareCols provides an overview of these properties for any number of data sets. 
 - By default, only descripancies are returned. 
-- Using diff.only=FALSE will give the complete list of columns in the two datasets.
+- Using `diff.only=FALSE` will give the complete list of columns in the two datasets.
 
 :::: 
 :::: column
@@ -242,7 +243,10 @@ compareCols(pk,pk.reduced)
 
 \vspace{12pt}
 
-Before merging or stacking, we may want to recode `AMT` in one of the datasets to get the class we need, and decide what to do about the missing `CYCLE` in one of the datasets (if OK, values are filled with `NA`).
+Before merging or stacking, we may want to 
+
+* recode `AMT` in one of the datasets to get the class we need
+* decide what to do about the missing `CYCLE` in one of the datasets 
 
 ::::
 :::
@@ -1108,7 +1112,7 @@ try(NMdataConf(use.input="FALSE"))
 - Reset individual settings: `NMdataConf(use.input=NULL, as.fun=NULL)`
 - Retrieve all current settings: `NMdataConf()`
 
-# Submission to CRAN
+# Next steps for `NMdata`
 
 ## How is `NMdata` qualified?
 
@@ -1154,8 +1158,11 @@ package, we will include the test in the package
 <!-- %%%% documentation of columnns -->
 
 # Summary
+::: columns
+:::: column
+Data creation
 
-* `renameByContents`
+* `renameByContents` - 
 * `compareCols`
 * `mergeCheck`
 * `flagsAssign`/`flagsCount`
@@ -1163,16 +1170,31 @@ package, we will include the test in the package
 * (`NMcheckData`)
 * `NMwriteData`
 * `stampObj`/`objInfo` 
+
+Read/write Nonmem control streams
+
 * `NMreadSection`/`NMwriteSection`
+::::
+:::: column
+Retrieve data from Nonmem runs
+
 * `NMscanData`
-* `NMinfo`
+* `summary`, `NMinfo`
 * `NMscanInput`, `NMreadCsv`
 * `NMscanTables`, `NMreadTab`
+
+Adjust behavior to your preferences
+
 * `NMdataConf`
+
+Other
+
 * (`NMfreezeModels`)
 
+:::: 
+:::
 
-The plan is submission to CRAN this month!
+### The plan is submission to CRAN this month!
 
 # Other tools
 ## pmxtricks

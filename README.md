@@ -1,4 +1,4 @@
-# NMdata
+# NMdata <a href='https://philipdelff.github.io/NMdata/'><img src='devel/NMdata_Rpackage/image_2021_06_07T20_32_08_398Z.png' align="right" height="131.5" /></a>
 ### A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
 NMdata provides data creation and data handling tools for
 pharmacometrics (PK/PD modeling). The tools are created around the use

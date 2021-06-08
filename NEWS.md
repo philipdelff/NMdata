@@ -1,6 +1,6 @@
 # NMdata 0.0.7.2
 NMreadCsv, NMscanInput, and NMscanData take argument args.fread. The
-contents of this list are passed as arguments to `fread` when reading
+contents of this list are passed as arguments to fread when reading
 csv files. This should only be needed in rare cases but offers full
 flexibility to match structure of csv files. Default contents of
 args.fread can be controlled using NMdataConf.
