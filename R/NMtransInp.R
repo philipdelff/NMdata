@@ -86,8 +86,9 @@ NMtransInp <- function(data,file){
                               )
     dt.colnames <- data.table(input=c(cnames.input.0,rep(NA_character_,length.max-length(cnames.input.0))),
                               nonmem=c(nms0,rep(NA_character_,length.max-length(nms0))),
-                              result=c(nms1,rep(NA_character_,length.max-length(nms1))),
-                              result.all=c(colnames(data),rep(NA_character_,length.max-length(colnames(data))))
+                              ## result=c(nms1,rep(NA_character_,length.max-length(nms1))),
+                              ## result.all=c(colnames(data),rep(NA_character_,length.max-length(colnames(data))))
+                              result=c(colnames(data),rep(NA_character_,length.max-length(colnames(data))))
                               )
 
     list(data=data,dt.colnames=dt.colnames)

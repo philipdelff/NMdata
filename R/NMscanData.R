@@ -388,13 +388,13 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         }
 
         if(use.input) {
-            mtime.inp <- max(data.input$meta$file.mtime)
+            mtime.inp <- max(data.input$meta$details$file.mtime)
             if(mtime.inp > file.mtime(file)){
-                messageWrap(paste0("input data (",data.input$meta$file,") is newer than output control stream (",file,") Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                messageWrap(paste0("input data (",data.input$meta$details$file,") is newer than output control stream (",file,") Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
                             fun.msg=warning)
             }
             if(mtime.inp > max(tables$meta[,file.mtime])){
-                messageWrap(paste0("input data file (",data.input$meta$file,") is newer than output tables. Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                messageWrap(paste0("input data file (",data.input$meta$details$file,") is newer than output tables. Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
                             fun.msg=warning)
             }
         }
@@ -431,7 +431,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         dt.vars <- rbind(dt.vars,
                          data.table(
                              variable=colnames(tab.row)
-                            ,file=data.input$meta[,name]
+                            ,file=data.input$meta$details[,name]
                             ,included=TRUE
                             ,source="input"
                             ,level="row")
@@ -485,7 +485,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             
             dt.vars1 <- data.table(
                 variable=colnames(data.input$data)
-               ,file=data.input$meta[,name]
+               ,file=data.input$meta$details[,name]
                ,source="input"
                ,level="row")
 
@@ -537,7 +537,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                 
                 dt.vars1 <- data.table(
                     variable=colnames(data.input$data)
-                   ,file=data.input$meta[,name]
+                   ,file=data.input$meta$details[,name]
                    ,source="input"
                    ,level="row"
                 )
@@ -691,8 +691,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
     tables$meta[,source:="output"]
     if(use.input){
-        data.input$meta[,source:="input"]
-        tables.meta <- rbind(tables$meta,data.input$meta,fill=TRUE)
+        data.input$meta$details[,source:="input"]
+        tables.meta <- rbind(tables$meta,data.input$meta$details,fill=TRUE)
     } else {
         tables.meta <- tables$meta
     }
@@ -727,8 +727,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     
     ## if available: file info for input data
     if(use.input){
-        details$file.input <- data.input$meta[,file]
-        details$mtime.input <- data.input$meta[,file.mtime]
+        details$file.input <- data.input$meta$details[,file]
+        details$mtime.input <- data.input$meta$details[,file.mtime]
     }
     
 ### more meta information needed.

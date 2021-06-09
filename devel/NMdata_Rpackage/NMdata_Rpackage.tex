@@ -144,7 +144,7 @@
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
 
-\title{\includegraphics[width=1in,height=\textheight]{image_2021_06_07T20_32_08_398Z.png}\\
+\title{\includegraphics[width=1in,height=\textheight]{NMdata_logo_v01.png}\\
 NMdata: A fast R package for efficient data preparation,
 consistency-checking and post-processing in PK/PD modeling}
 \author{Philip Delff}
@@ -221,8 +221,14 @@ Designed to fit in to the user's setup and coding preferences
 
 \[\vspace{.01in}\]
 
-The data creation tools should be relevant independently of
-estimation/simulation tool.
+\begin{itemize}
+\tightlist
+\item
+  The data creation tools should be relevant independently of
+  estimation/simulation tool.
+\item
+  Latest stable release is 0.0.7.2. Plan is to release 0.1.0 on CRAN.
+\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Motivation}
@@ -232,10 +238,9 @@ estimation/simulation tool.
   As large a potential pharmacometrics has for illuminating the unknown
   in drug development, it is dangerously technical.
 \item
-  I hate being stuck in leg work and having too little time for
-  modeling, reflection, and understanding key questions. \texttt{NMdata}
-  is a big help for me personally in freeing time to more high-level
-  tasks.
+  The risk is to have too little time for modeling, reflection, and
+  understanding key questions. \texttt{NMdata} can be a help in freeing
+  time to more high-level tasks.
 \item
   During the first 2-3 years I spent in pharmacometrics, I must have
   spent half the time coding, desparately trying to get Nonmem to behave
@@ -245,8 +250,8 @@ estimation/simulation tool.
   in this process. This takes a lot of time and is most often only
   because we don't have adequate tools at hand.
 \item
-  Being a fairly experienced R programmer, I generalized some of these
-  methods and collected them in \texttt{NMdata}.
+  I generalized some of my solutions and collected them in
+  \texttt{NMdata}.
 \item
   Almost every single line of code in the package is motivated by bad
   experiences. Errors, fear of errors, time wasted on debugging and
@@ -259,10 +264,16 @@ estimation/simulation tool.
 
 \begin{frame}[fragile]{Getting started}
 \protect\hypertarget{getting-started}{}
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+Use recent development version Notice: This should not be used for final
+scripts
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(remotes)}
-\KeywordTok{install\_github}\NormalTok{(}\StringTok{"philipdelff/NMdata"}\NormalTok{,}\DataTypeTok{upgrade=}\StringTok{"never"}\NormalTok{)}
+\KeywordTok{install\_github}\NormalTok{(}\StringTok{"philipdelff/NMdata"}\NormalTok{,}
+               \DataTypeTok{upgrade=}\StringTok{"never"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -276,6 +287,27 @@ estimation/simulation tool.
 ## Welcome to NMdata. Best place to browse NMdata documentation is
 ## https://philipdelff.github.io/NMdata
 \end{verbatim}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+Using a specific release. See list of releases at
+\url{https://github.com/philipdelff/NMdata/releases}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(remotes)}
+\KeywordTok{install\_github}\NormalTok{(}\StringTok{"philipdelff/NMdata@v0.0.7.2"}\NormalTok{,}
+               \DataTypeTok{upgrade=}\StringTok{"never"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(NMdata)}
+\end{Highlighting}
+\end{Shaded}
+\end{column}
+\end{columns}
 
 Three vignettes are available so far (see ``Vignettes'' tab when
 visiting URL above):
@@ -307,26 +339,34 @@ All functions and their arguments are documented in their help files.
 \section{Data set creation}\label{data-set-creation}}
 
 \begin{frame}[fragile]{Compare compatibility of data sets for rbind and
-merge}
-\protect\hypertarget{compare-compatibility-of-data-sets-for-rbind-and-merge}{}
+merge: \texttt{compareCols}}
+\protect\hypertarget{compare-compatibility-of-data-sets-for-rbind-and-merge-comparecols}{}
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 \begin{itemize}
 \tightlist
 \item
   In order to rbind or merge data sets, they must be compatible in
+
+  \begin{itemize}
+  \tightlist
+  \item
+    presence of columns, depending of desired outcome
+  \item
+    equally importantly, the classes of the common columns.
+  \end{itemize}
 \item
-  presence of columns, depending of desired outcome
-\item
-  equally importantly, the classes of the common columns.
-\item
-  compareCols provides an overview of these properties for any number of
-  data sets.
-\item
-  By default, only descripancies are returned.
-\item
-  Using \texttt{diff.only=FALSE} will give the complete list of columns
-  in the two datasets.
+  \texttt{compareCols} provides an overview of these properties for any
+  number of data sets.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    By default, only discrepancies are returned.
+  \item
+    Using \texttt{diff.only=FALSE} will give the complete list of
+    columns in the two datasets.
+  \end{itemize}
 \end{itemize}
 \end{column}
 
@@ -335,6 +375,8 @@ A slightly modified version of the \texttt{pk} dataset has been created.
 
 \begin{itemize}
 \tightlist
+\item
+  Rows have been omitted
 \item
   \texttt{CYCLE} has been removed, and
 \item
@@ -425,6 +467,10 @@ Before merging or stacking, we may want to
 \end{column}
 
 \begin{column}{0.48\textwidth}
+\begin{verbatim}
+All column names are capital case. We rename to lowercase those that Nonmem will not be able to interpret as numeric.
+\end{verbatim}
+
 \footnotesize
 
 \begin{Shaded}
@@ -483,8 +529,8 @@ Before merging or stacking, we may want to
 \item
   Merges are a very common source of data creation bugs.
 \item
-  As simple as they may seem, merges likely leave you with an unexpected
-  number of rows, some repeated or some omitted.
+  Merges likely leave you with an unexpected number of rows, some
+  repeated or some omitted.
 \item
   \texttt{mergeCheck} is a wrapper of \texttt{merge} which only accepts
   the results if
@@ -500,8 +546,7 @@ of the existing datasets, only columns added from the second dataset}
 \item
   This is not to say that merges beyond the scope of \texttt{mergeCheck}
   are relevant or necessary. But if \texttt{mergeCheck} covers your
-  needs, it's a real time saver in terms of automated checks that you
-  are getting what you expect.
+  needs, it's a real time saver in terms of automated checks.
 \end{itemize}
 
 \textbf{mergeCheck is not a new implementation of merge. It's an
@@ -509,15 +554,14 @@ implementation of checks.}
 
 \begin{itemize}
 \item
-  \texttt{mergeCheck} uses \texttt{merge.data.table}. The addition is
-  the checks that the result is in accordance with the restrictions.
-  This means
+  \texttt{mergeCheck} uses \texttt{merge.data.table}. The contribution
+  is the checks that no rows are lost, duplicated or added.
 \item
   The order of rows in the resulting data is always the same as the
   first dataset supplied.
 \end{itemize}
 
-Does that make it slower?
+Is \texttt{mergeCheck} slower?
 
 \begin{itemize}
 \tightlist
@@ -539,7 +583,7 @@ Does that make it slower?
 
 Say we want to add a covariate from a \texttt{dt.cov}. We expect the
 number of rows to be unchanged from \texttt{pk}. \texttt{mergeCheck}
-requires that we get all and only the \emph{same} rows:
+more strictly requires that we get all and only the \emph{same} rows:
 
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
@@ -550,29 +594,29 @@ requires that we get all and only the \emph{same} rows:
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\#\# The resulting dimensions are correct}
-\NormalTok{pk4 \textless{}{-}}\StringTok{ }\KeywordTok{merge}\NormalTok{(pk,dt.cov,}\DataTypeTok{by=}\StringTok{"ID"}\NormalTok{)}
-\KeywordTok{dims}\NormalTok{(pk,dt.cov,pk4)}
+\NormalTok{pkmerge \textless{}{-}}\StringTok{ }\KeywordTok{merge}\NormalTok{(pk,dt.cov,}\DataTypeTok{by=}\StringTok{"ID"}\NormalTok{)}
+\KeywordTok{dims}\NormalTok{(pk,dt.cov,pkmerge)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##      data nrows ncols
-## 1:     pk  1502    22
-## 2: dt.cov   150     2
-## 3:    pk4  1502    23
+##       data nrows ncols
+## 1:      pk  1502    22
+## 2:  dt.cov   150     2
+## 3: pkmerge  1502    23
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\#\# But we now have twice as many rows for this subject}
-\KeywordTok{dims}\NormalTok{(pk[ID}\OperatorTok{==}\DecValTok{31}\NormalTok{],pk4[ID}\OperatorTok{==}\DecValTok{31}\NormalTok{])}
+\KeywordTok{dims}\NormalTok{(pk[ID}\OperatorTok{==}\DecValTok{31}\NormalTok{],pkmerge[ID}\OperatorTok{==}\DecValTok{31}\NormalTok{])}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##             data nrows ncols
-## 1:  pk[ID == 31]    10    22
-## 2: pk4[ID == 31]    20    23
+##                 data nrows ncols
+## 1:      pk[ID == 31]    10    22
+## 2: pkmerge[ID == 31]    20    23
 \end{verbatim}
 \end{block}
 \end{column}
@@ -650,12 +694,10 @@ the necessary checks for you.
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 \begin{itemize}
+\tightlist
 \item
-  \texttt{flagsAssign} applies the conditions sequentially and by
+  \texttt{flagsAssign} applies the conditions sequentially, by
   increasing or decreasing value of \texttt{FLAG}.
-\item
-  \texttt{FLAG=0} means that none of the conditions were met and row is
-  kept in analysis. This cannot be changed.
 \item
   You can use any expression that can be evaluated \emph{row-wise}
   within the data.frame. In this case, \texttt{BLQ} has to exist in
@@ -664,6 +706,9 @@ the necessary checks for you.
   If you need to evaluate a condition based on multiple rows (say
   inadequate dosing history for a subject), do that first, and include a
   column representing this condition.
+\item
+  \texttt{FLAG=0} means that none of the conditions were met and row is
+  kept in analysis. This cannot be customized.
 \item
   In \texttt{Nonmem}, you can include \texttt{IGNORE=(FLAG.NE.0)} in
   \texttt{\$DATA} or \texttt{\$INFILE}.
@@ -728,7 +773,11 @@ the necessary checks for you.
 ## 4:       Analysis set    131       755        NA         19           NA           597
 \end{verbatim}
 
-Now pick the columns you want and format your table for the report.
+\begin{itemize}
+\tightlist
+\item
+  Now pick the columns you want and format your table for the report.
+\end{itemize}
 \end{frame}
 
 \hypertarget{finalize-data-for-nonmem}{%
@@ -753,36 +802,72 @@ A unique identifier is needed in order to
 \begin{block}{The identifier should be}
 \protect\hypertarget{the-identifier-should-be}{}
 \begin{itemize}
+\tightlist
 \item
   Numeric
-\item
-  For Nonmem to be able to read it
+
+  \begin{itemize}
+  \tightlist
+  \item
+    For Nonmem to be able to read it
+  \end{itemize}
 \item
   Integer
-\item
-  To avoid risk of rounding
-\item
-  It is \emph{not} a problem if represented as a \texttt{double} in
-  \texttt{R}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    To avoid risk of rounding
+  \item
+    It is \emph{not} a problem if represented as a \texttt{double} in
+    \texttt{R}
+  \end{itemize}
 \item
   Increasing
-\item
-  Not strictly necessary
-\item
-  Avoid confusion
-\item
-  May be useful for post-processing to have a single column to order by
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Not strictly necessary
+  \item
+    Avoid confusion
+  \item
+    May be useful for post-processing to have a single column to order
+    by
+  \end{itemize}
 \end{itemize}
 \end{block}
 \end{column}
 
 \begin{column}{0.48\textwidth}
-\begin{block}{Sort rows and add a row counter with \texttt{data.table}}
-\protect\hypertarget{sort-rows-and-add-a-row-counter-with-data.table}{}
+\begin{block}{Sort rows and add a row counter}
+\protect\hypertarget{sort-rows-and-add-a-row-counter}{}
+\begin{itemize}
+\tightlist
+\item
+  with \texttt{data.table}
+\end{itemize}
+
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{\#\# order}
 \KeywordTok{setorder}\NormalTok{(pk,ID,TIME,EVID)}
-\NormalTok{pk[,ROW}\OperatorTok{:}\ErrorTok{=}\DecValTok{1}\OperatorTok{:}\NormalTok{.N]}
+\CommentTok{\#\# add counter}
+\NormalTok{pk[,ROW}\OperatorTok{:}\ErrorTok{=}\NormalTok{.I]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  Or, with \texttt{dplyr} (I'm not very familiar with \texttt{dplyr})
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pk \textless{}{-}}\StringTok{ }\NormalTok{pk }\OperatorTok{\%\textgreater{}\%}
+\StringTok{    }\KeywordTok{arrange}\NormalTok{(ID,TIME,EVID) }\OperatorTok{\%\textgreater{}\%}
+\StringTok{    }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{ROW=}\DecValTok{1}\OperatorTok{:}\KeywordTok{n}\NormalTok{())}
 \end{Highlighting}
 \end{Shaded}
 \end{block}
@@ -796,31 +881,38 @@ A unique identifier is needed in order to
 \begin{column}{0.48\textwidth}
 \vspace{12pt}
 
-The order of columns in Nonmem is important for two reasons.
-
-\begin{itemize}
-\tightlist
-\item
-  Character in a variable read into Nonmem will make the run fail
-\item
-  The number of variables you can read into Nonmem is restricted
-\end{itemize}
-
-Uses a mix of recognition of column names and analysis of the column
-contents to sort the columns. \texttt{NMorderColumns} does not sort
-rows, nor does it modify any contents of columns.
-
 \begin{itemize}
 \item
-  First: Standard columns (\texttt{ID}, \texttt{TIME}, \texttt{EVID}
-  etc.) and usable columns first
+  The order of columns in Nonmem is important for two reasons.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Non-numeric Characters in a variable read into Nonmem will make the
+    run fail
+  \item
+    The number of variables you can read into Nonmem is restricted (may
+    not apply to recent Nonmem versions)
+  \end{itemize}
 \item
-  Columns that cannot be converted to numeric are put in the back
+  \texttt{NMorderColumns} uses a mix of recognition of column names and
+  analysis of the column contents to sort the columns.
+
+  \begin{itemize}
+  \item
+    First: Standard columns (\texttt{ID}, \texttt{TIME}, \texttt{EVID}
+    etc.) and usable columns first
+  \item
+    Columns that cannot be converted to numeric are put in the back
+  \item
+    Additional columns to place earlier (argument \texttt{first}) or
+    late (\texttt{last}) can be specified.
+  \item
+    See \texttt{?NMorderColumns} for more options.
+  \end{itemize}
 \item
-  Additional columns to place earlier (argument \texttt{first}) or late
-  (\texttt{last}) can be specified.
-\item
-  See \texttt{?NMorderColumns} for more options.
+  \texttt{NMorderColumns} does not sort rows, nor does it modify any
+  contents of columns.
 \end{itemize}
 \end{column}
 
@@ -891,19 +983,27 @@ For the final step of writing the dataset, \texttt{NMwriteData} is
 provided.
 
 \begin{itemize}
+\tightlist
+\item
+  \texttt{NMwriteData} \emph{never} modifies the data.
 \item
   Checks character variables for Nonmem compatibility (commas not
   allowed)
 \item
-  writes a csv file with appropriate options for Nonmem compatibility
+  writes a \texttt{csv} file with appropriate options for Nonmem
+  compatibility
 \item
-  Default is to also write an rds file for R
-\item
-  Contents identical to R object including all information (such as
-  factor levels) which cannot be saved in csv.
-\item
-  If you use \texttt{NMscanData} to read Nonmem results, this
-  information can be used automatically.
+  Default is to also write an \texttt{rds} file for R
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Contents identical to R object including all information (such as
+    factor levels) which cannot be saved in csv.
+  \item
+    If you use \texttt{NMscanData} to read Nonmem results, this
+    information can be used automatically.
+  \end{itemize}
 \item
   Provides a proposal for text to include in the \texttt{\$INPUT} and
   \texttt{\$DATA} sections of the Nonmem control streams.
@@ -966,8 +1066,6 @@ All arguments to \texttt{fwrite} can be modified using the
 
 \begin{itemize}
 \item
-  \texttt{NMwriteData} \emph{Never} modifies the data.
-\item
   \texttt{eff0} is the last column in \texttt{pk} that \texttt{Nonmem}
   can make use of (remember \texttt{NMisNumeric} from earlier?)
 \item
@@ -1009,7 +1107,8 @@ All arguments to \texttt{fwrite} can be modified using the
   \texttt{NMwriteData} by defaults saves a backup of the overwritten
   control streams.
 \item
-  \texttt{NMwriteData} has a counterpart in \texttt{NMreadSection}
+  \texttt{NMwriteData} has a section \emph{reader} counterpart in
+  \texttt{NMreadSection}
 \end{itemize}
 \end{block}
 \end{column}
@@ -1119,7 +1218,7 @@ All arguments to \texttt{fwrite} can be modified using the
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $CreationTime
-## [1] "2021-06-07 22:52:47"
+## [1] "2021-06-09 16:36:25"
 ## 
 ## $writtenTo
 ## [1] "derived/pk.csv"
@@ -1138,7 +1237,7 @@ All arguments to \texttt{fwrite} can be modified using the
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $CreationTime
-## [1] "2021-06-07 22:52:47 EDT"
+## [1] "2021-06-09 16:36:25 EDT"
 ## 
 ## $writtenTo
 ## [1] "derived/pk.rds"
@@ -1155,9 +1254,11 @@ runs}\label{retrieving-data-from-nonmem-runs}}
 
 \begin{frame}[fragile]{NMscanData}
 \protect\hypertarget{nmscandata}{}
-\texttt{NMscanData} is an automated and general reader of Nonmem. It
+\texttt{NMscanData} is an automated and general reader of Nonmem. * It
 returns one data set combining all information from input data and all
-output tables. Based on the list file (\texttt{.lst}) it will:
+output tables.
+
+Based on the list file (\texttt{.lst}) it will:
 
 \begin{itemize}
 \tightlist
@@ -1270,19 +1371,20 @@ Using a unique row identifier for merging data is highly recommended:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{file1.lst \textless{}{-}}\StringTok{ }\KeywordTok{system.file}\NormalTok{(}\StringTok{"examples/nonmem/xgxr001.lst"}\NormalTok{, }\DataTypeTok{package=}\StringTok{"NMdata"}\NormalTok{)}
 \NormalTok{res1 \textless{}{-}}\StringTok{ }\KeywordTok{NMscanData}\NormalTok{(file1.lst,}\DataTypeTok{merge.by.row=}\OtherTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## Model:  xgxr001 
+## Model:  xgxr003 
 ## Input and output data merged by: ROW 
 ## 
 ## Used tables, contents shown as used/total:
-##               file     rows columns     IDs
-##    xgxr001_res.txt  905/905   16/16 150/150
-##  xgxr1.csv (input) 905/1502   22/24 150/150
+##                  file     rows columns     IDs
+##       xgxr003_res.txt  905/905     7/7 150/150
+##  xgxr003_res_vols.txt  905/905     3/7 150/150
+##    xgxr003_res_fo.txt  150/150     1/2 150/150
+##     xgxr1.csv (input) 905/1502   21/24 150/150
 ## 
 ## Distribution of rows on event types in returned data:
 ##  EVID Output
@@ -1301,6 +1403,20 @@ Using a unique row identifier for merging data is highly recommended:
 \end{verbatim}
 
 \normalsize
+
+\begin{itemize}
+\tightlist
+\item
+  Starting from \texttt{NMdata\ 0.0.8}, the default behavior will be to
+  merge by \texttt{col.row} if found.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Default value of \texttt{col.row} is \texttt{ROW}. We shall see
+    later how to modify this.
+  \end{itemize}
+\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{NMscanData}
@@ -1359,13 +1475,15 @@ Using a unique row identifier for merging data is highly recommended:
 \end{Shaded}
 
 \begin{verbatim}
-## Model:  xgxr001 
+## Model:  xgxr003 
 ## Input and output data merged by: ROW 
 ## 
 ## Used tables, contents shown as used/total:
-##               file      rows columns     IDs
-##    xgxr001_res.txt   905/905   16/16 150/150
-##  xgxr1.csv (input) 1502/1502   22/24 150/150
+##                  file      rows columns     IDs
+##       xgxr003_res.txt   905/905     7/7 150/150
+##  xgxr003_res_vols.txt   905/905     3/7 150/150
+##    xgxr003_res_fo.txt   150/150     1/2 150/150
+##     xgxr1.csv (input) 1502/1502   21/24 150/150
 ## 
 ## Distribution of rows on event types in returned data:
 ##  EVID Input only Output
@@ -1379,13 +1497,12 @@ Using a unique row identifier for merging data is highly recommended:
   No information is carried from output tables to recovered input data
   rows. For instance, it could make sense to merge back unique values
   within subjects (like subject level parameter estimates). Such
-  ``back-filling'' must be done manually (easy with \texttt{data.table}
-  or \texttt{dplyr}).
+  ``back-filling'' must be done manually.
 \end{itemize}
 \end{column}
 
 \begin{column}{0.55\textwidth}
-\begin{center}\includegraphics[width=1.05\linewidth]{plots/unnamed-chunk-29-1} \end{center}
+\begin{center}\includegraphics[width=1.05\linewidth]{plots/unnamed-chunk-30-1} \end{center}
 \end{column}
 \end{columns}
 \end{frame}
@@ -1469,8 +1586,8 @@ csv file (same file name, only extension .rds different).
 \end{column}
 
 \begin{column}{0.48\textwidth}
-Notice, the plots are correctly ordered by doses - because they are
-ordered by factor levels.
+The plots are correctly ordered by doses - because they are ordered by
+factor levels as in \texttt{rds} input data.
 
 \footnotesize
 
@@ -1482,7 +1599,7 @@ ordered by factor levels.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=1.05\linewidth]{plots/unnamed-chunk-32-1} \end{center}
+\begin{center}\includegraphics[width=1.05\linewidth]{plots/unnamed-chunk-33-1} \end{center}
 \end{column}
 \end{columns}
 
@@ -1552,16 +1669,16 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## [2] "    quiet = TRUE)"                                                   
 ## 
 ## $time.call
-## [1] "2021-06-07 22:52:48 EDT"
+## [1] "2021-06-09 16:36:26 EDT"
 ## 
 ## $model
-## [1] "xgxr001"
+## [1] "xgxr003"
 ## 
 ## $file.lst
-## [1] "C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr001.lst"
+## [1] "C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003.lst"
 ## 
 ## $mtime.lst
-## [1] "2021-05-14 15:27:25 EDT"
+## [1] "2021-04-05 21:57:22 EDT"
 ## 
 ## $input.used
 ## [1] TRUE
@@ -1602,21 +1719,31 @@ dropping the \texttt{NMdata} class and then perform the operation.
 \end{Shaded}
 
 \begin{verbatim}
-##    source            name nrow ncol
-## 1: output xgxr001_res.txt  905   16
-## 2:  input       xgxr1.csv 1502   24
-##                                                                         file
-## 1: C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr001_res.txt
-## 2:         C:/Users/delff/working_copies/NMdata/inst/examples/data/xgxr1.csv
-##    firstonly lastonly firstlastonly format  sep idlevel
-## 1:     FALSE    FALSE         FALSE               FALSE
-## 2:        NA       NA            NA   <NA> <NA>      NA
+##    source                 name nrow ncol
+## 1: output      xgxr003_res.txt  905    7
+## 2: output xgxr003_res_vols.txt  905    7
+## 3: output   xgxr003_res_fo.txt  150    2
+## 4:  input            xgxr1.csv 1502   24
+##                                                                              file
+## 1:      C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003_res.txt
+## 2: C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003_res_vols.txt
+## 3:   C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003_res_fo.txt
+## 4:              C:/Users/delff/working_copies/NMdata/inst/examples/data/xgxr1.csv
+##    firstonly lastonly firstlastonly   format  sep idlevel
+## 1:     FALSE    FALSE         FALSE                 FALSE
+## 2:     FALSE    FALSE         FALSE   tF13.4        FALSE
+## 3:      TRUE    FALSE         FALSE ,1PE15.8    ,    TRUE
+## 4:        NA       NA            NA     <NA> <NA>      NA
 ##             file.mtime has.row maxLength full.length
-## 1: 2021-04-05 21:38:48    TRUE      TRUE        TRUE
-## 2: 2021-04-05 21:17:54      NA        NA          NA
+## 1: 2021-04-05 21:57:22    TRUE      TRUE        TRUE
+## 2: 2021-04-05 21:57:22   FALSE      TRUE        TRUE
+## 3: 2021-04-05 21:57:22   FALSE     FALSE       FALSE
+## 4: 2021-04-05 21:17:54      NA        NA          NA
 ##    filetype nid
 ## 1:     <NA>  NA
-## 2:     text 150
+## 2:     <NA>  NA
+## 3:     <NA>  NA
+## 4:     text 150
 \end{verbatim}
 \end{block}
 \end{column}
@@ -1626,7 +1753,7 @@ dropping the \texttt{NMdata} class and then perform the operation.
 \protect\hypertarget{column-specific-information}{}
 (The \texttt{nrows} and \texttt{topn} arguments are arguments to
 \texttt{print.data.table} to get a top and bottom snip of the table.)
-\footnotesize
+\scriptsize
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1635,36 +1762,116 @@ dropping the \texttt{NMdata} class and then perform the operation.
 \end{Shaded}
 
 \begin{verbatim}
-##     variable            file     source level COLNUM
-##  1:      ROW xgxr001_res.txt     output   row      1
-##  2:       ID       xgxr1.csv      input   row      2
-##  3:  NOMTIME       xgxr1.csv      input   row      3
-##  4:     TIME       xgxr1.csv      input   row      4
-##  5:     EVID       xgxr1.csv      input   row      5
-##  6:      CMT       xgxr1.csv      input   row      6
-##  7:      AMT       xgxr1.csv      input   row      7
-##  8:       DV xgxr001_res.txt     output   row      8
-##  9:     FLAG       xgxr1.csv      input   row      9
-## 10:    STUDY       xgxr1.csv      input   row     10
-## ---                                                 
-## 33:   EVENTU       xgxr1.csv      input   row     33
-## 34:     NAME       xgxr1.csv      input   row     34
-## 35: TIMEUNIT       xgxr1.csv      input   row     35
-## 36:   TRTACT       xgxr1.csv      input   row     36
-## 37:     flag       xgxr1.csv      input   row     37
-## 38:   trtact       xgxr1.csv      input   row     38
-## 39:    model            <NA> NMscanData model     39
-## 40:    nmout            <NA> NMscanData   row     40
-## 41:      ROW       xgxr1.csv      input   row     NA
-## 42:       DV       xgxr1.csv      input   row     NA
+##     variable                 file     source level COLNUM
+##  1:      ROW      xgxr003_res.txt     output   row      1
+##  2:       ID xgxr003_res_vols.txt     output   row      2
+##  3:  NOMTIME            xgxr1.csv      input   row      3
+##  4:     TIME            xgxr1.csv      input   row      4
+##  5:     EVID            xgxr1.csv      input   row      5
+##  6:      CMT            xgxr1.csv      input   row      6
+##  7:      AMT            xgxr1.csv      input   row      7
+##  8:       DV      xgxr003_res.txt     output   row      8
+##  9:     FLAG            xgxr1.csv      input   row      9
+## 10:    STUDY            xgxr1.csv      input   row     10
+## ---                                                      
+## 33:    model                 <NA> NMscanData model     33
+## 34:    nmout                 <NA> NMscanData   row     34
+## 35:       DV xgxr003_res_vols.txt     output   row     NA
+## 36:     PRED xgxr003_res_vols.txt     output   row     NA
+## 37:      RES xgxr003_res_vols.txt     output   row     NA
+## 38:     WRES xgxr003_res_vols.txt     output   row     NA
+## 39:      ROW            xgxr1.csv      input   row     NA
+## 40:       ID            xgxr1.csv      input   row     NA
+## 41:       DV            xgxr1.csv      input   row     NA
+## 42:       ID   xgxr003_res_fo.txt     output    id     NA
 \end{verbatim}
 \end{block}
 \end{column}
 \end{columns}
 \end{frame}
 
+\begin{frame}[fragile]{What to do when Nonmem results seem meaningless}
+\protect\hypertarget{what-to-do-when-nonmem-results-seem-meaningless}{}
+\framesubtitle{Check of usual suspect: DATA}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\begin{itemize}
+\tightlist
+\item
+  \texttt{NMcheckColnames} lists column names
+
+  \begin{itemize}
+  \tightlist
+  \item
+    As in input data set
+  \item
+    As in Nonmem \texttt{\$DATA}
+  \item
+    As inferred by \texttt{NMscanInput} (and \texttt{NMscanData})
+  \end{itemize}
+\item
+  This will help you easily check if \texttt{\$DATA} matches the input
+  data file.
+\item
+  This is a new function that will be available in the next
+  \texttt{NMdata} release
+\item
+  A more advanced idea is some automated guessing if mistakes were made.
+  This is currently not on the todo list
+\end{itemize}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+In this case, input column names are aligned with \texttt{\$DATA}
+\footnotesize
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{NMcheckColnames}\NormalTok{(lst)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Read rds input data file.
+\end{verbatim}
+
+\begin{verbatim}
+##        input   nonmem   result
+##  1:      ROW      ROW      ROW
+##  2:       ID       ID       ID
+##  3:     TIME     TIME     TIME
+##  4:     EVID     EVID     EVID
+##  5:      CMT      CMT      CMT
+##  6:      AMT      AMT      AMT
+##  7:       DV       DV       DV
+##  8:     FLAG     FLAG     FLAG
+##  9:    STUDY    STUDY    STUDY
+## 10:      BLQ      BLQ      BLQ
+## 11:    CYCLE    CYCLE    CYCLE
+## 12:     DOSE     DOSE     DOSE
+## 13:  NOMTIME  NOMTIME  NOMTIME
+## 14:     PART     PART     PART
+## 15:  PROFDAY  PROFDAY  PROFDAY
+## 16: PROFTIME PROFTIME PROFTIME
+## 17:  WEIGHTB  WEIGHTB  WEIGHTB
+## 18:     eff0     EFF0     EFF0
+## 19:   EVENTU     <NA>   EVENTU
+## 20:     NAME     <NA>     NAME
+## 21: TIMEUNIT     <NA> TIMEUNIT
+## 22:   TRTACT     <NA>   TRTACT
+## 23:     flag     <NA>     flag
+## 24:   trtact     <NA>   trtact
+##        input   nonmem   result
+\end{verbatim}
+
+\normalsize
+\end{column}
+\end{columns}
+\end{frame}
+
 \begin{frame}[fragile]{What should I do for my models to be compatible
-with NMscanData?}
+with \texttt{NMscanData}?}
 \protect\hypertarget{what-should-i-do-for-my-models-to-be-compatible-with-nmscandata}{}
 \begin{itemize}
 \item
@@ -1678,20 +1885,28 @@ with NMscanData?}
   sure to output what you need (like \texttt{IPRED}, \texttt{CWRES},
   \texttt{CL}, \texttt{ETA1} etc which cannot be found in input). Always
   output the row identifier!
-\item
-  Some of these values can be found from other files generated by
-  \texttt{Nonmem} but notice: \texttt{NMscanData} uses only input and
-  output data.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Some of these values can be found from other files generated by
+    \texttt{Nonmem} but notice: \texttt{NMscanData} only uses input and
+    output data.
+  \end{itemize}
 \item
   Including a unique row identifier in both input and output data is the
   most robust way to combine the tables.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Everything will most likely work even if you don't
+  \item
+    I would not take ``most likely'' when robustness is available.
+  \end{itemize}
 \item
   In \texttt{firstonly} tables, include the subject ID or the row
   identifier.
-\item
-  Everything will most likely work even if you don't
-\item
-  I would not take ``most likely'' when robustness is available.
 \end{itemize}
 \end{frame}
 
@@ -1723,10 +1938,11 @@ rare. There is a very good chance you will never run into any of them.
   Not all data filter statements implemented. Nested \texttt{ACCEPT} and
   \texttt{IGNORE} statements are not supported at this point. The
   resulting number of rows after applying filters is checked against
-  row-level output table dimensions (if any available). It is always
-  recommended to use a unique row identifier in both input and output
-  tables in order to avoid relying on interpretation of \texttt{Nonmem}
-  code.
+  row-level output table dimensions (if any available).
+\item
+  Disjoint rows with common \texttt{ID} values are currently not
+  supported together with \texttt{firstonly} or \texttt{lastonly}
+  tables. This is on the todo list.
 \item
   The \texttt{RECORDS} and \texttt{NULL} options in \texttt{\$DATA} are
   not implemented. If using \texttt{RECORDS}, please use the
@@ -1755,26 +1971,46 @@ automatic package provided by \texttt{NMscanData}.
 \tightlist
 \item
   \texttt{NMreadTab}
-\item
-  Fast read and format output tables from Nonmem.
-\item
-  Handles the ``\texttt{TABLE\ NO.}'' counter
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Fast read and format output tables from Nonmem
+  \item
+    Handles the ``\texttt{TABLE\ NO.}'' counter
+  \item
+    If you simulate a large number of subjects in Nonmem and get a large
+    (gigabytes) output data file, this will be extremely fast compared
+    to almost anything else.
+  \end{itemize}
 \item
   \texttt{NMscanTables} (uses \texttt{NMreadTab})
-\item
-  Given a control stream or list file, read all output tables
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Given a control stream or list file, read all output tables
+  \end{itemize}
 \item
   \texttt{NMreadCsv}
-\item
-  Fast read delimited (input data) files
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Fast read delimited (input data) files
+  \end{itemize}
 \item
   \texttt{NMscanInput} (uses \texttt{NMreadCSV})
-\item
-  Given a control stream or list file, read input data.
-\item
-  Optionally reads and applies Nonmem ignore/accept statements
-\item
-  Optionally translates column names according to names used in Nonmem
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Given a control stream or list file, read input data.
+  \item
+    Optionally reads and applies Nonmem ignore/accept statements
+  \item
+    Optionally translates column names according to names used in Nonmem
+  \end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -1837,11 +2073,11 @@ Other commonly used settings in \texttt{NMdataConf} are
 
 \begin{itemize}
 \item
-  \texttt{recover.rows}: Should \texttt{NMscanData} Include rows not
-  processed by Nonmem? (default \texttt{FALSE}).
-\item
   \texttt{use.input}: Should \texttt{NMscanData} combine (output data)
   with input data? (default \texttt{TRUE})
+\item
+  \texttt{recover.rows}: Should \texttt{NMscanData} Include rows not
+  processed by Nonmem? (default \texttt{FALSE}).
 \item
   \texttt{file.mod}: A function that translates the list file path to
   the input control stream file path. Default is to replace extension
@@ -1892,13 +2128,17 @@ use that.
 \tightlist
 \item
   A few extra features are available with \texttt{NMdataConf}:
-\item
-  Reset all settings: \texttt{NMdataConf(reset=TRUE)}
-\item
-  Reset individual settings:
-  \texttt{NMdataConf(use.input=NULL,\ as.fun=NULL)}
-\item
-  Retrieve all current settings: \texttt{NMdataConf()}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Reset all settings: \texttt{NMdataConf(reset=TRUE)}
+  \item
+    Reset individual settings:
+    \texttt{NMdataConf(use.input=NULL,\ as.fun=NULL)}
+  \item
+    Retrieve all current settings: \texttt{NMdataConf()}
+  \end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -1924,6 +2164,9 @@ use that.
 \item
   The tests are crucial in making sure that fixing one bug or
   introducing a new feature does not introduce new bugs
+\item
+  The testing approach is as recommended in ``R packages'' by Hadley
+  Wickham and Jennifer Bryan \url{https://r-pkgs.org/tests.html}.
 \item
   If you have a specific example you want to make sure is tested in the
   package, we will include the test in the package
@@ -1984,6 +2227,9 @@ use that.
   \item
     Functions for easy documentation of column contents (description,
     units, 1:1 relationships between character and numeric columns)
+  \item
+    Functions to generate dosing regimens for simulations and
+    nominal-time datasets
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -2033,11 +2279,13 @@ Retrieve data from Nonmem runs
 \item
   \texttt{NMscanData}
 \item
-  \texttt{NMinfo}
+  \texttt{summary}, \texttt{NMinfo}
 \item
   \texttt{NMscanInput}, \texttt{NMreadCsv}
 \item
   \texttt{NMscanTables}, \texttt{NMreadTab}
+\item
+  \texttt{NMcheckColnames}
 \end{itemize}
 
 Adjust behavior to your preferences
@@ -2063,144 +2311,16 @@ Other
 \end{block}
 \end{frame}
 
-\hypertarget{other-tools}{%
-\section{Other tools}\label{other-tools}}
-
-\begin{frame}[fragile]{pmxtricks}
-\protect\hypertarget{pmxtricks}{}
-A more diverse package
-
-\begin{itemize}
-\tightlist
-\item
-  \texttt{ggIndProfs}: Individual plots, including indication of doses
-\item
-  \texttt{ggwrite}: Saves images in sizes made for powerpoint, including
-  stamps (time, source, output filename). It can save multiple plots at
-  once as one file (pdf) or multiple files.
-\end{itemize}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(remotes)}
-\KeywordTok{install\_github}\NormalTok{(}\StringTok{"philipdelff/pmxtricks"}\NormalTok{,}\DataTypeTok{upgrade=}\StringTok{"never"}\NormalTok{)}
-\KeywordTok{library}\NormalTok{(pmxtricks)}
-\end{Highlighting}
-\end{Shaded}
-\end{frame}
-
-\begin{frame}[fragile]{Individual profiles including observations,
-doses, and model predictions}
-\protect\hypertarget{individual-profiles-including-observations-doses-and-model-predictions}{}
-\footnotesize
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{pls1 \textless{}{-}}\StringTok{ }\KeywordTok{ggIndProfs}\NormalTok{(res1,}\DataTypeTok{amt=}\StringTok{"AMT"}\NormalTok{,}\DataTypeTok{grp=}\StringTok{"trtact"}\NormalTok{,}\DataTypeTok{NPerSheet=}\DecValTok{36}\NormalTok{,}\DataTypeTok{labels=}\StringTok{"top{-}right"}\NormalTok{,}
-                   \DataTypeTok{ylab=}\StringTok{"Concentration"}\NormalTok{,}\DataTypeTok{ylab2=}\StringTok{"Dose"}\NormalTok{)}
-\KeywordTok{ggwrite}\NormalTok{(pls1[[}\DecValTok{5}\NormalTok{]],}\DataTypeTok{canvas=}\StringTok{"wide"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{center}\includegraphics[height=0.75\textheight]{plots/unnamed-chunk-41-1} \end{center}
-\normalsize
-\end{frame}
-
-\begin{frame}[fragile]{\texttt{ggwrite}: Flexible saving of tracable
-output}
-\protect\hypertarget{ggwrite-flexible-saving-of-tracable-output}{}
-\begin{columns}[T]
-\begin{column}{0.48\textwidth}
-\texttt{ggwrite} is a wrapper of \texttt{png} and \texttt{pdf} (and
-\texttt{dev.off}) with convenience features such as
-
-\begin{itemize}
-\tightlist
-\item
-  Support for multiple plots at once
-
-  \begin{itemize}
-  \tightlist
-  \item
-    saved as either multiple files, named by list element names if
-    wanted (or just numbered)
-  \item
-    or a single pdf with one plot per page
-  \end{itemize}
-\item
-  Stamping with creation time, script name, and output name
-\item
-  ``canvas'' sizes made for powerpoint or full-screen display (see
-  \texttt{?canvasSize})
-\item
-  Custom canvases are very simple to create
-\item
-  Independent \texttt{save} and \texttt{show} arguments for very simple
-  conditional behavior
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \texttt{save} defaults to \texttt{TRUE} if a filename is given
-  \item
-    \texttt{show} defaults to the inverse of \texttt{save}
-  \end{itemize}
-\end{itemize}
-\end{column}
-
-\begin{column}{0.48\textwidth}
-Save pls1, as one file and as multiple files, named by the dose levels.
-\footnotesize
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{writeOutput \textless{}{-}}\StringTok{ }\OtherTok{TRUE}
-\NormalTok{script \textless{}{-}}\StringTok{ "path/to/script.R"}
-\KeywordTok{ggwrite}\NormalTok{(pls1,}\DataTypeTok{file=}\StringTok{"results/individual\_profiles.png"}\NormalTok{,}
-        \DataTypeTok{stamp=}\NormalTok{script,}\DataTypeTok{canvas=}\StringTok{"wide{-}screen"}\NormalTok{,}\DataTypeTok{useNames=}\OtherTok{TRUE}\NormalTok{,}
-        \DataTypeTok{save=}\NormalTok{writeOutput)}
-\KeywordTok{ggwrite}\NormalTok{(pls1,}\DataTypeTok{file=}\StringTok{"results/individual\_profiles.pdf"}\NormalTok{,}
-        \DataTypeTok{stamp=}\NormalTok{script,}\DataTypeTok{canvas=}\StringTok{"wide{-}screen"}\NormalTok{,}\DataTypeTok{useNames=}\OtherTok{TRUE}\NormalTok{,}
-        \DataTypeTok{save=}\NormalTok{writeOutput,}\DataTypeTok{onefile=}\OtherTok{TRUE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{list.files}\NormalTok{(}\StringTok{"results"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] "individual_profiles.pdf"            
-## [2] "individual_profiles_trtact100mg.png"
-## [3] "individual_profiles_trtact10mg.png" 
-## [4] "individual_profiles_trtact300mg.png"
-## [5] "individual_profiles_trtact30mg.png" 
-## [6] "individual_profiles_trtact3mg.png"
-\end{verbatim}
-\end{column}
-\end{columns}
-
-\begin{itemize}
-\tightlist
-\item
-  Showing a bottom-right snip of
-  \texttt{results/individual\_profiles\_trtact300mg.png}:
-\end{itemize}
-
-\begin{center}
-\adjustbox{trim={.5\width} {0\height} {0\width} {.7\height},clip}{
-    \includegraphics[width=\textwidth]{results/individual_profiles_trtact300mg.png}
-}
-\end{center}
-\end{frame}
+\hypertarget{nmdata-functions-under-development}{%
+\section{\texorpdfstring{\texttt{NMdata} functions under
+development}{NMdata functions under development}}\label{nmdata-functions-under-development}}
 
 \begin{frame}[fragile]{\texttt{NMcheckData}: Check data syntax for
-Nonmem compatibility}
+Nonmem compatibility
+\includegraphics[width=0.5in]{figures/worksign.png}}
 \protect\hypertarget{nmcheckdata-check-data-syntax-for-nonmem-compatibility}{}
 Aim: check data for all potential Nonmem compatibility issues and other
-obvious errors. \includegraphics[width=0.5in]{figures/worksign.png}
+obvious errors.
 
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
@@ -2212,18 +2332,23 @@ obvious errors. \includegraphics[width=0.5in]{figures/worksign.png}
   \begin{itemize}
   \tightlist
   \item
-    Presence, no NA, and compatibility of \texttt{TIME}, \texttt{EVID},
-    \texttt{ID}, \texttt{CMT}
+    Presence, no \texttt{NA}, and compatibility of \texttt{TIME},
+    \texttt{EVID}, \texttt{ID}, \texttt{CMT}
   \item
-    DV must be NA at dosing events
+    \texttt{DV} must be \texttt{NA} at dosing events
   \item
-    If available MDV and col.flagn must be numeric and non-missing
+    If available \texttt{MDV} and col.flagn must be numeric and
+    non-missing
   \item
-    EVID one of 0,1,2,3,4
+    \texttt{EVID} one of 0,1,2,3,4
   \item
-    ID's are disjoint
+    \texttt{ID}'s are disjoint
   \item
-    TIME increasing within constant ID
+    \texttt{TIME} is positive and increasing within constant ID
+  \item
+    \texttt{CMT} is a positive integer
+  \item
+    \texttt{MDV} represents \texttt{is.na(DV)}
   \end{itemize}
 \item
   Todo
@@ -2247,11 +2372,13 @@ obvious errors. \includegraphics[width=0.5in]{figures/worksign.png}
     You could get a strange error due to ``holes'' in the function that
     haven't yet been implemented.
   \end{itemize}
+\item
+  May or may not get ready for \texttt{NMdata\ 0.1.0}
 \end{itemize}
 \end{column}
 
 \begin{column}{0.48\textwidth}
-\footnotesize
+\scriptsize
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2260,9 +2387,9 @@ obvious errors. \includegraphics[width=0.5in]{figures/worksign.png}
 \end{Shaded}
 
 \begin{verbatim}
-##  column                      check    N
-##     MDV           Column not found    1
-##     CMT CMT not a positive integer 1502
+##  column            check N
+##     MDV Column not found 1
+##    TIME    Negative time 2
 \end{verbatim}
 
 \begin{Shaded}
@@ -2272,18 +2399,10 @@ obvious errors. \includegraphics[width=0.5in]{figures/worksign.png}
 \end{Shaded}
 
 \begin{verbatim}
-##                            check column  row
-##    1:           Column not found    MDV   NA
-##    2: CMT not a positive integer    CMT    1
-##    3: CMT not a positive integer    CMT    2
-##    4: CMT not a positive integer    CMT    3
-##    5: CMT not a positive integer    CMT    4
-##   ---                                       
-## 1499: CMT not a positive integer    CMT 1498
-## 1500: CMT not a positive integer    CMT 1499
-## 1501: CMT not a positive integer    CMT 1500
-## 1502: CMT not a positive integer    CMT 1501
-## 1503: CMT not a positive integer    CMT 1502
+##               check column row
+## 1: Column not found    MDV  NA
+## 2:    Negative time   TIME 691
+## 3:    Negative time   TIME 962
 \end{verbatim}
 
 \begin{Shaded}
@@ -2296,10 +2415,10 @@ obvious errors. \includegraphics[width=0.5in]{figures/worksign.png}
 \end{Shaded}
 
 \begin{verbatim}
-##  column                      check    N
-##     CMT                      is NA    1
-##     CMT CMT not a positive integer 1501
-##     MDV   DV not NA in dosing recs  150
+##  column                 check    N
+##     CMT                 is NA    1
+##    TIME         Negative time    2
+##     MDV MDV does not match DV 1352
 \end{verbatim}
 
 \begin{Shaded}
@@ -2309,63 +2428,21 @@ obvious errors. \includegraphics[width=0.5in]{figures/worksign.png}
 \end{Shaded}
 
 \begin{verbatim}
-##                            check column  row
-##    1:                      is NA    CMT   21
-##    2: CMT not a positive integer    CMT    1
-##    3: CMT not a positive integer    CMT    2
-##    4: CMT not a positive integer    CMT    3
-##    5: CMT not a positive integer    CMT    4
-##   ---                                       
-## 1648:   DV not NA in dosing recs    MDV 1453
-## 1649:   DV not NA in dosing recs    MDV 1463
-## 1650:   DV not NA in dosing recs    MDV 1473
-## 1651:   DV not NA in dosing recs    MDV 1483
-## 1652:   DV not NA in dosing recs    MDV 1493
+##                       check column  row
+##    1:                 is NA    CMT   21
+##    2:         Negative time   TIME  691
+##    3:         Negative time   TIME  962
+##    4: MDV does not match DV    MDV    2
+##    5: MDV does not match DV    MDV    3
+##   ---                                  
+## 1351: MDV does not match DV    MDV 1498
+## 1352: MDV does not match DV    MDV 1499
+## 1353: MDV does not match DV    MDV 1500
+## 1354: MDV does not match DV    MDV 1501
+## 1355: MDV does not match DV    MDV 1502
 \end{verbatim}
 \end{column}
 \end{columns}
-\end{frame}
-
-\begin{frame}[fragile]{What to do when Nonmem results seem meaningless}
-\protect\hypertarget{what-to-do-when-nonmem-results-seem-meaningless}{}
-\begin{columns}[T]
-\begin{column}{0.85\textwidth}
-Check of usual suspect: \texttt{\$DATA}
-\end{column}
-
-\begin{column}{0.15\textwidth}
-\includegraphics[width=.5in]{figures/worksign.png}
-\end{column}
-\end{columns}
-
-\begin{itemize}
-\tightlist
-\item
-  NMscanData will check modification times of input and output, and give
-  warnings if the model seems to have been edited since last model run.
-\item
-  Even with these checks, there is a risk that the column names given in
-  \texttt{\$DATA} are wrong even if the estimation runs smoothly
-
-  \begin{itemize}
-  \tightlist
-  \item
-    either actually, because column used for estimation are not affected
-  \item
-    or apparently, because the wrong column labeling still gives a valid
-    but nonsense dataset
-  \end{itemize}
-\item
-  NMscanData already contains the functionality to provide a table input
-  data column names, control stream column name specification, and
-  resulting translation.
-\item
-  Todo: a simple function (or function argument to say
-  \texttt{NMscanInput}) that returns this info.
-\item
-  A more advanced idea is some automated guessing if mistakes were made.
-  This is currently not on the todo list.
-\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{NMfreezeModels}
@@ -2431,17 +2508,137 @@ Limitations
 \protect\hypertarget{safe-model-reader}{}
 \begin{columns}[T]
 \begin{column}{0.85\textwidth}
-A function to read frozen Nonmem results and mrgsolve code to ensure
-that the right simulation model and parameter values are used
+\begin{itemize}
+\item
+  A function to read frozen Nonmem results and mrgsolve code to ensure
+  that the right simulation model and parameter values are used
+\item
+  Obviously, this is closely related to the way mrgsolve code is frozen
+  together with nonmem code.
+\end{itemize}
 \end{column}
 
 \begin{column}{0.15\textwidth}
 \includegraphics[width=.5in]{figures/ideabulb.jpg}
 \end{column}
 \end{columns}
+\end{frame}
 
-Obviously, this is closely related to the way mrgsolve code is frozen
-together with nonmem code.
+\hypertarget{other-tools}{%
+\section{Other tools}\label{other-tools}}
+
+\begin{frame}[fragile]{pmxtricks}
+\protect\hypertarget{pmxtricks}{}
+A more diverse package
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{ggIndProfs}: Individual plots, including indication of doses
+\item
+  \texttt{ggwrite}: Saves images in sizes made for powerpoint, including
+  stamps (time, source, output filename). It can save multiple plots at
+  once as one file (pdf) or multiple files.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(remotes)}
+\KeywordTok{install\_github}\NormalTok{(}\StringTok{"philipdelff/pmxtricks"}\NormalTok{,}\DataTypeTok{upgrade=}\StringTok{"never"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(pmxtricks)}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}[fragile]{Individual profiles including observations,
+doses, and model predictions}
+\protect\hypertarget{individual-profiles-including-observations-doses-and-model-predictions}{}
+\footnotesize
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pls1 \textless{}{-}}\StringTok{ }\KeywordTok{ggIndProfs}\NormalTok{(res1,}\DataTypeTok{amt=}\StringTok{"AMT"}\NormalTok{,}\DataTypeTok{grp=}\StringTok{"trtact"}\NormalTok{,}\DataTypeTok{NPerSheet=}\DecValTok{36}\NormalTok{,}\DataTypeTok{labels=}\StringTok{"top{-}right"}\NormalTok{,}
+                   \DataTypeTok{ylab=}\StringTok{"Concentration"}\NormalTok{,}\DataTypeTok{ylab2=}\StringTok{"Dose"}\NormalTok{)}
+\KeywordTok{ggwrite}\NormalTok{(pls1[[}\DecValTok{5}\NormalTok{]],}\DataTypeTok{canvas=}\StringTok{"wide"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[height=0.75\textheight]{plots/unnamed-chunk-44-1} \end{center}
+\normalsize
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{ggwrite}: Flexible saving of tracable
+output}
+\protect\hypertarget{ggwrite-flexible-saving-of-tracable-output}{}
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\texttt{ggwrite} is a wrapper of \texttt{png} and \texttt{pdf} (and
+\texttt{dev.off}) with convenience features such as
+
+\begin{itemize}
+\tightlist
+\item
+  Support for multiple plots at once
+
+  \begin{itemize}
+  \tightlist
+  \item
+    saved as either multiple files, named by list element names if
+    wanted (or just numbered)
+  \item
+    or a single pdf with one plot per page
+  \end{itemize}
+\item
+  Stamping with creation time, script name, and output name
+\item
+  ``canvas'' sizes made for powerpoint or full-screen display (see
+  \texttt{?canvasSize})
+\item
+  Custom canvases are very simple to create
+\item
+  Independent \texttt{save} and \texttt{show} arguments for very simple
+  conditional behavior
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{save} defaults to \texttt{TRUE} if a filename is given
+  \item
+    \texttt{show} defaults to the inverse of \texttt{save}
+  \end{itemize}
+\end{itemize}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+Save pls1, as one file and as multiple files, named by the dose levels.
+\footnotesize
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{writeOutput \textless{}{-}}\StringTok{ }\OtherTok{TRUE}
+\NormalTok{script \textless{}{-}}\StringTok{ "path/to/script.R"}
+\KeywordTok{ggwrite}\NormalTok{(pls1,}\DataTypeTok{file=}\StringTok{"results/individual\_profiles.png"}\NormalTok{,}
+        \DataTypeTok{stamp=}\NormalTok{script,}\DataTypeTok{canvas=}\StringTok{"wide{-}screen"}\NormalTok{,}\DataTypeTok{useNames=}\OtherTok{TRUE}\NormalTok{,}
+        \DataTypeTok{save=}\NormalTok{writeOutput)}
+\KeywordTok{ggwrite}\NormalTok{(pls1,}\DataTypeTok{file=}\StringTok{"results/individual\_profiles.pdf"}\NormalTok{,}
+        \DataTypeTok{stamp=}\NormalTok{script,}\DataTypeTok{canvas=}\StringTok{"wide{-}screen"}\NormalTok{,}\DataTypeTok{useNames=}\OtherTok{TRUE}\NormalTok{,}
+        \DataTypeTok{save=}\NormalTok{writeOutput,}\DataTypeTok{onefile=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{list.files}\NormalTok{(}\StringTok{"results"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  Showing a bottom-right snip of
+  \texttt{results/individual\_profiles\_trtact300mg.png}:
+
+  \begin{center}
+  \includegraphics[trim={30cm 0 0 14cm},clip]{results/individual_profiles_trtact300mg.png}
+  \end{center}
+\end{itemize}
+\end{column}
+\end{columns}
 \end{frame}
 
 \end{document}

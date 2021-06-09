@@ -1,4 +1,10 @@
-# NMdata <a href='https://philipdelff.github.io/NMdata/'><img src='devel/NMdata_Rpackage/image_2021_06_07T20_32_08_398Z.png' align="right" height="131.5" /></a>
+# NMdata <a href='https://philipdelff.github.io/NMdata/'><img src='devel/NMdata_Rpackage/NMdata_logo_v01.png' align="right" height="131.5" /></a>
+<!-- badges: -->
+[![R build status](https://github.com/philipdelff/NMdata/workflows/R-CMD-check/badge.svg)](https://github.com/philipdelff/NMdata/actions)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Codecov test coverage](https://codecov.io/gh/philipdelff/NMdata/branch/master/graph/badge.svg)](https://codecov.io/gh/philipdelff/NMdata?branch=master)
+<!-- badges: end -->
+
 ### A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
 NMdata provides data creation and data handling tools for
 pharmacometrics (PK/PD modeling). The tools are created around the use

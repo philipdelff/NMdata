@@ -91,7 +91,8 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMscanInput
-**** TODO [#B] Get number of subjects as before filtering
+**** DONE Get number of subjects as before filtering
+     CLOSED: [2021-06-08 Tue 18:54]
 Challenge is that the filters are applied before the cplumn names are
 changed. So we need access to the old data and know what column to
 look at - called col.id after the translations.
@@ -133,6 +134,11 @@ A way to limit rows read into nonmem
      CLOSED: [2020-07-13 Mon 19:37]
 *** NMscanData
 **** TODO [#A] Check that no new values of col.row are found in output
+**** TODO [#A] Test for disjoint ID's
+     If ID's are disjoint, it's actually really easy to make a new ID
+     and use that for merging firstonly. But only if a row identifier
+     is used. If not the same new ID is to be added to the
+     firstonly. This will need testing.
 **** DONE Move time checks up
      CLOSED: [2021-05-22 Sat 00:18]
 Now, if number of rows don't match in input and output, the user don't

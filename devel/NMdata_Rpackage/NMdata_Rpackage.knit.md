@@ -1,6 +1,6 @@
 ---
 title: |
- ![](image_2021_06_07T20_32_08_398Z.png){width=1in}  
+ ![](NMdata_logo_v01.png){width=1in}  
  NMdata: A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
 author: Philip Delff
 date: June, 2021
@@ -73,7 +73,9 @@ Designed to fit in to the user's setup and coding preferences
 
 $$\vspace{.01in}$$
 
-The data creation tools should be relevant independently of estimation/simulation tool.
+* The data creation tools should be relevant independently of estimation/simulation tool.
+* Latest stable release is 0.0.7.2. Plan is to release 0.1.0 on CRAN.
+
 
 <!-- ## Who can find NMdata useful? -->
 
@@ -105,9 +107,9 @@ The data creation tools should be relevant independently of estimation/simulatio
 ## Motivation
 * As large a potential pharmacometrics has for illuminating the unknown in drug development, it is dangerously technical.
 
-* I hate being stuck in leg work and having too little time for modeling,
-reflection, and understanding key questions. `NMdata` is a big help for
-me personally in freeing time to more high-level tasks.
+* The risk is to have too little time for modeling, reflection, and
+understanding key questions. `NMdata` can be a help in freeing time to
+more high-level tasks.
 
 * During the first 2-3 years I spent in pharmacometrics, I must have spent half the time coding, desparately trying to get Nonmem to behave and to understand the properties of the estimates I obtained.
 
@@ -115,12 +117,14 @@ me personally in freeing time to more high-level tasks.
   difficulties in this process. This takes a lot of time and is most
   often only because we don't have adequate tools at hand.
 
-* Being a fairly experienced R programmer, I generalized some of these methods and collected them in `NMdata`.
+* I generalized some of my solutions and collected them in `NMdata`.
 
-* Almost every single line of code in the package is motivated by bad experiences. Errors, fear of errors, time wasted on debugging and double checking.
+* Almost every single line of code in the package is motivated by bad
+  experiences. Errors, fear of errors, time wasted on debugging and
+  double checking.
 
 * I have no intention of missioning these approaches to others. But if
-you find something interesting, feel free to take advantage.
+  you find something interesting, feel free to take advantage.
 
 
 <!-- This could become a good slide, but so far not ready at all -->
@@ -137,11 +141,15 @@ you find something interesting, feel free to take advantage.
 
 
 ## Getting started
-
+::: columns
+:::: column
+Use recent development version
+Notice: This should not be used for final scripts
 
 ```r
 library(remotes)
-install_github("philipdelff/NMdata",upgrade="never")
+install_github("philipdelff/NMdata",
+               upgrade="never")
 ```
 
 
@@ -153,6 +161,22 @@ library(NMdata)
 ## Welcome to NMdata. Best place to browse NMdata documentation is
 ## https://philipdelff.github.io/NMdata
 ```
+::::
+:::: column
+Using a specific release. See list of releases at [https://github.com/philipdelff/NMdata/releases](https://github.com/philipdelff/NMdata/releases)
+
+```r
+library(remotes)
+install_github("philipdelff/NMdata@v0.0.7.2",
+               upgrade="never")
+```
+
+
+```r
+library(NMdata)
+```
+::::
+:::
 
 
 
@@ -182,22 +206,23 @@ All functions and their arguments are documented in their help files.
 
 # Data set creation
 
-## Compare compatibility of data sets for rbind and merge
+## Compare compatibility of data sets for rbind and merge: `compareCols`
 ::: columns
 :::: column
 
 * In order to rbind or merge data sets, they must be compatible in 
-- presence of columns, depending of desired outcome
-- equally importantly, the classes of the common columns.
-* compareCols provides an overview of these properties for any number of data sets. 
-- By default, only descripancies are returned. 
-- Using `diff.only=FALSE` will give the complete list of columns in the two datasets.
+  - presence of columns, depending of desired outcome
+  - equally importantly, the classes of the common columns.
+* `compareCols` provides an overview of these properties for any number of data sets. 
+  - By default, only discrepancies are returned. 
+  - Using `diff.only=FALSE` will give the complete list of columns in the two datasets.
 
 :::: 
 :::: column
 
 A slightly modified version of the `pk` dataset has been created.
 
+* Rows have been omitted
 * `CYCLE` has been removed, and
 * `AMT` has been recoded to character
 
@@ -259,6 +284,7 @@ data values. We want to use these and other non-numerics in post-processing.
 :::: 
 
 :::: column
+	All column names are capital case. We rename to lowercase those that Nonmem will not be able to interpret as numeric.
 \footnotesize
 
 
@@ -314,7 +340,7 @@ compareCols(pk.old,pk)
 ## Automated checking of merges
 
 * Merges are a very common source of data creation bugs. 
-* As simple as they may seem, merges likely leave you with an unexpected number of
+* Merges likely leave you with an unexpected number of
 rows, some repeated or some omitted. 
 * `mergeCheck` is a wrapper of `merge` 
 which only accepts the results if 
@@ -329,16 +355,15 @@ consistency of the results.
 
 * This is not to say that merges beyond the scope of `mergeCheck` are
 relevant or necessary. But if `mergeCheck` covers your needs, it's a
-real time saver in terms of automated checks that you are getting
-what you expect.
+real time saver in terms of automated checks.
 
 **mergeCheck is not a new implementation of merge. It's an implementation of checks.**
 
-* `mergeCheck` uses `merge.data.table`. The addition is the checks that the result is in accordance with the restrictions. This means
+* `mergeCheck` uses `merge.data.table`. The contribution is the checks that no rows are lost, duplicated or added. 
 
 * The order of rows in the resulting data is always the same as the first dataset supplied.
 
-Does that make it slower?
+Is `mergeCheck` slower?
 
 - If you don't use data.table already, `mergeCheck` is likely to be way faster than what you use already. 
 - The checking overlay should be neglegible.
@@ -351,7 +376,7 @@ Does that make it slower?
 
 
 Say we want to add a covariate from a
-`dt.cov`.  We expect the number of rows to be unchanged from `pk`. `mergeCheck` requires that we get all and only the _same_ rows:
+`dt.cov`.  We expect the number of rows to be unchanged from `pk`. `mergeCheck` more strictly requires that we get all and only the _same_ rows:
 
 ::: columns
 :::: column
@@ -360,26 +385,26 @@ Say we want to add a covariate from a
 
 ```r
 ## The resulting dimensions are correct
-pk4 <- merge(pk,dt.cov,by="ID")
-dims(pk,dt.cov,pk4)
+pkmerge <- merge(pk,dt.cov,by="ID")
+dims(pk,dt.cov,pkmerge)
 ```
 
 ```
-##      data nrows ncols
-## 1:     pk  1502    22
-## 2: dt.cov   150     2
-## 3:    pk4  1502    23
+##       data nrows ncols
+## 1:      pk  1502    22
+## 2:  dt.cov   150     2
+## 3: pkmerge  1502    23
 ```
 
 ```r
 ## But we now have twice as many rows for this subject
-dims(pk[ID==31],pk4[ID==31])
+dims(pk[ID==31],pkmerge[ID==31])
 ```
 
 ```
-##             data nrows ncols
-## 1:  pk[ID == 31]    10    22
-## 2: pk4[ID == 31]    20    23
+##                 data nrows ncols
+## 1:      pk[ID == 31]    10    22
+## 2: pkmerge[ID == 31]    20    23
 ```
 :::
 :::: column
@@ -442,16 +467,13 @@ the rest of us.
 ## FlagsAssign
 ::: columns
 :::: column
-* `flagsAssign` applies the conditions sequentially and by increasing or decreasing
+
+* `flagsAssign` applies the conditions sequentially, by increasing or decreasing
 value of `FLAG`. 
-
-* `FLAG=0` means that none of the conditions were met and row is kept in analysis.  This cannot be changed.
-
 * You can use any expression that can be evaluated _row-wise_ within
 the data.frame. In this case, `BLQ` has to exist in `pk`.
-
 * If you need to evaluate a condition based on multiple rows (say inadequate dosing history for a subject), do that first, and include a column representing this condition.
-
+* `FLAG=0` means that none of the conditions were met and row is kept in analysis. This cannot be customized.
 * In `Nonmem`, you can include `IGNORE=(FLAG.NE.0)` in `$DATA` or `$INFILE`.
 
 ::::
@@ -510,7 +532,8 @@ flagsCount(data=pk[EVID==0],tab.flags=dt.flags)
 ```
 
 
-Now pick the columns you want and format your table for the report.
+
+* Now pick the columns you want and format your table for the report.
 
 
 # Finalize data for Nonmem 
@@ -528,25 +551,38 @@ A unique identifier is needed in order to
 ### The identifier should be
 
 * Numeric
-- For Nonmem to be able to read it
+  - For Nonmem to be able to read it
 * Integer
-- To avoid risk of rounding
-- It is _not_ a problem if represented as a `double` in `R`
+  - To avoid risk of rounding
+  - It is _not_ a problem if represented as a `double` in `R`
 
 * Increasing
-- Not strictly necessary
-- Avoid confusion
-- May be useful for post-processing to have a single column to order by
+  - Not strictly necessary
+  - Avoid confusion
+  - May be useful for post-processing to have a single column to order by
 
 ::::
 :::: column
 
-### Sort rows and add a row counter with `data.table`
+### Sort rows and add a row counter 
+
+* with `data.table`
 
 ```r
+## order
 setorder(pk,ID,TIME,EVID)
-pk[,ROW:=1:.N]
+## add counter
+pk[,ROW:=.I]
 ```
+
+* Or, with `dplyr` (I'm not very familiar with `dplyr`)
+
+```r
+pk <- pk %>%
+    arrange(ID,TIME,EVID) %>%
+    mutate(ROW=1:n())
+```
+
 ::::
 :::
 
@@ -558,24 +594,25 @@ pk[,ROW:=1:.N]
 ::: columns
 :::: column
 \vspace{12pt}
-The order of columns in Nonmem is important for two reasons. 
+* The order of columns in Nonmem is important for two reasons. 
 
-* Character in a variable read into Nonmem will make the run
+  - Non-numeric Characters in a variable read into Nonmem will make the run
 fail
-* The number of
-variables you can read into Nonmem is restricted 
+  - The number of
+variables you can read into Nonmem is restricted (may not apply to recent Nonmem versions)
 
-Uses a mix of recognition of column names and analysis of the
-column contents to sort the columns. `NMorderColumns` does not sort rows, nor does it modify any contents of columns.
+* `NMorderColumns` uses a mix of recognition of column names and analysis of the
+column contents to sort the columns. 
 
+  - First: Standard columns (`ID`, `TIME`, `EVID` etc.) and usable columns first
 
-* First: Standard columns (`ID`, `TIME`, `EVID` etc.) and usable columns first
+  - Columns that cannot be converted to numeric are put in the back
 
-* Columns that cannot be converted to numeric are put in the back
+  - Additional columns to place earlier (argument `first`) or late (`last`) can be specified. 
 
-* Additional columns to place earlier (argument `first`) or late (`last`) can be specified. 
+  - See `?NMorderColumns` for more options.
 
-* See `?NMorderColumns` for more options.
+* `NMorderColumns` does not sort rows, nor does it modify any contents of columns.
 
 ::::
 :::: column
@@ -637,11 +674,12 @@ data.table(old=colnames(pk.old),new=colnames(pk))
 For the final step of writing the dataset, `NMwriteData` is
 provided. 
 
+* `NMwriteData` _never_ modifies the data.
 * Checks character variables for Nonmem compatibility (commas not allowed)
-* writes a csv file with appropriate options for Nonmem compatibility
-* Default is to also write an rds file for R 
-- Contents identical to R object including all information (such as factor levels) which cannot be saved in csv. 
-- If you use `NMscanData` to read Nonmem results,  this information can be used automatically. 
+* writes a `csv` file with appropriate options for Nonmem compatibility
+* Default is to also write an `rds` file for R 
+  - Contents identical to R object including all information (such as factor levels) which cannot be saved in csv. 
+  - If you use `NMscanData` to read Nonmem results,  this information can be used automatically. 
 
 * Provides a proposal for text to include in the
 `$INPUT` and `$DATA` sections of the Nonmem control
@@ -688,7 +726,6 @@ NMwriteData(pk,file="derived/pk.csv")
 
 \vspace{12pt}
 
-* `NMwriteData` _Never_ modifies the data.
 
 * `eff0` is the last column in `pk` that `Nonmem` can make use of (remember `NMisNumeric` from earlier?)
 
@@ -723,7 +760,7 @@ specific to each model).
 * `NMwriteData` by defaults saves a backup of the overwritten control
 streams.
 
-* `NMwriteData` has a counterpart in `NMreadSection`
+* `NMwriteData` has a section _reader_ counterpart in `NMreadSection`
 
 ::::
 :::: column
@@ -817,7 +854,7 @@ objInfo(pknm)
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $CreationTime
-## [1] "2021-06-07 22:52:47"
+## [1] "2021-06-09 16:36:25"
 ## 
 ## $writtenTo
 ## [1] "derived/pk.csv"
@@ -834,7 +871,7 @@ objInfo(pknm2)
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $CreationTime
-## [1] "2021-06-07 22:52:47 EDT"
+## [1] "2021-06-09 16:36:25 EDT"
 ## 
 ## $writtenTo
 ## [1] "derived/pk.rds"
@@ -850,17 +887,20 @@ objInfo(pknm2)
 # Retrieving data from Nonmem runs 
 
 ## NMscanData
-`NMscanData` is an automated and general reader of Nonmem. It returns
+`NMscanData` is an automated and general reader of Nonmem. 
+* It returns
 one data set combining all information from input data and all output
-tables. Based on the list file (`.lst`) it will:
+tables. 
 
-- Read and combine output tables
-- If wanted, read input data and restore variables that were not
+Based on the list file (`.lst`) it will:
+
+* Read and combine output tables
+* If wanted, read input data and restore variables that were not
 output from the `Nonmem` model
-- If wanted, also restore rows from input data that were disregarded
+* If wanted, also restore rows from input data that were disregarded
 in `Nonmem` (e.g. observations or subjects that are not part of the
 analysis)
-- Perform multiple consistency checks 
+* Perform multiple consistency checks 
 
 \pause
 \footnotesize
@@ -945,20 +985,22 @@ head(res0,n=2)
 Using a unique row identifier for merging data is highly recommended:
 
 \footnotesize
+<!-- file1.lst <- system.file("examples/nonmem/xgxr001.lst", package="NMdata") -->
 
 ```r
-file1.lst <- system.file("examples/nonmem/xgxr001.lst", package="NMdata")
 res1 <- NMscanData(file1.lst,merge.by.row=TRUE)
 ```
 
 ```
-## Model:  xgxr001 
+## Model:  xgxr003 
 ## Input and output data merged by: ROW 
 ## 
 ## Used tables, contents shown as used/total:
-##               file     rows columns     IDs
-##    xgxr001_res.txt  905/905   16/16 150/150
-##  xgxr1.csv (input) 905/1502   22/24 150/150
+##                  file     rows columns     IDs
+##       xgxr003_res.txt  905/905     7/7 150/150
+##  xgxr003_res_vols.txt  905/905     3/7 150/150
+##    xgxr003_res_fo.txt  150/150     1/2 150/150
+##     xgxr1.csv (input) 905/1502   21/24 150/150
 ## 
 ## Distribution of rows on event types in returned data:
 ##  EVID Output
@@ -975,6 +1017,8 @@ class(res0)
 ```
 \normalsize
 
+* Starting from `NMdata 0.0.8`, the default behavior will be to merge by `col.row` if found.
+  - Default value of `col.row` is `ROW`. We shall see later how to modify this.
 
 ## NMscanData
 \framesubtitle{Example: quickly get from a list file to looking at the model}
@@ -1045,13 +1089,15 @@ res2 <- NMscanData(file1.lst,
 ```
 
 ```
-## Model:  xgxr001 
+## Model:  xgxr003 
 ## Input and output data merged by: ROW 
 ## 
 ## Used tables, contents shown as used/total:
-##               file      rows columns     IDs
-##    xgxr001_res.txt   905/905   16/16 150/150
-##  xgxr1.csv (input) 1502/1502   22/24 150/150
+##                  file      rows columns     IDs
+##       xgxr003_res.txt   905/905     7/7 150/150
+##  xgxr003_res_vols.txt   905/905     3/7 150/150
+##    xgxr003_res_fo.txt   150/150     1/2 150/150
+##     xgxr1.csv (input) 1502/1502   21/24 150/150
 ## 
 ## Distribution of rows on event types in returned data:
 ##  EVID Input only Output
@@ -1062,8 +1108,7 @@ res2 <- NMscanData(file1.lst,
 * No information is carried from output tables to recovered input data
 rows. For instance, it could make sense to merge back unique values
 within subjects (like subject level parameter estimates). Such
-"back-filling" must be done manually (easy with `data.table` or
-`dplyr`).
+"back-filling" must be done manually.
 
 :::
 
@@ -1071,7 +1116,7 @@ within subjects (like subject level parameter estimates). Such
 ::: {.column width="55%"}
 
 
-\begin{center}\includegraphics[width=1.05\linewidth]{plots/unnamed-chunk-29-1} \end{center}
+\begin{center}\includegraphics[width=1.05\linewidth]{plots/unnamed-chunk-30-1} \end{center}
 :::
 ::::::::::::::
 
@@ -1141,7 +1186,7 @@ By default, `NMscanData` will look for an rds file next to the csv file (same fi
 
 ::::
 :::: column
-Notice, the plots are correctly ordered by doses - because they are ordered by factor levels.
+The plots are correctly ordered by doses - because they are ordered by factor levels as in `rds` input data.
 
 \footnotesize
 
@@ -1152,7 +1197,7 @@ res14 <- NMscanData(lst,quiet=TRUE)
 ```
 
 
-\begin{center}\includegraphics[width=1.05\linewidth]{plots/unnamed-chunk-32-1} \end{center}
+\begin{center}\includegraphics[width=1.05\linewidth]{plots/unnamed-chunk-33-1} \end{center}
 ::::
 :::
 
@@ -1198,16 +1243,16 @@ NMinfo(res1,"details")
 ## [2] "    quiet = TRUE)"                                                   
 ## 
 ## $time.call
-## [1] "2021-06-07 22:52:48 EDT"
+## [1] "2021-06-09 16:36:26 EDT"
 ## 
 ## $model
-## [1] "xgxr001"
+## [1] "xgxr003"
 ## 
 ## $file.lst
-## [1] "C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr001.lst"
+## [1] "C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003.lst"
 ## 
 ## $mtime.lst
-## [1] "2021-05-14 15:27:25 EDT"
+## [1] "2021-04-05 21:57:22 EDT"
 ## 
 ## $input.used
 ## [1] TRUE
@@ -1244,62 +1289,129 @@ NMinfo(res1,"tables")
 ```
 
 ```
-##    source            name nrow ncol
-## 1: output xgxr001_res.txt  905   16
-## 2:  input       xgxr1.csv 1502   24
-##                                                                         file
-## 1: C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr001_res.txt
-## 2:         C:/Users/delff/working_copies/NMdata/inst/examples/data/xgxr1.csv
-##    firstonly lastonly firstlastonly format  sep idlevel
-## 1:     FALSE    FALSE         FALSE               FALSE
-## 2:        NA       NA            NA   <NA> <NA>      NA
+##    source                 name nrow ncol
+## 1: output      xgxr003_res.txt  905    7
+## 2: output xgxr003_res_vols.txt  905    7
+## 3: output   xgxr003_res_fo.txt  150    2
+## 4:  input            xgxr1.csv 1502   24
+##                                                                              file
+## 1:      C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003_res.txt
+## 2: C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003_res_vols.txt
+## 3:   C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003_res_fo.txt
+## 4:              C:/Users/delff/working_copies/NMdata/inst/examples/data/xgxr1.csv
+##    firstonly lastonly firstlastonly   format  sep idlevel
+## 1:     FALSE    FALSE         FALSE                 FALSE
+## 2:     FALSE    FALSE         FALSE   tF13.4        FALSE
+## 3:      TRUE    FALSE         FALSE ,1PE15.8    ,    TRUE
+## 4:        NA       NA            NA     <NA> <NA>      NA
 ##             file.mtime has.row maxLength full.length
-## 1: 2021-04-05 21:38:48    TRUE      TRUE        TRUE
-## 2: 2021-04-05 21:17:54      NA        NA          NA
+## 1: 2021-04-05 21:57:22    TRUE      TRUE        TRUE
+## 2: 2021-04-05 21:57:22   FALSE      TRUE        TRUE
+## 3: 2021-04-05 21:57:22   FALSE     FALSE       FALSE
+## 4: 2021-04-05 21:17:54      NA        NA          NA
 ##    filetype nid
 ## 1:     <NA>  NA
-## 2:     text 150
+## 2:     <NA>  NA
+## 3:     <NA>  NA
+## 4:     text 150
 ```
 
 ::::
 :::: column
 ### Column-specific information
 (The `nrows` and `topn` arguments are arguments to `print.data.table` to get a top and bottom snip of the table.)
-\footnotesize
+\scriptsize
 
 ```r
 print(NMinfo(res1,"columns"),nrows=20,topn=10)
 ```
 
 ```
-##     variable            file     source level COLNUM
-##  1:      ROW xgxr001_res.txt     output   row      1
-##  2:       ID       xgxr1.csv      input   row      2
-##  3:  NOMTIME       xgxr1.csv      input   row      3
-##  4:     TIME       xgxr1.csv      input   row      4
-##  5:     EVID       xgxr1.csv      input   row      5
-##  6:      CMT       xgxr1.csv      input   row      6
-##  7:      AMT       xgxr1.csv      input   row      7
-##  8:       DV xgxr001_res.txt     output   row      8
-##  9:     FLAG       xgxr1.csv      input   row      9
-## 10:    STUDY       xgxr1.csv      input   row     10
-## ---                                                 
-## 33:   EVENTU       xgxr1.csv      input   row     33
-## 34:     NAME       xgxr1.csv      input   row     34
-## 35: TIMEUNIT       xgxr1.csv      input   row     35
-## 36:   TRTACT       xgxr1.csv      input   row     36
-## 37:     flag       xgxr1.csv      input   row     37
-## 38:   trtact       xgxr1.csv      input   row     38
-## 39:    model            <NA> NMscanData model     39
-## 40:    nmout            <NA> NMscanData   row     40
-## 41:      ROW       xgxr1.csv      input   row     NA
-## 42:       DV       xgxr1.csv      input   row     NA
+##     variable                 file     source level COLNUM
+##  1:      ROW      xgxr003_res.txt     output   row      1
+##  2:       ID xgxr003_res_vols.txt     output   row      2
+##  3:  NOMTIME            xgxr1.csv      input   row      3
+##  4:     TIME            xgxr1.csv      input   row      4
+##  5:     EVID            xgxr1.csv      input   row      5
+##  6:      CMT            xgxr1.csv      input   row      6
+##  7:      AMT            xgxr1.csv      input   row      7
+##  8:       DV      xgxr003_res.txt     output   row      8
+##  9:     FLAG            xgxr1.csv      input   row      9
+## 10:    STUDY            xgxr1.csv      input   row     10
+## ---                                                      
+## 33:    model                 <NA> NMscanData model     33
+## 34:    nmout                 <NA> NMscanData   row     34
+## 35:       DV xgxr003_res_vols.txt     output   row     NA
+## 36:     PRED xgxr003_res_vols.txt     output   row     NA
+## 37:      RES xgxr003_res_vols.txt     output   row     NA
+## 38:     WRES xgxr003_res_vols.txt     output   row     NA
+## 39:      ROW            xgxr1.csv      input   row     NA
+## 40:       ID            xgxr1.csv      input   row     NA
+## 41:       DV            xgxr1.csv      input   row     NA
+## 42:       ID   xgxr003_res_fo.txt     output    id     NA
 ```
 ::::
 :::
 
 
-## What should I do for my models to be compatible with NMscanData?
+## What to do when Nonmem results seem meaningless
+\framesubtitle{Check of usual suspect: DATA}
+
+::: columns
+:::: column
+* `NMcheckColnames` lists column names
+  - As in input data set
+  - As in Nonmem `$DATA`
+  - As inferred by `NMscanInput` (and `NMscanData`) 
+* This will help you easily check if `$DATA` matches the input data file.
+* This is a new function that will be available in the next `NMdata` release
+* A more advanced idea is some automated guessing if mistakes were made. This is currently not on the todo list
+::::
+:::: column
+In this case, input column names are aligned with `$DATA`
+\footnotesize
+
+```r
+NMcheckColnames(lst)
+```
+
+```
+## Read rds input data file.
+```
+
+```
+##        input   nonmem   result
+##  1:      ROW      ROW      ROW
+##  2:       ID       ID       ID
+##  3:     TIME     TIME     TIME
+##  4:     EVID     EVID     EVID
+##  5:      CMT      CMT      CMT
+##  6:      AMT      AMT      AMT
+##  7:       DV       DV       DV
+##  8:     FLAG     FLAG     FLAG
+##  9:    STUDY    STUDY    STUDY
+## 10:      BLQ      BLQ      BLQ
+## 11:    CYCLE    CYCLE    CYCLE
+## 12:     DOSE     DOSE     DOSE
+## 13:  NOMTIME  NOMTIME  NOMTIME
+## 14:     PART     PART     PART
+## 15:  PROFDAY  PROFDAY  PROFDAY
+## 16: PROFTIME PROFTIME PROFTIME
+## 17:  WEIGHTB  WEIGHTB  WEIGHTB
+## 18:     eff0     EFF0     EFF0
+## 19:   EVENTU     <NA>   EVENTU
+## 20:     NAME     <NA>     NAME
+## 21: TIMEUNIT     <NA> TIMEUNIT
+## 22:   TRTACT     <NA>   TRTACT
+## 23:     flag     <NA>     flag
+## 24:   trtact     <NA>   trtact
+##        input   nonmem   result
+```
+\normalsize
+::::
+:::
+
+## What should I do for my models to be compatible with `NMscanData`?
 * The answer to this should be as close to "nothing" as possible -
 that's more or less the aim of the function. 
 
@@ -1310,19 +1422,16 @@ output data.
 * No need to output information that is unchanged from
 input, but make sure to output what you need (like `IPRED`, `CWRES`, `CL`,
 `ETA1` etc which cannot be found in input). Always output the row identifier!
-
-* Some of these values can be
-found from other files generated by `Nonmem` but notice: `NMscanData` uses
-only input and output data.
+  - Some of these values can be
+found from other files generated by `Nonmem` but notice: `NMscanData` only uses input and output data.
 
 * Including a unique row identifier in both input and
 output data is the most robust way to combine the tables. 
+  - Everything
+will most likely work even if you don't 
+  - I would not take "most likely" when robustness is available.
 
 * In `firstonly` tables, include the subject ID or the row identifier. 
-
-* Everything
-will most likely work even if you don't 
-- I would not take "most likely" when robustness is available.
 
 
 ## `NMscanData` limitations
@@ -1339,9 +1448,9 @@ Even if limitations of `NMscanData` may be several, they are all rare. There is 
 
 * Not all data filter statements implemented. Nested `ACCEPT` and `IGNORE` statements are not supported at this
 point. The resulting number of rows after applying filters is checked
-against row-level output table dimensions (if any available).  It is always recommended to use a unique row identifier in
-both input and output tables in order to avoid relying on
-interpretation of `Nonmem` code.
+against row-level output table dimensions (if any available).
+
+* Disjoint rows with common `ID` values are currently not supported together with `firstonly` or `lastonly` tables. This is on the todo list.
 
 * The `RECORDS` and `NULL` options in `$DATA` are not implemented. If using
 `RECORDS`, please use the `col.row` option to merge by a unique row
@@ -1362,16 +1471,19 @@ available elsewhere.
 `NMscanData` uses a few simpler functions to read all the data it can find. These functions may be useful when you don't want the full automatic package provided by `NMscanData`.
 
 * `NMreadTab`
-- Fast read and format output tables from Nonmem. 
-- Handles the "`TABLE NO.`" counter
+  - Fast read and format output tables from Nonmem
+  - Handles the "`TABLE NO.`" counter
+  - If you simulate a large number of subjects in Nonmem and get a
+    large (gigabytes) output data file, this will be extremely fast
+    compared to almost anything else.
 * `NMscanTables` (uses `NMreadTab`)
-- Given a control stream or list file, read all output tables
+  - Given a control stream or list file, read all output tables
 * `NMreadCsv` 
-- Fast read delimited (input data) files 
+  - Fast read delimited (input data) files 
 * `NMscanInput` (uses `NMreadCSV`)
-- Given a control stream or list file, read input data.
-- Optionally reads and applies Nonmem ignore/accept statements
-- Optionally translates column names according to names used in Nonmem
+  - Given a control stream or list file, read input data.
+  - Optionally reads and applies Nonmem ignore/accept statements
+  - Optionally translates column names according to names used in Nonmem
 
 <!-- # Data processing -->
 <!-- ## findCovs, findVars -->
@@ -1416,9 +1528,9 @@ library(tibble)
 NMdataConf(as.fun=tibble::as_tibble)
 ```
 
-- `recover.rows`: Should `NMscanData` Include rows not processed by Nonmem? (default `FALSE`).
-
 - `use.input`: Should `NMscanData` combine (output data) with input data? (default `TRUE`)
+
+- `recover.rows`: Should `NMscanData` Include rows not processed by Nonmem? (default `FALSE`).
 
 - `file.mod`: A function that translates the list file path to the input control stream file path. Default is to replace extension with `.mod`.
 
@@ -1447,9 +1559,9 @@ try(NMdataConf(use.input="FALSE"))
 ```
 
 * A few extra features are available with `NMdataConf`:
-- Reset all settings: `NMdataConf(reset=TRUE)` 
-- Reset individual settings: `NMdataConf(use.input=NULL, as.fun=NULL)`
-- Retrieve all current settings: `NMdataConf()`
+  - Reset all settings: `NMdataConf(reset=TRUE)` 
+  - Reset individual settings: `NMdataConf(use.input=NULL, as.fun=NULL)`
+  - Retrieve all current settings: `NMdataConf()`
 
 # Next steps for `NMdata`
 
@@ -1468,6 +1580,8 @@ results
 
 * The tests are crucial in making sure that fixing one bug or
 introducing a new feature does not introduce new bugs
+
+* The testing approach is as recommended in "R packages" by Hadley Wickham and Jennifer Bryan [https://r-pkgs.org/tests.html](https://r-pkgs.org/tests.html).
 
 * If you have a specific example you want to make sure is tested in the
 package, we will include the test in the package
@@ -1491,6 +1605,7 @@ package, we will include the test in the package
 * After first version on CRAN
   - Functions for easy documentation of column contents (description,
     units, 1:1 relationships between character and numeric columns)
+  - Functions to generate dosing regimens for simulations and nominal-time datasets
   
 <!-- %%%% automatic saving of meta data with csv files -->
 <!-- %%%% check that row identifier is not modified by Nonmem -->
@@ -1518,9 +1633,10 @@ Read/write Nonmem control streams
 Retrieve data from Nonmem runs
 
 * `NMscanData`
-* `NMinfo`
+* `summary`, `NMinfo`
 * `NMscanInput`, `NMreadCsv`
 * `NMscanTables`, `NMreadTab`
+* `NMcheckColnames`
 
 Adjust behavior to your preferences
 
@@ -1535,106 +1651,25 @@ Other
 
 ### The plan is submission to CRAN this month!
 
-# Other tools
-## pmxtricks
-A more diverse package 
-
-- `ggIndProfs`: Individual plots, including indication of doses
-- `ggwrite`: Saves images in sizes made for powerpoint, including stamps (time, source, output filename). It can save multiple plots at once as one file (pdf) or multiple files. 
+# `NMdata` functions under development 
 
 
-```r
-library(remotes)
-install_github("philipdelff/pmxtricks",upgrade="never")
-library(pmxtricks)
-```
-
-
-
-
-## Individual profiles including observations, doses, and model predictions
-\footnotesize
-
-```r
-pls1 <- ggIndProfs(res1,amt="AMT",grp="trtact",NPerSheet=36,labels="top-right",
-                   ylab="Concentration",ylab2="Dose")
-ggwrite(pls1[[5]],canvas="wide")
-```
-
-
-
-\begin{center}\includegraphics[height=0.75\textheight]{plots/unnamed-chunk-41-1} \end{center}
-\normalsize
-
-## `ggwrite`: Flexible saving of tracable output
-::: columns
-:::: column
-`ggwrite` is a wrapper of `png` and `pdf` (and `dev.off`) with convenience features such as
-
-* Support for multiple plots at once
-  - saved as either multiple files, named by list element names if wanted (or just numbered)
-  - or a single pdf with one plot per page
-* Stamping with creation time, script name, and output name
-* "canvas" sizes made for powerpoint or full-screen display (see `?canvasSize`)
-* Custom canvases are very simple to create
-* Independent `save` and `show` arguments for very simple conditional behavior
-  - `save` defaults to `TRUE` if a filename is given
-  - `show` defaults to the inverse of `save`
-::::
-:::: column
-Save pls1, as one file and as multiple files, named by the dose levels.
-\footnotesize
-
-```r
-writeOutput <- TRUE
-script <- "path/to/script.R"
-ggwrite(pls1,file="results/individual_profiles.png",
-        stamp=script,canvas="wide-screen",useNames=TRUE,
-        save=writeOutput)
-ggwrite(pls1,file="results/individual_profiles.pdf",
-        stamp=script,canvas="wide-screen",useNames=TRUE,
-        save=writeOutput,onefile=TRUE)
-```
-
-```r
-list.files("results")
-```
-
-```
-## [1] "individual_profiles.pdf"            
-## [2] "individual_profiles_trtact100mg.png"
-## [3] "individual_profiles_trtact10mg.png" 
-## [4] "individual_profiles_trtact300mg.png"
-## [5] "individual_profiles_trtact30mg.png" 
-## [6] "individual_profiles_trtact3mg.png"
-```
-::::
-:::
-
-* Showing a bottom-right snip of `results/individual_profiles_trtact300mg.png`:
-
-\begin{center}
-\adjustbox{trim={.5\width} {0\height} {0\width} {.7\height},clip}{
-	\includegraphics[width=\textwidth]{results/individual_profiles_trtact300mg.png}
-}
-\end{center}
-
-
-
-## `NMcheckData`: Check data syntax for Nonmem compatibility
+## `NMcheckData`: Check data syntax for Nonmem compatibility \includegraphics[width=0.5in]{figures/worksign.png}
 Aim: check data for all potential Nonmem compatibility issues and other obvious errors.
-\includegraphics[width=0.5in]{figures/worksign.png}
+
 
 ::: columns
 :::: column
 
 * Currently checks for:
-  - Presence, no NA, and compatibility of `TIME`, `EVID`, `ID`, `CMT`
-  - DV must be NA at dosing events
-  - If available MDV and col.flagn must be numeric and non-missing
-  - EVID one of 0,1,2,3,4
-  - ID's are disjoint 
-  - TIME increasing within constant ID
+  - Presence, no `NA`, and compatibility of `TIME`, `EVID`, `ID`, `CMT`
+  - `DV` must be `NA` at dosing events
+  - If available `MDV` and col.flagn must be numeric and non-missing
+  - `EVID` one of 0,1,2,3,4
+  - `ID`'s are disjoint 
+  - `TIME` is positive and increasing within constant ID
+  - `CMT` is a positive integer
+  - `MDV` represents `is.na(DV)`
 
 * Todo
   - Many checks will be added and most of them are simple to implement
@@ -1645,18 +1680,20 @@ Aim: check data for all potential Nonmem compatibility issues and other obvious 
   - You could get a strange error due to "holes" in the function that
     haven't yet been implemented.
 
+* May or may not get ready for `NMdata 0.1.0`
+
 ::::
 :::: column
-\footnotesize
+\scriptsize
 
 ```r
 res.check <- NMcheckData(pk)
 ```
 
 ```
-##  column                      check    N
-##     MDV           Column not found    1
-##     CMT CMT not a positive integer 1502
+##  column            check N
+##     MDV Column not found 1
+##    TIME    Negative time 2
 ```
 
 ```r
@@ -1664,18 +1701,10 @@ res.check
 ```
 
 ```
-##                            check column  row
-##    1:           Column not found    MDV   NA
-##    2: CMT not a positive integer    CMT    1
-##    3: CMT not a positive integer    CMT    2
-##    4: CMT not a positive integer    CMT    3
-##    5: CMT not a positive integer    CMT    4
-##   ---                                       
-## 1499: CMT not a positive integer    CMT 1498
-## 1500: CMT not a positive integer    CMT 1499
-## 1501: CMT not a positive integer    CMT 1500
-## 1502: CMT not a positive integer    CMT 1501
-## 1503: CMT not a positive integer    CMT 1502
+##               check column row
+## 1: Column not found    MDV  NA
+## 2:    Negative time   TIME 691
+## 3:    Negative time   TIME 962
 ```
 
 ```r
@@ -1686,10 +1715,10 @@ res.check <- NMcheckData(pkmod)
 ```
 
 ```
-##  column                      check    N
-##     CMT                      is NA    1
-##     CMT CMT not a positive integer 1501
-##     MDV   DV not NA in dosing recs  150
+##  column                 check    N
+##     CMT                 is NA    1
+##    TIME         Negative time    2
+##     MDV MDV does not match DV 1352
 ```
 
 ```r
@@ -1697,42 +1726,23 @@ res.check
 ```
 
 ```
-##                            check column  row
-##    1:                      is NA    CMT   21
-##    2: CMT not a positive integer    CMT    1
-##    3: CMT not a positive integer    CMT    2
-##    4: CMT not a positive integer    CMT    3
-##    5: CMT not a positive integer    CMT    4
-##   ---                                       
-## 1648:   DV not NA in dosing recs    MDV 1453
-## 1649:   DV not NA in dosing recs    MDV 1463
-## 1650:   DV not NA in dosing recs    MDV 1473
-## 1651:   DV not NA in dosing recs    MDV 1483
-## 1652:   DV not NA in dosing recs    MDV 1493
+##                       check column  row
+##    1:                 is NA    CMT   21
+##    2:         Negative time   TIME  691
+##    3:         Negative time   TIME  962
+##    4: MDV does not match DV    MDV    2
+##    5: MDV does not match DV    MDV    3
+##   ---                                  
+## 1351: MDV does not match DV    MDV 1498
+## 1352: MDV does not match DV    MDV 1499
+## 1353: MDV does not match DV    MDV 1500
+## 1354: MDV does not match DV    MDV 1501
+## 1355: MDV does not match DV    MDV 1502
 ```
 
 :::: 
 :::
 
-## What to do when Nonmem results seem meaningless
-:::::::::::::: {.columns}
-::: {.column width="85%"}
-Check of usual suspect: `$DATA`
-::: 
-::: {.column width="15%"}
-\includegraphics[width=.5in]{figures/worksign.png}
-::: 
-::::::::::::::
-
-
-* NMscanData will check modification times of input and output, and give warnings if the model seems to have been edited since last model run.
-* Even with these checks, there is a risk that the column names given in `$DATA` are wrong even if the estimation runs smoothly 
-  - either actually, because column used for estimation are not affected
-  - or apparently, because the wrong column labeling still gives a valid but nonsense dataset
-  
-* NMscanData already contains the functionality to provide a table input data column names, control stream column name specification, and resulting translation. 
-* Todo: a simple function (or function argument to say `NMscanInput`) that returns this info.
-* A more advanced idea is some automated guessing if mistakes were made. This is currently not on the todo list.
 
 ## NMfreezeModels
 
@@ -1773,7 +1783,9 @@ Limitations
 ## Safe model reader
 :::::::::::::: {.columns}
 ::: {.column width="85%"}
-A function to read frozen Nonmem results and mrgsolve code to ensure that the right simulation model and parameter values are used
+* A function to read frozen Nonmem results and mrgsolve code to ensure that the right simulation model and parameter values are used
+
+* Obviously, this is closely related to the way mrgsolve code is frozen together with nonmem code.
 ::: 
 ::: {.column width="15%"}
 \includegraphics[width=.5in]{figures/ideabulb.jpg}
@@ -1781,6 +1793,77 @@ A function to read frozen Nonmem results and mrgsolve code to ensure that the ri
 ::::::::::::::
 
 
-Obviously, this is closely related to the way mrgsolve code is frozen together with nonmem code.
+# Other tools
+## pmxtricks
+A more diverse package 
+
+- `ggIndProfs`: Individual plots, including indication of doses
+- `ggwrite`: Saves images in sizes made for powerpoint, including stamps (time, source, output filename). It can save multiple plots at once as one file (pdf) or multiple files. 
+
+
+```r
+library(remotes)
+install_github("philipdelff/pmxtricks",upgrade="never")
+library(pmxtricks)
+```
+
+
+## Individual profiles including observations, doses, and model predictions
+\footnotesize
+
+```r
+pls1 <- ggIndProfs(res1,amt="AMT",grp="trtact",NPerSheet=36,labels="top-right",
+                   ylab="Concentration",ylab2="Dose")
+ggwrite(pls1[[5]],canvas="wide")
+```
+
+
+
+\begin{center}\includegraphics[height=0.75\textheight]{plots/unnamed-chunk-44-1} \end{center}
+\normalsize
+
+## `ggwrite`: Flexible saving of tracable output
+::: columns
+:::: column
+`ggwrite` is a wrapper of `png` and `pdf` (and `dev.off`) with convenience features such as
+
+* Support for multiple plots at once
+  - saved as either multiple files, named by list element names if wanted (or just numbered)
+  - or a single pdf with one plot per page
+* Stamping with creation time, script name, and output name
+* "canvas" sizes made for powerpoint or full-screen display (see `?canvasSize`)
+* Custom canvases are very simple to create
+* Independent `save` and `show` arguments for very simple conditional behavior
+  - `save` defaults to `TRUE` if a filename is given
+  - `show` defaults to the inverse of `save`
+::::
+:::: column
+Save pls1, as one file and as multiple files, named by the dose levels.
+\footnotesize
+
+```r
+writeOutput <- TRUE
+script <- "path/to/script.R"
+ggwrite(pls1,file="results/individual_profiles.png",
+        stamp=script,canvas="wide-screen",useNames=TRUE,
+        save=writeOutput)
+ggwrite(pls1,file="results/individual_profiles.pdf",
+        stamp=script,canvas="wide-screen",useNames=TRUE,
+        save=writeOutput,onefile=TRUE)
+list.files("results")
+```
+* Showing a bottom-right snip of `results/individual_profiles_trtact300mg.png`:
+\begin{center}
+\includegraphics[trim={30cm 0 0 14cm},clip]{results/individual_profiles_trtact300mg.png}
+\end{center}
+
+::::
+:::
+
+
+
+
+
+
 
 

@@ -75,7 +75,6 @@ NMscanInput <- function(file, use.rds, file.mod,
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     nid <- NULL
-    result.all <- NULL
     input <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
@@ -134,6 +133,9 @@ NMscanInput <- function(file, use.rds, file.mod,
             stop(paste("Input data file not found. Was expecting to find",info.datafile$path))
         }
     }
+    ## keeping a backup before translating column names and filtering
+    ## rows. This is used for very litle which should be done here
+    ## instead of making a deep copy.
     data.input.0 <- copy(data.input)
     
 ### filters must be applied here according to NM manual IV-1. They are applied before translating column names.
@@ -151,15 +153,15 @@ NMscanInput <- function(file, use.rds, file.mod,
     
     col.id.inp <- col.id
     if(translate){
-        col.id.inp <- dt.colnames[result.all==col.id,input][1]
+        col.id.inp <- dt.colnames[result==col.id,input][1]
     }
     
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
     
     if(details){
-
-        meta <- data.table(
+        meta <- list()
+        meta$details <- data.table(
             file=path.data.input,
             file.mtime=file.mtime(path.data.input),
             filetype=type.file,
@@ -168,9 +170,12 @@ NMscanInput <- function(file, use.rds, file.mod,
             ncol=ncol(data.input.0),
             nid=NA_real_
         )
-        if(col.id%in%dt.colnames[,result.all]) {
-            meta$nid <- data.input.0[,uniqueN(get(col.id.inp))]
+        if(col.id%in%dt.colnames[,result]) {
+            meta$details[,nid:=data.input.0[,uniqueN(get(col.id.inp))]]
         }
+
+        meta$colnames <- NULL
+        if(translate) meta$colnames <- dt.colnames
         
         data.input <- as.fun(data.input)
         return(list(data=data.input,meta=meta))
