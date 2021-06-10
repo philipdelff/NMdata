@@ -1,6 +1,6 @@
 ---
 title: |
- ![](NMdata_logo_v01.png){width=1in}  
+ ![](../../man/figures/NMdata_logo_v01.png){width=1in}  
  NMdata: A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
 author: Philip Delff
 date: June, 2021
