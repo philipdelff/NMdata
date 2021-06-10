@@ -18,6 +18,14 @@ test_that("reset",{
     NMdataConf(as.fun="data.table")
     NMdataConf(reset=TRUE)
     defaults2 <- NMdataConf()
+
+    defaults$as.fun <- NULL
+    defaults$file.mod <- NULL
+    defaults$modelname <- NULL
+    defaults2$as.fun <- NULL
+    defaults2$file.mod <- NULL
+    defaults2$modelname <- NULL
+    
     
     expect_equal(defaults,defaults2)
 })

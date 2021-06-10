@@ -1177,6 +1177,8 @@ try(NMdataConf(use.input="FALSE"))
 
 ## How is `NMdata` qualified?
 
+\includegraphics[width=.8\textwidth]{badges_snip}
+
 * `NMdata` contains very little calculations (only exception may be `flagsAssign`/`flagsCount`)
 
 * Historic bugs have mostly resulted in uninformative errors due to

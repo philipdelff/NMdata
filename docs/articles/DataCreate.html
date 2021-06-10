@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2.902</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 
     
     
-<p>Built 2021-06-02 using NMdata 0.0.7.2.</p>
+<p>Built 2021-06-09 using NMdata 0.0.7.2.902.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -105,7 +105,7 @@
 <p>Furthermore, Nonmem has quite a number of restrictions on the format of the input data, and problems with the data set is a very common reason for Nonmem not to behave as expected. When this happens, debugging can be time-consuming. <code>NMdata</code> includes some simple functions to prevent these situations.</p>
 <p>This vignette uses <code>data.table</code> syntax for the little bit of data manipulation performed. However, you don’t need to use data.table <em>at all</em> to use these tools or any tool in <code>NMdata</code>. The reason why the functions return data.table objects is that the data set is a <code>data.table</code> to begin with</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span>file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>, package <span class="op">=</span> <span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span>
 <span class="co">#&gt; [1] "data.table" "data.frame"</span></code></pre></div>
 <p>If this was a <code>data.frame</code> (and not a <code>data.table</code>), the <code>NMdata</code> functions would keep returning objects of class <code>data.frame</code>.</p>
@@ -119,7 +119,7 @@
 <p>When stacking (rbind) and merging, it is most often necessary to check if two or more data sets are compatible for the operation. <code>compareCols</code> by defaults lists the columns where the two data sets differ.</p>
 <p>Just to illustrate the output of <code>compareCols</code>, a slightly modified version of the <code>pk</code> dataset has been created. On column (<code>CYCLE</code>) has been removed, and <code>AMT</code> has been recoded to character. <code>compareCols</code> tells us about exactly these two differences. So before mergeing or stacking, we may want to recode <code>AMT</code> in one of the datasets to get the class we need, and decide what to do about the missing <code>CYCLE</code> in one of the datasets (if OK, we fill in <code>NA</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/compareCols.html">compareCols</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">pk.reduced</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/compareCols.html">compareCols</a></span><span class="op">(</span><span class="va">pk</span>, <span class="va">pk.reduced</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="rename-columns-based-on-contents" class="section level3">
 <h3 class="hasAnchor">
@@ -127,10 +127,11 @@
 <p>The model estimation step is heavily dependent (and in Nonmem almost entirely based) on numeric data values. The source data will often contain character variables, i.e. columns with non-numeric data values.</p>
 <p>If the column names reflect whether the values are numeric, double-checking can be avoided. <code>renameByContents</code> renames columns if a function of their contents returns <code>TRUE</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pk.renamed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/renameByContents.html">renameByContents</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">pktmp</span>,fun.test<span class="op">=</span><span class="va">NMisNumeric</span>,fun.rename <span class="op">=</span> <span class="va">tolower</span>, invert.test <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">pk.renamed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/renameByContents.html">renameByContents</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pktmp</span>, fun.test <span class="op">=</span> <span class="va">NMisNumeric</span>,
+    fun.rename <span class="op">=</span> <span class="va">tolower</span>, invert.test <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><code>NMisNumeric</code> is a function that tests if the contents are numeric to <code>Nonmem</code>. If say the subject ID is of character class, it can be valid to <code>Nonmem</code>. Subject ID <code>"1039"</code> will be a numeric in Nonmem, <code>"1-039"</code> will not. We invert that, and those that Nonmem cannot interpret as numeric become lowercase. We use <code>compareCols</code> to illustrate that three columns were renamed:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/compareCols.html">compareCols</a></span><span class="op">(</span><span class="va">pktmp</span>,<span class="va">pk.renamed</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/compareCols.html">compareCols</a></span><span class="op">(</span><span class="va">pktmp</span>, <span class="va">pk.renamed</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="automated-checks-of-merge-results" class="section level3">
 <h3 class="hasAnchor">
@@ -141,43 +142,43 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1502   24</span>
 <span class="co">## the number of unique values of ID in pk</span>
-<span class="va">pk</span><span class="op">[</span>,<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">uniqueN</a></span><span class="op">(</span><span class="va">ID</span><span class="op">)</span><span class="op">]</span>
+<span class="va">pk</span><span class="op">[</span>, <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">uniqueN</a></span><span class="op">(</span><span class="va">ID</span><span class="op">)</span><span class="op">]</span>
 <span class="co">#&gt; [1] 150</span>
-<span class="va">pk</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">ID</span><span class="op">)</span><span class="op">]</span>
+<span class="va">pk</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">ID</span><span class="op">)</span><span class="op">]</span>
 <span class="co">#&gt; [1]  31 180</span>
 <span class="co">## dt.cov has a covariate for some of the subjects</span>
 <span class="va">dt.cov</span>
 <span class="co">#&gt;     ID COV</span>
-<span class="co">#&gt;  1: 31   3</span>
-<span class="co">#&gt;  2: 32   2</span>
-<span class="co">#&gt;  3: 33   2</span>
-<span class="co">#&gt;  4: 34   1</span>
-<span class="co">#&gt;  5: 35   2</span>
-<span class="co">#&gt;  6: 36   1</span>
+<span class="co">#&gt;  1: 31   1</span>
+<span class="co">#&gt;  2: 32   5</span>
+<span class="co">#&gt;  3: 33   3</span>
+<span class="co">#&gt;  4: 34   2</span>
+<span class="co">#&gt;  5: 35   1</span>
+<span class="co">#&gt;  6: 36   2</span>
 <span class="co">#&gt;  7: 37   2</span>
-<span class="co">#&gt;  8: 38   4</span>
-<span class="co">#&gt;  9: 39   4</span>
-<span class="co">#&gt; 10: 40   5</span>
-<span class="va">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span>
+<span class="co">#&gt;  8: 38   1</span>
+<span class="co">#&gt;  9: 39   1</span>
+<span class="co">#&gt; 10: 40   3</span>
+<span class="va">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span><span class="op">(</span><span class="va">pk</span>, <span class="va">dt.cov</span>, by <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">pk2</span><span class="op">)</span>
 <span class="co">#&gt; [1] 100  25</span>
 <span class="co">## now as expected</span>
-<span class="va">pk3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span>,all.x<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">pk3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span><span class="op">(</span><span class="va">pk</span>, <span class="va">dt.cov</span>, by <span class="op">=</span> <span class="st">"ID"</span>, all.x <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">pk3</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1502   25</span></code></pre></div>
 <p>So when creating <code>pk2</code> we lost a lot of rows because we forgot the <code>all.x</code> option. And also as we shall now see that checking the resulting dimensions is not enough. In the following example, <code>pk4</code> has the same number of rows as <code>pk</code>, but one row is repeated, another must have disappeared.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pk4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov2</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">pk4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span><span class="op">(</span><span class="va">pk</span>, <span class="va">dt.cov2</span>, by <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">pk4</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1502   25</span>
 <span class="co">## we now have twice as many rows for this subject</span>
-<span class="va">pk</span><span class="op">[</span><span class="va">ID</span><span class="op">==</span><span class="fl">31</span>,<span class="va">.N</span><span class="op">]</span>
+<span class="va">pk</span><span class="op">[</span><span class="va">ID</span> <span class="op">==</span> <span class="fl">31</span>, <span class="va">.N</span><span class="op">]</span>
 <span class="co">#&gt; [1] 10</span>
-<span class="va">pk4</span><span class="op">[</span><span class="va">ID</span><span class="op">==</span><span class="fl">31</span>,<span class="va">.N</span><span class="op">]</span>
+<span class="va">pk4</span><span class="op">[</span><span class="va">ID</span> <span class="op">==</span> <span class="fl">31</span>, <span class="va">.N</span><span class="op">]</span>
 <span class="co">#&gt; [1] 20</span></code></pre></div>
 <p>As illustrated by these simple examples, even the simplest merges have to be rigorously checked, no exceptions. The function call <code><a href="../reference/mergeCheck.html">mergeCheck(x1,x2)</a></code> ensures that the result has exactly one of each rows from <code>x1</code> and nothing else. We can use <code>...</code> to pass additional arguments to merge. Here, we need <code>all.x</code> to include rows from <code>x1</code> where <code>ID</code> is not matched by a row in <code>dt.cov</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pk2</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/try.html">try</a></span><span class="op">(</span><span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">pk2</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/try.html">try</a></span><span class="op">(</span><span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">pk</span>, <span class="va">dt.cov</span>, by <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Rows disappeared during merge.</span>
 <span class="co">#&gt; Overview of dimensions of input and output data:</span>
 <span class="co">#&gt;         data nrows ncols</span>
@@ -200,7 +201,7 @@
 <span class="co">#&gt; Error in mergeCheck(pk, dt.cov, by = "ID") : </span>
 <span class="co">#&gt;   Merge added and/or removed rows.</span>
 <span class="co">## now as expected</span>
-<span class="va">pk3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span>,all.x<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">pk3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">pk</span>, <span class="va">dt.cov</span>, by <span class="op">=</span> <span class="st">"ID"</span>, all.x <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">pk3</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1502   25</span></code></pre></div>
 <p>The result always has the same row order as the <code>x1</code> argument.</p>
@@ -220,15 +221,15 @@
 <p>For use in Nonmem, the easiest is that inclusion/exclusion is determined by a single column in data - we call that column <code>FLAG</code> here, but any column name can be used. <code>FLAG</code> obviously draws on information from other columns such as <code>TIME</code>, <code>DV</code>, and many others, depending on your dataset and your way of working.</p>
 <p>The function that applies inclusion/excluasion rules is called <code>flagsAssign</code>, and it takes a dataset and a data.frame with rules as arguments.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span>text<span class="op">=</span><span class="st">"FLAG,flag,condition
+<code class="sourceCode R"><span class="va">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"FLAG,flag,condition
 10,Below LLOQ,EVID==0&amp;BLQ==1
 100,Negative time,EVID==0&amp;TIME&lt;0"</span><span class="op">)</span>
 
-<span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsAssign.html">flagsAssign</a></span><span class="op">(</span><span class="va">pk</span>,tab.flags<span class="op">=</span><span class="va">dt.flags</span>,subset.data<span class="op">=</span><span class="st">"EVID==0"</span><span class="op">)</span>
+<span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsAssign.html">flagsAssign</a></span><span class="op">(</span><span class="va">pk</span>, tab.flags <span class="op">=</span> <span class="va">dt.flags</span>, subset.data <span class="op">=</span> <span class="st">"EVID==0"</span><span class="op">)</span>
 <span class="co">#&gt; Coding FLAG = 100, flag = Negative time</span>
 <span class="co">#&gt; Coding FLAG = 10, flag = Below LLOQ</span>
-<span class="va">pk</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">1</span>,<span class="va">FLAG</span><span class="op">:=</span><span class="fl">0</span><span class="op">]</span>
-<span class="va">pk</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">1</span>,<span class="va">flag</span><span class="op">:=</span><span class="st">"Dosing"</span><span class="op">]</span></code></pre></div>
+<span class="va">pk</span><span class="op">[</span><span class="va">EVID</span> <span class="op">==</span> <span class="fl">1</span>, <span class="fu">`:=`</span><span class="op">(</span><span class="va">FLAG</span>, <span class="fl">0</span><span class="op">)</span><span class="op">]</span>
+<span class="va">pk</span><span class="op">[</span><span class="va">EVID</span> <span class="op">==</span> <span class="fl">1</span>, <span class="fu">`:=`</span><span class="op">(</span><span class="va">flag</span>, <span class="st">"Dosing"</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <p>Your first question may be why <code>fread</code> is used to create a data.table (like <code>read.csv</code> to create a data.frame). The reason is that this way, we can write the information line by line. If you have ten lines in the dataset above and do <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame(FLAG=...,flag=...,condition=...)</a></code> it gets impossible to read what elements of the three columns that correspond.</p>
 <p><code>flagsAssign</code> applies the conditions sequentially and by increasing value of <code>FLAG</code>. <code>FLAG=0</code> means that the observation is included in the analysis. You can use any expression that can be evaluated within the data.frame. In this case, <code>BLQ</code> has to exist in <code>pk</code>.</p>
 <p>In <code>Nonmem</code>, you can include <code>IGNORE=(FLAG.NE.0)</code> in <code>$DATA</code> or <code>$INFILE</code>.</p>
@@ -240,7 +241,7 @@
 <a href="#summarize-data-exclusions" class="anchor"></a>Summarize data exclusions</h3>
 <p>An overview of the number of observations disregarded due to the different conditions is then obtained using <code>flagsCount</code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">tab.count</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsCount.html">flagsCount</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">pk</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">]</span>,tab.flags<span class="op">=</span><span class="va">dt.flags</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">tab.count</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsCount.html">flagsCount</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pk</span><span class="op">[</span><span class="va">EVID</span> <span class="op">==</span> <span class="fl">0</span><span class="op">]</span>, tab.flags <span class="op">=</span> <span class="va">dt.flags</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">tab.count</span><span class="op">)</span>
 <span class="co">#&gt;                  flag N.left Nobs.left N.discard N.disc.cum Nobs.discard</span>
 <span class="co">#&gt; 1: All available data    150      1352        NA          0           NA</span>
@@ -291,7 +292,7 @@
 <p>I may be the only one, but sometimes during the modeling stage, I want to go back and change or add something to the data creation step. Then once I have written a new data file, my Nonmem <code>$INPUT</code> sections no longer match the data file. In <code>NMwriteData</code> you can use a <code>last</code> argument to get columns pushed towards the back so the Nonmem runs should still work, but maybe you need the column in your nonmem runs, and so you have no way around updating the control streams. And that can be quite a lot of control streams.</p>
 <p><code>NMdata</code> has a couple of functions to extract and write sections to Nonmem control streams called <code>NMreadSection</code> and <code>NMwriteSection</code>. We are not going into detail with what these functions can do, but let’s stick to the example above. We can do</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/NMwriteSection.html">NMwriteSection</a></span><span class="op">(</span><span class="st">"run001.mod"</span>,<span class="st">"INPUT"</span>,<span class="st">"$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE FLAG2 NOMTIME PART PROFDAY PROFTIME WEIGHTB eff0"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/NMwriteSection.html">NMwriteSection</a></span><span class="op">(</span><span class="st">"run001.mod"</span>, <span class="st">"INPUT"</span>, <span class="st">"$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE FLAG2 NOMTIME PART PROFDAY PROFTIME WEIGHTB eff0"</span><span class="op">)</span></code></pre></div>
 <p>But in fact, we can go a step further and take the information straight from NMwriteData</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">text.nm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMwriteData.html">NMwriteData</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span>
@@ -304,7 +305,7 @@
 <span class="co">#&gt; IGNORE=(FLAG.NE.0)</span></code></pre></div>
 <p>NMwriteData invisibly returns a list of sections (<code>$INPUT</code> and <code>$DATA</code>). <code>NMwriteSection</code> can use these directly. So to write only the <code>$INPUT</code> section to <code>run001.mod</code>, we do the following. Please notice the single brackets in <code>text.nm["INPUT"]</code> which mean that we still send a list to <code>NMwriteSection</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/NMwriteSection.html">NMwriteSection</a></span><span class="op">(</span><span class="st">"run001.mod"</span>,list.sections<span class="op">=</span><span class="va">text.nm</span><span class="op">[</span><span class="st">"INPUT"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/NMwriteSection.html">NMwriteSection</a></span><span class="op">(</span><span class="st">"run001.mod"</span>, list.sections <span class="op">=</span> <span class="va">text.nm</span><span class="op">[</span><span class="st">"INPUT"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <p>If you run this in a loop over the control streams that use the created data set, you are all set to rerun the models as needed.</p>
 </div>
 </div>
@@ -313,22 +314,22 @@
 <a href="#stamp-objects-for-traceability" class="anchor"></a>Stamp objects for traceability</h2>
 <p>The last couple of functions that will be introduced here are used for tracing datasets to data creation scripts, including time stamps and other information you want to include with the data set.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stampObj.html">stampObj</a></span><span class="op">(</span><span class="va">pk</span>,script<span class="op">=</span><span class="st">"vignettes/DataCreate.Rmd"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stampObj.html">stampObj</a></span><span class="op">(</span><span class="va">pk</span>, script <span class="op">=</span> <span class="st">"vignettes/DataCreate.Rmd"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/objInfo.html">objInfo</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span>
 <span class="co">#&gt; $DataCreateScript</span>
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-06-02 15:25:41 EDT"</span></code></pre></div>
+<span class="co">#&gt; [1] "2021-06-09 22:51:03 EDT"</span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stampObj.html">stampObj</a></span><span class="op">(</span><span class="va">pk</span>,script<span class="op">=</span><span class="st">"vignettes/DataCreate.Rmd"</span>,Description<span class="op">=</span><span class="st">"A PK dataset used for examples."</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stampObj.html">stampObj</a></span><span class="op">(</span><span class="va">pk</span>, script <span class="op">=</span> <span class="st">"vignettes/DataCreate.Rmd"</span>, Description <span class="op">=</span> <span class="st">"A PK dataset used for examples."</span><span class="op">)</span>
 <span class="fu"><a href="../reference/objInfo.html">objInfo</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span>
 <span class="co">#&gt; $DataCreateScript</span>
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-06-02 15:25:41 EDT"</span>
+<span class="co">#&gt; [1] "2021-06-09 22:51:03 EDT"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span></code></pre></div>
@@ -340,25 +341,26 @@
 <a href="#subject-level-variables" class="anchor"></a>Subject-level variables</h2>
 <p>In a proper PK/PD analysis we need to explore the data at multiple variability levels. What we looked at above is at dosing and sampling level (one row per dosing or sampling event). <code>NMdata</code> provides very useful functions to extract information at other levels of variability. Before extracting the subject-level information we will add an individual exposure measure to the dataset. We will use the empirical Bayes’ estimate of the individual maximum concentration. This is derived as the maximum prediction across the sample times - it may be better to simulate the model at a richer time scale to get better precision. Again, we make use of <code>data.table</code> but feel free to use what you prefer. <code>findCovs</code> - like other <code>NMdata</code> functions - will work on <code>data.frame</code>’s, <code>tibble</code>’s and other <code>data.frame</code>-like classes (classes that inherit from <code>data.frame</code>).</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.lst"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span>,
-                   col.row<span class="op">=</span><span class="st">"ROW"</span>,merge.by.row<span class="op">=</span><span class="cn">TRUE</span>,quiet<span class="op">=</span><span class="cn">TRUE</span>,as.fun<span class="op">=</span><span class="st">"data.table"</span><span class="op">)</span>
-<span class="va">res1</span><span class="op">$</span><span class="va">trtact</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">res1</span><span class="op">$</span><span class="va">trtact</span>,<span class="va">res1</span><span class="op">$</span><span class="va">DOSE</span><span class="op">)</span>
-<span class="co">## with data.table, create a new column representing ID-level Cmax</span>
-<span class="va">res1</span><span class="op">[</span>,<span class="va">Cmax</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">IPRED</span><span class="op">)</span>,by<span class="op">=</span><span class="fu">.</span><span class="op">(</span><span class="va">ID</span><span class="op">)</span><span class="op">]</span>
-<span class="co">## findCovs picks the columns that do not vary within cols.id. One row</span>
-<span class="co">## per value of cols.id.</span>
-<span class="va">res1.id</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/findCovs.html">findCovs</a></span><span class="op">(</span><span class="va">res1</span>,cols.id<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.lst"</span>,
+    package <span class="op">=</span> <span class="st">"NMdata"</span><span class="op">)</span>, col.row <span class="op">=</span> <span class="st">"ROW"</span>, merge.by.row <span class="op">=</span> <span class="cn">TRUE</span>,
+    quiet <span class="op">=</span> <span class="cn">TRUE</span>, as.fun <span class="op">=</span> <span class="st">"data.table"</span><span class="op">)</span>
+<span class="va">res1</span><span class="op">$</span><span class="va">trtact</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">res1</span><span class="op">$</span><span class="va">trtact</span>, <span class="va">res1</span><span class="op">$</span><span class="va">DOSE</span><span class="op">)</span>
+<span class="co">## with data.table, create a new column representing</span>
+<span class="co">## ID-level Cmax</span>
+<span class="va">res1</span><span class="op">[</span>, <span class="fu">`:=`</span><span class="op">(</span><span class="va">Cmax</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">IPRED</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">ID</span><span class="op">)</span><span class="op">]</span>
+<span class="co">## findCovs picks the columns that do not vary within</span>
+<span class="co">## cols.id. One row per value of cols.id.</span>
+<span class="va">res1.id</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/findCovs.html">findCovs</a></span><span class="op">(</span><span class="va">res1</span>, cols.id <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">res1.id</span><span class="op">)</span>
 <span class="co">#&gt; [1] 150  26</span>
-<span class="fu">ggplot</span><span class="op">(</span><span class="va">res1.id</span>,<span class="fu">aes</span><span class="op">(</span><span class="va">WEIGHTB</span>,<span class="va">Cmax</span><span class="op">/</span><span class="va">DOSE</span>,colour<span class="op">=</span><span class="va">trtact</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
-    <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
-    <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="st">"Bodyweight at baseline (kg)"</span><span class="op">)</span></code></pre></div>
+<span class="fu">ggplot</span><span class="op">(</span><span class="va">res1.id</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">WEIGHTB</span>, <span class="va">Cmax</span><span class="op">/</span><span class="va">DOSE</span>, colour <span class="op">=</span> <span class="va">trtact</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Bodyweight at baseline (kg)"</span><span class="op">)</span></code></pre></div>
 <p><img src="DataCreate_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
 <p><code>cols.id</code> can be longer than one. Include a study column, a treatment column to support cross-over, or a model column if you are comparing model fits (see below how to do this very easily).</p>
 <p>If your model includes occasion variability, you probably also want to look at</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## we have no occasion variability in this data</span>
-<span class="co">## res1.id.occ &lt;- findCovs(res1,cols.id=c("ID","OCC"))</span></code></pre></div>
+<code class="sourceCode R"><span class="co">## we have no occasion variability in this data res1.id.occ</span>
+<span class="co">## &lt;- findCovs(res1,cols.id=c('ID','OCC'))</span></code></pre></div>
 <p>The simplest use of <code>findCovs</code> is to get variables that are constant across the whole dataset:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/findCovs.html">findCovs</a></span><span class="op">(</span><span class="va">res1</span><span class="op">)</span>
@@ -370,7 +372,7 @@
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">res1.id</span><span class="op">)</span>
 <span class="co">#&gt; [1] 150  26</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">res1.id</span>,<span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">res1.id</span>, <span class="fl">2</span><span class="op">)</span>
 <span class="co">#&gt;    ID FLAG STUDY   TVKA  TVV2    TVCL    TVV3     TVQ     KA    V2      CL</span>
 <span class="co">#&gt; 1: 31    0     1 0.1812 0.042 0.72457 0.17848 2307400 0.1812 0.042 0.72457</span>
 <span class="co">#&gt; 2: 32    0     1 0.1812 0.042 0.72457 0.17848 2307400 0.1812 0.042 0.72457</span>
@@ -385,7 +387,7 @@
 <code class="sourceCode R"><span class="va">res1.id2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/findVars.html">findVars</a></span><span class="op">(</span><span class="va">res1.id</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">res1.id2</span><span class="op">)</span>
 <span class="co">#&gt; [1] 150  10</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">res1.id2</span>,<span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">res1.id2</span>, <span class="fl">2</span><span class="op">)</span>
 <span class="co">#&gt;    ID     KA    V2      CL DOSE WEIGHTB   EFF0 TRTACT trtact Cmax</span>
 <span class="co">#&gt; 1: 31 0.1812 0.042 0.72457    3  87.031 56.461   3 mg   3 mg    0</span>
 <span class="co">#&gt; 2: 32 0.1812 0.042 0.72457    3 100.620 45.096   3 mg   3 mg    0</span></code></pre></div>
