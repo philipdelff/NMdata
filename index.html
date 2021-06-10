@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2.905</span>
       </span>
     </div>
 
@@ -103,9 +103,22 @@
 <div id="a-fast-r-package-for-efficient-data-preparation-consistency-checking-and-post-processing-in-pkpd-modeling" class="section level3">
 <h3 class="hasAnchor">
 <a href="#a-fast-r-package-for-efficient-data-preparation-consistency-checking-and-post-processing-in-pkpd-modeling" class="anchor"></a>A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling</h3>
-<p>NMdata provides data creation and data handling tools for pharmacometrics (PK/PD modeling). The tools are created around the use of Nonmem for estimation or simulation. Data set creation tools may be equally users of nlmixr or other proprietary software than Nonmem. However, so far, the most elaborated features of the package relates to the final organization and writing of data for Nonmem, and reading data from Nonmem after a model run.</p>
-<p>Nonmem is a flexible tool for PK and PK/PD modeling. However, creating the datasets and reading the data resulting from running Nonmem can be tedious, and mistakes can lead to hours of frustration. This package provides useful tools (including automated checks) for these trivial tasks so we can spend more time on the actual analysis.</p>
+<p>Pharmacometrics and PK/PD modeling offers unique information for decision-making in several steps of drug development. However, the leg work in pharmacometrics remains technical, and this is a typical bottleneck for a pharmacometrician to contributing even more.</p>
+<p>The tools are created around the use of Nonmem for estimation or simulation. Creating the datasets and reading the data resulting from running Nonmem can be tedious, and mistakes can lead to hours of frustration. This package provides useful tools (including automated checks) for these trivial tasks. The aim is to automate the book keeping and allow more time for the actual analysis.</p>
+<p>The data set creation tools in NMdata may be equally interesting to users of nlmixr or other proprietary software than Nonmem. However, so far, the most elaborated features of the package relates to the final organization and writing of data for Nonmem, and reading data from Nonmem after a model run.</p>
 <p>The best place to browse information about the package is <a href="https://philipdelff.github.io/NMdata">here</a>. All documentation is of course included in the package itself too.</p>
+</div>
+<div id="automated-and-general-reader-of-nonmem-results-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#automated-and-general-reader-of-nonmem-results-data" class="anchor"></a>Automated and general reader of Nonmem results data</h2>
+<p>Reading the resulting data from Nonmem can require a few manual steps. Especially because all modelers seem to do things a little differently. <code>NMscanData</code> can return all data output (<code>$TABLE</code>) from Nonmem combined, and if wanted with additional columns and rows in input data. It’s as simple as</p>
+<pre class="{r}"><code>results &lt;- NMscanData("run001.lst")</code></pre>
+<p>Take a look at <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html">this vignette</a> for more info on the Nonmem data reader.</p>
+</div>
+<div id="create-data-export-to-nonmem" class="section level2">
+<h2 class="hasAnchor">
+<a href="#create-data-export-to-nonmem" class="anchor"></a>Create data, export to Nonmem</h2>
+<p>On the data-generation side, functionality is provided for documentation of the datasets while generating them. Check out <a href="https://philipdelff.github.io/NMdata/articles/DataCreate.html">this vignette</a> on the topic. There are functions for automatic checks of (some) data merges, handling and counting of exclusions flags, final preparations for ensuring readability in Nonmem, and ensuring traceability of datasets back to data generation scripts.</p>
 </div>
 <div id="how-to-install" class="section level2">
 <h2 class="hasAnchor">
@@ -115,18 +128,6 @@
 install_github("philipdelff/NMdata")
 library(NMdata)</a></code></pre>
 <p>See the <a href="https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html">FAQ</a> for how to install specific releases from Github (ensuring reproducibility).</p>
-</div>
-<div id="automated-and-general-reader-of-nonmem-output-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#automated-and-general-reader-of-nonmem-output-data" class="anchor"></a>Automated and general reader of Nonmem output data</h2>
-<p>Reading the resulting data from Nonmem can require quite a bit of manual steps. Especially because all modelers seem to do things a little differently. The frustrating fact is that we always want the same out of these efforts. This is all data output from Nonmem combined with additional columns and sometimes rows in input data. NMdata automates this process and can save you a lot of time. It can also break down the data depending on level of variability (eg. subject or occasion level).</p>
-<p>Take a look at <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html">this vignette</a> for more info on the Nonmem data reader. Once <code>NMdata</code> is installed, you can of course access the vignette from within R:</p>
-<pre><code><a href="articles/NMscanData.html">vignette("NMscanData")</a></code></pre>
-</div>
-<div id="create-data-export-to-nonmem" class="section level2">
-<h2 class="hasAnchor">
-<a href="#create-data-export-to-nonmem" class="anchor"></a>Create data, export to Nonmem</h2>
-<p>On the data-generation side, functionality is provided for documentation of the datasets while generating them. Check out <a href="https://philipdelff.github.io/NMdata/articles/DataCreate.html">this vignette</a> on the topic. There are functions for automatic checks of (some) data merges, handling and counting of exclusions flags, final preparations for ensuring readability in Nonmem, and ensuring traceability of datasets back to data generation scripts.</p>
 </div>
 <div id="questions" class="section level2">
 <h2 class="hasAnchor">
@@ -138,6 +139,11 @@ library(NMdata)</a></code></pre>
 <a href="#feedback" class="anchor"></a>Feedback?</h2>
 <p>The best way to request features, report bugs etc. is by the <a href="https://github.com/philipdelff/NMdata">github page</a>.</p>
 </div>
+<div id="code-of-conduct" class="section level2">
+<h2 class="hasAnchor">
+<a href="#code-of-conduct" class="anchor"></a>Code of Conduct</h2>
+<p>Please note that the patchwork project is released with a <a href="https://philipdelff.github.io/NMdata/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+</div>
 </div>
   </div>
 
@@ -148,6 +154,12 @@ library(NMdata)</a></code></pre>
 <li>
 <a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
 </li>
+</ul>
+</div>
+<div class="community">
+<h2>Community</h2>
+<ul class="list-unstyled">
+<li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
 </ul>
 </div>
 <div class="developers">
