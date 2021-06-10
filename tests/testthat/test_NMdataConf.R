@@ -5,6 +5,9 @@ test_that("defaults",{
     fileRef <- "testReference/NMdataConf1.rds"
 
     defaults <- NMdataConf()
+    defaults$as.fun <- NULL
+    defaults$file.mod <- NULL
+    defaults$modelname <- NULL
     
     expect_equal_to_reference(defaults,fileRef)
 })
