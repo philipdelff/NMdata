@@ -3,8 +3,8 @@
 ^TODO\.org$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^.github
-^.gitignore
+^\.github
+^\.gitignore
 \\.Rhistory
 \\.\\.Rcheck
 \\.git
@@ -13,3 +13,4 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+
