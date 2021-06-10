@@ -77,10 +77,11 @@ test_that("Including meta data",{
     fileRef <- "testReference/NMscanInput6.rds"
     file.lst <- system.file("examples/nonmem/xgxr004.lst",package="NMdata")
 
-    ## res1 <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")
-    ### using as.data.table for as.fun is not recommended but still allowed
     res1 <-
         NMscanInput(file=file.lst,applyFilters = T,details=T, as.fun="data.table")
-
+    res1$meta$details$file <- "file"
+    res1$meta$details$file.mtime <- NULL
+    
+    
     expect_equal_to_reference(res1,fileRef,version=2)
 })

@@ -3,6 +3,7 @@
 ^TODO\.org$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^.github
 ^.gitignore
 \\.Rhistory
 \\.\\.Rcheck
