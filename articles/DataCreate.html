@@ -157,14 +157,14 @@
 <span class="va">dt.cov</span>
 <span class="co">#&gt;     ID COV</span>
 <span class="co">#&gt;  1: 31   3</span>
-<span class="co">#&gt;  2: 32   5</span>
-<span class="co">#&gt;  3: 33   4</span>
+<span class="co">#&gt;  2: 32   2</span>
+<span class="co">#&gt;  3: 33   3</span>
 <span class="co">#&gt;  4: 34   3</span>
-<span class="co">#&gt;  5: 35   2</span>
+<span class="co">#&gt;  5: 35   1</span>
 <span class="co">#&gt;  6: 36   1</span>
-<span class="co">#&gt;  7: 37   5</span>
-<span class="co">#&gt;  8: 38   4</span>
-<span class="co">#&gt;  9: 39   5</span>
+<span class="co">#&gt;  7: 37   3</span>
+<span class="co">#&gt;  8: 38   5</span>
+<span class="co">#&gt;  9: 39   1</span>
 <span class="co">#&gt; 10: 40   5</span>
 <span class="va">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">pk2</span><span class="op">)</span>
@@ -327,7 +327,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-06-10 13:18:53 UTC"</span></code></pre></div>
+<span class="co">#&gt; [1] "2021-06-10 13:31:38 UTC"</span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stampObj.html">stampObj</a></span><span class="op">(</span><span class="va">pk</span>,script<span class="op">=</span><span class="st">"vignettes/DataCreate.Rmd"</span>,Description<span class="op">=</span><span class="st">"A PK dataset used for examples."</span><span class="op">)</span>
@@ -336,7 +336,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-06-10 13:18:53 UTC"</span>
+<span class="co">#&gt; [1] "2021-06-10 13:31:38 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span></code></pre></div>
