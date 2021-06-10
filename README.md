@@ -5,27 +5,31 @@
 [![Codecov test coverage](https://codecov.io/gh/philipdelff/NMdata/branch/master/graph/badge.svg)](https://codecov.io/gh/philipdelff/NMdata?branch=master)
 <!-- badges: end -->
 
-### A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
+##  A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
 Pharmacometrics and PK/PD modeling offers unique information for
 decision-making in several steps of drug development. However, the leg work in pharmacometrics remains technical, and this is a typical bottleneck for a pharmacometrician to contributing even more.
 
-The tools are created around the use
-of Nonmem for estimation or simulation. Creating the datasets and reading the data resulting from running
-Nonmem can be tedious, and mistakes can lead to hours of
+Creating the datasets - and if you use Nonmem, reading the results data - can be tedious, and mistakes can lead to hours of
 frustration. This package provides useful tools (including automated
-checks) for these trivial tasks. The aim is to automate the book keeping and allow more time for the
-actual analysis.
+checks) for these trivial tasks. The aim is to automate the book
+keeping and allow more time for the actual analysis.
 
-The  data set creation tools in NMdata may be
-equally interesting to users of nlmixr or other proprietary software than
-Nonmem. However, so far, the most elaborated features of the package
-relates to the final organization and writing of data for Nonmem, and
-reading data from Nonmem after a model run.
+A central design feature of NMdata is that all included tools require
+as little as possible about how the user works. Any functionality in
+the package can be used independently of the rest of the package, and
+NMdata is not intended to force you to change any habits or
+preferences. Instead, NMdata tries to fit in with how you (or your
+colleague who worked on the project before you) do things.
+
+The data set creation tools in NMdata may be equally interesting to
+users of nlmixr or other proprietary software than Nonmem. However, so
+far, the most elaborated features of the package relates to the final
+organization and writing of data for Nonmem, and reading data from
+Nonmem after a model run.
 
 The best place to browse information about the package is
 [here](https://philipdelff.github.io/NMdata). All documentation is of
 course included in the package itself too.
-
 
 
 ## Automated and general reader of Nonmem results data
