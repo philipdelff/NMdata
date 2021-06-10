@@ -9,7 +9,7 @@
 Pharmacometrics and PK/PD modeling offers unique information for
 decision-making in several steps of drug development. However, the leg work in pharmacometrics remains technical, and this is a typical bottleneck for a pharmacometrician to contributing even more.
 
-Creating the datasets - and if you use Nonmem, reading the results data - can be tedious, and mistakes can lead to hours of
+Creating datasets - and if you use Nonmem, reading the results data - can be tedious, and mistakes can lead to hours of
 frustration. This package provides useful tools (including automated
 checks) for these trivial tasks. The aim is to automate the book
 keeping and allow more time for the actual analysis.

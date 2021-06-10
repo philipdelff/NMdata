@@ -1173,7 +1173,6 @@ try(NMdataConf(use.input="FALSE"))
   - Reset individual settings: `NMdataConf(use.input=NULL, as.fun=NULL)`
   - Retrieve all current settings: `NMdataConf()`
 
-# Next steps for `NMdata`
 
 ## How is `NMdata` qualified?
 
@@ -1198,26 +1197,28 @@ introducing a new feature does not introduce new bugs
 * If you have a specific example you want to make sure is tested in the
 package, we will include the test in the package
 
+# Next steps for `NMdata`
 ## Next steps for `NMdata`
 * The next milestone is submitting the package to CRAN
   - Aiming for end of June
+  - Most important task before is revision of vignettes
 * Abstract submitted to ACoP
 * The following would be great help in making `NMdata` more accessible and useful
   - Testing - please use the package and provide feedback
   - Review of documentation, vignettes, and descriptions/explanations on website
-  - Graphical representations and illustrations. A hexagon is needed!
+  - Graphical representations and illustrations.
   - A tidyverse workflow for a new vignette
   - If you have ideas you want to contribute, let's discuss!
   
 * Before or after first version on CRAN
   - `NMcheckData`: Check data syntax/format compatibility with Nonmem
   - `NMfreezeModels`: Save Nonmem models with input data and all results to ensure reproducibility of output
-  - Function for comparison of `$DATA` and input data
   
 * After first version on CRAN
+  - Functions to generate dosing regimens for simulations and
+    nominal-time datasets
   - Functions for easy documentation of column contents (description,
     units, 1:1 relationships between character and numeric columns)
-  - Functions to generate dosing regimens for simulations and nominal-time datasets
   
 <!-- %%%% automatic saving of meta data with csv files -->
 <!-- %%%% check that row identifier is not modified by Nonmem -->
