@@ -5,6 +5,9 @@ navbar:
     left:  [home, articles, reference, news, github]
   components:
     home:
+      title: Efficient data preparation, consistency-checking and post-processing in PK/PD modeling
+      description: >
+        Efficient and fast tools for preparation, checking and post-processing of data in PK/PD modeling and pharmacometrics, with focus on use of Nonmem. Save time and avoid time-consuming errors. Implemented in data.table, but integratable with base and dplyr and tidyverse.
       icon: fas fa-home fa-lg
       href: index.html
     articles:
