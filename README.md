@@ -6,23 +6,48 @@
 <!-- badges: end -->
 
 ### A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
-NMdata provides data creation and data handling tools for
-pharmacometrics (PK/PD modeling). The tools are created around the use
-of Nonmem for estimation or simulation. Data set creation tools may be
-equally users of nlmixr or other proprietary software than
+Pharmacometrics and PK/PD modeling offers unique information for
+decision-making in several steps of drug development. However, the leg work in pharmacometrics remains technical, and this is a typical bottleneck for a pharmacometrician to contributing even more.
+
+The tools are created around the use
+of Nonmem for estimation or simulation. Creating the datasets and reading the data resulting from running
+Nonmem can be tedious, and mistakes can lead to hours of
+frustration. This package provides useful tools (including automated
+checks) for these trivial tasks. The aim is to automate the book keeping and allow more time for the
+actual analysis.
+
+The  data set creation tools in NMdata may be
+equally interesting to users of nlmixr or other proprietary software than
 Nonmem. However, so far, the most elaborated features of the package
 relates to the final organization and writing of data for Nonmem, and
 reading data from Nonmem after a model run.
 
-Nonmem is a flexible tool for PK and PK/PD modeling. However, creating
-the datasets and reading the data resulting from running Nonmem can be
-tedious, and mistakes can lead to hours of frustration. This package
-provides useful tools (including automated checks) for these trivial
-tasks so we can spend more time on the actual analysis.
-
 The best place to browse information about the package is
 [here](https://philipdelff.github.io/NMdata). All documentation is of
 course included in the package itself too.
+
+
+
+## Automated and general reader of Nonmem results data
+Reading the resulting data from Nonmem can require a few
+manual steps. Especially because all modelers seem to do things a
+little differently. `NMscanData` can return all data output (`$TABLE`) from Nonmem combined, and if wanted with additional columns and rows in
+input data. It's as simple as
+```{r}
+results <- NMscanData("run001.lst")
+```
+
+Take a look at [this vignette](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
+for more info on the Nonmem data reader.
+
+## Create data, export to Nonmem
+On the data-generation side, functionality is provided for
+documentation of the datasets while generating them. Check out [this
+vignette](https://philipdelff.github.io/NMdata/articles/DataCreate.html)
+on the topic. There are functions for automatic checks of (some) data
+merges, handling and counting of exclusions flags, final
+preparations for ensuring readability in Nonmem, and ensuring
+traceability of datasets back to data generation scripts.
 
 ## How to install
 `NMdata` is aimed at CRAN release in near future. Meanwhile, installing
@@ -38,32 +63,6 @@ See the
 for how to install specific releases from Github (ensuring reproducibility).
 
 
-## Automated and general reader of Nonmem output data
-Reading the resulting data from Nonmem can require quite a bit of
-manual steps. Especially because all modelers seem to do things a
-little differently. The frustrating fact is that we always want the
-same out of these efforts. This is all data output from Nonmem combined with additional columns and sometimes rows in
-input data. NMdata automates this process and can save you a
-lot of time. It can also break down the data depending on level of variability (eg. subject or occasion level).
-
-Take a look at [this vignette](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
-for more info on the Nonmem data reader. Once `NMdata` is installed, you
-can of course access the vignette from within R:
-
-```
-vignette("NMscanData")
-``` 
-
-
-## Create data, export to Nonmem
-On the data-generation side, functionality is provided for
-documentation of the datasets while generating them. Check out [this
-vignette](https://philipdelff.github.io/NMdata/articles/DataCreate.html)
-on the topic. There are functions for automatic checks of (some) data
-merges, handling and counting of exclusions flags, final
-preparations for ensuring readability in Nonmem, and ensuring
-traceability of datasets back to data generation scripts.
-
 ## Questions?
 Check the [FAQ](https://philipdelff.github.io/NMdata/articles/FAQ.html), or ask on [github
 page](https://github.com/philipdelff/NMdata)
@@ -71,3 +70,6 @@ page](https://github.com/philipdelff/NMdata)
 ## Feedback?
 The best way to request features, report bugs etc. is by the [github
 page](https://github.com/philipdelff/NMdata).
+
+## Code of Conduct
+Please note that the patchwork project is released with a [Contributor Code of Conduct](https://philipdelff.github.io/NMdata/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
