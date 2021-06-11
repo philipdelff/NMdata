@@ -75,7 +75,7 @@ An R package that can help
 *  Creating event-based data sets for PK/PD modeling
 *  Keeping Nonmem code updated to match contents of datasets
 *  Read all output data and combine with input data from Nonmem runs
-- supply output list file (.lst), and the reader is very flexible and automated 
+  - supply output list file (.lst), and the reader is very flexible and automated 
 
 Designed to fit in to the user's setup and coding preferences
 
@@ -434,8 +434,8 @@ pk[,`:=`(FLAG=NULL,flag=NULL)]
 
 ```{r}
 dt.flags <- fread(text="FLAG,flag,condition
-10,Below LLOQ,EVID==0&BLQ==1
-100,Negative time,EVID==0&TIME<0")
+10,Below LLOQ,BLQ==1
+100,Negative time,TIME<0")
 
 pk <- flagsAssign(pk,tab.flags=dt.flags,subset.data="EVID==0")
 pk[EVID==1,FLAG:=0]
@@ -1174,7 +1174,11 @@ try(NMdataConf(use.input="FALSE"))
 
 
 ## How is `NMdata` qualified?
-
+```{r,include=F}
+library(devtools)
+res.test <- test()
+Ntests <- sum(sapply(res.test,function(x)length(x$results)))
+```
 \includegraphics[width=.8\textwidth]{badges_snip}
 
 * `NMdata` contains very little calculations (only exception may be `flagsAssign`/`flagsCount`)
@@ -1182,7 +1186,7 @@ try(NMdataConf(use.input="FALSE"))
 * Historic bugs have mostly resulted in uninformative errors due to
   e.g. failure in processing text
 
-* `NMdata` includes >60 "unit tests" where results of function calls
+* `NMdata` includes `r Ntests` "unit tests" where results of function calls
 with different datasets and arguments are compared to expected
 results
 

@@ -34,49 +34,61 @@ Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
 
 ## Introduction
-Preparing data for analysis in `Nonmem` and reading the results back
-into `R` can be time consuming. After a `Nonmem` run, a few tables may
+Preparing data for analysis in Nonmem and reading the results back
+into `R` can be time consuming. After a Nonmem run, a few tables may
 have to be combined. Then we need character variables that are only
 available in the input data file. And maybe the events ignored by
-`Nonmem` (say, observations below quantification limit that we still
+Nonmem (say, observations below quantification limit that we still
 need in further analysis and plotting). 
 
 This vignette focuses on how to use `NMdata` to automate what needs to
-be trivial: get a dataset out of a `Nonmem` run, including discarded
+be trivial: get a dataset out of a Nonmem run, including discarded
 columns and rows from the input data. In brevity, the most important
 steps are
 
 - Read and combine output tables
 - If wanted, read input data and restore variables that were not
-  output from the `Nonmem` model
+  output from the Nonmem model
 - If wanted, also restore rows from input data that were disregarded
-  in `Nonmem` (e.g. observations or subjects that are not part of the
+  in Nonmem (e.g. observations or subjects that are not part of the
   analysis)
   
 In most cases, this is not too hard to do. But with the large degree
-of flexibility `Nonmem` offer, there are a lot of caveats to be aware
-of. The implementation in `NMdata` aims at preventing and
-checking for as many of these caveats as possible. It is fast and
-default argument values can be configured depending on your setup
-(data standards, directory structure and other preferences).
+of flexibility Nonmem offers, the code will likely have to be
+adjusted between models, and there are a lot of caveats to be aware
+of. The implementation in `NMdata` works for the vast majority of
+models and aims at preventing and checking for as many 
+caveats as possible. It is fast and default argument values can be
+configured depending on your setup (data standards, directory
+structure and other preferences).
 
 Like the rest of `NMdata`, this functionality assumes as little as
-possible about how you work. It assumes nothing about the `Nonmem`
+possible about how you work. It assumes nothing about the Nonmem
 model itself and as little as possible about the organization of data
 and file paths/names. This makes it powerful for meta analyses, for
 reading a model developed by someone else - or one written by
 ourselves when we used to do things slightly differently. It will work
 out of the box in the vast majority of cases.
 
-For this vignette we initialize by attaching these packages and tweaking
-plotting layout slightly:
+We start by attaching `NMdata`. I'm a `data.table` user and use that
+for a few postprocessing steps. You can just as well use base R or `dplyr` if
+you prefer. Then `ggplot2` for illustrations.
 
 ```{r,setup,include=T}
 library(NMdata)
+## not necessary for NMdata to run, but we use thse in the examples
 library(data.table)
 library(ggplot2)
 theme_set(theme_bw()+theme(legend.position="bottom"))
 ```
+
+For the examples we will be using files that are available in the
+`NMdata` package. To type a little less, we use this shortcut function:
+
+```{r,file-shortcut,include=T}
+file.NMdata <- function(...) system.file(file.path("examples/nonmem",...), package="NMdata")
+```
+
 
 <!-- For the purpose of this vignette we will configure `NMdata` not to check time -->
 <!-- stamps of input control streams and input data against output control -->
@@ -92,8 +104,7 @@ NMdataConf(check.time=FALSE)
 Try `NMscanData` on any model:
 
 ```{r,eval=TRUE}
-res0 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                   merge.by.row=FALSE)
+res0 <- NMscanData(file.NMdata("xgxr001.lst"))
 class(res0)
 ```
 
@@ -101,8 +112,8 @@ class(res0)
 a `data.frame`. The `NMdata` class allows for keeping additional
 information in the object, but the object can be treated as a
 `data.frame`. The `cbind.by.filters` means that we want `NMscanData`
-to look at the `Nonmem` code (the output control stream) to figure out
-what part of the input data was used by `Nonmem` for the model run (by
+to look at the Nonmem code (the output control stream) to figure out
+what part of the input data was used by Nonmem for the model run (by
 `$IGNORE` and `$ACCEPT` statements in `$DATA`). The same filtering is
 then applied to the input data before adding columns to the output. In
 fact, that argument is not necessary, this is default
@@ -110,7 +121,7 @@ behaviour. However, if we left it out, `NMscanData` would try to
 explain this to you so you make an active choice what to do here. 
 
 ### Merge output and input data by a unique row identifier
-The default method of interpreting `Nonmem` code is not recommended. It
+The default method of interpreting Nonmem code is not recommended. It
 is the default because it does not rely on assumptions about the input
 data and hence very generic. It happens that this dataset and one of
 the output tables contain a unique row identifier (a row counter in
@@ -219,7 +230,7 @@ calculating the population geometric means by nominal time and
 dose. We included `nmout==TRUE`. `nmout` is a boolean column created
 by `NMscanData` expressing whether the rows were in the output data
 (`nmout==TRUE`) or they were recovered from the input data. `PRED` is
-obviously not calculated for data rows neglected by `Nonmem`, so we
+obviously not calculated for data rows neglected by Nonmem, so we
 want to keep those out of the calculation. Let's see how many were
 recovered
 
@@ -275,14 +286,14 @@ ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+
 
 
 
-### Use a row identifier or interpret `Nonmem` code
+### Use a row identifier or interpret Nonmem code
 The most robust way to combine augment output data with input data
 using `NMscanData` is to include a unique row identifier in both input
 and at least one full-length output table. Then tell NMscanData to use
 the row identifier using the `col.row` argument. The advantage is that
-less `Nonmem` code has to be interpreted for this method. However,
+less Nonmem code has to be interpreted for this method. However,
 notice that no checks are being done if the row identifier has been
-modified during the `Nonmem` run. If you tell NMscanData that the column
+modified during the Nonmem run. If you tell NMscanData that the column
 called `ROW` is a to be used as the row identifier, and `ROW` is being
 modified in say `$PK` before being output in an output table, this
 will mess up the result. But if you keep the good practice of
@@ -306,7 +317,7 @@ point. In order to preserve such information, we can use R's native
 rds format. If the argument `use.rds` is `TRUE`, `NMscanData` will look for
 an rds file next to the input data file (which is a delimited text
 file) the exact same name as the text file except the extension must
-be "`.rds`" rather than say "`.csv`" (for `Nonmem` and `NMscanData`, the
+be "`.rds`" rather than say "`.csv`" (for Nonmem and `NMscanData`, the
 extension of the delimited text file doesn't matter). If it finds the
 `rds` file, this will be used instead. No checks are done of whether the
 contents are similar in any way to the delimited text file which is
@@ -326,7 +337,7 @@ factor levels first. There are three advantages of using rds files
   connection. `NMdata` is generally very fast (thanks to `data.table`)
   so file/network access (I/O) is likely to be the main bottleneck.
 
-If you write `Nonmem` datasets with the `NMdata::NMwriteData`, you can
+If you write Nonmem datasets with the `NMdata::NMwriteData`, you can
 get an `rds` file automatically, exactly where `NMscanData` will look
 for it. Creating datasets using `NMdata` is described in [this
 vignette](https://philipdelff.github.io/NMdata/articles/DataCreate.html).
@@ -365,9 +376,9 @@ principles are followed:
 * Row-specific output data is preferred over ID-level (`FIRSTONLY` or
   `LASTONLY`) tables
 * Output tables are prioritized by their order of apperance
-* Input data is as defined in the `$INPUT` section in `Nonmem`. This
+* Input data is as defined in the `$INPUT` section in Nonmem. This
   includes renaming of columns while columns that are dropped in
-  `Nonmem` (`DROP` or `SKIP`) are included by `NMscanData`. Columns that
+  Nonmem (`DROP` or `SKIP`) are included by `NMscanData`. Columns that
   are not included in `$INPUT` are named as in the input data file.
 * If rows are being recovered from input data (the `recover.rows`
   argument), no information from output is merged onto these rows.
@@ -395,14 +406,14 @@ has been used based on the `$DATA` and `$INPUT` sections of the control
 stream. The key steps in this process are available as independent
 functions. 
 
-- `NMreadTab`: Read an `Nonmem` output table based on the path to the output
+- `NMreadTab`: Read an Nonmem output table based on the path to the output
   table file.
 
-- `NMscanTables`: Read all output data files defined in a `Nonmem`
+- `NMscanTables`: Read all output data files defined in a Nonmem
   run. Return a list of tables (as data.frames or data.tables).
 
-- `NMtransInput`: Read input data based on a `Nonmem` file. Data will be
-  processed and named like the `Nonmem` model. `ACCEPT` and `IGNORE` filters
+- `NMtransInput`: Read input data based on a Nonmem file. Data will be
+  processed and named like the Nonmem model. `ACCEPT` and `IGNORE` filters
   can be applied as well. There are a few limitations to this
   functionality at this point. More about them below.
 
@@ -414,7 +425,7 @@ sure that the information that you need is present in input data and
 output data. No need to output information that is unchanged from
 input, but make sure to output what you need (like `IPRED`, `CWRES`, `CL`,
 `ETA1` etc which cannot be found in input). Some of these values can be
-found from other files generated by `Nonmem` but notice: `NMscanData` uses
+found from other files generated by Nonmem but notice: `NMscanData` uses
 only input and output data.
 
 It is recommended to always use a unique row identifier in both input and
@@ -433,7 +444,7 @@ figure it out.
 ### Input data file must exist and be unmodified since model run
 If merging with input data, the input data must be available as was
 when the model was run. If you want to avoid this potential issue,
-`Nonmem` can be run in a wrapper script that either copies the input
+Nonmem can be run in a wrapper script that either copies the input
 data, or runs `NMscanData` and saves the output in a compressed file
 format (like `rds` or `zip`).
 
@@ -444,16 +455,16 @@ against row-level output table dimensions (if any available). In other
 words, you have to be unlucky to run into trouble without an
 error. But it is always recommended to use a unique row identifier in
 both input and output tables in order to avoid relying on
-interpretation of `Nonmem` code.
+interpretation of Nonmem code.
 
 The `RECORDS` and `NULL` options in `$DATA` are not implemented. If using
 `RECORDS`, please use the `col.row` option to merge by a unique row
 identifier.
 
 ### Character time variables not interpreted
-`Nonmem` supports a clocktime input format for a column called TIME in
+Nonmem supports a clocktime input format for a column called TIME in
 input data. Based on a day counter and a character ("00:00") clock
-format, `Nonmem` (or rather, `NM-TRAN`) can calculate the individual time since first
+format, Nonmem (or rather, `NM-TRAN`) can calculate the individual time since first
 record. This behaviour is not mimicked by NMscanData, and the only
 ways to get TIME in this case are to either include it in an output
 `TABLE` or to code the translation yourself after calling

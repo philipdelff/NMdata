@@ -30,7 +30,7 @@ test_that("basic",{
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
     ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
-    res1 <- NMscanData(file=file.lst,quiet=T,order.columns = F)
+    res1 <- NMscanData(file=file.lst,quiet=T,order.columns = F,merge.by.row=FALSE)
     ## dim(res1)
 
     fix.time(res1)
@@ -49,7 +49,7 @@ test_that("Modifications to column names in $INPUT",{
     
     file.lst <- NMdata_filepath("examples/nonmem/xgxr002.lst")
 
-    res <- NMscanData(file=file.lst,check.time = FALSE)
+    res <- NMscanData(file=file.lst, check.time = FALSE, merge.by.row=FALSE)
     fix.time(res)
     expect_equal_to_reference(res,fileRef,version=2)
     ## without meta
@@ -63,7 +63,7 @@ test_that("Multiple output table formats",{
     file.lst <- NMdata_filepath("examples/nonmem/xgxr003.lst")
 
     ## res <- NMscanData(file=file.lst)
-    res <- NMscanData(file=file.lst,check.time = FALSE)
+    res <- NMscanData(file=file.lst, check.time = FALSE, merge.by.row=FALSE)
     fix.time(res)
     
     expect_equal_to_reference(res,fileRef,version=2)

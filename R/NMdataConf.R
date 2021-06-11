@@ -266,7 +266,7 @@ NMdataConfOptions <- function(name){
         )
        ,
         merge.by.row=list(
-            default=FALSE
+            default="ifAvailable"
             ## has to be length 1 character 
            ,is.allowed=function(x)is.logical(x) || (is.character(x) && length(x)==1 && x=="ifAvailable")
            ,msg.not.allowed="merge.by.row must be logical or the string \"ifAvailable\"."
@@ -320,10 +320,10 @@ NMdataConfOptions <- function(name){
             if(name%in%names(all.options)){
                 return(all.options[[name]])
             } else {
-                stop("Option not found")
+                messageWrap("Option not found",fun.msg=stop,track.msg=FALSE)
             }
         } else {
-            stop("if name is given, it must be a character of length 1")
+            messageWrap("if name is given, it must be a character of length 1",fun.msg=stop,track.msg=FALSE)
         }
         
     } else {
@@ -346,7 +346,7 @@ NMdataDecideOption <- function(name,argument){
     
 
     if(missing(argument)||is.null(argument)) return(NMdataGetOption(name))
-    if(!values.option$is.allowed(argument)) stop(values.option$msg.not.allowed)
+    if(!values.option$is.allowed(argument)) messageWrap(values.option$msg.not.allowed,fun.msg=stop,track.msg = FALSE)
 
     argument <- values.option$process(argument)
 

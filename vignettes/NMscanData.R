@@ -19,12 +19,14 @@ library(data.table)
 library(ggplot2)
 theme_set(theme_bw()+theme(legend.position="bottom"))
 
+## ----file-shortcut,include=T------------------------------
+file.NMdata <- function(...) system.file(file.path("examples/nonmem",...), package="NMdata")
+
 ## ----setup2,include=F-------------------------------------
 NMdataConf(check.time=FALSE)
 
 ## ----eval=TRUE--------------------------------------------
-res0 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                   merge.by.row=FALSE)
+res0 <- NMscanData(file.NMdata("xgxr001.lst"))
 class(res0)
 
 ## ----eval=TRUE--------------------------------------------

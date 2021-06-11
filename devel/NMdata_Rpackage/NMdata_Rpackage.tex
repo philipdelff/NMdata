@@ -721,8 +721,8 @@ the necessary checks for you.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{dt.flags \textless{}{-}}\StringTok{ }\KeywordTok{fread}\NormalTok{(}\DataTypeTok{text=}\StringTok{"FLAG,flag,condition}
-\StringTok{10,Below LLOQ,EVID==0\&BLQ==1}
-\StringTok{100,Negative time,EVID==0\&TIME\textless{}0"}\NormalTok{)}
+\StringTok{10,Below LLOQ,BLQ==1}
+\StringTok{100,Negative time,TIME\textless{}0"}\NormalTok{)}
 
 \NormalTok{pk \textless{}{-}}\StringTok{ }\KeywordTok{flagsAssign}\NormalTok{(pk,}\DataTypeTok{tab.flags=}\NormalTok{dt.flags,}\DataTypeTok{subset.data=}\StringTok{"EVID==0"}\NormalTok{)}
 \end{Highlighting}
@@ -1218,7 +1218,7 @@ All arguments to \texttt{fwrite} can be modified using the
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $CreationTime
-## [1] "2021-06-10 13:36:54"
+## [1] "2021-06-11 14:03:13"
 ## 
 ## $writtenTo
 ## [1] "derived/pk.csv"
@@ -1237,7 +1237,7 @@ All arguments to \texttt{fwrite} can be modified using the
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $CreationTime
-## [1] "2021-06-10 13:36:54 EDT"
+## [1] "2021-06-11 14:03:13 EDT"
 ## 
 ## $writtenTo
 ## [1] "derived/pk.rds"
@@ -1254,9 +1254,14 @@ runs}\label{retrieving-data-from-nonmem-runs}}
 
 \begin{frame}[fragile]{NMscanData}
 \protect\hypertarget{nmscandata}{}
-\texttt{NMscanData} is an automated and general reader of Nonmem. * It
-returns one data set combining all information from input data and all
-output tables.
+\texttt{NMscanData} is an automated and general reader of Nonmem.
+
+\begin{itemize}
+\tightlist
+\item
+  It returns one data set combining all information from input data and
+  all output tables.
+\end{itemize}
 
 Based on the list file (\texttt{.lst}) it will:
 
@@ -1669,7 +1674,7 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## [2] "    quiet = TRUE)"                                                   
 ## 
 ## $time.call
-## [1] "2021-06-10 13:36:55 EDT"
+## [1] "2021-06-11 14:03:14 EDT"
 ## 
 ## $model
 ## [1] "xgxr003"
@@ -2110,7 +2115,7 @@ use that.
 \end{Shaded}
 
 \begin{verbatim}
-## Error in NMdataConfOptions(name) : Option not found
+## Error : Option not found
 \end{verbatim}
 
 \begin{Shaded}
@@ -2120,8 +2125,7 @@ use that.
 \end{Shaded}
 
 \begin{verbatim}
-## Error in NMdataDecideOption(names.args[I], val) : 
-##   use.input must be logical
+## Error : use.input must be logical
 \end{verbatim}
 
 \begin{itemize}
@@ -2154,9 +2158,9 @@ use that.
   Historic bugs have mostly resulted in uninformative errors due to
   e.g.~failure in processing text
 \item
-  \texttt{NMdata} includes \textgreater60 ``unit tests'' where results
-  of function calls with different datasets and arguments are compared
-  to expected results
+  \texttt{NMdata} includes 76 ``unit tests'' where results of function
+  calls with different datasets and arguments are compared to expected
+  results
 \item
   Tests are consistently run before any release of the package
 \item
@@ -2565,7 +2569,7 @@ doses, and model predictions}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[height=0.75\textheight]{plots/unnamed-chunk-44-1} \end{center}
+\begin{center}\includegraphics[height=0.75\textheight]{plots/unnamed-chunk-45-1} \end{center}
 \normalsize
 \end{frame}
 

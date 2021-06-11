@@ -21,10 +21,30 @@ knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 
 Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
-## General `NMdata` questions
+## General NMdata questions
+
+## What is NMdata?
+
+### NMdata is an R package that can help
+
+*  Creating event-based data sets for PK/PD modeling
+*  Keeping Nonmem code updated to match contents of datasets
+*  Read all output data and combine with input data from Nonmem runs
+  - supply output list file (.lst), and the reader is very flexible and automated 
+
+NMdata comes with a configuration tool that can be used to tailor default behaviour to the user's system configuration and preferences.
+
+### NMdata is not
+
+* A plotting package
+* A tool to retrieve details about model runs
+* A calculation or simulation toolbox
+* A "silo" that requires you to do things in a certain way
+  - No tools in NMdata requires other NMdata tools to be used
+
 
 ### How do I install NMdata?
-To get the development version of `NMdata`, do the following from
+To get the development version of NMdata, do the following from
 within R:
 
 ```{r,eval=FALSE}
@@ -52,35 +72,35 @@ fix which is only in the master branch, you can request a release.
 
 
 ### What about NMdata dependencies?
-`NMdata` depends on `data.table` only, and `data.table` does not have
-any dependencies. R 3.0 or later is required, that's all (yes, you can
-actually run this on pretty old R installations without any
+NMdata depends on `data.table` only, and `data.table` does not have
+any dependencies. R 3.0 or later is required, that's all (yes, you can run NMdata on pretty old R installations without any
 difference).
 
 ### Why one more tool for interacting with Nonmem from R?
-Other tools exist for reading data from Nonmem. However, `NMdata` aims at
+Other tools exist for reading data from Nonmem. However, they most often have requirements to how the dataset or the Nonmem control stream is written. NMdata aims at
  assuming as little as possible
 about how you work while still doing (and checking) as much as
  possible for you. 
-Tools in `NMdata` do not assume you use other tools in `NMdata`. If
-you like just one function in `NMdata` and want to integrate that in
-your workflow without bothering about the rest, that is
-perfectly possible. `NMdata` aims at being able to integrate with
+
+Tools in NMdata do not assume you use other tools in NMdata. If
+you like just one function in NMdata and want to integrate that in
+your workflow, that is
+perfectly possible. NMdata aims at being able to integrate with
 anything else and still do the job. 
 
-While many other tools available provide plotting functions, `NMdata`
+While many other tools available provide plotting functions, NMdata
 focuses on getting the data ready for smooth Nonmem experience (by
 checking as much as possible first), get the resulting data out of
 Nonmem and a little processing. 
 
-If you are building tools that process data from Nonmem, you may find
-very valuable tools here. I have not seen as generic and flexible a
+If you are building applications that process data from Nonmem, you may find
+very valuable tools in NMdata. I have not seen as generic and flexible a
 Nonmem data reader elsewhere.
 
 ### I use another tool that automatically reads my data. Should I be interested in NMdata?
-The data creation tools in `NMdata` may still be interesting. If
+The data creation tools in NMdata may still be interesting. If
 another tool is working well for a project, you may not have any
-reason to use `NMscanData` (the Nonmem data reader in `NMdata`) for
+reason to use `NMscanData` (the Nonmem data reader in NMdata) for
 it. However, a lot of the time those tools have certain requirements
 to how datasets are constructed and especially how data is exported
 from Nonmem (`$TABLE`). If a Nonmem run does not live up to those
@@ -89,30 +109,34 @@ will let you do that without you having to "correct" your `$TABLE`
 statements and wait for Nonmem to run again.
 
 Also, in other cases `NMscanData` can save you a lot of time and
-frustration even if you have your own routines that make `NMdata`
-unnecessary. If you want to read your old Nonmem runs that were done a
-little differently, someone else's work, or you want to quickly read a
-lot of runs done by different people for a meta analysis, `NMscanData`
-can save you a lot of work, time and frustration. And a meta analysis
+frustration even if you have your own routines for these tasks. It will allow you to easily read your old Nonmem runs that were done a
+little differently, or if you need to read someone else's work. A meta analysis
 of a large number of models implemented by different people over the
-years? That's a candy store for `NMscanData`. Here, `NMdata` can save
+years? That's a candy store for `NMscanData`. Here, NMdata can save
 you many hours of frustration.
 
+### How can `NMscanData` do all that only based on the Nonmem output list file
+`NMscanData` reads the names of the input and output tables from the
+list file, the path to the input data from the control stream (which
+it knows where to find, or you can change the method it uses to find
+it), and then it checks several properties of these files and their
+contents before combining all the info. It is quite a lot of checking
+and book keeping but the key steps are simple.
 
 ### Why is NMdata fast?
-`NMdata` is generally fast - all thanks to the incredible `data.table`
-package. If you don't use `data.table` already, `NMdata` may even seem extremely
-fast. If you are noticing some circumstances where `NMdata` seems
+NMdata is generally fast - all thanks to the incredible `data.table`
+package. If you don't use `data.table` already, NMdata may even seem extremely
+fast. If you are noticing some circumstances where NMdata seems
 slow, I am very curious to hear about it.
 
 ### So NMdata uses data.table. Does that mean variables are modified by reference? 
-`NMdata` definitely modify variables by reference
-internally but this will never affect your workspace. It might improve speed to go all the way, and modify by reference in the user workspace, but using `NMdata` must be easy for R users
+NMdata definitely modify variables by reference
+internally but this will never affect your workspace. It might improve speed to go all the way, and modify by reference in the user workspace, but using NMdata must be easy for R users
 at all levels of experience. If you don't understand what this is all
 about, you're fine.
 
 ### I want to use a tool from NMdata, but how does it integrate with dplyr or data.table?
-Every function in `NMdata` has an argument called `as.fun`. You
+Every function in NMdata has an argument called `as.fun`. You
 can provide a function in this argument which will be applied to data
 before returning it.
 
@@ -122,7 +146,7 @@ You can get a tibble if you work with `dplyr`/`tidyverse` tools:
 NMscanData(...,as.fun=tibble::as_tibble)
 ```
 
-Under the hood, `NMdata` is implemented in `data.table`, and in fact the
+Under the hood, NMdata is implemented in `data.table`, and in fact the
 default is to convert to `data.frame` before returning the output. So
 if you want to have `data.table`'s back, use `as.fun="data.table"` (notice as a character string, not a function) to avoid the conversion
 
@@ -143,7 +167,7 @@ NMdataConfig(as.fun=tibble::as_tibble)
 NMdataConfig(as.fun="data.table")
 ```
 
-All `NMdata` functions (that return data) should now return tibbles or
+All NMdata functions (that return data) should now return tibbles or
 data.tables. If you use `NMdataConfig` to control this, for reproducibility
 please do so explicitly in your script and not in your `.Rprofile` or similar.
 
@@ -162,12 +186,12 @@ in the R terminal.
 Please open an issue on [github](https://github.com/philipdelff/NMdata/issues).
 
 ### Any plans on including some plotting functions?
-No. See the question above about dependencies. If `NMdata` were extended
+No. See the question above about dependencies. If NMdata were extended
 with plotting features, it would become dependent on a number of
 packages, and backward compatibility would be very dificult to
 ensure. 
 
-The only way to provide plotting features for output from `NMdata`
+The only way to provide plotting features for output from NMdata
 functions, would be to launch a separate package. I
 rarely need much code to get the plots I want based on the format
 returned by `NMscanData` and maybe a call to `findCovs` or
@@ -190,7 +214,7 @@ option. If you input control streams are ending with `.cfg`, you can do
 ```{r,eval=FALSE}
 NMdataConfig(file.mod=function(file) fnExtension(file,".cfg"))
 ```
-where `fnExtension` is a very simple function in `NMdata` which covers this exact purpose. Feel free to use any other tools to put together a function that translates from list file name to input control stream file name.
+where `fnExtension` is a very simple function in NMdata which covers this exact purpose. Feel free to use any other tools to put together a function that translates from list file name to input control stream file name.
 
 Another commonly used file structure is to have each run in a separate
 folder carrying the model name/number. Say the input control stream is
@@ -212,7 +236,7 @@ Feel free to modify the function to omit parts of the string or add to
 it. 
 
 ### What is "input" and output data?
-- What is referred to as "input data" in `NMdata` documentation is the
+- What is referred to as "input data" in NMdata documentation is the
 datafile read in the `$DATA` or `$INFILE`. 
 - What is referred to as "output data" in the same documentation is the
 totality of files written by `$TABLE` statements. 

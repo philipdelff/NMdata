@@ -1,3 +1,10 @@
+# NMdata 0.0.8
+merge.by.row="ifAvailable"
+
+Check for new values of row identifier
+
+Check for disjoint ID's when ID-level output tables found
+
 # NMdata 0.0.7.2
 NMreadCsv, NMscanInput, and NMscanData take argument args.fread. The
 contents of this list are passed as arguments to fread when reading
