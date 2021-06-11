@@ -16,6 +16,7 @@ library(NMdata)
 ## load_all("c:/Users/delff/working_copies/NMdata")
 
 pkpd <- as.data.table(case1_pkpd)
+## we should save case1_pkpd somewhere so we don't get in trouble when xgxr change it.
 
 pk <- pkpd[CMT %in% 1:2] 
 
@@ -109,7 +110,8 @@ NMwriteData(pk[FLAG==0],file=file.path(NMdata_filepath(),"examples/data/xgxr2_fl
 pk2 <- cbind(pk,pk[,.(DOSE)])
 text3 <- NMwriteData(pk2,file=file.path(NMdata_filepath(),"examples/data/xgxr3.csv"),write.rds=T,args.rds=list(version=2))
 
-
+## and a version without rds, and without ROW
+text <- NMwriteData(pk[,!("ROW")],file=file.path(NMdata_filepath(),"examples/data/xgxr4.csv"),write.rds=F)
 
 dt.files <- data.table(path=list.files(file.path(NMdata_filepath(),"examples/nonmem"),pattern="\\.mod$",full.names=T))
 dt.files[,mod:=basename(path)]
