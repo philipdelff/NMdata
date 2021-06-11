@@ -8,7 +8,7 @@ test_that("basic",{
 
     fileRef <- "testReference/NMcheckColnames_1.rds"
 
-    file.lst <- "../../inst/examples/nonmem/run001.lst"
+    file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
     
     res1 <- NMcheckColnames(file=file.lst)
     ## dim(res1)
