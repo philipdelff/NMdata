@@ -144,7 +144,7 @@
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
 
-\title{\includegraphics[width=1in,height=\textheight]{NMdata_logo_v01.png}\\
+\title{\includegraphics[width=1in,height=\textheight]{../../man/figures/NMdata_logo_v01.png}\\
 NMdata: A fast R package for efficient data preparation,
 consistency-checking and post-processing in PK/PD modeling}
 \author{Philip Delff}
@@ -1218,7 +1218,7 @@ All arguments to \texttt{fwrite} can be modified using the
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $CreationTime
-## [1] "2021-06-09 22:46:43"
+## [1] "2021-06-10 13:36:54"
 ## 
 ## $writtenTo
 ## [1] "derived/pk.csv"
@@ -1237,7 +1237,7 @@ All arguments to \texttt{fwrite} can be modified using the
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $CreationTime
-## [1] "2021-06-09 22:46:43 EDT"
+## [1] "2021-06-10 13:36:54 EDT"
 ## 
 ## $writtenTo
 ## [1] "derived/pk.rds"
@@ -1669,7 +1669,7 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## [2] "    quiet = TRUE)"                                                   
 ## 
 ## $time.call
-## [1] "2021-06-09 22:46:44 EDT"
+## [1] "2021-06-10 13:36:55 EDT"
 ## 
 ## $model
 ## [1] "xgxr003"
@@ -2142,10 +2142,6 @@ use that.
 \end{itemize}
 \end{frame}
 
-\hypertarget{next-steps-for-nmdata}{%
-\section{\texorpdfstring{Next steps for
-\texttt{NMdata}}{Next steps for NMdata}}\label{next-steps-for-nmdata}}
-
 \begin{frame}[fragile]{How is \texttt{NMdata} qualified?}
 \protect\hypertarget{how-is-nmdata-qualified}{}
 \includegraphics[width=.8\textwidth]{badges_snip}
@@ -2175,6 +2171,10 @@ use that.
 \end{itemize}
 \end{frame}
 
+\hypertarget{next-steps-for-nmdata}{%
+\section{\texorpdfstring{Next steps for
+\texttt{NMdata}}{Next steps for NMdata}}\label{next-steps-for-nmdata}}
+
 \begin{frame}[fragile]{Next steps for \texttt{NMdata}}
 \protect\hypertarget{next-steps-for-nmdata-1}{}
 \begin{itemize}
@@ -2186,6 +2186,8 @@ use that.
   \tightlist
   \item
     Aiming for end of June
+  \item
+    Most important task before is revision of vignettes
   \end{itemize}
 \item
   Abstract submitted to ACoP
@@ -2201,7 +2203,7 @@ use that.
     Review of documentation, vignettes, and descriptions/explanations on
     website
   \item
-    Graphical representations and illustrations. A hexagon is needed!
+    Graphical representations and illustrations.
   \item
     A tidyverse workflow for a new vignette
   \item
@@ -2218,8 +2220,6 @@ use that.
   \item
     \texttt{NMfreezeModels}: Save Nonmem models with input data and all
     results to ensure reproducibility of output
-  \item
-    Function for comparison of \texttt{\$DATA} and input data
   \end{itemize}
 \item
   After first version on CRAN
@@ -2227,11 +2227,11 @@ use that.
   \begin{itemize}
   \tightlist
   \item
-    Functions for easy documentation of column contents (description,
-    units, 1:1 relationships between character and numeric columns)
-  \item
     Functions to generate dosing regimens for simulations and
     nominal-time datasets
+  \item
+    Functions for easy documentation of column contents (description,
+    units, 1:1 relationships between character and numeric columns)
   \end{itemize}
 \end{itemize}
 \end{frame}

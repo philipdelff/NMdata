@@ -718,9 +718,8 @@ objInfo(pknm2)
 
 ## NMscanData
 `NMscanData` is an automated and general reader of Nonmem. 
-* It returns
-one data set combining all information from input data and all output
-tables. 
+
+* It returns one data set combining all information from input data and all output tables.
 
 Based on the list file (`.lst`) it will:
 

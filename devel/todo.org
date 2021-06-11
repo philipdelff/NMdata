@@ -35,7 +35,8 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
-*** TODO [#B] NMcheckColNames
+*** DONE NMcheckColNames
+    CLOSED: [2021-06-10 Thu 20:20]
 **** return input column names and Nonmem interpretation for user to spot errors
 **** Bad name, what could we call it?
 *** TODO [#B] NMfreezeModels

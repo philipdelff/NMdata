@@ -237,7 +237,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     merge.by.row.arg <- merge.by.row
     merge.by.row <- NMdataDecideOption("merge.by.row",merge.by.row)
 
-## For now, searching for a row identifier is disabled. This may belong in a separate function. 
+    ## For now, searching for a row identifier is disabled. This may belong in a separate function. 
     search.col.row <- FALSE
 ### notice, this can't be evaluated if merge.by.row=="ifAvailable"
     ## if(is.null(merge.by.row.arg) && !merge.by.row){
@@ -319,6 +319,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 ### combine idlevel tables into one
     tab.idlevel <- NULL
     if(any(overview.tables$idlevel)) {
+        
         tab.idlevel <- Reduce(cbind,data[which(overview.tables$idlevel)])
         tab.idlevel <- tab.idlevel[,unique(colnames(tab.idlevel)),with=FALSE]
 
@@ -512,29 +513,38 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             checkColRow(col.row,file)
 
 
+            col.row.in.input <- FALSE
             ## Has this check already been done?
             if(col.row%in%cnames.input) {
                 if(data.input$data[,any(duplicated(get(col.row)))]) {
                     messageWrap("use.input=TRUE and merge.by.row=TRUE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and merge.by.row=TRUE.",fun.msg=stop)
                 }
+                col.row.in.input <- TRUE
             } else {
                 warning("use.input is TRUE, but col.row not found in _input_ data. Only output data used.")
                 use.input <- FALSE
             }
             
+            col.row.in.output <- FALSE
             if(col.row%in%colnames(tab.row)) {
                 if( tab.row[,any(duplicated(get(col.row)))]) {
                     messageWrap("use.input is TRUE, but col.row has duplicate values in _output_ data. col.row must be a unique row identifier. It is unique in input data, so how did rows get repeated in output data? Has input data been edited since the model was run?",fun.msg=stop)
                 }
+                col.row.in.output <- TRUE
             } else {
                 warning("use.input is TRUE, but col.row not found in _output_ data. Only output data used.")
                 use.input <- FALSE
             }
+            if(use.input && col.row.in.input && col.row.in.output ){
+                ## check that we are not getting new values of
+                ## col.row from input to output.
+                if(!all( tab.row[,get(col.row)] %in% data.input$data[,get(col.row)])){
+                    messageWrap("values of unique row identifier found in output data that are not present in input data. Please use another row identifier or don't use any (not recommended).",fun.msg=stop)
+                }
+            }
 
 ##### end: these checks should be in checkColRow            
-
             if(use.input) {
-                
                 dt.vars1 <- data.table(
                     variable=colnames(data.input$data)
                    ,file=data.input$meta$details[,name]
@@ -615,17 +625,24 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                     tab.idlevel[,(col.row):=NULL]
                     id.cols.not.new <- c(col.row,col.id)
                 }
+                ## For now, we don't support disjoint ID's in combination with idlevel tables. 
+                idjumps <- tab.idlevel[,.(ID.jump=c(0,diff(.I))),by=col.id]
+                if(any(idjumps[,ID.jump>1])){
+                    messageWrap("col.id is disjoint. For the moment, this is not supported in combination with ID-level output (firstonly and lastonly). ID-level tables will be skipped.",fun.msg=warning)
+                    skip.idlevel <- TRUE
+                }
                 
                 ## use tab.vars for the subset
-                cols.to.use <- unique(c(col.id,setdiff(colnames(tab.idlevel),dt.vars[source=="output",variable])))
-                tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=F]
-                tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="data.table")
-                
-                dt.vars.id1[,included:=FALSE]
-                dt.vars.id1[variable%in%setdiff(cols.to.use,id.cols.not.new),included:=TRUE]
+                if(!skip.idlevel){
+                    cols.to.use <- unique(c(col.id,setdiff(colnames(tab.idlevel),dt.vars[source=="output",variable])))
+                    tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=F]
+                    tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="data.table")
+                    
+                    dt.vars.id1[,included:=FALSE]
+                    dt.vars.id1[variable%in%setdiff(cols.to.use,id.cols.not.new),included:=TRUE]
 
-                dt.vars <- rbind(dt.vars,dt.vars.id1)
-
+                    dt.vars <- rbind(dt.vars,dt.vars.id1)
+                }
             }
         }
     }
