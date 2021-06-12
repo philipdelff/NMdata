@@ -1,5 +1,5 @@
 $PROBLEM    No ROW,no rds
-;@ Variables 34/20 @;
+;@ Variables 17/20 @;
 $INPUT      ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE
             PART PROFDAY PROFTIME WEIGHTB EFF0
 $DATA      xgxr4.csv IGNORE=@ IGNORE=(FLAG.NE.0)
@@ -47,7 +47,7 @@ $ESTIMATION METHOD=1 POSTHOC INTER MAXEVAL=9999 NSIG=2 SIGL=9 PRINT=10
             NOABORT
 ;@ Pred Variables 13/20 @;
 $TABLE      TVKA TVV2 TVCL TVV3 TVQ KA V2 CL V3 Q PRED IPRED NOPRINT
-            FILE=xgxr001_res.txt
+            FILE=xgxr017_res.txt
 
 
 NM-TRAN MESSAGES
@@ -341,8 +341,8 @@ NM-TRAN MESSAGES
  TOTAL EFFECTIVE ETAS (NIND*NETA):                           393
   
  #TERE:
- Elapsed estimation  time in seconds:    10.46
- Elapsed postprocess time in seconds:     0.06
+ Elapsed estimation  time in seconds:    10.41
+ Elapsed postprocess time in seconds:     0.05
 1
  
  
@@ -465,5 +465,5 @@ NM-TRAN MESSAGES
  EPS2
 +        0.00E+00  3.73E-02
  
- Elapsed finaloutput time in seconds:     0.04
- #CPUT: Total CPU Time in Seconds,       10.571
+ Elapsed finaloutput time in seconds:     0.02
+ #CPUT: Total CPU Time in Seconds,       10.497
