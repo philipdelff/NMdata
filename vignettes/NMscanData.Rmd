@@ -105,7 +105,12 @@ Try `NMscanData` on any model:
 
 ```{r,eval=TRUE}
 res0 <- NMscanData(file.NMdata("xgxr001.lst"))
+```
+`NMscanData` tells that it has read a model called `xgxr017` and how output and input data were combined. We shall see how these properties can be modified in a bit. Then it provides an overview of how much data is used from the data files that were read. It found one output data file (based on the `$TABLE` section(s) in the `.lst` file) from which it used all 905 rows and all 15 column, totalling 150 different values of `ID`. It used only 905 out of 1502 rows and 22 out of 23 columns in the input data. The input data did not contain any ID's that weren't used. Finally, 755 out of the 905 rows were `EVID==0`, the remaining 150 rows were `EVID==1`.
+
+```{r}
 class(res0)
+dim(res0)
 ```
 
 `NMscanData` has read and combined input and output data and returned
