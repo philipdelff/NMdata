@@ -77,7 +77,7 @@ library(ggplot2)
 theme_set(theme_bw()+theme(legend.position="bottom"))
 ```
 
-```{r,eval=TRUE,include=FALSE}
+```{r,eval=FALSE,include=FALSE}
 library(devtools)
 load_all()
 ```
