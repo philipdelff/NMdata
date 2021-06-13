@@ -25,11 +25,6 @@ knitr::opts_chunk$set(
 ## knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 ```
 
-```{r,eval=TRUE,include=FALSE}
-## library(devtools)
-## load_all("C:/Users/delff/working_copies/NMdata")
-```
-
 Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
 
@@ -82,6 +77,11 @@ library(ggplot2)
 theme_set(theme_bw()+theme(legend.position="bottom"))
 ```
 
+```{r,eval=TRUE,include=FALSE}
+library(devtools)
+load_all()
+```
+
 For the examples we will be using files that are available in the
 `NMdata` package. To type a little less, we use this shortcut function:
 
@@ -104,114 +104,155 @@ NMdataConf(check.time=FALSE)
 Try `NMscanData` on any model:
 
 ```{r,eval=TRUE}
-res0 <- NMscanData(file.NMdata("xgxr001.lst"))
+res0 <- NMscanData(file.NMdata("xgxr017.lst"))
 ```
-`NMscanData` tells that it has read a model called `xgxr017` and how output and input data were combined. We shall see how these properties can be modified in a bit. Then it provides an overview of how much data is used from the data files that were read. It found one output data file (based on the `$TABLE` section(s) in the `.lst` file) from which it used all 905 rows and all 15 column, totalling 150 different values of `ID`. It used only 905 out of 1502 rows and 22 out of 23 columns in the input data. The input data did not contain any ID's that weren't used. Finally, 755 out of the 905 rows were `EVID==0`, the remaining 150 rows were `EVID==1`.
+`NMscanData` tells that it has read a model called `xgxr017` and how output and input data were combined. We shall see how these properties can be modified in a bit.  Then follows an overview of how much data is used from the data files that were read. It used
+
+* one output data file (based on the `$TABLE` section(s) in the `.lst` file) from which it used all 905 rows and all 15 column, totalling 150 different values of `ID`. 
+* the input file, but only 905 out of 1502 rows and 22 out of 23 columns. Input data did not contain any ID's that weren't used. 
+
+In the resulting data, 755 out of the 905 rows are `EVID==0`, the remaining 150 rows are `EVID==1`.
+
+Let's take a quick look at key properties of the data that was returned. It's a `data.frame` with the additional `NMdata` class (for now, we just use it as a `data.frame`).
 
 ```{r}
 class(res0)
 dim(res0)
 ```
 
-`NMscanData` has read and combined input and output data and returned
-a `data.frame`. The `NMdata` class allows for keeping additional
-information in the object, but the object can be treated as a
-`data.frame`. The `cbind.by.filters` means that we want `NMscanData`
-to look at the Nonmem code (the output control stream) to figure out
-what part of the input data was used by Nonmem for the model run (by
-`$IGNORE` and `$ACCEPT` statements in `$DATA`). The same filtering is
-then applied to the input data before adding columns to the output. In
-fact, that argument is not necessary, this is default
-behaviour. However, if we left it out, `NMscanData` would try to
-explain this to you so you make an active choice what to do here. 
+The data used for the example is a PK single ascending dose data set, great thanks to the
+[xgxr](https://cran.r-project.org/web/packages/xgxr/index.html)
+package authors.
 
-### Merge output and input data by a unique row identifier
-The default method of interpreting Nonmem code is not recommended. It
-is the default because it does not rely on assumptions about the input
-data and hence very generic. It happens that this dataset and one of
-the output tables contain a unique row identifier (a row counter in
-the column called `ROW`). If we skipped the `cbind.by.filters` above,
-`NMscanData` would figure this out and recommend merging by this
-column. This is what we will now do using the `col.row` argument. The
-following demonstrates that we get the same result from the two
-methods. When using `col.row`, the row identifier is the first column
-in the returned data. This is why the columns in `res0` are reordered
-accordingly before the comparison. The way the reordering of columns
-is done is a bit involved. It makes sure that if any columns in `res0`
-are not in `res1`, these are not dismissed. It would be much easier to
-use `data.table::setcolorder` but we are sticking to base R here.
-
-```{r,eval=TRUE}
-res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                   col.row="ROW",merge.by.row=TRUE,quiet=TRUE)
-res0 <- res0[,c(colnames(res1),setdiff(colnames(res0),colnames(res1)))]
-all.equal(res0,res1,check.attributes=FALSE)
-```
-All features shown below will work whether you supply `col.row` or
-not. We use `col.row` because it is more robust and always
-recommended. 
-
-Let's have a quick look at the data we got back. The following is done
-with data.table. The comments in the code should make it
-clear what happens if you are not familiar with `data.table`. You can
-do this with `base::tapply`, `stats::aggregate`, a
-combination of `dplyr::group_by` and `dplyr::summarize`, or whatever
-you prefer. 
-
-
-```{r,eval=TRUE}
-## trtact is a character. Make it a factor with levels ordered by
-## numerical dose level.
-res1$trtact <- reorder(res1$trtact,res1$DOSE)
-## We are going to use data.table
-res1.dt <- as.data.table(res1)
-## Derive geometric mean pop predictions by treatment and nominal
-## sample time. Only use sample records. 
-res1.mean <- res1.dt[EVID==0,.(gmPRED=exp(mean(log(PRED)))),
-                     by=.(trtact,NOMTIME)]
-## plot individual observations and geometric mean pop
-## predictions. Split (facet) by treatment.
-ggplot(subset(res1,EVID==0))+
-    geom_point(aes(TIME,DV))+
-    geom_line(aes(NOMTIME,gmPRED),data=res1.mean,colour="red")+
-    scale_y_log10()+
-    facet_wrap(~trtact,scales="free_y")+
-    labs(x="Hours since administration",y="Concentration (ng/mL)")
-```
-
-We see that the obtained dataset contains both model
+The obtained dataset contains both model
 predictions (i.e. from output tables) and a character variable,
-`trtact` (i.e. from input data). Only the .lst (output control stream)
+`trtact` (i.e. from input data). To  the `.lst` (output control stream)
 file path was supplied by us. 
 
-The data used for the example is a PK single ascending dose data set from the
-[xgxr](https://cran.r-project.org/web/packages/xgxr/index.html)
-package, kindly allowed by the xgxr team.
+
+```{r}
+head(res0,n=2)
+```
+
+You may have noticed that when reading the model, we were told that 37
+columns were read while 39 columns are found in the result. The reason
+is the last two columns added by `NMscanData` called `model` and
+`nmout`. `model` obviously contains the name of the model which is by
+default derived from the list file name. See later in the "Recover
+rows" section what `nmout` represents.
 
 
 
-## More options and features
-### Recover rows
-You may have wondered why there is so little data on the small doses
-in the plot of observations and geometric mean population predictions
-above. The reason is that observations below the lower limit of
-quantification have been disregarded. For this and many other reasons,
-it is very common to use `ACCEPT` and `IGNORE` statements in the
-`$INPUT` section of nonmem control streams. `NMscanData` can include
-this data in the returned data object as well. Let's redo the plot
-above taking advantage of this option. We will use `data.table` for
-the calculations again, so we will reset the `as.fun` which we
-set in the beginning to get `data.frame`'s. 
+### Use a unique row identifier and get your preferred data class back
+Above, we were told that "Input and output data combined by
+translation of Nonmem data filters (not recommended)." Because of the
+very commonly used `ACCEPT` and `IGNORE` statements in Nonmem `$DATA`
+sections, the rows in output tables are often a subset of the input
+data rows. If no other information is available, `NMscanData` reads
+and interprets the `ACCEPT` or `IGNORE` statements and applies them to
+the input data before combining with the output data.
+
+A more robust approach is using a unique row identifier in both
+input data and output data. `NMscanData` can use this for merging the
+data. This means that the `ACCEPT` or `IGNORE` are not interpreted at
+all. Even though `NMscanData` should work even without, it is always
+recommended to always include a unique row identifier in both input
+and output tables (in fact, we just need it in one full-length output table).
+
+The following model happens to have such a unique row identifier in
+the column called `ROW`. The default `NMscanData` behavior is to use
+the row identifier if it can find it. The name of the column with the
+row identifier can be supplied using the `col.row` argument (and the
+default can be changed using the `NMdataConf` function). The default
+is to look for `ROW`.
+
+All features shown below will work whether you supply `col.row` or
+not. We use `col.row` because it is more robust and because it allows us to easily trace a row in the analysis back to the source data. We are now told that the data was merged by `ROW` - that's better. 
+
+```{r,eval=TRUE}
+res0 <- NMscanData(file.NMdata("xgxr003.lst"),as.fun=tibble::as_tibble)
+```
+We also added the `as.fun` argument. the "`as.`" refers to `as_tibble`, `as.data.frame`, `as.data.table` etc. - a function applied to the data before it's returned by `NMscanData` (or any other `NMdata` function). So now we have a `tibble`:
+
+ ```{r}
+class(res0)
+```
+
+I happen to be a `data.table` user so I am more comfortable
+working that way. Instead of using the `as.fun` all the time, we will
+change the default behavior using the `NMdataConf` function. Because
+`NMdata` is implemented in `data.table` we don't need to pass the
+`data.table::as.data.table` function but we can (better) use the
+string `"data.table"` (again, `data.table` is the exception - for
+anything else, please pass a function):
 
 ```{r}
 NMdataConf(as.fun="data.table")
 ```
 
+Notice, `NMdataConf` will set the default value for all `NMdata` functions that use that argument. So when setting `as.fun` this way, we will get the desired class returned from all data generating `NMdata` functions. 
+
+We don't want the same information about the dimensions repeated, so we use the `quiet` argument this time.
+```{r}
+res3 <- NMscanData(file.NMdata("xgxr003.lst"),quiet=TRUE)
+```
+As expected we got a `data.table` this time:
+ ```{r}
+class(res3)
+```
+
+### Results
+Let's have a quick look at the data we got back. The following is done
+with `data.table`. The comments in the code should make it
+clear what happens if you are not familiar with `data.table`. You can
+do this with `base::tapply`, `stats::aggregate`, a
+combination of `dplyr::group_by` and `dplyr::summarize`, or whatever
+you prefer. 
+
+`gmPRED` is calculated for sample times only and represents the geometric mean of population prediction (`PRED`) by dose and nominal time. 
+
+```{r,eval=TRUE}
+## trtact is a character. Make it a factor with levels ordered by
+## numerical dose level. The := is a data.table assignment within
+## res3. In dplyr, you could use mutate.
+res3[,trtact:=reorder(trtact,DOSE)]
+## Only use sample records. In dplyr, use filter
+res3.obs <- res3[EVID==0]
+## Derive geometric mean pop predictions by treatment and nominal
+## sample time. In dplyr, use group_by and summarize.
+res3.mean <- res3.obs[,.(gmPRED=exp(mean(log(PRED)))),
+                     by=.(trtact,NOMTIME)]
+## plot individual observations and geometric mean pop
+## predictions. Split (facet) by treatment.  
+ggplot(res3.obs)+
+    geom_point(aes(TIME,DV))+
+    geom_line(aes(NOMTIME,gmPRED),data=res3.mean,colour="red")+
+    scale_y_log10()+
+    facet_wrap(~trtact,scales="free_y")+
+    labs(x="Hours since administration",y="Concentration (ng/mL)")
+```
+
+Notice, how little data is shown on the small doses. Remember, only
+905 of the 1502 rows in the input data were used? Most of the rows
+excluded in the analysis are so due to observation being below the
+quantification limit (BLQ).  The next section shows how to recover all the
+input data rows with `NMscanData`.
+
+
+
+
+## More options and features
+### Recover rows
+We may want to include the input data that was ignored by Nonmem. Use `recover.rows=TRUE` to include all rows from input data.
+
+We make use of the `nmout` column to only calculate `gmPRED` for
+samples processed by Nonmem. `nmout` is a boolean column created by
+`NMscanData` expressing whether each row was in the output data
+(`nmout==TRUE`) or they were recovered from the input data
+(`nmout==FALSE`).
+
 ```{r,meanbydose}
-res2 <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
-                   col.row="ROW",merge.by.row="ifAvailable",recover.rows=TRUE)
-## now we have a data.table
-class(res2)
+res2 <- NMscanData(file.NMdata("xgxr014.lst"),recover.rows=TRUE)
 ## Derive another data.table with geometric mean pop predictions by
 ## treatment and nominal sample time. Only use sample records.
 res2.mean <- res2[EVID==0&nmout==TRUE,
@@ -227,27 +268,7 @@ ggplot(res2[EVID==0])+
     labs(x="Hours since administration",y="Concentration (ng/mL)")
 ```
 
-Of course, this only works because a value has been assigned to the
-(in this case) `DV` column for the observations below the
-quantification limit. A couple of details are different compared to
-when we read `res1`. For now, notice one thing changed when
-calculating the population geometric means by nominal time and
-dose. We included `nmout==TRUE`. `nmout` is a boolean column created
-by `NMscanData` expressing whether the rows were in the output data
-(`nmout==TRUE`) or they were recovered from the input data. `PRED` is
-obviously not calculated for data rows neglected by Nonmem, so we
-want to keep those out of the calculation. Let's see how many were
-recovered
 
-```{r}
-## this is just a long-format representation of
-## with(res1,table(nmout,flag)) using data.table.
-res2[,.N,by=.(nmout,flag)]
-```
-
-So `r res2[nmout==TRUE,.N]` rows were part of the analysis. 
-The `recover.rows` argument can be used independently of whether
-`col.row` is used.
 
 ### Combine multiple models
 `NMscanData` by default adds a column called `model` for convenience

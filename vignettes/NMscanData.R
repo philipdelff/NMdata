@@ -9,15 +9,16 @@ knitr::opts_chunk$set(
 ## this change data.table syntax. I think we can do without.
 ## knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 
-## ----eval=TRUE,include=FALSE------------------------------
-## library(devtools)
-## load_all("C:/Users/delff/working_copies/NMdata")
-
 ## ----setup,include=T--------------------------------------
 library(NMdata)
+## not necessary for NMdata to run, but we use thse in the examples
 library(data.table)
 library(ggplot2)
 theme_set(theme_bw()+theme(legend.position="bottom"))
+
+## ----eval=TRUE,include=FALSE------------------------------
+library(devtools)
+load_all()
 
 ## ----file-shortcut,include=T------------------------------
 file.NMdata <- function(...) system.file(file.path("examples/nonmem",...), package="NMdata")
@@ -26,42 +27,52 @@ file.NMdata <- function(...) system.file(file.path("examples/nonmem",...), packa
 NMdataConf(check.time=FALSE)
 
 ## ----eval=TRUE--------------------------------------------
-res0 <- NMscanData(file.NMdata("xgxr001.lst"))
+res0 <- NMscanData(file.NMdata("xgxr017.lst"))
+
+## ---------------------------------------------------------
 class(res0)
+dim(res0)
+
+## ---------------------------------------------------------
+head(res0,n=2)
 
 ## ----eval=TRUE--------------------------------------------
-res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                   col.row="ROW",merge.by.row=TRUE,quiet=TRUE)
-res0 <- res0[,c(colnames(res1),setdiff(colnames(res0),colnames(res1)))]
-all.equal(res0,res1,check.attributes=FALSE)
+res0 <- NMscanData(file.NMdata("xgxr003.lst"),as.fun=tibble::as_tibble)
 
-## ----eval=TRUE--------------------------------------------
-## trtact is a character. Make it a factor with levels ordered by
-## numerical dose level.
-res1$trtact <- reorder(res1$trtact,res1$DOSE)
-## We are going to use data.table
-res1.dt <- as.data.table(res1)
-## Derive geometric mean pop predictions by treatment and nominal
-## sample time. Only use sample records. 
-res1.mean <- res1.dt[EVID==0,.(gmPRED=exp(mean(log(PRED)))),
-                     by=.(trtact,NOMTIME)]
-## plot individual observations and geometric mean pop
-## predictions. Split (facet) by treatment.
-ggplot(subset(res1,EVID==0))+
-    geom_point(aes(TIME,DV))+
-    geom_line(aes(NOMTIME,gmPRED),data=res1.mean,colour="red")+
-    scale_y_log10()+
-    facet_wrap(~trtact,scales="free_y")+
-    labs(x="Hours since administration",y="Concentration (ng/mL)")
+## ---------------------------------------------------------
+class(res0)
 
 ## ---------------------------------------------------------
 NMdataConf(as.fun="data.table")
 
+## ---------------------------------------------------------
+res3 <- NMscanData(file.NMdata("xgxr003.lst"),quiet=TRUE)
+
+## ---------------------------------------------------------
+class(res3)
+
+## ----eval=TRUE--------------------------------------------
+## trtact is a character. Make it a factor with levels ordered by
+## numerical dose level. The := is a data.table assignment within
+## res3. In dplyr, you could use mutate.
+res3[,trtact:=reorder(trtact,DOSE)]
+## Only use sample records. In dplyr, use filter
+res3.obs <- res3[EVID==0]
+## Derive geometric mean pop predictions by treatment and nominal
+## sample time. In dplyr, use group_by and summarize.
+res3.mean <- res3.obs[,.(gmPRED=exp(mean(log(PRED)))),
+                     by=.(trtact,NOMTIME)]
+## plot individual observations and geometric mean pop
+## predictions. Split (facet) by treatment.  
+ggplot(res3.obs)+
+    geom_point(aes(TIME,DV))+
+    geom_line(aes(NOMTIME,gmPRED),data=res3.mean,colour="red")+
+    scale_y_log10()+
+    facet_wrap(~trtact,scales="free_y")+
+    labs(x="Hours since administration",y="Concentration (ng/mL)")
+
 ## ----meanbydose-------------------------------------------
-res2 <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
-                   col.row="ROW",merge.by.row="ifAvailable",recover.rows=TRUE)
-## now we have a data.table
-class(res2)
+res2 <- NMscanData(file.NMdata("xgxr014.lst"),recover.rows=TRUE)
 ## Derive another data.table with geometric mean pop predictions by
 ## treatment and nominal sample time. Only use sample records.
 res2.mean <- res2[EVID==0&nmout==TRUE,

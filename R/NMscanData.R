@@ -149,8 +149,10 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
+    . <- NULL
     COLNUM <- NULL
     DV <- NULL
+    ID.jump <- NULL
     firstlastonly <- NULL
     firstonly <- NULL
     has.row <- NULL
@@ -165,6 +167,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     type <- NULL
     var <- NULL
     variable <- NULL
+
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     

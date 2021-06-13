@@ -332,14 +332,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<p>Built 2021-06-11 using NMdata 0.0.7.2.907.</p>
+<p>Built 2021-06-11 using NMdata 0.0.7.2.908.</p>
 <div id="general-nmdata-questions" class="section level2">
 <h2>General NMdata questions</h2>
 </div>
 <div id="what-is-nmdata" class="section level2">
 <h2>What is NMdata?</h2>
 <div id="nmdata-is-an-r-package-that-can-help" class="section level3">
-<h3>NMdata is An R package that can help</h3>
+<h3>NMdata is an R package that can help</h3>
 <ul>
 <li>Creating event-based data sets for PK/PD modeling</li>
 <li>Keeping Nonmem code updated to match contents of datasets</li>
@@ -387,7 +387,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="i-use-another-tool-that-automatically-reads-my-data.-should-i-be-interested-in-nmdata" class="section level3">
 <h3>I use another tool that automatically reads my data. Should I be interested in NMdata?</h3>
 <p>The data creation tools in NMdata may still be interesting. If another tool is working well for a project, you may not have any reason to use <code>NMscanData</code> (the Nonmem data reader in NMdata) for it. However, a lot of the time those tools have certain requirements to how datasets are constructed and especially how data is exported from Nonmem (<code>$TABLE</code>). If a Nonmem run does not live up to those requirements, and you want to look at the run results, <code>NMscanData</code> will let you do that without you having to “correct” your <code>$TABLE</code> statements and wait for Nonmem to run again.</p>
-<p>Also, in other cases <code>NMscanData</code> can save you a lot of time and frustration even if you have your own routines that make NMdata unnecessary. If you want to read your old Nonmem runs that were done a little differently, someone else’s work, or you want to quickly read a lot of runs done by different people for a meta analysis, <code>NMscanData</code> can save you a lot of work, time and frustration. And a meta analysis of a large number of models implemented by different people over the years? That’s a candy store for <code>NMscanData</code>. Here, NMdata can save you many hours of frustration.</p>
+<p>Also, in other cases <code>NMscanData</code> can save you a lot of time and frustration even if you have your own routines for these tasks. It will allow you to easily read your old Nonmem runs that were done a little differently, or if you need to read someone else’s work. A meta analysis of a large number of models implemented by different people over the years? That’s a candy store for <code>NMscanData</code>. Here, NMdata can save you many hours of frustration.</p>
+</div>
+<div id="how-can-nmscandata-do-all-that-only-based-on-the-nonmem-output-list-file" class="section level3">
+<h3>How can <code>NMscanData</code> do all that only based on the Nonmem output list file</h3>
+<p><code>NMscanData</code> reads the names of the input and output tables from the list file, the path to the input data from the control stream (which it knows where to find, or you can change the method it uses to find it), and then it checks several properties of these files and their contents before combining all the info. It is quite a lot of checking and book keeping but the key steps are simple.</p>
 </div>
 <div id="why-is-nmdata-fast" class="section level3">
 <h3>Why is NMdata fast?</h3>

@@ -134,8 +134,11 @@ A way to limit rows read into nonmem
 **** DONE Lastonly does the same as firstonly
      CLOSED: [2020-07-13 Mon 19:37]
 *** NMscanData
-**** TODO [#A] Check that no new values of col.row are found in output
-**** TODO [#A] Test for disjoint ID's
+**** TODO [#A] nmout and model must not overwrite existing
+**** DONE Check that no new values of col.row are found in output
+     CLOSED: [2021-06-12 Sat 00:13]
+**** DONE Test for disjoint ID's
+     CLOSED: [2021-06-12 Sat 00:13]
      If ID's are disjoint, it's actually really easy to make a new ID
      and use that for merging firstonly. But only if a row identifier
      is used. If not the same new ID is to be added to the
@@ -262,6 +265,7 @@ It's fairly easy to implement. Paste in front of the expression.use column.
 **** DONE Add save argument to align with other functions
      CLOSED: [2021-05-14 Fri 16:17]
 *** NMdataConf
+**** TODO [#A] test that function evaluation does not depend on global env
 **** DONE Add support for add.name
      CLOSED: [2021-01-30 Sat 14:29]
 **** DONE use.input
