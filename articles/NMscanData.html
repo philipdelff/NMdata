@@ -105,7 +105,7 @@
 
     
     
-<p>Built 2021-06-13 using NMdata 0.0.7.2.908.</p>
+<p>Built 2021-06-14 using NMdata 0.0.7.2.908.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -216,10 +216,10 @@
 <p>Notice, <code>NMdataConf</code> will set the default value for all <code>NMdata</code> functions that use that argument. So when setting <code>as.fun</code> this way, we will get the desired class returned from all data generating <code>NMdata</code> functions.</p>
 <p>We don’t want the same information about the dimensions repeated, so we use the <code>quiet</code> argument this time.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr003.lst"</span><span class="op">)</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr003.lst"</span><span class="op">)</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>As expected we got a <code>data.table</code> this time:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">res3</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">res1</span><span class="op">)</span>
 <span class="co">#&gt; [1] "NMdata"     "data.table" "data.frame"</span></code></pre></div>
 </div>
 <div id="results" class="section level3">
@@ -231,22 +231,12 @@
 <code class="sourceCode R"><span class="co">## trtact is a character. Make it a factor with levels ordered by</span>
 <span class="co">## numerical dose level. The := is a data.table assignment within</span>
 <span class="co">## res3. In dplyr, you could use mutate.</span>
-<span class="va">res3</span><span class="op">[</span>,<span class="va">trtact</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">trtact</span>,<span class="va">DOSE</span><span class="op">)</span><span class="op">]</span>
-<span class="co">## Only use sample records. In dplyr, use filter</span>
-<span class="va">res3.obs</span> <span class="op">&lt;-</span> <span class="va">res3</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">]</span>
+<span class="va">res1</span><span class="op">[</span>,<span class="va">trtact</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">trtact</span>,<span class="va">DOSE</span><span class="op">)</span><span class="op">]</span>
 <span class="co">## Derive geometric mean pop predictions by treatment and nominal</span>
-<span class="co">## sample time. In dplyr, use group_by and summarize.</span>
-<span class="va">res3.mean</span> <span class="op">&lt;-</span> <span class="va">res3.obs</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span>gmPRED<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">PRED</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
-                     by<span class="op">=</span><span class="fu">.</span><span class="op">(</span><span class="va">trtact</span>,<span class="va">NOMTIME</span><span class="op">)</span><span class="op">]</span>
-<span class="co">## plot individual observations and geometric mean pop</span>
-<span class="co">## predictions. Split (facet) by treatment.  </span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">res3.obs</span><span class="op">)</span><span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">TIME</span>,<span class="va">DV</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">NOMTIME</span>,<span class="va">gmPRED</span><span class="op">)</span>,data<span class="op">=</span><span class="va">res3.mean</span>,colour<span class="op">=</span><span class="st">"red"</span><span class="op">)</span><span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">trtact</span>,scales<span class="op">=</span><span class="st">"free_y"</span><span class="op">)</span><span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"Hours since administration"</span>,y<span class="op">=</span><span class="st">"Concentration (ng/mL)"</span><span class="op">)</span></code></pre></div>
-<p><img src="NMscanData_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
+<span class="co">## sample time. In dplyr, use group_by, summarize, and ifelse?</span>
+<span class="va">res1</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span>,<span class="va">gmPRED</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">PRED</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
+     by<span class="op">=</span><span class="fu">.</span><span class="op">(</span><span class="va">trtact</span>,<span class="va">NOMTIME</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<p><img src="NMscanData_files/figure-html/plotres1-1.png" width="672"></p>
 <p>Notice, how little data is shown on the small doses. Remember, only 905 of the 1502 rows in the input data were used? Most of the rows excluded in the analysis are so due to observation being below the quantification limit (BLQ). The next section shows how to recover all the input data rows with <code>NMscanData</code>.</p>
 </div>
 </div>
@@ -257,7 +247,6 @@
 <h3 class="hasAnchor">
 <a href="#recover-rows" class="anchor"></a>Recover rows</h3>
 <p>We may want to include the input data that was ignored by Nonmem. Use <code>recover.rows=TRUE</code> to include all rows from input data.</p>
-<p>We make use of the <code>nmout</code> column to only calculate <code>gmPRED</code> for samples processed by Nonmem. <code>nmout</code> is a boolean column created by <code>NMscanData</code> expressing whether each row was in the output data (<code>nmout==TRUE</code>) or they were recovered from the input data (<code>nmout==FALSE</code>).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr014.lst"</span><span class="op">)</span>,recover.rows<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; Model:  xgxr014 </span>
@@ -271,80 +260,66 @@
 <span class="co">#&gt; Distribution of rows on event types in returned data:</span>
 <span class="co">#&gt;  EVID Input only Output</span>
 <span class="co">#&gt;     0        597    755</span>
-<span class="co">#&gt;     1          0    150</span>
-<span class="co">## Derive another data.table with geometric mean pop predictions by</span>
-<span class="co">## treatment and nominal sample time. Only use sample records.</span>
-<span class="va">res2.mean</span> <span class="op">&lt;-</span> <span class="va">res2</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">&amp;</span><span class="va">nmout</span><span class="op">==</span><span class="cn">TRUE</span>,
-                  <span class="fu">.</span><span class="op">(</span>gmPRED<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">PRED</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
-                  by<span class="op">=</span><span class="fu">.</span><span class="op">(</span><span class="va">trtact</span>,<span class="va">NOMTIME</span><span class="op">)</span><span class="op">]</span>
-<span class="co">## plot individual observations and geometric mean pop</span>
-<span class="co">## predictions. Split by treatment.</span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">res2</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">]</span><span class="op">)</span><span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">TIME</span>,<span class="va">DV</span>,colour<span class="op">=</span><span class="va">flag</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">NOMTIME</span>,<span class="va">gmPRED</span><span class="op">)</span>,data<span class="op">=</span><span class="va">res2.mean</span><span class="op">)</span><span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">trtact</span>,scales<span class="op">=</span><span class="st">"free_y"</span><span class="op">)</span><span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"Hours since administration"</span>,y<span class="op">=</span><span class="st">"Concentration (ng/mL)"</span><span class="op">)</span></code></pre></div>
-<p><img src="NMscanData_files/figure-html/meanbydose-1.png" width="672"></p>
+<span class="co">#&gt;     1          0    150</span></code></pre></div>
+<p>Besides the <code>model</code> column holding the model name, <code>NMscanData</code> creates one other column by default. <code>nmout</code> is a boolean column created by <code>NMscanData</code> expressing whether each row was in the output data (<code>nmout==TRUE</code>) or they were recovered from the input data (<code>nmout==FALSE</code>).</p>
+<p>We recognize these numbers from the message from <code>NMscanData</code> - the number of rows in output (905) and number of rows from input only (597).</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">res2</span><span class="op">[</span>,<span class="va">.N</span>,by<span class="op">=</span><span class="va">nmout</span><span class="op">]</span>
+<span class="co">#&gt;    nmout   N</span>
+<span class="co">#&gt; 1:  TRUE 905</span>
+<span class="co">#&gt; 2: FALSE 597</span></code></pre></div>
+<p>We make use of the <code>nmout</code> column to only calculate <code>gmPRED</code> for observations (<code>EVID==0</code>) processed by Nonmem.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## add geometric mean pop predictions by treatment and nominal sample</span>
+<span class="co">## time. Only use sample records.</span>
+<span class="va">res2</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">&amp;</span><span class="va">nmout</span><span class="op">==</span><span class="cn">TRUE</span>,
+     <span class="va">gmPRED</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">PRED</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
+     by<span class="op">=</span><span class="fu">.</span><span class="op">(</span><span class="va">trtact</span>,<span class="va">NOMTIME</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<p><img src="NMscanData_files/figure-html/plot-res2-1.png" width="672"></p>
+<p>Obviously, we were lucky that meaningful values were assigned to <code>DV</code> for the BLQ and pre-dose samples in input data, so we in this case could easily plot all the data.</p>
 </div>
 <div id="combine-multiple-models" class="section level3">
 <h3 class="hasAnchor">
 <a href="#combine-multiple-models" class="anchor"></a>Combine multiple models</h3>
 <p><code>NMscanData</code> by default adds a column called <code>model</code> for convenience when working with multiple models. You can specify both column name and content as arguments in <code>NMscanData</code>. You can also configure the default column name and the function that generates the column content by <code>NMdataConf</code>. If you don’t, the column will be called <code>model</code>, and the model name taken from the <code>lst</code> file name (say, <code>xgxr001</code>). In the following we use this to compare population predictions from two different models. We read them again just to show the use of the argument to name the models ourselves. Remember, we configure <code>NMdata</code>’s <code>as.fun</code> option so we are working with <code>data.table</code> and we easily stack with <code>rbind</code> (<code>rbind.data.table</code>) filling in <code>NA</code>’s. We add a couple of options to specify how input and output data are to be combined.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>as.fun<span class="op">=</span><span class="st">"data.table"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>col.row<span class="op">=</span><span class="st">"ROW"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>merge.by.row<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## notice fill is an option to rbind with data.table</span>
 <span class="va">res1.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.lst"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span>,
-                     quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+                     quiet<span class="op">=</span><span class="cn">TRUE</span>,modelname<span class="op">=</span><span class="st">"Two compartments"</span><span class="op">)</span>
 <span class="va">res2.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr014.lst"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span>,
-                     modelname<span class="op">=</span><span class="st">"single-compartment"</span>,
+                     modelname<span class="op">=</span><span class="st">"One compartment"</span>,
                      quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">res.mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/rbindlist.html">rbind</a></span><span class="op">(</span><span class="va">res1.m</span>,<span class="va">res2.m</span>,fill<span class="op">=</span><span class="cn">T</span><span class="op">)</span>
-<span class="va">res.mult.mean</span> <span class="op">&lt;-</span> <span class="va">res.mult</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">&amp;</span><span class="va">nmout</span><span class="op">==</span><span class="cn">TRUE</span>,
-                          <span class="fu">.</span><span class="op">(</span>gmPRED<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">PRED</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
-                          by<span class="op">=</span><span class="fu">.</span><span class="op">(</span><span class="va">model</span>,<span class="va">trtact</span>,<span class="va">NOMTIME</span><span class="op">)</span><span class="op">]</span>
-
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">res.mult.mean</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">NOMTIME</span>,<span class="va">gmPRED</span>,colour<span class="op">=</span><span class="va">model</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">trtact</span>,scales<span class="op">=</span><span class="st">"free_y"</span><span class="op">)</span></code></pre></div>
-<p><img src="NMscanData_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
+<span class="co">## Notice, the NMdata class disappeared</span>
+<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">res.mult</span><span class="op">)</span>
+<span class="co">#&gt; [1] "data.table" "data.frame"</span>
+<span class="va">res.mult</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">&amp;</span><span class="va">nmout</span><span class="op">==</span><span class="cn">TRUE</span>,
+         <span class="va">gmPRED</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">PRED</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
+         by<span class="op">=</span><span class="fu">.</span><span class="op">(</span><span class="va">model</span>,<span class="va">trtact</span>,<span class="va">NOMTIME</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<p><img src="NMscanData_files/figure-html/plot-resmult-1.png" width="672"></p>
 </div>
-<div id="use-a-row-identifier-or-interpret-nonmem-code" class="section level3">
+<div id="preserve-all-input-data-properties---use-rds" class="section level3">
 <h3 class="hasAnchor">
-<a href="#use-a-row-identifier-or-interpret-nonmem-code" class="anchor"></a>Use a row identifier or interpret Nonmem code</h3>
-<p>The most robust way to combine augment output data with input data using <code>NMscanData</code> is to include a unique row identifier in both input and at least one full-length output table. Then tell NMscanData to use the row identifier using the <code>col.row</code> argument. The advantage is that less Nonmem code has to be interpreted for this method. However, notice that no checks are being done if the row identifier has been modified during the Nonmem run. If you tell NMscanData that the column called <code>ROW</code> is a to be used as the row identifier, and <code>ROW</code> is being modified in say <code>$PK</code> before being output in an output table, this will mess up the result. But if you keep the good practice of including a unique row identifier in your dataset, the advice is to include it in at least one output table. Tell <code>NMscanData</code> to use it by the <code>col.row</code> argument.</p>
-</div>
-<div id="preserve-all-input-data-properties" class="section level3">
-<h3 class="hasAnchor">
-<a href="#preserve-all-input-data-properties" class="anchor"></a>Preserve all input data properties</h3>
-<p>In the code above when plotting the population predictions together with individual observations, we saw that character variables (the treatment as dose with unit) was read from the input data file and was used for splitting the plots. However, in order to sort the plots by increasing dose level, we had to run <code>reorder</code> on the variable. This is because the input data is read from a csv file and so factor levels are not preserved. <code>NMscanData</code> will not code any character variables as factors when reading from text files.</p>
-<p>Since the character representation of treatment was already prepared, it would be natural to encode the factor levels already at that point. In order to preserve such information, we can use R’s native rds format. If the argument <code>use.rds</code> is <code>TRUE</code>, <code>NMscanData</code> will look for an rds file next to the input data file (which is a delimited text file) the exact same name as the text file except the extension must be “<code>.rds</code>” rather than say “<code>.csv</code>” (for Nonmem and <code>NMscanData</code>, the extension of the delimited text file doesn’t matter). If it finds the <code>rds</code> file, this will be used instead. No checks are done of whether the contents are similar in any way to the delimited text file which is ignored in this case.</p>
-<p>Return to the example above creating the dataset <code>dat2</code>. Notice the message from NMscanData that an <code>rds</code> file was found. This is why we could sort the plots correctly on the dose level with reordering the factor levels first. There are three advantages of using rds files</p>
+<a href="#preserve-all-input-data-properties---use-rds" class="anchor"></a>Preserve all input data properties - use <code>rds</code>
+</h3>
+<p>Return to the example above creating the dataset <code>dat2</code>. Notice in the list of tables in the message from <code>NMscanData</code>, that input data is a <code>.rds</code> file. This is why we could sort the plots correctly on the dose level without reordering the factor levels first.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">res2</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">trtact</span><span class="op">)</span><span class="op">]</span>
+<span class="co">#&gt; [1] "factor"</span>
+<span class="va">res2</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">trtact</span><span class="op">)</span><span class="op">]</span>
+<span class="co">#&gt; [1] "Placebo" "3 mg"    "10 mg"   "30 mg"   "100 mg"  "300 mg"</span></code></pre></div>
+<p>If the argument <code>use.rds</code> is <code>TRUE</code>, <code>NMscanData</code> will look for an rds file next to the input data file (which is a delimited text file) the exact same name as the text file except the extension must be <code>.rds</code> rather than say <code>.csv</code> (for Nonmem and <code>NMscanData</code>, the extension of the delimited text file doesn’t matter). If it finds the <code>rds</code> file, this will be used instead. No checks are done of whether the contents are similar in any way to the delimited text file which is ignored in this case.</p>
+<p>There are three advantages of using <code>rds</code> files:</p>
 <ul>
 <li>All attributes are kept. This includes column classes and factor levels.</li>
 <li>Reading speed may be improved (NMdata uses <code>fread</code> from <code>data.table</code> which is extremely fast for delimited files so in many cases this difference can be small).</li>
 <li>File sizes are greatly reduced from text to <code>rds</code>. This can be a big advantage if you are transfering files or reading over a network connection. <code>NMdata</code> is generally very fast (thanks to <code>data.table</code>) so file/network access (I/O) is likely to be the main bottleneck.</li>
 </ul>
 <p>If you write Nonmem datasets with the <code><a href="../reference/NMwriteData.html">NMdata::NMwriteData</a></code>, you can get an <code>rds</code> file automatically, exactly where <code>NMscanData</code> will look for it. Creating datasets using <code>NMdata</code> is described in <a href="https://philipdelff.github.io/NMdata/articles/DataCreate.html">this vignette</a>.</p>
-</div>
-<div id="custom-naming-of-input-and-output-control-streams" class="section level3">
-<h3 class="hasAnchor">
-<a href="#custom-naming-of-input-and-output-control-streams" class="anchor"></a>Custom naming of input and output control streams</h3>
-<p>By default, <code>NMscanData</code> expects a <a href="https://uupharmacometrics.github.io/PsN/">PSN</a>-style naming of input and output control streams. This means that if the input control stream is called <code>model.mod</code>, the returned control stream is called <code>model.lst</code>. If you use a different setup, you can use the <code>file.mod</code> argument. Do one of the following if needed:</p>
-<ul>
-<li>Explicitly give the path to the input control stream or</li>
-<li>Pass a function that translates from the output control stream to the input. Example if the input is called <code>input.txt</code> and the output is called <code>output.txt</code>:</li>
-</ul>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">out2in</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">file</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>,<span class="st">"input.txt"</span><span class="op">)</span>
-<span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"path/to/output.txt"</span>,file.mod<span class="op">=</span><span class="va">out2in</span><span class="op">)</span></code></pre></div>
-<p>You can use <code>NMdataConf</code> to configure the default behaviour to match your setup:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>file.mod<span class="op">=</span><span class="va">out2in</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="what-exactly-will-nmscandata-return" class="section level2">
@@ -360,13 +335,13 @@
 <li>The primary aim is to return the output data. If input and output cannot be meaningfully combined (very rare), output will be returned.</li>
 </ul>
 <p>Notice that the summary text printed to the <code>R</code> terminal by <code>NMscanData</code> tells how many columns are included from the available tables. Also, within the resulting object, you can find a detailed table of all variables available, and whether they are included or not.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span><span class="op">(</span><span class="va">res1.m</span><span class="op">)</span><span class="op">$</span><span class="va">meta</span><span class="op">$</span><span class="va">variables</span>,topn<span class="op">=</span><span class="fl">3</span><span class="op">)</span>
 <span class="co">#&gt; NULL</span></code></pre></div>
 </div>
-<div id="the-building-blocks" class="section level2">
+<div id="reading-data-with-automatically-combining-it---the-nmscadata-building-blocks" class="section level2">
 <h2 class="hasAnchor">
-<a href="#the-building-blocks" class="anchor"></a>The building blocks</h2>
+<a href="#reading-data-with-automatically-combining-it---the-nmscadata-building-blocks" class="anchor"></a>Reading data with automatically combining it - the <code>NMscaData</code> building blocks</h2>
 <p>Each of the steps involved in reading and combining the data from a model run can be done separately.</p>
 <p>The <code>lst</code> file was scanned for output tables, and they were all read (including interpreting the possible <code>firstonly</code> option). The input data has been used based on the <code>$DATA</code> and <code>$INPUT</code> sections of the control stream. The key steps in this process are available as independent functions.</p>
 <ul>
@@ -406,6 +381,21 @@
 <a href="#some-table-options-not-supported" class="anchor"></a>Some TABLE options not supported</h3>
 <p>For now, only output tables returning either all rows or one row per subject can be merged with input. Tables written with options like <code>FIRSTLASTONLY</code> (two rows per subject) and <code>OBSONLY</code> are disregarded with a warning (you can read them with <code>NMscanTables</code>). <code>LASTONLY</code> is treated like <code>FIRSTONLY</code>, i.e. as ID-level information if not available elsewhere.</p>
 </div>
+</div>
+<div id="custom-naming-of-input-and-output-control-streams" class="section level2">
+<h2 class="hasAnchor">
+<a href="#custom-naming-of-input-and-output-control-streams" class="anchor"></a>Custom naming of input and output control streams</h2>
+<p>By default, <code>NMscanData</code> expects a <a href="https://uupharmacometrics.github.io/PsN/">PSN</a>-style naming of input and output control streams. This means that if the input control stream is called <code>model.mod</code>, the returned control stream is called <code>model.lst</code>. If you use a different setup, you can use the <code>file.mod</code> argument. Do one of the following if needed:</p>
+<ul>
+<li>Explicitly give the path to the input control stream or</li>
+<li>Pass a function that translates from the output control stream to the input. Example if the input is called <code>input.txt</code> and the output is called <code>output.txt</code>:</li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">out2in</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">file</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>,<span class="st">"input.txt"</span><span class="op">)</span>
+<span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"path/to/output.txt"</span>,file.mod<span class="op">=</span><span class="va">out2in</span><span class="op">)</span></code></pre></div>
+<p>You can use <code>NMdataConf</code> to configure the default behaviour to match your setup:</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>file.mod<span class="op">=</span><span class="va">out2in</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
 
