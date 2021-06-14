@@ -10,6 +10,7 @@ devel/NMdata_Rpackage/NMdata_Rpackage\.pdf
 doc
 vignettes/.\.pdf
 vignettes/.\.html
+vignettes/.\.md
 vignettes/.\.R
 inst/examples/nonmem/modelfit_dir*
 inst/examples/nonmem/trashed_*
