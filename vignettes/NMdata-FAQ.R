@@ -13,7 +13,7 @@ knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 
 ## ----eval=FALSE-------------------------------------------
 #  library(remotes)
-#  install_github("philipdelff/NMdata@v0.0.7.1")
+#  install_github("philipdelff/NMdata@v0.0.7.2")
 #  library(NMdata)
 
 ## ----eval=F-----------------------------------------------
