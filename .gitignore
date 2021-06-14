@@ -8,10 +8,10 @@ devel/NMdata_Rpackage/figure
 devel/NMdata_Rpackage/derived
 devel/NMdata_Rpackage/NMdata_Rpackage\.pdf
 doc
-vignettes/.\.pdf
-vignettes/.\.html
-vignettes/.\.md
-vignettes/.\.R
+vignettes/*\.pdf
+vignettes/*\.html
+vignettes/*\.md
+vignettes/*\.R
 inst/examples/nonmem/modelfit_dir*
 inst/examples/nonmem/trashed_*
 inst/examples/nonmem/backup_*
