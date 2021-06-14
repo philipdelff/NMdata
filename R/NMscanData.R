@@ -213,6 +213,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         include.model <- FALSE
     }
     
+    
     runname <- modelname(file)
     ## file.mod is treated later if we need the input control stream
     

@@ -100,11 +100,11 @@ NMdataConf(check.time=FALSE)
 ```
 
 
-## Get started
-Try `NMscanData` on any model:
+## Get started - the basics
+Try `NMscanData` on a control stream or a list file:
 
 ```{r,eval=TRUE}
-res0 <- NMscanData(file.NMdata("xgxr017.lst"))
+res1 <- NMscanData(file.NMdata("xgxr018.lst"))
 ```
 `NMscanData` tells that it has read a model called `xgxr017` and how output and input data were combined. We shall see how these properties can be modified in a bit.  Then follows an overview of how much data is used from the data files that were read. It used
 
@@ -116,8 +116,8 @@ In the resulting data, 755 out of the 905 rows are `EVID==0`, the remaining 150 
 Let's take a quick look at key properties of the data that was returned. It's a `data.frame` with the additional `NMdata` class (for now, we just use it as a `data.frame`).
 
 ```{r}
-class(res0)
-dim(res0)
+class(res1)
+dim(res1)
 ```
 
 The data used for the example is a PK single ascending dose data set, great thanks to the
@@ -131,7 +131,7 @@ file path was supplied by us.
 
 
 ```{r}
-head(res0,n=2)
+head(res1,n=2)
 ```
 
 You may have noticed that when reading the model, we were told that 37
@@ -141,9 +141,34 @@ is the last two columns added by `NMscanData` called `model` and
 default derived from the list file name. See later in the "Recover
 rows" section what `nmout` represents.
 
+### What will NMscanData return?
+Column in output data can overlap, and data can be available in both
+output and input data. Also, da
+
+The following main
+principles are followed by `NMscanData`:
+
+* Priority of data 
+  - Output data prevails over input data
+  - Row-specific output data is preferred over ID-level (`FIRSTONLY` or
+`LASTONLY`) tables
+  - Output tables are prioritized by their order of appearance (order of $TABLE sections)
+  - The primary aim is to return the output data. If input and output
+    cannot be meaningfully combined (very rare), output will be
+    returned.
+* Properties of returned data if input data used (`use.input=TRUE`)
+  - Input data column names will be default be returned as defined in
+    the `$INPUT` section in Nonmem.
+  - Columns that are dropped in Nonmem (`DROP` or `SKIP`) are included by `NMscanData`.
+  - Columns that are not included in `$INPUT` are named as in the input data file.
+  - If rows are being recovered from input data (the `recover.rows`
+    argument), no information from output is merged onto these rows.
+
+Once you have data from `NMscanData`, `NMinfo` can be used to browse
+meta information on what data was combined and how that was done.
 
 
-### Use a unique row identifier and get your preferred data class back
+### Use a unique row identifier 
 Above, we were told that "Input and output data combined by
 translation of Nonmem data filters (not recommended)." Because of the
 very commonly used `ACCEPT` and `IGNORE` statements in Nonmem `$DATA`
@@ -167,15 +192,22 @@ default can be changed using the `NMdataConf` function). The default
 is to look for `ROW`.
 
 All features shown below will work whether you supply `col.row` or
-not. We use `col.row` because it is more robust and because it allows us to easily trace a row in the analysis back to the source data. We are now told that the data was merged by `ROW` - that's better. 
+not. We use `col.row` because it is more robust and because it allows
+us to easily trace a row in the analysis back to the source data. We
+are now told that the data was merged by `ROW` - that's better.
 
 ```{r,eval=TRUE}
-res0 <- NMscanData(file.NMdata("xgxr003.lst"),as.fun=tibble::as_tibble)
+res1.tbl <- NMscanData(file.NMdata("xgxr003.lst"),as.fun=tibble::as_tibble)
 ```
-We also added the `as.fun` argument. the "`as.`" refers to `as_tibble`, `as.data.frame`, `as.data.table` etc. - a function applied to the data before it's returned by `NMscanData` (or any other `NMdata` function). So now we have a `tibble`:
+
+### Get your preferred data class back from `NMscanData`
+When reading `res1.tbl`, we also added the `as.fun` argument. the "`as.`" refers to
+`as_tibble`, `as.data.frame`, `as.data.table` etc. - a function
+applied to the data before it's returned by `NMscanData` (or any other
+`NMdata` function). So now we have a `tibble`:
 
 ```{r}
-class(res0)
+class(res1.tbl)
 ```
 
 I happen to be a `data.table` user so I am more comfortable
@@ -194,20 +226,51 @@ Notice, `NMdataConf` will set the default value for all `NMdata` functions that 
 
 We don't want the same information about the dimensions repeated, so we use the `quiet` argument this time.
 ```{r}
-res1 <- NMscanData(file.NMdata("xgxr003.lst"),quiet=TRUE)
+res1.dt <- NMscanData(file.NMdata("xgxr003.lst"),quiet=TRUE)
 ```
 As expected we got a `data.table` this time:
 ```{r}
-class(res1)
+class(res1.dt)
 ```
 
-### Results
+### Browse the metadata
+An `NMdata` object returned by `NMscanData` comes with meta information about when and how what was read, and how the data was combined. The `NMinfo` function browses this information, and three options are available. It provides three sections of meta data:
+
+* "details": A list including the function call, what options were
+  effective (if input was included, rows recovered, if data was merged
+  by a row identifier or combined by filters etc).
+ 
+* "tables": Overview of the tables that were read and combined by
+  `NMscanData` and properties of the different tables.
+
+* "columns": Information on the columns that were treated by
+  `NMscanData` (see example below).
+
+
+The follwing show the "columns" information as example. Remember, we are still getting a data.table because we used `NMdataConf` to change the configuration. We use the `data.table` print function to only look at first and last ten rows. 
+
+```{r}
+print(NMinfo(res1,info="columns"),nrows=20,topn=10)
+```
+
+The column names are sorted by the order in the resulting dataset, the
+order given by the `COLNUM` column. The variables in the bottom that
+have `COLNUM==NA` were redundant when combining the data (the same
+columns were included from other sources). The file names and their
+source (input/output) and a "level" are given. "level" is the
+information level of the source. Input data and full-length output
+tables are "row" level, a firstonly or lastonly table is id-level. And
+then there is the `model` column added by `NMscanData` which is
+obviously model-level. `nmout` is the other column added by
+`NMscanData` and both `model` and `nmout` have `NA` file and
+`NMscanData` as source.
+
+## More options and features
 Let's have a quick look at the data we got back. The following is done
-with `data.table`. The comments in the code should make it
-clear what happens if you are not familiar with `data.table`. You can
-do this with `base::tapply`, `stats::aggregate`, a
-combination of `dplyr::group_by` and `dplyr::summarize`, or whatever
-you prefer. 
+with `data.table`. The comments in the code should make it clear what
+happens if you are not familiar with `data.table`. You can do this
+with `base::tapply`, `stats::aggregate`, a combination of
+`dplyr::group_by` and `dplyr::summarize`, or whatever you prefer.
 
 `gmPRED` is calculated for sample times only and represents the geometric mean of population prediction (`PRED`) by dose and nominal time. 
 
@@ -215,16 +278,16 @@ you prefer.
 ## trtact is a character. Make it a factor with levels ordered by
 ## numerical dose level. The := is a data.table assignment within
 ## res3. In dplyr, you could use mutate.
-res1[,trtact:=reorder(trtact,DOSE)]
+res1.dt[,trtact:=reorder(trtact,DOSE)]
 ## Derive geometric mean pop predictions by treatment and nominal
 ## sample time. In dplyr, use group_by, summarize, and ifelse?
-res1[EVID==0,gmPRED:=exp(mean(log(PRED))),
+res1.dt[EVID==0,gmPRED:=exp(mean(log(PRED))),
      by=.(trtact,NOMTIME)]
 ```
-```{r,plotres1,echo=FALSE}
+```{r,plotres1.dt,echo=FALSE}
 ## plot individual observations and geometric mean pop
 ## predictions. Split (facet) by treatment.  
-ggplot(res1[EVID==0])+
+ggplot(res1.dt[EVID==0])+
     geom_point(aes(TIME,DV))+
     geom_line(aes(NOMTIME,gmPRED),colour="red")+
     scale_y_log10()+
@@ -239,9 +302,6 @@ quantification limit (BLQ).  The next section shows how to recover all the
 input data rows with `NMscanData`.
 
 
-
-
-## More options and features
 ### Recover rows
 We may want to include the input data that was ignored by Nonmem. Use `recover.rows=TRUE` to include all rows from input data.
 
@@ -255,7 +315,7 @@ Besides the `model` column holding the model name, `NMscanData` creates one othe
 (`nmout==TRUE`) or they were recovered from the input data
 (`nmout==FALSE`). 
 
-We recognize these numbers from the message from `NMscanData` - the number of rows in output (905) and number of rows from input only (597).
+We recognize these numbers from the message from `NMscanData` - the number of rows in output (905) and number of rows from input only (597). Since we changed the default value of `as.fun` with `NMdataConf`, `res2` is a `data.table`.
 
 ```{r}
 res2[,.N,by=nmout]
@@ -290,33 +350,35 @@ Obviously, we were lucky that meaningful values were assigned to `DV` for the BL
 
 ### Combine multiple models
 `NMscanData` by default adds a column called `model` for convenience
-when working with multiple models. You can specify both column name
-and content as arguments in `NMscanData`. You can also configure the
-default column name and the function that generates the column content
-by `NMdataConf`. If you don't, the column will be called `model`, and
-the model name taken from the `lst` file name (say, `xgxr001`).  In
-the following we use this to compare population predictions from two
-different models. We read them again just to show the use of the
-argument to name the models ourselves. Remember, we configure
-`NMdata`'s `as.fun` option so we are working with `data.table` and we
-easily stack with `rbind` (`rbind.data.table`) filling in `NA`'s. We
-add a couple of options to specify how input and output data are to be
-combined.
+when working with multiple models. You can specify both column name (which is by `model` default)
+and model name (contents of that column) as arguments in `NMscanData`. Using  `NMdataConf`, You can also configure the
+default column name and the function that generates the model name. 
+
+The default is to derive the model name from the `lst` file name (say,
+`xgxr001.lst` becomes `xgxr001`).  In the following we use this to
+compare population predictions from two different models. We read them
+again just to show the use of the argument to name the models
+ourselves. Remember, we configure `NMdata`'s `as.fun` option so we are
+working with `data.table` and we easily stack with `rbind`
+(`rbind.data.table`) filling in `NA`'s. We add a couple of options to
+specify how input and output data are to be combined.
 
 ```{r}
-NMdataConf(as.fun="data.table")
-NMdataConf(col.row="ROW")
-NMdataConf(merge.by.row=TRUE)
+NMdataConf(as.fun="data.table", ## already set above, repeated for completeness
+           col.row="ROW",       ## This is default, included for completeness
+           merge.by.row=TRUE    ## Require input and output data to be combined by merge
+           )
 ```
 
 
 ```{r}
-## notice fill is an option to rbind with data.table
 res1.m <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                     quiet=TRUE,modelname="Two compartments")
+                     quiet=TRUE)
+## using a custom modelname for this model
 res2.m <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
                      modelname="One compartment",
                      quiet=TRUE)
+## notice fill is an option to rbind with data.table (like bind_rows in dplyr)
 res.mult <- rbind(res1.m,res2.m,fill=T)
 ## Notice, the NMdata class disappeared
 class(res.mult)
@@ -335,11 +397,30 @@ ggplot(res.mult,aes(NOMTIME,gmPRED,colour=model))+
          subtitle="data: res.mult. Lines are gmPRED at output observation times.")
 ```
 
+In this, we specifically wanted to rename one model for illustration of the `modelname` argument. We can pass a function to customize how `NMscanData` derives it from the list file path. This one skips the characters and leading zeros, so we just get an integer. We could pass use the `modelname` argument in `NMdata` but why not changed the default instead?
+
+```{r}
+namefun <- function(path) sub("^[[:alpha:]0]+","",fnExtension(basename(path),""))
+NMdataConf(modelname=namefun)
+res1.m <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
+                     quiet=TRUE)
+res2.m <- NMscanData(system.file("examples/nonmem/xgxr014.lst", package="NMdata"),
+                     quiet=TRUE)
+## notice fill is an option to rbind with data.table (like bind_rows in dplyr)
+res.mult <- rbind(res1.m,res2.m,fill=T)
+res.mult[,.N,by=model]
+## resetting default
+NMdataConf(modelname=NULL)
+```
+
+`NMdataConf` can be used to change a lot of the default behaviour of
+the functions in `NMdata` so it fits in with your current setup and
+preferred work flow.
 
 
 ### Preserve all input data properties - use `rds`
-Return to the example above creating the dataset `dat2`. Notice in the
-list of tables in the message from `NMscanData`, that input data is a
+Return to the example above creating the dataset `res22`. Notice in the
+list of tables in the message from `NMscanData`, that input data was a
 `.rds` file. This is why we could sort the plots correctly on the dose
 level without reordering the factor levels first. 
 
@@ -369,46 +450,18 @@ advantage if you are transfering files or reading over a network
 connection. `NMdata` is generally very fast (thanks to `data.table`)
 so file/network access (I/O) is likely to be the main bottleneck.
 
-
-
 If you write Nonmem datasets with the `NMdata::NMwriteData`, you can
 get an `rds` file automatically, exactly where `NMscanData` will look
 for it. Creating datasets using `NMdata` is described in [this
 vignette](https://philipdelff.github.io/NMdata/articles/DataCreate.html).
 
+You probably want to use `NMdataConf` to change the default behavior
+if you don't want to use `rds` files.
 
 
 
-## What exactly will NMscanData return?
-So far, the merge has been very straightforward, but in many
-situations, choices are made by `NMscanData`. The following main
-principles are followed:
 
-* Output data prevails over input data
-* Row-specific output data is preferred over ID-level (`FIRSTONLY` or
-`LASTONLY`) tables
-* Output tables are prioritized by their order of apperance
-* Input data is as defined in the `$INPUT` section in Nonmem. This
-includes renaming of columns while columns that are dropped in
-Nonmem (`DROP` or `SKIP`) are included by `NMscanData`. Columns that
-are not included in `$INPUT` are named as in the input data file.
-* If rows are being recovered from input data (the `recover.rows`
-argument), no information from output is merged onto these rows.
-* The primary aim is to return the output data. If input and output
-cannot be meaningfully combined (very rare), output will be
-returned.
-
-Notice that the summary text printed to the `R` terminal by
-`NMscanData` tells how many columns are included from the available
-tables. Also, within the resulting object, you can find a detailed
-table of all variables available, and whether they are included or
-not.
-
-```{r}
-print(attributes(res1.m)$meta$variables,topn=3)
-```
-
-## Reading data with automatically combining it - the `NMscaData` building blocks
+## Reading data without automatically combining it - the `NMscaData` building blocks
 Each of the steps involved in reading and combining the data from a
 model run can be done separately. 
 

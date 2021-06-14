@@ -9,9 +9,8 @@ devel/NMdata_Rpackage/derived
 devel/NMdata_Rpackage/NMdata_Rpackage\.pdf
 doc
 vignettes/NMscanData\.pdf
-vignettes/NMscanData\.html
-vignettes/DataCreate\.html
-vignettes/NMdata-FAQ\.html
+vignettes/*.html
+vignettes/*.R
 inst/examples/nonmem/modelfit_dir*
 inst/examples/nonmem/trashed_*
 inst/examples/nonmem/backup_*

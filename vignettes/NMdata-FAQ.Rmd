@@ -55,11 +55,11 @@ library(NMdata)
 
 In a production environment, use a [github
 release](https://github.com/philipdelff/NMdata/releases) To install
-`NMdata 0.0.7.1` release, do (notice "@v":)
+`NMdata 0.0.7.2` release, do (notice "@v":)
 
 ```{r,eval=FALSE}
 library(remotes)
-install_github("philipdelff/NMdata@v0.0.7.1")
+install_github("philipdelff/NMdata@v0.0.7.2")
 library(NMdata)
 ```
 
