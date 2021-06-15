@@ -21,6 +21,7 @@ fix.time <- function(x){
     setattr(x,"meta",meta.x)
 }
 
+NMdataConf(reset=TRUE)
 test_that("basic",{
 
     fileRef <- "testReference/NMscanData1.rds"
@@ -74,6 +75,7 @@ test_that("No translation of column names in $INPUT",{
 
 test_that("Multiple output table formats",{
 
+    NMdataConf(reset=TRUE)
     fileRef <- "testReference/NMscanData3.rds"
     file.lst <- NMdata_filepath("examples/nonmem/xgxr003.lst")
 
@@ -87,6 +89,8 @@ test_that("Multiple output table formats",{
 })
 
 test_that("Interpret IGNORE statement",{
+
+    NMdataConf(reset=TRUE)
     fileRef <- "testReference/NMscanData4.rds"
     file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
 
@@ -438,7 +442,7 @@ test_that("Modifying row identifier",{
 
 })
 
-test_that("mege.by.row=ifAvailable when available",{
+test_that("merge.by.row=ifAvailable when available",{
 
     fileRef <- "testReference/NMscanData21.rds"
 
