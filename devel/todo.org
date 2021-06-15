@@ -134,7 +134,9 @@ A way to limit rows read into nonmem
 **** DONE Lastonly does the same as firstonly
      CLOSED: [2020-07-13 Mon 19:37]
 *** NMscanData
-**** TODO [#A] nmout and model must not overwrite existing
+**** DONE nmout and model must not overwrite existing
+     CLOSED: [2021-06-15 Tue 11:49]
+     The can still overwrite, but a warning is thrown
 **** DONE Check that no new values of col.row are found in output
      CLOSED: [2021-06-12 Sat 00:13]
 **** DONE Test for disjoint ID's

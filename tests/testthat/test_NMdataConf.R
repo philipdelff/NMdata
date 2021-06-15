@@ -47,3 +47,24 @@ test_that("unknown value",{
         NMdataConf(as.fun="datatable")
     )
 })
+
+test_that("change fun in globalenv does not affect NMdataConf()",{
+
+    NMdataConf(reset=TRUE)
+    
+    afun <- identity
+    NMdataConf(modelname=afun)
+    defaults <- NMdataConf()
+    afun <- class
+    defaults2 <- NMdataConf()
+
+    defaults$as.fun <- NULL
+    defaults$file.mod <- NULL
+    defaults$modelname <- NULL
+    defaults2$as.fun <- NULL
+    defaults2$file.mod <- NULL
+    defaults2$modelname <- NULL
+    
+    
+    expect_equal(defaults,defaults2)
+})

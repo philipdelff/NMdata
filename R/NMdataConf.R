@@ -57,6 +57,9 @@
 ##' the model. See modelname too (which defines the values that the
 ##' column will hold).
 ##'
+##' \item{col.nmout} A column of this name will be a logical
+##' representing whether row was in output table or not.
+##'
 ##' \item{col.nomtime} The name of the column holding nominal
 ##' time. This is only used for sorting columns by NMorderColumns.
 ##' 
@@ -223,6 +226,13 @@ NMdataConfOptions <- function(name){
             default="model"
            ,is.allowed=function(x) (is.character(x) && length(x)==1)
            ,msg.not.allowed="col.model must be a character vector of length 1."
+           ,process=identity
+        )
+       ,
+        col.nmout=list(
+            default="nmout"
+           ,is.allowed=function(x) (is.character(x) && length(x)==1)
+           ,msg.not.allowed="col.nmout must be a character vector of length 1."
            ,process=identity
         )
        ,

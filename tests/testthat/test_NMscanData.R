@@ -30,7 +30,7 @@ test_that("basic",{
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
     ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
-    res1 <- NMscanData(file=file.lst,quiet=T,order.columns = F,merge.by.row=FALSE)
+    res1 <- NMscanData(file=file.lst, quiet=T, order.columns = F, merge.by.row=FALSE)
     ## dim(res1)
 
     fix.time(res1)
@@ -54,6 +54,21 @@ test_that("Modifications to column names in $INPUT",{
     expect_equal_to_reference(res,fileRef,version=2)
     ## without meta
     ## expect_equal(unNMdata(res),unNMdata(readRDS(fileRef)))
+})
+
+test_that("No translation of column names in $INPUT",{
+
+    fileRef <- "testReference/NMscanData2b.rds"
+    ## res.ref <- readRDS(fileRef)
+    
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr002.lst")
+
+    res1 <- NMscanData(file=file.lst, check.time = FALSE, merge.by.row=FALSE, translate.input = T)
+    res2 <- NMscanData(file=file.lst, check.time = FALSE, merge.by.row=FALSE, translate.input = F)
+
+    dt.cnames <- data.table(colnames(res1),colnames(res2))
+    expect_equal_to_reference(dt.cnames,fileRef,version=2)
+
 })
 
 

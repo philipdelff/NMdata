@@ -150,6 +150,27 @@ print.summary_NMdata <- function(x,...){
     setnames(vars.sum2,c("print.inc"),c("columns"))
     setcolorder(vars.sum2,c("file","rows","columns","IDs"))
 
+    
+    ## this gives output+input+NMscanData. It's unnecessary because input is visible just above.
+    ## levels(x$column$source) <- c("output","input","NMscanData")
+    ## ncols <- paste(x$column[!is.na(COLNUM),.N,by=.(source)][,N],collapse="+")
+    
+    ### I don't quite understand why I get the "has been copied"
+    ### warning on this one.
+    ## x$columns[,source2:=source]
+    ## x$columns[source%in%c("input","output"),source2:="inout"]
+    ## levels(x$columns$source2) <- c("inout","NMscanData")
+    ## ncols <- paste(x$columns[!is.na(COLNUM),.N,by=.(source2)][,N],collapse="+")
+    ## row.res <- data.table(file="(result)",rows=x$N.rows[,sum(N.rows)],columns=ncols,IDs=x$N.ids[,sum(N.ids)])
+
+    vars[,source2:=source]
+    vars[source%in%c("input","output"),source2:="inout"]
+    levels(vars$source2) <- c("inout","NMscanData")
+    ncols <- paste(vars[!is.na(COLNUM),.N,by=.(source2)][,N],collapse="+")
+    row.res <- data.table(file="(result)",rows=x$N.rows[,sum(N.rows)],columns=ncols,IDs=x$N.ids[,sum(N.ids)])
+    
+    vars.sum2 <- rbind(vars.sum2,row.res)
+    
 #### other info to include. 
     dt.nmout <- data.table(nmout=c(TRUE,FALSE),NMOUT=c("Output","Input only"))
 
@@ -179,14 +200,14 @@ Nonmem data filters (not recommended).")
     } else {
         cat("Input data not used.\n")
     }
-    
+
     cat("\nUsed tables, contents shown as used/total:\n")
     print(vars.sum2,row.names=FALSE)
 
     ## cat("\nNumbers of rows and subjects\n")
     ## print(n5,row.names=FALSE,...)
     cat("\n")
-    
+
     if(any(!is.na(x$N.evids))){
         ## how many rows in output (broken down on EVID)
 
