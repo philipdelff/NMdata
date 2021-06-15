@@ -144,12 +144,12 @@ NMscanInput <- function(file, use.rds, file.mod,
         data.input <- NMapplyFilters(data.input,file=file,invert=invert,quiet=quiet,as.fun=identity)
     }
 
-    if(translate){
+    
 ### cnames.input is the names of columns as in input data file
-        data.input <- NMtransInp(data.input,file)
-        dt.colnames <- data.input$dt.colnames
-        data.input <- data.input$data
-    }
+    data.input <- NMtransInp(data.input,file,translate=translate)
+    dt.colnames <- data.input$dt.colnames
+    data.input <- data.input$data
+    
 
     
     col.id.inp <- col.id
@@ -158,7 +158,7 @@ NMscanInput <- function(file, use.rds, file.mod,
     }
     
     as.fun <- NMdataDecideOption("as.fun",as.fun)
-
+    
     
     if(details){
         meta <- list()
@@ -175,8 +175,7 @@ NMscanInput <- function(file, use.rds, file.mod,
             meta$details[,nid:=data.input.0[,uniqueN(get(col.id.inp))]]
         }
 
-        meta$colnames <- NULL
-        if(translate) meta$colnames <- dt.colnames
+        meta$colnames <- dt.colnames
         
         data.input <- as.fun(data.input)
         return(list(data=data.input,meta=meta))

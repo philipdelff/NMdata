@@ -289,7 +289,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             use.input <- FALSE }
     }
 
-    
+
+    cnames.input <- NULL
     if(use.input){
         data.input <- NMscanInput(file
                                  ,file.mod=file.mod
@@ -302,7 +303,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                  ,as.fun="data.table"
                                  ,col.id=col.id
                                  ,details=TRUE)
-        cnames.input <- colnames(data.input)
+
+        cnames.input <- data.input$meta$colnames[,result]
     }
 
 ### Section end: read input data
@@ -310,30 +312,33 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 #### Section start: col.nmout and col.model ####
     
     outnames  <- unlist(lapply(tables$data,colnames))
-
-    cnames.input <- NULL
-    if(use.input) cnames.input <- data.input$meta$colnames[,result]
                  
     allnames <- c(outnames,cnames.input)
     
-####### TODO: col.nmout and col.model cannot be NULL for now. 
     if(missing(col.model)) {
-        include.model <- TRUE
         col.model <- NMdataDecideOption("col.model",NULL)
-    } else if(is.null(col.model)) {
-        include.model <- FALSE
-    } else {
+    }
+    if(!is.null(col.model)) {
         col.model <- NMdataDecideOption("col.model",NULL)
     }
     
-
-    
+   
     if(!is.null(col.model) && col.model%in%allnames){
         messageWrap(paste0("column",col.model," (value of col.model) existed and was overwritten. To avoid this, use argument col.model. To skip, use col.model=NULL."),fun.msg=warning)
     }
 
-    ##col.nmout <- tmpcol(names=allnames,base="nmout",prefer.plain=TRUE)
-    col.nmout <- "nmout"
+    ##
+    if(missing(col.nmout)) col.nmout <- NULL
+    col.nmout <- NMdataDecideOption("col.nmout",col.nmout)
+    use.nmout <- TRUE
+    if(is.null(col.nmout)) {
+        col.nmout <- tmpcol(names=allnames,base="nmout",prefer.plain=TRUE)
+        if(recover.rows){
+            messageWrap(paste0("col.model is NULL, but this is not allowed for recover.rows=TRUE. col.nmout is set to ",col.nmout),fun.msg=warning)
+        } else {
+            use.nmout <- FALSE
+        }
+    }
     if(col.nmout%in%allnames){
         messageWrap(paste0("column",col.nmout," found in existing data and is overwritten. To avoid, use col.nmout argument.",fun.msg=warning))
     }
@@ -437,7 +442,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     
     
     if(use.input){
-        cnames.input <- copy(colnames(data.input$data))
+        ## cnames.input <- copy(colnames(data.input$data))
         col.row.in.input <- !is.null(col.row) && col.row %in% cnames.input 
 ### in case merge.by.row=="ifAvailable", we need to check if
 ### col.row is avilable in both input and output
@@ -731,6 +736,10 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         tab.row <- NMorderColumns(tab.row, col.row=col.row, as.fun="data.table",
                                   last=c(col.model,col.nmout),
                                   alpha=FALSE, quiet=TRUE)
+    }
+
+    if(!use.nmout){
+        tab.row[,(col.nmout):=NULL]
     }
 
 ### order columns in variable table accordingly.

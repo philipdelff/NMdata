@@ -5,6 +5,11 @@ Check for new values of row identifier
 
 Check for disjoint ID's when ID-level output tables found
 
+Improved message from NMscanData
+
+Support for custom (and NULL) values of col.model and col.nmout
+
+
 # NMdata 0.0.7.2
 NMreadCsv, NMscanInput, and NMscanData take argument args.fread. The
 contents of this list are passed as arguments to fread when reading
