@@ -1,27 +1,33 @@
 ##' read all output data tables in nonmem run
 ##' @param file the nonmem file to read (normally .mod or .lst)
-##' @param details If TRUE, metadata is added to output. In this case, you get a
-##'     list. Typically, this is mostly useful if programming up functions which
-##'     behavior must depend on properties of the output.
-##' @param quiet The default is to give some information along the way on what
-##'     data is found. But consider setting this to TRUE for non-interactive
-##'     use. Default can be configured using NMdataConf.
-##' @param tab.count Nonmem includes a counter of tables in the written data
-##'     files. These are often not useful. However, if tab.count is TRUE
-##'     (default), this will be carried forward and added as a column called
-##'     TABLENO.
-##' @param as.fun The default is to return data as a data.frame. Pass a function
-##'     (say tibble::as_tibble) in as.fun to convert to something else. If
-##'     data.tables are wanted, use as.fun="data.table". The default can be
-##'     configured using NMdataConf.
-##' @return A list of all the tables as data.frames. If details=TRUE, this is in
-##'     one element, called data, and meta is another element. If not, only the
-##'     element corresponding to data is returned.
+##' @param details If TRUE, metadata is added to output. In this case,
+##'     you get a list. Typically, this is mostly useful if
+##'     programming up functions which behavior must depend on
+##'     properties of the output.
+##' @param quiet The default is to give some information along the way
+##'     on what data is found. But consider setting this to TRUE for
+##'     non-interactive use. Default can be configured using
+##'     NMdataConf.
+##' @param tab.count Nonmem includes a counter of tables in the
+##'     written data files. These are often not useful. However, if
+##'     tab.count is TRUE (default), this will be carried forward and
+##'     added as a column called TABLENO.
+##' @param col.id name of the subject ID column. Used for calculation
+##'     of the number of subjects in each table.
+##' @param as.fun The default is to return data as a data.frame. Pass
+##'     a function (say tibble::as_tibble) in as.fun to convert to
+##'     something else. If data.tables are wanted, use
+##'     as.fun="data.table". The default can be configured using
+##'     NMdataConf.
+##' @return A list of all the tables as data.frames. If details=TRUE,
+##'     this is in one element, called data, and meta is another
+##'     element. If not, only the element corresponding to data is
+##'     returned.
 ##' @family DataRead
 ##' @import data.table
 ##' @export
 
-NMscanTables <- function(file,details=F,as.fun,quiet,tab.count=TRUE){
+NMscanTables <- function(file,details=F,as.fun,quiet,tab.count=TRUE,col.id="ID"){
 
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
@@ -89,6 +95,11 @@ file?"))
         dim.tmp <- dim(tables[[I]])
         meta[I,nrow:=dim.tmp[1]]
         meta[I,ncol:=dim.tmp[2]]
+        if(col.id%in%colnames(tables[[I]])){
+            meta[I,nid:=tables[[I]][,uniqueN(get(col.id))]]
+        } else {
+            meta[I,nid:=NA_real_]
+        }
     }
     
     meta[,idlevel:=firstonly|lastonly]

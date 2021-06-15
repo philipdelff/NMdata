@@ -257,7 +257,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 #### Section start: read all output tables and merge to max one firstonly and max one row ####
 
     tables <- NMscanTables(file,details=T,tab.count=tab.count,quiet=TRUE,as.fun="data.table")
-
+    
     rows.flo <- tables$meta[firstlastonly==TRUE]
     if(rows.flo[,.N]>0) {
         warning("One or more output tables with FIRSTLASTONLY option detected. This is not supported, and the table will be disregarded. Use a combination of NMscanTables, NMscanInput, and merge manually.")
@@ -721,7 +721,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 
     tab.row <- as.fun(tab.row)
-    tables.meta <- tables.meta
     details <- list(
         ## call
         call=deparse(sys.call()),
