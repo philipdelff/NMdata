@@ -91,6 +91,7 @@ print.summary_NMdata <- function(x,...){
     nid.used <- NULL
     IDs <- NULL
     rows <- NULL
+    source2 <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 

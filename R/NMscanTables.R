@@ -36,6 +36,7 @@ NMscanTables <- function(file,details=F,as.fun,quiet,tab.count=TRUE,col.id="ID")
     idlevel <- NULL
     lastonly <- NULL
     name <- NULL
+    nid <- NULL
     pastes <- NULL
 
 ###  Section end: Dummy variables, only not to get NOTE's in pacakge checks ####
