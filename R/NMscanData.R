@@ -142,9 +142,9 @@
 
 NMscanData <- function(file, col.row, use.input, merge.by.row,
                        recover.rows,
-                       col.model="model", modelname, file.mod,
+                        file.mod,
                        dir.data, translate.input=TRUE, quiet, use.rds,
-                       args.fread, as.fun, col.id="ID", tab.count=FALSE,
+                       args.fread, as.fun, col.id="ID", modelname, col.model, col.nmout,tab.count=FALSE,
                        order.columns=TRUE, check.time) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -197,22 +197,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     use.rds <- NMdataDecideOption("use.rds",use.rds)
     args.fread <- NMdataDecideOption("args.fread",args.fread)
     
-    if(missing(col.model)) {
-        include.model <- TRUE
-        col.model <- NMdataDecideOption("col.model",NULL)
-    } else if(is.null(col.model)) {
-        include.model <- FALSE
-    } else {
-        include.model <- TRUE
-        col.model <- NMdataDecideOption("col.model",NULL)
-    }
-    
-    if(is.null(col.model)){
-        include.model <- TRUE
-    } else {
-        include.model <- FALSE
-    }
-    
+  
     
     runname <- modelname(file)
     ## file.mod is treated later if we need the input control stream
@@ -252,11 +237,12 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 ### now code must use search.col.row, cbind.by.filters and merge.by.row
 
 ###  Section end: Process arguments 
+    
 
-
-#### Section start: read all output tables and merge to max one firstonly and max one row ####
+#### Section start: read all output tables and add to meta data ####
 
     tables <- NMscanTables(file,details=T,tab.count=tab.count,quiet=TRUE,as.fun="data.table")
+
     
     rows.flo <- tables$meta[firstlastonly==TRUE]
     if(rows.flo[,.N]>0) {
@@ -286,6 +272,78 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         }
     }
 
+
+### Section end: read all output tables and add to meta data
+
+
+#### Section start: read input data ####
+
+    if(use.input && is.null(dir.data)) {
+        
+        file.mod <- NMdataDecideOption("file.mod",file.mod)
+        file.mod <- file.mod(file)
+
+        if(!file.exists(file.mod)) {
+            messageWrap("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument. Input data not used.",
+                        fun.msg=warning)
+            use.input <- FALSE }
+    }
+
+    
+    if(use.input){
+        data.input <- NMscanInput(file
+                                 ,file.mod=file.mod
+                                 ,dir.data=dir.data
+                                 ,quiet=TRUE
+                                 ,translate=translate.input
+                                 ,use.rds=use.rds
+                                 ,applyFilters=FALSE
+                                 ,args.fread=args.fread
+                                 ,as.fun="data.table"
+                                 ,col.id=col.id
+                                 ,details=TRUE)
+        cnames.input <- colnames(data.input)
+    }
+
+### Section end: read input data
+
+#### Section start: col.nmout and col.model ####
+    
+    outnames  <- unlist(lapply(tables$data,colnames))
+
+    cnames.input <- NULL
+    if(use.input) cnames.input <- data.input$meta$colnames[,result]
+                 
+    allnames <- c(outnames,cnames.input)
+    
+####### TODO: col.nmout and col.model cannot be NULL for now. 
+    if(missing(col.model)) {
+        include.model <- TRUE
+        col.model <- NMdataDecideOption("col.model",NULL)
+    } else if(is.null(col.model)) {
+        include.model <- FALSE
+    } else {
+        col.model <- NMdataDecideOption("col.model",NULL)
+    }
+    
+
+    
+    if(!is.null(col.model) && col.model%in%allnames){
+        messageWrap(paste0("column",col.model," (value of col.model) existed and was overwritten. To avoid this, use argument col.model. To skip, use col.model=NULL."),fun.msg=warning)
+    }
+
+    ##col.nmout <- tmpcol(names=allnames,base="nmout",prefer.plain=TRUE)
+    col.nmout <- "nmout"
+    if(col.nmout%in%allnames){
+        messageWrap(paste0("column",col.nmout," found in existing data and is overwritten. To avoid, use col.nmout argument.",fun.msg=warning))
+    }
+
+### Section end: col.nmout and col.model
+
+
+
+##############
+    
     tab.row <- NULL
     dt.vars <- NULL
 
@@ -305,13 +363,12 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         
         tab.row <- tab.row[,!duplicated(colnames(tab.row)),with=FALSE]
 
-        
-        tab.row[,nmout:=TRUE]
+        tab.row[,(col.nmout):=TRUE]
 
         dt.vars <- rbind(dt.vars,dt.vars1)
         
         dt.vars <- rbind(dt.vars,
-                         data.table(variable="nmout"
+                         data.table(variable=col.nmout
                                    ,file=NA_character_
                                    ,included=TRUE 
                                    ,source="NMscanData"
@@ -338,43 +395,14 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         dt.vars.id1[,`:=`(source="output",level="id")]
 
     }
-
-###  Section end: read all output tables and merge to max one idlevel and max one row
-
-
-#### Section start: handle input data ####
-
-    if(use.input && is.null(dir.data)) {
-        
-        file.mod <- NMdataDecideOption("file.mod",file.mod)
-        file.mod <- file.mod(file)
-
-        if(!file.exists(file.mod)) {
-            messageWrap("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument. Input data not used.",
-                        fun.msg=warning)
-            use.input <- FALSE }
-    }
-
     ## use.rows means if to use row-data from output tables
     use.rows <- TRUE
     if(!any(tables$meta$full.length)) {
         use.rows <- FALSE
     }
 
-    if(use.input){
-        data.input <- NMscanInput(file
-                                 ,file.mod=file.mod
-                                 ,dir.data=dir.data
-                                 ,quiet=TRUE
-                                 ,translate=translate.input
-                                 ,use.rds=use.rds
-                                 ,applyFilters=FALSE
-                                 ,args.fread=args.fread
-                                 ,as.fun="data.table"
-                                 ,col.id=col.id
-                                 ,details=TRUE)
+###  Section end: read all output tables and merge to max one idlevel and max one row
 
-    }
 
 
 #### Section start: Check file modification times ####
@@ -442,7 +470,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                             ,level="row")
                          )
         
-        tab.row[,nmout:=FALSE]
+        tab.row[,(col.nmout):=FALSE]
     }
 
     if(use.input&&any(tables$meta$full.length)) {
@@ -613,7 +641,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
                 dt.vars.id1[,included:=TRUE]
                 dt.vars <- rbind(dt.vars,dt.vars.id1)
-                tab.row[,nmout:=TRUE]
+                tab.row[,(col.nmout):=TRUE]
                 
             } else {
                 ## there is row-level data to combine with
@@ -674,7 +702,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         } else {
             data.recover <- data.input$data[!get(col.row)%in%tab.row[,get(col.row)]]
         }
-        data.recover[,nmout:=FALSE]
+        data.recover[,(col.nmout):=FALSE]
         tab.row <- rbind(tab.row,data.recover,fill=T)
     }
 
@@ -684,8 +712,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 #### Section start: Format output ####
 
+    ## add column with model name
     if(!is.null(col.model)) {
-        
         tab.row[,c(col.model):=runname]
         
         dt.vars <- rbind(dt.vars,
@@ -701,7 +729,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 ### order columns in returned data
     if(order.columns){
         tab.row <- NMorderColumns(tab.row, col.row=col.row, as.fun="data.table",
-                                  last=c("model","nmout"),
+                                  last=c(col.model,col.nmout),
                                   alpha=FALSE, quiet=TRUE)
     }
 
