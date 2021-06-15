@@ -10,8 +10,6 @@ NMscanData(
   use.input,
   merge.by.row,
   recover.rows,
-  col.model = "model",
-  modelname,
   file.mod,
   dir.data,
   translate.input = TRUE,
@@ -20,6 +18,9 @@ NMscanData(
   args.fread,
   as.fun,
   col.id = "ID",
+  modelname,
+  col.model,
+  col.nmout,
   tab.count = FALSE,
   order.columns = TRUE,
   check.time
@@ -31,7 +32,8 @@ NMscanData(
 
 \item{col.row}{A column with a unique value for each row. Such a
 column is recommended to use if possible. See merge.by.row and
-details as well. Default ("ROW") can be modified using NMdataConf.}
+details as well. Default ("ROW") can be modified using
+NMdataConf.}
 
 \item{use.input}{Should the input data be added to the output
 data. Only column names that are not found in output data will
@@ -54,22 +56,6 @@ only, and $run, $id, and $occ datasets are created before this
 is taken into account. A column called nmout will be TRUE when
 the row was found in output tables, and FALSE when
 not. Default is FALSE and can be configured using NMdataConf.}
-
-\item{col.model}{A column of this name containing the model name
-will be included in the returned data. The default is to store
-this in a column called "model". See argument "modelname" as
-well. Set to NULL if not wanted. Default can be configured
-using NMdataConf.}
-
-\item{modelname}{The model name to be stored if col.model is not
-NULL. If not supplied, the name will be taken from the control
-stream file name by omitting the directory/path and deleting
-the .lst extension (path/run001.lst becomes run001). This can
-be a character string or a function which is called on the
-value of file (file is another argument to NMscanData). The
-function must take one character argument and return another
-character string. As example, see NMdataConf()$modelname. The
-default can be configured using NMdataConf.}
 
 \item{file.mod}{The input control stream. Default is to look for
 \"file\" with extension changed to .mod (PSN style). You can
@@ -112,6 +98,26 @@ NMdataConf.}
 
 \item{col.id}{The name of the subject ID variable, default is
 "ID".}
+
+\item{modelname}{The model name to be stored if col.model is not
+NULL. If not supplied, the name will be taken from the control
+stream file name by omitting the directory/path and deleting
+the .lst extension (path/run001.lst becomes run001). This can
+be a character string or a function which is called on the
+value of file (file is another argument to NMscanData). The
+function must take one character argument and return another
+character string. As example, see NMdataConf()$modelname. The
+default can be configured using NMdataConf.}
+
+\item{col.model}{A column of this name containing the model name
+will be included in the returned data. The default is to store
+this in a column called "model". See argument "modelname" as
+well. Set to NULL if not wanted. Default can be configured
+using NMdataConf.}
+
+\item{col.nmout}{A column of this name will be a logical
+representing whether row was in output table or not. Default
+can be modified using NMdataConf.}
 
 \item{tab.count}{Nonmem includes a counter of tables in the
 written data files. These are often not useful. Especially for

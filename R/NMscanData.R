@@ -34,7 +34,8 @@
 ##'     argument col.row too.
 ##' @param col.row A column with a unique value for each row. Such a
 ##'     column is recommended to use if possible. See merge.by.row and
-##'     details as well. Default ("ROW") can be modified using NMdataConf.
+##'     details as well. Default ("ROW") can be modified using
+##'     NMdataConf.
 ##' @param recover.rows Include rows from input data files that do not
 ##'     exist in output tables? This will be added to the $row dataset
 ##'     only, and $run, $id, and $occ datasets are created before this
@@ -46,6 +47,9 @@
 ##'     this in a column called "model". See argument "modelname" as
 ##'     well. Set to NULL if not wanted. Default can be configured
 ##'     using NMdataConf.
+##' @param col.nmout A column of this name will be a logical
+##'     representing whether row was in output table or not. Default
+##'     can be modified using NMdataConf.
 ##' @param modelname The model name to be stored if col.model is not
 ##'     NULL. If not supplied, the name will be taken from the control
 ##'     stream file name by omitting the directory/path and deleting
@@ -142,7 +146,7 @@
 
 NMscanData <- function(file, col.row, use.input, merge.by.row,
                        recover.rows,
-                        file.mod,
+                       file.mod,
                        dir.data, translate.input=TRUE, quiet, use.rds,
                        args.fread, as.fun, col.id="ID", modelname, col.model, col.nmout,tab.count=FALSE,
                        order.columns=TRUE, check.time) {
@@ -164,6 +168,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     maxLength <- NULL
     name <- NULL
     nmout <- NULL
+    result <- NULL
     type <- NULL
     var <- NULL
     variable <- NULL
@@ -197,7 +202,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     use.rds <- NMdataDecideOption("use.rds",use.rds)
     args.fread <- NMdataDecideOption("args.fread",args.fread)
     
-  
+    
     
     runname <- modelname(file)
     ## file.mod is treated later if we need the input control stream
@@ -259,11 +264,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     overview.tables[,has.row:=fun.has.row(name)]
     overview.tables[,maxLength:=nrow==max(nrow)]
     overview.tables[,full.length:=!idlevel&maxLength]
-    NrowFull <- overview.tables[full.length==TRUE,unique(nrow)]
 
 ### combine full tables into one
-    tabs.full <- which(overview.tables$full.length)
-
     col.row.in.output <- any(overview.tables[,full.length]) && overview.tables[,sum(has.row)]
     
     if(use.input && is.logical(merge.by.row) && merge.by.row) {
@@ -312,17 +314,17 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 #### Section start: col.nmout and col.model ####
     
     outnames  <- unlist(lapply(tables$data,colnames))
-                 
     allnames <- c(outnames,cnames.input)
+
     
-    if(missing(col.model)) {
-        col.model <- NMdataDecideOption("col.model",NULL)
-    }
-    if(!is.null(col.model)) {
-        col.model <- NMdataDecideOption("col.model",NULL)
+    if(missing(col.model)||!is.null(col.model)) {
+        if(missing(col.model)) {
+            col.model <- NULL
+        } 
+        col.model <- NMdataDecideOption("col.model",col.model)
     }
     
-   
+    
     if(!is.null(col.model) && col.model%in%allnames){
         messageWrap(paste0("column",col.model," (value of col.model) existed and was overwritten. To avoid this, use argument col.model. To skip, use col.model=NULL."),fun.msg=warning)
     }
@@ -346,8 +348,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 ### Section end: col.nmout and col.model
 
 
-
-##############
+#### Section start:  merge to max one idlevel and max one row ####
     
     tab.row <- NULL
     dt.vars <- NULL
@@ -406,7 +407,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         use.rows <- FALSE
     }
 
-###  Section end: read all output tables and merge to max one idlevel and max one row
+###  Section end:  merge to max one idlevel and max one row
 
 
 

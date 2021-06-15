@@ -57,6 +57,9 @@
 ##' the model. See modelname too (which defines the values that the
 ##' column will hold).
 ##'
+##' \item{col.nmout} A column of this name will be a logical
+##' representing whether row was in output table or not.
+##'
 ##' \item{col.nomtime} The name of the column holding nominal
 ##' time. This is only used for sorting columns by NMorderColumns.
 ##' 

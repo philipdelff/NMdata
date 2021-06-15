@@ -1,7 +1,10 @@
 ##' translate the column names according to the $INPUT section of a control stream
 ##'
 ##' @param data the data to translate
-##' @param file the list file or control stream 
+##' @param file the list file or control stream
+##' @param translate logical. Do translation according to Nonmem code
+##'     or not? If not, an overview of column names in data and in
+##'     Nonmem code is still returned with the data.
 
 ## don't export. An internal function used by NMscanInput. 
 

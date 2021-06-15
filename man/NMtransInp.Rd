@@ -4,12 +4,16 @@
 \alias{NMtransInp}
 \title{translate the column names according to the $INPUT section of a control stream}
 \usage{
-NMtransInp(data, file)
+NMtransInp(data, file, translate = TRUE)
 }
 \arguments{
 \item{data}{the data to translate}
 
 \item{file}{the list file or control stream}
+
+\item{translate}{logical. Do translation according to Nonmem code
+or not? If not, an overview of column names in data and in
+Nonmem code is still returned with the data.}
 }
 \description{
 translate the column names according to the $INPUT section of a control stream
