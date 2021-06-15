@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2.909</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2.910</span>
       </span>
     </div>
 
@@ -148,7 +148,7 @@
     <p>translate the column names according to the $INPUT section of a control stream</p>
     </div>
 
-    <pre class="usage"><span class='fu'>NMtransInp</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>file</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>NMtransInp</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>file</span>, translate <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -160,6 +160,12 @@
     <tr>
       <th>file</th>
       <td><p>the list file or control stream</p></td>
+    </tr>
+    <tr>
+      <th>translate</th>
+      <td><p>logical. Do translation according to Nonmem code
+or not? If not, an overview of column names in data and in
+Nonmem code is still returned with the data.</p></td>
     </tr>
     </table>
 

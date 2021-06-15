@@ -88,7 +88,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2.909</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2.910</span>
       </span>
     </div>
 
@@ -168,8 +168,6 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
   <span class='va'>use.input</span>,
   <span class='va'>merge.by.row</span>,
   <span class='va'>recover.rows</span>,
-  col.model <span class='op'>=</span> <span class='st'>"model"</span>,
-  <span class='va'>modelname</span>,
   <span class='va'>file.mod</span>,
   <span class='va'>dir.data</span>,
   translate.input <span class='op'>=</span> <span class='cn'>TRUE</span>,
@@ -178,6 +176,9 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
   <span class='va'>args.fread</span>,
   <span class='va'>as.fun</span>,
   col.id <span class='op'>=</span> <span class='st'>"ID"</span>,
+  <span class='va'>modelname</span>,
+  <span class='va'>col.model</span>,
+  <span class='va'>col.nmout</span>,
   tab.count <span class='op'>=</span> <span class='cn'>FALSE</span>,
   order.columns <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>check.time</span>
@@ -195,7 +196,8 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
       <th>col.row</th>
       <td><p>A column with a unique value for each row. Such a
 column is recommended to use if possible. See merge.by.row and
-details as well. Default ("ROW") can be modified using NMdataConf.</p></td>
+details as well. Default ("ROW") can be modified using
+NMdataConf.</p></td>
     </tr>
     <tr>
       <th>use.input</th>
@@ -224,26 +226,6 @@ only, and $run, $id, and $occ datasets are created before this
 is taken into account. A column called nmout will be TRUE when
 the row was found in output tables, and FALSE when
 not. Default is FALSE and can be configured using NMdataConf.</p></td>
-    </tr>
-    <tr>
-      <th>col.model</th>
-      <td><p>A column of this name containing the model name
-will be included in the returned data. The default is to store
-this in a column called "model". See argument "modelname" as
-well. Set to NULL if not wanted. Default can be configured
-using NMdataConf.</p></td>
-    </tr>
-    <tr>
-      <th>modelname</th>
-      <td><p>The model name to be stored if col.model is not
-NULL. If not supplied, the name will be taken from the control
-stream file name by omitting the directory/path and deleting
-the .lst extension (path/run001.lst becomes run001). This can
-be a character string or a function which is called on the
-value of file (file is another argument to NMscanData). The
-function must take one character argument and return another
-character string. As example, see NMdataConf()$modelname. The
-default can be configured using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>file.mod</th>
@@ -302,6 +284,32 @@ NMdataConf.</p></td>
       <th>col.id</th>
       <td><p>The name of the subject ID variable, default is
 "ID".</p></td>
+    </tr>
+    <tr>
+      <th>modelname</th>
+      <td><p>The model name to be stored if col.model is not
+NULL. If not supplied, the name will be taken from the control
+stream file name by omitting the directory/path and deleting
+the .lst extension (path/run001.lst becomes run001). This can
+be a character string or a function which is called on the
+value of file (file is another argument to NMscanData). The
+function must take one character argument and return another
+character string. As example, see NMdataConf()$modelname. The
+default can be configured using NMdataConf.</p></td>
+    </tr>
+    <tr>
+      <th>col.model</th>
+      <td><p>A column of this name containing the model name
+will be included in the returned data. The default is to store
+this in a column called "model". See argument "modelname" as
+well. Set to NULL if not wanted. Default can be configured
+using NMdataConf.</p></td>
+    </tr>
+    <tr>
+      <th>col.nmout</th>
+      <td><p>A column of this name will be a logical
+representing whether row was in output table or not. Default
+can be modified using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>tab.count</th>

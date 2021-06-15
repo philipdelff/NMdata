@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2.909</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2.910</span>
       </span>
     </div>
 
@@ -105,7 +105,7 @@
 
     
     
-<p>Built 2021-06-14 using NMdata 0.0.7.2.909.</p>
+<p>Built 2021-06-15 using NMdata 0.0.7.2.910.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -156,15 +156,15 @@
 <span class="co">## dt.cov has a covariate for some of the subjects</span>
 <span class="va">dt.cov</span>
 <span class="co">#&gt;     ID COV</span>
-<span class="co">#&gt;  1: 31   2</span>
-<span class="co">#&gt;  2: 32   5</span>
+<span class="co">#&gt;  1: 31   3</span>
+<span class="co">#&gt;  2: 32   3</span>
 <span class="co">#&gt;  3: 33   3</span>
-<span class="co">#&gt;  4: 34   4</span>
+<span class="co">#&gt;  4: 34   3</span>
 <span class="co">#&gt;  5: 35   5</span>
 <span class="co">#&gt;  6: 36   3</span>
-<span class="co">#&gt;  7: 37   2</span>
+<span class="co">#&gt;  7: 37   3</span>
 <span class="co">#&gt;  8: 38   3</span>
-<span class="co">#&gt;  9: 39   4</span>
+<span class="co">#&gt;  9: 39   1</span>
 <span class="co">#&gt; 10: 40   5</span>
 <span class="va">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">pk2</span><span class="op">)</span>
@@ -274,7 +274,7 @@
 <p>Columns that cannot be converted to numeric are put in the back, while column bearing standard Nonmem variable names like <code>ID</code>, <code>TIME</code>, <code>EVID</code> etc. will be pulled up front. You can of course add column names to prioritize to front (<code>first</code>) or back (<code>last</code>). See <code><a href="../reference/NMorderColumns.html">?NMorderColumns</a></code> for more options.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMorderColumns.html">NMorderColumns</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span>
-<span class="co">#&gt; Warning: These standard nonmem columns were not found in data: MDV</span></code></pre></div>
+<span class="co">#&gt; These standard nonmem columns were not found in data: MDV</span></code></pre></div>
 <p>We may want to add <code>MDV</code> and rerun <code>NMorderColumns</code>.</p>
 </div>
 <div id="writing-data-to-files" class="section level3">
@@ -327,7 +327,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-06-14 20:15:07 UTC"</span></code></pre></div>
+<span class="co">#&gt; [1] "2021-06-15 17:45:38 UTC"</span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stampObj.html">stampObj</a></span><span class="op">(</span><span class="va">pk</span>,script<span class="op">=</span><span class="st">"vignettes/DataCreate.Rmd"</span>,Description<span class="op">=</span><span class="st">"A PK dataset used for examples."</span><span class="op">)</span>
@@ -336,7 +336,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-06-14 20:15:07 UTC"</span>
+<span class="co">#&gt; [1] "2021-06-15 17:45:38 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span></code></pre></div>

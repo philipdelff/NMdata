@@ -86,7 +86,7 @@ data.frames)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2.909</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2.910</span>
       </span>
     </div>
 
@@ -205,6 +205,8 @@ flagsAssign, flagsCount.</p></li>
 <li><p>col.model The name of the column that will hold the name of
 the model. See modelname too (which defines the values that the
 column will hold).</p></li>
+<li><p>col.nmout A column of this name will be a logical
+representing whether row was in output table or not.</p></li>
 <li><p>col.nomtime The name of the column holding nominal
 time. This is only used for sorting columns by NMorderColumns.</p></li>
 <li><p>col.row The name of the column containing a unique row
@@ -276,7 +278,7 @@ hidden from other users.</p>
 #&gt;         return(as.data.frame(list()))
 #&gt;     UseMethod("as.data.frame")
 #&gt; }
-#&gt; &lt;bytecode: 0x7f800a1866e0&gt;
+#&gt; &lt;bytecode: 0x7ff1fbccd9d8&gt;
 #&gt; &lt;environment: namespace:base&gt;
 #&gt; 
 #&gt; $check.time
@@ -284,6 +286,9 @@ hidden from other users.</p>
 #&gt; 
 #&gt; $col.model
 #&gt; [1] "model"
+#&gt; 
+#&gt; $col.nmout
+#&gt; [1] "nmout"
 #&gt; 
 #&gt; $col.nomtime
 #&gt; [1] "NOMTIME"
@@ -300,8 +305,8 @@ hidden from other users.</p>
 #&gt; $file.mod
 #&gt; function (file) 
 #&gt; fnExtension(file, ext = ".mod")
-#&gt; &lt;bytecode: 0x7f800a15f530&gt;
-#&gt; &lt;environment: 0x7f800a183040&gt;
+#&gt; &lt;bytecode: 0x7ff1fbcb5ab8&gt;
+#&gt; &lt;environment: 0x7ff1fbcca628&gt;
 #&gt; 
 #&gt; $merge.by.row
 #&gt; [1] "ifAvailable"
@@ -309,8 +314,8 @@ hidden from other users.</p>
 #&gt; $modelname
 #&gt; function (file) 
 #&gt; fnExtension(basename(file), "")
-#&gt; &lt;bytecode: 0x7f800a15fe28&gt;
-#&gt; &lt;environment: 0x7f800a183040&gt;
+#&gt; &lt;bytecode: 0x7ff1fbcb2318&gt;
+#&gt; &lt;environment: 0x7ff1fbcca628&gt;
 #&gt; 
 #&gt; $quiet
 #&gt; [1] FALSE
