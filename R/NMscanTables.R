@@ -10,7 +10,7 @@
 ##'     NMdataConf.
 ##' @param tab.count Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. However, if
-##'     tab.count is TRUE (default), this will be carried forward and
+##'     tab.count is TRUE (not default), this will be carried forward and
 ##'     added as a column called TABLENO.
 ##' @param col.id name of the subject ID column. Used for calculation
 ##'     of the number of subjects in each table.
@@ -27,7 +27,7 @@
 ##' @import data.table
 ##' @export
 
-NMscanTables <- function(file,details=F,as.fun,quiet,tab.count=TRUE,col.id="ID"){
+NMscanTables <- function(file,details=F,as.fun,quiet,tab.count=FALSE,col.id="ID",col.row){
 
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
@@ -46,6 +46,12 @@ NMscanTables <- function(file,details=F,as.fun,quiet,tab.count=TRUE,col.id="ID")
     quiet <- NMdataDecideOption("quiet",quiet)
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
+
+    if(missing(col.row)||(!is.null(col.row)&&is.na(col.row))||(is.character(col.row)&&any(col.row==""))) {
+        col.row <- NULL
+    }    
+    col.row <- NMdataDecideOption("col.row",col.row)
+
     
     dir <- dirname(file)
     extract.info <- function(x,NAME,default){
@@ -89,6 +95,7 @@ NMscanTables <- function(file,details=F,as.fun,quiet,tab.count=TRUE,col.id="ID")
     }
 
     tables <- list()
+
     for(I in 1:nrow(meta)){
         if(!file.exists(meta[I,file])) stop(paste0("NMscanTables: File not found: ",meta[I,file],". Did you copy the lst file but forgot table
 file?"))
@@ -96,15 +103,30 @@ file?"))
         dim.tmp <- dim(tables[[I]])
         meta[I,nrow:=dim.tmp[1]]
         meta[I,ncol:=dim.tmp[2]]
-        if(col.id%in%colnames(tables[[I]])){
+
+        cnames.tab.I <- colnames(tables[[I]])
+
+        if(col.id%in%cnames.tab.I){
             meta[I,nid:=tables[[I]][,uniqueN(get(col.id))]]
         } else {
             meta[I,nid:=NA_real_]
         }
+     
+        if(!is.null(col.row)){
+            meta[I,has.row:=col.row%in%cnames.tab.I]
+        }
     }
-    
     meta[,idlevel:=firstonly|lastonly]
+    
+
+    ## fun.has.row <- function(names) do.call(c,lapply(names,function(name)col.row%in%colnames(data[[name]])))
+    ## overview.tables[,has.row:=fun.has.row(name)]
+    meta[,maxLength:=nrow==max(nrow)]
+    meta[,full.length:=!idlevel&maxLength]
+    
     meta[,file.mtime:=file.mtime(file)]
+    setcolorder(meta,intersect(c("source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype"),colnames(meta)))
+    
     
     if(!quiet){
         msg <- paste0("Number of output tables read: ",meta[,.N])
@@ -121,11 +143,7 @@ file?"))
             msg <- paste0(msg,".")
         }
         
-        ## message(paste0("Read ",nrow(meta)," output table(s)."))
-        ## message(paste0("Number of output tables read: ",meta[,.N], " (",NFO," idlevel and ",NFLO," FIRSTLASTONLY)"))
         message(msg)
-        
-
     }
     
     names(tables) <- meta[,name]

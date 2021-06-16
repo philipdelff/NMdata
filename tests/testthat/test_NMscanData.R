@@ -37,8 +37,8 @@ test_that("basic",{
     fix.time(res1)
     
     expect_equal_to_reference(res1,fileRef,version=2)
-## without meta
-##    expect_equal(unNMdata(res1),unNMdata(readRDS(fileRef)))
+    ## without meta
+    ##    expect_equal(unNMdata(res1),unNMdata(readRDS(fileRef)))
     ## data.table(attributes(readRDS(fileRef))$meta$variables$variable,attributes(res1)$meta$variables$variable)
 })
 
@@ -419,14 +419,14 @@ test_that("Duplicate columns in input data",{
 ### this is not a real test. Need to be able to test how the merges were performed. 
 ## test_that("col.row and merge.by.row=TRUE from NMdataConf",{
 ##     load_all("../../")
-    
+
 ##     NMdataConf(reset=TRUE)
 ##     NMdataConf(col.row="ROW", merge.by.row=TRUE)
 ##     NMdataConf()
 
 ##     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
 
-    
+
 ##     res1 <- NMscanData(file=file.lst)
 ## })
 
@@ -481,7 +481,7 @@ test_that(" col.row does not exist, but merge.by.row==TRUE",{
 
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
     
-## error is that it's not in output. It's not in input either though
+    ## error is that it's not in output. It's not in input either though
     expect_error(
         NMscanData(file=file.lst,col.row="NONEXIST",merge.by.row=TRUE)
     )
@@ -494,8 +494,8 @@ test_that("col.row is NULL, but merge.by.row==TRUE",{
 ### col.row is NULL, but merge.by.row==TRUE
 
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
-     
-## error is that it's not in output. It's not in input either though
+    
+    ## error is that it's not in output. It's not in input either though
     expect_error(
         res1=NMscanData(file=file.lst,col.row=NULL,merge.by.row=TRUE)
     )
@@ -519,4 +519,28 @@ test_that("A filter without operator",{
     )
     
 })
+
+
+test_that("Including a redundant output table",{
+    NMdataConf(as.fun="data.table")
+
+    fileRef <- "testReference/NMscanData24.rds"
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr019.lst")
+
+    ## notice no cols are taken from the redundant table - correct
+    res1 <- NMscanData(file=file.lst,merge.by.row="ifAvailable",as.fun="data.table",check.time = FALSE)
+    ##     tabs1 <- NMscanTables(file=file.lst,as.fun="data.table",details=T,tab.count=F)
+    ##     tabs1$meta
+    ## tabs1$data[[4]]
+    ## NMinfo(res1,"tables")
+
+    fix.time(res1)
+    expect_equal_to_reference(
+        res1,fileRef,version=2
+    )
+
+    ## inp1 <- NMscanInput(file=file.lst)
+    
+}
+)
 

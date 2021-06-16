@@ -91,7 +91,7 @@
 ##'     tables can be combined so this information is not unique
 ##'     across those source tables. However, if tab.count is TRUE (not
 ##'     default), this will be carried forward and added as a column
-##'     called TABLENO.
+##'     called TABLENO. The argument is passed to NMscanTables.
 ##' @param order.columns If TRUE (default), NMorderColumns is used to
 ##'     reorder the columns before returning the data. NMorderColumns
 ##'     will be called with alpha=FALSE, so columns are not sorted
@@ -145,10 +145,10 @@
 ## if merge by row, got to make sure that col.row can be used.
 
 NMscanData <- function(file, col.row, use.input, merge.by.row,
-                       recover.rows,
-                       file.mod,
-                       dir.data, translate.input=TRUE, quiet, use.rds,
-                       args.fread, as.fun, col.id="ID", modelname, col.model, col.nmout,tab.count=FALSE,
+                       recover.rows,file.mod,dir.data,
+                       translate.input=TRUE, quiet, use.rds,
+                       args.fread, as.fun, col.id="ID",
+                       modelname, col.model, col.nmout,tab.count=FALSE,
                        order.columns=TRUE, check.time) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -234,9 +234,9 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     ## For now, searching for a row identifier is disabled. This may belong in a separate function. 
     search.col.row <- FALSE
 ### notice, this can't be evaluated if merge.by.row=="ifAvailable"
-    ## if(is.null(merge.by.row.arg) && !merge.by.row){
-    ##     search.col.row <- TRUE
-    ## }
+    if(is.null(merge.by.row.arg) && is.character(merge.by.row) && merge.by.row=="ifAvailable"){
+        search.col.row <- TRUE
+    }
 
 ### merging method found
 ### now code must use search.col.row, cbind.by.filters and merge.by.row
@@ -246,7 +246,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 #### Section start: read all output tables and add to meta data ####
 
-    tables <- NMscanTables(file,details=T,tab.count=tab.count,quiet=TRUE,as.fun="data.table")
+    tables <- NMscanTables(file,details=T,tab.count=tab.count,quiet=TRUE,as.fun="data.table",col.row=col.row)
 
     
     rows.flo <- tables$meta[firstlastonly==TRUE]
@@ -258,13 +258,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     }
     data <- tables$data
     overview.tables <- tables$meta
-
-
-    fun.has.row <- function(names) do.call(c,lapply(names,function(name)col.row%in%colnames(data[[name]])))
-    overview.tables[,has.row:=fun.has.row(name)]
-    overview.tables[,maxLength:=nrow==max(nrow)]
-    overview.tables[,full.length:=!idlevel&maxLength]
-
+    
 ### combine full tables into one
     col.row.in.output <- any(overview.tables[,full.length]) && overview.tables[,sum(has.row)]
     

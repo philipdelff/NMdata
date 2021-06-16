@@ -8,13 +8,16 @@
 ##' table file alone.
 ##'
 ##' @param file path to NONMEM table file
-##' @param quiet logical stating whether or not information is prignted
-##'     about what is being done. Default can be configured using
-##'     NMdataConf.
+##' @param quiet logical stating whether or not information is
+##'     prignted about what is being done. Default can be configured
+##'     using NMdataConf.
 ##' @param tab.count Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. However, if
-##'     tab.count is TRUE (default), this will be carried forward and
-##'     added as a column called TABLENO.
+##'     tab.count is TRUE (default), a counter of tables is included
+##'     as a column called TABLENO. Just notice, the table numbers in
+##'     TABLENO are just cumulatively counting the number of tables
+##'     reported in the file. TABLENO is not true to the actual table
+##'     number as given by Nonmem.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
