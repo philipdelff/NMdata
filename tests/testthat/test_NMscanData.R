@@ -482,7 +482,9 @@ test_that(" col.row does not exist, but merge.by.row==TRUE",{
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
     
 ## error is that it's not in output. It's not in input either though
-    expect_error( NMscanData(file=file.lst,col.row="NONEXIST",merge.by.row=TRUE))
+    expect_error(
+        NMscanData(file=file.lst,col.row="NONEXIST",merge.by.row=TRUE)
+    )
 
     
 })
@@ -500,3 +502,21 @@ test_that("col.row is NULL, but merge.by.row==TRUE",{
 
     
 })
+
+
+test_that("A filter without operator",{
+
+    fileRef <- "testReference/NMscanData23.rds"
+
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr010.lst")
+
+    res1 <- NMscanData(file=file.lst,merge.by.row="ifAvailable",as.fun="data.table",check.time = FALSE)
+    res1[,.N,by=.(DOSE)]
+    fix.time(res1)
+    
+    expect_equal_to_reference(
+        res1,fileRef,version=2
+    )
+    
+})
+

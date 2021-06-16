@@ -23,6 +23,8 @@
 
 
 NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
+
+    
     
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
@@ -133,7 +135,10 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
 
     ## replace single = with ==
     expressions.list <- sub("^([a-zA-Z]* *)=( *[0-9]+)$","\\1==\\2",expressions.list)
+    ## (DOSE 10) means (DOSE==10) in NMTRAN. 
+    expressions.list <- sub("([[:alpha:]]+) +([[:alnum:]]+)","\\1==\\2",expressions.list)
 
+    
     cond.combine <- "|"
     ## remember to negate everything if the type is ignore
     if(type.condition=="IGNORE") {

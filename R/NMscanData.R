@@ -270,7 +270,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     
     if(use.input && is.logical(merge.by.row) && merge.by.row) {
         if(any(overview.tables[,full.length])&&!col.row.in.output) {
-            messageWrap("col.row not found in any full-length (not firstonly) output tables. Correct or disable.",fun.msg=stop)
+            messageWrap("col.row not found in any full-length (not firstonly) output tables. Correct or disable merge.by.row.",fun.msg=stop)
         }
     }
 

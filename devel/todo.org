@@ -30,7 +30,7 @@ With load_all():
 > dt1
    a newcol
 1: 1      1
-*** TODO messageWrap internal/external
+*** TODO [#B] messageWrap internal/external
     The mentioning of where a message comes from is only useful if a
     function is called from other functions. Possible to distinguish
     somehow?
@@ -267,7 +267,8 @@ It's fairly easy to implement. Paste in front of the expression.use column.
 **** DONE Add save argument to align with other functions
      CLOSED: [2021-05-14 Fri 16:17]
 *** NMdataConf
-**** TODO [#A] test that function evaluation does not depend on global env
+**** DONE test that function evaluation does not depend on global env
+     CLOSED: [2021-06-15 Tue 13:57]
 **** DONE Add support for add.name
      CLOSED: [2021-01-30 Sat 14:29]
 **** DONE use.input
@@ -296,7 +297,8 @@ arguments. NMdata calls this "writtenTo".
       CLOSED: [2021-05-20 Thu 23:22]
 ***** DONE Add number of rows
       CLOSED: [2021-05-20 Thu 23:22]
-***** TODO [#B] Add result row
+***** DONE Add result row
+      CLOSED: [2021-06-15 Tue 13:59]
 ****** Number of columns has 0-2 extra columns
 ** Nonmem examples
 *** DONE Use FLAG

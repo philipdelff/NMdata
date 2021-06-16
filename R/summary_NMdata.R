@@ -96,7 +96,9 @@ print.summary_NMdata <- function(x,...){
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
     
-    if(!"summary_NMdata"%in%class(x)) stop("list does not seem to be of class NMdata")
+    if(!"summary_NMdata"%in%class(x)){
+        stop("list does not seem to be of class NMdata")
+    }
     vars <- copy(x$columns)
     if(!is.data.table(vars)){
         vars <- as.data.table(vars)
@@ -156,8 +158,8 @@ print.summary_NMdata <- function(x,...){
     ## levels(x$column$source) <- c("output","input","NMscanData")
     ## ncols <- paste(x$column[!is.na(COLNUM),.N,by=.(source)][,N],collapse="+")
     
-    ### I don't quite understand why I get the "has been copied"
-    ### warning on this one.
+### I don't quite understand why I get the "has been copied"
+### warning on this one.
     ## x$columns[,source2:=source]
     ## x$columns[source%in%c("input","output"),source2:="inout"]
     ## levels(x$columns$source2) <- c("inout","NMscanData")

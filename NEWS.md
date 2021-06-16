@@ -9,6 +9,7 @@ Improved message from NMscanData
 
 Support for custom (and NULL) values of col.model and col.nmout
 
+Support for Nonmem filters without operators (COL XX)
 
 # NMdata 0.0.7.2
 NMreadCsv, NMscanInput, and NMscanData take argument args.fread. The
