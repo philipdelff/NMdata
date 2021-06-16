@@ -1,5 +1,5 @@
 ---
-title: "Automated and general reader of Nonmem data"
+title: "NMscanData: Scan for and combine all output and input data"
 output:
 rmarkdown::html_vignette:
     toc: true
@@ -28,6 +28,16 @@ knitr::opts_chunk$set(
 Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
 
+<!-- Objectives -->
+
+<!-- Use NMscanData to  -->
+<!-- Read and combine all output and input data based only on (the path to) the Nonmem list file -->
+
+<!-- Include input data rows that were not processed by Nonmem (`ACCEPT` and `IGNORE`) -->
+
+<!-- Combine such data sets for of a multiple models -->
+	
+
 ## Introduction
 Preparing data for analysis in Nonmem and reading the results back
 into `R` can be time consuming. After a Nonmem run, a few tables may
@@ -37,23 +47,34 @@ Nonmem (say, observations below quantification limit that we still
 need in further analysis and plotting). 
 
 This vignette focuses on how to use `NMdata` to automate what needs to
-be trivial: get a dataset out of a Nonmem run, including discarded
-columns and rows from the input data. In brevity, the most important
-steps are
+be trivial: get one dataset out of a Nonmem run, combining all output
+tables and including additional columns and rows from the input
+data. After scanning the Nonmem list file and/or control stream for file and column names, the data files are read and combined. 
 
+In brevity, the most important steps are
+
+- Based on .lst/.mod: Identify input and output table files 
 - Read and combine output tables
 - If wanted, read input data and restore variables that were not
-output from the Nonmem model
+output from the Nonmem model. 
 - If wanted, also restore rows from input data that were disregarded
 in Nonmem (e.g. observations or subjects that are not part of the
 analysis)
 
-In most cases, this is not too hard to do. But with the large degree
-of flexibility Nonmem offers, the code will likely have to be
-adjusted between models, and there are a lot of caveats to be aware
-of. The implementation in `NMdata` works for the vast majority of
-models and aims at preventing and checking for as many 
-caveats as possible. It is fast and default argument values can be
+An additional complication is the potential renaming of input data
+column names in the Nonmem `$INPUT` section. `NMscanData` by default
+(but optionally) follows the column names as read by Nonmem.
+
+This way of reading the output and input data is fully compatible with
+most other of the great R packages for reading data from Nonmem.
+
+In most cases, the steps above are not too hard to do. But with the large degree
+of flexibility Nonmem offers, the code will likely have to be adjusted
+between models. The implementation in `NMdata` works for the vast
+majority of models and aims at preventing and checking for as many
+caveats as possible. It is fast too.
+
+Default argument values can be
 configured depending on your setup (data standards, directory
 structure and other preferences).
 
@@ -65,9 +86,8 @@ reading a model developed by someone else - or one written by
 ourselves when we used to do things slightly differently. It will work
 out of the box in the vast majority of cases.
 
-We start by attaching `NMdata`. I'm a `data.table` user and use that
-for a few postprocessing steps. You can just as well use base R or `dplyr` if
-you prefer. Then `ggplot2` for illustrations.
+We start by attaching `NMdata`. Also, I use `data.table`for a few post-processing steps. You can just as well use base R
+or `dplyr` if you prefer. Then `ggplot2`.
 
 ```{r,setup,include=T}
 library(NMdata)
