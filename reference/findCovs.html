@@ -205,7 +205,13 @@ be configued using NMdataConf.</p></td>
 #&gt; <span class='warning'>than output control stream</span>
 #&gt; <span class='warning'>(/Users/runner/work/_temp/Library/NMdata/examples/nonmem/xgxr001.lst) Seems</span>
 #&gt; <span class='warning'>like model has been edited since last run. If data sections have been edited,</span>
-#&gt; <span class='warning'>this can corrupt results.</span></div><div class='output co'>#&gt; Model:  xgxr001 
+#&gt; <span class='warning'>this can corrupt results.</span></div><div class='output co'>#&gt; <span class='message'>Input data columns will be appended to output data. However, column(s) were</span>
+#&gt; <span class='message'>identified as unique identifiers, present in both input and output data. If</span>
+#&gt; <span class='message'>this column or one of these columns is not modified by the Nonmem run,</span>
+#&gt; <span class='message'>consider using this in col.row for a robust merge of input and output data.</span>
+#&gt; <span class='message'>Candidate columns: ROW To skip this check, please use merge.by.row=TRUE or</span>
+#&gt; <span class='message'>merge.by.row=FALSE.</span></div><div class='output co'>#&gt; 
+#&gt; Model:  xgxr001 
 #&gt; Input and output data merged by: ROW 
 #&gt; 
 #&gt; Used tables, contents shown as used/total:

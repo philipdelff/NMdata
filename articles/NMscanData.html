@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Automated and general reader of Nonmem data • NMdata</title>
+<title>NMscanData: Scan for and combine all output and input data • NMdata</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Automated and general reader of Nonmem data">
+<script src="../pkgdown.js"></script><meta property="og:title" content="NMscanData: Scan for and combine all output and input data">
 <meta property="og:description" content="NMdata">
 <meta property="og:image" content="https://philipdelff.github.io/NMdata/reference/figures/NMdata_logo_v01.png">
 <meta property="og:image:alt" content="Efficient data preparation, consistency-checking and post-processing in PK/PD modeling">
@@ -95,7 +95,7 @@
       </header><script src="NMscanData_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Automated and general reader of Nonmem data</h1>
+      <h1 data-toc-skip>NMscanData: Scan for and combine all output and input data</h1>
             
       
       
@@ -106,19 +106,29 @@
     
     
 <p>Built 2021-06-16 using NMdata 0.0.7.2.911.</p>
+<!-- Objectives -->
+<!-- Use NMscanData to  -->
+<!-- Read and combine all output and input data based only on (the path to) the Nonmem list file -->
+<!-- Include input data rows that were not processed by Nonmem (`ACCEPT` and `IGNORE`) -->
+<!-- Combine such data sets for of a multiple models -->
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>Preparing data for analysis in Nonmem and reading the results back into <code>R</code> can be time consuming. After a Nonmem run, a few tables may have to be combined. Then we need character variables that are only available in the input data file. And maybe the events ignored by Nonmem (say, observations below quantification limit that we still need in further analysis and plotting).</p>
-<p>This vignette focuses on how to use <code>NMdata</code> to automate what needs to be trivial: get a dataset out of a Nonmem run, including discarded columns and rows from the input data. In brevity, the most important steps are</p>
+<p>This vignette focuses on how to use <code>NMdata</code> to automate what needs to be trivial: get one dataset out of a Nonmem run, combining all output tables and including additional columns and rows from the input data. After scanning the Nonmem list file and/or control stream for file and column names, the data files are read and combined.</p>
+<p>In brevity, the most important steps are</p>
 <ul>
+<li>Based on .lst/.mod: Identify input and output table files</li>
 <li>Read and combine output tables</li>
-<li>If wanted, read input data and restore variables that were not output from the Nonmem model</li>
+<li>If wanted, read input data and restore variables that were not output from the Nonmem model.</li>
 <li>If wanted, also restore rows from input data that were disregarded in Nonmem (e.g. observations or subjects that are not part of the analysis)</li>
 </ul>
-<p>In most cases, this is not too hard to do. But with the large degree of flexibility Nonmem offers, the code will likely have to be adjusted between models, and there are a lot of caveats to be aware of. The implementation in <code>NMdata</code> works for the vast majority of models and aims at preventing and checking for as many caveats as possible. It is fast and default argument values can be configured depending on your setup (data standards, directory structure and other preferences).</p>
+<p>An additional complication is the potential renaming of input data column names in the Nonmem <code>$INPUT</code> section. <code>NMscanData</code> by default (but optionally) follows the column names as read by Nonmem.</p>
+<p>This way of reading the output and input data is fully compatible with most other of the great R packages for reading data from Nonmem.</p>
+<p>In most cases, the steps above are not too hard to do. But with the large degree of flexibility Nonmem offers, the code will likely have to be adjusted between models. The implementation in <code>NMdata</code> works for the vast majority of models and aims at preventing and checking for as many caveats as possible. It is fast too.</p>
+<p>Default argument values can be configured depending on your setup (data standards, directory structure and other preferences).</p>
 <p>Like the rest of <code>NMdata</code>, this functionality assumes as little as possible about how you work. It assumes nothing about the Nonmem model itself and as little as possible about the organization of data and file paths/names. This makes it powerful for meta analyses, for reading a model developed by someone else - or one written by ourselves when we used to do things slightly differently. It will work out of the box in the vast majority of cases.</p>
-<p>We start by attaching <code>NMdata</code>. I’m a <code>data.table</code> user and use that for a few postprocessing steps. You can just as well use base R or <code>dplyr</code> if you prefer. Then <code>ggplot2</code> for illustrations.</p>
+<p>We start by attaching <code>NMdata</code>. Also, I use <code>data.table</code>for a few post-processing steps. You can just as well use base R or <code>dplyr</code> if you prefer. Then <code>ggplot2</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata">NMdata</a></span><span class="op">)</span>
 <span class="co">#&gt; Welcome to NMdata. Best place to browse NMdata documentation is</span>
@@ -141,6 +151,12 @@
 <p>Try <code>NMscanData</code> on a control stream or a list file:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr018.lst"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Input data columns will be appended to output data. However, it is recommended</span>
+<span class="co">#&gt; to use a unique row identifier (typically a counter but only required to be</span>
+<span class="co">#&gt; unique for each row) for a robust merge of input and output data. See argument</span>
+<span class="co">#&gt; col.row. To skip this check, please use merge.by.row=TRUE or</span>
+<span class="co">#&gt; merge.by.row=FALSE.</span>
+<span class="co">#&gt; </span>
 <span class="co">#&gt; Model:  xgxr018</span>
 <span class="co">#&gt; Input and output data combined by translation of</span>
 <span class="co">#&gt; Nonmem data filters (not recommended).</span>
@@ -217,6 +233,13 @@
 <p>All features shown below will work whether you supply <code>col.row</code> or not. We use <code>col.row</code> because it is more robust and because it allows us to easily trace a row in the analysis back to the source data. We are now told that the data was merged by <code>ROW</code> - that’s better.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res1.tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr003.lst"</span><span class="op">)</span>,as.fun<span class="op">=</span><span class="fu">tibble</span><span class="fu">::</span><span class="va"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">)</span>
+<span class="co">#&gt; Input data columns will be appended to output data. However, column(s) were</span>
+<span class="co">#&gt; identified as unique identifiers, present in both input and output data. If</span>
+<span class="co">#&gt; this column or one of these columns is not modified by the Nonmem run,</span>
+<span class="co">#&gt; consider using this in col.row for a robust merge of input and output data.</span>
+<span class="co">#&gt; Candidate columns: ROW To skip this check, please use merge.by.row=TRUE or</span>
+<span class="co">#&gt; merge.by.row=FALSE.</span>
+<span class="co">#&gt; </span>
 <span class="co">#&gt; Model:  xgxr003 </span>
 <span class="co">#&gt; Input and output data merged by: ROW </span>
 <span class="co">#&gt; </span>
@@ -247,7 +270,13 @@
 <p>Notice, <code>NMdataConf</code> will set the default value for all <code>NMdata</code> functions that use that argument. So when setting <code>as.fun</code> this way, we will get the desired class returned from all data generating <code>NMdata</code> functions.</p>
 <p>We don’t want the same information about the dimensions repeated, so we use the <code>quiet</code> argument this time.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res1.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr003.lst"</span><span class="op">)</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">res1.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr003.lst"</span><span class="op">)</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; Input data columns will be appended to output data. However, column(s) were</span>
+<span class="co">#&gt; identified as unique identifiers, present in both input and output data. If</span>
+<span class="co">#&gt; this column or one of these columns is not modified by the Nonmem run,</span>
+<span class="co">#&gt; consider using this in col.row for a robust merge of input and output data.</span>
+<span class="co">#&gt; Candidate columns: ROW To skip this check, please use merge.by.row=TRUE or</span>
+<span class="co">#&gt; merge.by.row=FALSE.</span></code></pre></div>
 <p>As expected we got a <code>data.table</code> this time:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">res1.dt</span><span class="op">)</span>
@@ -312,6 +341,13 @@
 <p>We may want to include the input data that was ignored by Nonmem. Use <code>recover.rows=TRUE</code> to include all rows from input data.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr014.lst"</span><span class="op">)</span>,recover.rows<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; Input data columns will be appended to output data. However, column(s) were</span>
+<span class="co">#&gt; identified as unique identifiers, present in both input and output data. If</span>
+<span class="co">#&gt; this column or one of these columns is not modified by the Nonmem run,</span>
+<span class="co">#&gt; consider using this in col.row for a robust merge of input and output data.</span>
+<span class="co">#&gt; Candidate columns: ROW To skip this check, please use merge.by.row=TRUE or</span>
+<span class="co">#&gt; merge.by.row=FALSE.</span>
+<span class="co">#&gt; </span>
 <span class="co">#&gt; Model:  xgxr014 </span>
 <span class="co">#&gt; Input and output data merged by: ROW </span>
 <span class="co">#&gt; </span>
