@@ -125,7 +125,7 @@ file?"))
     meta[,full.length:=!idlevel&maxLength]
     
     meta[,file.mtime:=file.mtime(file)]
-    setcolorder(meta,intersect(c("source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype"),colnames(meta)))
+    setcolorder(meta,intersect(c("source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype","file"),colnames(meta)))
     
     
     if(!quiet){

@@ -4,6 +4,8 @@
 
 context("NMscanInput")
 
+NMdataConf(reset=TRUE)
+
 test_that("basic",{
 
     fileRef <- "testReference/NMscanInput.rds"
