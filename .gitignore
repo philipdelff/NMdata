@@ -15,3 +15,5 @@ vignettes/*\.R
 inst/examples/nonmem/modelfit_dir*
 inst/examples/nonmem/trashed_*
 inst/examples/nonmem/backup_*
+inst/examples/nonmem/*\.ext
+inst/examples/nonmem/*\.phi

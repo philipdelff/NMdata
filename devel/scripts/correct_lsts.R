@@ -1,7 +1,5 @@
-## library(remotes)
-## install_github("philipdelff/pmxtricks")
-## library(pmxtricks)
 
+load_all()
 lsts <- list.files(system.file("examples/nonmem",package="NMdata"),pattern="xgxr.*\\.lst$",full.names=TRUE)
 
 ## backup
@@ -28,4 +26,20 @@ for (lst in lsts){
         writeLines(lines,con=lst)
     }
 }
+
+### complete
+for (lst in lsts){
+
+    lines <- readLines(lst)
+    ## until "$PROBLEM"
+    lines <- lines[-max(1,grep(" *\\$PROBLEM.*",x=lines)[1]-1)]
+
+    ## keep only control stream part
+    block.start <- grep("^ *NM-TRAN MESSAGES",lines)
+    if(length(block.start) ){
+        lines <- lines[1:(block.start-1)]
+    }
+    writeLines(lines,con=lst)
+}
+
 
