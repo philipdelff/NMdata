@@ -15,6 +15,8 @@ library(NMdata)
 ## library(devtools)
 ## load_all("c:/Users/delff/working_copies/NMdata")
 
+script.1 <- "dsCreate_1"
+
 pkpd <- as.data.table(case1_pkpd)
 ## we should save case1_pkpd somewhere so we don't get in trouble when xgxr change it.
 
@@ -70,7 +72,7 @@ dt.flags <- fread(text="FLAG,flag,condition
 
 pk[EVID==1,FLAG:=0]
 pk[EVID==1,flag:="Dosing"]
-load_all("c:/Users/delff/working_copies/NMdata")
+
 ### OK!
 pk <- flagsAssign(pk,subset.data="EVID==0",tab.flags=dt.flags)
 tab.count <- flagsCount(pk,dt.flags,by="EVID")
@@ -93,7 +95,7 @@ if(F){
 
 pk <- pk[order(ID,TIME,CMT)]
 pk <- pk[DOSE>0]
-pk[,ROW:=1:nrow(pk)]
+pk[,ROW:=.I]
 pk <- NMorderColumns(pk)
 colnames(pk)
 dim(pk)
@@ -102,9 +104,9 @@ text <- NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv
 ### with this one, we don't need to filter on FLAG
 NMwriteData(pk[FLAG==0],file=file.path(NMdata_filepath(),"examples/data/xgxr1_flag0.csv"),write.rds=F)
 
-## same, but with rds
-text2 <- NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write.rds=T,args.rds=list(version=2))
-NMwriteData(pk[FLAG==0],file=file.path(NMdata_filepath(),"examples/data/xgxr2_flag0.csv"),write.rds=T,args.rds=list(version=2))
+## same, but both rds and csv. Both with meta data.
+text2 <- NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write.rds=T,args.rds=list(version=2),script=script.1)
+NMwriteData(pk[FLAG==0],file=file.path(NMdata_filepath(),"examples/data/xgxr2_flag0.csv"),write.rds=T,args.rds=list(version=2),script=script.1)
 
 ## a version with duplicated column names for testing
 pk2 <- cbind(pk,pk[,.(DOSE)])
@@ -116,7 +118,7 @@ text <- NMwriteData(pk[,!("ROW")],file=file.path(NMdata_filepath(),"examples/dat
 dt.files <- data.table(path=list.files(file.path(NMdata_filepath(),"examples/nonmem"),pattern="\\.mod$",full.names=T))
 dt.files[,mod:=basename(path)]
 dt.files[,ROW:=1:.N]
-dt.files[,DATA:=paste(NMgetSection(path,section="DATA"),collapse=" "),by=.(ROW)]
+dt.files[,DATA:=paste(NMreadSection(path,section="DATA"),collapse=" "),by=.(ROW)]
 dt.files[,file:={strings=strsplit(DATA," ")
     list(strings[[1]][grepl("\\.csv",strings[[1]])])
 },by=.(ROW)]

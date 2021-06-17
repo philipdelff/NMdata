@@ -29,8 +29,7 @@ NMstamp <- function(data,script,time=Sys.time(),...,byRef=FALSE){
                 )
         return(invisible(data))
     } else {
-
-        attr(data,"objInfo") <-
+        attr(data,"meta") <-
             list(
                 DataCreateScript=script,
                 CreationTime=Sys.time(),

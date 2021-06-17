@@ -522,6 +522,7 @@ test_that("A filter without operator",{
 
 
 test_that("Including a redundant output table",{
+    NMdataConf(reset=T)
     NMdataConf(as.fun="data.table")
 
     fileRef <- "testReference/NMscanData24.rds"

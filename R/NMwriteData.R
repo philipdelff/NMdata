@@ -266,24 +266,26 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
         ## fwrite      (data,na=".",quote=FALSE,row.names=FALSE,scipen=0,file=file.csv)
         files.written <- c(files.written,file.csv)
         if(doStamp){
-            data.meta.csv <- objInfo(do.call(stampObj,append(list(data=data,writtenTo=file.csv),args.stamp)))
+            
+            data.meta.csv <- NMinfo(do.call(NMstamp,append(list(data=data,writtenTo=file.csv),args.stamp)))
             data.meta.csv <- data.table(parameter=names(data.meta.csv)
                                        ,value=unlist(lapply(data.meta.csv,as.character)))
             file.csv.meta <- paste0(fnExtension(file.csv,ext=""),"_meta.txt")
             fwrite(data.meta.csv,file=file.csv.meta,quote=TRUE,row.names=FALSE,sep=",")
         }
     }
+    
     if(write.RData){
         name.data <- deparse(substitute(data))
         file.RData <- fnExtension(file,".RData")
-        if(doStamp) data <- do.call(stampObj,append(list(data=data,writtenTo=file.RData),args.stamp))
+        if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.RData),args.stamp))
         assign(name.data,data)
         save(list=name.data,file=file.RData)
         files.written <- c(files.written,file.RData)
     }
     if(write.rds){
         file.rds <- fnExtension(file,".rds")
-        if(doStamp) data <- do.call(stampObj,append(list(data=data,writtenTo=file.rds),args.stamp))
+        if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.rds),args.stamp))
         do.call(saveRDS,append(list(object=data,file=file.rds),args.rds))
         files.written <- c(files.written,file.rds)
     }
