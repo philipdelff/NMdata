@@ -1,3 +1,4 @@
+Thu Jun 17 16:46:51 EDT 2021
 $PROBLEM    PK
 ;@ Variables 17/20 @;
 $INPUT      ROW ID TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE
@@ -67,6 +68,10 @@ NM-TRAN MESSAGES
  * THE MAXIMUM NUMBER OF WARNINGS OF ONE OR MORE TYPES WAS REACHED.
  IT IS POSSIBLE THAT SOME WARNING MESSAGES WERE SUPPRESSED.
 
+License Registered to: Vertex
+Expiration Date:    14 JAN 2022
+Current Date:       17 JUN 2021
+Days until program expires : 212
 1NONLINEAR MIXED EFFECTS MODEL PROGRAM (NONMEM) VERSION 7.4.4
  ORIGINALLY DEVELOPED BY STUART BEAL, LEWIS SHEINER, AND ALISON BOECKMANN
  CURRENT DEVELOPERS ARE ROBERT BAUER, ICON DEVELOPMENT SOLUTIONS,
@@ -340,7 +345,7 @@ NM-TRAN MESSAGES
  TOTAL EFFECTIVE ETAS (NIND*NETA):                           393
   
  #TERE:
- Elapsed estimation  time in seconds:    11.98
+ Elapsed estimation  time in seconds:    10.84
  Elapsed postprocess time in seconds:     0.05
 1
  
@@ -465,4 +470,6 @@ NM-TRAN MESSAGES
 +        0.00E+00  3.73E-02
  
  Elapsed finaloutput time in seconds:     0.04
- #CPUT: Total CPU Time in Seconds,       10.718
+ #CPUT: Total CPU Time in Seconds,       10.950
+Stop Time:
+Thu Jun 17 16:47:07 EDT 2021
