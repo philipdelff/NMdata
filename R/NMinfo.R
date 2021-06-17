@@ -18,20 +18,29 @@
 ##' @export
 
 NMinfo <- function(data,info,as.fun){
-    if (!inherits(data, "NMdata")) 
-        stop("NMinfo is only intended for NMdata objects.")
-    
+
+
+    if (!inherits(data, "NMdata")) {
+        ## stop("NMinfo is only intended for NMdata objects.")
+        meta <- attributes(data)$meta
+        if(is.null(meta)){
+            warning("No meta data available. NULL returned.")
+        }
+        return(meta)
+    }
+
+    ## NMdata object
+
     if(missing(as.fun)) as.fun <- NULL
     if(missing(info)) info <- NULL
-
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    
     if(!is.null(info)){
         if(!info%in%c("details","columns","tables")){
             stop("If 'info' is supplied, it has to be one of 'details', 'columns', 'tables'.")
         }
     }
     
-    as.fun <- NMdataDecideOption("as.fun",as.fun)
-
     
     if(is.null(info)) {
         nms.meta <- names(attributes(data)$meta)
