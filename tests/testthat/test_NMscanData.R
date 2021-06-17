@@ -29,7 +29,7 @@ test_that("basic",{
     ## file.lst <- "../../inst/examples/nonmem/run001.lst"
     ## file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
-    ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+    ## NMreadSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
     res1 <- NMscanData(file=file.lst, quiet=T, order.columns = F, merge.by.row=FALSE)
     ## dim(res1)
@@ -113,8 +113,8 @@ test_that("List of ACCEPT statements and vs separate statements",{
     file1.lst <- NMdata_filepath("examples/nonmem/xgxr006.lst")
     file2.lst <- NMdata_filepath("examples/nonmem/xgxr007.lst")
 
-    NMgetSection(file1.lst,section="PROBLEM")
-    NMgetSection(file2.lst,section="PROBLEM")
+    NMreadSection(file1.lst,section="PROBLEM")
+    NMreadSection(file2.lst,section="PROBLEM")
     res1 <- NMscanData(file=file1.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE)
     res2 <- NMscanData(file=file2.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE) 
     setattr(res1,"meta",NULL)
@@ -129,8 +129,8 @@ test_that("merge by filters or not",{
     file1.lst <- NMdata_filepath("examples/nonmem/xgxr006.lst")
     file2.lst <- NMdata_filepath("examples/nonmem/xgxr008.lst")
 
-    ## NMgetSection(file1.lst,section="PROBLEM")
-    ## NMgetSection(file2.lst,section="PROBLEM")
+    ## NMreadSection(file1.lst,section="PROBLEM")
+    ## NMreadSection(file2.lst,section="PROBLEM")
     res1 <- NMscanData(file=file1.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE)
     res2 <- NMscanData(file=file2.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE)
     setnames(res2,"EFF0","eff0")
@@ -152,7 +152,7 @@ test_that("Only a firstonly without ID but with ROW",{
     fileRef <- "testReference/NMscanData11.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr011.lst")
-    ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+    ## NMreadSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
 ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
     ## tabs <- NMscanTables(file.lst)
@@ -183,9 +183,9 @@ test_that("Only a firstonly, no ID, no ROW",{
     fileRef <- "testReference/NMscanData12.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr012.lst")
-    ## NMgetSection(file.lst,section="DATA")
-    ## NMgetSection(file.lst,section="PROBLEM")
-    ## NMgetSection(file.lst,section="TABLE")
+    ## NMreadSection(file.lst,section="DATA")
+    ## NMreadSection(file.lst,section="PROBLEM")
+    ## NMreadSection(file.lst,section="TABLE")
     
     expect_error(
         expect_warning(
@@ -201,8 +201,8 @@ test_that("FO and row-level output. No ID, no row.",{
     fileRef <- "testReference/NMscanData13.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr013.lst")
-    NMgetSection(file.lst,section="PROBLEM")
-    ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+    NMreadSection(file.lst,section="PROBLEM")
+    ## NMreadSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
     ## tabs <- NMscanTables(file=file.lst)
     res1 <- expect_warning(
@@ -220,7 +220,7 @@ test_that("FO and row-level output. No ID, no row. cbind.by.filters=T",{
     fileRef <- "testReference/NMscanData14.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr013.lst")
-    NMgetSection(file.lst,section="PROBLEM")
+    NMreadSection(file.lst,section="PROBLEM")
     
     ## tabs <- NMscanTables(file=file.lst)
     res1 <- expect_warning(
@@ -244,8 +244,8 @@ test_that("Only a firstonly without ID but with ROW",{
     fileRef <- "testReference/NMscanData15.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr011.lst")
-    NMgetSection(file.lst,section="DATA")
-    NMgetSection(file.lst,section="TABLE")
+    NMreadSection(file.lst,section="DATA")
+    NMreadSection(file.lst,section="TABLE")
 
 ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
     ## tabs <- NMscanTables(file.lst)
@@ -268,8 +268,8 @@ test_that("Only a firstonly without ID but with ROW. Using merge.by.row=TRUE.",{
     fileRef <- "testReference/NMscanData15b.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr011.lst")
-    NMgetSection(file.lst,section="DATA")
-    NMgetSection(file.lst,section="TABLE")
+    NMreadSection(file.lst,section="DATA")
+    NMreadSection(file.lst,section="TABLE")
 
 ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
     ## tabs <- NMscanTables(file.lst)
@@ -291,8 +291,8 @@ test_that("recoverRows without a row identifier",{
     fileRef <- "testReference/NMscanData16.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
-    NMgetSection(file.lst,section="DATA")
-    NMgetSection(file.lst,section="TABLE")
+    NMreadSection(file.lst,section="DATA")
+    NMreadSection(file.lst,section="TABLE")
 
 ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
     ## tabs <- NMscanTables(file.lst)
@@ -316,8 +316,8 @@ test_that("use as.fun to get a data.frame",{
     fileRef <- "testReference/NMscanData17.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
-    NMgetSection(file.lst,section="DATA")
-    NMgetSection(file.lst,section="TABLE")
+    NMreadSection(file.lst,section="DATA")
+    NMreadSection(file.lst,section="TABLE")
 
     res1 <- NMscanData(file=file.lst,merge.by.row=FALSE,recover.rows = T,as.fun=as.data.frame,check.time = FALSE)
     dim(res1)
@@ -340,8 +340,8 @@ test_that("use as.fun to get a tibble",{
     fileRef <- "testReference/NMscanData18.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
-    NMgetSection(file.lst,section="DATA")
-    NMgetSection(file.lst,section="TABLE")
+    NMreadSection(file.lst,section="DATA")
+    NMreadSection(file.lst,section="TABLE")
 
 ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
     ## tabs <- NMscanTables(file.lst)

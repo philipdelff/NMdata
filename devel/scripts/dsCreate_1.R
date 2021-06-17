@@ -100,39 +100,118 @@ pk <- NMorderColumns(pk)
 colnames(pk)
 dim(pk)
 
-text <- NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),write.rds=F)
-### with this one, we don't need to filter on FLAG
-NMwriteData(pk[FLAG==0],file=file.path(NMdata_filepath(),"examples/data/xgxr1_flag0.csv"),write.rds=F)
+dt.data <- fread(text="file.data,description
+xgxr1.csv,1 csv only
+xgxr1_flag0.csv,pk FLAG==0
+xgxr2.csv,1 +rds +meta
+xgxr2_flag0.csv,2 FLAG==0
+xgxr3.csv,duplic column names
+xgxr4.csv,1 without ROW
+")
 
-## same, but both rds and csv. Both with meta data.
-text2 <- NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write.rds=T,args.rds=list(version=2),script=script.1)
-NMwriteData(pk[FLAG==0],file=file.path(NMdata_filepath(),"examples/data/xgxr2_flag0.csv"),write.rds=T,args.rds=list(version=2),script=script.1)
+file.nm <- function(...)file.path(NMdata_filepath(),"examples/data",...)
+
+
+dt.data[file.data=="xgxr1.csv",
+        nmCode:=list(list(
+            NMwriteData(pk,file=file.nm(file.data),write.rds=F)
+        ))]
+dt.data[file.data=="xgxr1_flag0.csv",
+        nmCode:=list(list(
+            NMwriteData(pk[FLAG==0],file=file.nm(file.data),write.rds=F)
+        ))]
+
+
+dt.data[file.data=="xgxr2.csv",
+        nmCode:=list(list(
+            NMwriteData(pk,file=file.nm(file.data),write.rds=T,args.rds=list(version=2),script=script.1)
+        ))]
+dt.data[file.data=="xgxr2_flag0.csv",
+        nmCode:=list(list(
+            NMwriteData(pk[FLAG==0],file=file.nm(file.data),write.rds=T,args.rds=list(version=2),script=script.1)
+        ))]
+
 
 ## a version with duplicated column names for testing
 pk2 <- cbind(pk,pk[,.(DOSE)])
-text3 <- NMwriteData(pk2,file=file.path(NMdata_filepath(),"examples/data/xgxr3.csv"),write.rds=T,args.rds=list(version=2))
+dt.data[file.data=="xgxr3.csv",
+        nmCode:=list(list(
+            NMwriteData(pk2,file=file.nm(file.data),write.rds=T,args.rds=list(version=2))
+        ))]
 
-## and a version without rds, and without ROW
-text <- NMwriteData(pk[,!("ROW")],file=file.path(NMdata_filepath(),"examples/data/xgxr4.csv"),write.rds=F)
+## without ROW
+dt.data[file.data=="xgxr4.csv",
+        nmCode:=list(list(
+            NMwriteData(pk[,!("ROW")],file=file.nm(file.data),write.rds=T,args.rds=list(version=2))
+                        ))]
 
-dt.files <- data.table(path=list.files(file.path(NMdata_filepath(),"examples/nonmem"),pattern="\\.mod$",full.names=T))
-dt.files[,mod:=basename(path)]
-dt.files[,ROW:=1:.N]
-dt.files[,DATA:=paste(NMreadSection(path,section="DATA"),collapse=" "),by=.(ROW)]
-dt.files[,file:={strings=strsplit(DATA," ")
+
+
+
+#### Update $INPUT sections, depending on data set
+dt.runs <- data.table(path=list.files(file.path(NMdata_filepath(),"examples/nonmem"),pattern="\\.mod$",full.names=T))
+dt.runs[,mod:=basename(path)]
+dt.runs[,ROW:=1:.N]
+dt.runs[,DATA:=paste(NMreadSection(path,section="DATA"),collapse=" "),by=.(ROW)]
+dt.runs[,path.data:={strings=strsplit(DATA," ")
     list(strings[[1]][grepl("\\.csv",strings[[1]])])
 },by=.(ROW)]
-dt.files
+dt.runs[,file.data:=basename(path.data)]
 
-## lapply(dt.files[file=="../data/xgxr1.csv",path],
+
+dt.runs <- mergeCheck(dt.runs,dt.data,by="file.data")
+
+dt.runs[1,NMwriteSection(file=path,list.sections=get(nmCode[[1]]["INPUT"]),backup=FALSE)]
+
+dt.runs[,ROW:=.I]
+dt.runs[,{
+    sec=nmCode[[1]]["INPUT"]
+    NMwriteSection(file=path,list.sections=sec,backup=FALSE)},by=ROW
+        ]
+
+dt.runs[1,nmCode]$
+1
+## lapply(dt.runs[file=="../data/xgxr1.csv",path],
 ##        NMreplacePart,list.sections=text["INPUT"])
 
-## lapply(dt.files[file=="../data/xgxr1.csv",path],
+## lapply(dt.runs[file=="../data/xgxr1.csv",path],
 ##        NMundoReplace)
 
-## lapply(dt.files[file=="../data/xgxr2.csv",path],
+## lapply(dt.runs[file=="../data/xgxr2.csv",path],
 ##        NMreplacePart,list.sections=text2["INPUT"])
 
-## lapply(dt.files[file=="../data/xgxr3.csv",path],
+## lapply(dt.runs[file=="../data/xgxr3.csv",path],
 ##        NMreplacePart,list.sections=text3["INPUT"])
 
+## dt.data[file.data=="xgxr001.csv",nmCode:={
+##     nmcod=NMwriteData(pk,file=file.nm(file.data),write.rds=F)
+##     list(paste(nmCode$INPUT,collapse="\n"))
+## }]
+
+
+
+
+if(F){
+
+    nmcode.3 <- NMwriteData(pk2,file=file.path(NMdata_filepath(),"examples/data/xgxr3.csv"),write.rds=T,args.rds=list(version=2))
+
+    ## and a version without rds, and without ROW
+    nmcode.4 <- NMwriteData(pk[,!("ROW")],file=file.path(NMdata_filepath(),"examples/data/xgxr4.csv"),write.rds=F)
+
+
+
+    nmcode.1 <- NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),write.rds=F)
+### with this one, we don't need to filter on FLAG
+    nmcode.1.f0 <- NMwriteData(pk[FLAG==0],file=file.path(NMdata_filepath(),"examples/data/xgxr1_flag0.csv"),write.rds=F)
+
+    ## same, but both rds and csv. Both with meta data.
+    nmcode.2 <- NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write.rds=T,args.rds=list(version=2),script=script.1)
+    nmcode.2.f0 <- NMwriteData(pk[FLAG==0],file=file.path(NMdata_filepath(),"examples/data/xgxr2_flag0.csv"),write.rds=T,args.rds=list(version=2),script=script.1)
+
+    ## a version with duplicated column names for testing
+    pk2 <- cbind(pk,pk[,.(DOSE)])
+    nmcode.3 <- NMwriteData(pk2,file=file.path(NMdata_filepath(),"examples/data/xgxr3.csv"),write.rds=T,args.rds=list(version=2))
+
+    ## and a version without rds, and without ROW
+    nmcode.4 <- NMwriteData(pk[,!("ROW")],file=file.path(NMdata_filepath(),"examples/data/xgxr4.csv"),write.rds=F)
+}

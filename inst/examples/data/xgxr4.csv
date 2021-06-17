@@ -689,7 +689,7 @@ ID,NOMTIME,TIME,EVID,CMT,AMT,DV,FLAG,STUDY,BLQ,CYCLE,DOSE,PART,PROFDAY,PROFTIME,
 99,12,12.39657,0,2,0,0.05,10,1,1,1,30,1,1,12,96.745,49.018,ng/mL,PK Concentration,Hours,30 mg,Below LLOQ,30 mg
 99,18,18.31423,0,2,0,0.05,10,1,1,1,30,1,1,18,96.745,49.018,ng/mL,PK Concentration,Hours,30 mg,Below LLOQ,30 mg
 99,23.9,24.43297,0,2,0,0.05,10,1,1,1,30,1,1,23.9,96.745,49.018,ng/mL,PK Concentration,Hours,30 mg,Below LLOQ,30 mg
-100,0,-1,0,1,30,0.05,100,1,1,1,30,1,1,0,109.04,46.163,mg,Dosing,Hours,30 mg,Pre-dose sample,30 mg
+100,0,-1,0,1,30,0.05,100,1,1,1,30,1,1,0,109.04,46.163,mg,Dosing,Hours,30 mg,Negative time,30 mg
 100,0,0,1,1,30,,0,1,0,1,30,1,1,0,109.04,46.163,mg,Dosing,Hours,30 mg,Dosing,30 mg
 100,0.1,0.06671,0,2,0,0.05,10,1,1,1,30,1,1,0.1,109.04,46.163,ng/mL,PK Concentration,Hours,30 mg,Below LLOQ,30 mg
 100,0.5,0.32435,0,2,0,0.12057,0,1,0,1,30,1,1,0.5,109.04,46.163,ng/mL,PK Concentration,Hours,30 mg,Analysis set,30 mg
@@ -960,7 +960,7 @@ ID,NOMTIME,TIME,EVID,CMT,AMT,DV,FLAG,STUDY,BLQ,CYCLE,DOSE,PART,PROFDAY,PROFTIME,
 126,12,12.36955,0,2,0,0.078357,0,1,0,1,100,1,1,12,148.23,48.961,ng/mL,PK Concentration,Hours,100 mg,Analysis set,100 mg
 126,18,18.37572,0,2,0,0.05,10,1,1,1,100,1,1,18,148.23,48.961,ng/mL,PK Concentration,Hours,100 mg,Below LLOQ,100 mg
 126,23.9,24.31185,0,2,0,0.05,10,1,1,1,100,1,1,23.9,148.23,48.961,ng/mL,PK Concentration,Hours,100 mg,Below LLOQ,100 mg
-127,0,-1,0,1,100,0.05,100,1,1,1,100,1,1,0,133.16,42.732,mg,Dosing,Hours,100 mg,Pre-dose sample,100 mg
+127,0,-1,0,1,100,0.05,100,1,1,1,100,1,1,0,133.16,42.732,mg,Dosing,Hours,100 mg,Negative time,100 mg
 127,0,0,1,1,100,,0,1,0,1,100,1,1,0,133.16,42.732,mg,Dosing,Hours,100 mg,Dosing,100 mg
 127,0.1,0.18777,0,2,0,0.34041,0,1,0,1,100,1,1,0.1,133.16,42.732,ng/mL,PK Concentration,Hours,100 mg,Analysis set,100 mg
 127,0.5,0.59696,0,2,0,0.39846,0,1,0,1,100,1,1,0.5,133.16,42.732,ng/mL,PK Concentration,Hours,100 mg,Analysis set,100 mg
