@@ -26,7 +26,7 @@ summary.NMdata <- function(object,...){
     ## I need to look more into this. Some operations (merge?) drop
     ## many attributes but not the NMdata class. If that has happened,
     ## we ave nothing to use the class for.
-    if(!"meta"%in%names(attributes(data))) {
+    if(!"NMdata"%in%names(attributes(data))) {
         warning("object seems to be a corrupted NMdata object (meta data missing).")
         unNMdata(data)
         return(summary(data,...))
@@ -36,7 +36,7 @@ summary.NMdata <- function(object,...){
     ## derive how many subjects. Need to 
 
     
-    s1 <- attr(data,"meta")
+    s1 <- NMinfo(data,as.fun="data.table")
     s1$N.ids1 <- data[,list(N.ids=uniqueN(ID)),by="nmout"]
 
     N.ids.nmout <- s1$N.ids1[nmout==TRUE,N.ids]

@@ -51,7 +51,7 @@ NMinfo <- function(data,info,as.fun,nullEmpty=FALSE){
         return(setNames(lapply(nms.meta,function(x)NMinfo(data,info=x,as.fun=as.fun)),nms.meta))
     }
 
-    out <- attributes(data)$meta[[info]]
+    out <- attributes(data)$NMdata[[info]]
     ##    if(info=="details") return(attributes(data)$meta$details)
     if(is.data.frame(out)) {
         out <- as.fun(out)

@@ -795,7 +795,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     )
 
 
-    setattr(tab.row,"meta",meta)
+    ## setattr(tab.row,"NMdata",meta)
+    writeNMinfo(tab.row,meta,byRef=TRUE)
 
 ###  Section end: Format output
 

@@ -9,7 +9,7 @@ NMdata_filepath <- function(...) {
 
 
 fix.time <- function(x){
-    meta.x <- attr(x,"meta")
+    meta.x <- attr(x,"NMdata")
     ## meta.x$time.call <- as.POSIXct("2020-02-01 00:01:01",tz="UTC")
     meta.x$details$time.call <- NULL
     meta.x$details$file.lst <- NULL
@@ -18,7 +18,7 @@ fix.time <- function(x){
     meta.x$details$mtime.lst <- NULL
     meta.x$tables$file <- NULL
     meta.x$tables$file.mtime <- NULL
-    setattr(x,"meta",meta.x)
+    setattr(x,"NMdata",meta.x)
 }
 
 NMdataConf(reset=TRUE)
@@ -50,6 +50,7 @@ test_that("Modifications to column names in $INPUT",{
     
     file.lst <- NMdata_filepath("examples/nonmem/xgxr002.lst")
 
+    load_all()
     res <- NMscanData(file=file.lst, check.time = FALSE, merge.by.row=FALSE)
     fix.time(res)
     expect_equal_to_reference(res,fileRef,version=2)

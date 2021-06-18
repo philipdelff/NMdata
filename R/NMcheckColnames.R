@@ -24,7 +24,7 @@ NMcheckColnames <- function(file,as.fun,...){
 
     data.input <- do.call(NMscanInput,dots)
    
-    res <- as.fun(data.input$meta$colnames)
+    res <- NMinfo(data.input,"colnames",as.fun=as.fun)
     return(res)
 
 }
