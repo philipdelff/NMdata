@@ -31,7 +31,7 @@ test_that("basic",{
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
     ## NMreadSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
-    res1 <- NMscanData(file=file.lst, quiet=T, order.columns = F, merge.by.row=FALSE)
+    res1 <- NMscanData(file=file.lst, quiet=T, order.columns = F, merge.by.row=FALSE, check.time = FALSE)
     ## dim(res1)
 
     fix.time(res1)

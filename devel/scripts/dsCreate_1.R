@@ -169,7 +169,11 @@ dt.runs[,{
     NMwriteSection(file=path,list.sections=sec,backup=FALSE)},by=ROW
         ]
 
-dt.runs[1,nmCode]$
+### xgxgr002: CYCLE=DROP
+
+dt.runs[,ROW:=.I]
+dt.runs[,paste(NMreadSection(fnExtension(path,".lst"),section="INPUT"),collapse="\n"),by=ROW]
+
 1
 ## lapply(dt.runs[file=="../data/xgxr1.csv",path],
 ##        NMreplacePart,list.sections=text["INPUT"])
