@@ -17,37 +17,44 @@
 ##'     "details".
 ##' @export
 
-NMinfo <- function(data,info,as.fun){
+NMinfo <- function(data,info,as.fun,nullEmpty=FALSE){
 
 
-    if (!inherits(data, "NMdata")) {
-        ## stop("NMinfo is only intended for NMdata objects.")
-        meta <- attributes(data)$meta
-        if(is.null(meta)){
-            warning("No meta data available. NULL returned.")
-        }
-        return(meta)
-    }
+    ## if (!inherits(data, "NMdata")) {
+    ##     ## stop("NMinfo is only intended for NMdata objects.")
+    ##     meta <- attributes(data)$meta
+    ##     if(is.null(meta)){
+    ##         if(!nullEmpty){
+    ##             warning("No meta data available. NULL returned.")
+    ##         }
+    ##     }
+    ##     return(meta)
+    ## }
 
     ## NMdata object
 
     if(missing(as.fun)) as.fun <- NULL
     if(missing(info)) info <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
-    
+
+    if (inherits(data, "NMdata")) {
     if(!is.null(info)){
         if(!info%in%c("details","columns","tables")){
-            stop("If 'info' is supplied, it has to be one of 'details', 'columns', 'tables'.")
+            stop("For NMdata objects: If 'info' is supplied, it has to be one of 'details', 'columns', 'tables'.")
         }
+    }
     }
     
     
     if(is.null(info)) {
-        nms.meta <- names(attributes(data)$meta)
+        nms.meta <- names(attributes(data)$NMdata)
         return(setNames(lapply(nms.meta,function(x)NMinfo(data,info=x,as.fun=as.fun)),nms.meta))
     }
 
-    if(info=="details") return(attributes(data)$meta$details)
-    as.fun(attributes(data)$meta[[info]])
-
+    out <- attributes(data)$meta[[info]]
+    ##    if(info=="details") return(attributes(data)$meta$details)
+    if(is.data.frame(out)) {
+        out <- as.fun(out)
+    }
+    out
 }

@@ -123,7 +123,6 @@ test_that("List of ACCEPT statements and vs separate statements",{
 })
 
 
-### find out how much can be tested. 
 test_that("merge by filters or not",{
     ##    fileRef <- "testReference/NMscanData4.rds"
     file1.lst <- NMdata_filepath("examples/nonmem/xgxr006.lst")
@@ -133,7 +132,7 @@ test_that("merge by filters or not",{
     ## NMreadSection(file2.lst,section="PROBLEM")
     res1 <- NMscanData(file=file1.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE)
     res2 <- NMscanData(file=file2.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE)
-    setnames(res2,"EFF0","eff0")
+    setnames(res2,"EFF0","eff0",skip_absent=T)
     setcolorder(res1,colnames(res2))
 
     ## the var tables are different because ROW is input in one,
@@ -145,6 +144,8 @@ test_that("merge by filters or not",{
 
     expect_equal(res1,res2)
 })
+
+### BUG 011. NA rows used for fo table. 0 IDs.
 
 test_that("Only a firstonly without ID but with ROW",{
 ### This should work because ROW is in firstonly table.
@@ -158,13 +159,14 @@ test_that("Only a firstonly without ID but with ROW",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-### impossible with filters
+### impossible with filters at the moment. should be implemented.
     expect_error(
         expect_warning(
             NMscanData(file=file.lst,merge.by.row=FALSE,col.row="ROW",check.time = FALSE)
         )
     )
-    ## load_all()
+
+    ##    load_all()
     res1 <- NMscanData(file=file.lst,merge.by.row=TRUE,col.row="ROW",check.time = FALSE)
     fix.time(res1)
     expect_equal_to_reference(res1,fileRef,version=2)

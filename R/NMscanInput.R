@@ -138,6 +138,8 @@ NMscanInput <- function(file, use.rds, file.mod,
     ## rows. This is used for very litle which should be done here
     ## instead of making a deep copy.
     data.input.0 <- copy(data.input)
+    nminfo.input.0 <- NMinfo(data.input)
+    
     
 ### filters must be applied here according to NM manual IV-1. They are applied before translating column names.
     if(applyFilters){
@@ -162,7 +164,9 @@ NMscanInput <- function(file, use.rds, file.mod,
     
     if(details){
         meta <- list()
-        meta$details <- data.table(
+
+        meta$tables <- data.table(
+            source="input",
             file=path.data.input,
             file.mtime=file.mtime(path.data.input),
             filetype=type.file,
@@ -172,13 +176,15 @@ NMscanInput <- function(file, use.rds, file.mod,
             nid=NA_real_
         )
         if(col.id%in%dt.colnames[,result]) {
-            meta$details[,nid:=data.input.0[,uniqueN(get(col.id.inp))]]
+            meta$tables[,nid:=data.input.0[,uniqueN(get(col.id.inp))]]
         }
-
-        meta$colnames <- dt.colnames
+        meta$NMinfo.input <- nminfo.input.0
         
+        meta$colnames <- dt.colnames
+
         data.input <- as.fun(data.input)
-        return(list(data=data.input,meta=meta))
+        writeNMinfo(data.input,meta,byRef=TRUE)
+        return(data.input)
     }
     
     data.input <- as.fun(data.input)

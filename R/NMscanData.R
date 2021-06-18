@@ -299,8 +299,12 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                  ,as.fun="data.table"
                                  ,col.id=col.id
                                  ,details=TRUE)
+        nminfo.input <- NMinfo(data.input,as.fun="data.table")
+        cnames.input <- nminfo.input$colnames
+##            NMinfo(data.input,"colnames",as.fun="data.table")[,result]
+##        cnames.input <- NMinfo(data.input)$colnames[,result]
+##        cnames.input <- data.input$meta$colnames[,result]
 
-        cnames.input <- data.input$meta$colnames[,result]
     }
 
 ### Section end: read input data
@@ -421,13 +425,13 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         }
 
         if(use.input) {
-            mtime.inp <- max(data.input$meta$details$file.mtime)
+            mtime.inp <- max(nminfo.input$tables$file.mtime)
             if(mtime.inp > file.mtime(file)){
-                messageWrap(paste0("input data (",data.input$meta$details$file,") is newer than output control stream (",file,") Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                messageWrap(paste0("input data (",nminfo.input$tables$file,") is newer than output control stream (",file,") Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
                             fun.msg=warning)
             }
             if(mtime.inp > max(tables$meta[,file.mtime])){
-                messageWrap(paste0("input data file (",data.input$meta$details$file,") is newer than output tables. Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                messageWrap(paste0("input data file (",nminfo.input$tables$file,") is newer than output tables. Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
                             fun.msg=warning)
             }
         }
@@ -455,7 +459,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     
     if(use.input&&!any(tables$meta$full.length)) {
         ## copying so we can modify tab.row        
-        tab.row <- copy(data.input$data)
+        tab.row <- copy(data.input)
         setattr(tab.row,"file",NULL)
         setattr(tab.row,"type.file",NULL)
         setattr(tab.row,"mtime.file",NULL)
@@ -464,7 +468,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         dt.vars <- rbind(dt.vars,
                          data.table(
                              variable=colnames(tab.row)
-                            ,file=data.input$meta$details[,name]
+                            ,file=nminfo.input$tables[,name]
                             ,included=TRUE
                             ,source="input"
                             ,level="row")
@@ -510,15 +514,15 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         }
         
         if(cbind.by.filters) {
-            if(!is.null(tab.row) && nrow(data.input$data)!=nrow(tab.row)) {
+            if(!is.null(tab.row) && nrow(data.input)!=nrow(tab.row)) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.                
                 messageWrap("After applying filters to input data, the resulting number of rows differ from the number of rows in output data. Please check that input data hasn't changed since Nonmem was run, and that $INPUT section matches columns in input data. Also, NMdata may not be able to interpret your IGNORE/ACCEPT statements correctly (see ?NMapplyFilters). Please consider including a unique row identifier in both input and output data if possible.",fun.msg=stop)
             }
 
             
             dt.vars1 <- data.table(
-                variable=colnames(data.input$data)
-               ,file=data.input$meta$details[,name]
+                variable=colnames(data.input)
+               ,file=nminfo.input$tables[,name]
                ,source="input"
                ,level="row")
 
@@ -531,10 +535,10 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                              )
             
             
-            ## tab.vars <- rbind(tab.vars,data.table(var=setdiff(colnames(data.input$data),colnames(tab.row)),source="input",level="row"))
+            ## tab.vars <- rbind(tab.vars,data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",level="row"))
             tab.row <- cbind(
                 tab.row,
-                data.input$data[,!colnames(data.input$data)%in%colnames(tab.row),with=F]
+                data.input[,!colnames(data.input)%in%colnames(tab.row),with=F]
             )
 
             
@@ -548,7 +552,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             col.row.in.input <- FALSE
             ## Has this check already been done?
             if(col.row%in%cnames.input) {
-                if(data.input$data[,any(duplicated(get(col.row)))]) {
+                if(data.input[,any(duplicated(get(col.row)))]) {
                     messageWrap("use.input=TRUE and merge.by.row=TRUE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and merge.by.row=TRUE.",fun.msg=stop)
                 }
                 col.row.in.input <- TRUE
@@ -570,7 +574,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             if(use.input && col.row.in.input && col.row.in.output ){
                 ## check that we are not getting new values of
                 ## col.row from input to output.
-                if(!all( tab.row[,get(col.row)] %in% data.input$data[,get(col.row)])){
+                if(!all( tab.row[,get(col.row)] %in% data.input[,get(col.row)])){
                     messageWrap("values of unique row identifier found in output data that are not present in input data. Please use another row identifier or don't use any (not recommended).",fun.msg=stop)
                 }
             }
@@ -578,18 +582,18 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 ##### end: these checks should be in checkColRow            
             if(use.input) {
                 dt.vars1 <- data.table(
-                    variable=colnames(data.input$data)
-                   ,file=data.input$meta$details[,name]
+                    variable=colnames(data.input)
+                   ,file=nminfo.input$tables[,name]
                    ,source="input"
                    ,level="row"
                 )
                 
                 dt.vars1[,
-                         included:=variable%in%setdiff(colnames(data.input$data),colnames(tab.row))
+                         included:=variable%in%setdiff(colnames(data.input),colnames(tab.row))
                          ]
 
                 dt.vars <- rbind(dt.vars,dt.vars1)
-                tab.row <- mergeCheck(tab.row,data.input$data[,c(col.row,setdiff(colnames(data.input$data),colnames(tab.row))),with=FALSE],by=col.row,all.x=T,as.fun="data.table")
+                tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=T,as.fun="data.table")
                 
             }
             
@@ -700,7 +704,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                        ,as.fun="data.table"
                                        ,details=FALSE)
         } else {
-            data.recover <- data.input$data[!get(col.row)%in%tab.row[,get(col.row)]]
+            data.recover <- data.input[!get(col.row)%in%tab.row[,get(col.row)]]
         }
         data.recover[,(col.nmout):=FALSE]
         tab.row <- rbind(tab.row,data.recover,fill=T)
@@ -744,8 +748,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
     tables$meta[,source:="output"]
     if(use.input){
-        data.input$meta$details[,source:="input"]
-        tables.meta <- rbind(tables$meta,data.input$meta$details,fill=TRUE)
+        ## data.input$meta$tables[,source:="input"]
+        tables.meta <- rbind(tables$meta,nminfo.input$tables,fill=TRUE)
     } else {
         tables.meta <- tables$meta
     }
@@ -779,8 +783,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     
     ## if available: file info for input data
     if(use.input){
-        details$file.input <- data.input$meta$details[,file]
-        details$mtime.input <- data.input$meta$details[,file.mtime]
+        details$file.input <- nminfo.input$tables[,file]
+        details$mtime.input <- nminfo.input$tables[,file.mtime]
     }
     
 ### more meta information needed.
