@@ -67,7 +67,7 @@
 
 NMscanInput <- function(file, use.rds, file.mod,
                         dir.data=NULL, applyFilters=FALSE, translate=TRUE,
-                        details=TRUE, col.id="ID", quiet, args.fread,
+                        details=TRUE, col.id="ID", col.row, quiet, args.fread,
                         invert=FALSE,
                         as.fun) {
     
@@ -92,6 +92,12 @@ NMscanInput <- function(file, use.rds, file.mod,
     file.find.data <- file
     if(missing(as.fun)) as.fun <- NULL
     if(missing(file.mod)) file.mod <- NULL
+
+    if(missing(col.row)) {
+        col.row <- NULL
+    } 
+    col.row <- NMdataDecideOption("col.row",col.row)
+
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
     if(missing(use.rds)) use.rds <- NULL
@@ -139,31 +145,36 @@ NMscanInput <- function(file, use.rds, file.mod,
     ## rows. This is used for very litle which should be done here
     ## instead of making a deep copy.
     data.input.0 <- copy(data.input)
-    nminfo.input.0 <- NMinfo(data.input)
+    nminfo.input.0 <- NMinfoDT(data.input)
+
     
     
 ### filters must be applied here according to NM manual IV-1. They are applied before translating column names.
     if(applyFilters){
-        data.input <- NMapplyFilters(data.input,file=file,invert=invert,quiet=quiet,as.fun=identity)
+        
+        data.input <- NMapplyFilters(data.input,file=file,invert=invert,quiet=quiet,as.fun="data.table")
     }
 
     
 ### cnames.input is the names of columns as in input data file
     data.input <- NMtransInp(data.input,file,translate=translate)
-    dt.colnames <- data.input$dt.colnames
-    data.input <- data.input$data
+    ## dt.colnames <- data.input$dt.colnames
+    ## data.input <- data.input$data
+    ## data.filters <- data.input$filters
     
     
     col.id.inp <- col.id
     if(translate){
-        col.id.inp <- dt.colnames[result==col.id,datafile][1]
+        
+        col.id.inp <- NMinfoDT(data.input,"input.colnames")[result==col.id,datafile][1]
     }
     
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     
     
     if(details){
-        meta <- list()
+        
+        meta <- NMinfoDT(data.input)
 
         meta$tables <- data.table(
             source="input",
@@ -175,20 +186,26 @@ NMscanInput <- function(file, use.rds, file.mod,
             ncol=ncol(data.input.0),
             nid=NA_real_
         )
+        meta$tables$has.col.row <- NA
+        if(!is.null(col.row)){
+            meta$tables$has.col.row <- col.row%in%meta$input.colnames[,result]
+        }
+        
         setcolorder(meta$tables,intersect(c("source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype","file.mtime","file"),colnames(meta$tables)))
 
-        if(col.id%in%dt.colnames[,result]) {
+        
+        if(col.id%in%NMinfoDT(data.input,"input.colnames")[,result]) {
             meta$tables[,nid:=data.input.0[,uniqueN(get(col.id.inp))]]
         }
-        meta$NMinfo.input <- nminfo.input.0
-        
-        meta$colnames <- dt.colnames
+
+        ## meta$NMinfo.input <- nminfo.input.0
+        ## meta$colnames <- dt.colnames
 
         data.input <- as.fun(data.input)
         writeNMinfo(data.input,meta,byRef=TRUE)
         return(data.input)
     }
-    
+
     data.input <- as.fun(data.input)
     return(data.input)
 }

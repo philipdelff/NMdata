@@ -219,7 +219,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(missing(col.row)||(!is.null(col.row)&&is.na(col.row))||(is.character(col.row)&&any(col.row==""))) {
         col.row <- NULL
     }
-    
     col.row <- NMdataDecideOption("col.row",col.row)
 
     if(missing(merge.by.row)) merge.by.row <- NULL
@@ -299,14 +298,15 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                  ,as.fun="data.table"
                                  ,col.id=col.id
                                  ,details=TRUE)
-        nminfo.input <- NMinfo(data.input,as.fun="data.table")
 
+        nminfo.input <- NMinfo(data.input,as.fun="data.table")
+        
 
         ## Only used for col.row? col.row must be seen by nonmem
-##        cnames.input <- nminfo.input$colnames[!is.na(nonmem),result]
-##            NMinfo(data.input,"colnames",as.fun="data.table")[,result]
-##        cnames.input <- NMinfo(data.input)$colnames[,result]
-##        cnames.input <- data.input$meta$colnames[,result]
+        ##        cnames.input <- nminfo.input$colnames[!is.na(nonmem),result]
+        ##            NMinfo(data.input,"colnames",as.fun="data.table")[,result]
+        ##        cnames.input <- NMinfo(data.input)$colnames[,result]
+        ##        cnames.input <- data.input$meta$colnames[,result]
 
     }
 
@@ -413,17 +413,20 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 
 #### Section start: Check file modification times ####
-
-    if(check.time){    
+    time.ok <- "Not checked"
+    if(check.time){
+        time.ok <- c()
         if(!is.null(file.mod)&file.exists(file.mod)) {
             mtime.mod <- file.mtime(file.mod)
             if(mtime.mod>file.mtime(file)){
                 messageWrap(paste0("input control stream (",file.mod,") is newer than output control stream (",file,") Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
                             fun.msg=warning)
+                time.ok <- c(time.ok,"mod > lst")
             }
             if(mtime.mod>max(tables$meta[,file.mtime])){
                 messageWrap(paste0("input control stream (",file.mod,") is newer than output tables. Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
                             fun.msg=warning)
+                time.ok <- c(time.ok,"mod > output")
             }
         }
 
@@ -432,19 +435,31 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             if(mtime.inp > file.mtime(file)){
                 messageWrap(paste0("input data (",nminfo.input$tables$file,") is newer than output control stream (",file,") Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
                             fun.msg=warning)
+                time.ok <- c(time.ok,"input > lst")
             }
             if(mtime.inp > max(tables$meta[,file.mtime])){
                 messageWrap(paste0("input data file (",nminfo.input$tables$file,") is newer than output tables. Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
                             fun.msg=warning)
+                time.ok <- c(time.ok,"input > output")
             }
         }
+        
+        time.ok <-
+            if(length(time.ok)>0) {
+                paste("Warning. File modification times:", paste(time.ok,collapse=", "))
+            } else {
+                "All OK"
+            }
+        
     }
+
 
 ### Section end: Check file modification times
     
     
     if(use.input){
-        cnames.input.nonmem  <- nminfo.input$colnames[!is.na(nonmem),result]
+        
+        cnames.input.nonmem  <- nminfo.input$input.colnames[,nonmem]
         ## cnames.input <- copy(colnames(data.input$data))
         col.row.in.input <- !is.null(col.row) && col.row %in% cnames.input.nonmem 
 ### in case merge.by.row=="ifAvailable", we need to check if
@@ -456,6 +471,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         cbind.by.filters <- !merge.by.row
         ## if cbind.by.filters, we have to filter input data now.
         if(cbind.by.filters){
+            
             data.input <- NMapplyFilters(data.input,file=file,as.fun="data.table",quiet=TRUE)
         }
     }
@@ -553,14 +569,14 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             checkColRow(col.row,file)
 
 
-##            col.row.in.input <- FALSE
+            ##            col.row.in.input <- FALSE
             ## Has this check already been done?
             
             if(col.row.in.input) {
                 if(data.input[,any(duplicated(get(col.row)))]) {
                     messageWrap("use.input=TRUE and merge.by.row=TRUE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and merge.by.row=TRUE.",fun.msg=stop)
                 }
-  ##              col.row.in.input <- TRUE
+                ##              col.row.in.input <- TRUE
             } else {
                 warning("merge.by.col is TRUE, but col.row not found in _input_ data. Only output data used.")
                 use.input <- FALSE
@@ -760,19 +776,20 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     }
     setcolorder(tables.meta,c("source","name","nrow","ncol"))
 
-
-    tab.row <- as.fun(tab.row)
+    
     details <- list(
         ## call
         call=deparse(sys.call()),
         ## time of NMscanData call
-        time.call=Sys.time(),
+        time.NMscanData=Sys.time(),
         ## name of model
         model=runname,
         ## path to lst
         file.lst=file,
-        ## file info on lst
-        mtime.lst=file.info(file)$mtime,
+        ## path to mod
+        file.mod=file.mod,
+        time.ok=time.ok,
+        dir.data=dir.data,
         ## was input used?
         input.used=use.input,
         ## was input recovered?
@@ -782,6 +799,10 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         col.row=col.row,
         ## if available: path to input data
         file.input=NA_character_,
+        ## file info on lst
+        mtime.lst=file.info(file)$mtime,
+        ## file info on mod
+        mtime.mod=file.info(file.mod)$mtime,
         ## if available: mtime of input data
         mtime.input=NA_character_
     )
@@ -795,19 +816,22 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     
 
 ### more meta information needed.
-    meta <- list(details=details)
-    meta.input <- nminfo.input
-    meta.input$tables <- NULL
-    if(use.input){
-        meta <- append(meta,list(NMinfo.input=meta.input[["NMinfo.input"]]))
-        meta <- append(meta,list(colnames.input=meta.input[["colnames"]]))
-    }
-    meta <- append(meta,list(tables=tables.meta))
-    meta <- append(meta,list(columns=dt.vars))
+    ## meta <- list(details=details)
+    writeNMinfo(tab.row,list(details=details),append=FALSE)
 
+    meta.input <- NMinfoDT(data.input)
+    meta.input$tables <- NULL
+
+    if(use.input){
+        writeNMinfo(tab.row,meta.input,append=T)
+    }
+    
+    writeNMinfo(tab.row,list(tables=tables.meta),append=TRUE)
+    writeNMinfo(tab.row,list(columns=dt.vars),append=TRUE)
 
     ## setattr(tab.row,"NMdata",meta)
-    writeNMinfo(tab.row,meta,byRef=TRUE)
+    tab.row <- as.fun(tab.row)
+    ##    writeNMinfo(tab.row,meta,byRef=TRUE)
 
 ###  Section end: Format output
 

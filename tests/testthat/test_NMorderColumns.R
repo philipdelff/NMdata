@@ -18,4 +18,5 @@ test_that("last NULL",{
     expect_equal_to_reference(
         dtres
        ,fileRef)
+
 })

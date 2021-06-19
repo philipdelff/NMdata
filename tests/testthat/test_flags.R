@@ -21,6 +21,9 @@ test_that("basic",{
     pk[EVID==1,FLAG:=0]
     pk[EVID==1,flag:="Dosing"]
 
+### these were addedd to the dsCreate script
+    ## pk[,flag2:=NULL]
+    ## pk[,FLAG2:=NULL]
 
     fileRef <- "testReference/flagsAssign_1.rds"
     expect_equal_to_reference(pk,fileRef)

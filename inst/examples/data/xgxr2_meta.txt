@@ -1,4 +1,4 @@
 "parameter","value"
 "DataCreateScript","dsCreate_1"
-"CreationTime","2021-06-18 15:19:27"
+"CreationTime","2021-06-19 15:49:13"
 "writtenTo","C:/Users/delff/working_copies/NMdata/inst/examples/data/xgxr2.csv"

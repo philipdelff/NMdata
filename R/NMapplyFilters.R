@@ -54,6 +54,7 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
 ### remember to update meta. This is needed for NMscanData, not
 ### NMscanInput. We leave meta data untouched.
     details <- FALSE
+    data.meta <- list()
     if(is.list(data) && !is.data.frame(data)){
         data.meta <- data$meta
         data <- data$data
@@ -93,9 +94,12 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
         regmatches(text3, gregexpr(paste0(type.condition," *=* *\\([^)]*\\)"),text3))
     conds.expr <- do.call(c,conds.expr)
 
+    
+    
     ## translating single-charaters
     name.c1 <- colnames(data)[1]
     scs <- sub(paste0("IGNORE"," *=* *(.+)"),"\\1",conds.sc)
+    scs.all <- scs
     expressions.sc <- c()
     if(length(scs)&&grepl("@",scs)) {
 ### NM manual: @ means first non-blank is a-z or A-Z.
@@ -126,6 +130,7 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
         gsub(paste0(type.condition," *=* *\\((.+)\\)"),"\\1",conds.expr)
        ,split=",")
     conds.char <- do.call(c,conds.list)
+
     
     expressions.list <- c(paste0(
         NMcode2R(
@@ -149,7 +154,7 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     if(length(expressions.sc)) {
         conditions.all.sc <- paste0(expressions.sc,collapse="&")
     } else {
-         conditions.all.sc <- "TRUE"
+        conditions.all.sc <- "TRUE"
     }
     
     expressions.all <- NULL
@@ -176,11 +181,19 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
             data <- as.data.table(data)[eval(parse(text=expressions.all))]
         }
     }
-        
-    data <- as.fun(data)
-    if(details) {
-        data <- list(data=data,meta=data.meta)
+    
+    conds.text <- paste0(type.condition,": ",paste(conds.char,collapse=", "))
+    data.meta.filters <- data.table(
+        nonmem=c(conds.sc,
+                 conds.text),
+        R=c(conditions.all.sc,paste(expressions.all,collapse=", "))
+    )
+    if(nrow(data.meta.filters)){
+        data.meta$input.filters <- data.meta.filters
     }
     
+    data <- as.fun(data)
+    writeNMinfo(data,meta=data.meta,append=T)
     data
+ 
 }

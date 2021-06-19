@@ -19,5 +19,16 @@ test_that("basic",{
                            invert.test = TRUE)
 
     expect_equal_to_reference(pk,fileRef)
+    
+    ## pkref <- readRDS(fileRef)
+    ## setattr(pk,"NMdata",NULL)
+    ## setattr(pkref,"NMdata",NULL)
+    ## pk$FLAG2=NULL
+    ## pk$flag2=NULL
+    ## pk <- NMorderColumns(pk)    
+    ## pkref <- NMorderColumns(pkref)
+    ## ## this is because flag changed from "pre-dose sample" to "negative time"
+    ## pk$flag[pk$flag=="Negative time"] <- "Pre-dose sample"
+    ## expect_equal(pk,pkref)
 
 })

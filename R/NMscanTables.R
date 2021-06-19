@@ -113,19 +113,18 @@ file?"))
         }
      
         if(!is.null(col.row)){
-            meta[I,has.row:=col.row%in%cnames.tab.I]
+            meta[I,has.col.row:=col.row%in%cnames.tab.I]
         }
     }
-    meta[,idlevel:=firstonly|lastonly]
     
+    meta[,idlevel:=firstonly|lastonly]
+    meta[,filetype:="output"]
 
-    ## fun.has.row <- function(names) do.call(c,lapply(names,function(name)col.row%in%colnames(data[[name]])))
-    ## overview.tables[,has.row:=fun.has.row(name)]
     meta[,maxLength:=nrow==max(nrow)]
     meta[,full.length:=!idlevel&maxLength]
     
     meta[,file.mtime:=file.mtime(file)]
-    setcolorder(meta,intersect(c("source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype","file"),colnames(meta)))
+    setcolorder(meta,intersect(c("source","name","nrow","ncol","nid","firstonly","lastonly","firstlastonly","format","sep","idlevel","has.col.row","maxLength","full.length","filetype","file"),colnames(meta)))
     
     
     if(!quiet){

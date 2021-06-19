@@ -62,3 +62,7 @@ NMinfo <- function(data,info,as.fun,nullEmpty=FALSE){
     }
     out
 }
+
+
+## dont export
+NMinfoDT <- function(...) NMinfo(...,as.fun="data.table")
