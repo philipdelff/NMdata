@@ -18,8 +18,9 @@
 ##' @param backup In case you are overwriting the old file, do you
 ##'     want to backup the file (to say, backup_run001.mod)?
 ##' @param blank.append Append a blank line to output?
-##' @param test Want to see the resulting input.txt and not write it
-##'     to disk?  Default is FALSE.
+##' @param write Default is to write to file. If write=FALSE,
+##'     NMwriteSection returns the resulting input.txt without writing
+##'     it.  to disk?  Default is FALSE.
 ##'
 ##' @details The new file will be written with unix-style line endings.
 ##' @family Nonmem
@@ -32,7 +33,7 @@
 
 
 NMwriteSection <- function(file,section,newlines,list.sections,newfile,
-                          backup=TRUE,blank.append=TRUE,test=FALSE){
+                          backup=TRUE,blank.append=TRUE,write=TRUE){
 
 
     
@@ -126,7 +127,7 @@ NMwriteSection <- function(file,section,newlines,list.sections,newfile,
                                             sub("(.+/)([^/].+$)","\\1backup_\\2",x=file)
                                             )
 
-    if(test){
+    if(!write){
         return(newlines)
     }
 

@@ -15,6 +15,13 @@ library(NMdata)
 ## library(devtools)
 ## load_all("c:/Users/delff/working_copies/NMdata")
 
+NMdata_filepath <- function(...) {
+    system.file(..., package = "NMdata")
+}
+file.data <- function(...)file.path(NMdata_filepath(),"examples/data",...)
+file.nm <- function(...)file.path(NMdata_filepath(),"examples/nonmem",...)
+
+
 script.1 <- "dsCreate_1"
 
 pkpd <- as.data.table(case1_pkpd)
@@ -109,26 +116,25 @@ xgxr3.csv,duplic column names
 xgxr4.csv,1 without ROW
 ")
 
-file.nm <- function(...)file.path(NMdata_filepath(),"examples/data",...)
 
 
 dt.data[file.data=="xgxr1.csv",
         nmCode:=list(list(
-            NMwriteData(pk,file=file.nm(file.data),write.rds=F)
+            NMwriteData(pk,file=file.data(file.data),write.rds=F)
         ))]
 dt.data[file.data=="xgxr1_flag0.csv",
         nmCode:=list(list(
-            NMwriteData(pk[FLAG==0],file=file.nm(file.data),write.rds=F)
+            NMwriteData(pk[FLAG==0],file=file.data(file.data),write.rds=F)
         ))]
 
 
 dt.data[file.data=="xgxr2.csv",
         nmCode:=list(list(
-            NMwriteData(pk,file=file.nm(file.data),write.rds=T,args.rds=list(version=2),script=script.1)
+            NMwriteData(pk,file=file.data(file.data),write.rds=T,args.rds=list(version=2),script=script.1)
         ))]
 dt.data[file.data=="xgxr2_flag0.csv",
         nmCode:=list(list(
-            NMwriteData(pk[FLAG==0],file=file.nm(file.data),write.rds=T,args.rds=list(version=2),script=script.1)
+            NMwriteData(pk[FLAG==0],file=file.data(file.data),write.rds=T,args.rds=list(version=2),script=script.1)
         ))]
 
 
@@ -136,45 +142,86 @@ dt.data[file.data=="xgxr2_flag0.csv",
 pk2 <- cbind(pk,pk[,.(DOSE)])
 dt.data[file.data=="xgxr3.csv",
         nmCode:=list(list(
-            NMwriteData(pk2,file=file.nm(file.data),write.rds=T,args.rds=list(version=2))
+            NMwriteData(pk2,file=file.data(file.data),write.rds=T,args.rds=list(version=2))
         ))]
 
 ## without ROW
 dt.data[file.data=="xgxr4.csv",
         nmCode:=list(list(
-            NMwriteData(pk[,!("ROW")],file=file.nm(file.data),write.rds=T,args.rds=list(version=2))
-                        ))]
+            NMwriteData(pk[,!("ROW")],file=file.data(file.data),write.rds=T,args.rds=list(version=2))
+        ))]
 
 
 
 
 #### Update $INPUT sections, depending on data set
-dt.runs <- data.table(path=list.files(file.path(NMdata_filepath(),"examples/nonmem"),pattern="\\.mod$",full.names=T))
+## dt.runs <- data.table(path=list.files(file.nm(),pattern="\\.mod$",full.names=T))
+dt.runs <- data.table(path=list.files(file.nm(),pattern="\\.mod$|^input.txt$",full.names=T,recursive = T))
 dt.runs[,mod:=basename(path)]
-dt.runs[,ROW:=1:.N]
-dt.runs[,DATA:=paste(NMreadSection(path,section="DATA"),collapse=" "),by=.(ROW)]
-dt.runs[,path.data:={strings=strsplit(DATA," ")
-    list(strings[[1]][grepl("\\.csv",strings[[1]])])
-},by=.(ROW)]
+stopifnot(dt.runs[,uniqueN(mod)==.N])
+dt.runs[,ROW:=.I]
+dt.runs[,path.data:={NMextractDataFile(path)$string},by=ROW]
 dt.runs[,file.data:=basename(path.data)]
-
 
 dt.runs <- mergeCheck(dt.runs,dt.data,by="file.data")
 
-dt.runs[1,NMwriteSection(file=path,list.sections=get(nmCode[[1]]["INPUT"]),backup=FALSE)]
 
-dt.runs[,ROW:=.I]
 dt.runs[,{
     sec=nmCode[[1]]["INPUT"]
-    NMwriteSection(file=path,list.sections=sec,backup=FALSE)},by=ROW
-        ]
+    NMwriteSection(file=path,list.sections=sec,backup=FALSE)
+},
+by=ROW
+]
 
-### xgxgr002: CYCLE=DROP
-
-dt.runs[,ROW:=.I]
+## the old lst
 dt.runs[,paste(NMreadSection(fnExtension(path,".lst"),section="INPUT"),collapse="\n"),by=ROW]
 
+
+### xgxgr002: CYCLE=DROP
+dt.runs[mod=="xgxr002.mod",{
+    nmcode=NMwriteData(pk,file="xgxr2.csv",nm.drop="CYCLE",write.csv=FALSE)
+    NMwriteSection(file=path,list.sections=nmcode["INPUT"],
+                   backup=FALSE,write=TRUE)
+},
+by=ROW
+]
+
+
+dt.runs[mod=="input.txt",{
+    nmcode=NMwriteData(pk,file="xgxr1.csv",write.csv=FALSE,nm.rename=c(EFF0="eff0"))
+    NMwriteSection(file=path,list.sections=nmcode["INPUT"],
+                   backup=FALSE,write=TRUE)
+},
+by=ROW
+]
+
+### when run, copy 001 to 001dir
+list.files(file.nm())
+unlink(file.nm("xgxr001.mod"))
+list.files(file.nm("xgxr001dir"))
+
+unlink(file.nm("xgxr001dir"),recursive=T)
+dir.create(file.nm("xgxr001dir"))
+file.copy(
+    file.nm("xgxr001.mod")
+   ,
+    file.nm("xgxr001dir/input.txt")
+)
+## unlink("xgxr001dir/output.txt")
+file.copy(file.nm("xgxr001.lst"),file.nm("xgxr001dir/output.txt"))
+files.data <- list.files(file.nm(),pattern="^xgxr001_.*",full.names=T)
+file.copy(files.data,file.nm("xgxr001dir"))
+list.files(file.nm("xgxr001dir"))
+
+## update path to data
+sec.data <- NMreadSection(file.nm("xgxr001dir/input.txt"),section="DATA")
+data.old <- NMextractDataFile(file.nm("xgxr001dir/input.txt"))
+sec.data.new <- sub(data.old$string,paste0("../",data.old$string),sec.data)
+NMwriteSection(file.nm("xgxr001dir/input.txt"),section="DATA",newlines=sec.data.new)
+
+
 1
+
 ## lapply(dt.runs[file=="../data/xgxr1.csv",path],
 ##        NMreplacePart,list.sections=text["INPUT"])
 

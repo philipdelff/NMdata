@@ -1,7 +1,7 @@
 ;; 1. Based on: min035
 ;; 2. Description: transit compartment on insulin effect
 ;; x1. Author: user
-$PROBLEM    min007 on multiple dose levels
+$PROBLEM    using different data than min036
 ;| Variables 9/20 |;
 
 $INPUT ROW ,ID ,TIME ,EVID, CMT ,AMT RATE DV MDV ROUTE DOSEINS

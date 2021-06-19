@@ -300,7 +300,10 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                  ,col.id=col.id
                                  ,details=TRUE)
         nminfo.input <- NMinfo(data.input,as.fun="data.table")
-        cnames.input <- nminfo.input$colnames
+
+
+        ## Only used for col.row? col.row must be seen by nonmem
+##        cnames.input <- nminfo.input$colnames[!is.na(nonmem),result]
 ##            NMinfo(data.input,"colnames",as.fun="data.table")[,result]
 ##        cnames.input <- NMinfo(data.input)$colnames[,result]
 ##        cnames.input <- data.input$meta$colnames[,result]
@@ -310,9 +313,9 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 ### Section end: read input data
 
 #### Section start: col.nmout and col.model ####
-    
+    cnames.input.result <- nminfo.input$colnames[,result]
     outnames  <- unlist(lapply(tables$data,colnames))
-    allnames <- c(outnames,cnames.input)
+    allnames <- c(outnames,cnames.input.result)
 
     
     if(missing(col.model)||!is.null(col.model)) {
@@ -441,8 +444,9 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     
     
     if(use.input){
+        cnames.input.nonmem  <- nminfo.input$colnames[!is.na(nonmem),result]
         ## cnames.input <- copy(colnames(data.input$data))
-        col.row.in.input <- !is.null(col.row) && col.row %in% cnames.input 
+        col.row.in.input <- !is.null(col.row) && col.row %in% cnames.input.nonmem 
 ### in case merge.by.row=="ifAvailable", we need to check if
 ### col.row is avilable in both input and output
         if(merge.by.row=="ifAvailable"){
@@ -549,26 +553,27 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             checkColRow(col.row,file)
 
 
-            col.row.in.input <- FALSE
+##            col.row.in.input <- FALSE
             ## Has this check already been done?
-            if(col.row%in%cnames.input) {
+            
+            if(col.row.in.input) {
                 if(data.input[,any(duplicated(get(col.row)))]) {
                     messageWrap("use.input=TRUE and merge.by.row=TRUE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and merge.by.row=TRUE.",fun.msg=stop)
                 }
-                col.row.in.input <- TRUE
+  ##              col.row.in.input <- TRUE
             } else {
-                warning("use.input is TRUE, but col.row not found in _input_ data. Only output data used.")
+                warning("merge.by.col is TRUE, but col.row not found in _input_ data. Only output data used.")
                 use.input <- FALSE
             }
             
             col.row.in.output <- FALSE
             if(col.row%in%colnames(tab.row)) {
                 if( tab.row[,any(duplicated(get(col.row)))]) {
-                    messageWrap("use.input is TRUE, but col.row has duplicate values in _output_ data. col.row must be a unique row identifier. It is unique in input data, so how did rows get repeated in output data? Has input data been edited since the model was run?",fun.msg=stop)
+                    messageWrap("merge.by.col is TRUE, but col.row has duplicate values in _output_ data. col.row must be a unique row identifier. It is unique in input data, so how did rows get repeated in output data? Has input data been edited since the model was run?",fun.msg=stop)
                 }
                 col.row.in.output <- TRUE
             } else {
-                warning("use.input is TRUE, but col.row not found in _output_ data. Only output data used.")
+                warning("merge.by.col is TRUE, but col.row not found in _output_ data. Only output data used.")
                 use.input <- FALSE
             }
             if(use.input && col.row.in.input && col.row.in.output ){

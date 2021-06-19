@@ -92,6 +92,12 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMscanInput
+**** TODO argument char.comment.inp
+     User may write say # (input_data_debug.csv) in front of column
+     names in csv and then use IGNORE=# to avoid them in Nonmem. We
+     should support the same arg to remove the char from the input
+     column name. However, only relevant if column names are not
+     translated.
 **** DONE Get number of subjects as before filtering
      CLOSED: [2021-06-08 Tue 18:54]
 Challenge is that the filters are applied before the cplumn names are
@@ -119,6 +125,7 @@ look at - called col.id after the translations.
       CLOSED: [2020-09-17 Thu 15:19]
       Maybe file can be missing/NULL if file.mod is given.
 *** NMtransFilters
+**** TODO [#A] Report translation in NMmeta
 **** DONE Replace single = with ==
      CLOSED: [2020-06-15 Mon 21:05]
 According to the manual single = can be used for comparisons. This is not and
@@ -130,7 +137,15 @@ The way to change the missing string in nonmem. User could use
 NULL=NAN which would mean that NA should be interpreted as NA in R.
 **** TODO [#B] Implement or at least detect RECORDS
 A way to limit rows read into nonmem
+*** NMtransInput
+**** TODO [#B] Add comparison column input-nonmem
+***** if input!=nonmem,
+***** nonmem %in% all(input)
+***** tolower(nonmem)==tolower(input) OK
+***** diff
+***** off
 *** NMscanTables
+**** TODO [#A] include meta data as NMinfo
 **** DONE Lastonly does the same as firstonly
      CLOSED: [2020-07-13 Mon 19:37]
 *** NMscanData

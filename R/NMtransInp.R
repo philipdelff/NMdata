@@ -86,7 +86,8 @@ NMtransInp <- function(data,file,translate=TRUE){
         }
         
 
-    } 
+    }
+    ## use compareColNames?
     length.max <- max(length(cnames.input.0),
                       length(nms0),
                       length(nms1),

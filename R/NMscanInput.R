@@ -67,7 +67,7 @@
 
 NMscanInput <- function(file, use.rds, file.mod,
                         dir.data=NULL, applyFilters=FALSE, translate=TRUE,
-                        details=FALSE, col.id="ID", quiet, args.fread,
+                        details=TRUE, col.id="ID", quiet, args.fread,
                         invert=FALSE,
                         as.fun) {
     
@@ -121,19 +121,20 @@ NMscanInput <- function(file, use.rds, file.mod,
     type.file <- NA_character_
     if(use.rds && info.datafile$exists.file.rds){
         type.file <- "rds"
-        if(!quiet) message("Read rds input data file.")
+        if(!quiet) message(paste0("Read rds input data file:\n",info.datafile$path.rds,"."))
         path.data.input <- info.datafile$path.rds
         data.input <- as.data.table(readRDS(path.data.input))
     } else {
         if(file.exists(info.datafile$path)){
             type.file <- "text"
-            if(!quiet) message("Read delimited text input data file.")
+            if(!quiet) message(paste0("Read delimited text input data file:\n",info.datafile$path,"."))
             path.data.input <- info.datafile$path
             data.input <- NMreadCsv(path.data.input,args.fread=args.fread,as.fun="data.table")
         } else {
             stop(paste("Input data file not found. Was expecting to find",info.datafile$path))
         }
     }
+    
     ## keeping a backup before translating column names and filtering
     ## rows. This is used for very litle which should be done here
     ## instead of making a deep copy.
@@ -175,6 +176,8 @@ NMscanInput <- function(file, use.rds, file.mod,
             ncol=ncol(data.input.0),
             nid=NA_real_
         )
+        setcolorder(meta$tables,intersect(c("source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype","file.mtime","file"),colnames(meta$tables)))
+
         if(col.id%in%dt.colnames[,result]) {
             meta$tables[,nid:=data.input.0[,uniqueN(get(col.id.inp))]]
         }

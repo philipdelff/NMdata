@@ -7,6 +7,8 @@ NMdata_filepath <- function(...) {
     system.file(..., package = "NMdata")
 }
 
+file.nm <- function(...) NMdata_filepath("examples/nonmem",...)
+file.data <- function(...) NMdata_filepath("examples/data",...)
 
 fix.time <- function(x){
     meta.x <- attr(x,"NMdata")
@@ -363,20 +365,23 @@ test_that("use as.fun to get a tibble",{
 
 
 ## test the dir structure with input.txt/output.txt 
-## load_all("../../")
+
 test_that("dir structure with input.txt/output.txt",{
     ## options(NMdata.as.fun="none")
     
     ## options(NMdata.file.mod=function(file) file.path(dirname(file),"input.txt"))
     ## options(NMdata.modelname=function(file) basename(dirname(normalizePath(file))))
 
+    load_all()
+    NMdataConf(reset=TRUE)
     NMdataConf(as.fun="data.table")
     NMdataConf(file.mod=function(file) file.path(dirname(file),"input.txt"))
     NMdataConf(modelname=function(file) basename(dirname(normalizePath(file))))
     
-    filedir.lst <- NMdata_filepath("examples/nonmem/xgxr001dir/output.txt")
-    res1dir <- NMscanData(filedir.lst,check.time = FALSE)
-    expect_equal(attr(res1dir,"meta")$details$model,"xgxr001dir")
+    filedir.lst <- file.nm("xgxr001dir/output.txt")
+    res1dir <- NMscanData(filedir.lst,check.time = FALSE,merge.by.row=F)
+    
+    expect_equal(NMinfo(res1dir,"details")$model,"xgxr001dir")
     umod <- unique(res1dir[,model])
     expect_equal(length(umod),1)
     expect_equal(umod,"xgxr001dir")
