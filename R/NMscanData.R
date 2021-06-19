@@ -792,12 +792,18 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         details$mtime.input <- nminfo.input$tables[,file.mtime]
     }
     
+    
+
 ### more meta information needed.
-    meta <- list(
-        details=details
-       ,tables=tables.meta
-       ,columns=dt.vars
-    )
+    meta <- list(details=details)
+    meta.input <- nminfo.input
+    meta.input$tables <- NULL
+    if(use.input){
+        meta <- append(meta,list(NMinfo.input=meta.input[["NMinfo.input"]]))
+        meta <- append(meta,list(colnames.input=meta.input[["colnames"]]))
+    }
+    meta <- append(meta,list(tables=tables.meta))
+    meta <- append(meta,list(columns=dt.vars))
 
 
     ## setattr(tab.row,"NMdata",meta)

@@ -169,7 +169,6 @@ test_that("Only a firstonly without ID but with ROW",{
         )
     )
 
-    ##    load_all()
     res1 <- NMscanData(file=file.lst,merge.by.row=TRUE,col.row="ROW",check.time = FALSE)
     fix.time(res1)
     expect_equal_to_reference(res1,fileRef,version=2)
@@ -416,7 +415,9 @@ test_that("Duplicate columns in input data",{
 
     ## load_all("../../")
     ## debugonce(NMscanData)
-    res <- expect_warning(NMscanData(file=file.lst,merge.by.row=FALSE,check.time = FALSE))
+    res <- expect_warning(
+        NMscanData(file=file.lst,merge.by.row=FALSE,check.time = FALSE)
+    )
     fix.time(res)
     ## names(res$row)
     

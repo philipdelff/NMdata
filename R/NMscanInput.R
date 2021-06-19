@@ -153,11 +153,10 @@ NMscanInput <- function(file, use.rds, file.mod,
     dt.colnames <- data.input$dt.colnames
     data.input <- data.input$data
     
-
     
     col.id.inp <- col.id
     if(translate){
-        col.id.inp <- dt.colnames[result==col.id,input][1]
+        col.id.inp <- dt.colnames[result==col.id,datafile][1]
     }
     
     as.fun <- NMdataDecideOption("as.fun",as.fun)

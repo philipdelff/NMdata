@@ -38,11 +38,15 @@ NMinfo <- function(data,info,as.fun,nullEmpty=FALSE){
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
     if (inherits(data, "NMdata")) {
-    if(!is.null(info)){
-        if(!info%in%c("details","columns","tables")){
-            stop("For NMdata objects: If 'info' is supplied, it has to be one of 'details', 'columns', 'tables'.")
+        if(!is.null(info)){
+            nms.meta <- names(attributes(data)$NMdata)
+            ## if(!info%in%c("details","columns","tables")){
+            ##     stop("For NMdata objects: If 'info' is supplied, it has to be one of 'details', 'columns', 'tables'.")
+            ## }
+            if(!info%in%nms.meta){
+                stop("Requested info not available. Available",paste(nms.meta,collapse=", "))
+            }
         }
-    }
     }
     
     

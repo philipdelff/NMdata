@@ -87,19 +87,25 @@ NMtransInp <- function(data,file,translate=TRUE){
         
 
     }
-    ## use compareColNames?
-    length.max <- max(length(cnames.input.0),
-                      length(nms0),
-                      length(nms1),
-                      length(colnames(data))
+    
+    length.max <- max(length(cnames.input.0), ## datafile
+                      length(nms0),       ## DATA
+                      length(nms1),       ## nonmem
+                      length(colnames(data)) ## result
                       )
-    dt.colnames <- data.table(input=c(cnames.input.0,rep(NA_character_,length.max-length(cnames.input.0))),
-                              nonmem=c(nms0,rep(NA_character_,length.max-length(nms0))),
-                              ## result=c(nms1,rep(NA_character_,length.max-length(nms1))),
+    dt.colnames <- data.table(datafile=c(cnames.input.0,rep(NA_character_,length.max-length(cnames.input.0))),
+                              DATA=c(nms0,rep(NA_character_,length.max-length(nms0))),
+                              nonmem=c(nms1,rep(NA_character_,length.max-length(nms1))),
                               ## result.all=c(colnames(data),rep(NA_character_,length.max-length(colnames(data))))
                               result=c(colnames(data),rep(NA_character_,length.max-length(colnames(data))))
                               )
 
+    
+    ## compare: OK, diff, off
+    dt.colnames[tolower(datafile)==tolower(DATA),compare:="OK"]
+    dt.colnames[tolower(datafile)!=tolower(DATA),compare:="diff"]
+    dt.colnames[compare=="dir"&tolower(DATA)%in%tolower(datafile),compare:="off"]
+    dt.colnames[,compare:=factor(compare,levels=c("OK","diff","off"))]
 
     list(data=data,dt.colnames=dt.colnames)
 }
