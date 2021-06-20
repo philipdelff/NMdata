@@ -1,60 +1,66 @@
 ##' read input data and translate column names according to the $INPUT section
 ##' 
-##' @description Based on a nonmem run (lst and/or mod file), this function
-##'     finds the input data and reads it. It reads the data like the nonmem run
-##'     by applying DROP/SKIP arguments and alternative naming of columns in the
-##'     nonmem run.
-##' @param file a .lst (output) or a .mod (input) control stream file. The
-##'     filename does not need to end in .lst. It is recommended to use the
-##'     output control stream because it reflects the model as it was run rather
-##'     than how it is planned for next run. However, see file.mod and dir.data.
-##' @param file.mod The input control stream file path. Default is to look for
-##'     \"file\" with extension changed to .mod (PSN style). You can also supply
-##'     the path to the file, or you can provide a function that translates the
-##'     output file path to the input file path. If dir.data is missing, the
-##'     input control stream is needed. This is because the .lst does not
-##'     contain the path to the data file. The .mod file is only used for
-##'     finding the data file. How to interpret the datafile is read from the
-##'     .lst file. The default can be configured using NMdataConf. See dir.data
-##'     too.
-##' @param dir.data The data directory can only be read from the control stream
-##'     (.mod) and not from the output file (.lst). So if you only have the
-##'     output file, use dir.data to tell in which directory to find the data
-##'     file. If dir.data is provided, the .mod file is not used at all.
-##' @param use.rds If an rds file is found with the exact same name (except for
-##'     .rds instead of say .csv) as the text file mentioned in the Nonmem
-##'     control stream, should this be used instead? The default is yes, and
-##'     NMwriteData will create this by default too.
-##' @param applyFilters If TRUE (default), IGNORE and ACCEPT statements in the
-##'     nonmem control streams are applied before returning the data.
-##' @param translate If TRUE (default), data columns are named as interpreted by
-##'     Nonmem (in $INPUT). If data file contains more columns than mentioned in
-##'     $INPUT, these will be named as in data file (if data file contains named
-##'     variables).
-##' @param details If TRUE, metadata is added to output. In this case, you get a
-##'     list. Typically, this is mostly useful if programming up functions which
-##'     behavior must depend on properties of the output. See details.
-##' @param col.id The name of the subject ID column. Only used if details=TRUE
-##'     to summarize number of subjects in data.
+##' @description Based on a nonmem run (lst and/or mod file), this
+##'     function finds the input data and reads it. It reads the data
+##'     like the nonmem run by applying DROP/SKIP arguments and
+##'     alternative naming of columns in the nonmem run.
+##' @param file a .lst (output) or a .mod (input) control stream
+##'     file. The filename does not need to end in .lst. It is
+##'     recommended to use the output control stream because it
+##'     reflects the model as it was run rather than how it is planned
+##'     for next run. However, see file.mod and dir.data.
+##' @param file.mod The input control stream file path. Default is to
+##'     look for \"file\" with extension changed to .mod (PSN
+##'     style). You can also supply the path to the file, or you can
+##'     provide a function that translates the output file path to the
+##'     input file path. If dir.data is missing, the input control
+##'     stream is needed. This is because the .lst does not contain
+##'     the path to the data file. The .mod file is only used for
+##'     finding the data file. How to interpret the datafile is read
+##'     from the .lst file. The default can be configured using
+##'     NMdataConf. See dir.data too.
+##' @param dir.data The data directory can only be read from the
+##'     control stream (.mod) and not from the output file (.lst). So
+##'     if you only have the output file, use dir.data to tell in
+##'     which directory to find the data file. If dir.data is
+##'     provided, the .mod file is not used at all.
+##' @param use.rds If an rds file is found with the exact same name
+##'     (except for .rds instead of say .csv) as the text file
+##'     mentioned in the Nonmem control stream, should this be used
+##'     instead? The default is yes, and NMwriteData will create this
+##'     by default too.
+##' @param applyFilters If TRUE (default), IGNORE and ACCEPT
+##'     statements in the nonmem control streams are applied before
+##'     returning the data.
+##' @param translate If TRUE (default), data columns are named as
+##'     interpreted by Nonmem (in $INPUT). If data file contains more
+##'     columns than mentioned in $INPUT, these will be named as in
+##'     data file (if data file contains named variables).
+##' @param details If TRUE, metadata is added to output. In this case,
+##'     you get a list. Typically, this is mostly useful if
+##'     programming up functions which behavior must depend on
+##'     properties of the output. See details.
+##' @param col.id The name of the subject ID column. Optional and only
+##'     used to calculate number of subjects in data. Default is
+##'     modified by NMdataConf.
+##' @param col.row The name of the row counter column. Optional and only
+##'     used to check whether the row counter is in the data.
 ##' @param quiet Default is to inform a little, but TRUE is useful for
 ##'     non-interactive stuff.
 ##' @param args.fread List of arguments passed to fread. Notice that
 ##'     except for "input" and "file", you need to supply all
 ##'     arguments to fread if you use this argument. Default values
 ##'     can be configured using NMdataConf.
-##' @param as.fun The default is to return data as a data.frame. Pass a function
-##'     (say tibble::as_tibble) in as.fun to convert to something else. If
-##'     data.tables are wanted, use as.fun="data.table". The default can be
-##'     configured using NMdataConf.
-##' @param invert If TRUE, the data rows that are dismissed by the Nonmem data
-##'     filters (ACCEPT and IGNORE) and only this will be returned. Only used if
-##'     applyFilters is TRUE.
-##' @details The line containing whom the license is issued to cannot be
-##'     retrieved. Special characters like accents and the registerred trademark
-##'     (R) sign are likely to cause trouble if locales are changed (say from a
-##'     linux system running Nonmem to a Windows or Mac running R), so this line
-##'     is discarded. Columns that are dropped (using DROP or SKIP in $INPUT) in
-##'     the model will be included in the output.
+##' @param as.fun The default is to return data as a data.frame. Pass
+##'     a function (say tibble::as_tibble) in as.fun to convert to
+##'     something else. If data.tables are wanted, use
+##'     as.fun="data.table". The default can be configured using
+##'     NMdataConf.
+##' @param invert If TRUE, the data rows that are dismissed by the
+##'     Nonmem data filters (ACCEPT and IGNORE) and only this will be
+##'     returned. Only used if applyFilters is TRUE.
+##' @details Columns that are dropped (using DROP or SKIP in $INPUT)
+##'     in the model will be included in the output.
 ##'
 ##' It may not work if a column is dropped, and a new column is
 ##' renamed to the same name. Say you have DV and CONC as the only two
@@ -74,6 +80,7 @@ NMscanInput <- function(file, use.rds, file.mod,
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
+    datafile <- NULL
     nid <- NULL
     input <- NULL
     result <- NULL

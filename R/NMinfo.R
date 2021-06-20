@@ -17,7 +17,7 @@
 ##'     "details".
 ##' @export
 
-NMinfo <- function(data,info,as.fun,nullEmpty=FALSE){
+NMinfo <- function(data,info,as.fun){
 
 
     ## if (!inherits(data, "NMdata")) {

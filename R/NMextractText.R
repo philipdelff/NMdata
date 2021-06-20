@@ -49,7 +49,7 @@
 ##'     then be called by NMreadSection.
 ##' @family Nonmem
 ##' @examples
-##' NMreadSection(system.file("examples/nonmem/run001.lst", package = "NMdata"),section="DATA")
+##' NMreadSection(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"),section="DATA")
 ##' @export
 
 

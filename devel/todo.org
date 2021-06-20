@@ -397,3 +397,17 @@ exported so it's not very important.
     CLOSED: [2021-04-12 Mon 16:03]
 *** DONE flagsAssign cannot handle missing subset
     CLOSED: [2021-04-12 Mon 16:03]
+
+
+* temp
+  Undocumented arguments in documentation object 'NMinfo'
+  'nullEmpty'
+
+Undocumented arguments in documentation object 'NMscanInput'
+  'col.row'
+
+Undocumented arguments in documentation object 'NMscanTables'
+  'col.row'
+
+Undocumented arguments in documentation object 'NMstamp'
+  'time' 'byRef'

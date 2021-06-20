@@ -35,11 +35,14 @@ NMdataConf.}
 
 \item{tab.count}{Nonmem includes a counter of tables in the
 written data files. These are often not useful. However, if
-tab.count is TRUE (not default), this will be carried forward and
-added as a column called TABLENO.}
+tab.count is TRUE (not default), this will be carried forward
+and added as a column called TABLENO.}
 
 \item{col.id}{name of the subject ID column. Used for calculation
 of the number of subjects in each table.}
+
+\item{col.row}{The name of the row counter column. Optional and only
+used to check whether the row counter is in the data.}
 }
 \value{
 A list of all the tables as data.frames. If details=TRUE,

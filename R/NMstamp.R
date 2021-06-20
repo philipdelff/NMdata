@@ -8,9 +8,10 @@
 ##'
 ##' @param data The dataset to stamp.
 ##' @param script path to the script where the dataset was generated.
+##' @param time the time stamp to attach. Default is to use cpu clock.
 ##' @param ... other named metadata elements to add to the dataset. Example:
 ##'     Description="PK data for ph1 trials in project".
-##' @seealso objInfo
+##' @seealso NMinfo
 ##' @family DataCreate
 ##' x=1
 ##' NMstamp(x,script="example.R",description="Example data")
@@ -18,22 +19,24 @@
 ##' @export
 
 
-NMstamp <- function(data,script,time=Sys.time(),...,byRef=FALSE){
+NMstamp <- function(data,script,time=Sys.time(),...){
+    byRef <- TRUE
     if(byRef){
-                writeNMinfo(data,
-                list(dataCreate=list(
-                    DataCreateScript=script,
-                    CreationTime=Sys.time(),
-                    ...
-                )),byRef=byRef
-                )
+        writeNMinfo(data,
+                    list(dataCreate=list(
+                             DataCreateScript=script,
+                             CreationTime=Sys.time(),
+                             ...
+                         )),byRef=byRef
+                    )
         return(invisible(data))
     } else {
         data <- writeNMinfo(data,
-                            list(DataCreateScript=script,
-                                 CreationTime=Sys.time(),
-                                 ...
-                                 ))
+                            list(dataCreate=list(
+                                     DataCreateScript=script,
+                                     CreationTime=Sys.time(),
+                                     ...
+                                 )),byRef=byRef)
         return(data)
     }
     

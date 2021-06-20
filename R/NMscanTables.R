@@ -10,8 +10,8 @@
 ##'     NMdataConf.
 ##' @param tab.count Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. However, if
-##'     tab.count is TRUE (not default), this will be carried forward and
-##'     added as a column called TABLENO.
+##'     tab.count is TRUE (not default), this will be carried forward
+##'     and added as a column called TABLENO.
 ##' @param col.id name of the subject ID column. Used for calculation
 ##'     of the number of subjects in each table.
 ##' @param as.fun The default is to return data as a data.frame. Pass
@@ -19,6 +19,8 @@
 ##'     something else. If data.tables are wanted, use
 ##'     as.fun="data.table". The default can be configured using
 ##'     NMdataConf.
+##' @param col.row The name of the row counter column. Optional and only
+##'     used to check whether the row counter is in the data.
 ##' @return A list of all the tables as data.frames. If details=TRUE,
 ##'     this is in one element, called data, and meta is another
 ##'     element. If not, only the element corresponding to data is
@@ -31,6 +33,10 @@ NMscanTables <- function(file,details=F,as.fun,quiet,tab.count=FALSE,col.id="ID"
 
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
+    has.col.row <- NULL
+    filetype <- NULL
+    maxLength <- NULL
+    full.length <- NULL
     firstlastonly <- NULL
     firstonly <- NULL
     idlevel <- NULL

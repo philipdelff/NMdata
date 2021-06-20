@@ -51,7 +51,7 @@ The new file will be written with unix-style line endings.
 }
 \examples{
 newlines <- "$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"
-NMwriteSection(file=system.file("examples/nonmem/run001.mod", package = "NMdata"),
+NMwriteSection(file=system.file("examples/nonmem/xgxr001.mod", package = "NMdata"),
 section="EST", newlines=newlines,newfile=NULL)
 }
 \seealso{

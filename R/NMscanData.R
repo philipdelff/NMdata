@@ -168,6 +168,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     maxLength <- NULL
     name <- NULL
     nmout <- NULL
+    nonmem <- NULL
     result <- NULL
     type <- NULL
     var <- NULL
@@ -447,7 +448,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         
         time.ok <-
             if(length(time.ok)>0) {
-                paste("Warning. File modification times:", paste(time.ok,collapse=", "))
+                paste("Warning(s):", paste(time.ok,collapse=", "))
             } else {
                 "All OK"
             }
@@ -526,12 +527,14 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             } else if(length(cols.row.input)) {
                 msg0 <- paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in input data. If this column or one of these columns is not modified by the Nonmem run, consider adding it to a row-level output table and using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.input,collapse=", "))
             } else {
-                msg0 <- "\nInput data columns will be appended to output data. However, it is recommended to use a unique row identifier (typically a counter but only required to be unique for each row) for a robust merge of input and output data. See argument col.row."
+                msg0 <- ""
             }
-            msg <- paste0(msg0,"\n",
-                          "To skip this check, please use merge.by.row=TRUE or merge.by.row=FALSE.")
-            messageWrap(msg,fun.msg=message)
-            cat("\n")
+            if(msg0!=""){
+                msg <- paste0(msg0,"\n",
+                              "To skip this check, please use merge.by.row=TRUE or merge.by.row=FALSE.")
+                messageWrap(msg,fun.msg=message)
+                cat("\n")
+            }
         }
         
         if(cbind.by.filters) {

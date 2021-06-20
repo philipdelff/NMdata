@@ -6,7 +6,7 @@ rmarkdown::html_vignette:
 Suggests: markdown
 VignetteBuilder: knitr
 vignette: >
-  %\VignetteIndexEntry{Automated and general reader of Nonmem data}
+  %\VignetteIndexEntry{NMscanData: Scan for and combine all output and input data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 header-includes:
@@ -14,6 +14,7 @@ header-includes:
 ---
 
 ```{r, include = FALSE}
+knitr::opts_chunk$set(dev = "cairo_pdf")
 knitr::opts_chunk$set(
                       collapse = TRUE
                      ,comment = "#>"

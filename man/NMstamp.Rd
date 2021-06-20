@@ -4,12 +4,14 @@
 \alias{NMstamp}
 \title{stamp a dataset or any other object}
 \usage{
-NMstamp(data, script, time = Sys.time(), ..., byRef = FALSE)
+NMstamp(data, script, time = Sys.time(), ...)
 }
 \arguments{
 \item{data}{The dataset to stamp.}
 
 \item{script}{path to the script where the dataset was generated.}
+
+\item{time}{the time stamp to attach. Default is to use cpu clock.}
 
 \item{...}{other named metadata elements to add to the dataset. Example:
 Description="PK data for ph1 trials in project".}
@@ -23,7 +25,7 @@ NMstamp can be accessed using the function NMinfo.
 NMstamp modifies the meta data by reference. See example.
 }
 \seealso{
-objInfo
+NMinfo
 }
 \concept{DataCreate
 x=1

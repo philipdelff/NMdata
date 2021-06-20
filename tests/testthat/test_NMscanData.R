@@ -15,6 +15,7 @@ fix.time <- function(x){
     ## meta.x$time.call <- as.POSIXct("2020-02-01 00:01:01",tz="UTC")
     meta.x$details$time.NMscanData <- NULL
     meta.x$details$file.lst <- NULL
+    meta.x$details$file.mod <- NULL
     meta.x$details$file.input <- NULL
     meta.x$details$mtime.input <- NULL
     meta.x$details$mtime.lst <- NULL
@@ -28,7 +29,8 @@ NMdataConf(reset=TRUE)
 test_that("basic",{
 
     fileRef <- "testReference/NMscanData1.rds"
-
+    resRef <- if(file.exists(fileRef)) readRDS(fileRef) else NULL
+    
     ## file.lst <- "../../inst/examples/nonmem/run001.lst"
     ## file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
@@ -82,7 +84,6 @@ test_that("Multiple output table formats",{
     fileRef <- "testReference/NMscanData3.rds"
     file.lst <- NMdata_filepath("examples/nonmem/xgxr003.lst")
 
-    load_all()
 
     ## res <- NMscanData(file=file.lst)
     res <- NMscanData(file=file.lst, check.time = FALSE, merge.by.row=FALSE)
@@ -415,7 +416,6 @@ test_that("Duplicate columns in input data",{
     ## res <- NMscanData(file=file.lst)
     ## res <- NMscanData(file=file.lst)
 
-    ## load_all("../../")
     ## debugonce(NMscanData)
     res <- expect_warning(
         NMscanData(file=file.lst,merge.by.row=FALSE,check.time = FALSE)
@@ -429,7 +429,6 @@ test_that("Duplicate columns in input data",{
 
 ### this is not a real test. Need to be able to test how the merges were performed. 
 ## test_that("col.row and merge.by.row=TRUE from NMdataConf",{
-##     load_all("../../")
 
 ##     NMdataConf(reset=TRUE)
 ##     NMdataConf(col.row="ROW", merge.by.row=TRUE)
@@ -537,7 +536,7 @@ test_that("Including a redundant output table",{
     NMdataConf(as.fun="data.table")
 
     fileRef <- "testReference/NMscanData24.rds"
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr019.lst")
+    file.lst <- file.nm("xgxr019.lst")
 
     ## notice no cols are taken from the redundant table - correct
     res1 <- NMscanData(file=file.lst,merge.by.row="ifAvailable",as.fun="data.table",check.time = FALSE)

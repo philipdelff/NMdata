@@ -12,6 +12,15 @@ NMtransInp <- function(data,file,translate=TRUE){
 
     ## data is assumed to be a data.table, and a data.table is returned.
 
+#### Section start: Dummy variables, only not to get NOTE's in package checks ####
+    datafile <- NULL
+    DATA <- NULL
+    compare <- NULL    
+
+
+### Section end: Dummy variables, only not to get NOTE's in package checks ####
+
+
 
     ## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    
     lines <- NMreadSection(file,section="INPUT",keepName=FALSE,keepComments=FALSE,cleanSpaces=TRUE)
