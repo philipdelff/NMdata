@@ -4,7 +4,7 @@
 \alias{NMinfo}
 \title{Get metadata from an NMdata object}
 \usage{
-NMinfo(data, info, as.fun)
+NMinfo(data, info, as.fun, nullEmpty = FALSE)
 }
 \arguments{
 \item{data}{An object of class NMdata (a result of NMscanData)}

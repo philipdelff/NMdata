@@ -13,11 +13,12 @@ file.data <- function(...) NMdata_filepath("examples/data",...)
 fix.time <- function(x){
     meta.x <- attr(x,"NMdata")
     ## meta.x$time.call <- as.POSIXct("2020-02-01 00:01:01",tz="UTC")
-    meta.x$details$time.call <- NULL
+    meta.x$details$time.NMscanData <- NULL
     meta.x$details$file.lst <- NULL
     meta.x$details$file.input <- NULL
     meta.x$details$mtime.input <- NULL
     meta.x$details$mtime.lst <- NULL
+    meta.x$details$mtime.mod <- NULL
     meta.x$tables$file <- NULL
     meta.x$tables$file.mtime <- NULL
     setattr(x,"NMdata",meta.x)
@@ -135,7 +136,7 @@ test_that("merge by filters or not",{
     ## NMreadSection(file1.lst,section="PROBLEM")
     ## NMreadSection(file2.lst,section="PROBLEM")
 
-res1 <- NMscanData(file=file1.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE)
+    res1 <- NMscanData(file=file1.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE)
     res2 <- NMscanData(file=file2.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE)
     setnames(res2,"EFF0","eff0",skip_absent=T)
     setcolorder(res1,colnames(res2))
@@ -239,13 +240,6 @@ test_that("FO and row-level output. No ID, no row. cbind.by.filters=T",{
     expect_equal_to_reference(
         res1,fileRef,version=2
     )
-
-names(attributes(readRDS(fileRef))$meta)
-names(attributes(res1)$NMdata)
-
-attributes(readRDS(fileRef))$meta$columns
-attributes(res1)$NMdata$columns
-
 
 })
 

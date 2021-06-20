@@ -159,7 +159,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     ID.jump <- NULL
     firstlastonly <- NULL
     firstonly <- NULL
-    has.row <- NULL
+    has.col.row <- NULL
     full.length <- NULL
     idlevel <- NULL
     included <- NULL
@@ -259,7 +259,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     overview.tables <- tables$meta
     
 ### combine full tables into one
-    col.row.in.output <- any(overview.tables[,full.length]) && overview.tables[,sum(has.row)]
+    col.row.in.output <- any(overview.tables[,full.length]) && overview.tables[,sum(has.col.row)]
+
     
     if(use.input && is.logical(merge.by.row) && merge.by.row) {
         if(any(overview.tables[,full.length])&&!col.row.in.output) {

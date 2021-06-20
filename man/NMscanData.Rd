@@ -125,7 +125,7 @@ NMscanData output it can be meaningless because multiple
 tables can be combined so this information is not unique
 across those source tables. However, if tab.count is TRUE (not
 default), this will be carried forward and added as a column
-called TABLENO.}
+called TABLENO. The argument is passed to NMscanTables.}
 
 \item{order.columns}{If TRUE (default), NMorderColumns is used to
 reorder the columns before returning the data. NMorderColumns

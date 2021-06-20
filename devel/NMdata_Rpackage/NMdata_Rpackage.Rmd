@@ -761,7 +761,7 @@ Using a unique row identifier for merging data is highly recommended:
 \footnotesize
 <!-- file1.lst <- system.file("examples/nonmem/xgxr001.lst", package="NMdata") -->
 ```{r}
-res1 <- NMscanData(file1.lst,merge.by.row=TRUE)
+res1 <- NMscanData(file.nm("xgxr001.lst"),merge.by.row=TRUE)
 class(res0)
 ```
 \normalsize
@@ -1138,6 +1138,9 @@ NMdataConf(as.fun="data.table"
           ,merge.by.row=TRUE
 ### You can switch this when script is final
           ,quiet=FALSE)
+### shortcuts to examples in NMdata
+file.data <- function(...) system.file("examples/data",..., package="NMdata")
+file.nm <- function(...) system.file("examples/nonmem",..., package="NMdata")
 ```
 
 ::::

@@ -4,7 +4,15 @@
 \alias{NMscanTables}
 \title{read all output data tables in nonmem run}
 \usage{
-NMscanTables(file, details = F, as.fun, quiet, tab.count = TRUE, col.id = "ID")
+NMscanTables(
+  file,
+  details = F,
+  as.fun,
+  quiet,
+  tab.count = FALSE,
+  col.id = "ID",
+  col.row
+)
 }
 \arguments{
 \item{file}{the nonmem file to read (normally .mod or .lst)}
@@ -27,7 +35,7 @@ NMdataConf.}
 
 \item{tab.count}{Nonmem includes a counter of tables in the
 written data files. These are often not useful. However, if
-tab.count is TRUE (default), this will be carried forward and
+tab.count is TRUE (not default), this will be carried forward and
 added as a column called TABLENO.}
 
 \item{col.id}{name of the subject ID column. Used for calculation

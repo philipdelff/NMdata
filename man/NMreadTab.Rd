@@ -11,12 +11,15 @@ NMreadTab(file, tab.count = TRUE, quiet, as.fun, ...)
 
 \item{tab.count}{Nonmem includes a counter of tables in the
 written data files. These are often not useful. However, if
-tab.count is TRUE (default), this will be carried forward and
-added as a column called TABLENO.}
+tab.count is TRUE (default), a counter of tables is included
+as a column called TABLENO. Just notice, the table numbers in
+TABLENO are just cumulatively counting the number of tables
+reported in the file. TABLENO is not true to the actual table
+number as given by Nonmem.}
 
-\item{quiet}{logical stating whether or not information is prignted
-about what is being done. Default can be configured using
-NMdataConf.}
+\item{quiet}{logical stating whether or not information is
+prignted about what is being done. Default can be configured
+using NMdataConf.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to

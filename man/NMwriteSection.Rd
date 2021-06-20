@@ -12,7 +12,7 @@ NMwriteSection(
   newfile,
   backup = TRUE,
   blank.append = TRUE,
-  test = FALSE
+  write = TRUE
 )
 }
 \arguments{
@@ -38,8 +38,9 @@ want to backup the file (to say, backup_run001.mod)?}
 
 \item{blank.append}{Append a blank line to output?}
 
-\item{test}{Want to see the resulting input.txt and not write it
-to disk?  Default is FALSE.}
+\item{write}{Default is to write to file. If write=FALSE,
+NMwriteSection returns the resulting input.txt without writing
+it.  to disk?  Default is FALSE.}
 }
 \description{
 Just give the section name, the new lines and the file path, and the
