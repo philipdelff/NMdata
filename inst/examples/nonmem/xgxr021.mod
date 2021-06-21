@@ -1,8 +1,8 @@
 $PROBLEM    Demo run. Multiple tables, meta data.
 
-;@ Variables 17/20 @;
-$INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY
-BLQ CYCLE DOSE PART PROFDAY PROFTIME WEIGHTB eff0
+;@ Variables 18/20 @;
+$INPUT ROW     ID   NOMTIME  TIME  EVID  CMT       AMT       DV  FLAG  STUDY
+       HEIGHT  BLQ  CYCLE    DOSE  PART  PROFDAY  PROFTIME  EFF0
 
 $DATA     ../data/xgxr2.csv IGNORE=@ IGNORE=(FLAG.NE.0)
 
@@ -16,21 +16,21 @@ V3=THETA(4)*EXP(ETA(4))
 Q=THETA(5)*EXP(ETA(5))
 
 $ERROR
-  IPRED=F
-  IRES=DV-IPRED
-
+  IPRED = F
+  IRES  = DV-IPRED
+  
   IF (IPRED.GT.1) THEN
     W = SQRT(IPRED**2*SIGMA(1,1)**2 + SIGMA(2,2)**2)
   ELSE
-    W=1
+    W = 1
   ENDIF
 
-  IWRES=IRES/W
-  Y=F+F*ERR(1)+ERR(2)
+  IWRES = IRES/W
+  Y     = F+F*ERR(1)+ERR(2)
 
 ;-----------------------INITIAL ESTIMATES---------------------------------
 $THETA  (0,0.9)           ; POPKA
-$THETA  (0,4.2)             ; POPCL
+$THETA  (0, 4.2) ; POPCL
 $THETA  (0,3.6)             ; POPV2
 $THETA  (0,5.81)             ; POPV3
 $THETA  (0,3.44)           ; POPQ 
