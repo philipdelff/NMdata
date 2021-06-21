@@ -197,6 +197,10 @@ NMscanInput <- function(file, use.rds, file.mod,
         if(!is.null(col.row)){
             meta$tables$has.col.row <- col.row%in%meta$input.colnames[,result]
         }
+        meta$tables$has.col.id <- NA
+        if(!is.null(col.id)){
+            meta$tables$has.col.id <- col.id%in%meta$input.colnames[,result]
+        }
         
         setcolorder(meta$tables,intersect(c("source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype","file.mtime","file"),colnames(meta$tables)))
 

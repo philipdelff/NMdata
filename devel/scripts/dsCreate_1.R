@@ -117,24 +117,24 @@ xgxr4.csv,1 without ROW
 ")
 
 
-
+writeOutput <- FALSE
 dt.data[file.data=="xgxr1.csv",
         nmCode:=list(list(
-            NMwriteData(pk,file=file.data(file.data),write.rds=F)
+            NMwriteData(pk,file=file.data(file.data),write.csv=writeOutput,write.rds=F)
         ))]
 dt.data[file.data=="xgxr1_flag0.csv",
         nmCode:=list(list(
-            NMwriteData(pk[FLAG==0],file=file.data(file.data),write.rds=F)
+            NMwriteData(pk[FLAG==0],file=file.data(file.data),write.csv=writeOutput,write.rds=F)
         ))]
 
 
 dt.data[file.data=="xgxr2.csv",
         nmCode:=list(list(
-            NMwriteData(pk,file=file.data(file.data),write.rds=T,args.rds=list(version=2),script=script.1)
+            NMwriteData(pk,file=file.data(file.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2),script=script.1)
         ))]
 dt.data[file.data=="xgxr2_flag0.csv",
         nmCode:=list(list(
-            NMwriteData(pk[FLAG==0],file=file.data(file.data),write.rds=T,args.rds=list(version=2),script=script.1)
+            NMwriteData(pk[FLAG==0],file=file.data(file.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2),script=script.1)
         ))]
 
 
@@ -142,13 +142,13 @@ dt.data[file.data=="xgxr2_flag0.csv",
 pk2 <- cbind(pk,pk[,.(DOSE)])
 dt.data[file.data=="xgxr3.csv",
         nmCode:=list(list(
-            NMwriteData(pk2,file=file.data(file.data),write.rds=T,args.rds=list(version=2))
+            NMwriteData(pk2,file=file.data(file.data),write.csv=writeOutput,write.rds=write.csv,args.rds=list(version=2))
         ))]
 
 ## without ROW
 dt.data[file.data=="xgxr4.csv",
         nmCode:=list(list(
-            NMwriteData(pk[,!("ROW")],file=file.data(file.data),write.rds=T,args.rds=list(version=2))
+            NMwriteData(pk[,!("ROW")],file=file.data(file.data),write.csv=writeOutput,write.rds=write.csv,args.rds=list(version=2))
         ))]
 
 

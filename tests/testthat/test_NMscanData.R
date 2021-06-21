@@ -153,6 +153,12 @@ test_that("merge by filters or not",{
 })
 
 ### BUG 011. NA rows used for fo table. 0 IDs.
+#### it is the rare situation where
+##### there is only first-only output (nmout=FALSE everywhere)
+##### col.id is not in first-only table
+
+##### nmout does not exactly represent the split we need here. We need
+##### to know which rows were enriched by output.
 
 test_that("Only a firstonly without ID but with ROW",{
 ### This should work because ROW is in firstonly table.
@@ -166,14 +172,17 @@ test_that("Only a firstonly without ID but with ROW",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-### impossible with filters at the moment. should be implemented.
+### impossible with filters at the moment. Cannot be implemented because id level cannot be merged onto row level input.
     expect_error(
         expect_warning(
             NMscanData(file=file.lst,merge.by.row=FALSE,col.row="ROW",check.time = FALSE)
         )
     )
 
-    res1 <- NMscanData(file=file.lst,merge.by.row=TRUE,col.row="ROW",check.time = FALSE)
+    ## merge.by.row should be able to merge. 
+    res1 <-
+        expect_warning(
+            NMscanData(file=file.lst,merge.by.row=TRUE,col.row="ROW",check.time = FALSE))
     fix.time(res1)
     expect_equal_to_reference(res1,fileRef,version=2)
     ## without meta
@@ -183,7 +192,8 @@ test_that("Only a firstonly without ID but with ROW",{
 
 
 test_that("Only a firstonly, no ID, no ROW",{
-### use.input is TRUE but cbind.by.filters is FALSE. This should give an error because input cannot be used even though it is requested
+### use.input= TRUE, cbind.by.filters=FALSE.
+    ## This should give an error because input cannot be used even though it is requested
 
     ## this one only outputs a firstonly that cannot be merged onto
     ## input. use.input=T so input data should be returned.
@@ -204,8 +214,10 @@ test_that("Only a firstonly, no ID, no ROW",{
 
 
 test_that("FO and row-level output. No ID, no row.",{
-    
-    ## row-level output returned because cbind.by.filters=F, and firstonly is without ID and row. Warning that firstonly is dropped. Correct. 
+
+#### merge.by.row = "ifAvailable" or FALSE
+    ## Only row-level output returned because cbind.by.filters=F, and firstonly is without ID and row. Warning that firstonly is dropped. Correct. 
+
     fileRef <- "testReference/NMscanData13.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr013.lst")
@@ -221,8 +233,22 @@ test_that("FO and row-level output. No ID, no row.",{
         res1,fileRef,version=2
     )
 
+    ## merge.by.row=F cannot combine and returns output. OK
+    res2 <- expect_warning(
+        NMscanData(file=file.lst,check.time = FALSE,merge.by.row=T)
+    )
+
+    ## if we leave use.input out and can only get row level. OK
+    res2 <- expect_warning(
+        NMscanData(file=file.lst,check.time = FALSE,use.input=F)
+    )
+
+    
 })
 
+
+
+### uses ACCEPT: DOSE.GT.20 explining only 731 rows
 test_that("FO and row-level output. No ID, no row. cbind.by.filters=T",{
     ## row-level output+input returned because cbind.by.filters=T, and firstonly is without ID and row. Correct. 
     fileRef <- "testReference/NMscanData14.rds"
@@ -283,7 +309,9 @@ test_that("Only a firstonly without ID but with ROW. Using merge.by.row=TRUE.",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-    res1 <- NMscanData(file=file.lst,col.row="ROW",merge.by.row=TRUE,check.time = FALSE)
+    res1 <- expect_warning(
+        NMscanData(file=file.lst,col.row="ROW",merge.by.row=TRUE,check.time = FALSE)
+    )
     
     fix.time(res1)
     expect_equal_to_reference(
@@ -488,14 +516,18 @@ test_that("merge.by.row=ifAvailable when not available",{
 
 test_that(" col.row does not exist, but merge.by.row==TRUE",{
 ### col.row does not exist, but merge.by.row==TRUE
-
+    fileRef <- "testReference/NMscanData22b.rds"
+    NMdataConf(reset=T)
+    NMdataConf(check.time=F)
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
     
-    ## error is that it's not in output. It's not in input either though
-    expect_error(
-        NMscanData(file=file.lst,col.row="NONEXIST",merge.by.row=TRUE)
-    )
-
+    ## warning becauses the merge was not possible even though merge.by.row
+    res1 <- 
+        expect_warning(
+            NMscanData(file=file.lst,col.row="NONEXIST",merge.by.row=TRUE)
+        )
+    fix.time(res1)
+    expect_equal_to_reference(res1,fileRef)
     
 })
 
@@ -555,3 +587,6 @@ test_that("Including a redundant output table",{
 }
 )
 
+NMdataConf(check.time=F)
+file.lst <- NMdata_filepath("examples/nonmem/xgxr014.lst")
+res1  <- NMscanData(file.lst,merge.by.row=F)

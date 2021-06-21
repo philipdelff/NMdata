@@ -19,7 +19,7 @@ summary.NMdata <- function(object,...){
     nmout <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
-
+    
     data <- object
     if(!"NMdata"%in%class(data)) stop("data does not seem to be of class NMdata.")
 
@@ -36,7 +36,7 @@ summary.NMdata <- function(object,...){
     ## derive how many subjects. Need to 
 
     
-    s1 <- NMinfo(data,as.fun="data.table")
+    s1 <- NMinfoDT(data)
     s1$N.ids1 <- data[,list(N.ids=uniqueN(ID)),by="nmout"]
 
     N.ids.nmout <- s1$N.ids1[nmout==TRUE,N.ids]
@@ -71,7 +71,7 @@ summary.NMdata <- function(object,...){
 print.summary_NMdata <- function(x,...){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
-
+    
     . <- NULL
     COLNUM <- NULL
     included <- NULL
@@ -80,7 +80,6 @@ print.summary_NMdata <- function(x,...){
     print.inc <- NULL
     tabn <- NULL
     name <- NULL
-    idlevel <- NULL
     level <- NULL
     N <- NULL
     nid <- NULL
@@ -94,7 +93,7 @@ print.summary_NMdata <- function(x,...){
     source2 <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
-
+    
     
     if(!"summary_NMdata"%in%class(x)){
         stop("list does not seem to be of class NMdata")
@@ -127,51 +126,41 @@ print.summary_NMdata <- function(x,...){
     
     tabs.out[,tabn:=1:.N]
     ## assuming that all ID's present somewhere in output is present in all output tables
-    tabs.out[source=="output",nid:=x$N.ids[NMOUT=="Output",N.ids]]
-    vars.sum2 <- mergeCheck(vars.sum1,tabs.out[,.(file=name,source,idlevel,tabn,nrow,nid)],by="file",all.x=T)
+    ## tabs.out[source=="output",nid:=x$N.ids[NMOUT=="Output",N.ids]]
+    vars.sum2 <- mergeCheck(vars.sum1,tabs.out[,.(file=name,source,level,tabn,nrow,nid)],by="file",all.x=T)
 
+    
+    
     ## assuming that all available rows are used - not true if table not used.
     vars.sum2[source=="output",nrow.used:=pmin(nrow,x$N.row[nmout==TRUE,N.rows])]
     vars.sum2[source=="input",nrow.used:=pmin(nrow,x$N.row[,sum(N.rows)])]
     vars.sum2[,nid.used:=pmin(nid,x$N.id[,sum(N.ids)])]
     vars.sum2[source=="input",file:=paste(file,"(input)")]
-
+    
     
     vars.sum2[,IDs:=sprintf("%d/%d",nid.used,nid)]
     vars.sum2[,rows:=sprintf("%d/%d",nrow.used,nrow)]
     
     ## include level
     vars.sum2[,level:="row"]
-    vars.sum2[idlevel==TRUE,level:="ID"]
+    ## vars.sum2[idlevel==TRUE,level:="ID"]
     ## order as treated in NMscanData
     setorder(vars.sum2,tabn,na.last=TRUE)
     vars.sum2[,source:=NULL]
-
-    cols.rm=c("tabn","idlevel","included","nid.used","nid","nrow.used","nrow","level")
+    
+    cols.rm=c("tabn","level","included","nid.used","nid","nrow.used","nrow")
     vars.sum2[,(cols.rm):=lapply(.SD,function(x)NULL),.SDcols=cols.rm]
     if("not"%in%colnames(vars.sum2)) vars.sum2[,not:=NULL]
     setnames(vars.sum2,c("print.inc"),c("columns"))
     setcolorder(vars.sum2,c("file","rows","columns","IDs"))
 
     
-    ## this gives output+input+NMscanData. It's unnecessary because input is visible just above.
-    ## levels(x$column$source) <- c("output","input","NMscanData")
-    ## ncols <- paste(x$column[!is.na(COLNUM),.N,by=.(source)][,N],collapse="+")
-    
-### I don't quite understand why I get the "has been copied"
-### warning on this one.
-    ## x$columns[,source2:=source]
-    ## x$columns[source%in%c("input","output"),source2:="inout"]
-    ## levels(x$columns$source2) <- c("inout","NMscanData")
-    ## ncols <- paste(x$columns[!is.na(COLNUM),.N,by=.(source2)][,N],collapse="+")
-    ## row.res <- data.table(file="(result)",rows=x$N.rows[,sum(N.rows)],columns=ncols,IDs=x$N.ids[,sum(N.ids)])
-
     vars[,source2:=source]
     vars[source%in%c("input","output"),source2:="inout"]
     levels(vars$source2) <- c("inout","NMscanData")
     ncols <- paste(vars[!is.na(COLNUM),.N,by=.(source2)][,N],collapse="+")
     row.res <- data.table(file="(result)",rows=x$N.rows[,sum(N.rows)],columns=ncols,IDs=x$N.ids[,sum(N.ids)])
-    
+    row.res[IDs==0,IDs:="NA"] 
     vars.sum2 <- rbind(vars.sum2,row.res)
     
 #### other info to include. 

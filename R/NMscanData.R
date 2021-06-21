@@ -160,8 +160,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     firstlastonly <- NULL
     firstonly <- NULL
     has.col.row <- NULL
-    full.length <- NULL
-    idlevel <- NULL
     included <- NULL
     lastonly <- NULL
     level <- NULL
@@ -228,6 +226,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(!is.null(merge.by.row)&&isTRUE(merge.by.row)&&!use.input){
         stop("merge.by.row cannot be TRUE when use.input is FALSE.")
     }
+    
     merge.by.row.arg <- merge.by.row
     merge.by.row <- NMdataDecideOption("merge.by.row",merge.by.row)
 
@@ -246,7 +245,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 #### Section start: read all output tables and add to meta data ####
 
-    tables <- NMscanTables(file,details=T,tab.count=tab.count,quiet=TRUE,as.fun="data.table",col.row=col.row)
+    tables <- NMscanTables(file,details=T,tab.count=tab.count,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id)
 
     
     rows.flo <- tables$meta[firstlastonly==TRUE]
@@ -260,12 +259,11 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     overview.tables <- tables$meta
     
 ### combine full tables into one
-    col.row.in.output <- any(overview.tables[,full.length]) && overview.tables[,sum(has.col.row)]
-
+    col.row.in.output <- overview.tables[level=="row",any(has.col.row)]
     
     if(use.input && is.logical(merge.by.row) && merge.by.row) {
-        if(any(overview.tables[,full.length])&&!col.row.in.output) {
-            messageWrap("col.row not found in any full-length (not firstonly) output tables. Correct or disable merge.by.row.",fun.msg=stop)
+        if(!col.row.in.output) {
+            messageWrap("Only output data will be returned. Output cannot be merged with input. col.row not found in any full-length (not firstonly) output tables. To include input data, add col.row to the tables, or disable merge.by.row.",fun.msg=warning)
         }
     }
 
@@ -274,11 +272,12 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 
 #### Section start: read input data ####
-
+    file.info.mod <- NULL
     if(use.input && is.null(dir.data)) {
         
         file.mod <- NMdataDecideOption("file.mod",file.mod)
         file.mod <- file.mod(file)
+        if(file.exists(file.mod)) file.info.mod <- file.info(file.mod)
 
         if(!file.exists(file.mod)) {
             messageWrap("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument. Input data not used.",
@@ -286,8 +285,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             use.input <- FALSE }
     }
 
-
-    cnames.input <- NULL
+    nminfo.input <- NULL
     if(use.input){
         data.input <- NMscanInput(file
                                  ,file.mod=file.mod
@@ -301,15 +299,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                  ,col.id=col.id
                                  ,details=TRUE)
 
-        nminfo.input <- NMinfo(data.input,as.fun="data.table")
+        nminfo.input <- NMinfoDT(data.input)
         
-
-        ## Only used for col.row? col.row must be seen by nonmem
-        ##        cnames.input <- nminfo.input$colnames[!is.na(nonmem),result]
-        ##            NMinfo(data.input,"colnames",as.fun="data.table")[,result]
-        ##        cnames.input <- NMinfo(data.input)$colnames[,result]
-        ##        cnames.input <- data.input$meta$colnames[,result]
-
     }
 
 ### Section end: read input data
@@ -319,7 +310,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     outnames  <- unlist(lapply(tables$data,colnames))
     allnames <- c(outnames,cnames.input.result)
 
-    
     if(missing(col.model)||!is.null(col.model)) {
         if(missing(col.model)) {
             col.model <- NULL
@@ -335,6 +325,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     ##
     if(missing(col.nmout)) col.nmout <- NULL
     col.nmout <- NMdataDecideOption("col.nmout",col.nmout)
+    
     use.nmout <- TRUE
     if(is.null(col.nmout)) {
         col.nmout <- tmpcol(names=allnames,base="nmout",prefer.plain=TRUE)
@@ -350,18 +341,19 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 ### Section end: col.nmout and col.model
 
+    
 
 #### Section start:  merge to max one idlevel and max one row ####
     
     tab.row <- NULL
     dt.vars <- NULL
-
-    if(any(overview.tables[,full.length])) {
+    
+    if(overview.tables[level=="row",.N]) {
         
         ## there might be a little bit to save by reducing the columns before cbind.
-        tab.row <- Reduce(cbind,data[which(overview.tables$maxLength)])
+        tab.row <- Reduce(cbind,data[which(overview.tables$level=="row")])
 ### get all names from this and then select unique to get a table with the included variables
-        list.vars <- lapply(data[which(overview.tables$maxLength)],names)
+        list.vars <- lapply(data[which(overview.tables$level=="row")],names)
         list.vars <- lapply(list.vars,as.data.table)
         list.vars <- lapply(seq_along(list.vars),function(n)list.vars[[n]][,file:=names(list.vars)[n]])
         dt.vars1 <- rbindlist(list.vars)
@@ -388,13 +380,13 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 ### combine idlevel tables into one
     tab.idlevel <- NULL
-    if(any(overview.tables$idlevel)) {
+    if(any(overview.tables$level=="id")) {
         
-        tab.idlevel <- Reduce(cbind,data[which(overview.tables$idlevel)])
+        tab.idlevel <- Reduce(cbind,data[which(overview.tables$level=="id")])
         tab.idlevel <- tab.idlevel[,unique(colnames(tab.idlevel)),with=FALSE]
 
 ### get all names from this and then select unique to get a table with the included variables
-        list.vars.id <- lapply(data[which(overview.tables$idlevel)],names)
+        list.vars.id <- lapply(data[which(overview.tables$level=="id")],names)
         list.vars.id <- lapply(list.vars.id,as.data.table)
         list.vars.id <- lapply(seq_along(list.vars.id),function(n)list.vars.id[[n]][,file:=names(list.vars.id)[n]])
         dt.vars.id1 <- rbindlist(list.vars.id)
@@ -402,12 +394,13 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         ## notice the selection of names in dt.vars.id and tab.row must be identical
         ## dt.vars.id1[,included:=!duplicated(variable)]
         dt.vars.id1[,`:=`(source="output",level="id")]
-
     }
+    
     ## use.rows means if to use row-data from output tables
     use.rows <- TRUE
-    if(!any(tables$meta$full.length)) {
+    if(!any(overview.tables$level=="row")) {
         use.rows <- FALSE
+        col.row.in.output <- overview.tables[full.length==FALSE,any(has.col.row)]
     }
 
 ###  Section end:  merge to max one idlevel and max one row
@@ -415,11 +408,13 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 
 #### Section start: Check file modification times ####
+    
     time.ok <- "Not checked"
     if(check.time){
         time.ok <- c()
         if(!is.null(file.mod)&file.exists(file.mod)) {
-            mtime.mod <- file.mtime(file.mod)
+            mtime.mod <- file.info.mod$mtime
+            
             if(mtime.mod>file.mtime(file)){
                 messageWrap(paste0("input control stream (",file.mod,") is newer than output control stream (",file,") Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
                             fun.msg=warning)
@@ -469,13 +464,18 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         if(merge.by.row=="ifAvailable"){
             merge.by.row <- col.row.in.input && col.row.in.output
         }
-        
         cbind.by.filters <- !merge.by.row
+
         ## if cbind.by.filters, we have to filter input data now.
         if(cbind.by.filters){
             
             data.input <- NMapplyFilters(data.input,file=file,as.fun="data.table",quiet=TRUE)
         }
+    } else {
+        if(merge.by.row=="ifAvailable"){
+            merge.by.row <- col.row.in.output
+        }
+        cbind.by.filters <- !merge.by.row
     }
 
     
@@ -582,18 +582,18 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                 }
                 ##              col.row.in.input <- TRUE
             } else {
-                warning("merge.by.col is TRUE, but col.row not found in _input_ data. Only output data used.")
+                warning("merge.by.row is TRUE, but col.row not found in _input_ data. Only output data used.")
                 use.input <- FALSE
             }
             
             col.row.in.output <- FALSE
             if(col.row%in%colnames(tab.row)) {
                 if( tab.row[,any(duplicated(get(col.row)))]) {
-                    messageWrap("merge.by.col is TRUE, but col.row has duplicate values in _output_ data. col.row must be a unique row identifier. It is unique in input data, so how did rows get repeated in output data? Has input data been edited since the model was run?",fun.msg=stop)
+                    messageWrap("merge.by.row is TRUE, but col.row has duplicate values in _output_ data. col.row must be a unique row identifier. It is unique in input data, so how did rows get repeated in output data? Has input data been edited since the model was run?",fun.msg=stop)
                 }
                 col.row.in.output <- TRUE
             } else {
-                warning("merge.by.col is TRUE, but col.row not found in _output_ data. Only output data used.")
+                warning("merge.by.row is TRUE, but col.row not found in _output_ data. Only output data used.")
                 use.input <- FALSE
             }
             if(use.input && col.row.in.input && col.row.in.output ){
@@ -624,10 +624,10 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             
         }
     }
-
+    
 ###  Section end: handle input data
 
-
+    
 #### Section start: Add idlevel data ####
     ## if merge.by.row==TRUE, col.row is the prefered col to merge by. col.row or col.id must be present.
 
@@ -635,79 +635,87 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
     ## col.row is only acceptable to
     ## merge by if merge.by.row==TRUE
-
-    skip.idlevel <- FALSE
-    if(!is.null(tab.idlevel)) {
-
+    
+    skip.idlevel <- is.null(tab.idlevel)
+    if(!skip.idlevel) {
+        
         ## If we use input or row-level output, we will not use DV from idlevel
         if( (use.input || use.rows) && "DV"%in%colnames(tab.idlevel)){
             tab.idlevel[,DV:=NULL]
         }
-        
+    }
+    if(!skip.idlevel && use.rows) {
+        ## preparing merge of idlevel onto row level
         cols.merge.idlevel <- col.id
         if(merge.by.row) cols.merge.idlevel <- c(col.id,col.row)
         
-        cols.common.row.id <- intersect(colnames(tab.row),colnames(tab.idlevel))
+        cols.common.row.id <- intersect(intersect(colnames(tab.row),colnames(tab.idlevel)),cols.merge.idlevel)
         
-        if(!any(cols.merge.idlevel%in%cols.common.row.id)){
-            messageWrap("subject-level output data cannot be combined with other data. To make use of subject-level output: If method.combine=filters, col.id must be in row-specific input or output data. If method.combine=row, col.id or col.row must be in row-specific input or output data.",fun.msg=warning)
+        if(!length (cols.common.row.id)){
+            ## if(!any(cols.merge.idlevel%in%cols.common.row.id)){
+            messageWrap(paste0("subject-level output data (i.e. firstonly or lastonly) cannot be combined with other data. merge.by.row=",merge.by.row,". To include subject-level output: If merge.by.row=FALSE, col.id must be in subject-level output data. If merge.by.row=TRUE, col.id or col.row must be in subject-level output data."),fun.msg=warning)
             skip.idlevel <- TRUE
         }
+    }
 
-        ## if col.row is in cols.merge.row.id, merge by col.row only.
-        
-        ## We want everything that is not in output row-data. We want
-        ## it even if in input data. But give a warning if it varies
-        ## in input.
-        if(!skip.idlevel) {
+    ## if col.row is in cols.merge.row.id, merge by col.row only.
+    
+    ## We want everything that is not in output row-data. We want
+    ## it even if in input data. But give a warning if it varies
+    ## in input.
+    if(!skip.idlevel) {
 
-            if(!use.input && !use.rows) {
-                ## The very special case where we don't use input and
-                ## there is no row-level data.
-                
-                ## there's nothing else - so just return idlevel data
-                tab.row <- tab.idlevel
+        if(!use.input && !use.rows) {
+            ## The very special case where we don't use input and
+            ## there is no row-level data.
+            
+            ## there's nothing else - so just return idlevel data
+            tab.row <- tab.idlevel
 
-                dt.vars.id1[,included:=TRUE]
-                dt.vars <- rbind(dt.vars,dt.vars.id1)
-                tab.row[,(col.nmout):=TRUE]
-                
-            } else {
-                ## there is row-level data to combine with
-                id.cols.not.new <- col.id
-                if(merge.by.row && all(col.row%in%colnames(tab.idlevel))){
-                    ## fetch new ID column, merging by col.row. Then we will merge by
-                    ## ID.
-                    if(col.id%in%colnames(tab.idlevel)){
-                        tab.idlevel[,(col.id):=NULL]
-                    }
-                    
-                    tab.idlevel <- mergeCheck(tab.idlevel,unique(tab.row[,c(col.row,col.id),with=FALSE]),by=col.row)
-                    tab.idlevel[,(col.row):=NULL]
-                    id.cols.not.new <- c(col.row,col.id)
+            dt.vars.id1[,included:=TRUE]
+            dt.vars <- rbind(dt.vars,dt.vars.id1)
+            tab.row[,(col.nmout):=TRUE]
+            
+        } else {
+            ## there is row-level data to combine with
+            id.cols.not.new <- col.id
+            if(merge.by.row && all(col.row%in%colnames(tab.idlevel))){
+                ## fetch new ID column, merging by col.row. Then we will merge by
+                ## ID.
+                if(col.id%in%colnames(tab.idlevel)){
+                    tab.idlevel[,(col.id):=NULL]
                 }
-                ## For now, we don't support disjoint ID's in combination with idlevel tables. 
+                
+                tab.idlevel <- mergeCheck(tab.idlevel,unique(tab.row[,c(col.row,col.id),with=FALSE]),by=col.row)
+                tab.idlevel[,(col.row):=NULL]
+                id.cols.not.new <- c(col.row,col.id)
+                
+                overview.tables[level=="id",nid:=tab.idlevel[,uniqueN(get(col.id))]]
+            }
+            ## For now, we don't support disjoint ID's in combination with idlevel tables. 
+            if(col.id%in%colnames(tab.idlevel)) {
                 idjumps <- tab.idlevel[,.(ID.jump=c(0,diff(.I))),by=col.id]
                 if(any(idjumps[,ID.jump>1])){
                     messageWrap("col.id is disjoint. For the moment, this is not supported in combination with ID-level output (firstonly and lastonly). ID-level tables will be skipped.",fun.msg=warning)
                     skip.idlevel <- TRUE
                 }
+            }
+            
+            ## use tab.vars for the subset
+            if(!skip.idlevel){
+                cols.to.use <- unique(c(col.id,setdiff(colnames(tab.idlevel),dt.vars[source=="output",variable])))
+                tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=F]
+                tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="data.table")
                 
-                ## use tab.vars for the subset
-                if(!skip.idlevel){
-                    cols.to.use <- unique(c(col.id,setdiff(colnames(tab.idlevel),dt.vars[source=="output",variable])))
-                    tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=F]
-                    tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="data.table")
-                    
-                    dt.vars.id1[,included:=FALSE]
-                    dt.vars.id1[variable%in%setdiff(cols.to.use,id.cols.not.new),included:=TRUE]
+                dt.vars.id1[,included:=FALSE]
+                dt.vars.id1[variable%in%setdiff(cols.to.use,id.cols.not.new),included:=TRUE]
 
-                    dt.vars <- rbind(dt.vars,dt.vars.id1)
-                }
+                dt.vars <- rbind(dt.vars,dt.vars.id1)
             }
         }
     }
 
+    
 ### Section end: Add idlevel data
 
     if(!use.rows && skip.idlevel) {
@@ -753,6 +761,16 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                    ,level="model"
                                     ))
     }
+    ## add column with model name
+    ## if(use.nmout) {
+    ##     dt.vars <- rbind(dt.vars,
+    ##                      data.table(variable=col.nmout
+    ##                                ,file=NA_character_
+    ##                                ,included=TRUE 
+    ##                                ,source="NMscanData"
+    ##                                ,level="model"
+    ##                                 ))
+    ## }
 
 
 ### order columns in returned data
@@ -780,7 +798,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     }
     setcolorder(tables.meta,c("source","name","nrow","ncol"))
 
-    
+
     details <- list(
         ## call
         call=deparse(sys.call()),
@@ -806,30 +824,33 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         ## file info on lst
         mtime.lst=file.info(file)$mtime,
         ## file info on mod
-        mtime.mod=file.info(file.mod)$mtime,
+        mtime.mod=file.info.mod$mtime,
         ## if available: mtime of input data
         mtime.input=NA_character_
     )
-    
+
     ## if available: file info for input data
     if(use.input){
         details$file.input <- nminfo.input$tables[,file]
         details$mtime.input <- nminfo.input$tables[,file.mtime]
     }
-    
-    
+
+
 
 ### more meta information needed.
     ## meta <- list(details=details)
     writeNMinfo(tab.row,list(details=details),append=FALSE)
 
-    meta.input <- NMinfoDT(data.input)
+    meta.input <- NULL
+    if(exists("data.input")){
+        meta.input <- NMinfoDT(data.input)
+    }
     meta.input$tables <- NULL
 
     if(use.input){
         writeNMinfo(tab.row,meta.input,append=T)
     }
-    
+
     writeNMinfo(tab.row,list(tables=tables.meta),append=TRUE)
     writeNMinfo(tab.row,list(columns=dt.vars),append=TRUE)
 

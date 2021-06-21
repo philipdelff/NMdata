@@ -42,6 +42,10 @@ unloadNamespace("NMdata")
                                         # some setup
 options(width=60)  # make the printing fit on the page
 set.seed(1121)   # make the results repeatable
+
+### shortcuts to examples in NMdata
+file.data <- function(...) system.file("examples/data",..., package="NMdata")
+file.nm <- function(...) system.file("examples/nonmem",..., package="NMdata")
 ```
 
 <!-- Supposedly this chunk option should activate a profile but it doesn't work -->
@@ -628,9 +632,6 @@ $TABLE) of nonmem control streams.
 the proposed text for the Nonmem run, see `?NMwriteData`.
 
 ### Tips
-* `NMextractDataFile` takes a control stream/list file and extracts
-the input data file name/path. You can use this to identify the
-model runs in which to update `$DATA`.
 
 * `NMwriteData` is very useful for many other sections, like `$TABLE`,
 or even `$PK`. But not `$THETA` and `$OMEAGE` (because they are
@@ -640,6 +641,10 @@ specific to each model).
 streams.
 
 * `NMwriteData` has a section _reader_ counterpart in `NMreadSection`
+
+* `NMextractDataFile` takes a control stream/list file and extracts
+the input data file name/path. You can use this to identify the
+model runs in which to update `$DATA`.
 
 ::::
 :::: column
@@ -685,10 +690,10 @@ supplied to `NMwriteData`, a little meta information is saved together with the 
 
 * For rds files, the meta data is attached to the object saved in the
 `rds` file.
-- `stampObj` is used under the hood. You can use `stampObj` on any R object to attach similar meta information. 
-- Additional arguments (essentially anything) can be passed from `NMwriteData` to `stampObj` using the argument `args.stamp`.
+- `NMstamp` is used under the hood. You can use `NMstamp` on any R object to attach similar meta information. 
+- Additional arguments (essentially anything) can be passed from `NMwriteData` to `NMstamp` using the argument `args.stamp`.
 
-* `stampObj` and `objInfo` write and read an "attribute" called `objInfo`.
+* `NMstamp` and `NMinfo` write and read an "attribute" called `NMdata`.
 
 :::: 
 :::: column
@@ -701,10 +706,10 @@ NMwriteData(pk,file="derived/pk.csv",
 list.files("derived")
 ## NMreadCsv reads the metadata .txt file if found
 pknm <- NMreadCsv("derived/pk.csv")
-objInfo(pknm)
+NMinfo(pknm)
 ## The .rds file contains the metadata already
 pknm2 <- readRDS("derived/pk.rds")
-objInfo(pknm2)
+NMinfo(pknm2)
 ```
 
 ::::
@@ -1138,9 +1143,6 @@ NMdataConf(as.fun="data.table"
           ,merge.by.row=TRUE
 ### You can switch this when script is final
           ,quiet=FALSE)
-### shortcuts to examples in NMdata
-file.data <- function(...) system.file("examples/data",..., package="NMdata")
-file.nm <- function(...) system.file("examples/nonmem",..., package="NMdata")
 ```
 
 ::::

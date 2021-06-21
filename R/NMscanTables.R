@@ -39,7 +39,6 @@ NMscanTables <- function(file,details=F,as.fun,quiet,tab.count=FALSE,col.id="ID"
     full.length <- NULL
     firstlastonly <- NULL
     firstonly <- NULL
-    idlevel <- NULL
     lastonly <- NULL
     name <- NULL
     nid <- NULL
@@ -121,22 +120,47 @@ file?"))
         if(!is.null(col.row)){
             meta[I,has.col.row:=col.row%in%cnames.tab.I]
         }
+        if(!is.null(col.id)){
+            meta[I,has.col.id:=col.id%in%cnames.tab.I]
+        }
     }
-    
-    meta[,idlevel:=firstonly|lastonly]
-    meta[,filetype:="output"]
 
-    meta[,maxLength:=nrow==max(nrow)]
-    meta[,full.length:=!idlevel&maxLength]
+    has.row.level <- meta[,any((firstonly+lastonly+firstlastonly)==0)]
+    ## level is the observed level. If a first only table has as many
+    ## rows as a row-level table, it's row label.
+    meta[,full.length:=(nrow==max(nrow))]
+    if(has.row.level){   
+        meta[full.length==TRUE,level:="row"]
+        meta[full.length==FALSE,level:="id"]
+    } else {
+        meta[,level:="id"]
+    }
+    ## not supported
+    meta[firstlastonly==T,level:=NA_character_]
+    
+    meta[,scope:="all"]
+    meta[firstonly==T,scope:="firstonly"]
+    meta[lastonly==T,scope:="lastonly"]
+    meta[firstlastonly==T,scope:="firstlastonly"]
+    meta[,`:=`(firstonly=NULL,
+               lastonly=NULL,
+               firstlastonly=NULL
+               )]
+
+
+    meta[,filetype:="output"]
+##
+##    meta[,full.length:=nrow==max(nrow)]
+## test if all  have same length within level. 
     
     meta[,file.mtime:=file.mtime(file)]
-    setcolorder(meta,intersect(c("source","name","nrow","ncol","nid","firstonly","lastonly","firstlastonly","format","sep","idlevel","has.col.row","maxLength","full.length","filetype","file"),colnames(meta)))
+    setcolorder(meta,intersect(c("source","name","nrow","ncol","nid","level","scope","has.col.row","has.col.id","full.length","filetype","format","sep","file.mtime","file"),colnames(meta)))
     
     
     if(!quiet){
         msg <- paste0("Number of output tables read: ",meta[,.N])
-        NIDL <- meta[idlevel==TRUE&firstlastonly==FALSE,.N]
-        NFLO <- meta[idlevel==FALSE&firstlastonly==TRUE,.N]
+        NIDL <- meta[level=="id",.N]
+        NFLO <- meta[firstlastonly==TRUE,.N]
         mNIDL <- NULL
         if(NIDL>0) mNIDL <- paste0(NIDL, " idlevel")
         mNFLO <- NULL

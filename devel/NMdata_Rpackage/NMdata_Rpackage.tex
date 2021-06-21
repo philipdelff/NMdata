@@ -395,8 +395,8 @@ A slightly modified version of the \texttt{pk} dataset has been created.
 
 \begin{verbatim}
 ##          data nrows ncols
-## 1:         pk  1502    22
-## 2: pk.reduced   751    21
+## 1:         pk  1502    21
+## 2: pk.reduced   751    20
 \end{verbatim}
 
 \begin{verbatim}
@@ -496,8 +496,8 @@ All column names are capital case. We rename to lowercase those that Nonmem will
 
 \begin{verbatim}
 ##      data nrows ncols
-## 1: pk.old  1502    22
-## 2:     pk  1502    22
+## 1: pk.old  1502    21
+## 2:     pk  1502    21
 \end{verbatim}
 
 \begin{verbatim}
@@ -506,15 +506,7 @@ All column names are capital case. We rename to lowercase those that Nonmem will
 \end{verbatim}
 
 \begin{verbatim}
-##      column    pk.old        pk
-## 1:   EVENTU character      <NA>
-## 2:     NAME character      <NA>
-## 3: TIMEUNIT character      <NA>
-## 4:   TRTACT character      <NA>
-## 5:   eventu      <NA> character
-## 6:     name      <NA> character
-## 7: timeunit      <NA> character
-## 8:   trtact      <NA> character
+## No differences.
 \end{verbatim}
 
 \normalsize
@@ -601,9 +593,9 @@ more strictly requires that we get all and only the \emph{same} rows:
 
 \begin{verbatim}
 ##       data nrows ncols
-## 1:      pk  1502    22
+## 1:      pk  1502    21
 ## 2:  dt.cov   150     2
-## 3: pkmerge  1502    23
+## 3: pkmerge  1502    22
 \end{verbatim}
 
 \begin{Shaded}
@@ -615,8 +607,8 @@ more strictly requires that we get all and only the \emph{same} rows:
 
 \begin{verbatim}
 ##                 data nrows ncols
-## 1:      pk[ID == 31]    10    22
-## 2: pkmerge[ID == 31]    20    23
+## 1:      pk[ID == 31]    10    21
+## 2: pkmerge[ID == 31]    20    22
 \end{verbatim}
 \end{block}
 \end{column}
@@ -639,9 +631,9 @@ more strictly requires that we get all and only the \emph{same} rows:
 \begin{verbatim}
 ## Overview of dimensions of input and output data:
 ##         data nrows ncols
-## 1:        pk  1502    23
+## 1:        pk  1502    22
 ## 2:    dt.cov   150     2
-## 3: merged.df  1502    24
+## 3: merged.df  1502    23
 \end{verbatim}
 
 \begin{verbatim}
@@ -950,22 +942,21 @@ We may want to add \texttt{MDV} and rerun \texttt{NMorderColumns}.
 ##  5:      CMT     EVID
 ##  6:      AMT      CMT
 ##  7:       DV      AMT
-##  8:    STUDY       DV
-##  9:      BLQ  WEIGHTB
-## 10:    CYCLE     FLAG
-## 11:     DOSE    STUDY
-## 12:     PART      BLQ
-## 13:  PROFDAY    CYCLE
-## 14: PROFTIME     DOSE
-## 15:  WEIGHTB     PART
+##  8:  WEIGHTB       DV
+##  9:    STUDY  WEIGHTB
+## 10:      BLQ     FLAG
+## 11:    CYCLE    STUDY
+## 12:     DOSE      BLQ
+## 13:     PART    CYCLE
+## 14:  PROFDAY     DOSE
+## 15: PROFTIME     PART
 ## 16:     eff0  PROFDAY
 ## 17:   eventu PROFTIME
 ## 18:     name     eff0
 ## 19: timeunit   eventu
-## 20:   trtact     flag
-## 21:     FLAG     name
-## 22:     flag timeunit
-## 23:      ROW   trtact
+## 20:     FLAG     flag
+## 21:     flag     name
+## 22:      ROW timeunit
 ##          old      new
 \end{verbatim}
 \end{column}
@@ -1095,10 +1086,6 @@ All arguments to \texttt{fwrite} can be modified using the
 \protect\hypertarget{tips}{}
 \begin{itemize}
 \item
-  \texttt{NMextractDataFile} takes a control stream/list file and
-  extracts the input data file name/path. You can use this to identify
-  the model runs in which to update \texttt{\$DATA}.
-\item
   \texttt{NMwriteData} is very useful for many other sections, like
   \texttt{\$TABLE}, or even \texttt{\$PK}. But not \texttt{\$THETA} and
   \texttt{\$OMEAGE} (because they are specific to each model).
@@ -1108,6 +1095,10 @@ All arguments to \texttt{fwrite} can be modified using the
 \item
   \texttt{NMwriteData} has a section \emph{reader} counterpart in
   \texttt{NMreadSection}
+\item
+  \texttt{NMextractDataFile} takes a control stream/list file and
+  extracts the input data file name/path. You can use this to identify
+  the model runs in which to update \texttt{\$DATA}.
 \end{itemize}
 \end{block}
 \end{column}
@@ -1177,15 +1168,15 @@ All arguments to \texttt{fwrite} can be modified using the
   For rds files, the meta data is attached to the object saved in the
   \texttt{rds} file.
 \item
-  \texttt{stampObj} is used under the hood. You can use
-  \texttt{stampObj} on any R object to attach similar meta information.
+  \texttt{NMstamp} is used under the hood. You can use \texttt{NMstamp}
+  on any R object to attach similar meta information.
 \item
   Additional arguments (essentially anything) can be passed from
-  \texttt{NMwriteData} to \texttt{stampObj} using the argument
+  \texttt{NMwriteData} to \texttt{NMstamp} using the argument
   \texttt{args.stamp}.
 \item
-  \texttt{stampObj} and \texttt{objInfo} write and read an ``attribute''
-  called \texttt{objInfo}.
+  \texttt{NMstamp} and \texttt{NMinfo} write and read an ``attribute''
+  called \texttt{NMdata}.
 \end{itemize}
 \end{column}
 
@@ -1208,36 +1199,40 @@ All arguments to \texttt{fwrite} can be modified using the
 \begin{Highlighting}[]
 \CommentTok{\#\# NMreadCsv reads the metadata .txt file if found}
 \NormalTok{pknm \textless{}{-}}\StringTok{ }\KeywordTok{NMreadCsv}\NormalTok{(}\StringTok{"derived/pk.csv"}\NormalTok{)}
-\KeywordTok{objInfo}\NormalTok{(pknm)}
+\KeywordTok{NMinfo}\NormalTok{(pknm)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## Warning: 'objInfo' is deprecated.
-## Use 'NMinfo' instead.
-## See help("Deprecated")
-\end{verbatim}
-
-\begin{verbatim}
-## NULL
+## $dataCreate
+## $dataCreate$DataCreateScript
+## [1] "NMdata_Rpackage.Rmd"
+## 
+## $dataCreate$CreationTime
+## [1] "2021-06-20 23:29:52"
+## 
+## $dataCreate$writtenTo
+## [1] "derived/pk.csv"
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\#\# The .rds file contains the metadata already}
 \NormalTok{pknm2 \textless{}{-}}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"derived/pk.rds"}\NormalTok{)}
-\KeywordTok{objInfo}\NormalTok{(pknm2)}
+\KeywordTok{NMinfo}\NormalTok{(pknm2)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## Warning: 'objInfo' is deprecated.
-## Use 'NMinfo' instead.
-## See help("Deprecated")
-\end{verbatim}
-
-\begin{verbatim}
-## NULL
+## $dataCreate
+## $dataCreate$DataCreateScript
+## [1] "NMdata_Rpackage.Rmd"
+## 
+## $dataCreate$CreationTime
+## [1] "2021-06-20 23:29:52 EDT"
+## 
+## $dataCreate$writtenTo
+## [1] "derived/pk.rds"
 \end{verbatim}
 \end{column}
 \end{columns}
@@ -1303,7 +1298,7 @@ Based on the list file (\texttt{.lst}) it will:
 ## 
 ## Used tables, contents shown as used/total:
 ##                  file     rows columns     IDs
-##       xgxr003_res.txt  905/905     7/7 150/150
+##       xgxr003_res.txt  905/905     7/7   NA/NA
 ##  xgxr003_res_vols.txt  905/905     3/7 150/150
 ##    xgxr003_res_fo.txt  150/150     1/2 150/150
 ##     xgxr1.csv (input) 905/1502   21/24 150/150
@@ -1384,7 +1379,7 @@ Using a unique row identifier for merging data is highly recommended:
 ## 
 ## Used tables, contents shown as used/total:
 ##               file     rows columns     IDs
-##    xgxr001_res.txt  905/905   16/16 150/150
+##    xgxr001_res.txt  905/905   16/16   NA/NA
 ##  xgxr1.csv (input) 905/1502   22/24 150/150
 ##           (result)      905    38+2     150
 ## 
@@ -1482,7 +1477,7 @@ Using a unique row identifier for merging data is highly recommended:
 ## 
 ## Used tables, contents shown as used/total:
 ##                  file      rows columns     IDs
-##       xgxr003_res.txt   905/905     7/7 150/150
+##       xgxr003_res.txt   905/905     7/7   NA/NA
 ##  xgxr003_res_vols.txt   905/905     3/7 150/150
 ##    xgxr003_res_fo.txt   150/150     1/2 150/150
 ##     xgxr1.csv (input) 1502/1502   21/24 150/150
@@ -1672,7 +1667,7 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## [2] "    quiet = TRUE)"                                                   
 ## 
 ## $time.NMscanData
-## [1] "2021-06-19 20:02:56 EDT"
+## [1] "2021-06-20 23:29:53 EDT"
 ## 
 ## $model
 ## [1] "xgxr003"
@@ -1708,7 +1703,7 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## [1] "2021-06-17 20:25:24 EDT"
 ## 
 ## $mtime.mod
-## [1] "2021-06-18 18:09:01 EDT"
+## [1] "2021-06-20 22:58:47 EDT"
 ## 
 ## $mtime.input
 ## [1] "2021-06-19 15:49:08 EDT"
@@ -1734,31 +1729,26 @@ dropping the \texttt{NMdata} class and then perform the operation.
 \end{Shaded}
 
 \begin{verbatim}
-##    source                 name nrow ncol nid firstonly
-## 1: output      xgxr003_res.txt  905    7  NA     FALSE
-## 2: output xgxr003_res_vols.txt  905    7 150     FALSE
-## 3: output   xgxr003_res_fo.txt  150    2 150      TRUE
-## 4:  input            xgxr1.csv 1502   24 150        NA
-##    lastonly firstlastonly   format  sep idlevel has.col.row
-## 1:    FALSE         FALSE                 FALSE        TRUE
-## 2:    FALSE         FALSE   tF13.4        FALSE       FALSE
-## 3:    FALSE         FALSE ,1PE15.8    ,    TRUE       FALSE
-## 4:       NA            NA     <NA> <NA>      NA        TRUE
-##    maxLength full.length filetype
-## 1:      TRUE        TRUE   output
-## 2:      TRUE        TRUE   output
-## 3:     FALSE       FALSE   output
-## 4:        NA          NA     text
+##    source                 name nrow ncol nid level
+## 1: output      xgxr003_res.txt  905    7  NA   row
+## 2: output xgxr003_res_vols.txt  905    7 150   row
+## 3: output   xgxr003_res_fo.txt  150    2 150    id
+## 4:  input            xgxr1.csv 1502   24 150  <NA>
+##        scope has.col.row has.col.id full.length filetype
+## 1:       all        TRUE      FALSE        TRUE   output
+## 2:       all       FALSE       TRUE        TRUE   output
+## 3: firstonly       FALSE       TRUE       FALSE   output
+## 4:      <NA>        TRUE       TRUE          NA     text
+##      format  sep          file.mtime
+## 1:               2021-04-05 21:57:22
+## 2:   tF13.4      2021-04-05 21:57:22
+## 3: ,1PE15.8    , 2021-04-05 21:57:22
+## 4:     <NA> <NA> 2021-06-19 15:49:08
 ##                                                                              file
 ## 1:      C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003_res.txt
 ## 2: C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003_res_vols.txt
 ## 3:   C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003_res_fo.txt
 ## 4:              C:/Users/delff/working_copies/NMdata/inst/examples/data/xgxr1.csv
-##             file.mtime
-## 1: 2021-04-05 21:57:22
-## 2: 2021-04-05 21:57:22
-## 3: 2021-04-05 21:57:22
-## 4: 2021-06-19 15:49:08
 \end{verbatim}
 \end{block}
 \end{column}
@@ -1862,22 +1852,21 @@ In this case, input column names are aligned with \texttt{\$DATA}
 ##  6:      CMT      CMT      CMT      CMT      OK
 ##  7:      AMT      AMT      AMT      AMT      OK
 ##  8:       DV       DV       DV       DV      OK
-##  9:     FLAG     FLAG     FLAG     FLAG      OK
-## 10:    STUDY    STUDY    STUDY    STUDY      OK
-## 11:      BLQ      BLQ      BLQ      BLQ      OK
-## 12:    CYCLE    CYCLE    CYCLE    CYCLE      OK
-## 13:     DOSE     DOSE     DOSE     DOSE      OK
-## 14:     PART     PART     PART     PART      OK
-## 15:  PROFDAY  PROFDAY  PROFDAY  PROFDAY      OK
-## 16: PROFTIME PROFTIME PROFTIME PROFTIME      OK
-## 17:  WEIGHTB  WEIGHTB  WEIGHTB  WEIGHTB      OK
+##  9:  WEIGHTB     FLAG     FLAG     FLAG    diff
+## 10:     FLAG    STUDY    STUDY    STUDY    diff
+## 11:    STUDY      BLQ      BLQ      BLQ    diff
+## 12:      BLQ    CYCLE    CYCLE    CYCLE    diff
+## 13:    CYCLE     DOSE     DOSE     DOSE    diff
+## 14:     DOSE     PART     PART     PART    diff
+## 15:     PART  PROFDAY  PROFDAY  PROFDAY    diff
+## 16:  PROFDAY PROFTIME PROFTIME PROFTIME    diff
+## 17: PROFTIME  WEIGHTB  WEIGHTB  WEIGHTB    diff
 ## 18:     eff0     eff0     eff0     eff0      OK
-## 19:   EVENTU     <NA>     <NA>   EVENTU    <NA>
-## 20:     NAME     <NA>     <NA>     NAME    <NA>
-## 21: TIMEUNIT     <NA>     <NA> TIMEUNIT    <NA>
-## 22:   TRTACT     <NA>     <NA>   TRTACT    <NA>
-## 23:     flag     <NA>     <NA>     flag    <NA>
-## 24:   trtact     <NA>     <NA>   trtact    <NA>
+## 19:   eventu     <NA>     <NA>   eventu    <NA>
+## 20:     flag     <NA>     <NA>     flag    <NA>
+## 21:     name     <NA>     <NA>     name    <NA>
+## 22: timeunit     <NA>     <NA> timeunit    <NA>
+## 23:   trtact     <NA>     <NA>   trtact    <NA>
 ##     datafile     DATA   nonmem   result compare
 \end{verbatim}
 
@@ -2065,9 +2054,6 @@ My initialization of scripts often contain this:
 \NormalTok{          ,}\DataTypeTok{merge.by.row=}\OtherTok{TRUE}
 \CommentTok{\#\#\# You can switch this when script is final}
 \NormalTok{          ,}\DataTypeTok{quiet=}\OtherTok{FALSE}\NormalTok{)}
-\CommentTok{\#\#\# shortcuts to examples in NMdata}
-\NormalTok{file.data \textless{}{-}}\StringTok{ }\ControlFlowTok{function}\NormalTok{(...) }\KeywordTok{system.file}\NormalTok{(}\StringTok{"examples/data"}\NormalTok{,..., }\DataTypeTok{package=}\StringTok{"NMdata"}\NormalTok{)}
-\NormalTok{file.nm \textless{}{-}}\StringTok{ }\ControlFlowTok{function}\NormalTok{(...) }\KeywordTok{system.file}\NormalTok{(}\StringTok{"examples/nonmem"}\NormalTok{,..., }\DataTypeTok{package=}\StringTok{"NMdata"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 \end{column}
@@ -2172,7 +2158,7 @@ use that.
   Historic bugs have mostly resulted in uninformative errors due to
   e.g.~failure in processing text
 \item
-  \texttt{NMdata} includes 88 ``unit tests'' where results of function
+  \texttt{NMdata} includes 40 ``unit tests'' where results of function
   calls with different datasets and arguments are compared to expected
   results
 \item
