@@ -1,4 +1,4 @@
-Thu Jun 17 21:10:59 EDT 2021
+Mon Jun 21 10:16:37 EDT 2021
 $PROBLEM    PK. Tests of modifications to column names in $INPUT
 ;; One variable is dropped, BBW is a new name.         
 
@@ -65,8 +65,8 @@ NM-TRAN MESSAGES
 
 License Registered to: Vertex
 Expiration Date:    14 JAN 2022
-Current Date:       17 JUN 2021
-Days until program expires : 212
+Current Date:       21 JUN 2021
+Days until program expires : 208
 1NONLINEAR MIXED EFFECTS MODEL PROGRAM (NONMEM) VERSION 7.4.4
  ORIGINALLY DEVELOPED BY STUART BEAL, LEWIS SHEINER, AND ALISON BOECKMANN
  CURRENT DEVELOPERS ARE ROBERT BAUER, ICON DEVELOPMENT SOLUTIONS,
@@ -332,8 +332,8 @@ Days until program expires : 212
  TOTAL EFFECTIVE ETAS (NIND*NETA):                           393
   
  #TERE:
- Elapsed estimation  time in seconds:     9.44
- Elapsed postprocess time in seconds:     0.06
+ Elapsed estimation  time in seconds:     8.81
+ Elapsed postprocess time in seconds:     0.07
 1
  
  
@@ -3347,8 +3347,8 @@ Days until program expires : 212
     5
 +        1.50E+03  2.19E-01  3.27E-02  1.08E+00  2.58E-01  3.32E+10  6.57E-02  4.39E-02  2.17E-02  1.00E+00
  
- Elapsed finaloutput time in seconds:     0.08
+ Elapsed finaloutput time in seconds:     0.05
 1THERE ARE ERROR MESSAGES IN FILE PRDERR                                                                  
- #CPUT: Total CPU Time in Seconds,        9.593
+ #CPUT: Total CPU Time in Seconds,        8.954
 Stop Time:
-Thu Jun 17 21:11:14 EDT 2021
+Mon Jun 21 10:16:51 EDT 2021
