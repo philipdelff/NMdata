@@ -117,7 +117,7 @@ xgxr4.csv,1 without ROW
 ")
 
 
-writeOutput <- FALSE
+writeOutput <- TRUE
 dt.data[file.data=="xgxr1.csv",
         nmCode:=list(list(
             NMwriteData(pk,file=file.data(file.data),write.csv=writeOutput,write.rds=F)
@@ -142,13 +142,13 @@ dt.data[file.data=="xgxr2_flag0.csv",
 pk2 <- cbind(pk,pk[,.(DOSE)])
 dt.data[file.data=="xgxr3.csv",
         nmCode:=list(list(
-            NMwriteData(pk2,file=file.data(file.data),write.csv=writeOutput,write.rds=write.csv,args.rds=list(version=2))
+            NMwriteData(pk2,file=file.data(file.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2))
         ))]
 
 ## without ROW
 dt.data[file.data=="xgxr4.csv",
         nmCode:=list(list(
-            NMwriteData(pk[,!("ROW")],file=file.data(file.data),write.csv=writeOutput,write.rds=write.csv,args.rds=list(version=2))
+            NMwriteData(pk[,!("ROW")],file=file.data(file.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2))
         ))]
 
 
@@ -165,8 +165,8 @@ dt.runs[,file.data:=basename(path.data)]
 
 dt.runs <- mergeCheck(dt.runs,dt.data,by="file.data")
 
-
-dt.runs[,{
+##### DO THE UPDATE
+dt.runs[mod!="input.txt",{
     sec=nmCode[[1]]["INPUT"]
     NMwriteSection(file=path,list.sections=sec,backup=FALSE)
 },
@@ -174,7 +174,7 @@ by=ROW
 ]
 
 ## the old lst
-dt.runs[,paste(NMreadSection(fnExtension(path,".lst"),section="INPUT"),collapse="\n"),by=ROW]
+## dt.runs[,paste(NMreadSection(fnExtension(path,".lst"),section="INPUT"),collapse="\n"),by=ROW]
 
 
 ### xgxgr002: CYCLE=DROP
@@ -187,17 +187,9 @@ by=ROW
 ]
 
 
-dt.runs[mod=="input.txt",{
-    nmcode=NMwriteData(pk,file="xgxr1.csv",write.csv=FALSE,nm.rename=c(EFF0="eff0"))
-    NMwriteSection(file=path,list.sections=nmcode["INPUT"],
-                   backup=FALSE,write=TRUE)
-},
-by=ROW
-]
 
 ### when run, copy 001 to 001dir
 list.files(file.nm())
-unlink(file.nm("xgxr001.mod"))
 list.files(file.nm("xgxr001dir"))
 
 unlink(file.nm("xgxr001dir"),recursive=T)
