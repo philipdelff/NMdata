@@ -29,19 +29,26 @@
 ##'     argument is only used for generating the proposed text to
 ##'     paste into the Nonmem control stream. To skip this feature,
 ##'     use col.flag=NULL.
-##' @param nm.drop Only used for generation of proposed text for Nonmem
-##'     control stream. Columns to drop in Nonmem $DATA. This has two
-##'     implications. One is that the proposed $DATA indicates =DROP
-##'     after the given column names. The other that in case it is a
-##'     non-numeric column, succeeding columns can still be included.
 ##' @param nmdir.data For the $DATA text proposal only. The path to
 ##'     the input datafile to be used in the Nonmem $DATA
 ##'     section. Often, a relative path to the actual Nonmem run is
 ##'     wanted here.
-##' @param nm.rename For the $DATA text proposal only. If you plan to
+##' @param nm.copy For the $DATA text proposal only. If you plan to
 ##'     rename columns in Nonmem $DATA, NMwriteData can adjust the
 ##'     suggested $DATA text. If you plan to use CONC as DV in Nonmem,
-##'     consider nm.rename=c(DV="CONC").
+##'     you can include nm.rename=c(DV="CONC").
+##' @param nm.rename For the $DATA text proposal only. If you plan to
+##'     rename columns in Nonmem $DATA, NMwriteData can adjust the
+##'     suggested $DATA text. If you plan to use BBW instead of BWBASE
+##'     in Nonmem, consider nm.rename=c(BWBASE="BBW"). The result is
+##'     different from nm.copy since the nm.copy syntax is only
+##'     allowed by Nonmem for certain standard column names such as DV.
+##' @param nm.drop Only used for generation of proposed text for
+##'     Nonmem control stream. Columns to drop in Nonmem $DATA. This
+##'     has two implications. One is that the proposed $DATA indicates
+##'     =DROP after the given column names. The other that in case it
+##'     is a non-numeric column, succeeding columns can still be
+##'     included.
 ##' @param nm.capitalize For the $DATA text proposal only. If TRUE,
 ##'     the suggested text for Nonmem will only contain capital
 ##'     letters in column names.
@@ -72,7 +79,7 @@
 NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
                         write.rds=write.csv,script,args.stamp,args.fwrite,
                         args.rds,nm.drop,nmdir.data,col.flag="FLAG",
-                        nm.rename,nm.capitalize=FALSE,allow.char.TIME=TRUE,
+                        nm.rename,nm.copy,nm.capitalize=FALSE,allow.char.TIME=TRUE,
                         quiet){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -213,12 +220,21 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
         }
     }
     
+    ## apply nm.copy
+    if(!missing(nm.copy)){
+        names.copy <- names(nm.copy)
+        dt.num.ok[,name.copy:=names.copy[match(dt.num.ok[,col],nm.copy)]]
+        dt.num.ok[!is.na(name.copy),name.nm:=paste0(name.copy,"=",col)]
+    }
+
     ## apply nm.rename
     if(!missing(nm.rename)){
         names.rename <- names(nm.rename)
         dt.num.ok[,name.rename:=names.rename[match(dt.num.ok[,col],nm.rename)]]
-        dt.num.ok[!is.na(name.rename),name.nm:=paste0(name.rename,"=",col)]
+        dt.num.ok[!is.na(name.rename),name.nm:=name.rename]
     }
+    
+    
     
     dt.num.ok[,include:=cumsum(!numeric.ok&!drop)<1]
 

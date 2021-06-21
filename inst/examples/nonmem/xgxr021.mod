@@ -1,4 +1,4 @@
-$PROBLEM    PK. Test of multiple output table formats
+$PROBLEM    Demo run. Multiple tables, meta data.
 
 ;@ Variables 17/20 @;
 $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY

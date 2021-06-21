@@ -177,9 +177,9 @@ by=ROW
 ## dt.runs[,paste(NMreadSection(fnExtension(path,".lst"),section="INPUT"),collapse="\n"),by=ROW]
 
 
-### xgxgr002: CYCLE=DROP
+### xgxgr002: CYCLE=DROP, BBW for WEIGHTB
 dt.runs[mod=="xgxr002.mod",{
-    nmcode=NMwriteData(pk,file="xgxr2.csv",nm.drop="CYCLE",write.csv=FALSE)
+    nmcode=NMwriteData(pk,file="xgxr2.csv",nm.drop="CYCLE",nm.rename=c(BBW="WEIGHTB"),write.csv=FALSE)
     NMwriteSection(file=path,list.sections=nmcode["INPUT"],
                    backup=FALSE,write=TRUE)
 },
@@ -188,8 +188,7 @@ by=ROW
 
 
 
-### when run, copy 001 to 001dir
-list.files(file.nm())
+### when run, copy 001 to 001dir list.files(file.nm())
 list.files(file.nm("xgxr001dir"))
 
 unlink(file.nm("xgxr001dir"),recursive=T)
