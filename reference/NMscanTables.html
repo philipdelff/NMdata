@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2.911</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.3.901</span>
       </span>
     </div>
 
@@ -148,7 +148,15 @@
     <p>read all output data tables in nonmem run</p>
     </div>
 
-    <pre class="usage"><span class='fu'>NMscanTables</span><span class='op'>(</span><span class='va'>file</span>, details <span class='op'>=</span> <span class='cn'>F</span>, <span class='va'>as.fun</span>, <span class='va'>quiet</span>, tab.count <span class='op'>=</span> <span class='cn'>TRUE</span>, col.id <span class='op'>=</span> <span class='st'>"ID"</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>NMscanTables</span><span class='op'>(</span>
+  <span class='va'>file</span>,
+  details <span class='op'>=</span> <span class='cn'>F</span>,
+  <span class='va'>as.fun</span>,
+  <span class='va'>quiet</span>,
+  tab.count <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  col.id <span class='op'>=</span> <span class='st'>"ID"</span>,
+  <span class='va'>col.row</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -183,13 +191,18 @@ NMdataConf.</p></td>
       <th>tab.count</th>
       <td><p>Nonmem includes a counter of tables in the
 written data files. These are often not useful. However, if
-tab.count is TRUE (default), this will be carried forward and
-added as a column called TABLENO.</p></td>
+tab.count is TRUE (not default), this will be carried forward
+and added as a column called TABLENO.</p></td>
     </tr>
     <tr>
       <th>col.id</th>
       <td><p>name of the subject ID column. Used for calculation
 of the number of subjects in each table.</p></td>
+    </tr>
+    <tr>
+      <th>col.row</th>
+      <td><p>The name of the row counter column. Optional and only
+used to check whether the row counter is in the data.</p></td>
     </tr>
     </table>
 

@@ -87,7 +87,7 @@ in the file argument." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2.911</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.3.901</span>
       </span>
     </div>
 
@@ -174,6 +174,7 @@ in the file argument.</p>
   <span class='va'>nmdir.data</span>,
   col.flag <span class='op'>=</span> <span class='st'>"FLAG"</span>,
   <span class='va'>nm.rename</span>,
+  <span class='va'>nm.copy</span>,
   nm.capitalize <span class='op'>=</span> <span class='cn'>FALSE</span>,
   allow.char.TIME <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>quiet</span>
@@ -227,11 +228,12 @@ configured using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>nm.drop</th>
-      <td><p>Only used for generation of proposed text for Nonmem
-control stream. Columns to drop in Nonmem $DATA. This has two
-implications. One is that the proposed $DATA indicates =DROP
-after the given column names. The other that in case it is a
-non-numeric column, succeeding columns can still be included.</p></td>
+      <td><p>Only used for generation of proposed text for
+Nonmem control stream. Columns to drop in Nonmem $DATA. This
+has two implications. One is that the proposed $DATA indicates
+=DROP after the given column names. The other that in case it
+is a non-numeric column, succeeding columns can still be
+included.</p></td>
     </tr>
     <tr>
       <th>nmdir.data</th>
@@ -252,8 +254,17 @@ use col.flag=NULL.</p></td>
       <th>nm.rename</th>
       <td><p>For the $DATA text proposal only. If you plan to
 rename columns in Nonmem $DATA, NMwriteData can adjust the
+suggested $DATA text. If you plan to use BBW instead of BWBASE
+in Nonmem, consider nm.rename=c(BWBASE="BBW"). The result is
+different from nm.copy since the nm.copy syntax is only
+allowed by Nonmem for certain standard column names such as DV.</p></td>
+    </tr>
+    <tr>
+      <th>nm.copy</th>
+      <td><p>For the $DATA text proposal only. If you plan to
+rename columns in Nonmem $DATA, NMwriteData can adjust the
 suggested $DATA text. If you plan to use CONC as DV in Nonmem,
-consider nm.rename=c(DV="CONC").</p></td>
+you can include nm.rename=c(DV="CONC").</p></td>
     </tr>
     <tr>
       <th>nm.capitalize</th>

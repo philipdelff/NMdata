@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.2.911</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.3.901</span>
       </span>
     </div>
 
@@ -105,7 +105,7 @@
 
     
     
-<p>Built 2021-06-16 using NMdata 0.0.7.2.911.</p>
+<p>Built 2021-06-23 using NMdata 0.0.7.3.901.</p>
 <!-- Objectives -->
 <!-- Use NMscanData to  -->
 <!-- Read and combine all output and input data based only on (the path to) the Nonmem list file -->
@@ -151,23 +151,17 @@
 <p>Try <code>NMscanData</code> on a control stream or a list file:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr018.lst"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Input data columns will be appended to output data. However, it is recommended</span>
-<span class="co">#&gt; to use a unique row identifier (typically a counter but only required to be</span>
-<span class="co">#&gt; unique for each row) for a robust merge of input and output data. See argument</span>
-<span class="co">#&gt; col.row. To skip this check, please use merge.by.row=TRUE or</span>
-<span class="co">#&gt; merge.by.row=FALSE.</span>
-<span class="co">#&gt; </span>
 <span class="co">#&gt; Model:  xgxr018</span>
 <span class="co">#&gt; Input and output data combined by translation of</span>
 <span class="co">#&gt; Nonmem data filters (not recommended).</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Used tables, contents shown as used/total:</span>
 <span class="co">#&gt;                  file     rows columns     IDs</span>
-<span class="co">#&gt;       xgxr018_res.txt  905/905     7/7 150/150</span>
+<span class="co">#&gt;       xgxr018_res.txt  905/905     6/6   NA/NA</span>
 <span class="co">#&gt;  xgxr018_res_vols.txt  905/905     3/7 150/150</span>
 <span class="co">#&gt;    xgxr018_res_fo.txt  150/150     1/2 150/150</span>
-<span class="co">#&gt;     xgxr4.csv (input) 905/1502   21/23 150/150</span>
-<span class="co">#&gt;              (result)      905    32+2     150</span>
+<span class="co">#&gt;     xgxr4.rds (input) 905/1502   21/23 150/150</span>
+<span class="co">#&gt;              (result)      905    31+2     150</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Distribution of rows on event types in returned data:</span>
 <span class="co">#&gt;  EVID Output</span>
@@ -184,20 +178,20 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">res1</span><span class="op">)</span>
 <span class="co">#&gt; [1] "NMdata"     "data.frame"</span>
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">res1</span><span class="op">)</span>
-<span class="co">#&gt; [1] 905  34</span></code></pre></div>
+<span class="co">#&gt; [1] 905  33</span></code></pre></div>
 <p>The data used for the example is a PK single ascending dose data set, great thanks to the <a href="https://cran.r-project.org/web/packages/xgxr/index.html">xgxr</a> package authors.</p>
 <p>The obtained dataset contains both model predictions (i.e. from output tables) and a character variable, <code>trtact</code> (i.e. from input data). To the <code>.lst</code> (output control stream) file path was supplied by us.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">res1</span>,n<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
-<span class="co">#&gt;   ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY     KA       Q PRED RES WRES</span>
-<span class="co">#&gt; 1   1 31       0    0    1   1   3  0    0     1 0.1812 2307400    0   0    0</span>
-<span class="co">#&gt; 2  11 32       0    0    1   1   3  0    0     1 0.1812 2307400    0   0    0</span>
-<span class="co">#&gt;      V2     V3 BLQ CYCLE DOSE PART PROFDAY PROFTIME WEIGHTB   EFF0        CL</span>
-<span class="co">#&gt; 1 0.042 0.1785   0     1    3    1       1        0  87.031 56.461 0.7245691</span>
-<span class="co">#&gt; 2 0.042 0.1785   0     1    3    1       1        0 100.620 45.096 0.7245691</span>
-<span class="co">#&gt;   EVENTU   NAME TIMEUNIT TRTACT   flag trtact   model nmout</span>
-<span class="co">#&gt; 1     mg Dosing    Hours   3 mg Dosing   3 mg xgxr018  TRUE</span>
-<span class="co">#&gt; 2     mg Dosing    Hours   3 mg Dosing   3 mg xgxr018  TRUE</span></code></pre></div>
+<span class="co">#&gt;   ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY     KA       Q PRED RES WRES    V2</span>
+<span class="co">#&gt; 1 31       0    0    1   1   3  0    0     1 0.1812 2307400    0   0    0 0.042</span>
+<span class="co">#&gt; 2 32       0    0    1   1   3  0    0     1 0.1812 2307400    0   0    0 0.042</span>
+<span class="co">#&gt;       V3 BLQ CYCLE DOSE PART PROFDAY PROFTIME WEIGHTB   EFF0        CL EVENTU</span>
+<span class="co">#&gt; 1 0.1785   0     1    3    1       1        0  87.031 56.461 0.7245691     mg</span>
+<span class="co">#&gt; 2 0.1785   0     1    3    1       1        0 100.620 45.096 0.7245691     mg</span>
+<span class="co">#&gt;     NAME TIMEUNIT TRTACT   flag trtact   model nmout</span>
+<span class="co">#&gt; 1 Dosing    Hours   3 mg Dosing   3 mg xgxr018  TRUE</span>
+<span class="co">#&gt; 2 Dosing    Hours   3 mg Dosing   3 mg xgxr018  TRUE</span></code></pre></div>
 <p>You may have noticed that when reading the model, we were told that 37 columns were read while 39 columns are found in the result. The reason is the last two columns added by <code>NMscanData</code> called <code>model</code> and <code>nmout</code>. <code>model</code> obviously contains the name of the model which is by default derived from the list file name. See later in the “Recover rows” section what <code>nmout</code> represents.</p>
 <div id="what-will-nmscandata-return" class="section level3">
 <h3 class="hasAnchor">
@@ -233,19 +227,12 @@
 <p>All features shown below will work whether you supply <code>col.row</code> or not. We use <code>col.row</code> because it is more robust and because it allows us to easily trace a row in the analysis back to the source data. We are now told that the data was merged by <code>ROW</code> - that’s better.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res1.tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr003.lst"</span><span class="op">)</span>,as.fun<span class="op">=</span><span class="fu">tibble</span><span class="fu">::</span><span class="va"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">)</span>
-<span class="co">#&gt; Input data columns will be appended to output data. However, column(s) were</span>
-<span class="co">#&gt; identified as unique identifiers, present in both input and output data. If</span>
-<span class="co">#&gt; this column or one of these columns is not modified by the Nonmem run,</span>
-<span class="co">#&gt; consider using this in col.row for a robust merge of input and output data.</span>
-<span class="co">#&gt; Candidate columns: ROW To skip this check, please use merge.by.row=TRUE or</span>
-<span class="co">#&gt; merge.by.row=FALSE.</span>
-<span class="co">#&gt; </span>
 <span class="co">#&gt; Model:  xgxr003 </span>
 <span class="co">#&gt; Input and output data merged by: ROW </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Used tables, contents shown as used/total:</span>
 <span class="co">#&gt;                  file     rows columns     IDs</span>
-<span class="co">#&gt;       xgxr003_res.txt  905/905     7/7 150/150</span>
+<span class="co">#&gt;       xgxr003_res.txt  905/905     7/7   NA/NA</span>
 <span class="co">#&gt;  xgxr003_res_vols.txt  905/905     3/7 150/150</span>
 <span class="co">#&gt;    xgxr003_res_fo.txt  150/150     1/2 150/150</span>
 <span class="co">#&gt;     xgxr1.csv (input) 905/1502   21/24 150/150</span>
@@ -270,13 +257,7 @@
 <p>Notice, <code>NMdataConf</code> will set the default value for all <code>NMdata</code> functions that use that argument. So when setting <code>as.fun</code> this way, we will get the desired class returned from all data generating <code>NMdata</code> functions.</p>
 <p>We don’t want the same information about the dimensions repeated, so we use the <code>quiet</code> argument this time.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res1.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr003.lst"</span><span class="op">)</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; Input data columns will be appended to output data. However, column(s) were</span>
-<span class="co">#&gt; identified as unique identifiers, present in both input and output data. If</span>
-<span class="co">#&gt; this column or one of these columns is not modified by the Nonmem run,</span>
-<span class="co">#&gt; consider using this in col.row for a robust merge of input and output data.</span>
-<span class="co">#&gt; Candidate columns: ROW To skip this check, please use merge.by.row=TRUE or</span>
-<span class="co">#&gt; merge.by.row=FALSE.</span></code></pre></div>
+<code class="sourceCode R"><span class="va">res1.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr003.lst"</span><span class="op">)</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>As expected we got a <code>data.table</code> this time:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">res1.dt</span><span class="op">)</span>
@@ -295,27 +276,27 @@
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="../reference/NMinfo.html">NMinfo</a></span><span class="op">(</span><span class="va">res1</span>,info<span class="op">=</span><span class="st">"columns"</span><span class="op">)</span>,nrows<span class="op">=</span><span class="fl">20</span>,topn<span class="op">=</span><span class="fl">10</span><span class="op">)</span>
 <span class="co">#&gt;     variable                 file     source level COLNUM</span>
-<span class="co">#&gt;  1:      ROW      xgxr018_res.txt     output   row      1</span>
-<span class="co">#&gt;  2:       ID xgxr018_res_vols.txt     output   row      2</span>
-<span class="co">#&gt;  3:  NOMTIME            xgxr4.csv      input   row      3</span>
-<span class="co">#&gt;  4:     TIME            xgxr4.csv      input   row      4</span>
-<span class="co">#&gt;  5:     EVID            xgxr4.csv      input   row      5</span>
-<span class="co">#&gt;  6:      CMT            xgxr4.csv      input   row      6</span>
-<span class="co">#&gt;  7:      AMT            xgxr4.csv      input   row      7</span>
-<span class="co">#&gt;  8:       DV      xgxr018_res.txt     output   row      8</span>
-<span class="co">#&gt;  9:     FLAG            xgxr4.csv      input   row      9</span>
-<span class="co">#&gt; 10:    STUDY            xgxr4.csv      input   row     10</span>
+<span class="co">#&gt;  1:       ID xgxr018_res_vols.txt     output   row      1</span>
+<span class="co">#&gt;  2:  NOMTIME            xgxr4.rds      input   row      2</span>
+<span class="co">#&gt;  3:     TIME            xgxr4.rds      input   row      3</span>
+<span class="co">#&gt;  4:     EVID            xgxr4.rds      input   row      4</span>
+<span class="co">#&gt;  5:      CMT            xgxr4.rds      input   row      5</span>
+<span class="co">#&gt;  6:      AMT            xgxr4.rds      input   row      6</span>
+<span class="co">#&gt;  7:       DV      xgxr018_res.txt     output   row      7</span>
+<span class="co">#&gt;  8:     FLAG            xgxr4.rds      input   row      8</span>
+<span class="co">#&gt;  9:    STUDY            xgxr4.rds      input   row      9</span>
+<span class="co">#&gt; 10:       KA      xgxr018_res.txt     output   row     10</span>
 <span class="co">#&gt; ---                                                      </span>
-<span class="co">#&gt; 32:   trtact            xgxr4.csv      input   row     32</span>
-<span class="co">#&gt; 33:    model                 &lt;NA&gt; NMscanData model     33</span>
-<span class="co">#&gt; 34:    nmout                 &lt;NA&gt; NMscanData   row     34</span>
-<span class="co">#&gt; 35:       DV xgxr018_res_vols.txt     output   row     NA</span>
-<span class="co">#&gt; 36:     PRED xgxr018_res_vols.txt     output   row     NA</span>
-<span class="co">#&gt; 37:      RES xgxr018_res_vols.txt     output   row     NA</span>
-<span class="co">#&gt; 38:     WRES xgxr018_res_vols.txt     output   row     NA</span>
-<span class="co">#&gt; 39:       ID            xgxr4.csv      input   row     NA</span>
-<span class="co">#&gt; 40:       DV            xgxr4.csv      input   row     NA</span>
-<span class="co">#&gt; 41:       ID   xgxr018_res_fo.txt     output    id     NA</span></code></pre></div>
+<span class="co">#&gt; 31:   trtact            xgxr4.rds      input   row     31</span>
+<span class="co">#&gt; 32:    model                 &lt;NA&gt; NMscanData model     32</span>
+<span class="co">#&gt; 33:    nmout                 &lt;NA&gt; NMscanData   row     33</span>
+<span class="co">#&gt; 34:       DV xgxr018_res_vols.txt     output   row     NA</span>
+<span class="co">#&gt; 35:     PRED xgxr018_res_vols.txt     output   row     NA</span>
+<span class="co">#&gt; 36:      RES xgxr018_res_vols.txt     output   row     NA</span>
+<span class="co">#&gt; 37:     WRES xgxr018_res_vols.txt     output   row     NA</span>
+<span class="co">#&gt; 38:       ID            xgxr4.rds      input   row     NA</span>
+<span class="co">#&gt; 39:       DV            xgxr4.rds      input   row     NA</span>
+<span class="co">#&gt; 40:       ID   xgxr018_res_fo.txt     output    id     NA</span></code></pre></div>
 <p>The column names are sorted by the order in the resulting dataset, the order given by the <code>COLNUM</code> column. The variables in the bottom that have <code>COLNUM==NA</code> were redundant when combining the data (the same columns were included from other sources). The file names and their source (input/output) and a “level” are given. “level” is the information level of the source. Input data and full-length output tables are “row” level, a firstonly or lastonly table is id-level. And then there is the <code>model</code> column added by <code>NMscanData</code> which is obviously model-level. <code>nmout</code> is the other column added by <code>NMscanData</code> and both <code>model</code> and <code>nmout</code> have <code>NA</code> file and <code>NMscanData</code> as source.</p>
 </div>
 </div>
@@ -341,19 +322,12 @@
 <p>We may want to include the input data that was ignored by Nonmem. Use <code>recover.rows=TRUE</code> to include all rows from input data.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr014.lst"</span><span class="op">)</span>,recover.rows<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; Input data columns will be appended to output data. However, column(s) were</span>
-<span class="co">#&gt; identified as unique identifiers, present in both input and output data. If</span>
-<span class="co">#&gt; this column or one of these columns is not modified by the Nonmem run,</span>
-<span class="co">#&gt; consider using this in col.row for a robust merge of input and output data.</span>
-<span class="co">#&gt; Candidate columns: ROW To skip this check, please use merge.by.row=TRUE or</span>
-<span class="co">#&gt; merge.by.row=FALSE.</span>
-<span class="co">#&gt; </span>
 <span class="co">#&gt; Model:  xgxr014 </span>
 <span class="co">#&gt; Input and output data merged by: ROW </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Used tables, contents shown as used/total:</span>
 <span class="co">#&gt;               file      rows columns     IDs</span>
-<span class="co">#&gt;    xgxr014_res.txt   905/905   12/12 150/150</span>
+<span class="co">#&gt;    xgxr014_res.txt   905/905   12/12   NA/NA</span>
 <span class="co">#&gt;  xgxr2.rds (input) 1502/1502   22/24 150/150</span>
 <span class="co">#&gt;           (result)      1502    34+2     150</span>
 <span class="co">#&gt; </span>
@@ -431,7 +405,7 @@
 <code class="sourceCode R"><span class="va">res2</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">trtact</span><span class="op">)</span><span class="op">]</span>
 <span class="co">#&gt; [1] "factor"</span>
 <span class="va">res2</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">trtact</span><span class="op">)</span><span class="op">]</span>
-<span class="co">#&gt; [1] "Placebo" "3 mg"    "10 mg"   "30 mg"   "100 mg"  "300 mg"</span></code></pre></div>
+<span class="co">#&gt; [1] "10 mg"   "100 mg"  "3 mg"    "30 mg"   "300 mg"  "Placebo"</span></code></pre></div>
 <p>If the argument <code>use.rds</code> is <code>TRUE</code>, <code>NMscanData</code> will look for an rds file next to the input data file (which is a delimited text file) the exact same name as the text file except the extension must be <code>.rds</code> rather than say <code>.csv</code> (for Nonmem and <code>NMscanData</code>, the extension of the delimited text file doesn’t matter). If it finds the <code>rds</code> file, this will be used instead. No checks are done of whether the contents are similar in any way to the delimited text file which is ignored in this case.</p>
 <p>There are three advantages of using <code>rds</code> files:</p>
 <ul>
