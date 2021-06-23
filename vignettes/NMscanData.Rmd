@@ -14,7 +14,7 @@ header-includes:
 ---
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(dev = "cairo_pdf")
+##knitr::opts_chunk$set(dev = "cairo_pdf")
 knitr::opts_chunk$set(
                       collapse = TRUE
                      ,comment = "#>"

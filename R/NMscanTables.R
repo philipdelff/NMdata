@@ -33,6 +33,7 @@ NMscanTables <- function(file,details=F,as.fun,quiet,tab.count=FALSE,col.id="ID"
 
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
+    has.col.id <- NULL
     has.col.row <- NULL
     filetype <- NULL
     maxLength <- NULL
@@ -40,9 +41,11 @@ NMscanTables <- function(file,details=F,as.fun,quiet,tab.count=FALSE,col.id="ID"
     firstlastonly <- NULL
     firstonly <- NULL
     lastonly <- NULL
+    level <- NULL
     name <- NULL
     nid <- NULL
     pastes <- NULL
+    scope <- NULL
 
 ###  Section end: Dummy variables, only not to get NOTE's in pacakge checks ####
 

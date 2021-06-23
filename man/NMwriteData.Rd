@@ -18,6 +18,7 @@ NMwriteData(
   nmdir.data,
   col.flag = "FLAG",
   nm.rename,
+  nm.copy,
   nm.capitalize = FALSE,
   allow.char.TIME = TRUE,
   quiet
@@ -49,11 +50,12 @@ configured using NMdataConf.}
 
 \item{args.rds}{A list of arguments to be passed to saveRDS.}
 
-\item{nm.drop}{Only used for generation of proposed text for Nonmem
-control stream. Columns to drop in Nonmem $DATA. This has two
-implications. One is that the proposed $DATA indicates =DROP
-after the given column names. The other that in case it is a
-non-numeric column, succeeding columns can still be included.}
+\item{nm.drop}{Only used for generation of proposed text for
+Nonmem control stream. Columns to drop in Nonmem $DATA. This
+has two implications. One is that the proposed $DATA indicates
+=DROP after the given column names. The other that in case it
+is a non-numeric column, succeeding columns can still be
+included.}
 
 \item{nmdir.data}{For the $DATA text proposal only. The path to
 the input datafile to be used in the Nonmem $DATA
@@ -68,8 +70,15 @@ use col.flag=NULL.}
 
 \item{nm.rename}{For the $DATA text proposal only. If you plan to
 rename columns in Nonmem $DATA, NMwriteData can adjust the
+suggested $DATA text. If you plan to use BBW instead of BWBASE
+in Nonmem, consider nm.rename=c(BWBASE="BBW"). The result is
+different from nm.copy since the nm.copy syntax is only
+allowed by Nonmem for certain standard column names such as DV.}
+
+\item{nm.copy}{For the $DATA text proposal only. If you plan to
+rename columns in Nonmem $DATA, NMwriteData can adjust the
 suggested $DATA text. If you plan to use CONC as DV in Nonmem,
-consider nm.rename=c(DV="CONC").}
+you can include nm.rename=c(DV="CONC").}
 
 \item{nm.capitalize}{For the $DATA text proposal only. If TRUE,
 the suggested text for Nonmem will only contain capital

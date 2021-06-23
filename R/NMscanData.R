@@ -159,12 +159,14 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     ID.jump <- NULL
     firstlastonly <- NULL
     firstonly <- NULL
+    full.length <- NULL
     has.col.row <- NULL
     included <- NULL
     lastonly <- NULL
     level <- NULL
     maxLength <- NULL
     name <- NULL
+    nid <- NULL
     nmout <- NULL
     nonmem <- NULL
     result <- NULL

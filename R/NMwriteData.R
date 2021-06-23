@@ -88,6 +88,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     name.nm <- NULL
     comma.ok <- NULL
     include <- NULL
+    name.copy <- NULL
     numeric.ok <- NULL
     occ.cum <- NULL
     name.rename <- NULL
