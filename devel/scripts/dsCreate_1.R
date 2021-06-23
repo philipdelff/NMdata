@@ -1,3 +1,5 @@
+#### Section start: Initialization ####
+
 ## install.packages("xgxr")
 library(xgxr)
 library(data.table)
@@ -23,6 +25,10 @@ file.nm <- function(...)file.path(NMdata_filepath(),"examples/nonmem",...)
 
 
 script.1 <- "dsCreate_1"
+writeOutput <- TRUE
+
+###  Section end: Initialization
+
 
 pkpd <- as.data.table(case1_pkpd)
 ## we should save case1_pkpd somewhere so we don't get in trouble when xgxr change it.
@@ -32,7 +38,7 @@ pk <- pkpd[CMT %in% 1:2]
 pk <- pk[CYCLE==1]
 
 pk <- pk[,!c("IPRED")]
-pk[,trtact := factor(TRTACT, levels = sort(unique(TRTACT)))]
+pk[,trtact := reorder(TRTACT, DOSE)]
 
 if(F){
     ggplot(data = pk, aes(x     = NOMTIME,
@@ -52,7 +58,7 @@ if(F){
         geom_line()+geom_point()+
         xgx_scale_y_log10() +
         facet_wrap(~trtact)
-}    
+}
 
 ## rename
 setnames(pk,
@@ -107,6 +113,10 @@ pk <- NMorderColumns(pk)
 colnames(pk)
 dim(pk)
 
+pmxtricks:::NMcheckData(pk[FLAG==0])
+
+#### Section start: Write data to files ####
+
 dt.data <- fread(text="file.data,description
 xgxr1.csv,1 csv only
 xgxr1_flag0.csv,pk FLAG==0
@@ -117,7 +127,6 @@ xgxr4.csv,1 without ROW
 ")
 
 
-writeOutput <- TRUE
 dt.data[file.data=="xgxr1.csv",
         nmCode:=list(list(
             NMwriteData(pk,file=file.data(file.data),write.csv=writeOutput,write.rds=F)
@@ -151,6 +160,10 @@ dt.data[file.data=="xgxr4.csv",
             NMwriteData(pk[,!("ROW")],file=file.data(file.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2))
         ))]
 
+
+###  Section end: Write data to files
+
+#### Section start: Update $INPUT sections ####
 
 
 
@@ -186,9 +199,14 @@ dt.runs[mod=="xgxr002.mod",{
 by=ROW
 ]
 
+###### xgxr021 is quite special wuth a number of features. Please take
+###### from old lst for now.
 
+###  Section end: Update $INPUT sections
 
-### when run, copy 001 to 001dir list.files(file.nm())
+#### Section start: Create xgxr001dir ####
+
+### copy 001 to 001dir list.files(file.nm())
 list.files(file.nm("xgxr001dir"))
 
 unlink(file.nm("xgxr001dir"),recursive=T)
@@ -211,49 +229,5 @@ sec.data.new <- sub(data.old$string,paste0("../",data.old$string),sec.data)
 NMwriteSection(file.nm("xgxr001dir/input.txt"),section="DATA",newlines=sec.data.new)
 
 
-1
+###  Section end: Create xgxr001dir
 
-## lapply(dt.runs[file=="../data/xgxr1.csv",path],
-##        NMreplacePart,list.sections=text["INPUT"])
-
-## lapply(dt.runs[file=="../data/xgxr1.csv",path],
-##        NMundoReplace)
-
-## lapply(dt.runs[file=="../data/xgxr2.csv",path],
-##        NMreplacePart,list.sections=text2["INPUT"])
-
-## lapply(dt.runs[file=="../data/xgxr3.csv",path],
-##        NMreplacePart,list.sections=text3["INPUT"])
-
-## dt.data[file.data=="xgxr001.csv",nmCode:={
-##     nmcod=NMwriteData(pk,file=file.nm(file.data),write.rds=F)
-##     list(paste(nmCode$INPUT,collapse="\n"))
-## }]
-
-
-
-
-if(F){
-
-    nmcode.3 <- NMwriteData(pk2,file=file.path(NMdata_filepath(),"examples/data/xgxr3.csv"),write.rds=T,args.rds=list(version=2))
-
-    ## and a version without rds, and without ROW
-    nmcode.4 <- NMwriteData(pk[,!("ROW")],file=file.path(NMdata_filepath(),"examples/data/xgxr4.csv"),write.rds=F)
-
-
-
-    nmcode.1 <- NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr1.csv"),write.rds=F)
-### with this one, we don't need to filter on FLAG
-    nmcode.1.f0 <- NMwriteData(pk[FLAG==0],file=file.path(NMdata_filepath(),"examples/data/xgxr1_flag0.csv"),write.rds=F)
-
-    ## same, but both rds and csv. Both with meta data.
-    nmcode.2 <- NMwriteData(pk,file=file.path(NMdata_filepath(),"examples/data/xgxr2.csv"),write.rds=T,args.rds=list(version=2),script=script.1)
-    nmcode.2.f0 <- NMwriteData(pk[FLAG==0],file=file.path(NMdata_filepath(),"examples/data/xgxr2_flag0.csv"),write.rds=T,args.rds=list(version=2),script=script.1)
-
-    ## a version with duplicated column names for testing
-    pk2 <- cbind(pk,pk[,.(DOSE)])
-    nmcode.3 <- NMwriteData(pk2,file=file.path(NMdata_filepath(),"examples/data/xgxr3.csv"),write.rds=T,args.rds=list(version=2))
-
-    ## and a version without rds, and without ROW
-    nmcode.4 <- NMwriteData(pk[,!("ROW")],file=file.path(NMdata_filepath(),"examples/data/xgxr4.csv"),write.rds=F)
-}

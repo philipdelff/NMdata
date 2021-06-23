@@ -971,13 +971,12 @@ ggplot(res14[EVID==0])+
 ## The NMdata class
 ::: columns
 :::: column
-Most important message: an `NMdata` object can be used as if it weren't. `R` looks sequentially for "methods" matching the classes of an object.
+Most important message: an `NMdata` object can be used as if it weren't. 
 
 Methods defined for `NMdata`:
 
 * `summary`: The information that is written to the console if `quiet=FALSE`.
 
-This is the only behavior that is overwritten by the `NMdata` class. 
 
 Simple other methods like `rbind` and similar are defined by dropping the `NMdata` class and then perform the operation.
 
