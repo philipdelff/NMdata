@@ -405,7 +405,7 @@
 <code class="sourceCode R"><span class="va">res2</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">trtact</span><span class="op">)</span><span class="op">]</span>
 <span class="co">#&gt; [1] "factor"</span>
 <span class="va">res2</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">trtact</span><span class="op">)</span><span class="op">]</span>
-<span class="co">#&gt; [1] "10 mg"   "100 mg"  "3 mg"    "30 mg"   "300 mg"  "Placebo"</span></code></pre></div>
+<span class="co">#&gt; [1] "Placebo" "3 mg"    "10 mg"   "30 mg"   "100 mg"  "300 mg"</span></code></pre></div>
 <p>If the argument <code>use.rds</code> is <code>TRUE</code>, <code>NMscanData</code> will look for an rds file next to the input data file (which is a delimited text file) the exact same name as the text file except the extension must be <code>.rds</code> rather than say <code>.csv</code> (for Nonmem and <code>NMscanData</code>, the extension of the delimited text file doesn’t matter). If it finds the <code>rds</code> file, this will be used instead. No checks are done of whether the contents are similar in any way to the delimited text file which is ignored in this case.</p>
 <p>There are three advantages of using <code>rds</code> files:</p>
 <ul>
