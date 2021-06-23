@@ -79,7 +79,7 @@ An R package that can help
 *  Creating event-based data sets for PK/PD modeling
 *  Keeping Nonmem code updated to match contents of datasets
 *  Read all output data and combine with input data from Nonmem runs
-  - supply output list file (.lst), and the reader is very flexible and automated 
+- supply output list file (.lst), and the reader is very flexible and automated 
 
 Designed to fit in to the user's setup and coding preferences
 
@@ -98,7 +98,7 @@ Designed to fit in to the user's setup and coding preferences
 * A calculation or simulation toolbox
 
 * A "silo" that requires you to do things in a certain way
-  - No tools in NMdata requires other NMdata tools to be used
+- No tools in NMdata requires other NMdata tools to be used
 
 ::::
 :::
@@ -146,17 +146,17 @@ more high-level tasks.
 * During the first 2-3 years I spent in pharmacometrics, I must have spent half the time coding, desparately trying to get Nonmem to behave and to understand the properties of the estimates I obtained.
 
 * Most of us develop our own ways to avoid some of the many
-  difficulties in this process. This takes a lot of time and is most
-  often only because we don't have adequate tools at hand.
+difficulties in this process. This takes a lot of time and is most
+often only because we don't have adequate tools at hand.
 
 * I generalized some of my solutions and collected them in `NMdata`.
 
 * Almost every single line of code in the package is motivated by bad
-  experiences. Errors, fear of errors, time wasted on debugging and
-  double checking.
+experiences. Errors, fear of errors, time wasted on debugging and
+double checking.
 
 * I have no intention of missioning these approaches to others. But if
-  you find something interesting, feel free to take advantage.
+you find something interesting, feel free to take advantage.
 
 
 <!-- This could become a good slide, but so far not ready at all -->
@@ -249,11 +249,11 @@ pk.reduced[,AMT:=as.character(AMT)]
 :::: column
 
 * In order to rbind or merge data sets, they must be compatible in 
-  - presence of columns, depending of desired outcome
-  - equally importantly, the classes of the common columns.
+- presence of columns, depending of desired outcome
+- equally importantly, the classes of the common columns.
 * `compareCols` provides an overview of these properties for any number of data sets. 
-  - By default, only discrepancies are returned. 
-  - Using `diff.only=FALSE` will give the complete list of columns in the two datasets.
+- By default, only discrepancies are returned. 
+- Using `diff.only=FALSE` will give the complete list of columns in the two datasets.
 
 :::: 
 :::: column
@@ -300,7 +300,7 @@ data values. We want to use these and other non-numerics in post-processing.
 :::: 
 
 :::: column
-	All column names are capital case. We rename to lowercase those that Nonmem will not be able to interpret as numeric.
+All column names are capital case. We rename to lowercase those that Nonmem will not be able to interpret as numeric.
 \footnotesize
 ```{r,include=FALSE}
 pk.old <- copy(pk)
@@ -488,15 +488,15 @@ A unique identifier is needed in order to
 ### The identifier should be
 
 * Numeric
-  - For Nonmem to be able to read it
+- For Nonmem to be able to read it
 * Integer
-  - To avoid risk of rounding
-  - It is _not_ a problem if represented as a `double` in `R`
+- To avoid risk of rounding
+- It is _not_ a problem if represented as a `double` in `R`
 
 * Increasing
-  - Not strictly necessary
-  - Avoid confusion
-  - May be useful for post-processing to have a single column to order by
+- Not strictly necessary
+- Avoid confusion
+- May be useful for post-processing to have a single column to order by
 
 ::::
 :::: column
@@ -531,21 +531,21 @@ pk <- pk %>%
 \vspace{12pt}
 * The order of columns in Nonmem is important for two reasons. 
 
-  - Non-numeric Characters in a variable read into Nonmem will make the run
+- Non-numeric Characters in a variable read into Nonmem will make the run
 fail
-  - The number of
+- The number of
 variables you can read into Nonmem is restricted (may not apply to recent Nonmem versions)
 
 * `NMorderColumns` uses a mix of recognition of column names and analysis of the
 column contents to sort the columns. 
 
-  - First: Standard columns (`ID`, `TIME`, `EVID` etc.) and usable columns first
+- First: Standard columns (`ID`, `TIME`, `EVID` etc.) and usable columns first
 
-  - Columns that cannot be converted to numeric are put in the back
+- Columns that cannot be converted to numeric are put in the back
 
-  - Additional columns to place earlier (argument `first`) or late (`last`) can be specified. 
+- Additional columns to place earlier (argument `first`) or late (`last`) can be specified. 
 
-  - See `?NMorderColumns` for more options.
+- See `?NMorderColumns` for more options.
 
 * `NMorderColumns` does not sort rows, nor does it modify any contents of columns.
 
@@ -578,8 +578,8 @@ provided.
 * Checks character variables for Nonmem compatibility (commas not allowed)
 * writes a `csv` file with appropriate options for Nonmem compatibility
 * Default is to also write an `rds` file for R 
-  - Contents identical to R object including all information (such as factor levels) which cannot be saved in csv. 
-  - If you use `NMscanData` to read Nonmem results,  this information can be used automatically. 
+- Contents identical to R object including all information (such as factor levels) which cannot be saved in csv. 
+- If you use `NMscanData` to read Nonmem results,  this information can be used automatically. 
 
 * Provides a proposal for text to include in the
 `$INPUT` and `$DATA` sections of the Nonmem control
@@ -773,7 +773,7 @@ class(res0)
 \normalsize
 
 * Starting from `NMdata 0.0.8`, the default behavior will be to merge by `col.row` if found.
-  - Default value of `col.row` is `ROW`. We shall see later how to modify this.
+- Default value of `col.row` is `ROW`. We shall see later how to modify this.
 
 ## NMscanData
 \framesubtitle{Example: quickly get from a list file to looking at the model}
@@ -814,8 +814,7 @@ res1[EVID==0,
 ## mean pop predictions. Split (facet) by treatment.
 ggplot(subset(res1,EVID==0))+
     geom_point(aes(TIME,DV))+
-    geom_line(aes(NOMTIME,gmPRED),
-              data=res1.mean,colour="red")+
+    geom_line(aes(NOMTIME,gmPRED),colour="red")+
     scale_y_log10()+
     facet_wrap(~trtact,scales="free_y",ncol=2)+
     labs(x="Hours since administration",
@@ -857,14 +856,14 @@ within subjects (like subject level parameter estimates). Such
 ```{r,echo=FALSE,out.width="105%"}
 ## Derive another data.table with geometric mean pop predictions by
 ## treatment and nominal sample time. Only use sample records.
-res2.mean <- res2[EVID==0&nmout==TRUE,
-                  .(gmPRED=exp(mean(log(PRED)))),
+res2[EVID==0&nmout==TRUE,
+                  gmPRED:=exp(mean(log(PRED))),
                   by=.(trtact,NOMTIME)]
 ## plot individual observations and geometric mean pop
 ## predictions. Split by treatment.
 ggplot(res2[EVID==0])+
     geom_point(aes(TIME,DV,colour=flag))+
-    geom_line(aes(NOMTIME,gmPRED),data=res2.mean)+
+    geom_line(aes(NOMTIME,gmPRED))+
     scale_y_log10()+
     facet_wrap(~trtact,scales="free_y",ncol=2)+
     labs(x="Hours since administration",y="Concentration (ng/mL)")
@@ -884,7 +883,7 @@ NMdataConf(col.row="ROW")
 NMdataConf(merge.by.row=TRUE)
 ```
 
-```{r,compmodels,eval=F}
+```{r,compmodels}
 ## notice fill is an option to rbind with data.table
 lst.1 <- system.file("examples/nonmem/xgxr001.lst",
                      package="NMdata")
@@ -907,10 +906,10 @@ class(res.mult)
 ::: {.column width="55%"}
 \normalsize
 ```{r,comparemodels-plot,echo=F,message=FALSE,warning=FALSE}
-ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+
+ggplot(res.mult,aes(NOMTIME,gmPRED,colour=model))+
     geom_line()+
     scale_y_log10()+
-    geom_point(aes(TIME,DV),data=res1.m,
+    geom_point(aes(TIME,DV),
                alpha=.5,colour="grey")+
     labs(x="Hours since administration",y="Concentration (ng/mL)")+
     facet_wrap(~trtact,scales="free_y",ncol=2)
@@ -950,14 +949,14 @@ res14 <- NMscanData(lst,quiet=TRUE)
 ```{r,echo=FALSE,out.width="105%"}
 ## Derive another data.table with geometric mean pop predictions by
 ## treatment and nominal sample time. Only use sample records.
-res.mean <- res14[EVID==0&nmout==TRUE,
-                  .(gmPRED=exp(mean(log(PRED)))),
+res14[EVID==0&nmout==TRUE,
+                  gmPRED:=exp(mean(log(PRED))),
                   by=.(trtact,NOMTIME)]
 ## plot individual observations and geometric mean pop
 ## predictions. Split by treatment.
 ggplot(res14[EVID==0])+
     geom_point(aes(TIME,DV,colour=flag))+
-    geom_line(aes(NOMTIME,gmPRED),data=res.mean)+
+    geom_line(aes(NOMTIME,gmPRED))+
     scale_y_log10()+
     facet_wrap(~trtact,scales="free_y",ncol=2)+
     labs(x="Hours since administration",y="Concentration (ng/mL)")
@@ -981,16 +980,16 @@ Methods defined for `NMdata`:
 Simple other methods like `rbind` and similar are defined by dropping the `NMdata` class and then perform the operation.
 
 * `NMinfo` lists metadata from `NMdata` objects and only works on `NMdata` objects. Components in metadata are (as available):
-  - `NMinfo(res1,"details")`: How was the data read and combined?
-  - `NMinfo(res1,"dataCreate")`: Meta data found attached to the input data file.
-  - `NMinfo(res1,"input.colnames")`: The translation table of input column names from input to output
-  - `NMinfo(res1,"input.filters")`: The "filters" (IGNORE/ACCEPT) from Nonmem and how they are applied in R.
-  - `NMinfo(res1,"tables")`: What tables were read and how?
-  - `NMinfo(res1,"columns")`: What columns were read from what tables?
+- `NMinfo(res1,"details")`: How was the data read and combined?
+- `NMinfo(res1,"dataCreate")`: Meta data found attached to the input data file.
+- `NMinfo(res1,"input.colnames")`: The translation table of input column names from input to output
+- `NMinfo(res1,"input.filters")`: The "filters" (IGNORE/ACCEPT) from Nonmem and how they are applied in R.
+- `NMinfo(res1,"tables")`: What tables were read and how?
+- `NMinfo(res1,"columns")`: What columns were read from what tables?
 ::::
 
 :::: column
-\scriptsize
+\tiny
 ```{r}
 class(res1)
 NMinfo(res1,"details")
@@ -1011,27 +1010,6 @@ NMinfo(res1,"tables")
 ```
 
 
-```{r,include=F,eval=F}
-## this is a nice NMinfo example
-NMdataConf(check.time=T)
-file.lst <- file.nm("xgxr021.lst")
-res1  <- NMscanData(file.lst,merge.by.row=F)
-NMinfo(res1)
-## add NOMTIME=DROP ## notice gives an extra input column in summary
-## add DV=CONC
-inp1=NMscanInput(file.lst)
-dat1=readRDS("C:/Users/delff/working_copies/NMdata/inst/examples/data/xgxr2.rds")
-## this one is interesting too
-res2 <- NMscanData(file.lst,merge.by.row=F,translate.input = F)
-NMinfo(res2,"input.colnames")
-
-install.packages("ggPMX")
-library(ggPMX)
-ctr <- pmx_nm(
-  directory = file.nm(),
-  file     = "xgxr021.lst" 
-)
-```
 
 ::::
 :::: column
@@ -1051,9 +1029,9 @@ print(NMinfo(res1,"columns"),nrows=20,topn=10)
 ::: columns
 :::: column
 * `NMcheckColnames` lists column names
-  - As in input data set
-  - As in Nonmem `$DATA`
-  - As inferred by `NMscanInput` (and `NMscanData`) 
+- As in input data set
+- As in Nonmem `$DATA`
+- As inferred by `NMscanInput` (and `NMscanData`) 
 * This will help you easily check if `$DATA` matches the input data file.
 * This is a new function that will be available in the next `NMdata` release
 * A more advanced idea is some automated guessing if mistakes were made. This is currently not on the todo list
@@ -1079,14 +1057,14 @@ output data.
 * No need to output information that is unchanged from
 input, but make sure to output what you need (like `IPRED`, `CWRES`, `CL`,
 `ETA1` etc which cannot be found in input). Always output the row identifier!
-  - Some of these values can be
+- Some of these values can be
 found from other files generated by `Nonmem` but notice: `NMscanData` only uses input and output data.
 
 * Including a unique row identifier in both input and
 output data is the most robust way to combine the tables. 
-  - Everything
+- Everything
 will most likely work even if you don't 
-  - I would not take "most likely" when robustness is available.
+- I would not take "most likely" when robustness is available.
 
 * In `firstonly` tables, include the subject ID or the row identifier. 
 
@@ -1128,19 +1106,19 @@ available elsewhere.
 `NMscanData` uses a few simpler functions to read all the data it can find. These functions may be useful when you don't want the full automatic package provided by `NMscanData`.
 
 * `NMreadTab`
-  - Fast read and format output tables from Nonmem
-  - Handles the "`TABLE NO.`" counter
-  - If you simulate a large number of subjects in Nonmem and get a
-    large (gigabytes) output data file, this will be extremely fast
-    compared to almost anything else.
+- Fast read and format output tables from Nonmem
+- Handles the "`TABLE NO.`" counter
+- If you simulate a large number of subjects in Nonmem and get a
+large (gigabytes) output data file, this will be extremely fast
+compared to almost anything else.
 * `NMscanTables` (uses `NMreadTab`)
-  - Given a control stream or list file, read all output tables
+- Given a control stream or list file, read all output tables
 * `NMreadCsv` 
-  - Fast read delimited (input data) files 
+- Fast read delimited (input data) files 
 * `NMscanInput` (uses `NMreadCSV`)
-  - Given a control stream or list file, read input data.
-  - Optionally reads and applies Nonmem ignore/accept statements
-  - Optionally translates column names according to names used in Nonmem
+- Given a control stream or list file, read input data.
+- Optionally reads and applies Nonmem ignore/accept statements
+- Optionally translates column names according to names used in Nonmem
 
 <!-- # Data processing -->
 <!-- ## findCovs, findVars -->
@@ -1201,9 +1179,9 @@ try(NMdataConf(use.input="FALSE"))
 ```
 
 * A few extra features are available with `NMdataConf`:
-  - Reset all settings: `NMdataConf(reset=TRUE)` 
-  - Reset individual settings: `NMdataConf(use.input=NULL, as.fun=NULL)`
-  - Retrieve all current settings: `NMdataConf()`
+- Reset all settings: `NMdataConf(reset=TRUE)` 
+- Reset individual settings: `NMdataConf(use.input=NULL, as.fun=NULL)`
+- Retrieve all current settings: `NMdataConf()`
 
 
 ## How is `NMdata` qualified?
@@ -1217,7 +1195,7 @@ Ntests <- sum(sapply(res.test,function(x)length(x$results)))
 * `NMdata` contains very little calculations (only exception may be `flagsAssign`/`flagsCount`)
 
 * Historic bugs have mostly resulted in uninformative errors due to
-  e.g. failure in processing text
+e.g. failure in processing text
 
 * `NMdata` includes `r Ntests` "unit tests" where results of function calls
 with different datasets and arguments are compared to expected
@@ -1236,26 +1214,26 @@ package, we will include the test in the package
 # Next steps for `NMdata`
 ## Next steps for `NMdata`
 * The next milestone is submitting the package to CRAN
-  - Aiming for end of June
-  - Most important task before is revision of vignettes
+- Aiming for end of June
+- Most important task before is revision of vignettes
 * Abstract submitted to ACoP
 * The following would be great help in making `NMdata` more accessible and useful
-  - Testing - please use the package and provide feedback
-  - Review of documentation, vignettes, and descriptions/explanations on website
-  - Graphical representations and illustrations.
-  - A tidyverse workflow for a new vignette
-  - If you have ideas you want to contribute, let's discuss!
-  
+- Testing - please use the package and provide feedback
+- Review of documentation, vignettes, and descriptions/explanations on website
+- Graphical representations and illustrations.
+- A tidyverse workflow for a new vignette
+- If you have ideas you want to contribute, let's discuss!
+
 * Before or after first version on CRAN
-  - `NMcheckData`: Check data syntax/format compatibility with Nonmem
-  - `NMfreezeModels`: Save Nonmem models with input data and all results to ensure reproducibility of output
-  
+- `NMcheckData`: Check data syntax/format compatibility with Nonmem
+- `NMfreezeModels`: Save Nonmem models with input data and all results to ensure reproducibility of output
+
 * After first version on CRAN
-  - Functions to generate dosing regimens for simulations and
-    nominal-time datasets
-  - Functions for easy documentation of column contents (description,
-    units, 1:1 relationships between character and numeric columns)
-  
+- Functions to generate dosing regimens for simulations and
+nominal-time datasets
+- Functions for easy documentation of column contents (description,
+units, 1:1 relationships between character and numeric columns)
+
 <!-- %%%% automatic saving of meta data with csv files -->
 <!-- %%%% check that row identifier is not modified by Nonmem -->
 <!-- %%%% documentation of columnns -->
@@ -1313,23 +1291,23 @@ Aim: check data for all potential Nonmem compatibility issues and other obvious 
 :::: column
 
 * Currently checks for:
-  - Presence, no `NA`, and compatibility of `TIME`, `EVID`, `ID`, `CMT`
-  - `DV` must be `NA` at dosing events
-  - If available `MDV` and col.flagn must be numeric and non-missing
-  - `EVID` one of 0,1,2,3,4
-  - `ID`'s are disjoint 
-  - `TIME` is positive and increasing within constant ID
-  - `CMT` is a positive integer
-  - `MDV` represents `is.na(DV)`
+- Presence, no `NA`, and compatibility of `TIME`, `EVID`, `ID`, `CMT`
+- `DV` must be `NA` at dosing events
+- If available `MDV` and col.flagn must be numeric and non-missing
+- `EVID` one of 0,1,2,3,4
+- `ID`'s are disjoint 
+- `TIME` is positive and increasing within constant ID
+- `CMT` is a positive integer
+- `MDV` represents `is.na(DV)`
 
 * Todo
-  - Many checks will be added and most of them are simple to implement
-  - Has to accept many more alternative ways to code the data
-  
+- Many checks will be added and most of them are simple to implement
+- Has to accept many more alternative ways to code the data
+
 * It is experimental but safe
-  - `NMcheckData is a "look but don't touch" function, so worst case is output is confusing. 
-  - You could get a strange error due to "holes" in the function that
-    haven't yet been implemented.
+- `NMcheckData is a "look but don't touch" function, so worst case is output is confusing. 
+- You could get a strange error due to "holes" in the function that
+haven't yet been implemented.
 
 * May or may not get ready for `NMdata 0.1.0`
 
@@ -1381,9 +1359,9 @@ Limitations
 * NMfreezeModels does not provide a solution for the simulation code at this point. I am very interested in how we can do this.
 * Only supports collections of models with one common input dataset
 * The permissions of the frozen folder should be read-only. However,
-  that means that once the freeze it's done, you can no longer add
-  code or descriptions. It all has to be handled in the freeze
-  procedure.
+that means that once the freeze it's done, you can no longer add
+code or descriptions. It all has to be handled in the freeze
+procedure.
 
 
 ## Safe model reader
@@ -1428,14 +1406,14 @@ ggwrite(pls1[[5]],canvas="wide")
 `ggwrite` is a wrapper of `png` and `pdf` (and `dev.off`) with convenience features such as
 
 * Support for multiple plots at once
-  - saved as either multiple files, named by list element names if wanted (or just numbered)
-  - or a single pdf with one plot per page
+- saved as either multiple files, named by list element names if wanted (or just numbered)
+- or a single pdf with one plot per page
 * Stamping with creation time, script name, and output name
 * "canvas" sizes made for powerpoint or full-screen display (see `?canvasSize`)
 * Custom canvases are very simple to create
 * Independent `save` and `show` arguments for very simple conditional behavior
-  - `save` defaults to `TRUE` if a filename is given
-  - `show` defaults to the inverse of `save`
+- `save` defaults to `TRUE` if a filename is given
+- `show` defaults to the inverse of `save`
 ::::
 :::: column
 Save pls1, as one file and as multiple files, named by the dose levels.

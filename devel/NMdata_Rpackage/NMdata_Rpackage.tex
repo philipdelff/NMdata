@@ -208,12 +208,8 @@ Designed to fit in to the user's setup and coding preferences
   A calculation or simulation toolbox
 \item
   A ``silo'' that requires you to do things in a certain way
-
-  \begin{itemize}
-  \tightlist
-  \item
-    No tools in NMdata requires other NMdata tools to be used
-  \end{itemize}
+\item
+  No tools in NMdata requires other NMdata tools to be used
 \end{itemize}
 \end{block}
 \end{column}
@@ -347,26 +343,18 @@ merge: \texttt{compareCols}}
 \tightlist
 \item
   In order to rbind or merge data sets, they must be compatible in
-
-  \begin{itemize}
-  \tightlist
-  \item
-    presence of columns, depending of desired outcome
-  \item
-    equally importantly, the classes of the common columns.
-  \end{itemize}
+\item
+  presence of columns, depending of desired outcome
+\item
+  equally importantly, the classes of the common columns.
 \item
   \texttt{compareCols} provides an overview of these properties for any
   number of data sets.
-
-  \begin{itemize}
-  \tightlist
-  \item
-    By default, only discrepancies are returned.
-  \item
-    Using \texttt{diff.only=FALSE} will give the complete list of
-    columns in the two datasets.
-  \end{itemize}
+\item
+  By default, only discrepancies are returned.
+\item
+  Using \texttt{diff.only=FALSE} will give the complete list of columns
+  in the two datasets.
 \end{itemize}
 \end{column}
 
@@ -467,11 +455,8 @@ Before merging or stacking, we may want to
 \end{column}
 
 \begin{column}{0.48\textwidth}
-\begin{verbatim}
-All column names are capital case. We rename to lowercase those that Nonmem will not be able to interpret as numeric.
-\end{verbatim}
-
-\footnotesize
+All column names are capital case. We rename to lowercase those that
+Nonmem will not be able to interpret as numeric. \footnotesize
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -802,39 +787,25 @@ A unique identifier is needed in order to
 \begin{block}{The identifier should be}
 \protect\hypertarget{the-identifier-should-be}{}
 \begin{itemize}
-\tightlist
 \item
   Numeric
-
-  \begin{itemize}
-  \tightlist
-  \item
-    For Nonmem to be able to read it
-  \end{itemize}
+\item
+  For Nonmem to be able to read it
 \item
   Integer
-
-  \begin{itemize}
-  \tightlist
-  \item
-    To avoid risk of rounding
-  \item
-    It is \emph{not} a problem if represented as a \texttt{double} in
-    \texttt{R}
-  \end{itemize}
+\item
+  To avoid risk of rounding
+\item
+  It is \emph{not} a problem if represented as a \texttt{double} in
+  \texttt{R}
 \item
   Increasing
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Not strictly necessary
-  \item
-    Avoid confusion
-  \item
-    May be useful for post-processing to have a single column to order
-    by
-  \end{itemize}
+\item
+  Not strictly necessary
+\item
+  Avoid confusion
+\item
+  May be useful for post-processing to have a single column to order by
 \end{itemize}
 \end{block}
 \end{column}
@@ -884,32 +855,25 @@ A unique identifier is needed in order to
 \begin{itemize}
 \item
   The order of columns in Nonmem is important for two reasons.
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Non-numeric Characters in a variable read into Nonmem will make the
-    run fail
-  \item
-    The number of variables you can read into Nonmem is restricted (may
-    not apply to recent Nonmem versions)
-  \end{itemize}
+\item
+  Non-numeric Characters in a variable read into Nonmem will make the
+  run fail
+\item
+  The number of variables you can read into Nonmem is restricted (may
+  not apply to recent Nonmem versions)
 \item
   \texttt{NMorderColumns} uses a mix of recognition of column names and
   analysis of the column contents to sort the columns.
-
-  \begin{itemize}
-  \item
-    First: Standard columns (\texttt{ID}, \texttt{TIME}, \texttt{EVID}
-    etc.) and usable columns first
-  \item
-    Columns that cannot be converted to numeric are put in the back
-  \item
-    Additional columns to place earlier (argument \texttt{first}) or
-    late (\texttt{last}) can be specified.
-  \item
-    See \texttt{?NMorderColumns} for more options.
-  \end{itemize}
+\item
+  First: Standard columns (\texttt{ID}, \texttt{TIME}, \texttt{EVID}
+  etc.) and usable columns first
+\item
+  Columns that cannot be converted to numeric are put in the back
+\item
+  Additional columns to place earlier (argument \texttt{first}) or late
+  (\texttt{last}) can be specified.
+\item
+  See \texttt{?NMorderColumns} for more options.
 \item
   \texttt{NMorderColumns} does not sort rows, nor does it modify any
   contents of columns.
@@ -982,7 +946,6 @@ For the final step of writing the dataset, \texttt{NMwriteData} is
 provided.
 
 \begin{itemize}
-\tightlist
 \item
   \texttt{NMwriteData} \emph{never} modifies the data.
 \item
@@ -993,16 +956,12 @@ provided.
   compatibility
 \item
   Default is to also write an \texttt{rds} file for R
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Contents identical to R object including all information (such as
-    factor levels) which cannot be saved in csv.
-  \item
-    If you use \texttt{NMscanData} to read Nonmem results, this
-    information can be used automatically.
-  \end{itemize}
+\item
+  Contents identical to R object including all information (such as
+  factor levels) which cannot be saved in csv.
+\item
+  If you use \texttt{NMscanData} to read Nonmem results, this
+  information can be used automatically.
 \item
   Provides a proposal for text to include in the \texttt{\$INPUT} and
   \texttt{\$DATA} sections of the Nonmem control streams.
@@ -1219,7 +1178,7 @@ All arguments to \texttt{fwrite} can be modified using the
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $dataCreate$CreationTime
-## [1] "2021-06-23 08:21:17"
+## [1] "2021-06-23 09:37:18"
 ## 
 ## $dataCreate$writtenTo
 ## [1] "derived/pk.csv"
@@ -1239,7 +1198,7 @@ All arguments to \texttt{fwrite} can be modified using the
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $dataCreate$CreationTime
-## [1] "2021-06-23 08:21:17 EDT"
+## [1] "2021-06-23 09:37:18 EDT"
 ## 
 ## $dataCreate$writtenTo
 ## [1] "derived/pk.rds"
@@ -1416,13 +1375,9 @@ Using a unique row identifier for merging data is highly recommended:
 \item
   Starting from \texttt{NMdata\ 0.0.8}, the default behavior will be to
   merge by \texttt{col.row} if found.
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Default value of \texttt{col.row} is \texttt{ROW}. We shall see
-    later how to modify this.
-  \end{itemize}
+\item
+  Default value of \texttt{col.row} is \texttt{ROW}. We shall see later
+  how to modify this.
 \end{itemize}
 \end{frame}
 
@@ -1499,6 +1454,11 @@ Using a unique row identifier for merging data is highly recommended:
 \end{column}
 
 \begin{column}{0.55\textwidth}
+\begin{verbatim}
+## Warning: Removed 7 row(s) containing missing values
+## (geom_path).
+\end{verbatim}
+
 \begin{center}\includegraphics[width=1.05\linewidth]{plots/unnamed-chunk-30-1} \end{center}
 \end{column}
 \end{columns}
@@ -1539,6 +1499,10 @@ Using a unique row identifier for merging data is highly recommended:
 \KeywordTok{class}\NormalTok{(res.mult)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## [1] "data.table" "data.frame"
+\end{verbatim}
 \end{column}
 
 \begin{column}{0.55\textwidth}
@@ -1602,8 +1566,7 @@ factor levels as in \texttt{rds} input data.
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 Most important message: an \texttt{NMdata} object can be used as if it
-weren't. \texttt{R} looks sequentially for ``methods'' matching the
-classes of an object.
+weren't.
 
 Methods defined for \texttt{NMdata}:
 
@@ -1623,31 +1586,27 @@ dropping the \texttt{NMdata} class and then perform the operation.
   \texttt{NMinfo} lists metadata from \texttt{NMdata} objects and only
   works on \texttt{NMdata} objects. Components in metadata are (as
   available):
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \texttt{NMinfo(res1,"details")}: How was the data read and combined?
-  \item
-    \texttt{NMinfo(res1,"dataCreate")}: Meta data found attached to the
-    input data file.
-  \item
-    \texttt{NMinfo(res1,"input.colnames")}: The translation table of
-    input column names from input to output
-  \item
-    \texttt{NMinfo(res1,"input.filters")}: The ``filters''
-    (IGNORE/ACCEPT) from Nonmem and how they are applied in R.
-  \item
-    \texttt{NMinfo(res1,"tables")}: What tables were read and how?
-  \item
-    \texttt{NMinfo(res1,"columns")}: What columns were read from what
-    tables?
-  \end{itemize}
+\item
+  \texttt{NMinfo(res1,"details")}: How was the data read and combined?
+\item
+  \texttt{NMinfo(res1,"dataCreate")}: Meta data found attached to the
+  input data file.
+\item
+  \texttt{NMinfo(res1,"input.colnames")}: The translation table of input
+  column names from input to output
+\item
+  \texttt{NMinfo(res1,"input.filters")}: The ``filters'' (IGNORE/ACCEPT)
+  from Nonmem and how they are applied in R.
+\item
+  \texttt{NMinfo(res1,"tables")}: What tables were read and how?
+\item
+  \texttt{NMinfo(res1,"columns")}: What columns were read from what
+  tables?
 \end{itemize}
 \end{column}
 
 \begin{column}{0.48\textwidth}
-\scriptsize
+\tiny
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1671,7 +1630,7 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## [2] "    quiet = TRUE)"                                                   
 ## 
 ## $time.NMscanData
-## [1] "2021-06-23 08:21:18 EDT"
+## [1] "2021-06-23 09:37:19 EDT"
 ## 
 ## $model
 ## [1] "xgxr003"
@@ -1710,7 +1669,7 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## [1] "2021-06-22 23:13:18 EDT"
 ## 
 ## $mtime.input
-## [1] "2021-06-22 23:13:18 EDT"
+## [1] "2021-06-23 08:47:03 EDT"
 \end{verbatim}
 \end{column}
 \end{columns}
@@ -1747,7 +1706,7 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## 1:               2021-04-05 21:57:22
 ## 2:   tF13.4      2021-04-05 21:57:22
 ## 3: ,1PE15.8    , 2021-04-05 21:57:22
-## 4:     <NA> <NA> 2021-06-22 23:13:18
+## 4:     <NA> <NA> 2021-06-23 08:47:03
 ##                                                                              file
 ## 1:      C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003_res.txt
 ## 2: C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003_res_vols.txt
@@ -1809,16 +1768,12 @@ dropping the \texttt{NMdata} class and then perform the operation.
 \tightlist
 \item
   \texttt{NMcheckColnames} lists column names
-
-  \begin{itemize}
-  \tightlist
-  \item
-    As in input data set
-  \item
-    As in Nonmem \texttt{\$DATA}
-  \item
-    As inferred by \texttt{NMscanInput} (and \texttt{NMscanData})
-  \end{itemize}
+\item
+  As in input data set
+\item
+  As in Nonmem \texttt{\$DATA}
+\item
+  As inferred by \texttt{NMscanInput} (and \texttt{NMscanData})
 \item
   This will help you easily check if \texttt{\$DATA} matches the input
   data file.
@@ -1895,25 +1850,17 @@ with \texttt{NMscanData}?}
   sure to output what you need (like \texttt{IPRED}, \texttt{CWRES},
   \texttt{CL}, \texttt{ETA1} etc which cannot be found in input). Always
   output the row identifier!
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Some of these values can be found from other files generated by
-    \texttt{Nonmem} but notice: \texttt{NMscanData} only uses input and
-    output data.
-  \end{itemize}
+\item
+  Some of these values can be found from other files generated by
+  \texttt{Nonmem} but notice: \texttt{NMscanData} only uses input and
+  output data.
 \item
   Including a unique row identifier in both input and output data is the
   most robust way to combine the tables.
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Everything will most likely work even if you don't
-  \item
-    I would not take ``most likely'' when robustness is available.
-  \end{itemize}
+\item
+  Everything will most likely work even if you don't
+\item
+  I would not take ``most likely'' when robustness is available.
 \item
   In \texttt{firstonly} tables, include the subject ID or the row
   identifier.
@@ -1981,46 +1928,30 @@ automatic package provided by \texttt{NMscanData}.
 \tightlist
 \item
   \texttt{NMreadTab}
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Fast read and format output tables from Nonmem
-  \item
-    Handles the ``\texttt{TABLE\ NO.}'' counter
-  \item
-    If you simulate a large number of subjects in Nonmem and get a large
-    (gigabytes) output data file, this will be extremely fast compared
-    to almost anything else.
-  \end{itemize}
+\item
+  Fast read and format output tables from Nonmem
+\item
+  Handles the ``\texttt{TABLE\ NO.}'' counter
+\item
+  If you simulate a large number of subjects in Nonmem and get a large
+  (gigabytes) output data file, this will be extremely fast compared to
+  almost anything else.
 \item
   \texttt{NMscanTables} (uses \texttt{NMreadTab})
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Given a control stream or list file, read all output tables
-  \end{itemize}
+\item
+  Given a control stream or list file, read all output tables
 \item
   \texttt{NMreadCsv}
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Fast read delimited (input data) files
-  \end{itemize}
+\item
+  Fast read delimited (input data) files
 \item
   \texttt{NMscanInput} (uses \texttt{NMreadCSV})
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Given a control stream or list file, read input data.
-  \item
-    Optionally reads and applies Nonmem ignore/accept statements
-  \item
-    Optionally translates column names according to names used in Nonmem
-  \end{itemize}
+\item
+  Given a control stream or list file, read input data.
+\item
+  Optionally reads and applies Nonmem ignore/accept statements
+\item
+  Optionally translates column names according to names used in Nonmem
 \end{itemize}
 \end{frame}
 
@@ -2137,17 +2068,13 @@ use that.
 \tightlist
 \item
   A few extra features are available with \texttt{NMdataConf}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Reset all settings: \texttt{NMdataConf(reset=TRUE)}
-  \item
-    Reset individual settings:
-    \texttt{NMdataConf(use.input=NULL,\ as.fun=NULL)}
-  \item
-    Retrieve all current settings: \texttt{NMdataConf()}
-  \end{itemize}
+\item
+  Reset all settings: \texttt{NMdataConf(reset=TRUE)}
+\item
+  Reset individual settings:
+  \texttt{NMdataConf(use.input=NULL,\ as.fun=NULL)}
+\item
+  Retrieve all current settings: \texttt{NMdataConf()}
 \end{itemize}
 \end{frame}
 
@@ -2187,61 +2114,44 @@ use that.
 \begin{frame}[fragile]{Next steps for \texttt{NMdata}}
 \protect\hypertarget{next-steps-for-nmdata-1}{}
 \begin{itemize}
-\tightlist
 \item
   The next milestone is submitting the package to CRAN
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Aiming for end of June
-  \item
-    Most important task before is revision of vignettes
-  \end{itemize}
+\item
+  Aiming for end of June
+\item
+  Most important task before is revision of vignettes
 \item
   Abstract submitted to ACoP
 \item
   The following would be great help in making \texttt{NMdata} more
   accessible and useful
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Testing - please use the package and provide feedback
-  \item
-    Review of documentation, vignettes, and descriptions/explanations on
-    website
-  \item
-    Graphical representations and illustrations.
-  \item
-    A tidyverse workflow for a new vignette
-  \item
-    If you have ideas you want to contribute, let's discuss!
-  \end{itemize}
+\item
+  Testing - please use the package and provide feedback
+\item
+  Review of documentation, vignettes, and descriptions/explanations on
+  website
+\item
+  Graphical representations and illustrations.
+\item
+  A tidyverse workflow for a new vignette
+\item
+  If you have ideas you want to contribute, let's discuss!
 \item
   Before or after first version on CRAN
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \texttt{NMcheckData}: Check data syntax/format compatibility with
-    Nonmem
-  \item
-    \texttt{NMfreezeModels}: Save Nonmem models with input data and all
-    results to ensure reproducibility of output
-  \end{itemize}
+\item
+  \texttt{NMcheckData}: Check data syntax/format compatibility with
+  Nonmem
+\item
+  \texttt{NMfreezeModels}: Save Nonmem models with input data and all
+  results to ensure reproducibility of output
 \item
   After first version on CRAN
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Functions to generate dosing regimens for simulations and
-    nominal-time datasets
-  \item
-    Functions for easy documentation of column contents (description,
-    units, 1:1 relationships between character and numeric columns)
-  \end{itemize}
+\item
+  Functions to generate dosing regimens for simulations and nominal-time
+  datasets
+\item
+  Functions for easy documentation of column contents (description,
+  units, 1:1 relationships between character and numeric columns)
 \end{itemize}
 \end{frame}
 
@@ -2336,53 +2246,40 @@ obvious errors.
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 \begin{itemize}
-\tightlist
 \item
   Currently checks for:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Presence, no \texttt{NA}, and compatibility of \texttt{TIME},
-    \texttt{EVID}, \texttt{ID}, \texttt{CMT}
-  \item
-    \texttt{DV} must be \texttt{NA} at dosing events
-  \item
-    If available \texttt{MDV} and col.flagn must be numeric and
-    non-missing
-  \item
-    \texttt{EVID} one of 0,1,2,3,4
-  \item
-    \texttt{ID}'s are disjoint
-  \item
-    \texttt{TIME} is positive and increasing within constant ID
-  \item
-    \texttt{CMT} is a positive integer
-  \item
-    \texttt{MDV} represents \texttt{is.na(DV)}
-  \end{itemize}
+\item
+  Presence, no \texttt{NA}, and compatibility of \texttt{TIME},
+  \texttt{EVID}, \texttt{ID}, \texttt{CMT}
+\item
+  \texttt{DV} must be \texttt{NA} at dosing events
+\item
+  If available \texttt{MDV} and col.flagn must be numeric and
+  non-missing
+\item
+  \texttt{EVID} one of 0,1,2,3,4
+\item
+  \texttt{ID}'s are disjoint
+\item
+  \texttt{TIME} is positive and increasing within constant ID
+\item
+  \texttt{CMT} is a positive integer
+\item
+  \texttt{MDV} represents \texttt{is.na(DV)}
 \item
   Todo
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Many checks will be added and most of them are simple to implement
-  \item
-    Has to accept many more alternative ways to code the data
-  \end{itemize}
+\item
+  Many checks will be added and most of them are simple to implement
+\item
+  Has to accept many more alternative ways to code the data
 \item
   It is experimental but safe
-
-  \begin{itemize}
-  \tightlist
-  \item
-    `NMcheckData is a ``look but don't touch'' function, so worst case
-    is output is confusing.
-  \item
-    You could get a strange error due to ``holes'' in the function that
-    haven't yet been implemented.
-  \end{itemize}
+\item
+  `NMcheckData is a ``look but don't touch'' function, so worst case is
+  output is confusing.
+\item
+  You could get a strange error due to ``holes'' in the function that
+  haven't yet been implemented.
 \item
   May or may not get ready for \texttt{NMdata\ 0.1.0}
 \end{itemize}
@@ -2590,15 +2487,11 @@ output}
 \tightlist
 \item
   Support for multiple plots at once
-
-  \begin{itemize}
-  \tightlist
-  \item
-    saved as either multiple files, named by list element names if
-    wanted (or just numbered)
-  \item
-    or a single pdf with one plot per page
-  \end{itemize}
+\item
+  saved as either multiple files, named by list element names if wanted
+  (or just numbered)
+\item
+  or a single pdf with one plot per page
 \item
   Stamping with creation time, script name, and output name
 \item
@@ -2609,14 +2502,10 @@ output}
 \item
   Independent \texttt{save} and \texttt{show} arguments for very simple
   conditional behavior
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \texttt{save} defaults to \texttt{TRUE} if a filename is given
-  \item
-    \texttt{show} defaults to the inverse of \texttt{save}
-  \end{itemize}
+\item
+  \texttt{save} defaults to \texttt{TRUE} if a filename is given
+\item
+  \texttt{show} defaults to the inverse of \texttt{save}
 \end{itemize}
 \end{column}
 
