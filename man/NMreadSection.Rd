@@ -78,7 +78,7 @@ suitable for the results part too.
 }}
 
 \examples{
-NMreadSection(system.file("examples/nonmem/run001.lst", package="NMdata"),section="DATA")
+NMreadSection(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),section="DATA")
 
 }
 \seealso{

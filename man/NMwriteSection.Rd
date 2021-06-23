@@ -12,7 +12,7 @@ NMwriteSection(
   newfile,
   backup = TRUE,
   blank.append = TRUE,
-  test = FALSE
+  write = TRUE
 )
 }
 \arguments{
@@ -38,8 +38,9 @@ want to backup the file (to say, backup_run001.mod)?}
 
 \item{blank.append}{Append a blank line to output?}
 
-\item{test}{Want to see the resulting input.txt and not write it
-to disk?  Default is FALSE.}
+\item{write}{Default is to write to file. If write=FALSE,
+NMwriteSection returns the resulting input.txt without writing
+it.  to disk?  Default is FALSE.}
 }
 \description{
 Just give the section name, the new lines and the file path, and the
@@ -50,7 +51,7 @@ The new file will be written with unix-style line endings.
 }
 \examples{
 newlines <- "$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"
-NMwriteSection(file=system.file("examples/nonmem/run001.mod", package = "NMdata"),
+NMwriteSection(file=system.file("examples/nonmem/xgxr001.mod", package = "NMdata"),
 section="EST", newlines=newlines,newfile=NULL)
 }
 \seealso{

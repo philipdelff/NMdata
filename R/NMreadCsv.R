@@ -31,9 +31,11 @@ NMreadCsv <- function(file,args.fread,as.fun=NULL){
     dt <- as.fun(dt)
     file.csv.meta <- paste0(fnExtension(file,ext=""),"_meta.txt")
     if(file.exists(file.csv.meta)){
+        
         meta <- fread(file.csv.meta,sep=",",header=TRUE)
         meta.list <- setNames(as.list(meta$value),meta$parameter)
-        attr(dt,"objInfo") <- meta.list
+        ## attr(dt,"meta") <- meta.list
+        writeNMinfo(dt,list(dataCreate=meta.list))
     }
     
     return(dt)

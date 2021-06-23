@@ -1,15 +1,25 @@
-# NMdata 0.0.8
-merge.by.row="ifAvailable"
+# NMdata 0.0.7.3
+Meta data system rewritten
+* NMinfo and NMstamp are used to read and write meta data. Meta data is stored as an attribute to the data object (attributes(data)$NMdata). 
 
-Check for new values of row identifier
+* Translation table includes a column ranking the match betwen input
+  data file contents and $INPUT. OK: names match, diff: names do not
+  match, off: diff and name is found elsewhere.
 
-Check for disjoint ID's when ID-level output tables found
+* NMscanInput, NMaplyFilters, NMtransInp all return meta data
+  compatibly with NMinfo.
 
-Improved message from NMscanData
+* merge.by.row="ifAvailable"
 
-Support for custom (and NULL) values of col.model and col.nmout
+* Check for new values of row identifier
 
-Support for Nonmem filters without operators (COL XX)
+* Check for disjoint ID's when ID-level output tables found
+
+* Improved message from NMscanData
+
+* Support for custom (and NULL) values of col.model and col.nmout
+
+* Support for Nonmem filters without operators (COL XX)
 
 # NMdata 0.0.7.2
 NMreadCsv, NMscanInput, and NMscanData take argument args.fread. The

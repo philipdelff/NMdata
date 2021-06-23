@@ -9,7 +9,7 @@ messageWrap(
   fun.msg = message,
   prefix = "\\n",
   initial = "",
-  width = 80,
+  width,
   track.msg = FALSE
 )
 }

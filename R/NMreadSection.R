@@ -36,7 +36,7 @@
 ##' @return character vector with extracted lines.
 ##' @family Nonmem
 ##' @examples
-##' NMreadSection(system.file("examples/nonmem/run001.lst", package="NMdata"),section="DATA")
+##' NMreadSection(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),section="DATA")
 ##'
 ##' @export
 
@@ -97,7 +97,7 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
 
 #' @describeIn NMreadSection Old function name for NMreadSection
 NMgetSection <- function(...){
-    message("NMgetSection has been renamed. Please use NMreadSection instead.")
+    .Deprecated("NMreadSection")
     NMreadSection(...)
     
 }

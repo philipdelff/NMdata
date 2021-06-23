@@ -13,11 +13,23 @@ test_that("basic",{
     
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     pk[,trtact:=NULL]
+    pk.0 <- copy(pk)
     pk <- renameByContents(data=pk,
                            fun.test=NMisNumeric,
                            fun.rename = tolower,
                            invert.test = TRUE)
-
-    expect_equal_to_reference(pk,fileRef)
+    res <- compareCols(pk,pk.0)
+    expect_equal_to_reference(res,fileRef)
+    
+    ## pkref <- readRDS(fileRef)
+    ## setattr(pk,"NMdata",NULL)
+    ## setattr(pkref,"NMdata",NULL)
+    ## pk$FLAG2=NULL
+    ## pk$flag2=NULL
+    ## pk <- NMorderColumns(pk)    
+    ## pkref <- NMorderColumns(pkref)
+    ## ## this is because flag changed from "pre-dose sample" to "negative time"
+    ## pk$flag[pk$flag=="Negative time"] <- "Pre-dose sample"
+    ## expect_equal(pk,pkref)
 
 })

@@ -8,5 +8,6 @@
 ##' @export
 
 objInfo <- function(data){
+    .Deprecated("NMinfo")
     attr(data,"objInfo")
 }

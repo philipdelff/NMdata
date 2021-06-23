@@ -14,6 +14,8 @@
 
 
 stampObj <- function(data,script,...){
+    .Deprecated("NMstamp")
+
     attr(data,"objInfo") <-
         list(
             DataCreateScript=script,

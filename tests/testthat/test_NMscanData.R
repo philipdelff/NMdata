@@ -7,31 +7,36 @@ NMdata_filepath <- function(...) {
     system.file(..., package = "NMdata")
 }
 
+file.nm <- function(...) NMdata_filepath("examples/nonmem",...)
+file.data <- function(...) NMdata_filepath("examples/data",...)
 
 fix.time <- function(x){
-    meta.x <- attr(x,"meta")
+    meta.x <- attr(x,"NMdata")
     ## meta.x$time.call <- as.POSIXct("2020-02-01 00:01:01",tz="UTC")
-    meta.x$details$time.call <- NULL
+    meta.x$details$time.NMscanData <- NULL
     meta.x$details$file.lst <- NULL
+    meta.x$details$file.mod <- NULL
     meta.x$details$file.input <- NULL
     meta.x$details$mtime.input <- NULL
     meta.x$details$mtime.lst <- NULL
+    meta.x$details$mtime.mod <- NULL
     meta.x$tables$file <- NULL
     meta.x$tables$file.mtime <- NULL
-    setattr(x,"meta",meta.x)
+    setattr(x,"NMdata",meta.x)
 }
 
 NMdataConf(reset=TRUE)
 test_that("basic",{
 
     fileRef <- "testReference/NMscanData1.rds"
-
+    resRef <- if(file.exists(fileRef)) readRDS(fileRef) else NULL
+    
     ## file.lst <- "../../inst/examples/nonmem/run001.lst"
     ## file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
-    ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+    ## NMreadSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
-    res1 <- NMscanData(file=file.lst, quiet=T, order.columns = F, merge.by.row=FALSE)
+    res1 <- NMscanData(file=file.lst, quiet=T, order.columns = F, merge.by.row=FALSE, check.time = FALSE)
     ## dim(res1)
 
     fix.time(res1)
@@ -79,6 +84,7 @@ test_that("Multiple output table formats",{
     fileRef <- "testReference/NMscanData3.rds"
     file.lst <- NMdata_filepath("examples/nonmem/xgxr003.lst")
 
+
     ## res <- NMscanData(file=file.lst)
     res <- NMscanData(file=file.lst, check.time = FALSE, merge.by.row=FALSE)
     fix.time(res)
@@ -113,38 +119,46 @@ test_that("List of ACCEPT statements and vs separate statements",{
     file1.lst <- NMdata_filepath("examples/nonmem/xgxr006.lst")
     file2.lst <- NMdata_filepath("examples/nonmem/xgxr007.lst")
 
-    NMgetSection(file1.lst,section="PROBLEM")
-    NMgetSection(file2.lst,section="PROBLEM")
+    NMreadSection(file1.lst,section="PROBLEM")
+    NMreadSection(file2.lst,section="PROBLEM")
     res1 <- NMscanData(file=file1.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE)
     res2 <- NMscanData(file=file2.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE) 
-    setattr(res1,"meta",NULL)
-    setattr(res2,"meta",NULL)
+    setattr(res1,"NMdata",NULL)
+    setattr(res2,"NMdata",NULL)
     expect_identical(res1,res2)
 })
 
 
-### find out how much can be tested. 
 test_that("merge by filters or not",{
     ##    fileRef <- "testReference/NMscanData4.rds"
     file1.lst <- NMdata_filepath("examples/nonmem/xgxr006.lst")
     file2.lst <- NMdata_filepath("examples/nonmem/xgxr008.lst")
 
-    ## NMgetSection(file1.lst,section="PROBLEM")
-    ## NMgetSection(file2.lst,section="PROBLEM")
+    ## NMreadSection(file1.lst,section="PROBLEM")
+    ## NMreadSection(file2.lst,section="PROBLEM")
+
     res1 <- NMscanData(file=file1.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE)
     res2 <- NMscanData(file=file2.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE)
-    setnames(res2,"EFF0","eff0")
+    setnames(res2,"EFF0","eff0",skip_absent=T)
     setcolorder(res1,colnames(res2))
 
     ## the var tables are different because ROW is input in one,
     ## output in the other. This is as expected.
 
     ## cbind(attr(res1,"var"),attr(res2,"var"))
-    setattr(res1,"meta",NULL)
-    setattr(res2,"meta",NULL)
+    setattr(res1,"NMdata",NULL)
+    setattr(res2,"NMdata",NULL)
 
     expect_equal(res1,res2)
 })
+
+### BUG 011. NA rows used for fo table. 0 IDs.
+#### it is the rare situation where
+##### there is only first-only output (nmout=FALSE everywhere)
+##### col.id is not in first-only table
+
+##### nmout does not exactly represent the split we need here. We need
+##### to know which rows were enriched by output.
 
 test_that("Only a firstonly without ID but with ROW",{
 ### This should work because ROW is in firstonly table.
@@ -152,20 +166,23 @@ test_that("Only a firstonly without ID but with ROW",{
     fileRef <- "testReference/NMscanData11.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr011.lst")
-    ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+    ## NMreadSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
 ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-### impossible with filters
+### impossible with filters at the moment. Cannot be implemented because id level cannot be merged onto row level input.
     expect_error(
         expect_warning(
             NMscanData(file=file.lst,merge.by.row=FALSE,col.row="ROW",check.time = FALSE)
         )
     )
-    ## load_all()
-    res1 <- NMscanData(file=file.lst,merge.by.row=TRUE,col.row="ROW",check.time = FALSE)
+
+    ## merge.by.row should be able to merge. 
+    res1 <-
+        expect_warning(
+            NMscanData(file=file.lst,merge.by.row=TRUE,col.row="ROW",check.time = FALSE))
     fix.time(res1)
     expect_equal_to_reference(res1,fileRef,version=2)
     ## without meta
@@ -175,7 +192,8 @@ test_that("Only a firstonly without ID but with ROW",{
 
 
 test_that("Only a firstonly, no ID, no ROW",{
-### use.input is TRUE but cbind.by.filters is FALSE. This should give an error because input cannot be used even though it is requested
+### use.input= TRUE, cbind.by.filters=FALSE.
+    ## This should give an error because input cannot be used even though it is requested
 
     ## this one only outputs a firstonly that cannot be merged onto
     ## input. use.input=T so input data should be returned.
@@ -183,9 +201,9 @@ test_that("Only a firstonly, no ID, no ROW",{
     fileRef <- "testReference/NMscanData12.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr012.lst")
-    ## NMgetSection(file.lst,section="DATA")
-    ## NMgetSection(file.lst,section="PROBLEM")
-    ## NMgetSection(file.lst,section="TABLE")
+    ## NMreadSection(file.lst,section="DATA")
+    ## NMreadSection(file.lst,section="PROBLEM")
+    ## NMreadSection(file.lst,section="TABLE")
     
     expect_error(
         expect_warning(
@@ -196,13 +214,15 @@ test_that("Only a firstonly, no ID, no ROW",{
 
 
 test_that("FO and row-level output. No ID, no row.",{
-    
-    ## row-level output returned because cbind.by.filters=F, and firstonly is without ID and row. Warning that firstonly is dropped. Correct. 
+
+#### merge.by.row = "ifAvailable" or FALSE
+    ## Only row-level output returned because cbind.by.filters=F, and firstonly is without ID and row. Warning that firstonly is dropped. Correct. 
+
     fileRef <- "testReference/NMscanData13.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr013.lst")
-    NMgetSection(file.lst,section="PROBLEM")
-    ## NMgetSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+    NMreadSection(file.lst,section="PROBLEM")
+    ## NMreadSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
     ## tabs <- NMscanTables(file=file.lst)
     res1 <- expect_warning(
@@ -213,14 +233,28 @@ test_that("FO and row-level output. No ID, no row.",{
         res1,fileRef,version=2
     )
 
+    ## merge.by.row=F cannot combine and returns output. OK
+    res2 <- expect_warning(
+        NMscanData(file=file.lst,check.time = FALSE,merge.by.row=T)
+    )
+
+    ## if we leave use.input out and can only get row level. OK
+    res2 <- expect_warning(
+        NMscanData(file=file.lst,check.time = FALSE,use.input=F)
+    )
+
+    
 })
 
+
+
+### uses ACCEPT: DOSE.GT.20 explining only 731 rows
 test_that("FO and row-level output. No ID, no row. cbind.by.filters=T",{
     ## row-level output+input returned because cbind.by.filters=T, and firstonly is without ID and row. Correct. 
     fileRef <- "testReference/NMscanData14.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr013.lst")
-    NMgetSection(file.lst,section="PROBLEM")
+    NMreadSection(file.lst,section="PROBLEM")
     
     ## tabs <- NMscanTables(file=file.lst)
     res1 <- expect_warning(
@@ -244,8 +278,8 @@ test_that("Only a firstonly without ID but with ROW",{
     fileRef <- "testReference/NMscanData15.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr011.lst")
-    NMgetSection(file.lst,section="DATA")
-    NMgetSection(file.lst,section="TABLE")
+    NMreadSection(file.lst,section="DATA")
+    NMreadSection(file.lst,section="TABLE")
 
 ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
     ## tabs <- NMscanTables(file.lst)
@@ -268,14 +302,16 @@ test_that("Only a firstonly without ID but with ROW. Using merge.by.row=TRUE.",{
     fileRef <- "testReference/NMscanData15b.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr011.lst")
-    NMgetSection(file.lst,section="DATA")
-    NMgetSection(file.lst,section="TABLE")
+    NMreadSection(file.lst,section="DATA")
+    NMreadSection(file.lst,section="TABLE")
 
 ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-    res1 <- NMscanData(file=file.lst,col.row="ROW",merge.by.row=TRUE,check.time = FALSE)
+    res1 <- expect_warning(
+        NMscanData(file=file.lst,col.row="ROW",merge.by.row=TRUE,check.time = FALSE)
+    )
     
     fix.time(res1)
     expect_equal_to_reference(
@@ -291,8 +327,8 @@ test_that("recoverRows without a row identifier",{
     fileRef <- "testReference/NMscanData16.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
-    NMgetSection(file.lst,section="DATA")
-    NMgetSection(file.lst,section="TABLE")
+    NMreadSection(file.lst,section="DATA")
+    NMreadSection(file.lst,section="TABLE")
 
 ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
     ## tabs <- NMscanTables(file.lst)
@@ -316,8 +352,8 @@ test_that("use as.fun to get a data.frame",{
     fileRef <- "testReference/NMscanData17.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
-    NMgetSection(file.lst,section="DATA")
-    NMgetSection(file.lst,section="TABLE")
+    NMreadSection(file.lst,section="DATA")
+    NMreadSection(file.lst,section="TABLE")
 
     res1 <- NMscanData(file=file.lst,merge.by.row=FALSE,recover.rows = T,as.fun=as.data.frame,check.time = FALSE)
     dim(res1)
@@ -340,8 +376,8 @@ test_that("use as.fun to get a tibble",{
     fileRef <- "testReference/NMscanData18.rds"
 
     file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
-    NMgetSection(file.lst,section="DATA")
-    NMgetSection(file.lst,section="TABLE")
+    NMreadSection(file.lst,section="DATA")
+    NMreadSection(file.lst,section="TABLE")
 
 ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
     ## tabs <- NMscanTables(file.lst)
@@ -360,20 +396,22 @@ test_that("use as.fun to get a tibble",{
 
 
 ## test the dir structure with input.txt/output.txt 
-## load_all("../../")
+
 test_that("dir structure with input.txt/output.txt",{
     ## options(NMdata.as.fun="none")
     
     ## options(NMdata.file.mod=function(file) file.path(dirname(file),"input.txt"))
     ## options(NMdata.modelname=function(file) basename(dirname(normalizePath(file))))
 
+    NMdataConf(reset=TRUE)
     NMdataConf(as.fun="data.table")
     NMdataConf(file.mod=function(file) file.path(dirname(file),"input.txt"))
     NMdataConf(modelname=function(file) basename(dirname(normalizePath(file))))
     
-    filedir.lst <- NMdata_filepath("examples/nonmem/xgxr001dir/output.txt")
-    res1dir <- NMscanData(filedir.lst,check.time = FALSE)
-    expect_equal(attr(res1dir,"meta")$details$model,"xgxr001dir")
+    filedir.lst <- file.nm("xgxr001dir/output.txt")
+    res1dir <- NMscanData(filedir.lst,check.time = FALSE,merge.by.row=F)
+    
+    expect_equal(NMinfo(res1dir,"details")$model,"xgxr001dir")
     umod <- unique(res1dir[,model])
     expect_equal(length(umod),1)
     expect_equal(umod,"xgxr001dir")
@@ -406,9 +444,10 @@ test_that("Duplicate columns in input data",{
     ## res <- NMscanData(file=file.lst)
     ## res <- NMscanData(file=file.lst)
 
-    ## load_all("../../")
     ## debugonce(NMscanData)
-    res <- expect_warning(NMscanData(file=file.lst,merge.by.row=FALSE,check.time = FALSE))
+    res <- expect_warning(
+        NMscanData(file=file.lst,merge.by.row=FALSE,check.time = FALSE)
+    )
     fix.time(res)
     ## names(res$row)
     
@@ -418,7 +457,6 @@ test_that("Duplicate columns in input data",{
 
 ### this is not a real test. Need to be able to test how the merges were performed. 
 ## test_that("col.row and merge.by.row=TRUE from NMdataConf",{
-##     load_all("../../")
 
 ##     NMdataConf(reset=TRUE)
 ##     NMdataConf(col.row="ROW", merge.by.row=TRUE)
@@ -478,14 +516,18 @@ test_that("merge.by.row=ifAvailable when not available",{
 
 test_that(" col.row does not exist, but merge.by.row==TRUE",{
 ### col.row does not exist, but merge.by.row==TRUE
-
+    fileRef <- "testReference/NMscanData22b.rds"
+    NMdataConf(reset=T)
+    NMdataConf(check.time=F)
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
     
-    ## error is that it's not in output. It's not in input either though
-    expect_error(
-        NMscanData(file=file.lst,col.row="NONEXIST",merge.by.row=TRUE)
-    )
-
+    ## warning becauses the merge was not possible even though merge.by.row
+    res1 <- 
+        expect_warning(
+            NMscanData(file=file.lst,col.row="NONEXIST",merge.by.row=TRUE)
+        )
+    fix.time(res1)
+    expect_equal_to_reference(res1,fileRef)
     
 })
 
@@ -522,10 +564,11 @@ test_that("A filter without operator",{
 
 
 test_that("Including a redundant output table",{
+    NMdataConf(reset=T)
     NMdataConf(as.fun="data.table")
 
     fileRef <- "testReference/NMscanData24.rds"
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr019.lst")
+    file.lst <- file.nm("xgxr019.lst")
 
     ## notice no cols are taken from the redundant table - correct
     res1 <- NMscanData(file=file.lst,merge.by.row="ifAvailable",as.fun="data.table",check.time = FALSE)

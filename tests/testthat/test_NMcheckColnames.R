@@ -17,7 +17,7 @@ test_that("basic",{
 })
 
 test_that("results as data.frame",{
-
+    
     fileRef <- "testReference/NMcheckColnames_2.rds"
 
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")

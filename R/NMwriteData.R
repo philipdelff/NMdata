@@ -29,19 +29,26 @@
 ##'     argument is only used for generating the proposed text to
 ##'     paste into the Nonmem control stream. To skip this feature,
 ##'     use col.flag=NULL.
-##' @param nm.drop Only used for generation of proposed text for Nonmem
-##'     control stream. Columns to drop in Nonmem $DATA. This has two
-##'     implications. One is that the proposed $DATA indicates =DROP
-##'     after the given column names. The other that in case it is a
-##'     non-numeric column, succeeding columns can still be included.
 ##' @param nmdir.data For the $DATA text proposal only. The path to
 ##'     the input datafile to be used in the Nonmem $DATA
 ##'     section. Often, a relative path to the actual Nonmem run is
 ##'     wanted here.
-##' @param nm.rename For the $DATA text proposal only. If you plan to
+##' @param nm.copy For the $DATA text proposal only. If you plan to
 ##'     rename columns in Nonmem $DATA, NMwriteData can adjust the
 ##'     suggested $DATA text. If you plan to use CONC as DV in Nonmem,
-##'     consider nm.rename=c(DV="CONC").
+##'     you can include nm.rename=c(DV="CONC").
+##' @param nm.rename For the $DATA text proposal only. If you plan to
+##'     rename columns in Nonmem $DATA, NMwriteData can adjust the
+##'     suggested $DATA text. If you plan to use BBW instead of BWBASE
+##'     in Nonmem, consider nm.rename=c(BWBASE="BBW"). The result is
+##'     different from nm.copy since the nm.copy syntax is only
+##'     allowed by Nonmem for certain standard column names such as DV.
+##' @param nm.drop Only used for generation of proposed text for
+##'     Nonmem control stream. Columns to drop in Nonmem $DATA. This
+##'     has two implications. One is that the proposed $DATA indicates
+##'     =DROP after the given column names. The other that in case it
+##'     is a non-numeric column, succeeding columns can still be
+##'     included.
 ##' @param nm.capitalize For the $DATA text proposal only. If TRUE,
 ##'     the suggested text for Nonmem will only contain capital
 ##'     letters in column names.
@@ -72,7 +79,7 @@
 NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
                         write.rds=write.csv,script,args.stamp,args.fwrite,
                         args.rds,nm.drop,nmdir.data,col.flag="FLAG",
-                        nm.rename,nm.capitalize=FALSE,allow.char.TIME=TRUE,
+                        nm.rename,nm.copy,nm.capitalize=FALSE,allow.char.TIME=TRUE,
                         quiet){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -81,6 +88,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     name.nm <- NULL
     comma.ok <- NULL
     include <- NULL
+    name.copy <- NULL
     numeric.ok <- NULL
     occ.cum <- NULL
     name.rename <- NULL
@@ -213,12 +221,21 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
         }
     }
     
+    ## apply nm.copy
+    if(!missing(nm.copy)){
+        names.copy <- names(nm.copy)
+        dt.num.ok[,name.copy:=names.copy[match(dt.num.ok[,col],nm.copy)]]
+        dt.num.ok[!is.na(name.copy),name.nm:=paste0(name.copy,"=",col)]
+    }
+
     ## apply nm.rename
     if(!missing(nm.rename)){
         names.rename <- names(nm.rename)
         dt.num.ok[,name.rename:=names.rename[match(dt.num.ok[,col],nm.rename)]]
-        dt.num.ok[!is.na(name.rename),name.nm:=paste0(name.rename,"=",col)]
+        dt.num.ok[!is.na(name.rename),name.nm:=name.rename]
     }
+    
+    
     
     dt.num.ok[,include:=cumsum(!numeric.ok&!drop)<1]
 
@@ -266,24 +283,27 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
         ## fwrite      (data,na=".",quote=FALSE,row.names=FALSE,scipen=0,file=file.csv)
         files.written <- c(files.written,file.csv)
         if(doStamp){
-            data.meta.csv <- objInfo(do.call(stampObj,append(list(data=data,writtenTo=file.csv),args.stamp)))
+            
+            data <- do.call(NMstamp,append(list(data=data,writtenTo=file.csv),args.stamp))
+            data.meta.csv <- NMinfo(data,"dataCreate")
             data.meta.csv <- data.table(parameter=names(data.meta.csv)
                                        ,value=unlist(lapply(data.meta.csv,as.character)))
             file.csv.meta <- paste0(fnExtension(file.csv,ext=""),"_meta.txt")
             fwrite(data.meta.csv,file=file.csv.meta,quote=TRUE,row.names=FALSE,sep=",")
         }
     }
+    
     if(write.RData){
         name.data <- deparse(substitute(data))
         file.RData <- fnExtension(file,".RData")
-        if(doStamp) data <- do.call(stampObj,append(list(data=data,writtenTo=file.RData),args.stamp))
+        if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.RData),args.stamp))
         assign(name.data,data)
         save(list=name.data,file=file.RData)
         files.written <- c(files.written,file.RData)
     }
     if(write.rds){
         file.rds <- fnExtension(file,".rds")
-        if(doStamp) data <- do.call(stampObj,append(list(data=data,writtenTo=file.rds),args.stamp))
+        if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.rds),args.stamp))
         do.call(saveRDS,append(list(object=data,file=file.rds),args.rds))
         files.written <- c(files.written,file.rds)
     }

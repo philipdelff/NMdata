@@ -10,8 +10,8 @@
 ##'     NMdataConf.
 ##' @param tab.count Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. However, if
-##'     tab.count is TRUE (not default), this will be carried forward and
-##'     added as a column called TABLENO.
+##'     tab.count is TRUE (not default), this will be carried forward
+##'     and added as a column called TABLENO.
 ##' @param col.id name of the subject ID column. Used for calculation
 ##'     of the number of subjects in each table.
 ##' @param as.fun The default is to return data as a data.frame. Pass
@@ -19,6 +19,8 @@
 ##'     something else. If data.tables are wanted, use
 ##'     as.fun="data.table". The default can be configured using
 ##'     NMdataConf.
+##' @param col.row The name of the row counter column. Optional and only
+##'     used to check whether the row counter is in the data.
 ##' @return A list of all the tables as data.frames. If details=TRUE,
 ##'     this is in one element, called data, and meta is another
 ##'     element. If not, only the element corresponding to data is
@@ -31,13 +33,19 @@ NMscanTables <- function(file,details=F,as.fun,quiet,tab.count=FALSE,col.id="ID"
 
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
+    has.col.id <- NULL
+    has.col.row <- NULL
+    filetype <- NULL
+    maxLength <- NULL
+    full.length <- NULL
     firstlastonly <- NULL
     firstonly <- NULL
-    idlevel <- NULL
     lastonly <- NULL
+    level <- NULL
     name <- NULL
     nid <- NULL
     pastes <- NULL
+    scope <- NULL
 
 ###  Section end: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -113,25 +121,49 @@ file?"))
         }
      
         if(!is.null(col.row)){
-            meta[I,has.row:=col.row%in%cnames.tab.I]
+            meta[I,has.col.row:=col.row%in%cnames.tab.I]
+        }
+        if(!is.null(col.id)){
+            meta[I,has.col.id:=col.id%in%cnames.tab.I]
         }
     }
-    meta[,idlevel:=firstonly|lastonly]
-    
 
-    ## fun.has.row <- function(names) do.call(c,lapply(names,function(name)col.row%in%colnames(data[[name]])))
-    ## overview.tables[,has.row:=fun.has.row(name)]
-    meta[,maxLength:=nrow==max(nrow)]
-    meta[,full.length:=!idlevel&maxLength]
+    has.row.level <- meta[,any((firstonly+lastonly+firstlastonly)==0)]
+    ## level is the observed level. If a first only table has as many
+    ## rows as a row-level table, it's row label.
+    meta[,full.length:=(nrow==max(nrow))]
+    if(has.row.level){   
+        meta[full.length==TRUE,level:="row"]
+        meta[full.length==FALSE,level:="id"]
+    } else {
+        meta[,level:="id"]
+    }
+    ## not supported
+    meta[firstlastonly==T,level:=NA_character_]
+    
+    meta[,scope:="all"]
+    meta[firstonly==T,scope:="firstonly"]
+    meta[lastonly==T,scope:="lastonly"]
+    meta[firstlastonly==T,scope:="firstlastonly"]
+    meta[,`:=`(firstonly=NULL,
+               lastonly=NULL,
+               firstlastonly=NULL
+               )]
+
+
+    meta[,filetype:="output"]
+##
+##    meta[,full.length:=nrow==max(nrow)]
+## test if all  have same length within level. 
     
     meta[,file.mtime:=file.mtime(file)]
-    setcolorder(meta,intersect(c("source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype","file"),colnames(meta)))
+    setcolorder(meta,intersect(c("source","name","nrow","ncol","nid","level","scope","has.col.row","has.col.id","full.length","filetype","format","sep","file.mtime","file"),colnames(meta)))
     
     
     if(!quiet){
         msg <- paste0("Number of output tables read: ",meta[,.N])
-        NIDL <- meta[idlevel==TRUE&firstlastonly==FALSE,.N]
-        NFLO <- meta[idlevel==FALSE&firstlastonly==TRUE,.N]
+        NIDL <- meta[level=="id",.N]
+        NFLO <- meta[firstlastonly==TRUE,.N]
         mNIDL <- NULL
         if(NIDL>0) mNIDL <- paste0(NIDL, " idlevel")
         mNFLO <- NULL
