@@ -656,7 +656,8 @@ nmCode <- NMwriteData(pk,file="derived/pk.csv",
 ### arguments that tailors text for Nonmem
                       nmdir.data="../derived",
                       nm.drop="PROFDAY",
-                      nm.rename=c(CONC="DV"),
+                      nm.copy=c(CONC="DV"),
+                      nm.rename=c(WEIGHTB="BBW"),
                       ## PSN compatibility
                       nm.capitalize=TRUE)
 ```
@@ -788,17 +789,27 @@ class(res0)
 ::: {.column width="45%"}
 <!-- ::: columns -->
 <!-- :::: column -->
-```{r,aplot,eval=FALSE}
+```{r,aplot,eval=TRUE,echo=TRUE}
 ## Using data.table for easy summarize
 res1 <- NMscanData(file1.lst,merge.by.row=TRUE,
                    as.fun="data.table",quiet=TRUE)
 ## Derive geometric mean pop predictions by
 ## treatment and nominal sample time. Only
 ## use sample records.
-res1.mean <-
-    res1[EVID==0,
-         .(gmPRED=exp(mean(log(PRED)))),
-         by=.(trtact,NOMTIME)]
+res1[EVID==0,
+     gmPRED:=exp(mean(log(PRED))),
+     by=.(trtact,NOMTIME)]
+```
+
+<!-- :::: -->
+<!-- :::: column -->
+
+:::
+::: {.column width="55%"}
+
+\normalsize
+
+```{r,aplot-plot,echo=FALSE,eval=TRUE,out.width="105%"}
 ## plot individual observations and geometric
 ## mean pop predictions. Split (facet) by treatment.
 ggplot(subset(res1,EVID==0))+
@@ -809,16 +820,6 @@ ggplot(subset(res1,EVID==0))+
     facet_wrap(~trtact,scales="free_y",ncol=2)+
     labs(x="Hours since administration",
          y="Concentration (ng/mL)")
-```
-<!-- :::: -->
-<!-- :::: column -->
-
-:::
-::: {.column width="55%"}
-
-\normalsize
-
-```{r,aplot,echo=FALSE,eval=TRUE,out.width="105%"}
 ```
 
 <!-- :::: -->
@@ -894,10 +895,18 @@ res2.m <- NMscanData(lst.2,quiet=TRUE,
                      modelname="single-compartment")
 
 res.mult <- rbind(res1.m,res2.m,fill=T)
-res.mult.mean <- res.mult[EVID==0&nmout==TRUE,
-                          .(gmPRED=exp(mean(log(PRED)))),
-                          by=.(model,trtact,NOMTIME)]
+res.mult[EVID==0&nmout==TRUE,
+         gmPRED:=exp(mean(log(PRED))),
+         by=.(model,trtact,NOMTIME)]
+## NMdata class gone because of rbind
+class(res.mult)
+```
 
+
+:::
+::: {.column width="55%"}
+\normalsize
+```{r,comparemodels-plot,echo=F,message=FALSE,warning=FALSE}
 ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+
     geom_line()+
     scale_y_log10()+
@@ -905,12 +914,6 @@ ggplot(res.mult.mean,aes(NOMTIME,gmPRED,colour=model))+
                alpha=.5,colour="grey")+
     labs(x="Hours since administration",y="Concentration (ng/mL)")+
     facet_wrap(~trtact,scales="free_y",ncol=2)
-```
-
-:::
-::: {.column width="55%"}
-\normalsize
-```{r,compmodels,eval=T,echo=FALSE,out.width="105%",warning=FALSE}
 ```
 
 :::
@@ -978,10 +981,13 @@ This is the only behavior that is overwritten by the `NMdata` class.
 
 Simple other methods like `rbind` and similar are defined by dropping the `NMdata` class and then perform the operation.
 
-* `NMinfo` lists metadata from `NMdata` objects and only works on `NMdata` objects.
-- `NMinfo(res1,"details")`: How was the data read and combined?
-- `NMinfo(res1,"tables")`: What tables were read and how?
-- `NMinfo(res1,"columns")`: What columns were read from what tables?
+* `NMinfo` lists metadata from `NMdata` objects and only works on `NMdata` objects. Components in metadata are (as available):
+  - `NMinfo(res1,"details")`: How was the data read and combined?
+  - `NMinfo(res1,"dataCreate")`: Meta data found attached to the input data file.
+  - `NMinfo(res1,"input.colnames")`: The translation table of input column names from input to output
+  - `NMinfo(res1,"input.filters")`: The "filters" (IGNORE/ACCEPT) from Nonmem and how they are applied in R.
+  - `NMinfo(res1,"tables")`: What tables were read and how?
+  - `NMinfo(res1,"columns")`: What columns were read from what tables?
 ::::
 
 :::: column
@@ -1003,6 +1009,29 @@ NMinfo(res1,"details")
 \scriptsize
 ```{r}
 NMinfo(res1,"tables")
+```
+
+
+```{r,include=F,eval=F}
+## this is a nice NMinfo example
+NMdataConf(check.time=T)
+file.lst <- file.nm("xgxr021.lst")
+res1  <- NMscanData(file.lst,merge.by.row=F)
+NMinfo(res1)
+## add NOMTIME=DROP ## notice gives an extra input column in summary
+## add DV=CONC
+inp1=NMscanInput(file.lst)
+dat1=readRDS("C:/Users/delff/working_copies/NMdata/inst/examples/data/xgxr2.rds")
+## this one is interesting too
+res2 <- NMscanData(file.lst,merge.by.row=F,translate.input = F)
+NMinfo(res2,"input.colnames")
+
+install.packages("ggPMX")
+library(ggPMX)
+ctr <- pmx_nm(
+  directory = file.nm(),
+  file     = "xgxr021.lst" 
+)
 ```
 
 ::::
@@ -1134,7 +1163,7 @@ available elsewhere.
 
 :::: column
 My initialization of scripts often contain this: 
-```{r,eval=FALSE}
+```{r,NMdataConf,eval=FALSE}
 library(NMdata)
 NMdataConf(as.fun="data.table"
 ### this is the default value
@@ -1150,7 +1179,7 @@ NMdataConf(as.fun="data.table"
 Other commonly used settings in `NMdataConf` are
 
 - `as.fun`: a function to apply to all objects before returning them from `NMdata` functions. If you use `dplyr/tidyverse`, do (notice, no quotes!):
-```{r,eval=FALSE}
+```{r,use-tibble,eval=FALSE}
 library(tibble)
 NMdataConf(as.fun=tibble::as_tibble)
 ```
@@ -1167,7 +1196,7 @@ NMdataConf(as.fun=tibble::as_tibble)
 `R` has a system for handling settings. `NMdata` does not use that.
 
 * Main reason: `NMdataConf` can check both setting/argument names and values for consistency. 
-```{r}
+```{r,NMdataConf-err}
 try(NMdataConf(asfun=tibble::as_tibble))
 try(NMdataConf(use.input="FALSE"))
 ```
@@ -1273,7 +1302,7 @@ Other
 ### The plan is submission to CRAN this month!
 
 # `NMdata` functions under development 
-```{r,include=FALSE}
+```{r,load-pmxtricks,include=FALSE}
 load_all("c:/Users/delff/working_copies/pmxtricks/")
 ```
 
@@ -1308,7 +1337,7 @@ Aim: check data for all potential Nonmem compatibility issues and other obvious 
 ::::
 :::: column
 \scriptsize
-```{r}
+```{r,NMcheckData}
 res.check <- NMcheckData(pk)
 res.check
 pkmod <- copy(pk)
@@ -1378,7 +1407,7 @@ A more diverse package
 - `ggIndProfs`: Individual plots, including indication of doses
 - `ggwrite`: Saves images in sizes made for powerpoint, including stamps (time, source, output filename). It can save multiple plots at once as one file (pdf) or multiple files. 
 
-```{r,eval=FALSE}
+```{r,install-pmxtricks,eval=FALSE}
 library(remotes)
 install_github("philipdelff/pmxtricks",upgrade="never")
 library(pmxtricks)
@@ -1387,7 +1416,7 @@ library(pmxtricks)
 
 ## Individual profiles including observations, doses, and model predictions
 \footnotesize
-```{r,message=FALSE,warning=FALSE,out.height="75%"}
+```{r,ggIndProfs,message=FALSE,warning=FALSE,out.height="75%"}
 pls1 <- ggIndProfs(res1,amt="AMT",grp="trtact",NPerSheet=36,labels="top-right",
                    ylab="Concentration",ylab2="Dose")
 ggwrite(pls1[[5]],canvas="wide")

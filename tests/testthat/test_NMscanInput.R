@@ -25,7 +25,7 @@ NMdataConf(reset=TRUE)
 
 test_that("basic",{
 
-    fileRef <- "testReference/NMscanInput.rds"
+    fileRef <- "testReference/NMscanInput_1.rds"
     file.lst <- system.file("examples/nonmem/xgxr004.lst",package="NMdata")
 
     ## res1 <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")

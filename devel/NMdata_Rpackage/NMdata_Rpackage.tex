@@ -395,8 +395,8 @@ A slightly modified version of the \texttt{pk} dataset has been created.
 
 \begin{verbatim}
 ##          data nrows ncols
-## 1:         pk  1502    21
-## 2: pk.reduced   751    20
+## 1:         pk  1502    22
+## 2: pk.reduced   751    21
 \end{verbatim}
 
 \begin{verbatim}
@@ -496,8 +496,8 @@ All column names are capital case. We rename to lowercase those that Nonmem will
 
 \begin{verbatim}
 ##      data nrows ncols
-## 1: pk.old  1502    21
-## 2:     pk  1502    21
+## 1: pk.old  1502    22
+## 2:     pk  1502    22
 \end{verbatim}
 
 \begin{verbatim}
@@ -506,7 +506,15 @@ All column names are capital case. We rename to lowercase those that Nonmem will
 \end{verbatim}
 
 \begin{verbatim}
-## No differences.
+##      column    pk.old        pk
+## 1:   EVENTU character      <NA>
+## 2:     NAME character      <NA>
+## 3: TIMEUNIT character      <NA>
+## 4:   TRTACT character      <NA>
+## 5:   eventu      <NA> character
+## 6:     name      <NA> character
+## 7: timeunit      <NA> character
+## 8:   trtact      <NA> character
 \end{verbatim}
 
 \normalsize
@@ -593,9 +601,9 @@ more strictly requires that we get all and only the \emph{same} rows:
 
 \begin{verbatim}
 ##       data nrows ncols
-## 1:      pk  1502    21
+## 1:      pk  1502    22
 ## 2:  dt.cov   150     2
-## 3: pkmerge  1502    22
+## 3: pkmerge  1502    23
 \end{verbatim}
 
 \begin{Shaded}
@@ -607,8 +615,8 @@ more strictly requires that we get all and only the \emph{same} rows:
 
 \begin{verbatim}
 ##                 data nrows ncols
-## 1:      pk[ID == 31]    10    21
-## 2: pkmerge[ID == 31]    20    22
+## 1:      pk[ID == 31]    10    22
+## 2: pkmerge[ID == 31]    20    23
 \end{verbatim}
 \end{block}
 \end{column}
@@ -631,9 +639,9 @@ more strictly requires that we get all and only the \emph{same} rows:
 \begin{verbatim}
 ## Overview of dimensions of input and output data:
 ##         data nrows ncols
-## 1:        pk  1502    22
+## 1:        pk  1502    23
 ## 2:    dt.cov   150     2
-## 3: merged.df  1502    23
+## 3: merged.df  1502    24
 \end{verbatim}
 
 \begin{verbatim}
@@ -942,21 +950,22 @@ We may want to add \texttt{MDV} and rerun \texttt{NMorderColumns}.
 ##  5:      CMT     EVID
 ##  6:      AMT      CMT
 ##  7:       DV      AMT
-##  8:  WEIGHTB       DV
-##  9:    STUDY  WEIGHTB
-## 10:      BLQ     FLAG
-## 11:    CYCLE    STUDY
-## 12:     DOSE      BLQ
-## 13:     PART    CYCLE
-## 14:  PROFDAY     DOSE
-## 15: PROFTIME     PART
+##  8:    STUDY       DV
+##  9:      BLQ  WEIGHTB
+## 10:    CYCLE     FLAG
+## 11:     DOSE    STUDY
+## 12:     PART      BLQ
+## 13:  PROFDAY    CYCLE
+## 14: PROFTIME     DOSE
+## 15:  WEIGHTB     PART
 ## 16:     eff0  PROFDAY
 ## 17:   eventu PROFTIME
 ## 18:     name     eff0
 ## 19: timeunit   eventu
-## 20:     FLAG     flag
-## 21:     flag     name
-## 22:      ROW timeunit
+## 20:   trtact     flag
+## 21:     FLAG     name
+## 22:     flag timeunit
+## 23:      ROW   trtact
 ##          old      new
 \end{verbatim}
 \end{column}
@@ -1113,7 +1122,8 @@ All arguments to \texttt{fwrite} can be modified using the
 \CommentTok{\#\#\# arguments that tailors text for Nonmem}
                       \DataTypeTok{nmdir.data=}\StringTok{"../derived"}\NormalTok{,}
                       \DataTypeTok{nm.drop=}\StringTok{"PROFDAY"}\NormalTok{,}
-                      \DataTypeTok{nm.rename=}\KeywordTok{c}\NormalTok{(}\DataTypeTok{CONC=}\StringTok{"DV"}\NormalTok{),}
+                      \DataTypeTok{nm.copy=}\KeywordTok{c}\NormalTok{(}\DataTypeTok{CONC=}\StringTok{"DV"}\NormalTok{),}
+                      \DataTypeTok{nm.rename=}\KeywordTok{c}\NormalTok{(}\DataTypeTok{WEIGHTB=}\StringTok{"BBW"}\NormalTok{),}
                       \CommentTok{\#\# PSN compatibility}
                       \DataTypeTok{nm.capitalize=}\OtherTok{TRUE}\NormalTok{)}
 \end{Highlighting}
@@ -1209,7 +1219,7 @@ All arguments to \texttt{fwrite} can be modified using the
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $dataCreate$CreationTime
-## [1] "2021-06-20 23:29:52"
+## [1] "2021-06-22 21:50:50"
 ## 
 ## $dataCreate$writtenTo
 ## [1] "derived/pk.csv"
@@ -1229,7 +1239,7 @@ All arguments to \texttt{fwrite} can be modified using the
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $dataCreate$CreationTime
-## [1] "2021-06-20 23:29:52 EDT"
+## [1] "2021-06-22 21:50:50 EDT"
 ## 
 ## $dataCreate$writtenTo
 ## [1] "derived/pk.rds"
@@ -1432,20 +1442,9 @@ Using a unique row identifier for merging data is highly recommended:
 \CommentTok{\#\# Derive geometric mean pop predictions by}
 \CommentTok{\#\# treatment and nominal sample time. Only}
 \CommentTok{\#\# use sample records.}
-\NormalTok{res1.mean \textless{}{-}}
-\StringTok{    }\NormalTok{res1[EVID}\OperatorTok{==}\DecValTok{0}\NormalTok{,}
-\NormalTok{         .(}\DataTypeTok{gmPRED=}\KeywordTok{exp}\NormalTok{(}\KeywordTok{mean}\NormalTok{(}\KeywordTok{log}\NormalTok{(PRED)))),}
-\NormalTok{         by=.(trtact,NOMTIME)]}
-\CommentTok{\#\# plot individual observations and geometric}
-\CommentTok{\#\# mean pop predictions. Split (facet) by treatment.}
-\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{subset}\NormalTok{(res1,EVID}\OperatorTok{==}\DecValTok{0}\NormalTok{))}\OperatorTok{+}
-\StringTok{    }\KeywordTok{geom\_point}\NormalTok{(}\KeywordTok{aes}\NormalTok{(TIME,DV))}\OperatorTok{+}
-\StringTok{    }\KeywordTok{geom\_line}\NormalTok{(}\KeywordTok{aes}\NormalTok{(NOMTIME,gmPRED),}
-              \DataTypeTok{data=}\NormalTok{res1.mean,}\DataTypeTok{colour=}\StringTok{"red"}\NormalTok{)}\OperatorTok{+}
-\StringTok{    }\KeywordTok{scale\_y\_log10}\NormalTok{()}\OperatorTok{+}
-\StringTok{    }\KeywordTok{facet\_wrap}\NormalTok{(}\OperatorTok{\textasciitilde{}}\NormalTok{trtact,}\DataTypeTok{scales=}\StringTok{"free\_y"}\NormalTok{,}\DataTypeTok{ncol=}\DecValTok{2}\NormalTok{)}\OperatorTok{+}
-\StringTok{    }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x=}\StringTok{"Hours since administration"}\NormalTok{,}
-         \DataTypeTok{y=}\StringTok{"Concentration (ng/mL)"}\NormalTok{)}
+\NormalTok{res1[EVID}\OperatorTok{==}\DecValTok{0}\NormalTok{,}
+\NormalTok{     gmPRED}\OperatorTok{:}\ErrorTok{=}\KeywordTok{exp}\NormalTok{(}\KeywordTok{mean}\NormalTok{(}\KeywordTok{log}\NormalTok{(PRED))),}
+\NormalTok{     by=.(trtact,NOMTIME)]}
 \end{Highlighting}
 \end{Shaded}
 \end{column}
@@ -1453,7 +1452,7 @@ Using a unique row identifier for merging data is highly recommended:
 \begin{column}{0.55\textwidth}
 \normalsize
 
-\begin{center}\includegraphics[width=1.05\linewidth]{plots/aplot-1} \end{center}
+\begin{center}\includegraphics[width=1.05\linewidth]{plots/aplot-plot-1} \end{center}
 \end{column}
 \end{columns}
 \end{frame}
@@ -1533,17 +1532,11 @@ Using a unique row identifier for merging data is highly recommended:
                      \DataTypeTok{modelname=}\StringTok{"single{-}compartment"}\NormalTok{)}
 
 \NormalTok{res.mult \textless{}{-}}\StringTok{ }\KeywordTok{rbind}\NormalTok{(res1.m,res2.m,}\DataTypeTok{fill=}\NormalTok{T)}
-\NormalTok{res.mult.mean \textless{}{-}}\StringTok{ }\NormalTok{res.mult[EVID}\OperatorTok{==}\DecValTok{0}\OperatorTok{\&}\NormalTok{nmout}\OperatorTok{==}\OtherTok{TRUE}\NormalTok{,}
-\NormalTok{                          .(}\DataTypeTok{gmPRED=}\KeywordTok{exp}\NormalTok{(}\KeywordTok{mean}\NormalTok{(}\KeywordTok{log}\NormalTok{(PRED)))),}
-\NormalTok{                          by=.(model,trtact,NOMTIME)]}
-
-\KeywordTok{ggplot}\NormalTok{(res.mult.mean,}\KeywordTok{aes}\NormalTok{(NOMTIME,gmPRED,}\DataTypeTok{colour=}\NormalTok{model))}\OperatorTok{+}
-\StringTok{    }\KeywordTok{geom\_line}\NormalTok{()}\OperatorTok{+}
-\StringTok{    }\KeywordTok{scale\_y\_log10}\NormalTok{()}\OperatorTok{+}
-\StringTok{    }\KeywordTok{geom\_point}\NormalTok{(}\KeywordTok{aes}\NormalTok{(TIME,DV),}\DataTypeTok{data=}\NormalTok{res1.m,}
-               \DataTypeTok{alpha=}\NormalTok{.}\DecValTok{5}\NormalTok{,}\DataTypeTok{colour=}\StringTok{"grey"}\NormalTok{)}\OperatorTok{+}
-\StringTok{    }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x=}\StringTok{"Hours since administration"}\NormalTok{,}\DataTypeTok{y=}\StringTok{"Concentration (ng/mL)"}\NormalTok{)}\OperatorTok{+}
-\StringTok{    }\KeywordTok{facet\_wrap}\NormalTok{(}\OperatorTok{\textasciitilde{}}\NormalTok{trtact,}\DataTypeTok{scales=}\StringTok{"free\_y"}\NormalTok{,}\DataTypeTok{ncol=}\DecValTok{2}\NormalTok{)}
+\NormalTok{res.mult[EVID}\OperatorTok{==}\DecValTok{0}\OperatorTok{\&}\NormalTok{nmout}\OperatorTok{==}\OtherTok{TRUE}\NormalTok{,}
+\NormalTok{         gmPRED}\OperatorTok{:}\ErrorTok{=}\KeywordTok{exp}\NormalTok{(}\KeywordTok{mean}\NormalTok{(}\KeywordTok{log}\NormalTok{(PRED))),}
+\NormalTok{         by=.(model,trtact,NOMTIME)]}
+\CommentTok{\#\# NMdata class gone because of rbind}
+\KeywordTok{class}\NormalTok{(res.mult)}
 \end{Highlighting}
 \end{Shaded}
 \end{column}
@@ -1551,7 +1544,7 @@ Using a unique row identifier for merging data is highly recommended:
 \begin{column}{0.55\textwidth}
 \normalsize
 
-\begin{center}\includegraphics[width=1.05\linewidth]{plots/compmodels-1} \end{center}
+\begin{center}\includegraphics{plots/comparemodels-plot-1} \end{center}
 \end{column}
 \end{columns}
 \end{frame}
@@ -1631,14 +1624,28 @@ dropping the \texttt{NMdata} class and then perform the operation.
 \tightlist
 \item
   \texttt{NMinfo} lists metadata from \texttt{NMdata} objects and only
-  works on \texttt{NMdata} objects.
-\item
-  \texttt{NMinfo(res1,"details")}: How was the data read and combined?
-\item
-  \texttt{NMinfo(res1,"tables")}: What tables were read and how?
-\item
-  \texttt{NMinfo(res1,"columns")}: What columns were read from what
-  tables?
+  works on \texttt{NMdata} objects. Components in metadata are (as
+  available):
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{NMinfo(res1,"details")}: How was the data read and combined?
+  \item
+    \texttt{NMinfo(res1,"dataCreate")}: Meta data found attached to the
+    input data file.
+  \item
+    \texttt{NMinfo(res1,"input.colnames")}: The translation table of
+    input column names from input to output
+  \item
+    \texttt{NMinfo(res1,"input.filters")}: The ``filters''
+    (IGNORE/ACCEPT) from Nonmem and how they are applied in R.
+  \item
+    \texttt{NMinfo(res1,"tables")}: What tables were read and how?
+  \item
+    \texttt{NMinfo(res1,"columns")}: What columns were read from what
+    tables?
+  \end{itemize}
 \end{itemize}
 \end{column}
 
@@ -1667,7 +1674,7 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## [2] "    quiet = TRUE)"                                                   
 ## 
 ## $time.NMscanData
-## [1] "2021-06-20 23:29:53 EDT"
+## [1] "2021-06-22 21:50:51 EDT"
 ## 
 ## $model
 ## [1] "xgxr003"
@@ -1700,13 +1707,13 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## [1] "C:/Users/delff/working_copies/NMdata/inst/examples/data/xgxr1.csv"
 ## 
 ## $mtime.lst
-## [1] "2021-06-17 20:25:24 EDT"
+## [1] "2021-06-21 10:30:19 EDT"
 ## 
 ## $mtime.mod
-## [1] "2021-06-20 22:58:47 EDT"
+## [1] "2021-06-20 23:51:19 EDT"
 ## 
 ## $mtime.input
-## [1] "2021-06-19 15:49:08 EDT"
+## [1] "2021-06-20 23:38:23 EDT"
 \end{verbatim}
 \end{column}
 \end{columns}
@@ -1743,7 +1750,7 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## 1:               2021-04-05 21:57:22
 ## 2:   tF13.4      2021-04-05 21:57:22
 ## 3: ,1PE15.8    , 2021-04-05 21:57:22
-## 4:     <NA> <NA> 2021-06-19 15:49:08
+## 4:     <NA> <NA> 2021-06-20 23:38:23
 ##                                                                              file
 ## 1:      C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003_res.txt
 ## 2: C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003_res_vols.txt
@@ -1852,21 +1859,22 @@ In this case, input column names are aligned with \texttt{\$DATA}
 ##  6:      CMT      CMT      CMT      CMT      OK
 ##  7:      AMT      AMT      AMT      AMT      OK
 ##  8:       DV       DV       DV       DV      OK
-##  9:  WEIGHTB     FLAG     FLAG     FLAG    diff
-## 10:     FLAG    STUDY    STUDY    STUDY    diff
-## 11:    STUDY      BLQ      BLQ      BLQ    diff
-## 12:      BLQ    CYCLE    CYCLE    CYCLE    diff
-## 13:    CYCLE     DOSE     DOSE     DOSE    diff
-## 14:     DOSE     PART     PART     PART    diff
-## 15:     PART  PROFDAY  PROFDAY  PROFDAY    diff
-## 16:  PROFDAY PROFTIME PROFTIME PROFTIME    diff
-## 17: PROFTIME  WEIGHTB  WEIGHTB  WEIGHTB    diff
+##  9:     FLAG     FLAG     FLAG     FLAG      OK
+## 10:    STUDY    STUDY    STUDY    STUDY      OK
+## 11:      BLQ      BLQ      BLQ      BLQ      OK
+## 12:    CYCLE    CYCLE    CYCLE    CYCLE      OK
+## 13:     DOSE     DOSE     DOSE     DOSE      OK
+## 14:     PART     PART     PART     PART      OK
+## 15:  PROFDAY  PROFDAY  PROFDAY  PROFDAY      OK
+## 16: PROFTIME PROFTIME PROFTIME PROFTIME      OK
+## 17:  WEIGHTB  WEIGHTB  WEIGHTB  WEIGHTB      OK
 ## 18:     eff0     eff0     eff0     eff0      OK
-## 19:   eventu     <NA>     <NA>   eventu    <NA>
-## 20:     flag     <NA>     <NA>     flag    <NA>
-## 21:     name     <NA>     <NA>     name    <NA>
-## 22: timeunit     <NA>     <NA> timeunit    <NA>
-## 23:   trtact     <NA>     <NA>   trtact    <NA>
+## 19:   EVENTU     <NA>     <NA>   EVENTU    <NA>
+## 20:     NAME     <NA>     <NA>     NAME    <NA>
+## 21: TIMEUNIT     <NA>     <NA> TIMEUNIT    <NA>
+## 22:   TRTACT     <NA>     <NA>   TRTACT    <NA>
+## 23:     flag     <NA>     <NA>     flag    <NA>
+## 24:   trtact     <NA>     <NA>   trtact    <NA>
 ##     datafile     DATA   nonmem   result compare
 \end{verbatim}
 
@@ -2158,7 +2166,7 @@ use that.
   Historic bugs have mostly resulted in uninformative errors due to
   e.g.~failure in processing text
 \item
-  \texttt{NMdata} includes 40 ``unit tests'' where results of function
+  \texttt{NMdata} includes 57 ``unit tests'' where results of function
   calls with different datasets and arguments are compared to expected
   results
 \item
@@ -2569,7 +2577,7 @@ doses, and model predictions}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[height=0.75\textheight]{plots/unnamed-chunk-45-1} \end{center}
+\begin{center}\includegraphics[height=0.75\textheight]{plots/ggIndProfs-1} \end{center}
 \normalsize
 \end{frame}
 

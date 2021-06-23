@@ -10,8 +10,9 @@
 ##'     message/warning/error is mentioned. This is not default but
 ##'     useful when using function inside other functions.
 
-messageWrap <- function(..., fun.msg=message, prefix = "\n", initial = "", width=80,track.msg=FALSE){
+messageWrap <- function(..., fun.msg=message, prefix = "\n", initial = "", width,track.msg=FALSE){
     
+    if(missing(width)) width=options("width")[["width"]]
     if(is.null(fun.msg)) invisible(return(NULL))
     
     parent.call <- sys.call(sys.nframe() - 1L)
@@ -35,31 +36,31 @@ is.NMdata <- function(x){
 }
 
 merge.NMdata <- function(x,...){
-    setattr(x,"class",setdiff(class(x),"NMdata"))
+    unNMdata(x)
     merge(x,...)
 }
 
 t.NMdata <- function(x,...){
-    setattr(x,"class",setdiff(class(x),"NMdata"))
+    unNMdata(x)
     t(x,...)
 }
 
 dimnames.NMdata <- function(x,...){
-    setattr(x,"class",setdiff(class(x),"NMdata"))
+    unNMdata(x)
     dimnames(x,...)
 }
 
 rbind.NMdata <- function(x,...){
-    setattr(x,"class",setdiff(class(x),"NMdata"))
+    unNMdata(x)
     rbind(x,...)
 }
 
 cbind.NMdata <- function(x,...){
-    setattr(x,"class",setdiff(class(x),"NMdata"))
+    unNMdata(x)
     cbind(x,...)
 }
 
 unNMdata <- function(x){
+    setattr(x,"NMdata",NULL)
     setattr(x,"class",setdiff(class(x),"NMdata"))
-    setattr(x,"meta",NULL)
 }

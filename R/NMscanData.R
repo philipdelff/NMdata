@@ -420,7 +420,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                             fun.msg=warning)
                 time.ok <- c(time.ok,"mod > lst")
             }
-            if(mtime.mod>max(tables$meta[,file.mtime])){
+            if(mtime.mod>min(tables$meta[,file.mtime])){
                 messageWrap(paste0("input control stream (",file.mod,") is newer than output tables. Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
                             fun.msg=warning)
                 time.ok <- c(time.ok,"mod > output")
@@ -434,7 +434,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                             fun.msg=warning)
                 time.ok <- c(time.ok,"input > lst")
             }
-            if(mtime.inp > max(tables$meta[,file.mtime])){
+            if(mtime.inp > min(tables$meta[,file.mtime])){
                 messageWrap(paste0("input data file (",nminfo.input$tables$file,") is newer than output tables. Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
                             fun.msg=warning)
                 time.ok <- c(time.ok,"input > output")

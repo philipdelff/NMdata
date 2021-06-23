@@ -587,7 +587,3 @@ test_that("Including a redundant output table",{
 }
 )
 
-NMdataConf(check.time=T)
-file.lst <- NMdata_filepath("examples/nonmem/xgxr021.lst")
-res1  <- NMscanData(file.lst,merge.by.row=F)
-NMinfo(res1)
