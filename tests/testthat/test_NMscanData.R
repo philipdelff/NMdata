@@ -587,3 +587,31 @@ test_that("Including a redundant output table",{
 }
 )
 
+
+## this one has a commented DATA section and an extra DV in output table
+test_that("redundant output",{
+    NMdataConf(reset=T)
+    NMdataConf(as.fun="data.table")
+    NMdataConf(file.mod=function(x)sub("\\.lst$",".ctl",x))
+    NMdataConf(check.time=FALSE)
+
+    fileRef <- "testReference/NMscanData25.rds"
+    file.lst <- file.nm("estim_debug.ctl")
+
+    ## notice no cols are taken from the redundant table - correct
+    res1 <- expect_warning(NMscanData(file=file.lst))
+    ##     tabs1 <- NMscanTables(file=file.lst,as.fun="data.table",details=T,tab.count=F)
+    ##     tabs1$meta
+    ## tabs1$data[[4]]
+    ## NMinfo(res1,"tables")
+
+    fix.time(res1)
+    expect_equal_to_reference(
+        res1,fileRef,version=2
+    )
+
+    ## inp1 <- NMscanInput(file=file.lst)
+    
+}
+)
+

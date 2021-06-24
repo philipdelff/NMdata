@@ -34,7 +34,7 @@
 
 
 NMreadTab <- function(file,tab.count=TRUE,quiet,as.fun,...) {
-
+    
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     TABLE <- NULL
@@ -83,6 +83,9 @@ NMreadTab <- function(file,tab.count=TRUE,quiet,as.fun,...) {
         message("Making sure everything is numeric")
     }
 
+    ## redoing this because columns have been cleaned since colnames
+    ## were extracted.
+    cnames <- colnames(dt1)
     dt1[,(cnames):=lapply(.SD,as.numeric)]
 
     dt1 <- as.fun(dt1)

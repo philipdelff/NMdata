@@ -1178,7 +1178,7 @@ All arguments to \texttt{fwrite} can be modified using the
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $dataCreate$CreationTime
-## [1] "2021-06-23 09:37:18"
+## [1] "2021-06-23 15:25:28"
 ## 
 ## $dataCreate$writtenTo
 ## [1] "derived/pk.csv"
@@ -1198,7 +1198,7 @@ All arguments to \texttt{fwrite} can be modified using the
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $dataCreate$CreationTime
-## [1] "2021-06-23 09:37:18 EDT"
+## [1] "2021-06-23 15:25:28 EDT"
 ## 
 ## $dataCreate$writtenTo
 ## [1] "derived/pk.rds"
@@ -1630,7 +1630,7 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## [2] "    quiet = TRUE)"                                                   
 ## 
 ## $time.NMscanData
-## [1] "2021-06-23 09:37:19 EDT"
+## [1] "2021-06-23 15:25:29 EDT"
 ## 
 ## $model
 ## [1] "xgxr003"
@@ -1928,30 +1928,46 @@ automatic package provided by \texttt{NMscanData}.
 \tightlist
 \item
   \texttt{NMreadTab}
-\item
-  Fast read and format output tables from Nonmem
-\item
-  Handles the ``\texttt{TABLE\ NO.}'' counter
-\item
-  If you simulate a large number of subjects in Nonmem and get a large
-  (gigabytes) output data file, this will be extremely fast compared to
-  almost anything else.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Fast read and format output tables from Nonmem
+  \item
+    Handles the ``\texttt{TABLE\ NO.}'' counter
+  \item
+    If you simulate a large number of subjects in Nonmem and get a large
+    (gigabytes) output data file, this will be extremely fast compared
+    to almost anything else.
+  \end{itemize}
 \item
   \texttt{NMscanTables} (uses \texttt{NMreadTab})
-\item
-  Given a control stream or list file, read all output tables
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Given a control stream or list file, read all output tables
+  \end{itemize}
 \item
   \texttt{NMreadCsv}
-\item
-  Fast read delimited (input data) files
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Fast read delimited (input data) files
+  \end{itemize}
 \item
   \texttt{NMscanInput} (uses \texttt{NMreadCSV})
-\item
-  Given a control stream or list file, read input data.
-\item
-  Optionally reads and applies Nonmem ignore/accept statements
-\item
-  Optionally translates column names according to names used in Nonmem
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Given a control stream or list file, read input data.
+  \item
+    Optionally reads and applies Nonmem ignore/accept statements
+  \item
+    Optionally translates column names according to names used in Nonmem
+  \end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -2080,7 +2096,7 @@ use that.
 
 \begin{frame}[fragile]{How is \texttt{NMdata} qualified?}
 \protect\hypertarget{how-is-nmdata-qualified}{}
-\includegraphics[width=.8\textwidth]{badges_snip}
+\includegraphics[width=.8\textwidth]{badges_snip_210623}
 
 \begin{itemize}
 \item
@@ -2088,7 +2104,7 @@ use that.
   be \texttt{flagsAssign}/\texttt{flagsCount})
 \item
   Historic bugs have mostly resulted in uninformative errors due to
-  e.g.~failure in processing text
+  e.g.~failure in processing text. Never a wrong data set.
 \item
   \texttt{NMdata} includes 93 ``unit tests'' where results of function
   calls with different datasets and arguments are compared to expected

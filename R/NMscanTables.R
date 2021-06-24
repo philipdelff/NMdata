@@ -48,8 +48,7 @@ NMscanTables <- function(file,details=F,as.fun,quiet,tab.count=FALSE,col.id="ID"
     scope <- NULL
 
 ###  Section end: Dummy variables, only not to get NOTE's in pacakge checks ####
-
-
+    
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
     if(missing(as.fun)) as.fun <- NULL

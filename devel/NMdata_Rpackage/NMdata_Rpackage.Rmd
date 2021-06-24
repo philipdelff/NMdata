@@ -1106,19 +1106,17 @@ available elsewhere.
 `NMscanData` uses a few simpler functions to read all the data it can find. These functions may be useful when you don't want the full automatic package provided by `NMscanData`.
 
 * `NMreadTab`
-- Fast read and format output tables from Nonmem
-- Handles the "`TABLE NO.`" counter
-- If you simulate a large number of subjects in Nonmem and get a
-large (gigabytes) output data file, this will be extremely fast
-compared to almost anything else.
+  - Fast read and format output tables from Nonmem
+  - Handles the "`TABLE NO.`" counter
+  - If you simulate a large number of subjects in Nonmem and get a large (gigabytes) output data file, this will be extremely fast compared to almost anything else.
 * `NMscanTables` (uses `NMreadTab`)
-- Given a control stream or list file, read all output tables
+  - Given a control stream or list file, read all output tables
 * `NMreadCsv` 
-- Fast read delimited (input data) files 
+  - Fast read delimited (input data) files 
 * `NMscanInput` (uses `NMreadCSV`)
-- Given a control stream or list file, read input data.
-- Optionally reads and applies Nonmem ignore/accept statements
-- Optionally translates column names according to names used in Nonmem
+  - Given a control stream or list file, read input data.
+  - Optionally reads and applies Nonmem ignore/accept statements
+  - Optionally translates column names according to names used in Nonmem
 
 <!-- # Data processing -->
 <!-- ## findCovs, findVars -->
@@ -1173,7 +1171,7 @@ NMdataConf(as.fun=tibble::as_tibble)
 `R` has a system for handling settings. `NMdata` does not use that.
 
 * Main reason: `NMdataConf` can check both setting/argument names and values for consistency. 
-```{r,NMdataConf-err}
+```{r,NMdataConf-err,warning=F}
 try(NMdataConf(asfun=tibble::as_tibble))
 try(NMdataConf(use.input="FALSE"))
 ```
@@ -1190,12 +1188,12 @@ library(devtools)
 res.test <- test()
 Ntests <- sum(sapply(res.test,function(x)length(x$results)))
 ```
-\includegraphics[width=.8\textwidth]{badges_snip}
+\includegraphics[width=.8\textwidth]{badges_snip_210623}
 
 * `NMdata` contains very little calculations (only exception may be `flagsAssign`/`flagsCount`)
 
 * Historic bugs have mostly resulted in uninformative errors due to
-e.g. failure in processing text
+e.g. failure in processing text. Never a wrong data set.
 
 * `NMdata` includes `r Ntests` "unit tests" where results of function calls
 with different datasets and arguments are compared to expected
@@ -1250,7 +1248,7 @@ Data creation
 * `NMorderColumns`
 * (`NMcheckData`)
 * `NMwriteData`
-* `stampObj`/`objInfo` 
+* `NMstamp`/`NMinfo` 
 
 Read/write Nonmem control streams
 
