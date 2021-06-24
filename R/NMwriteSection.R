@@ -35,7 +35,7 @@
 NMwriteSection <- function(file,section,newlines,list.sections,newfile,
                           backup=TRUE,blank.append=TRUE,write=TRUE){
 
-
+    
     
 #### Section start: handle arguments ####
     
@@ -45,7 +45,6 @@ NMwriteSection <- function(file,section,newlines,list.sections,newfile,
     if(missing(newfile)) newfile <- file
     if(!is.null(newfile)){
         newfile <- filePathSimple(newfile)
-        stopifnot(file.exists(newfile))
     }
 
     ## supply either section and newlines or a list

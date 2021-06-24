@@ -98,3 +98,44 @@ test_that("Identical column names",{
                                ))
 
 })
+
+
+test_that("nm.copy, nm.rename, drop",{
+    fileRef <- "testReference/NMwriteData_4.rds"
+    
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    nmCode <- NMwriteData(pk,file="derived/pk.csv",
+                          write.csv=FALSE,
+### arguments that tailors text for Nonmem
+                          nmdir.data="../derived",
+                          nm.drop="PROFDAY",
+                          nm.copy=c(CONC="DV"),
+                          nm.rename=c(BBW="WEIGHTB"),
+                          ## PSN compatibility
+                          nm.capitalize=TRUE)
+
+    expect_equal_to_reference(nmCode,fileRef)
+})
+
+
+test_that("nm.copy, nm.rename, drop",{
+    fileRef <- "testReference/NMwriteData_5.rds"
+    
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    nmCode <- NMwriteData(pk,
+                          file="testOutput/pk.csv",
+                          write.csv=TRUE,
+                          write.rds=TRUE,
+                          write.RData=TRUE
+### arguments that tailors text for Nonmem
+                          )
+    load("testOutput/pk.RData")
+    pk.rdata <- pk
+    all.res <- list(rds=readRDS("testOutput/pk.rds")
+                   ,csv=fread("testOutput/pk.csv")
+                   ,Rdata=fread("testOutput/pk.csv")
+                   )
+    expect_equal_to_reference(nmCode,fileRef)
+})
+
+

@@ -657,7 +657,7 @@ nmCode <- NMwriteData(pk,file="derived/pk.csv",
                       nmdir.data="../derived",
                       nm.drop="PROFDAY",
                       nm.copy=c(CONC="DV"),
-                      nm.rename=c(WEIGHTB="BBW"),
+                      nm.rename=c(BBW="WEIGHTB"),
                       ## PSN compatibility
                       nm.capitalize=TRUE)
 ```
