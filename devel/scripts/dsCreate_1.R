@@ -24,7 +24,7 @@ file.data <- function(...)file.path(NMdata_filepath(),"examples/data",...)
 file.nm <- function(...)file.path(NMdata_filepath(),"examples/nonmem",...)
 
 
-script.1 <- "dsCreate_1"
+script.1 <- "dsCreate_1.R"
 writeOutput <- TRUE
 
 ###  Section end: Initialization

@@ -19,7 +19,7 @@ navbar:
     articles:
       text: Vignettes
       menu:
-      - text: "Automated and general reader of Nonmem data"
+      - text: "NMscanData: find and combine all output and input data"
         href: articles/NMscanData.html
       - text: "Data creation tools"
         href: articles/DataCreate.html

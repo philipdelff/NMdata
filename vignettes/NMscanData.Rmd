@@ -1,12 +1,12 @@
 ---
-title: "NMscanData: Scan for and combine all output and input data"
+title: "NMscanData: Find and combine all output and input data"
 output:
 rmarkdown::html_vignette:
     toc: true
 Suggests: markdown
 VignetteBuilder: knitr
 vignette: >
-  %\VignetteIndexEntry{NMscanData: Scan for and combine all output and input data}
+  %\VignetteIndexEntry{NMscanData: Find and combine all output and input data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 header-includes:
@@ -28,33 +28,44 @@ knitr::opts_chunk$set(
 
 Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
+## Objectives
+This vignettes aims at enabling you at 
 
-<!-- Objectives -->
+* Using NMscanData to
+read and combine all output and input data based only on (the path to) the Nonmem list file (understanding how NMscanData prioritizes output and input data in case of redundancy)
 
-<!-- Use NMscanData to  -->
-<!-- Read and combine all output and input data based only on (the path to) the Nonmem list file -->
+* Switching between combining output and input data by mimicking the Nonmem data filters (IGNORE/ACCEPT) and merging by a row identifier
 
-<!-- Include input data rows that were not processed by Nonmem (`ACCEPT` and `IGNORE`) -->
+* Configuring `NMdata` to return the data class of your preference (say `data.table` or `tbl`) instead of `data.frame` which is default
 
-<!-- Combine such data sets for of a multiple models -->
-	
+* Using automatically generated meta data to look up information on input and output tables, how they were combined, and results of checks performed by `NMscanData`.
+
+* Including input data rows that were not processed by Nonmem (`ACCEPT` and `IGNORE`)
+
+* Combining such data sets for of a multiple models
+
+* If available, using an rds file to represent the input data in order to preserve all data properties (e.g. factor levels) from data set preparation
+
+* After having checked the rare exceptions, feeling confident that `NMscanData` should work on all your Nonmem models
+
+
+<!-- Preparing data for analysis in Nonmem and reading the results back -->
+<!-- into `R` can be time consuming. After a Nonmem run, a few tables may -->
+<!-- have to be combined. Then we need character variables that are only -->
+<!-- available in the input data file. And maybe the events ignored by -->
+<!-- Nonmem (say, observations below quantification limit that we still -->
+<!-- need in further analysis and plotting).  -->
 
 ## Introduction
-Preparing data for analysis in Nonmem and reading the results back
-into `R` can be time consuming. After a Nonmem run, a few tables may
-have to be combined. Then we need character variables that are only
-available in the input data file. And maybe the events ignored by
-Nonmem (say, observations below quantification limit that we still
-need in further analysis and plotting). 
-
 This vignette focuses on how to use `NMdata` to automate what needs to
 be trivial: get one dataset out of a Nonmem run, combining all output
 tables and including additional columns and rows from the input
-data. After scanning the Nonmem list file and/or control stream for file and column names, the data files are read and combined. 
+data. After scanning the Nonmem list file and/or control stream for
+file and column names, the data files are read and combined.
 
-In brevity, the most important steps are
+In brevity, the most important steps are:
 
-- Based on .lst/.mod: Identify input and output table files 
+- Based on list file (often `.lst`): Identify input and output table files 
 - Read and combine output tables
 - If wanted, read input data and restore variables that were not
 output from the Nonmem model. 
@@ -120,6 +131,16 @@ file.NMdata <- function(...) system.file(file.path("examples/nonmem",...), packa
 NMdataConf(check.time=FALSE)
 ```
 
+### Note on file names and directory structures
+Depending on your Nonmem setup, habits and preferences, you may name
+your control streams and list files differently than this
+vignette. Here, we use the `NMdata` default which is `.mod` and
+`.lst`. You can easily configure `NMdata` to match your
+preferences. See the
+[FAQ](https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html)
+for how. So for now, rest assured that this is easy to adjust and read
+on.
+
 
 ## Get started - the basics
 Try `NMscanData` on a control stream or a list file:
@@ -127,9 +148,9 @@ Try `NMscanData` on a control stream or a list file:
 ```{r,eval=TRUE}
 res1 <- NMscanData(file.NMdata("xgxr018.lst"))
 ```
-`NMscanData` tells that it has read a model called `xgxr017` and how output and input data were combined. We shall see how these properties can be modified in a bit.  Then follows an overview of how much data is used from the data files that were read. It used
+`NMscanData` tells that it has read a model called `xgxr018` and how output and input data were combined. We shall see how these properties can be modified in a bit.  Then follows an overview of how much data is used from the data files that were read. It used
 
-* one output data file (based on the `$TABLE` section(s) in the `.lst` file) from which it used all 905 rows and all 15 column, totalling 150 different values of `ID`. 
+* one output data file (based on the `$TABLE` section(s) in the `.lst` file) from which it used all 905 rows and all 15 column, totaling 150 different values of `ID`. 
 * the input file, but only 905 out of 1502 rows and 22 out of 23 columns. Input data did not contain any ID's that weren't used. 
 
 In the resulting data, 755 out of the 905 rows are `EVID==0`, the remaining 150 rows are `EVID==1`.
@@ -164,10 +185,8 @@ rows" section what `nmout` represents.
 
 ### What will NMscanData return?
 Column in output data can overlap, and data can be available in both
-output and input data. Also, da
-
-The following main
-principles are followed by `NMscanData`:
+output and input data. The following main principles are followed by
+`NMscanData`:
 
 * Priority of data 
   - Output data prevails over input data
@@ -375,7 +394,7 @@ when working with multiple models. You can specify both column name (which is by
 and model name (contents of that column) as arguments in `NMscanData`. Using  `NMdataConf`, You can also configure the
 default column name and the function that generates the model name. 
 
-The default is to derive the model name from the `lst` file name (say,
+The default is to derive the model name from the `lst` file name (say,
 `xgxr001.lst` becomes `xgxr001`).  In the following we use this to
 compare population predictions from two different models. We read them
 again just to show the use of the argument to name the models
@@ -565,25 +584,38 @@ treated like `FIRSTONLY`, i.e. as ID-level information if not
 available elsewhere.
 
 
-## Custom naming of input and output control streams
-By default, `NMscanData` expects a
-[PSN](https://uupharmacometrics.github.io/PsN/)-style naming of input
-and output control streams. This means that if the input control
-stream is called `model.mod`, the returned control stream is called
-`model.lst`. If you use a different setup, you can use the `file.mod`
-argument. Do one of the following if needed:
+## Summary
+In this vignette you should have learned to
 
-* Explicitly give the path to the input control stream or
-* Pass a function that translates from the output control stream to
-the input. Example if the input is called `input.txt` and the output
-is called `output.txt`:
+* `NMscanData` can automatically read and combine all output and input
+  data, only based on the path to the list (.lst) file
+  - Output data is prioritized over input data
 
-```{r,eval=FALSE}
-out2in <- function(file) file.path(dirname(file),"input.txt")
-res <- NMscanData("path/to/output.txt",file.mod=out2in)
-```
+* Switch between combining output and input data by mimicking the
+  Nonmem data filters (IGNORE/ACCEPT) and merging by a row identifier
+  - `merge.by.row` is the argument of interest
+  
+* Configure `NMdata` to return your favorite data class
+  - `NMdataConf(as.fun="data.table")` for `data.table`
+  - `NMdataConf(as.fun=tibble::as_tibble)` for tibbles (`tbl`)
+  
+* Look up meta data on input and output tables, how they were
+  combined, and results of checks performed by `NMscanData`
+  - Use `NMinfo` on the result coming out of `NMscanData`
 
-You can use `NMdataConf` to configure the default behaviour to match your setup:
-```{r,eval=FALSE}
-NMdataConf(file.mod=out2in)
-```
+* Include input data rows that were not processed by Nonmem
+  - `recover.rows=TRUE`
+
+* Combining such data sets for of a multiple models
+  - By default, the column called `model` will hold the model name
+    which you can use when combining (`rbind`) multiple model data
+    sets
+  - Use the `modelname` option to change the model name or how the
+    model name is derived from the list file path.
+
+* Use an `rds` file to preserve all input data
+  - `NMdata::NMwriteData` writes this `rds` file by default
+
+You should have seen that `NMscanData` have very little limitations in
+what Nonmem models it can read. You should not have to change anything
+in the way you work to make use of `NMscanData`.

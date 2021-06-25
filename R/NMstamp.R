@@ -20,25 +20,16 @@
 
 
 NMstamp <- function(data,script,time=Sys.time(),...){
-    byRef <- TRUE
-    if(byRef){
-        writeNMinfo(data,
-                    list(dataCreate=list(
-                             DataCreateScript=script,
-                             CreationTime=Sys.time(),
-                             ...
-                         )),byRef=byRef
-                    )
-        return(invisible(data))
-    } else {
-        data <- writeNMinfo(data,
-                            list(dataCreate=list(
-                                     DataCreateScript=script,
-                                     CreationTime=Sys.time(),
-                                     ...
-                                 )),byRef=byRef)
-        return(data)
-    }
+
+    writeNMinfo(data,
+                list(dataCreate=list(
+                         DataCreateScript=script,
+                         CreationTime=Sys.time(),
+                         ...
+                     )),byRef=TRUE
+                )
+    return(invisible(data))
+
     
 }
 
