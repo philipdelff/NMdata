@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NMscanData: Scan for and combine all output and input data • NMdata</title>
+<title>NMscanData: Find and combine all output and input data • NMdata</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="NMscanData: Scan for and combine all output and input data">
+<script src="../pkgdown.js"></script><meta property="og:title" content="NMscanData: Find and combine all output and input data">
 <meta property="og:description" content="NMdata">
 <meta property="og:image" content="https://philipdelff.github.io/NMdata/reference/figures/NMdata_logo_v01.png">
 <meta property="og:image:alt" content="Efficient data preparation, consistency-checking and post-processing in PK/PD modeling">
@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9.901</span>
       </span>
     </div>
 
@@ -59,7 +59,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/NMscanData.html">Automated and general reader of Nonmem data</a>
+      <a href="../articles/NMscanData.html">NMscanData: find and combine all output and input data</a>
     </li>
     <li>
       <a href="../articles/DataCreate.html">Data creation tools</a>
@@ -95,7 +95,7 @@
       </header><script src="NMscanData_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>NMscanData: Scan for and combine all output and input data</h1>
+      <h1 data-toc-skip>NMscanData: Find and combine all output and input data</h1>
             
       
       
@@ -105,20 +105,30 @@
 
     
     
-<p>Built 2021-06-24 using NMdata 0.0.7.9.</p>
-<!-- Objectives -->
-<!-- Use NMscanData to  -->
-<!-- Read and combine all output and input data based only on (the path to) the Nonmem list file -->
-<!-- Include input data rows that were not processed by Nonmem (`ACCEPT` and `IGNORE`) -->
-<!-- Combine such data sets for of a multiple models -->
+<p>Built 2021-06-25 using NMdata 0.0.7.9.901.</p>
+<div id="objectives" class="section level2">
+<h2 class="hasAnchor">
+<a href="#objectives" class="anchor"></a>Objectives</h2>
+<p>This vignettes aims at enabling you at</p>
+<ul>
+<li><p>Using NMscanData to read and combine all output and input data based only on (the path to) the Nonmem list file (understanding how NMscanData prioritizes output and input data in case of redundancy)</p></li>
+<li><p>Switching between combining output and input data by mimicking the Nonmem data filters (IGNORE/ACCEPT) and merging by a row identifier</p></li>
+<li><p>Configuring <code>NMdata</code> to return the data class of your preference (say <code>data.table</code> or <code>tbl</code>) instead of <code>data.frame</code> which is default</p></li>
+<li><p>Using automatically generated meta data to look up information on input and output tables, how they were combined, and results of checks performed by <code>NMscanData</code>.</p></li>
+<li><p>Including input data rows that were not processed by Nonmem (<code>ACCEPT</code> and <code>IGNORE</code>)</p></li>
+<li><p>Combining such data sets for of a multiple models</p></li>
+<li><p>If available, using an rds file to represent the input data in order to preserve all data properties (e.g. factor levels) from data set preparation</p></li>
+<li><p>After having checked the rare exceptions, feeling confident that <code>NMscanData</code> should work on all your Nonmem models</p></li>
+</ul>
+<!-- Preparing data for analysis in Nonmem and reading the results back --><!-- into `R` can be time consuming. After a Nonmem run, a few tables may --><!-- have to be combined. Then we need character variables that are only --><!-- available in the input data file. And maybe the events ignored by --><!-- Nonmem (say, observations below quantification limit that we still --><!-- need in further analysis and plotting).  -->
+</div>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>Preparing data for analysis in Nonmem and reading the results back into <code>R</code> can be time consuming. After a Nonmem run, a few tables may have to be combined. Then we need character variables that are only available in the input data file. And maybe the events ignored by Nonmem (say, observations below quantification limit that we still need in further analysis and plotting).</p>
 <p>This vignette focuses on how to use <code>NMdata</code> to automate what needs to be trivial: get one dataset out of a Nonmem run, combining all output tables and including additional columns and rows from the input data. After scanning the Nonmem list file and/or control stream for file and column names, the data files are read and combined.</p>
-<p>In brevity, the most important steps are</p>
+<p>In brevity, the most important steps are:</p>
 <ul>
-<li>Based on .lst/.mod: Identify input and output table files</li>
+<li>Based on list file (often <code>.lst</code>): Identify input and output table files</li>
 <li>Read and combine output tables</li>
 <li>If wanted, read input data and restore variables that were not output from the Nonmem model.</li>
 <li>If wanted, also restore rows from input data that were disregarded in Nonmem (e.g. observations or subjects that are not part of the analysis)</li>
@@ -144,6 +154,11 @@
 <!-- stamps of input control streams and input data against output control -->
 <!-- streams. We need it because we cannot control -->
 <!-- time stamps of the files in the distributed package. -->
+<div id="note-on-file-names-and-directory-structures" class="section level3">
+<h3 class="hasAnchor">
+<a href="#note-on-file-names-and-directory-structures" class="anchor"></a>Note on file names and directory structures</h3>
+<p>Depending on your Nonmem setup, habits and preferences, you may name your control streams and list files differently than this vignette. Here, we use the <code>NMdata</code> default which is <code>.mod</code> and <code>.lst</code>. You can easily configure <code>NMdata</code> to match your preferences. See the <a href="https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html">FAQ</a> for how. So for now, rest assured that this is easy to adjust and read on.</p>
+</div>
 </div>
 <div id="get-started---the-basics" class="section level2">
 <h2 class="hasAnchor">
@@ -167,9 +182,9 @@
 <span class="co">#&gt;  EVID Output</span>
 <span class="co">#&gt;     0    755</span>
 <span class="co">#&gt;     1    150</span></code></pre></div>
-<p><code>NMscanData</code> tells that it has read a model called <code>xgxr017</code> and how output and input data were combined. We shall see how these properties can be modified in a bit. Then follows an overview of how much data is used from the data files that were read. It used</p>
+<p><code>NMscanData</code> tells that it has read a model called <code>xgxr018</code> and how output and input data were combined. We shall see how these properties can be modified in a bit. Then follows an overview of how much data is used from the data files that were read. It used</p>
 <ul>
-<li>one output data file (based on the <code>$TABLE</code> section(s) in the <code>.lst</code> file) from which it used all 905 rows and all 15 column, totalling 150 different values of <code>ID</code>.</li>
+<li>one output data file (based on the <code>$TABLE</code> section(s) in the <code>.lst</code> file) from which it used all 905 rows and all 15 column, totaling 150 different values of <code>ID</code>.</li>
 <li>the input file, but only 905 out of 1502 rows and 22 out of 23 columns. Input data did not contain any ID’s that weren’t used.</li>
 </ul>
 <p>In the resulting data, 755 out of the 905 rows are <code>EVID==0</code>, the remaining 150 rows are <code>EVID==1</code>.</p>
@@ -196,8 +211,7 @@
 <div id="what-will-nmscandata-return" class="section level3">
 <h3 class="hasAnchor">
 <a href="#what-will-nmscandata-return" class="anchor"></a>What will NMscanData return?</h3>
-<p>Column in output data can overlap, and data can be available in both output and input data. Also, da</p>
-<p>The following main principles are followed by <code>NMscanData</code>:</p>
+<p>Column in output data can overlap, and data can be available in both output and input data. The following main principles are followed by <code>NMscanData</code>:</p>
 <ul>
 <li>Priority of data
 <ul>
@@ -356,7 +370,8 @@
 <h3 class="hasAnchor">
 <a href="#combine-multiple-models" class="anchor"></a>Combine multiple models</h3>
 <p><code>NMscanData</code> by default adds a column called <code>model</code> for convenience when working with multiple models. You can specify both column name (which is by <code>model</code> default) and model name (contents of that column) as arguments in <code>NMscanData</code>. Using <code>NMdataConf</code>, You can also configure the default column name and the function that generates the model name.</p>
-<p>The default is to derive the model name from the <code>lst</code> file name (say, <code>xgxr001.lst</code> becomes <code>xgxr001</code>). In the following we use this to compare population predictions from two different models. We read them again just to show the use of the argument to name the models ourselves. Remember, we configure <code>NMdata</code>’s <code>as.fun</code> option so we are working with <code>data.table</code> and we easily stack with <code>rbind</code> (<code>rbind.data.table</code>) filling in <code>NA</code>’s. We add a couple of options to specify how input and output data are to be combined.</p>
+<p>The default is to derive the model name from the <code>lst</code> file name (say,</p>
+<p><code>xgxr001.lst</code> becomes <code>xgxr001</code>). In the following we use this to compare population predictions from two different models. We read them again just to show the use of the argument to name the models ourselves. Remember, we configure <code>NMdata</code>’s <code>as.fun</code> option so we are working with <code>data.table</code> and we easily stack with <code>rbind</code> (<code>rbind.data.table</code>) filling in <code>NA</code>’s. We add a couple of options to specify how input and output data are to be combined.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>as.fun<span class="op">=</span><span class="st">"data.table"</span>, <span class="co">## already set above, repeated for completeness</span>
            col.row<span class="op">=</span><span class="st">"ROW"</span>,       <span class="co">## This is default, included for completeness</span>
@@ -460,20 +475,57 @@
 <p>For now, only output tables returning either all rows or one row per subject can be merged with input. Tables written with options like <code>FIRSTLASTONLY</code> (two rows per subject) and <code>OBSONLY</code> are disregarded with a warning (you can read them with <code>NMscanTables</code>). <code>LASTONLY</code> is treated like <code>FIRSTONLY</code>, i.e. as ID-level information if not available elsewhere.</p>
 </div>
 </div>
-<div id="custom-naming-of-input-and-output-control-streams" class="section level2">
+<div id="summary" class="section level2">
 <h2 class="hasAnchor">
-<a href="#custom-naming-of-input-and-output-control-streams" class="anchor"></a>Custom naming of input and output control streams</h2>
-<p>By default, <code>NMscanData</code> expects a <a href="https://uupharmacometrics.github.io/PsN/">PSN</a>-style naming of input and output control streams. This means that if the input control stream is called <code>model.mod</code>, the returned control stream is called <code>model.lst</code>. If you use a different setup, you can use the <code>file.mod</code> argument. Do one of the following if needed:</p>
+<a href="#summary" class="anchor"></a>Summary</h2>
+<p>In this vignette you should have learned to</p>
 <ul>
-<li>Explicitly give the path to the input control stream or</li>
-<li>Pass a function that translates from the output control stream to the input. Example if the input is called <code>input.txt</code> and the output is called <code>output.txt</code>:</li>
+<li>
+<code>NMscanData</code> can automatically read and combine all output and input data, only based on the path to the list (.lst) file
+<ul>
+<li>Output data is prioritized over input data</li>
 </ul>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">out2in</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">file</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>,<span class="st">"input.txt"</span><span class="op">)</span>
-<span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"path/to/output.txt"</span>,file.mod<span class="op">=</span><span class="va">out2in</span><span class="op">)</span></code></pre></div>
-<p>You can use <code>NMdataConf</code> to configure the default behaviour to match your setup:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>file.mod<span class="op">=</span><span class="va">out2in</span><span class="op">)</span></code></pre></div>
+</li>
+<li>Switch between combining output and input data by mimicking the Nonmem data filters (IGNORE/ACCEPT) and merging by a row identifier
+<ul>
+<li>
+<code>merge.by.row</code> is the argument of interest</li>
+</ul>
+</li>
+<li>Configure <code>NMdata</code> to return your favorite data class
+<ul>
+<li>
+<code><a href="../reference/NMdataConf.html">NMdataConf(as.fun="data.table")</a></code> for <code>data.table</code>
+</li>
+<li>
+<code><a href="../reference/NMdataConf.html">NMdataConf(as.fun=tibble::as_tibble)</a></code> for tibbles (<code>tbl</code>)</li>
+</ul>
+</li>
+<li>Look up meta data on input and output tables, how they were combined, and results of checks performed by <code>NMscanData</code>
+<ul>
+<li>Use <code>NMinfo</code> on the result coming out of <code>NMscanData</code>
+</li>
+</ul>
+</li>
+<li>Include input data rows that were not processed by Nonmem
+<ul>
+<li><code>recover.rows=TRUE</code></li>
+</ul>
+</li>
+<li>Combining such data sets for of a multiple models
+<ul>
+<li>By default, the column called <code>model</code> will hold the model name which you can use when combining (<code>rbind</code>) multiple model data sets</li>
+<li>Use the <code>modelname</code> option to change the model name or how the model name is derived from the list file path.</li>
+</ul>
+</li>
+<li>Use an <code>rds</code> file to preserve all input data
+<ul>
+<li>
+<code><a href="../reference/NMwriteData.html">NMdata::NMwriteData</a></code> writes this <code>rds</code> file by default</li>
+</ul>
+</li>
+</ul>
+<p>You should have seen that <code>NMscanData</code> have very little limitations in what Nonmem models it can read. You should not have to change anything in the way you work to make use of <code>NMscanData</code>.</p>
 </div>
   </div>
 
