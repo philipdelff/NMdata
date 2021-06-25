@@ -153,3 +153,19 @@ test_that("with stamp",{
         res1
        ,fileRef)
 })
+
+test_that("with stamp on csv",{
+
+    fileRef <- "testReference/NMwriteData_8.rds"
+    outfile <- "testOutput/scanData_8.csv"
+    
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+
+    res1 <- NMwriteData(pk,file=outfile
+                        ,script="A simple test")
+    res1 <- fix.input(res1)
+
+    expect_equal_to_reference(
+        res1
+       ,fileRef)
+})
