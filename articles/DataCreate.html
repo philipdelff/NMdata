@@ -127,7 +127,16 @@
 <p>When stacking (rbind) and merging, it is most often necessary to check if two or more data sets are compatible for the operation. <code>compareCols</code> by defaults lists the columns where the two data sets differ.</p>
 <p>Just to illustrate the output of <code>compareCols</code>, a slightly modified version of the <code>pk</code> dataset has been created. On column (<code>CYCLE</code>) has been removed, and <code>AMT</code> has been recoded to character. <code>compareCols</code> tells us about exactly these two differences. So before mergeing or stacking, we may want to recode <code>AMT</code> in one of the datasets to get the class we need, and decide what to do about the missing <code>CYCLE</code> in one of the datasets (if OK, we fill in <code>NA</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/compareCols.html">compareCols</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">pk.reduced</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/compareCols.html">compareCols</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">pk.reduced</span><span class="op">)</span>
+<span class="co">#&gt; Dimensions:</span>
+<span class="co">#&gt;          data nrows ncols</span>
+<span class="co">#&gt; 1:         pk  1502    24</span>
+<span class="co">#&gt; 2: pk.reduced   751    23</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Overview of columns:</span>
+<span class="co">#&gt;    column      pk pk.reduced</span>
+<span class="co">#&gt; 1:  CYCLE integer       &lt;NA&gt;</span>
+<span class="co">#&gt; 2:    AMT integer  character</span></code></pre></div>
 </div>
 <div id="rename-columns-based-on-contents" class="section level3">
 <h3 class="hasAnchor">
@@ -138,7 +147,20 @@
 <code class="sourceCode R"><span class="va">pk.renamed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/renameByContents.html">renameByContents</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">pktmp</span>,fun.test<span class="op">=</span><span class="va">NMisNumeric</span>,fun.rename <span class="op">=</span> <span class="va">tolower</span>, invert.test <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><code>NMisNumeric</code> is a function that tests if the contents are numeric to <code>Nonmem</code>. If say the subject ID is of character class, it can be valid to <code>Nonmem</code>. Subject ID <code>"1039"</code> will be a numeric in Nonmem, <code>"1-039"</code> will not. We invert that, and those that Nonmem cannot interpret as numeric become lowercase. We use <code>compareCols</code> to illustrate that three columns were renamed:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/compareCols.html">compareCols</a></span><span class="op">(</span><span class="va">pktmp</span>,<span class="va">pk.renamed</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/compareCols.html">compareCols</a></span><span class="op">(</span><span class="va">pktmp</span>,<span class="va">pk.renamed</span><span class="op">)</span>
+<span class="co">#&gt; Dimensions:</span>
+<span class="co">#&gt;          data nrows ncols</span>
+<span class="co">#&gt; 1:      pktmp  1502    23</span>
+<span class="co">#&gt; 2: pk.renamed  1502    23</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Overview of columns:</span>
+<span class="co">#&gt;      column     pktmp pk.renamed</span>
+<span class="co">#&gt; 1:   EVENTU character       &lt;NA&gt;</span>
+<span class="co">#&gt; 2:     NAME character       &lt;NA&gt;</span>
+<span class="co">#&gt; 3: TIMEUNIT character       &lt;NA&gt;</span>
+<span class="co">#&gt; 4:   eventu      &lt;NA&gt;  character</span>
+<span class="co">#&gt; 5:     name      &lt;NA&gt;  character</span>
+<span class="co">#&gt; 6: timeunit      &lt;NA&gt;  character</span></code></pre></div>
 </div>
 <div id="automated-checks-of-merge-results" class="section level3">
 <h3 class="hasAnchor">
@@ -156,15 +178,15 @@
 <span class="co">## dt.cov has a covariate for some of the subjects</span>
 <span class="va">dt.cov</span>
 <span class="co">#&gt;     ID COV</span>
-<span class="co">#&gt;  1: 31   4</span>
+<span class="co">#&gt;  1: 31   3</span>
 <span class="co">#&gt;  2: 32   3</span>
-<span class="co">#&gt;  3: 33   1</span>
-<span class="co">#&gt;  4: 34   2</span>
-<span class="co">#&gt;  5: 35   4</span>
-<span class="co">#&gt;  6: 36   5</span>
-<span class="co">#&gt;  7: 37   1</span>
-<span class="co">#&gt;  8: 38   3</span>
-<span class="co">#&gt;  9: 39   1</span>
+<span class="co">#&gt;  3: 33   2</span>
+<span class="co">#&gt;  4: 34   5</span>
+<span class="co">#&gt;  5: 35   3</span>
+<span class="co">#&gt;  6: 36   3</span>
+<span class="co">#&gt;  7: 37   3</span>
+<span class="co">#&gt;  8: 38   1</span>
+<span class="co">#&gt;  9: 39   4</span>
 <span class="co">#&gt; 10: 40   4</span>
 <span class="va">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">pk2</span><span class="op">)</span>
@@ -287,7 +309,7 @@
 <span class="co">#&gt; For NonMem:</span>
 <span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span>
 <span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB eff0</span>
-<span class="co">#&gt; $DATA </span>
+<span class="co">#&gt; $DATA &lt;data file&gt;</span>
 <span class="co">#&gt; IGN=@</span>
 <span class="co">#&gt; IGNORE=(FLAG.NE.0)</span></code></pre></div>
 <p>Notice, <code>NMwriteData</code> detected the exclusion flag and suggests to include it in <code>$DATA</code>.</p>
@@ -307,7 +329,7 @@
 <span class="co">#&gt; For NonMem:</span>
 <span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span>
 <span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB eff0</span>
-<span class="co">#&gt; $DATA </span>
+<span class="co">#&gt; $DATA &lt;data file&gt;</span>
 <span class="co">#&gt; IGN=@</span>
 <span class="co">#&gt; IGNORE=(FLAG.NE.0)</span></code></pre></div>
 <p>NMwriteData invisibly returns a list of sections (<code>$INPUT</code> and <code>$DATA</code>). <code>NMwriteSection</code> can use these directly. So to write only the <code>$INPUT</code> section to <code>run001.mod</code>, we do the following. Please notice the single brackets in <code>text.nm["INPUT"]</code> which mean that we still send a list to <code>NMwriteSection</code>.</p>
@@ -333,7 +355,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-06-25 03:03:18 UTC"</span></code></pre></div>
+<span class="co">#&gt; [1] "2021-06-25 03:34:01 UTC"</span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>stampObj</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stampObj.html">stampObj</a></span><span class="op">(</span><span class="va">pk</span>,script<span class="op">=</span><span class="st">"vignettes/DataCreate.Rmd"</span>,Description<span class="op">=</span><span class="st">"A PK dataset used for examples."</span><span class="op">)</span>
@@ -348,7 +370,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2021-06-25 03:03:18 UTC"</span>
+<span class="co">#&gt; [1] "2021-06-25 03:34:01 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span></code></pre></div>
