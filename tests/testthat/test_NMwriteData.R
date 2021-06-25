@@ -134,8 +134,22 @@ test_that("nm.copy, nm.rename, drop",{
     all.res <- list(rds=readRDS("testOutput/pk.rds")
                    ,csv=fread("testOutput/pk.csv")
                    ,Rdata=fread("testOutput/pk.csv")
-                   )
+                    )
     expect_equal_to_reference(nmCode,fileRef)
 })
 
 
+test_that("with stamp",{
+
+    fileRef <- "testReference/NMwriteData_7.rds"
+
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+
+    res1 <- NMwriteData(pk,file=NULL,
+                        write.rds=F,write.csv=F,nmdir.data="/example",script="A simple test")
+    res1 <- fix.input(res1)
+
+    expect_equal_to_reference(
+        res1
+       ,fileRef)
+})

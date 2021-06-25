@@ -83,7 +83,7 @@ pk.reduced[,AMT:=as.character(AMT)]
 Just to illustrate the output of `compareCols`, a slightly modified version of the `pk` dataset has been created. On column (`CYCLE`) has been removed, and `AMT` has been recoded to character. `compareCols` tells us about exactly these two differences. So before mergeing or stacking, we may want to recode `AMT` in one of the datasets to get the class we need, and decide what to do about the missing `CYCLE` in one of the datasets (if OK, we fill in `NA`.
 
 
-```{r,eval=FALSE}
+```{r,eval=TRUE}
 compareCols(pk,pk.reduced)
 ```
 
@@ -105,7 +105,7 @@ pk.renamed <- renameByContents(data=pktmp,fun.test=NMisNumeric,fun.rename = tolo
 
 `NMisNumeric` is a function that tests if the contents are numeric to `Nonmem`. If say the subject ID is of character class, it can be valid to `Nonmem`. Subject ID `"1039"` will be a numeric in Nonmem, `"1-039"` will not. We invert that, and those that Nonmem cannot interpret as numeric become lowercase. We use `compareCols` to illustrate that three columns were renamed:
 
-```{r,eval=FALSE}
+```{r,eval=TRUE}
 compareCols(pktmp,pk.renamed)
 ```
 

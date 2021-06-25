@@ -17,8 +17,8 @@
 ##'     recommended. Use write.rds instead.
 ##' @param write.rds write an rds file?
 ##' @param script If provided, the object will be stamped with this
-##'     script name before saved to rds or Rdata. See ?stampObj.
-##' @param args.stamp A list of arguments to be passed to stampObj.
+##'     script name before saved to rds or Rdata. See ?NMstamp.
+##' @param args.stamp A list of arguments to be passed to NMstamp.
 ##' @param args.fwrite List of arguments passed to fwrite. Notice that
 ##'     except for "x" and "file", you need to supply all arguments to
 ##'     fwrite if you use this argument. Default values can be
@@ -100,9 +100,11 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
 
     if(missing(args.fwrite)) args.fwrite <- NULL
     args.fread <- NMdataDecideOption("args.fwrite",args.fwrite)
+
+    if(missing(nmdir.data)) nmdir.data <- NULL
     
     stopifnot(is.data.frame(data)) 
-    if(missing(file)){
+    if(missing(file)||is.null(file)){
         file <- NULL
     } else {
 #### check file name for compatibility with replacing extension
@@ -253,8 +255,10 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     
     nmfile <- file
 
-    if(!missing(nmdir.data)){
+    if(!is.null(nmdir.data)&&!is.null(nmfile)){
         nmfile <- file.path(nmdir.data,basename(nmfile))
+    } else {
+        nmfile <- "<data file>"
     }
 
     text.nm.input <- strwrap(
