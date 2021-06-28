@@ -20,19 +20,6 @@
 NMinfo <- function(data,info,as.fun){
 
 
-    ## if (!inherits(data, "NMdata")) {
-    ##     ## stop("NMinfo is only intended for NMdata objects.")
-    ##     meta <- attributes(data)$meta
-    ##     if(is.null(meta)){
-    ##         if(!nullEmpty){
-    ##             warning("No meta data available. NULL returned.")
-    ##         }
-    ##     }
-    ##     return(meta)
-    ## }
-
-    ## NMdata object
-
     if(missing(as.fun)) as.fun <- NULL
     if(missing(info)) info <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
@@ -40,9 +27,7 @@ NMinfo <- function(data,info,as.fun){
     if (inherits(data, "NMdata")) {
         if(!is.null(info)){
             nms.meta <- names(attributes(data)$NMdata)
-            ## if(!info%in%c("details","columns","tables")){
-            ##     stop("For NMdata objects: If 'info' is supplied, it has to be one of 'details', 'columns', 'tables'.")
-            ## }
+
             if(!info%in%nms.meta){
                 stop("Requested info not available. Available",paste(nms.meta,collapse=", "))
             }
@@ -56,7 +41,6 @@ NMinfo <- function(data,info,as.fun){
     }
 
     out <- attributes(data)$NMdata[[info]]
-    ##    if(info=="details") return(attributes(data)$meta$details)
     if(is.data.frame(out)) {
         out <- as.fun(out)
     }
@@ -64,5 +48,5 @@ NMinfo <- function(data,info,as.fun){
 }
 
 
-## dont export
+## dont export. This is used internally not having to remember as.fun="data.table" 
 NMinfoDT <- function(...) NMinfo(...,as.fun="data.table")
