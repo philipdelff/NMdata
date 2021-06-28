@@ -83,8 +83,9 @@ test_that("Duplicate columns in input data",{
 })
 
 test_that("single-char ignore",{
+    NMdataConf(reset=T)
     fileRef <- "testReference/NMscanInput4.rds"
-    file.lst <- system.file("examples/nonmem/estim_debug.lst", package="NMdata")
+    file.lst <- "testData/nonmem/estim_debug.lst"
 
     inpdat <- NMscanInput(file=file.lst,applyFilters=T,file.mod=function(x)sub("\\.lst$",".ctl",x))
     expect_equal(nrow(inpdat),98)

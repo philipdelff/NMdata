@@ -596,7 +596,7 @@ test_that("redundant output",{
     NMdataConf(check.time=FALSE)
 
     fileRef <- "testReference/NMscanData25.rds"
-    file.lst <- file.nm("estim_debug.ctl")
+    file.lst <- "testData/nonmem/estim_debug.ctl"
 
     ## notice no cols are taken from the redundant table - correct
     res1 <- expect_warning(NMscanData(file=file.lst))

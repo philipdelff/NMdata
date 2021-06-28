@@ -175,10 +175,9 @@ NMscanInput <- function(file, use.rds, file.mod,
         
         col.id.inp <- NMinfoDT(data.input,"input.colnames")[result==col.id,datafile][1]
     }
-    
+
     as.fun <- NMdataDecideOption("as.fun",as.fun)
-    
-    
+        
     if(details){
         
         meta <- NMinfoDT(data.input)
