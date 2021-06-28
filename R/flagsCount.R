@@ -275,7 +275,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     
     if(data.was.data.table && is.null(as.fun.arg)) as.fun <- "data.table"
     as.fun <- NMdataDecideOption("as.fun",as.fun)
-    data <- as.fun(data)
+    allres <- as.fun(allres)
 
     return(allres)
 }
