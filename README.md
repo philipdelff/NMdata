@@ -1,6 +1,6 @@
 # NMdata <a href='https://philipdelff.github.io/NMdata/'><img src='man/figures/NMdata_logo_v01.png' align="right" height="131.5" /></a>
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R-CMD-check](https://github.com/philipdelff/NMdata/workflows/R-CMD-check/badge.svg)](https://github.com/philipdelff/NMdata/actions)
 [![Codecov test coverage](https://codecov.io/gh/philipdelff/NMdata/branch/master/graph/badge.svg)](https://codecov.io/gh/philipdelff/NMdata?branch=master)
 <!-- badges: end -->
@@ -28,7 +28,7 @@ organization and writing of data for Nonmem, and reading data from
 Nonmem after a model run.
 
 The best place to browse information about the package is
-[here](https://philipdelff.github.io/NMdata). All documentation is of
+[here](https://philipdelff.github.io/NMdata/). All documentation is of
 course included in the package itself too.
 
 
@@ -68,12 +68,12 @@ for how to install specific releases from Github (ensuring reproducibility).
 
 
 ## Questions?
-Check the [FAQ](https://philipdelff.github.io/NMdata/articles/FAQ.html), or ask on [github
-page](https://github.com/philipdelff/NMdata)
+Check the [FAQ](https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html), or ask on [github
+page](https://github.com/philipdelff/NMdata/)
 
 ## Feedback?
 The best way to request features, report bugs etc. is by the [github
-page](https://github.com/philipdelff/NMdata).
+page](https://github.com/philipdelff/NMdata/).
 
 ## Code of Conduct
 Please note that the patchwork project is released with a [Contributor Code of Conduct](https://philipdelff.github.io/NMdata/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.

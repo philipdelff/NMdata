@@ -19,7 +19,7 @@ dims <- function(...,list.data,keepNames=TRUE,as.fun=NULL){
     if(missing(list.data)){
         dots <- list(...)
         if(keepNames){
-            names.dots <- setdiff(as.character(match.call(expand.dots=T)),as.character(match.call(expand.dots=F)))
+            names.dots <- setdiff(as.character(match.call(expand.dots=TRUE)),as.character(match.call(expand.dots=FALSE)))
         }
     } else {
         dots <- list.data

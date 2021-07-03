@@ -33,6 +33,7 @@ Use this to exclude columns that are constant within cols.id. If
 \seealso{
 Other DataCreate: 
 \code{\link{NMorderColumns}()},
+\code{\link{NMstamp}()},
 \code{\link{findCovs}()},
 \code{\link{flagsAssign}()},
 \code{\link{flagsCount}()},

@@ -247,7 +247,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 #### Section start: read all output tables and add to meta data ####
 
-    tables <- NMscanTables(file,details=T,tab.count=tab.count,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id)
+    tables <- NMscanTables(file,details=TRUE,tab.count=tab.count,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id)
 
     
     rows.flo <- tables$meta[firstlastonly==TRUE]
@@ -564,7 +564,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             ## tab.vars <- rbind(tab.vars,data.table(var=setdiff(colnames(data.input),colnames(tab.row)),source="input",level="row"))
             tab.row <- cbind(
                 tab.row,
-                data.input[,!colnames(data.input)%in%colnames(tab.row),with=F]
+                data.input[,!colnames(data.input)%in%colnames(tab.row),with=FALSE]
             )
 
             
@@ -620,7 +620,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                          ]
 
                 dt.vars <- rbind(dt.vars,dt.vars1)
-                tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=T,as.fun="data.table")
+                tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=TRUE,as.fun="data.table")
                 
             }
             
@@ -706,7 +706,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             ## use tab.vars for the subset
             if(!skip.idlevel){
                 cols.to.use <- unique(c(col.id,setdiff(colnames(tab.idlevel),dt.vars[source=="output",variable])))
-                tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=F]
+                tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=FALSE]
                 tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="data.table")
                 
                 dt.vars.id1[,included:=FALSE]
@@ -735,14 +735,14 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                        ,applyFilters=cbind.by.filters
                                        ,translate=translate.input
                                        ,args.fread=args.fread
-                                       ,invert=T
+                                       ,invert=TRUE
                                        ,as.fun="data.table"
                                        ,details=FALSE)
         } else {
             data.recover <- data.input[!get(col.row)%in%tab.row[,get(col.row)]]
         }
         data.recover[,(col.nmout):=FALSE]
-        tab.row <- rbind(tab.row,data.recover,fill=T)
+        tab.row <- rbind(tab.row,data.recover,fill=TRUE)
     }
 
 ###  Section end: Recover rows
@@ -850,7 +850,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     meta.input$tables <- NULL
 
     if(use.input){
-        writeNMinfo(tab.row,meta.input,append=T)
+        writeNMinfo(tab.row,meta.input,append=TRUE)
     }
 
     writeNMinfo(tab.row,list(tables=tables.meta),append=TRUE)

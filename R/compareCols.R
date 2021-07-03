@@ -65,7 +65,7 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,fun.cl
     
     if(keepNames){
         
-        names.dots <- setdiff(as.character(match.call(expand.dots=T)),as.character(match.call(expand.dots=F)))
+        names.dots <- setdiff(as.character(match.call(expand.dots=TRUE)),as.character(match.call(expand.dots=FALSE)))
     } else {
         names.dots <- paste0("x",seq(ndots))
     }
@@ -84,7 +84,7 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,fun.cl
     for(n in 1:ndots) setnames(cols[[n]],"class",names.dots[n])
 
     
-    dt.cols <- Reduce(function(...)merge(...,by="column",all=T),cols)
+    dt.cols <- Reduce(function(...)merge(...,by="column",all=TRUE),cols)
 
     dt.cols.l <- melt(dt.cols,id.vars="column")
     

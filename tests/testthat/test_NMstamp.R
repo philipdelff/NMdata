@@ -25,5 +25,5 @@ test_that("basic",{
 
     fix.time(x)
     
-    expect_equal_to_reference(x,fileRef)
+    expect_equal_to_reference(x,fileRef,version=2)
 })

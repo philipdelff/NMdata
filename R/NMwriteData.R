@@ -13,9 +13,9 @@
 ##'     and including last ".") is dropped. csv, rds and other
 ##'     standard file name extensions are added.
 ##' @param write.csv Write to csv file?
+##' @param write.rds write an rds file?
 ##' @param write.RData In case you want to save to .RData object. Not
 ##'     recommended. Use write.rds instead.
-##' @param write.rds write an rds file?
 ##' @param script If provided, the object will be stamped with this
 ##'     script name before saved to rds or Rdata. See ?NMstamp.
 ##' @param args.stamp A list of arguments to be passed to NMstamp.
@@ -24,6 +24,7 @@
 ##'     fwrite if you use this argument. Default values can be
 ##'     configured using NMdataConf.
 ##' @param args.rds A list of arguments to be passed to saveRDS.
+##' @param args.RData A list of arguments to be passed to save.
 ##' @param col.flag Name of a numeric column with zero value for rows
 ##'     to include in Nonmem run, non-zero for rows to skip. The
 ##'     argument is only used for generating the proposed text to
@@ -42,7 +43,8 @@
 ##'     suggested $DATA text. If you plan to use BBW instead of BWBASE
 ##'     in Nonmem, consider nm.rename=c(BWBASE="BBW"). The result is
 ##'     different from nm.copy since the nm.copy syntax is only
-##'     allowed by Nonmem for certain standard column names such as DV.
+##'     allowed by Nonmem for certain standard column names such as
+##'     DV.
 ##' @param nm.drop Only used for generation of proposed text for
 ##'     Nonmem control stream. Columns to drop in Nonmem $DATA. This
 ##'     has two implications. One is that the proposed $DATA indicates
@@ -76,10 +78,11 @@
 ##' @export
 
 
-NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
-                        write.rds=write.csv,script,args.stamp,args.fwrite,
-                        args.rds,nm.drop,nmdir.data,col.flag="FLAG",
-                        nm.rename,nm.copy,nm.capitalize=FALSE,allow.char.TIME=TRUE,
+NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
+                        write.RData=FALSE,script,args.stamp,
+                        args.fwrite, args.rds,args.RData,nm.drop,
+                        nmdir.data,col.flag="FLAG", nm.rename,nm.copy,
+                        nm.capitalize=FALSE,allow.char.TIME=TRUE,
                         quiet){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -146,6 +149,17 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
     } else {
         if(!is.list(args.rds)){
             stop("args.rds must be a list of arguments.")
+        }
+    }
+### RData arguments
+    if(!missing(args.RData) && !write.RData ){
+        warning("args.RData supplied, but write.RData is FALSE. RData file will not be written.")
+    }
+    if(missing(args.RData)) {
+        args.RData <- list()
+    } else {
+        if(!is.list(args.RData)){
+            stop("args.RData must be a list of arguments.")
         }
     }
 
@@ -303,6 +317,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.RData=FALSE,
         if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.RData),args.stamp))
         assign(name.data,data)
         save(list=name.data,file=file.RData)
+        do.call(save,append(list(list=name.data,file=file.RData),args.RData))
         files.written <- c(files.written,file.RData)
     }
     if(write.rds){

@@ -29,7 +29,7 @@
 ##' @import data.table
 ##' @export
 
-NMscanTables <- function(file,details=F,as.fun,quiet,tab.count=FALSE,col.id="ID",col.row){
+NMscanTables <- function(file,details=FALSE,as.fun,quiet,tab.count=FALSE,col.id="ID",col.row){
 
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
@@ -62,18 +62,18 @@ NMscanTables <- function(file,details=F,as.fun,quiet,tab.count=FALSE,col.id="ID"
     
     dir <- dirname(file)
     extract.info <- function(x,NAME,default){
-        r1 <- regexpr(paste0(NAME," *= *[^ ]*"),x,ignore.case=T)
+        r1 <- regexpr(paste0(NAME," *= *[^ ]*"),x,ignore.case=TRUE)
         rm1 <- regmatches(x,r1)
-        info <- sub(paste0(NAME," *= *"),"",rm1,ignore.case=T)
+        info <- sub(paste0(NAME," *= *"),"",rm1,ignore.case=TRUE)
         if(length(info)==0&&!missing(default)) {
             info <- default
         }
         info
     }
     
-    lines.table <- NMreadSection(file,section="TABLE",keepName=F,
-                                 keepComments=F,keepEmpty=F,asOne=F,
-                                 simplify=F)
+    lines.table <- NMreadSection(file,section="TABLE",keepName=FALSE,
+                                 keepComments=FALSE,keepEmpty=FALSE,
+                                 asOne=FALSE, simplify=FALSE)
     if(length(lines.table)==0) {
         messageWrap("No TABLE sections found in control stream. Please inspect the control stream.",
                     fun.msg=stop)
@@ -86,7 +86,7 @@ NMscanTables <- function(file,details=F,as.fun,quiet,tab.count=FALSE,col.id="ID"
                          ,lastonly=any(grepl("LASTONLY",x))
                          ,firstlastonly=any(grepl("FIRSTLASTONLY",x))
                          ,format=extract.info(x,"FORMAT",default=" ")
-                         ,stringsAsFactors=F)
+                         ,stringsAsFactors=FALSE)
         tab
     })
 
@@ -138,12 +138,12 @@ file?"))
         meta[,level:="id"]
     }
     ## not supported
-    meta[firstlastonly==T,level:=NA_character_]
+    meta[firstlastonly==TRUE,level:=NA_character_]
     
     meta[,scope:="all"]
-    meta[firstonly==T,scope:="firstonly"]
-    meta[lastonly==T,scope:="lastonly"]
-    meta[firstlastonly==T,scope:="firstlastonly"]
+    meta[firstonly==TRUE,scope:="firstonly"]
+    meta[lastonly==TRUE,scope:="lastonly"]
+    meta[firstlastonly==TRUE,scope:="firstlastonly"]
     meta[,`:=`(firstonly=NULL,
                lastonly=NULL,
                firstlastonly=NULL

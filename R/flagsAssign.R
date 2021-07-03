@@ -28,8 +28,8 @@
 ##' @param as.fun The default is to return data.tables if input data
 ##'     is a data.table, and return a data.frame for all other input
 ##'     classes. Pass a function in as.fun to convert to something
-##'     else. If return.all=F, this is applied to data and tab.flags
-##'     independently.
+##'     else. If return.all=FALSE, this is applied to data and
+##'     tab.flags independently.
 ##' @return The dataset with flags added. See parameter flags.return
 ##'     as well.
 ##' @details dt.flags must contain a column with numerical exclusion
@@ -221,7 +221,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
             data.table(FLAG=0,
                        flag="Analysis set",condition=NA_character_),
             tab.flags,
-            fill=T)
+            fill=TRUE)
     }
     tab.flags[FLAG==0,condition:=NA_character_]
 
@@ -253,7 +253,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
         message(sprintf("Coding %s = %d, %s = %s",col.flagn,tab.flags[fn,FLAG],col.flagc,tab.flags[fn,flag]))
         ##,fun.msg=message)
         ## find all affected columns
-        is.matched <- try(with(data.flags,eval(parse(text=tab.flags[fn,condition.used]))),silent=T)
+        is.matched <- try(with(data.flags,eval(parse(text=tab.flags[fn,condition.used]))),silent=TRUE)
         if("try-error"%in%class(is.matched)){
             messageWrap(attr(is.matched,"condition")$message,fun.msg=warning)
             next
@@ -267,7 +267,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
 
     ## tab.flags.0[,Nmatched:=data.flags[FLAG==0,.N]]
     
-    tab.flags <- rbind(tab.flags,tab.flags.0,fill=T)
+    tab.flags <- rbind(tab.flags,tab.flags.0,fill=TRUE)
     
     
 ### check that all data.flags$FLAG have a value matching tab.flags$FLAG. Then merge on the flag values.
@@ -277,7 +277,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     }
 
     dim0 <- dim(data.flags)
-    data.flags <- mergeCheck(data.flags,unique(tab.flags[,c("FLAG","flag")]),all.x=T,by="FLAG")
+    data.flags <- mergeCheck(data.flags,unique(tab.flags[,c("FLAG","flag")]),all.x=TRUE,by="FLAG")
     stopifnot(all(dim(data.flags)==(dim0+c(0,1))))
 
 ### rename FLAG and flag, and add back backed up columns if relevant
@@ -288,7 +288,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     }
 
     ## add the data where flags have not been assigned
-    data <- rbind(data.noflags,data.flags,fill=T)
+    data <- rbind(data.noflags,data.flags,fill=TRUE)
     
 ### arrange back to original order
     setorderv(data,col.row)

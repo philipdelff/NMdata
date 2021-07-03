@@ -17,9 +17,11 @@ knitr::opts_chunk$set(
 
 knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 ```
-
-
 Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
+
+This vignette is still under development. Please make sure to see
+latest version available
+[here](https://philipdelff.github.io/NMdata/).
 
 ## General NMdata questions
 
@@ -55,11 +57,11 @@ library(NMdata)
 
 In a production environment, use a [github
 release](https://github.com/philipdelff/NMdata/releases) To install
-`NMdata 0.0.7.2` release, do (notice "@v":)
+`NMdata X.Y.Z` release, do (notice "@v":)
 
 ```{r,eval=FALSE}
 library(remotes)
-install_github("philipdelff/NMdata@v0.0.7.2")
+install_github("philipdelff/NMdata@vX.Y.Z")
 library(NMdata)
 ```
 
@@ -73,8 +75,8 @@ fix which is only in the master branch, you can request a release.
 
 ### What about NMdata dependencies?
 NMdata depends on `data.table` only, and `data.table` does not have
-any dependencies. R 3.0 or later is required, that's all (yes, you can run NMdata on pretty old R installations without any
-difference).
+any dependencies. R 3.0 or later is required, that's all (yes, you can
+run NMdata on pretty old R installations without any difference).
 
 ### Why one more tool for interacting with Nonmem from R?
 Other tools exist for reading data from Nonmem. However, they most often have requirements to how the dataset or the Nonmem control stream is written. NMdata aims at

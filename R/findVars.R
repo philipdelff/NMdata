@@ -28,11 +28,11 @@ findVars <- function(data,cols.id=NULL,as.fun=NULL){
         stop("data must be a data.frame (or data.table)")
     }
 
-    was.data.table <- T
+    was.data.table <- TRUE
     if(is.data.table(data)){
         data <- copy(data)
     } else {
-        was.data.table <- F
+        was.data.table <- FALSE
         data <- as.data.table(data)
     }
 
@@ -51,7 +51,7 @@ findVars <- function(data,cols.id=NULL,as.fun=NULL){
     ## use any
     ifkeep <- dt2[,sapply(.SD,any),.SDcols=!(cols.id)]
     keep <- c(cols.id,setdiff(colnames(dt2),cols.id)[ifkeep])
-    reduced <- unique(data[,keep,with=F])
+    reduced <- unique(data[,keep,with=FALSE])
 
     if(rm.tmp) reduced[,(cols.id):=NULL]
 

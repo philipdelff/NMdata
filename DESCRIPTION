@@ -1,10 +1,11 @@
 Package: NMdata
 Type: Package
-Title: Efficient data preparation, consistency-checking and post-processing in PK/PD modeling
-Version: 0.0.7.9.901
-Author: Philip Delff <philip@delff.dk>
+Title: Preparation, checking and Post-Processing data for PK/PD Modeling
+Version: 0.0.8
+Authors@R: person("Philip", "Delff", email = "philip@delff.dk",
+                  role = c("aut", "cre"))
 Maintainer: Philip Delff <philip@delff.dk>
-Description: Efficient tools for preparation, checking and post-processing of data in PK/PD modeling, with a special focus on use of Nonmem. The aim is to save time on trivial tasks and avoid time-consuming errors. Implemented in data.table, but integratable with base or tidyverse.
+Description: Efficient tools for preparation, checking and post-processing of data in PK/PD (pharmacokinetics/pharmacodynamics) modeling, with focus on use of Nonmem. Helps with trivial but tedious tasks and tries to identify errors to save time on debugging. Implemented in 'data.table', but fully integratable with 'base' and 'tidyverse'.
 License: MIT + file LICENSE
 RoxygenNote: 7.1.1
 Roxygen: list(roclets=c("collate", "namespace", "rd", "vignette"))
@@ -19,4 +20,5 @@ Suggests:
     covr
 VignetteBuilder: knitr
 Encoding: UTF-8
-URL: https://philipdelff.github.io/NMdata
+URL: https://philipdelff.github.io/NMdata/
+BugReports: https://github.com/philipdelff/NMdata/issues

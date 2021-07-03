@@ -80,16 +80,16 @@ NMwriteSection <- function(file,section,newlines,list.sections,newfile,
         ## make sure newlines start with $SECTION
         newlines <- sub("^ +","",newlines)
 ### doesn't work. For now, user has to supply newlines including a valid $SECTION start.
-        ## if(grepl(paste0("^\\",section),newlines,ignore.case=T)){
+        ## if(grepl(paste0("^\\",section),newlines,ignore.case=TRUE)){
         ##     newlines <-
         ##         sub("^([^ ]+)(\\s.*)","\\1",newlines,perl=TRUE)
         ## }
         
         if(blank.append) newlines <- c(newlines,"")
         
-        idx.dlines <- NMreadSection(lines=lines,section=section,return="idx",keepEmpty=T,
-                                   keepName=T,keepComments=T,asOne=T,
-                                   cleanSpaces=F)
+        idx.dlines <- NMreadSection(lines=lines,section=section,return="idx",keepEmpty=TRUE,
+                                   keepName=TRUE,keepComments=TRUE,asOne=TRUE,
+                                   cleanSpaces=FALSE)
 
         stopifnot(length(idx.dlines)>0)
         

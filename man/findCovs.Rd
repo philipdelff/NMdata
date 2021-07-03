@@ -40,6 +40,7 @@ findCovs(dat)
 \seealso{
 Other DataCreate: 
 \code{\link{NMorderColumns}()},
+\code{\link{NMstamp}()},
 \code{\link{findVars}()},
 \code{\link{flagsAssign}()},
 \code{\link{flagsCount}()},

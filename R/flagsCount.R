@@ -230,12 +230,12 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     allres <- rbind(allres,
                     ## this is the analysis set
                     data[FLAG==0,.(FLAG=0,N.left=uniqueN(get(col.id)),Nobs.left=.N,N.discard=NA,Nobs.discard=NA),by=by],
-                    fill=T)
+                    fill=TRUE)
     
     ##  tab.flags <- rbind(tab.flags,data.table(FLAG=-Inf,flag="All data"),fill=TRUE)
 ### this is how many N/obs are left after the flags/conditions are applied
     allres[is.na(alldata),alldata:=FALSE]
-    allres <- mergeCheck(allres,rbind(tab.flags.0,tab.flags)[,.(FLAG,flag)],by="FLAG",all.x=T)
+    allres <- mergeCheck(allres,rbind(tab.flags.0,tab.flags)[,.(FLAG,flag)],by="FLAG",all.x=TRUE)
     allres[alldata==TRUE,flag:=name.all.data]
     allres[,notAll:=alldata!=1]
     allres[,isFinal:=FLAG==0]
@@ -268,7 +268,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     setnames(allres,"flag",col.flagc)
 
     if(!is.null(file)&&save){
-        fwrite(allres,file=file,quote=F,row.names=F)
+        fwrite(allres,file=file,quote=FALSE,row.names=F)
         cat(paste0("Table written to ",file,"\n"))
     }
 

@@ -25,7 +25,7 @@ test_that("basic",{
 
     expect_equal_to_reference(
         res1
-       ,fileRef)
+       ,fileRef,version=2)
 })
 
 test_that("nm.drop is an empty string - not allowed",{
@@ -52,7 +52,7 @@ test_that("Dropping a column in Nonmem",{
     
     expect_equal_to_reference(
         res2
-       ,fileRef)
+       ,fileRef,version=2)
 
     ## dropping a character column
     pk[,CYCLE:=paste0(as.character(CYCLE),"a")]
@@ -67,7 +67,7 @@ test_that("Dropping a column in Nonmem",{
     expect_equal_to_reference(
         res2b
        ,
-        file=fileRef
+        file=fileRef,version=2
     )
 
 })
@@ -114,7 +114,7 @@ test_that("nm.copy, nm.rename, drop",{
                           ## PSN compatibility
                           nm.capitalize=TRUE)
 
-    expect_equal_to_reference(nmCode,fileRef)
+    expect_equal_to_reference(nmCode,fileRef,version=2)
 })
 
 
@@ -128,14 +128,15 @@ test_that("nm.copy, nm.rename, drop",{
                           write.rds=TRUE,
                           write.RData=TRUE
 ### arguments that tailors text for Nonmem
-                          )
+                         ,args.rds=list(version=2),
+                         ,args.RData=list(version=2))
     load("testOutput/pk.RData")
     pk.rdata <- pk
     all.res <- list(rds=readRDS("testOutput/pk.rds")
                    ,csv=fread("testOutput/pk.csv")
                    ,Rdata=fread("testOutput/pk.csv")
                     )
-    expect_equal_to_reference(nmCode,fileRef)
+    expect_equal_to_reference(nmCode,fileRef,version=2)
 })
 
 
@@ -151,21 +152,21 @@ test_that("with stamp",{
 
     expect_equal_to_reference(
         res1
-       ,fileRef)
+       ,fileRef,version=2)
 })
 
 test_that("with stamp on csv",{
 
     fileRef <- "testReference/NMwriteData_8.rds"
-    outfile <- "testOutput/scanData_8.csv"
+    outfile <- "testOutput/stampedData_8.csv"
     
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 
     res1 <- NMwriteData(pk,file=outfile
-                        ,script="A simple test")
+                        ,script="A simple test",write.rds=FALSE)
     res1 <- fix.input(res1)
 
     expect_equal_to_reference(
         res1
-       ,fileRef)
+       ,fileRef,version=2)
 })

@@ -8,12 +8,13 @@ NMwriteData(
   data,
   file,
   write.csv = TRUE,
-  write.RData = FALSE,
   write.rds = write.csv,
+  write.RData = FALSE,
   script,
   args.stamp,
   args.fwrite,
   args.rds,
+  args.RData,
   nm.drop,
   nmdir.data,
   col.flag = "FLAG",
@@ -33,15 +34,15 @@ standard file name extensions are added.}
 
 \item{write.csv}{Write to csv file?}
 
+\item{write.rds}{write an rds file?}
+
 \item{write.RData}{In case you want to save to .RData object. Not
 recommended. Use write.rds instead.}
 
-\item{write.rds}{write an rds file?}
-
 \item{script}{If provided, the object will be stamped with this
-script name before saved to rds or Rdata. See ?stampObj.}
+script name before saved to rds or Rdata. See ?NMstamp.}
 
-\item{args.stamp}{A list of arguments to be passed to stampObj.}
+\item{args.stamp}{A list of arguments to be passed to NMstamp.}
 
 \item{args.fwrite}{List of arguments passed to fwrite. Notice that
 except for "x" and "file", you need to supply all arguments to
@@ -49,6 +50,8 @@ fwrite if you use this argument. Default values can be
 configured using NMdataConf.}
 
 \item{args.rds}{A list of arguments to be passed to saveRDS.}
+
+\item{args.RData}{A list of arguments to be passed to save.}
 
 \item{nm.drop}{Only used for generation of proposed text for
 Nonmem control stream. Columns to drop in Nonmem $DATA. This
@@ -73,7 +76,8 @@ rename columns in Nonmem $DATA, NMwriteData can adjust the
 suggested $DATA text. If you plan to use BBW instead of BWBASE
 in Nonmem, consider nm.rename=c(BWBASE="BBW"). The result is
 different from nm.copy since the nm.copy syntax is only
-allowed by Nonmem for certain standard column names such as DV.}
+allowed by Nonmem for certain standard column names such as
+DV.}
 
 \item{nm.copy}{For the $DATA text proposal only. If you plan to
 rename columns in Nonmem $DATA, NMwriteData can adjust the

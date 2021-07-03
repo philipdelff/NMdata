@@ -36,6 +36,9 @@ theme_set(theme_bw()+theme(legend.position="bottom"))
 ```
 Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
+This vignette is still under development. Please make sure to see
+latest version available
+[here](https://philipdelff.github.io/NMdata/).
 
 ## Introduction
 Getting data ready for modeling is a crucial and tedious but often
@@ -70,7 +73,10 @@ of class `data.frame`.
 
 
 ### Compare presence and class of columns across data sets
-When stacking (rbind) and merging, it is most often necessary to check if two or more data sets are compatible for the operation. `compareCols` by defaults lists the columns where the two data sets differ.
+When stacking (rbind) and merging, it is most often necessary to check
+if two or more data sets are compatible for the
+operation. `compareCols` by defaults lists the columns where the two
+data sets differ.
 
 
 ```{r,include=FALSE}
@@ -80,7 +86,13 @@ pk.reduced[,CYCLE:=NULL]
 pk.reduced[,AMT:=as.character(AMT)]
 ```
 
-Just to illustrate the output of `compareCols`, a slightly modified version of the `pk` dataset has been created. On column (`CYCLE`) has been removed, and `AMT` has been recoded to character. `compareCols` tells us about exactly these two differences. So before mergeing or stacking, we may want to recode `AMT` in one of the datasets to get the class we need, and decide what to do about the missing `CYCLE` in one of the datasets (if OK, we fill in `NA`.
+Just to illustrate the output of `compareCols`, a slightly modified
+version of the `pk` dataset has been created. On column (`CYCLE`) has
+been removed, and `AMT` has been recoded to character. `compareCols`
+tells us about exactly these two differences. So before mergeing or
+stacking, we may want to recode `AMT` in one of the datasets to get
+the class we need, and decide what to do about the missing `CYCLE` in
+one of the datasets (if OK, we fill in `NA`.
 
 
 ```{r,eval=TRUE}

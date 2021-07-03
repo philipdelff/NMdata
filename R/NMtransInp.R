@@ -92,7 +92,7 @@ NMtransInp <- function(data,file,translate=TRUE){
             }
 #### Reduce to unique column names
             
-            data <- data[,unique(cnames.input),with=F]
+            data <- data[,unique(cnames.input),with=FALSE]
         }
         
 
@@ -117,6 +117,6 @@ NMtransInp <- function(data,file,translate=TRUE){
     dt.colnames[compare=="diff"&tolower(DATA)%in%tolower(datafile),compare:="off"]
     dt.colnames[,compare:=factor(compare,levels=c("OK","diff","off"))]
     writeNMinfo(data,nminfo.data.0)
-    writeNMinfo(data,list(input.colnames=dt.colnames),append=T)
+    writeNMinfo(data,list(input.colnames=dt.colnames),append=TRUE)
     data
 }

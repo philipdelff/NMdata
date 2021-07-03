@@ -15,9 +15,9 @@ NMextractDataFile <- function(file,dir.data=NULL){
 ### containing the data. Since it is to be used in a FORTRAN OPEN statement,
 ### this name may not include embedded commas, semi-colons, parentheses, or
 ### spaces.
-    lines.data <- NMreadSection(file,section="DATA",keepName=F,keepComments=F,keepEmpty=F)
+    lines.data <- NMreadSection(file,section="DATA",keepName=FALSE,keepComments=FALSE,keepEmpty=FALSE)
     if(is.null(lines.data)) {
-        lines.data <- NMreadSection(file,section="INFILE",keepName=F,keepComments=F,keepEmpty=F)
+        lines.data <- NMreadSection(file,section="INFILE",keepName=FALSE,keepComments=FALSE,keepEmpty=FALSE)
     }
     if(is.null(lines.data)) stop("Could not find $DATA or $INFILE section in nonmem model. Please check the lst file.")
 

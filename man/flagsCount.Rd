@@ -107,6 +107,7 @@ flagsCount(pk[EVID==0],dt.flags,col.flagn="flagn",col.flagc="flagc")
 \seealso{
 Other DataCreate: 
 \code{\link{NMorderColumns}()},
+\code{\link{NMstamp}()},
 \code{\link{findCovs}()},
 \code{\link{findVars}()},
 \code{\link{flagsAssign}()},

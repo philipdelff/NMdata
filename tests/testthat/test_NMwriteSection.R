@@ -12,7 +12,7 @@ test_that("basic",{
                   ,newlines=newlines
                   ,newfile=outfile)
     res <- readLines(outfile)
-    expect_equal_to_reference(res,fileRef)
+    expect_equal_to_reference(res,fileRef,version=2)
 
 })
 
@@ -32,7 +32,7 @@ test_that("list.section",{
                   ,newfile=outfile
                    )
     res <- readLines(outfile)
-    expect_equal_to_reference(res,fileRef)
+    expect_equal_to_reference(res,fileRef,version=2)
 
 })
 

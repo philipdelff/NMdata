@@ -14,9 +14,8 @@
 ##'     configured using NMdataConf.
 ##' @param quiet Don't report information along the way if no warnings or
 ##'     errors. Default is FALSE.
-##' @details This is not bulletproof. A statement like ACCEPT=(DOSE 10) which in
-##'     Nonmem means the same as ACCEPT=(DOSE==10) will not be correctly
-##'     interpreted. Also, nested conditions are not supported altogether.
+##' @details This is not bulletproof. Nested conditions are not supported altogether.
+##' @return data with filters applied
 ##' @family Nonmem
 
 ## Don't export. This is only being used by NMscanInput at this point.
@@ -61,7 +60,7 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
         details <- TRUE
     }
     
-    text2 <- NMreadSection(lines=lines,section="DATA",keepComments=F)
+    text2 <- NMreadSection(lines=lines,section="DATA",keepComments=FALSE)
     text3 <- sub(";.*$","",text2)
 
     ## replace the allowed IGN with IGNORE
@@ -193,7 +192,7 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     }
     
     data <- as.fun(data)
-    writeNMinfo(data,meta=data.meta,append=T)
+    writeNMinfo(data,meta=data.meta,append=TRUE)
     data
  
 }

@@ -38,7 +38,7 @@ egdt <- function(dt1,dt2){
     dt1[,(tc):=1]
     dt2[,(tc):=1]
 
-    dt3 <- merge(dt1,dt2,by=tc,allow.cartesian = T)
+    dt3 <- merge(dt1,dt2,by=tc,allow.cartesian = TRUE)
     dt3[,(tc):=NULL]
     dt3[]
 }

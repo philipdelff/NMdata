@@ -113,7 +113,8 @@
 ##' NMdataConf(modelname=NULL)
 ##' ## reset all parameters to defaults
 ##' NMdataConf(reset=TRUE)
-
+##' @return If no arguments given, a list of active settings. If
+##'     arguments given and no issues found, TRUE invisibly.
 ##' @export
 
 NMdataConf <- function(...){
@@ -161,9 +162,15 @@ NMdataConf <- function(...){
     for(I in 1:N.args){
         .NMdata$options[[names.args[I]]] <- args[[I]]
     }
+    invisible(TRUE)
 }
 
-## A function that keeps track of the possible parameter options.
+##' Get NMdataConf parameter properties
+##'
+##' @param name Optionally, a single parameter name (say "as.fun").
+##' @return If name is provided, a list representing one argument,
+##'     otherwise a list with an element for each argument that can be
+##'     customized using NMdataConf.
 
 ## do not export
 
@@ -341,14 +348,16 @@ NMdataConfOptions <- function(name){
     }
 }
 
-## Could rename to NMdataDecideOption - > NMdataCoalConf for "coalesce". But the
-## function is not exported anyway.
+
+##' Determine active parameter value based on argument and NMdataConf setting
+##' @param name The name of the parameter, say "as.fun"
+##' @param argument The value to pass. If missing or NULL, the value returned by NMdataConf/NMdataGetOption will typically be used.
+##' @return Active argument value.
 
 ## Do not export.
 NMdataDecideOption <- function(name,argument){
     
     values.option <- NMdataConfOptions(name)
-    ## TODO check that we found that option at all
 
     if(!missing(argument) && is.character(argument) && length(argument)==1 && argument=="default") {
         return(values.option$default)
@@ -363,8 +372,11 @@ NMdataDecideOption <- function(name,argument){
 
     
     return(argument)
-
 }
+
+##' Look up default configuration of an argument
+##' @param ... argument to look up. Only one argument can be looked up.
+##' @return The value active in configuration
 
 ## This is only used by NMdataDecideOption
 ## do not export.

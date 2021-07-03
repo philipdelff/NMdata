@@ -30,8 +30,8 @@ filePathSimple <- function(...){
     
     
     ## Denote windows drives with capital letter
-    fpath <- sub("^([a-z]):/","\\U\\1:/",fpath,perl=T)
-    is.win.abs <- grepl("^[a-z]:/",fpath,ignore.case=T,perl=T)
+    fpath <- sub("^([a-z]):/","\\U\\1:/",fpath,perl=TRUE)
+    is.win.abs <- grepl("^[a-z]:/",fpath,ignore.case=TRUE,perl=TRUE)
     if(any(is.win.abs)){
         fpath[is.win.abs] <- normalizePath(fpath[is.win.abs],mustWork=FALSE,winslash="/")
     }

@@ -44,8 +44,8 @@ NMreadTab <- function(file,tab.count=TRUE,quiet,as.fun,...) {
 
     
     ## arg checks
-    if(!is.character(file)) stop("file should be a character string",call.=F)
-    if(!file.exists(file)) stop("argument file is not a path to an existing file.",call.=F)
+    if(!is.character(file)) stop("file should be a character string",call.=FALSE)
+    if(!file.exists(file)) stop("argument file is not a path to an existing file.",call.=FALSE)
 
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
@@ -56,7 +56,7 @@ NMreadTab <- function(file,tab.count=TRUE,quiet,as.fun,...) {
     if(!quiet){
         message("Reading data using fread")
     }
-    dt1 <- fread(file,fill=T,header=T,skip=1,...)
+    dt1 <- fread(file,fill=TRUE,header=TRUE,skip=1,...)
 
     cnames <- colnames(dt1)
     if(!quiet){
@@ -64,14 +64,14 @@ NMreadTab <- function(file,tab.count=TRUE,quiet,as.fun,...) {
     }
     if(tab.count){
         ## find table numbers
-        dt1[grep("^TABLE +NO\\. +[0-9]+ *$",as.character(get(cnames[1])),invert=F,perl=T),TABLE:=get(cnames[1])]
+        dt1[grep("^TABLE +NO\\. +[0-9]+ *$",as.character(get(cnames[1])),invert=FALSE,perl=TRUE),TABLE:=get(cnames[1])]
         dt1[,TABLENO:=cumsum(!is.na(TABLE))+1]
         dt1[,TABLE:=NULL]
     }
     if(!quiet){
         message("getting rid of non-data rows")
     }
-    dt1 <- dt1[grep("^ *[[:alpha:]]",as.character(get(cnames[1])),invert=T,perl=T)]
+    dt1 <- dt1[grep("^ *[[:alpha:]]",as.character(get(cnames[1])),invert=TRUE,perl=TRUE)]
 
     cols.dup <- duplicated(colnames(dt1))
     if(any(cols.dup)){

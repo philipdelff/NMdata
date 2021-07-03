@@ -142,7 +142,7 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
         
         dtcheck <- merge(df1[,.N,by=by],
                          df3[,.N,by=by]
-                        ,by=by,all=T,suffixes=c(".df1",".result")
+                        ,by=by,all=TRUE,suffixes=c(".df1",".result")
                          )
         dtcheck[is.na(N.df1),N.df1:=0]
         dtcheck[is.na(N.result),N.result:=0]

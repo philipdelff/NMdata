@@ -102,6 +102,7 @@ corresponding argument. Not
 }
 \seealso{
 Other DataCreate: 
+\code{\link{NMstamp}()},
 \code{\link{findCovs}()},
 \code{\link{findVars}()},
 \code{\link{flagsAssign}()},

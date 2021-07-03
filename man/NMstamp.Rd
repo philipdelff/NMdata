@@ -24,10 +24,23 @@ NMstamp can be accessed using the function NMinfo.
 \details{
 NMstamp modifies the meta data by reference. See example.
 }
-\seealso{
-NMinfo
-}
-\concept{DataCreate
+\examples{
 x=1
 NMstamp(x,script="example.R",description="Example data")
-NMinfo(x)}
+NMinfo(x)
+}
+\seealso{
+NMinfo
+
+Other DataCreate: 
+\code{\link{NMorderColumns}()},
+\code{\link{findCovs}()},
+\code{\link{findVars}()},
+\code{\link{flagsAssign}()},
+\code{\link{flagsCount}()},
+\code{\link{mergeCheck}()},
+\code{\link{objInfo}()},
+\code{\link{stampObj}()},
+\code{\link{tmpcol}()}
+}
+\concept{DataCreate}

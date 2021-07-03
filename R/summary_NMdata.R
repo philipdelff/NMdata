@@ -119,7 +119,7 @@ print.summary_NMdata <- function(x,...){
     ## calc number of used and available columns
     vars.sum <- vars[source!="NMscanData"][,.N,by=.(file,inc)]
     vars.sum1 <- dcast(vars.sum,file~inc,value.var="N",fill=0)
-    vars.sum1[,print.inc:=paste0(included,"/",sum(c(included,not),na.rm=T)),by=.(file)]
+    vars.sum1[,print.inc:=paste0(included,"/",sum(c(included,not),na.rm=TRUE)),by=.(file)]
     ## calc number of used and available rows
     ## Since this is based on NMinfo(res,"columns"), we know the table is used
     
@@ -127,7 +127,7 @@ print.summary_NMdata <- function(x,...){
     tabs.out[,tabn:=1:.N]
     ## assuming that all ID's present somewhere in output is present in all output tables
     ## tabs.out[source=="output",nid:=x$N.ids[NMOUT=="Output",N.ids]]
-    vars.sum2 <- mergeCheck(vars.sum1,tabs.out[,.(file=name,source,level,tabn,nrow,nid)],by="file",all.x=T)
+    vars.sum2 <- mergeCheck(vars.sum1,tabs.out[,.(file=name,source,level,tabn,nrow,nid)],by="file",all.x=TRUE)
 
     
     
@@ -176,7 +176,7 @@ print.summary_NMdata <- function(x,...){
     N.ids[,N:="N.ids"]
     N.ids[,.:=NULL]
     
-    n5 <- rbind(n4,N.ids,fill=T)
+    n5 <- rbind(n4,N.ids,fill=TRUE)
     n5[is.na(n5)] <- 0
     
     ## model name

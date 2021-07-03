@@ -1,3 +1,13 @@
+##' check that col.row is not edited in Nonmem control stream
+##'
+##' @description In order to safely merge by a unique row identifier,
+##'     that row identifier must not be edited from input to
+##'     output. checkColRow helps checking that based on the control
+##'     stream.
+##' @param col.row The name of the unique row identifier (say "ROW").
+##' @param file
+##' @return TRUE if no issues found
+
 ## not to be exported. This is a helper function for NMscanData.
 
 checkColRow <- function(col.row,file){
@@ -21,14 +31,3 @@ checkColRow <- function(col.row,file){
     }
     invisible(TRUE)
 }
-
-
-   ##          if(col.row%in%cnames.input) {
-   ##              if(data.input$data[,any(duplicated(get(col.row)))]) {
-   ##                  messageWrap("use.input=TRUE and merge.by.row=TRUE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and merge.by.row=TRUE.",fun.msg=stop)
-   ##              }
-   ##          }
-
-   ## if( tab.row[,any(duplicated(get(col.row)))]) {
-   ##                  messageWrap("use.input is TRUE, but col.row has duplicate values in _output_ data. col.row must be a unique row identifier. It is unique in input data, so how did rows get repeated in output data? Has input data been edited since the model was run?",fun.msg=stop)
-   ##              }

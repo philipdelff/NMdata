@@ -50,12 +50,12 @@ findCovs <- function(data,cols.id=NULL,as.fun=NULL){
         Nid <- 1
     } else {
         ## This is a little clumpsy, but it works when cols.id is of length > 1.
-        Nid <- nrow(unique(data[,cols.id,with=F]))
+        Nid <- nrow(unique(data[,cols.id,with=FALSE]))
     }
 
-    names.covs <- cnames.to.use[unlist(lapply(cnames.to.use,function(x) nrow(unique(data[,c(cols.id,x),with=F]))==Nid))]
+    names.covs <- cnames.to.use[unlist(lapply(cnames.to.use,function(x) nrow(unique(data[,c(cols.id,x),with=FALSE]))==Nid))]
 
-    reduced <- unique(data[,c(cols.id,names.covs),with=F])
+    reduced <- unique(data[,c(cols.id,names.covs),with=FALSE])
     if(!is.null(cols.id)){
         reduced <- reduced[order(get(cols.id))]
     }

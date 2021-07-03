@@ -3,9 +3,9 @@
 ##' @param text the Nonmem code.
 ##' @details You probably want to run this on text obtained by using
 ##'     the NMreadSection function.
+##' @return R code as text
 
-### This function is exported from pmxtricks. It is included in NMdata not to
-### depend on pmxtricks. However, please align.
+### Do not export. For an exported function, see the pmxtricks package.
 
 NMcode2R <- function(text){
 

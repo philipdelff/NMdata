@@ -17,6 +17,7 @@ stampObj
 
 Other DataCreate: 
 \code{\link{NMorderColumns}()},
+\code{\link{NMstamp}()},
 \code{\link{findCovs}()},
 \code{\link{findVars}()},
 \code{\link{flagsAssign}()},
