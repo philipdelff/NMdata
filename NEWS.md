@@ -1,6 +1,7 @@
-# NMdata 0.0.7.3
-Meta data system rewritten
-* NMinfo and NMstamp are used to read and write meta data. Meta data is stored as an attribute to the data object (attributes(data)$NMdata). 
+# NMdata 0.0.8
+* Meta data system rewritten. NMinfo and NMstamp are used to read and
+  write meta data. Meta data is stored as an attribute to the data
+  object (attributes(data)$NMdata).
 
 * Translation table includes a column ranking the match betwen input
   data file contents and $INPUT. OK: names match, diff: names do not
