@@ -15,6 +15,10 @@ NMtransInp(data, file, translate = TRUE)
 or not? If not, an overview of column names in data and in
 Nonmem code is still returned with the data.}
 }
+\value{
+data with column names translated as specified by nonmem
+    control stream. Class same as for 'data' argument.
+}
 \description{
 translate the column names according to the $INPUT section of a control stream
 }

@@ -5,6 +5,8 @@
 ##' @param translate logical. Do translation according to Nonmem code
 ##'     or not? If not, an overview of column names in data and in
 ##'     Nonmem code is still returned with the data.
+##' @return data with column names translated as specified by nonmem
+##'     control stream. Class same as for 'data' argument.
 
 ## don't export. An internal function used by NMscanInput. 
 

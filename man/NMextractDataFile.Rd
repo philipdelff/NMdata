@@ -10,9 +10,12 @@ NMextractDataFile(file, dir.data = NULL)
 \item{file}{The input control stream or the list file.}
 
 \item{dir.data}{See NMscanInput. If used, only the file name
-mentioned in $DATA is used. This file name is looked for in
-dir.data. If dir.data is NULL (default), the path is either
-absolute (only unix paths starting in / are supported.}
+mentioned in $DATA is used. dir.data will be used as the path,
+and the existence of the file in that directory is not
+checked.}
+}
+\value{
+The path to the input data file.
 }
 \description{
 Extract the data file used in a control stream

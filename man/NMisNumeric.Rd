@@ -9,6 +9,9 @@ NMisNumeric(x)
 \arguments{
 \item{x}{The vector to check Don't export}
 }
+\value{
+TRUE or FALSE
+}
 \description{
 Nonmem can only interpret numeric data. However, a
     factor or a character variable may very well be interpretable

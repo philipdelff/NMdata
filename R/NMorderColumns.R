@@ -49,10 +49,10 @@
 ##' @param quiet If true, no warning will be given about missing
 ##'     standard Nonmem columns.
 ##' @details This function will change the order of columns but it
-##'     will never edit values in any columns.
+##'     will never edit values in any columns. The ordering is by the
+##'     following steps, each step depending on corresponding
+##'     argument.
 ##'
-##' The ordering is by the following steps, each step depending on
-##' corresponding argument. Not
 ##' \itemize{
 ##'  \item{"col.row - "}{Row id if argument row is non-NULL}
 ##'  \item{"not editable - "}{ID (if a column is called ID)}
@@ -65,6 +65,7 @@
 ##'  \item{"lower.last - "}{lower case in name}
 ##'  \item{"alpha - "}{Alphabetic/numeric sorting}
 ##' }
+##' @return data with modified column order.
 ##'
 ##' @family DataCreate
 ##' @import data.table 

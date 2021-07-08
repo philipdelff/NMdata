@@ -47,7 +47,8 @@
 ##' @import data.table
 ##' @importFrom utils capture.output
 ##' @importFrom stats setNames
-##' @return a data.frame resulting from merging df1 and df2
+##' @return a data.frame resulting from merging df1 and df2. Class as
+##'     defined by as.fun.
 ##' @export
 
 mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols.expect,track.msg=FALSE,...){

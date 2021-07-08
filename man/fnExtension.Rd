@@ -2,8 +2,7 @@
 % Please edit documentation in R/fnExtension.R
 \name{fnExtension}
 \alias{fnExtension}
-\title{change file name extension
-Very simple but often applicable function to change the file name extension (from say file.lst to file.mod)}
+\title{Change file name extension}
 \usage{
 fnExtension(fn, ext)
 }
@@ -12,8 +11,10 @@ fnExtension(fn, ext)
 
 \item{ext}{new file name extension}
 }
+\value{
+A text string
+}
 \description{
-change file name extension
 Very simple but often applicable function to change the file name extension (from say file.lst to file.mod)
 }
 \examples{

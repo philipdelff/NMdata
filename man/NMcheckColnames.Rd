@@ -13,6 +13,9 @@ NMcheckColnames(file, as.fun, ...)
 
 \item{...}{Additional arguments passed to}
 }
+\value{
+An overview of input column names and how they are translated
+}
 \description{
 Misspecification of column names in $DATA are a common source of
 problems with Nonmem models, and one of the first things to check

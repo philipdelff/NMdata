@@ -10,6 +10,8 @@
 ##'     default is to return a data.table, if not the default is to
 ##'     return a data.frame. Use whatever to get what fits in with
 ##'     your workflow. Default can be configured with NMdataConf.
+##' @return A data.frame with dimensions of objects in ... Actual
+##'     class defined by as.fun.
 ##' @family DataWrangling
 ##' @export
 

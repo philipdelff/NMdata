@@ -4,13 +4,13 @@
 \alias{findCovs}
 \title{Extract columns that do not vary within variables in data}
 \usage{
-findCovs(data, cols.id = NULL, as.fun = NULL)
+findCovs(data, by = NULL, as.fun = NULL)
 }
 \arguments{
 \item{data}{data.frame in which to look for covariates}
 
-\item{cols.id}{covariates will be searched for in combinations of values in
-these columns. Often cols.id will be either empty or ID. But it can also
+\item{by}{covariates will be searched for in combinations of values in
+these columns. Often by will be either empty or ID. But it can also
 be both say c("ID","DRUG") or c("ID","TRT").}
 
 \item{as.fun}{The default is to return a data.table if data is a data.table
@@ -20,7 +20,7 @@ be configued using NMdataConf.}
 }
 \value{
 a data set with one observation per combination of values of
-    variables listed in cols.id.
+    variables listed in by.
 }
 \description{
 This function provides an automated method to extract covariate-like
@@ -33,7 +33,7 @@ variables that do not vary within unique combinations of these.
 \examples{
 dat <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"))
 ### very common use
-findCovs(dat,cols.id="ID")
+findCovs(dat,by="ID")
 ### Without an ID column we get non-varying columns
 findCovs(dat)
 }
@@ -45,8 +45,6 @@ Other DataCreate:
 \code{\link{flagsAssign}()},
 \code{\link{flagsCount}()},
 \code{\link{mergeCheck}()},
-\code{\link{objInfo}()},
-\code{\link{stampObj}()},
 \code{\link{tmpcol}()}
 }
 \concept{DataCreate}

@@ -6,7 +6,7 @@
 \usage{
 NMscanTables(
   file,
-  details = F,
+  details = FALSE,
   as.fun,
   quiet,
   tab.count = FALSE,
@@ -47,7 +47,7 @@ used to check whether the row counter is in the data.}
 \value{
 A list of all the tables as data.frames. If details=TRUE,
     this is in one element, called data, and meta is another
-    element. If not, only the element corresponding to data is
+    element. If not, only the data is
     returned.
 }
 \description{

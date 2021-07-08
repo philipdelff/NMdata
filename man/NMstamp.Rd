@@ -16,6 +16,9 @@ NMstamp(data, script, time = Sys.time(), ...)
 \item{...}{other named metadata elements to add to the dataset. Example:
 Description="PK data for ph1 trials in project".}
 }
+\value{
+data with meta data attached. Class unchanged.
+}
 \description{
 Dataset metadata can be valuable, eg. by tracing an archived dataset
 back to the code that generated it. The metadata added by
@@ -39,8 +42,6 @@ Other DataCreate:
 \code{\link{flagsAssign}()},
 \code{\link{flagsCount}()},
 \code{\link{mergeCheck}()},
-\code{\link{objInfo}()},
-\code{\link{stampObj}()},
 \code{\link{tmpcol}()}
 }
 \concept{DataCreate}

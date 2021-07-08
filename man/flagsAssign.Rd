@@ -46,12 +46,12 @@ analysis.}
 \item{as.fun}{The default is to return data.tables if input data
 is a data.table, and return a data.frame for all other input
 classes. Pass a function in as.fun to convert to something
-else. If return.all=F, this is applied to data and tab.flags
-independently.}
+else. If return.all=FALSE, this is applied to data and
+tab.flags independently.}
 }
 \value{
-The dataset with flags added. See parameter flags.return
-    as well.
+The dataset with flags added. Class as defined by
+    as.fun. See parameter flags.return as well.
 }
 \description{
 The aim with this function is to take a (say PK) dataset and a
@@ -83,8 +83,6 @@ Other DataCreate:
 \code{\link{findVars}()},
 \code{\link{flagsCount}()},
 \code{\link{mergeCheck}()},
-\code{\link{objInfo}()},
-\code{\link{stampObj}()},
 \code{\link{tmpcol}()}
 }
 \concept{DataCreate}

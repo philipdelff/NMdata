@@ -9,6 +9,9 @@ NMcode2R(text)
 \arguments{
 \item{text}{the Nonmem code.}
 }
+\value{
+R code as text
+}
 \description{
 Translate Nonmem $PK, $PRED sections or other Nonmem code to R code
 }

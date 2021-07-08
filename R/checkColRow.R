@@ -5,7 +5,7 @@
 ##'     output. checkColRow helps checking that based on the control
 ##'     stream.
 ##' @param col.row The name of the unique row identifier (say "ROW").
-##' @param file
+##' @param file a list file or input control stream file path.
 ##' @return TRUE if no issues found
 
 ## not to be exported. This is a helper function for NMscanData.

@@ -76,6 +76,9 @@ data.table, settings via NMdataConf are ignored.}
 \item{quiet}{If true, no warning will be given about missing
 standard Nonmem columns.}
 }
+\value{
+data with modified column order.
+}
 \description{
 Order data columns for easy export to Nonmem. No data values are
 edited. The order is configurable through multiple arguments. See
@@ -83,10 +86,10 @@ details.
 }
 \details{
 This function will change the order of columns but it
-    will never edit values in any columns.
+    will never edit values in any columns. The ordering is by the
+    following steps, each step depending on corresponding
+    argument.
 
-The ordering is by the following steps, each step depending on
-corresponding argument. Not
 \itemize{
  \item{"col.row - "}{Row id if argument row is non-NULL}
  \item{"not editable - "}{ID (if a column is called ID)}
@@ -108,8 +111,6 @@ Other DataCreate:
 \code{\link{flagsAssign}()},
 \code{\link{flagsCount}()},
 \code{\link{mergeCheck}()},
-\code{\link{objInfo}()},
-\code{\link{stampObj}()},
 \code{\link{tmpcol}()}
 }
 \concept{DataCreate}

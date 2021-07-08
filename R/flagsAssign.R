@@ -30,8 +30,8 @@
 ##'     classes. Pass a function in as.fun to convert to something
 ##'     else. If return.all=FALSE, this is applied to data and
 ##'     tab.flags independently.
-##' @return The dataset with flags added. See parameter flags.return
-##'     as well.
+##' @return The dataset with flags added. Class as defined by
+##'     as.fun. See parameter flags.return as well.
 ##' @details dt.flags must contain a column with numerical exclusion
 ##'     flags, one with character exclusion flags, and one with a
 ##'     expressions to evaluate for whether to apply the exclusion

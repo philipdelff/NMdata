@@ -42,12 +42,16 @@ want to backup the file (to say, backup_run001.mod)?}
 NMwriteSection returns the resulting input.txt without writing
 it.  to disk?  Default is FALSE.}
 }
+\value{
+The new section text is returned. If write=TRUE, this is done invisibly.
+}
 \description{
 Just give the section name, the new lines and the file path, and the
 "$section", and the input to Nonmem will be updated.
 }
 \details{
-The new file will be written with unix-style line endings.
+The new file will be written with unix-style line
+    endings.
 }
 \examples{
 newlines <- "$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"

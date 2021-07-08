@@ -89,6 +89,9 @@ something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.}
 }
+\value{
+A data set, class defined by 'as.fun'
+}
 \description{
 Based on a nonmem run (lst and/or mod file), this
     function finds the input data and reads it. It reads the data

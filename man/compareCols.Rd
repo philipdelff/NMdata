@@ -52,11 +52,20 @@ default is to return a data.table, if not the default is to
 return a data.frame. Use whatever to get what fits in with
 your workflow. Default can be configured with NMdataConf.}
 }
+\value{
+A data.frame with an overview of elementes and their
+    classes of objects in ... Class as defined by as.fun.
+}
 \description{
 Useful interactive tool when merging or binding objects
 together. It lists the names of elements that differ in presence
 or class across multiple datasets. Before running rbind, you may want
 to check the compatibility of the data.
+}
+\details{
+tecnically, this function compares classes of elements in
+    lists. However, in relation to NMdata, this will most of the
+    time be columns in data.frames.
 }
 \seealso{
 Other DataWrangling: 

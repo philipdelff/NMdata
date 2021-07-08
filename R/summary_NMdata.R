@@ -7,6 +7,7 @@
 ##'     means that in this case it will report that no IDs are found in
 ##'     output. The correct statement is that records are found for zero
 ##'     subjects in output tables.
+##' @return A list with summary information on the NMdata object.
 ##' @import data.table
 ##' @export
 summary.NMdata <- function(object,...){

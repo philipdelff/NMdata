@@ -132,17 +132,11 @@
 ##'  \item{NULL}{The NULL argument to specify missing value string in input data is not respected. If delimited input data is read (as opposed to rds files), missing values are assumed to be represented by dots (.).}
 ##' }
 ##'
-##' 
+##' @return A data set of class 'NMdata'.
 ##' @family DataRead
 ##' @import data.table
 ##' @export
 
-## method.combine should be empty by default to look for col.row if none
-## supplied. To disable, use method.combine="none"
-
-## NMdecideOption define method.combine and remove chk in NMscanData
-
-## if merge by row, got to make sure that col.row can be used.
 
 NMscanData <- function(file, col.row, use.input, merge.by.row,
                        recover.rows,file.mod,dir.data,

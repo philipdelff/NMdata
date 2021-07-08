@@ -12,6 +12,9 @@
 \item{...}{Only passed to the summary generic if object is missing NMdata
 meta data (this should not happen anyway).}
 }
+\value{
+A list with summary information on the NMdata object.
+}
 \description{
 summary method for NMdata objects
 }

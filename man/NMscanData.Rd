@@ -143,6 +143,9 @@ system where Nonmem was run, these checks may not make sense,
 and you may not want to see these warnings. The default can be
 configured using NMdataConf.}
 }
+\value{
+A data set of class 'NMdata'.
+}
 \description{
 This is a very general solution to automatically identifying, reading, and  merging all output and input data in a Nonmem model. The most important
 steps are

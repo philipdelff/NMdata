@@ -51,7 +51,8 @@ to messages/warnings/errors that they came from mergCheck.}
 them, an error will be returned.}
 }
 \value{
-a data.frame resulting from merging df1 and df2
+a data.frame resulting from merging df1 and df2. Class as
+    defined by as.fun.
 }
 \description{
 This function is a useful wrapper for merges where df1 will be
@@ -81,8 +82,6 @@ Other DataCreate:
 \code{\link{findVars}()},
 \code{\link{flagsAssign}()},
 \code{\link{flagsCount}()},
-\code{\link{objInfo}()},
-\code{\link{stampObj}()},
 \code{\link{tmpcol}()}
 }
 \concept{DataCreate}

@@ -43,8 +43,6 @@ Other DataCreate:
 \code{\link{findVars}()},
 \code{\link{flagsAssign}()},
 \code{\link{flagsCount}()},
-\code{\link{mergeCheck}()},
-\code{\link{objInfo}()},
-\code{\link{stampObj}()}
+\code{\link{mergeCheck}()}
 }
 \concept{DataCreate}

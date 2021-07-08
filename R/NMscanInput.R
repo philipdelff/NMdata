@@ -67,6 +67,8 @@
 ##' columns (not possible but illustrative), and in Nonmem you do
 ##' DV=DROP DV. Not sure it will work in Nonmem, and it probably won't
 ##' work in NMscanInput.
+##'
+##' @return A data set, class defined by 'as.fun'
 ##' 
 ##' @family DataRead
 ##' @export

@@ -48,7 +48,8 @@
 ##'     flag table. "discarded" means that the reduction of number of
 ##'     observations and subjects resulting from the flag, "retained"
 ##'     means the numbers that are left after application of the
-##'     flag. The default is "both" which will report both.
+##'     flag. The default is "both" which will report both. Class as
+##'     defined by as.fun.
 ##' @details This function is used to count flags as assigned by the
 ##'     flagsAssign function.
 ##'

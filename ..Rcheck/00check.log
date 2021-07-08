@@ -1,0 +1,10 @@
+* using log directory 'C:/Users/delff/working_copies/NMdata/..Rcheck'
+* using R version 4.1.0 (2021-05-18)
+* using platform: x86_64-w64-mingw32 (64-bit)
+* using session charset: ISO8859-1
+* using option '--as-cran'
+* checking for file './DESCRIPTION' ... ERROR
+Required field missing or empty:
+  'Author'
+* DONE
+Status: 1 ERROR

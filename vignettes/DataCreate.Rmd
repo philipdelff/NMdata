@@ -364,14 +364,14 @@ tracing datasets to data creation scripts, including time stamps and
 other information you want to include with the data set. 
 
 ```{r}
-pk <- stampObj(pk,script="vignettes/DataCreate.Rmd")
-objInfo(pk)
+pk <- NMstamp(pk,script="vignettes/DataCreate.Rmd")
+NMinfo(pk)
 ```
-The `script` argument is recognized by `stampObj`, but you can add anything to this. Say you want to keep descriptive note too:
+The `script` argument is recognized by `NMstamp`, but you can add anything to this. Say you want to keep descriptive note too:
 
 ```{r}
-pk <- stampObj(pk,script="vignettes/DataCreate.Rmd",Description="A PK dataset used for examples.")
-objInfo(pk)
+pk <- NMstamp(pk,script="vignettes/DataCreate.Rmd",Description="A PK dataset used for examples.")
+NMinfo(pk)
 ```
 
 These are very simple functions. But they are simple to use as well,
@@ -379,9 +379,9 @@ and hopefully they will help you avoid sitting with a data set trying
 to guess which script generated it so you can do a modification or
 understand how something was done.
 
-When using `NMwriteData`, you don't have to call `stampObj`
+When using `NMwriteData`, you don't have to call `NMstamp`
 explicitly. Just pass the `script` argument to `NMwriteData` and
-`stampObj` will be applied automatically.
+`NMstamp` will be applied automatically.
 
 
 ## Subject-level variables
@@ -408,14 +408,14 @@ res1$trtact <- reorder(res1$trtact,res1$DOSE)
 res1[,Cmax:=max(IPRED),by=.(ID)]
 ## findCovs picks the columns that do not vary within cols.id. One row
 ## per value of cols.id.
-res1.id <- findCovs(res1,cols.id="ID")
+res1.id <- findCovs(res1,by="ID")
 dim(res1.id)
 ggplot(res1.id,aes(WEIGHTB,Cmax/DOSE,colour=trtact))+
     geom_point()+
     labs(x="Bodyweight at baseline (kg)")
 ```
 
-`cols.id` can be longer than one. Include a study column, a treatment column to
+`by` can be longer than one. Include a study column, a treatment column to
 support cross-over, or a model
 column if you are comparing model fits (see below how to do this very easily).
 
@@ -424,7 +424,7 @@ look at
 
 ```{r}
 ## we have no occasion variability in this data
-## res1.id.occ <- findCovs(res1,cols.id=c("ID","OCC"))
+## res1.id.occ <- findCovs(res1,by=c("ID","OCC"))
 ```
 
 The simplest use of `findCovs` is to get variables that are constant
@@ -446,7 +446,7 @@ head(res1.id,2)
 
 
 `findCovs` has a counterpart in `findVars` which finds variables that
-do vary within constant values of optional `cols.id` columns. To get only the ones that
+do vary within constant values of optional `by` columns. To get only the ones that
 vary within the dataset (i.e. they are truely subject-level
 variables and not say a study number if we only have one study), we can do 
 
@@ -456,9 +456,9 @@ dim(res1.id2)
 head(res1.id2,2)
 ```
 
-`findVars` supports the cols.id argument too. So you can use
-`findVars(res1,cols.id="ID")` to find variables that are non-constant
-within (at least one value of) ID. `cols.id` can be of arbitrary length.
+`findVars` supports the `by` argument too. So you can use
+`findVars(res1,by="ID")` to find variables that are non-constant
+within (at least one value of) ID. `by` can be of arbitrary length.
 
 Of course, we most often know what covariates or other subject-level
 variables to look at, and we would not search for them after running a

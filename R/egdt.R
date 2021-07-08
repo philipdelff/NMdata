@@ -2,8 +2,6 @@
 ##'
 ##' @param dt1 a data.table.
 ##' @param dt2 another data.table.
-##' @return a data.table that expands combinations of rows in dt1 and
-##'     dt2.
 ##'
 ##' @details Merging works mostly similarly for data.table and
 ##'     data.table. However, for data.table the merge must be done by
@@ -11,7 +9,8 @@
 ##'     expand all combinations of all rows in two data.frames is not
 ##'     available for data.tables. This functions provides that
 ##'     functionality. It always returns data.tables.
-##'
+##' @return a data.table that expands combinations of rows in dt1 and
+##'     dt2.
 ##' @examples
 ##' df1 <- data.frame(a=1:2,b=3:4)
 ##' df2 <- data.frame(c=5:6,d=7:8)

@@ -25,7 +25,7 @@ test_that("basic",{
     r1 <- findVars(dt1)
     ## not a. OK
     ##    r1
-    r2 <- findVars(dt1,cols.id=c("b"))
+    r2 <- findVars(dt1,by=c("b"))
     ## not a and c. OK
     ##    r2
 

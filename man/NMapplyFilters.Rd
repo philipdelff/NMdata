@@ -29,13 +29,14 @@ configured using NMdataConf.}
 \item{quiet}{Don't report information along the way if no warnings or
 errors. Default is FALSE.}
 }
+\value{
+data with filters applied
+}
 \description{
 Translate filters in Nonmem and apply to data
 }
 \details{
-This is not bulletproof. A statement like ACCEPT=(DOSE 10) which in
-    Nonmem means the same as ACCEPT=(DOSE==10) will not be correctly
-    interpreted. Also, nested conditions are not supported altogether.
+This is not bulletproof. Nested conditions are not supported altogether.
 }
 \seealso{
 Other Nonmem: 

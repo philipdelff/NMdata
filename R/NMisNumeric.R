@@ -5,7 +5,7 @@
 ##'     by Nonmem (e.g. "33"). This function tells whether Nonmem will
 ##'     be able to read it.
 ##' @param x The vector to check Don't export
-
+##' @return TRUE or FALSE
 ##' @export
 
 NMisNumeric <- function(x){

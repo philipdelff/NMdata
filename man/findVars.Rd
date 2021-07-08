@@ -4,13 +4,13 @@
 \alias{findVars}
 \title{Extract columns that vary within values of other columns in a data.frame}
 \usage{
-findVars(data, cols.id = NULL, as.fun = NULL)
+findVars(data, by = NULL, as.fun = NULL)
 }
 \arguments{
 \item{data}{data.frame in which to look for covariates}
 
-\item{cols.id}{optional covariates will be searched for in combinations of
-values in these columns. Often cols.id will be either empty or ID. But
+\item{by}{optional covariates will be searched for in combinations of
+values in these columns. Often by will be either empty or ID. But
 it can also be both say c("ID","DRUG") or c("ID","TRT").}
 
 \item{as.fun}{The default is to return a data.table if data is a data.table
@@ -23,12 +23,12 @@ a data set with as many rows as in data.
 }
 \description{
 If you want to look at the variability of a number of columns and you want
-to disregard those that are constant. Like for findCovs, cols.id can be of
+to disregard those that are constant. Like for findCovs, by can be of
 arbitrary length.
 }
 \details{
-Use this to exclude columns that are constant within cols.id. If
-    cols.id=ID, this could be to get only time-varying covariates.
+Use this to exclude columns that are constant within by. If
+    by=ID, this could be to get only time-varying covariates.
 }
 \seealso{
 Other DataCreate: 
@@ -38,8 +38,6 @@ Other DataCreate:
 \code{\link{flagsAssign}()},
 \code{\link{flagsCount}()},
 \code{\link{mergeCheck}()},
-\code{\link{objInfo}()},
-\code{\link{stampObj}()},
 \code{\link{tmpcol}()}
 }
 \concept{DataCreate}

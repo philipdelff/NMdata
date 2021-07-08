@@ -22,7 +22,9 @@
 ##'     NMwriteSection returns the resulting input.txt without writing
 ##'     it.  to disk?  Default is FALSE.
 ##'
-##' @details The new file will be written with unix-style line endings.
+##' @details The new file will be written with unix-style line
+##'     endings.
+##' @return The new section text is returned. If write=TRUE, this is done invisibly.
 ##' @family Nonmem
 ##' 
 ##' @examples
@@ -133,5 +135,5 @@ NMwriteSection <- function(file,section,newlines,list.sections,newfile,
     con.newfile <- file(newfile,"wb")
     writeLines(newlines,con=con.newfile)
     close(con.newfile)
-    
+    return(invisible(newlines))
 }

@@ -22,6 +22,10 @@ default is to return a data.table, if not the default is to
 return a data.frame. Use whatever to get what fits in with
 your workflow. Default can be configured with NMdataConf.}
 }
+\value{
+A data.frame with dimensions of objects in ... Actual
+    class defined by as.fun.
+}
 \description{
 Get dimensions of multiple objects
 }

@@ -101,6 +101,10 @@ all relevant variables in the output tables. Default is TRUE.
 
 }}
 }
+\value{
+If no arguments given, a list of active settings. If
+    arguments given and no issues found, TRUE invisibly.
+}
 \description{
 Configure default behavior across the functions in NMdata rather
 than typing the arguments in all function calls. Configure for

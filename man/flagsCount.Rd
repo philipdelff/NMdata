@@ -77,7 +77,8 @@ A summary table with number of discarded and retained
     flag table. "discarded" means that the reduction of number of
     observations and subjects resulting from the flag, "retained"
     means the numbers that are left after application of the
-    flag. The default is "both" which will report both.
+    flag. The default is "both" which will report both. Class as
+    defined by as.fun.
 }
 \description{
 Generate an overview of number of observations disregarded due to
@@ -112,8 +113,6 @@ Other DataCreate:
 \code{\link{findVars}()},
 \code{\link{flagsAssign}()},
 \code{\link{mergeCheck}()},
-\code{\link{objInfo}()},
-\code{\link{stampObj}()},
 \code{\link{tmpcol}()}
 }
 \concept{DataCreate}

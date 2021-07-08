@@ -13,6 +13,7 @@
 ##'     Description="PK data for ph1 trials in project".
 ##' @seealso NMinfo
 ##' @family DataCreate
+##' @return data with meta data attached. Class unchanged.
 ##' @examples
 ##' x=1
 ##' NMstamp(x,script="example.R",description="Example data")

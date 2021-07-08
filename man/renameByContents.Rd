@@ -24,6 +24,10 @@ something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.}
 }
+\value{
+data with (some) new column names. Class as defined by
+    as.fun.
+}
 \description{
 For instance, lowercase all columns that Nonmem
     cannot interpret (as numeric).

@@ -14,6 +14,8 @@
 ##'     something else. If data.tables are wanted, use
 ##'     as.fun="data.table". The default can be configured using
 ##'     NMdataConf.
+##' @return data with (some) new column names. Class as defined by
+##'     as.fun.
 ##' @export
 
 renameByContents <- function(data,fun.test,fun.rename,invert.test=FALSE,as.fun){
