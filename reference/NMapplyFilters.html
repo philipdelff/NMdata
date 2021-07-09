@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8</span>
       </span>
     </div>
 
@@ -140,7 +140,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Translate filters in Nonmem and apply to data</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/philipdelff/NMdata/blob/master/R/NMapplyFilters.R'><code>R/NMapplyFilters.R</code></a></small>
     <div class="hidden name"><code>NMapplyFilters.Rd</code></div>
     </div>
 
@@ -191,11 +191,12 @@ errors. Default is FALSE.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>data with filters applied</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This is not bulletproof. A statement like ACCEPT=(DOSE 10) which in
-    Nonmem means the same as ACCEPT=(DOSE==10) will not be correctly
-    interpreted. Also, nested conditions are not supported altogether.</p>
+    <p>This is not bulletproof. Nested conditions are not supported altogether.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Nonmem: 

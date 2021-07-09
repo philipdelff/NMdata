@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8</span>
       </span>
     </div>
 
@@ -140,7 +140,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>read all output data tables in nonmem run</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/philipdelff/NMdata/blob/master/R/NMscanTables.R'><code>R/NMscanTables.R</code></a></small>
     <div class="hidden name"><code>NMscanTables.Rd</code></div>
     </div>
 
@@ -150,7 +150,7 @@
 
     <pre class="usage"><span class='fu'>NMscanTables</span><span class='op'>(</span>
   <span class='va'>file</span>,
-  details <span class='op'>=</span> <span class='cn'>F</span>,
+  details <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>as.fun</span>,
   <span class='va'>quiet</span>,
   tab.count <span class='op'>=</span> <span class='cn'>FALSE</span>,
@@ -210,7 +210,7 @@ used to check whether the row counter is in the data.</p></td>
 
     <p>A list of all the tables as data.frames. If details=TRUE,
     this is in one element, called data, and meta is another
-    element. If not, only the element corresponding to data is
+    element. If not, only the data is
     returned.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

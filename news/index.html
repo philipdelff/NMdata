@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8</span>
       </span>
     </div>
 
@@ -139,15 +139,15 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      
+      <small>Source: <a href='https://github.com/philipdelff/NMdata/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="nmdata-0073" class="section level1">
-<h1 class="page-header" data-toc-text="0.0.7.3">
-<a href="#nmdata-0073" class="anchor"></a>NMdata 0.0.7.3</h1>
-<p>Meta data system rewritten</p>
+    <div id="nmdata-008" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.8">
+<a href="#nmdata-008" class="anchor"></a>NMdata 0.0.8<small> 2021-07-09 </small>
+</h1>
 <ul>
-<li><p>NMinfo and NMstamp are used to read and write meta data. Meta data is stored as an attribute to the data object (attributes(data)$NMdata).</p></li>
+<li><p>Meta data system rewritten. NMinfo and NMstamp are used to read and write meta data. Meta data is stored as an attribute to the data object (attributes(data)$NMdata).</p></li>
 <li><p>Translation table includes a column ranking the match betwen input data file contents and $INPUT. OK: names match, diff: names do not match, off: diff and name is found elsewhere.</p></li>
 <li><p>NMscanInput, NMaplyFilters, NMtransInp all return meta data compatibly with NMinfo.</p></li>
 <li><p>merge.by.row=“ifAvailable”</p></li>
@@ -160,7 +160,8 @@
 </div>
     <div id="nmdata-0072" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.7.2">
-<a href="#nmdata-0072" class="anchor"></a>NMdata 0.0.7.2</h1>
+<a href="#nmdata-0072" class="anchor"></a>NMdata 0.0.7.2<small> Unreleased </small>
+</h1>
 <p>NMreadCsv, NMscanInput, and NMscanData take argument args.fread. The contents of this list are passed as arguments to fread when reading csv files. This should only be needed in rare cases but offers full flexibility to match structure of csv files. Default contents of args.fread can be controlled using NMdataConf.</p>
 <p>NMwriteData updated with more concise message.</p>
 <p>NMreadSection now returns all sections if argument section is missing or equals NULL or “.”.</p>
@@ -182,7 +183,8 @@
 </div>
     <div id="nmdata-0071" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.7.1">
-<a href="#nmdata-0071" class="anchor"></a>NMdata 0.0.7.1</h1>
+<a href="#nmdata-0071" class="anchor"></a>NMdata 0.0.7.1<small> Unreleased </small>
+</h1>
 <p>compareCols generalized to the single data set case.</p>
 <p>mergeCheck has improved warnings when checks fail. This should in most cases provide information for the user to get a good idea what needs to be resolved for the merge to work as expected.</p>
 <p>Support for pseudonyms when translating input data column names based on nonmem control stream. Now by default, the column will be returned (doubled) with both peudonyms as column names.</p>
@@ -201,7 +203,8 @@
 </div>
     <div id="nmdata-007" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.7">
-<a href="#nmdata-007" class="anchor"></a>NMdata 0.0.7</h1>
+<a href="#nmdata-007" class="anchor"></a>NMdata 0.0.7<small> Unreleased </small>
+</h1>
 <p>This is a major upgrade from 0.0.6.6 featuring many improvements and bug fixes. Everyone is strongly encouraged to upgrade.</p>
 <p>The choice between data combination methods in NMscanData is now done in one argument, called merge.by.row. Before the method was decided based on values of two arguments, cbind.by.filters and col.row. A default value for col.row can now be set using NMdataConf and will not affect the data combination method.</p>
 <p>Other arguments which default values can now be modified using NMdataConf are: merge.by.row, col.flagn, col.flagc, use.input, recover.rows, col.model, modelname, file.mod, and check.time, quiet, use.rds.</p>
@@ -224,36 +227,42 @@
 </div>
     <div id="nmdata-0066" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.6.6">
-<a href="#nmdata-0066" class="anchor"></a>NMdata 0.0.6.6</h1>
+<a href="#nmdata-0066" class="anchor"></a>NMdata 0.0.6.6<small> Unreleased </small>
+</h1>
 <p>Central configuration mechanism implemented. The configuration function to use is NMdataConf. You can configure several options, corresponding to default values of arguments to different functions in the package. This is very useful if you want to change the directory and file naming structure, or if you want to change default column names.</p>
 <p>The exclusion flag functions flagsAssign and flagsCount have been generalized to use customizable column names for the numerical and caracter flags. The default can be configured using NMdataConf.</p>
 </div>
     <div id="nmdata-0064" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.6.4">
-<a href="#nmdata-0064" class="anchor"></a>NMdata 0.0.6.4</h1>
+<a href="#nmdata-0064" class="anchor"></a>NMdata 0.0.6.4<small> Unreleased </small>
+</h1>
 <p>If all common column names two data objects to merge are not used for merging (by), new column names are created by merge. The behavior of mergeCheck can now be controlled in case this happens. This is especially useful when using mergeCheck in programming.</p>
 <p>A shortcut to system.file(…,package=“NMdata”) has been removed. The function was called NMdata_filepath and is no longer available. Use system.file instead.</p>
 </div>
     <div id="nmdata-0063" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.6.3">
-<a href="#nmdata-0063" class="anchor"></a>NMdata 0.0.6.3</h1>
+<a href="#nmdata-0063" class="anchor"></a>NMdata 0.0.6.3<small> Unreleased </small>
+</h1>
 <p>Meta information added about the input data.</p>
 </div>
     <div id="nmdata-0062" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.6.2">
-<a href="#nmdata-0062" class="anchor"></a>NMdata 0.0.6.2</h1>
+<a href="#nmdata-0062" class="anchor"></a>NMdata 0.0.6.2<small> Unreleased </small>
+</h1>
 <p>A summary function is provided for NMdata objects. There is a print function for the summary too. This is printet automatically by NMdata unless quiet=TRUE.</p>
 <p>A lot of meta information has been added in an attribute to NMdata objects. This will help the user to understand and automatically document what has been read.</p>
 <p>The argument to NMscanData previously called name has been renamed to modelname and generalized to take a function that derives the name from the file path. Also an general option “NMdata.modelname” has been added, so the default behavior can be configured.</p>
 </div>
     <div id="nmdata-0061" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.6.1">
-<a href="#nmdata-0061" class="anchor"></a>NMdata 0.0.6.1</h1>
+<a href="#nmdata-0061" class="anchor"></a>NMdata 0.0.6.1<small> Unreleased </small>
+</h1>
 <p>The default class to generate is now data.frame rather than data.table. If you want to work with data.tables, do options(NMdata.as.fun=“none”)</p>
 </div>
     <div id="nmdata-006" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.6">
-<a href="#nmdata-006" class="anchor"></a>NMdata 0.0.6</h1>
+<a href="#nmdata-006" class="anchor"></a>NMdata 0.0.6<small> Unreleased </small>
+</h1>
 <p>General support for conversion of output to user-specified class. Setting the option “NMdata.as.fun” to a conversion function such as as.data.frame or tibble::as_tibble it is possible for the user to work with their preferred data class. An argument, as.fun, can be used for the individual functions too.</p>
 <p>The translation from the output control stream file path (.lst in PSN) and the input control stream (.mod in PSN) can now be configured through the option “NM.file.mod”. Typically, all the models to be considered in an anlysis have been run on the same system, so it makes most sense to define this behavior once and for all for most users.</p>
 <p>NMwriteData improved with checks of column names and automated generation of $INPUT and $DATA Nonmem sections.</p>
@@ -269,14 +278,16 @@
 </div>
     <div id="nmdata-005" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.5">
-<a href="#nmdata-005" class="anchor"></a>NMdata 0.0.5</h1>
+<a href="#nmdata-005" class="anchor"></a>NMdata 0.0.5<small> Unreleased </small>
+</h1>
 <p>This release introduces a consistent default NMscanData behavior that will work in most cases and provide the user with information on how to use a more robust approach to merging input and output data.</p>
 <p>Naming of a few arguments to NMscanData has been changed from camelCase to lower.case for consistency.</p>
 <p>NMscanTables keeps track of LASTONLY and FIRSTLASTONLY. LASTONLY are now treated like FIRSTONLY while FIRSTLASTONLY tables are disregarded (with a warning).</p>
 </div>
     <div id="nmdata-004" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.4">
-<a href="#nmdata-004" class="anchor"></a>NMdata 0.0.4</h1>
+<a href="#nmdata-004" class="anchor"></a>NMdata 0.0.4<small> Unreleased </small>
+</h1>
 <p>The most obvious change since 0.0.3 is that only one data.table is being returned from NMscanData. This is what used to be the <code>row</code> element in the returned objects previously. The main reason for this change is that it makes it easier for users to postprocess only one dataset before splitting into different levels of variability. The small cost is that the user will have to run findCovs, or findVars to get the desired level of variability. These functions are however very simple to use and very fast to run.</p>
 <p>This release features numerous improvements to especially the NMscanData function. The work is mainly focused around use without a row identifier. Even without a row identifier, NMscanData should now work for the vast majority of models, including merging with input and recovering rows.</p>
 <p>An attribute called <code>vars</code> has been added to the NMdata objects coming out of NMscanData. It features a table of the columns in the returned object and information about where they originate from. More work is still to be done on this, but hopefully it is useful already.</p>
@@ -285,7 +296,8 @@
 </div>
     <div id="nmdata-002" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.2">
-<a href="#nmdata-002" class="anchor"></a>NMdata 0.0.2</h1>
+<a href="#nmdata-002" class="anchor"></a>NMdata 0.0.2<small> Unreleased </small>
+</h1>
 <p>This release contains bugfixes and experimental support for merging nonmem input and output data without a row identifier.</p>
 <p>A clearer cut has been made between the pmxtricks package (version 0.0.10) and NMdata. The packages should not overlap in exported functionality, and they do not depend on each other.</p>
 </div>

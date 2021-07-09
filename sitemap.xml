@@ -16,6 +16,18 @@
     <loc>https://philipdelff.github.io/NMdata/reference/NMdataConf.html</loc>
   </url>
   <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMdataConfOptions.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMdataDecideOption.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMdataGetOption.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMdataOperations.html</loc>
+  </url>
+  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMextractDataFile.html</loc>
   </url>
   <url>
@@ -61,6 +73,9 @@
     <loc>https://philipdelff.github.io/NMdata/reference/NMwriteSection.html</loc>
   </url>
   <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/checkColRow.html</loc>
+  </url>
+  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/compareCols.html</loc>
   </url>
   <url>
@@ -88,13 +103,13 @@
     <loc>https://philipdelff.github.io/NMdata/reference/fnExtension.html</loc>
   </url>
   <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/is.NMdata.html</loc>
+  </url>
+  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/mergeCheck.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/messageWrap.html</loc>
-  </url>
-  <url>
-    <loc>https://philipdelff.github.io/NMdata/reference/objInfo.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/print.summary_NMdata.html</loc>
@@ -103,13 +118,16 @@
     <loc>https://philipdelff.github.io/NMdata/reference/renameByContents.html</loc>
   </url>
   <url>
-    <loc>https://philipdelff.github.io/NMdata/reference/stampObj.html</loc>
-  </url>
-  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/summary.NMdata.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/tmpcol.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/unNMdata.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/writeNMinfo.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/articles/DataCreate.html</loc>

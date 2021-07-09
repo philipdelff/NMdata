@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Efficient data preparation, consistency-checking and post-processing in PK/PD modeling • NMdata</title>
+<title>Preparation, Checking and Post-Processing Data for PK/PD Modeling • NMdata</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -17,8 +17,8 @@
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Efficient data preparation, consistency-checking and post-processing in PK/PD modeling">
-<meta property="og:description" content="Efficient tools for preparation, checking and post-processing of data in PK/PD modeling, with a special focus on use of Nonmem. The aim is to save time on trivial tasks and avoid time-consuming errors. Implemented in data.table, but integratable with base or tidyverse.">
+<script src="pkgdown.js"></script><meta property="og:title" content="Preparation, Checking and Post-Processing Data for PK/PD Modeling">
+<meta property="og:description" content="Efficient tools for preparation, checking and post-processing of data in PK/PD (pharmacokinetics/pharmacodynamics) modeling, with focus on use of Nonmem. Helps with trivial but tedious tasks and tries to identify errors to save time on debugging. Implemented in data.table, but easily integrated with base and tidyverse.">
 <meta property="og:image" content="https://philipdelff.github.io/NMdata/reference/figures/NMdata_logo_v01.png">
 <meta property="og:image:alt" content="Efficient data preparation, consistency-checking and post-processing in PK/PD modeling">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8</span>
       </span>
     </div>
 
@@ -107,7 +107,7 @@
 <p>Creating datasets - and if you use Nonmem, reading the results data - can be tedious, and mistakes can lead to hours of frustration. This package provides useful tools (including automated checks) for these trivial tasks. The aim is to automate the book keeping and allow more time for the actual analysis.</p>
 <p>A central design feature of NMdata is that all included tools require as little as possible about how the user works. Any functionality in the package can be used independently of the rest of the package, and NMdata is not intended to force you to change any habits or preferences. Instead, NMdata tries to fit in with how you (or your colleague who worked on the project before you) do things.</p>
 <p>The data set creation tools in NMdata may be equally interesting to users of nlmixr or other proprietary software than Nonmem. However, so far, the most elaborated features of the package relates to the final organization and writing of data for Nonmem, and reading data from Nonmem after a model run.</p>
-<p>The best place to browse information about the package is <a href="https://philipdelff.github.io/NMdata">here</a>. All documentation is of course included in the package itself too.</p>
+<p>The best place to browse information about the package is <a href="https://philipdelff.github.io/NMdata/">here</a>. All documentation is of course included in the package itself too.</p>
 </div>
 <div id="automated-and-general-reader-of-nonmem-results-data" class="section level2">
 <h2 class="hasAnchor">
@@ -133,12 +133,12 @@ library(NMdata)</a></code></pre>
 <div id="questions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#questions" class="anchor"></a>Questions?</h2>
-<p>Check the <a href="https://philipdelff.github.io/NMdata/articles/FAQ.html">FAQ</a>, or ask on <a href="https://github.com/philipdelff/NMdata">github page</a></p>
+<p>Check the <a href="https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html">FAQ</a>, or ask on <a href="https://github.com/philipdelff/NMdata/">github page</a></p>
 </div>
 <div id="feedback" class="section level2">
 <h2 class="hasAnchor">
 <a href="#feedback" class="anchor"></a>Feedback?</h2>
-<p>The best way to request features, report bugs etc. is by the <a href="https://github.com/philipdelff/NMdata">github page</a>.</p>
+<p>The best way to request features, report bugs etc. is by the <a href="https://github.com/philipdelff/NMdata/">github page</a>.</p>
 </div>
 <div id="code-of-conduct" class="section level2">
 <h2 class="hasAnchor">
@@ -149,7 +149,18 @@ library(NMdata)</a></code></pre>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="license">
+    <div class="links">
+<h2>Links</h2>
+<ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=NMdata">https://​cloud.r-project.org/​package=NMdata</a>
+</li>
+<li>Browse source code at <br><a href="https://github.com/philipdelff/NMdata/">https://​github.com/​philipdelff/​NMdata/​</a>
+</li>
+<li>Report a bug at <br><a href="https://github.com/philipdelff/NMdata/issues">https://​github.com/​philipdelff/​NMdata/​issues</a>
+</li>
+</ul>
+</div>
+<div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
 <li>
@@ -166,14 +177,14 @@ library(NMdata)</a></code></pre>
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Philip Delff <br><small class="roles"> Maintainer </small>  </li>
+<li>Philip Delff <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
 
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
 <li><a href="https://github.com/philipdelff/NMdata/actions"><img src="https://github.com/philipdelff/NMdata/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://codecov.io/gh/philipdelff/NMdata?branch=master"><img src="https://codecov.io/gh/philipdelff/NMdata/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>

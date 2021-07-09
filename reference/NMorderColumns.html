@@ -83,7 +83,7 @@ details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8</span>
       </span>
     </div>
 
@@ -142,7 +142,7 @@ details." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Order columns in dataset for use in Nonmem.</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/philipdelff/NMdata/blob/master/R/NMorderColumns.R'><code>R/NMorderColumns.R</code></a></small>
     <div class="hidden name"><code>NMorderColumns.Rd</code></div>
     </div>
 
@@ -252,12 +252,16 @@ standard Nonmem columns.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>data with modified column order.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function will change the order of columns but it
-    will never edit values in any columns.</p>
-<p>The ordering is by the following steps, each step depending on
-corresponding argument. Not</p><ul>
+    will never edit values in any columns. The ordering is by the
+    following steps, each step depending on corresponding
+    argument.</p>
+<ul>
 <li><p>"col.row - "Row id if argument row is non-NULL</p></li>
 <li><p>"not editable - "ID (if a column is called ID)</p></li>
 <li><p>"col.ntime - "Nominal time.</p></li>
@@ -273,13 +277,12 @@ corresponding argument. Not</p><ul>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other DataCreate: 
+<code><a href='NMstamp.html'>NMstamp</a>()</code>,
 <code><a href='findCovs.html'>findCovs</a>()</code>,
 <code><a href='findVars.html'>findVars</a>()</code>,
 <code><a href='flagsAssign.html'>flagsAssign</a>()</code>,
 <code><a href='flagsCount.html'>flagsCount</a>()</code>,
 <code><a href='mergeCheck.html'>mergeCheck</a>()</code>,
-<code><a href='objInfo.html'>objInfo</a>()</code>,
-<code><a href='stampObj.html'>stampObj</a>()</code>,
 <code><a href='tmpcol.html'>tmpcol</a>()</code></p></div>
 
   </div>

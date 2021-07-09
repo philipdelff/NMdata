@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8</span>
       </span>
     </div>
 
@@ -98,14 +98,15 @@
       <h1 data-toc-skip>NMscanData: Find and combine all output and input data</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/master/vignettes/NMscanData.Rmd"><code>vignettes/NMscanData.Rmd</code></a></small>
       <div class="hidden name"><code>NMscanData.Rmd</code></div>
 
     </div>
 
     
     
-<p>Built 2021-06-28 using NMdata 0.0.7.9.901.</p>
+<p>Built 2021-07-09 using NMdata 0.0.8.</p>
+<p>This vignette is still under development. Please make sure to see latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div id="objectives" class="section level2">
 <h2 class="hasAnchor">
 <a href="#objectives" class="anchor"></a>Objectives</h2>
@@ -140,9 +141,9 @@
 <p>Like the rest of <code>NMdata</code>, this functionality assumes as little as possible about how you work. It assumes nothing about the Nonmem model itself and as little as possible about the organization of data and file paths/names. This makes it powerful for meta analyses, for reading a model developed by someone else - or one written by ourselves when we used to do things slightly differently. It will work out of the box in the vast majority of cases.</p>
 <p>We start by attaching <code>NMdata</code>. Also, I use <code>data.table</code>for a few post-processing steps. You can just as well use base R or <code>dplyr</code> if you prefer. Then <code>ggplot2</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata">NMdata</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span>
 <span class="co">#&gt; Welcome to NMdata. Best place to browse NMdata documentation is</span>
-<span class="co">#&gt; https://philipdelff.github.io/NMdata</span>
+<span class="co">#&gt; https://philipdelff.github.io/NMdata/</span>
 <span class="co">## not necessary for NMdata to run, but we use thse in the examples</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
@@ -194,7 +195,7 @@
 <span class="co">#&gt; [1] "NMdata"     "data.frame"</span>
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">res1</span><span class="op">)</span>
 <span class="co">#&gt; [1] 905  33</span></code></pre></div>
-<p>The data used for the example is a PK single ascending dose data set, great thanks to the <a href="https://cran.r-project.org/web/packages/xgxr/index.html">xgxr</a> package authors.</p>
+<p>The data used for the example is a PK single ascending dose data set, great thanks to the <a href="https://CRAN.R-project.org/package=xgxr">xgxr</a> package authors.</p>
 <p>The obtained dataset contains both model predictions (i.e. from output tables) and a character variable, <code>trtact</code> (i.e. from input data). To the <code>.lst</code> (output control stream) file path was supplied by us.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">res1</span>,n<span class="op">=</span><span class="fl">2</span><span class="op">)</span>

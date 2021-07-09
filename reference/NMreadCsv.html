@@ -82,7 +82,7 @@ using NMwriteData." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8</span>
       </span>
     </div>
 
@@ -141,7 +141,7 @@ using NMwriteData." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>read csv data that is written to be read by nonmem</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/philipdelff/NMdata/blob/master/R/NMreadCsv.R'><code>R/NMreadCsv.R</code></a></small>
     <div class="hidden name"><code>NMreadCsv.Rd</code></div>
     </div>
 
@@ -162,9 +162,9 @@ using NMwriteData.</p>
     <tr>
       <th>args.fread</th>
       <td><p>List of arguments passed to fread. Notice that
-except for "file", you need to supply all
-arguments to fread if you use this argument. Default values
-can be configured using NMdataConf.</p></td>
+except for "file", you need to supply all arguments to fread
+if you use this argument. Default values can be configured
+using NMdataConf.</p></td>
     </tr>
     <tr>
       <th>as.fun</th>
@@ -176,10 +176,16 @@ NMdataConf.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A data set of class as defined by as.fun.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This is just a shortcut to fread so you don't have to
-    remember how to read the data that was exported for nonmem.</p>
+    <p>This is almost just a shortcut to fread so you don't have
+    to remember how to read the data that was exported for
+    nonmem. The only added feature is that meta data as written by
+    NMwriteData is read and attached as NMdata metadata before
+    data is returned.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>NMwriteData</p>

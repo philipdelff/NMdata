@@ -86,7 +86,7 @@ data.frames)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8</span>
       </span>
     </div>
 
@@ -145,7 +145,7 @@ data.frames)." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Configure default behavior of NMdata functions</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/philipdelff/NMdata/blob/master/R/NMdataConf.R'><code>R/NMdataConf.R</code></a></small>
     <div class="hidden name"><code>NMdataConf.Rd</code></div>
     </div>
 
@@ -240,6 +240,10 @@ all relevant variables in the output tables. Default is TRUE.</p></li>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>If no arguments given, a list of active settings. If
+    arguments given and no issues found, TRUE invisibly.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Recommendation: Use
@@ -278,7 +282,7 @@ hidden from other users.</p>
 #&gt;         return(as.data.frame(list()))
 #&gt;     UseMethod("as.data.frame")
 #&gt; }
-#&gt; &lt;bytecode: 0x7f9d1e58ac78&gt;
+#&gt; &lt;bytecode: 0x7fdf927f1e10&gt;
 #&gt; &lt;environment: namespace:base&gt;
 #&gt; 
 #&gt; $check.time
@@ -305,8 +309,8 @@ hidden from other users.</p>
 #&gt; $file.mod
 #&gt; function (file) 
 #&gt; fnExtension(file, ext = ".mod")
-#&gt; &lt;bytecode: 0x7f9d1e597740&gt;
-#&gt; &lt;environment: 0x7f9d1e58a310&gt;
+#&gt; &lt;bytecode: 0x7fdf95008ac8&gt;
+#&gt; &lt;environment: 0x7fdf927f14e0&gt;
 #&gt; 
 #&gt; $merge.by.row
 #&gt; [1] "ifAvailable"
@@ -314,8 +318,8 @@ hidden from other users.</p>
 #&gt; $modelname
 #&gt; function (file) 
 #&gt; fnExtension(basename(file), "")
-#&gt; &lt;bytecode: 0x7f9d1e59c5b0&gt;
-#&gt; &lt;environment: 0x7f9d1e58a310&gt;
+#&gt; &lt;bytecode: 0x7fdf95008470&gt;
+#&gt; &lt;environment: 0x7fdf927f14e0&gt;
 #&gt; 
 #&gt; $quiet
 #&gt; [1] FALSE

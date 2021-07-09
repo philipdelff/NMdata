@@ -83,7 +83,7 @@ flag." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8</span>
       </span>
     </div>
 
@@ -142,7 +142,7 @@ flag." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create an overview of number of retained and discarded datapoints.</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/philipdelff/NMdata/blob/master/R/flagsCount.R'><code>R/flagsCount.R</code></a></small>
     <div class="hidden name"><code>flagsCount.Rd</code></div>
     </div>
 
@@ -254,7 +254,8 @@ using NMdataConf.</p></td>
     flag table. "discarded" means that the reduction of number of
     observations and subjects resulting from the flag, "retained"
     means the numbers that are left after application of the
-    flag. The default is "both" which will report both.</p>
+    flag. The default is "both" which will report both. Class as
+    defined by as.fun.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function is used to count flags as assigned by the
@@ -268,12 +269,11 @@ using NMdataConf.</p></td>
 
     <div class='dont-index'><p>Other DataCreate: 
 <code><a href='NMorderColumns.html'>NMorderColumns</a>()</code>,
+<code><a href='NMstamp.html'>NMstamp</a>()</code>,
 <code><a href='findCovs.html'>findCovs</a>()</code>,
 <code><a href='findVars.html'>findVars</a>()</code>,
 <code><a href='flagsAssign.html'>flagsAssign</a>()</code>,
 <code><a href='mergeCheck.html'>mergeCheck</a>()</code>,
-<code><a href='objInfo.html'>objInfo</a>()</code>,
-<code><a href='stampObj.html'>stampObj</a>()</code>,
 <code><a href='tmpcol.html'>tmpcol</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

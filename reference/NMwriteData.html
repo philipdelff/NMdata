@@ -87,7 +87,7 @@ in the file argument." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8</span>
       </span>
     </div>
 
@@ -146,7 +146,7 @@ in the file argument." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Write dataset for use in Nonmem (and R)</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/philipdelff/NMdata/blob/master/R/NMwriteData.R'><code>R/NMwriteData.R</code></a></small>
     <div class="hidden name"><code>NMwriteData.Rd</code></div>
     </div>
 
@@ -164,12 +164,13 @@ in the file argument.</p>
   <span class='va'>data</span>,
   <span class='va'>file</span>,
   write.csv <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  write.RData <span class='op'>=</span> <span class='cn'>FALSE</span>,
   write.rds <span class='op'>=</span> <span class='va'>write.csv</span>,
+  write.RData <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>script</span>,
   <span class='va'>args.stamp</span>,
   <span class='va'>args.fwrite</span>,
   <span class='va'>args.rds</span>,
+  <span class='va'>args.RData</span>,
   <span class='va'>nm.drop</span>,
   <span class='va'>nmdir.data</span>,
   col.flag <span class='op'>=</span> <span class='st'>"FLAG"</span>,
@@ -198,22 +199,22 @@ standard file name extensions are added.</p></td>
       <td><p>Write to csv file?</p></td>
     </tr>
     <tr>
+      <th>write.rds</th>
+      <td><p>write an rds file?</p></td>
+    </tr>
+    <tr>
       <th>write.RData</th>
       <td><p>In case you want to save to .RData object. Not
 recommended. Use write.rds instead.</p></td>
     </tr>
     <tr>
-      <th>write.rds</th>
-      <td><p>write an rds file?</p></td>
-    </tr>
-    <tr>
       <th>script</th>
       <td><p>If provided, the object will be stamped with this
-script name before saved to rds or Rdata. See ?stampObj.</p></td>
+script name before saved to rds or Rdata. See ?NMstamp.</p></td>
     </tr>
     <tr>
       <th>args.stamp</th>
-      <td><p>A list of arguments to be passed to stampObj.</p></td>
+      <td><p>A list of arguments to be passed to NMstamp.</p></td>
     </tr>
     <tr>
       <th>args.fwrite</th>
@@ -225,6 +226,10 @@ configured using NMdataConf.</p></td>
     <tr>
       <th>args.rds</th>
       <td><p>A list of arguments to be passed to saveRDS.</p></td>
+    </tr>
+    <tr>
+      <th>args.RData</th>
+      <td><p>A list of arguments to be passed to save.</p></td>
     </tr>
     <tr>
       <th>nm.drop</th>
@@ -257,7 +262,8 @@ rename columns in Nonmem $DATA, NMwriteData can adjust the
 suggested $DATA text. If you plan to use BBW instead of BWBASE
 in Nonmem, consider nm.rename=c(BWBASE="BBW"). The result is
 different from nm.copy since the nm.copy syntax is only
-allowed by Nonmem for certain standard column names such as DV.</p></td>
+allowed by Nonmem for certain standard column names such as
+DV.</p></td>
     </tr>
     <tr>
       <th>nm.copy</th>

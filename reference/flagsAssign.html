@@ -82,7 +82,7 @@ pre-specified table of flags, assign the flags automatically." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8</span>
       </span>
     </div>
 
@@ -141,7 +141,7 @@ pre-specified table of flags, assign the flags automatically." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Assign exclusion flags to a dataset based on specified table</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/philipdelff/NMdata/blob/master/R/flagsAssign.R'><code>R/flagsAssign.R</code></a></small>
     <div class="hidden name"><code>flagsAssign.Rd</code></div>
     </div>
 
@@ -208,15 +208,15 @@ analysis.</p></td>
       <td><p>The default is to return data.tables if input data
 is a data.table, and return a data.frame for all other input
 classes. Pass a function in as.fun to convert to something
-else. If return.all=F, this is applied to data and tab.flags
-independently.</p></td>
+else. If return.all=FALSE, this is applied to data and
+tab.flags independently.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The dataset with flags added. See parameter flags.return
-    as well.</p>
+    <p>The dataset with flags added. Class as defined by
+    as.fun. See parameter flags.return as well.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>dt.flags must contain a column with numerical exclusion
@@ -228,12 +228,11 @@ independently.</p></td>
 
     <div class='dont-index'><p>Other DataCreate: 
 <code><a href='NMorderColumns.html'>NMorderColumns</a>()</code>,
+<code><a href='NMstamp.html'>NMstamp</a>()</code>,
 <code><a href='findCovs.html'>findCovs</a>()</code>,
 <code><a href='findVars.html'>findVars</a>()</code>,
 <code><a href='flagsCount.html'>flagsCount</a>()</code>,
 <code><a href='mergeCheck.html'>mergeCheck</a>()</code>,
-<code><a href='objInfo.html'>objInfo</a>()</code>,
-<code><a href='stampObj.html'>stampObj</a>()</code>,
 <code><a href='tmpcol.html'>tmpcol</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

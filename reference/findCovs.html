@@ -86,7 +86,7 @@ variables that do not vary within unique combinations of these." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.9.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8</span>
       </span>
     </div>
 
@@ -145,7 +145,7 @@ variables that do not vary within unique combinations of these." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Extract columns that do not vary within variables in data</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/philipdelff/NMdata/blob/master/R/findCovs.R'><code>R/findCovs.R</code></a></small>
     <div class="hidden name"><code>findCovs.Rd</code></div>
     </div>
 
@@ -158,7 +158,7 @@ ID. Or, you can provide a combination of id.cols, say ID and STUDY, and get
 variables that do not vary within unique combinations of these.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>findCovs</span><span class='op'>(</span><span class='va'>data</span>, cols.id <span class='op'>=</span> <span class='cn'>NULL</span>, as.fun <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>findCovs</span><span class='op'>(</span><span class='va'>data</span>, by <span class='op'>=</span> <span class='cn'>NULL</span>, as.fun <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -168,9 +168,9 @@ variables that do not vary within unique combinations of these.</p>
       <td><p>data.frame in which to look for covariates</p></td>
     </tr>
     <tr>
-      <th>cols.id</th>
+      <th>by</th>
       <td><p>covariates will be searched for in combinations of values in
-these columns. Often cols.id will be either empty or ID. But it can also
+these columns. Often by will be either empty or ID. But it can also
 be both say c("ID","DRUG") or c("ID","TRT").</p></td>
     </tr>
     <tr>
@@ -185,17 +185,16 @@ be configued using NMdataConf.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a data set with one observation per combination of values of
-    variables listed in cols.id.</p>
+    variables listed in by.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other DataCreate: 
 <code><a href='NMorderColumns.html'>NMorderColumns</a>()</code>,
+<code><a href='NMstamp.html'>NMstamp</a>()</code>,
 <code><a href='findVars.html'>findVars</a>()</code>,
 <code><a href='flagsAssign.html'>flagsAssign</a>()</code>,
 <code><a href='flagsCount.html'>flagsCount</a>()</code>,
 <code><a href='mergeCheck.html'>mergeCheck</a>()</code>,
-<code><a href='objInfo.html'>objInfo</a>()</code>,
-<code><a href='stampObj.html'>stampObj</a>()</code>,
 <code><a href='tmpcol.html'>tmpcol</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -218,7 +217,7 @@ be configued using NMdataConf.</p></td>
 #&gt;  EVID Output
 #&gt;     0    755
 #&gt;     1    150</div><div class='input'><span class='co'>### very common use</span>
-<span class='fu'>findCovs</span><span class='op'>(</span><span class='va'>dat</span>,cols.id<span class='op'>=</span><span class='st'>"ID"</span><span class='op'>)</span>
+<span class='fu'>findCovs</span><span class='op'>(</span><span class='va'>dat</span>,by<span class='op'>=</span><span class='st'>"ID"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;      ID FLAG STUDY   TVKA  TVV2    TVCL    TVV3     TVQ       KA       V2
 #&gt; 1    31    0     1 0.1812 0.042 0.72457 0.17848 2307400 0.181200 0.042000
 #&gt; 2    32    0     1 0.1812 0.042 0.72457 0.17848 2307400 0.181200 0.042000
