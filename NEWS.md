@@ -1,3 +1,7 @@
+# NMdata 0.0.9
+The only change from 0.0.8 is a patch provided by Matt Dowle ensuring
+that tests pass after the release of data.table v1.14.2.
+
 # NMdata 0.0.8
 * Meta data system rewritten. NMinfo and NMstamp are used to read and
   write meta data. Meta data is stored as an attribute to the data
