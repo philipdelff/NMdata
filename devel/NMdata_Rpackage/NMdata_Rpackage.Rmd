@@ -1,6 +1,6 @@
 ---
 title: |
- ![](../../man/figures/NMdata_logo_v01.png){width=1in}  
+ ![](../../man/figures/NMdata_logo_v01.png){width=1in}
  NMdata: A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
 author: Philip Delff
 date: June, 2021
@@ -39,7 +39,7 @@ library(data.table)
 unloadNamespace("pmxtricks")
 unloadNamespace("NMdata")
 
-                                        # some setup
+## some setup
 options(width=60)  # make the printing fit on the page
 set.seed(1121)   # make the results repeatable
 
