@@ -84,7 +84,6 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
                         nmdir.data,col.flag="FLAG", nm.rename,nm.copy,
                         nm.capitalize=FALSE,allow.char.TIME=TRUE,
                         quiet){
-    
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
     
     TIME <- NULL 
@@ -271,10 +270,10 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
 
     if(!is.null(nmdir.data)&&!is.null(nmfile)){
         nmfile <- file.path(nmdir.data,basename(nmfile))
-    } else {
+    } else if(is.null(nmfile)){
         nmfile <- "<data file>"
     }
-
+    
     text.nm.input <- strwrap(
         paste0("$INPUT ",paste(colnames.nm,collapse=" "))
     )

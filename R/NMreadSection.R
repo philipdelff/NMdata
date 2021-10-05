@@ -1,4 +1,4 @@
-##' extract sections of Nonmem control streams
+##' Extract sections of Nonmem control streams
 ##'
 ##' This is a very commonly used wrapper for the input part of the
 ##' model file. Look NMextractText for more general functionality

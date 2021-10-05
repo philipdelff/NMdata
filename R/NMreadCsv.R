@@ -1,4 +1,4 @@
-##' read csv data that is written to be read by nonmem
+##' Read input data formatted for nonmem
 ##'
 ##' This function is especially useful if the csv file was written
 ##' using NMwriteData.

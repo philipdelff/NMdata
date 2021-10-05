@@ -130,12 +130,13 @@ test_that("nm.copy, nm.rename, drop",{
 ### arguments that tailors text for Nonmem
                          ,args.rds=list(version=2),
                          ,args.RData=list(version=2))
-    load("testOutput/pk.RData")
-    pk.rdata <- pk
-    all.res <- list(rds=readRDS("testOutput/pk.rds")
-                   ,csv=fread("testOutput/pk.csv")
-                   ,Rdata=fread("testOutput/pk.csv")
-                    )
+### for testing of file contents. Not used.
+    ## load("testOutput/pk.RData")
+    ## pk.rdata <- pk
+    ## all.res <- list(rds=readRDS("testOutput/pk.rds")
+    ##                ,csv=fread("testOutput/pk.csv")
+    ##                ,Rdata=fread("testOutput/pk.csv")
+    ##                 )
     expect_equal_to_reference(nmCode,fileRef,version=2)
 })
 

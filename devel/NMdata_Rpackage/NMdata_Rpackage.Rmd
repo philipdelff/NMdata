@@ -1023,7 +1023,7 @@ print(NMinfo(res1,"columns"),nrows=20,topn=10)
 :::
 
 
-## What to do when Nonmem results seem meaningless
+## What to do when Nonmem results seem meaningless?
 \framesubtitle{Check of usual suspect: DATA}
 
 ::: columns

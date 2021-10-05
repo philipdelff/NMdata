@@ -1,4 +1,4 @@
-##' read input data and translate column names according to the $INPUT section
+##' Find and read input data and optionally translate column names according to the $INPUT section
 ##' 
 ##' @description Based on a nonmem run (lst and/or mod file), this
 ##'     function finds the input data and reads it. It reads the data

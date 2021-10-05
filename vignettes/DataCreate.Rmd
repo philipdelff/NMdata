@@ -1,5 +1,5 @@
 ---
-title: "Data creation tools"
+title: "Data Creation Tools"
 output:  rmarkdown::html_vignette
 Suggests: markdown
 VignetteBuilder: knitr

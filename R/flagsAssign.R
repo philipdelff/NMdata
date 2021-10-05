@@ -126,10 +126,14 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
         tab.flags.was.data.table <- FALSE
         tab.flags <- as.data.table(tab.flags)
     }
-
+  
+### Check that FLAG values are unique. If not, we can't merge flag on to data afterwards.
     
-    
-### For here, FLAG and flag have to be generalized to match args. These are arg checks.
+    if(tab.flags[,uniqueN(get(col.flagn))!=.N]){
+        messageWrap(sprintf("All rows in tab.flags must contain unique values of",col.flagc),fun.msg=stop)
+    }
+  
+### Checks of tab.flags column classes
     if(!is.numeric(tab.flags[,get(col.flagn)])) stop(sprintf("column %s in tab.flags must be numeric and non-negative",col.flagn))
     if(any(tab.flags[,get(col.flagn)]<0)) stop(sprintf("column %s in tab.flags must be non-negative",col.flagn))
     if(!is.character(tab.flags[,get(col.flagc)])) stop(sprintf("column %s in tab.flags must be of type character",col.flagc))
@@ -158,7 +162,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
         }
 
         subsetAND <- paste(subset.data,"&")
-    } 
+    }
     
 ####### END Check tab.flags ####
     
@@ -216,15 +220,18 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     
 ### FLAG==0 cannot be customized. If not in table, put in table. Return the
 ### table as well. Maybe a reduced table containing only used FLAGS
-    if(!0%in%tab.flags[,"FLAG"]) {
+    
+####### TODO: for now, FLAG=0 is not allowed in tab.flags
+    
+    if(!0%in%tab.flags[,FLAG]) {
         tab.flags <- rbind(
             data.table(FLAG=0,
                        flag="Analysis set",condition=NA_character_),
             tab.flags,
             fill=TRUE)
     }
-    tab.flags[FLAG==0,condition:=NA_character_]
 
+    ## tab.flags[FLAG==0,condition:=NA_character_]
     
     ## If a FLAG is not zero and does not have a condition, it is not used.
     tab.flags <- tab.flags[FLAG==0|(!is.na(condition)&condition!="")]
@@ -275,6 +282,8 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
         ## stop("NA's found in data.flags$FLAG after assigning FLAGS. Bug in flagsAssign?")
         messageWrap(sprintf("NA's found in %s after assigning flags. Bug in flagsAssign?",col.flagn),fun.msg=stop)
     }
+
+    
 
     dim0 <- dim(data.flags)
     data.flags <- mergeCheck(data.flags,unique(tab.flags[,c("FLAG","flag")]),all.x=TRUE,by="FLAG")

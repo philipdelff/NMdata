@@ -2,6 +2,7 @@
 ## library(NMdata)
 ## library(data.table)
 
+## library(devtools)
 
 context("flags")
 
@@ -86,4 +87,28 @@ test_that("incresing order",{
     expect_equal_to_reference(tab.count,fileRef)
     
 })
+
+## test_that("Include EVID==1",{
+    
+##     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+
+##     dt.flags <- fread(text="FLAG,flag,condition
+## 0,Dosing,EVID==1
+## 100,Below LLOQ,EVID==0&BLQ==1
+## 10,Negative time,EVID==0&TIME<0")
+    
+##     pk <- flagsAssign(pk,tab.flags=dt.flags,flags.increasing=T)
+
+##     pk[EVID==1,FLAG2:=0]
+##     pk[EVID==1,flag2:="Dosing"]
+
+##     ## all excluded due to below LLOQ
+##     tab.count <- flagsCount(pk[EVID==0],dt.flags2,col.flagn="FLAG2",col.flagc="flag2",flags.increasing=T)
+
+##     fileRef <- "testReference/flagsAssign_3.rds"
+##     expect_equal_to_reference(pk,fileRef)
+##     fileRef <- "testReference/flagsCount_3.rds"
+##     expect_equal_to_reference(tab.count,fileRef)
+    
+## })
 
