@@ -52,6 +52,9 @@
 ##' @export
 
 
+########## Use UFLAG as a unique FLAG. Then use that to merge on the FLAG and flag values.
+
+
 flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
                         flags.increasing=FALSE, as.fun=NULL){
     
@@ -126,13 +129,13 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
         tab.flags.was.data.table <- FALSE
         tab.flags <- as.data.table(tab.flags)
     }
-  
+    
 ### Check that FLAG values are unique. If not, we can't merge flag on to data afterwards.
     
     if(tab.flags[,uniqueN(get(col.flagn))!=.N]){
         messageWrap(sprintf("All rows in tab.flags must contain unique values of",col.flagc),fun.msg=stop)
     }
-  
+    
 ### Checks of tab.flags column classes
     if(!is.numeric(tab.flags[,get(col.flagn)])) stop(sprintf("column %s in tab.flags must be numeric and non-negative",col.flagn))
     if(any(tab.flags[,get(col.flagn)]<0)) stop(sprintf("column %s in tab.flags must be non-negative",col.flagn))
@@ -190,23 +193,21 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     ## we want to use columns FLAG and flag. So if these exist in
     ## data, copy for backup
     backed.up.old.flags <- FALSE
-    if(any(c("FLAG","flag")%in%colnames(data.flags))){
-        cols.pick <- c(col.row,intersect(c("FLAG","flag"),colnames(data.flags)))
-        ## we only want to keep FLAG and flag if col.flagc and flagn are oter columns. If col.flagn and col.flagc will be called FLAG and flag, they should overwrite the ecxisting anyway.
-        cols.pick <- setdiff(cols.pick,c(col.flagn,col.flagc))
+    colnames.flags <- c("UFLAG","FLAG","flag")
+    if(any(colnames.flags%in%colnames(data.flags))){
+        cols.pick <- c(col.row,intersect(colnames.flags,colnames(data.flags)))
+        ## we only want to keep FLAG and flag if col.flagc and flagn are other columns. If col.flagn and col.flagc will be called FLAG and flag, they should overwrite the ecxisting anyway.
+        cols.pick <- setdiff(cols.pick,colnames.flags)
         if(length(cols.pick)>0){
             backed.up.old.flags <- TRUE
             flags.orig.data <- data.flags[,cols.pick,with=FALSE]
         }
-        if("FLAG"%in%colnames(data.flags)){
-            data.flags[,FLAG:=NULL]
-        }
-        if("flag"%in%colnames(data.flags)){
-            data.flags[,flag:=NULL]
-        }
+      
+          data.flags[,(cols.pick):=NULL]
         
     }
-
+    
+    
     if(col.flagn%in%colnames(data.flags)){
         data.flags[,(col.flagn):=NULL]
     }
@@ -216,8 +217,9 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     
     
     ## rename tab.flags columns to flag and FLAG
-    setnames(tab.flags,c(col.flagn,col.flagc),c("FLAG","flag"))
+    setnames(tab.flags,c(col.flagn,col.flagc),colnames.flags)
     
+
 ### FLAG==0 cannot be customized. If not in table, put in table. Return the
 ### table as well. Maybe a reduced table containing only used FLAGS
     
