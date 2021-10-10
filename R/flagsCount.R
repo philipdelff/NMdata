@@ -142,6 +142,11 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     
 ### check that tab.flags contains col.flagn and col.flagc and that data contains col.flagn
     if(!col.flagn%in%cnames.data) messageWrap("data must contain a column with same name as value of col.flagn",fun.msg="stop")
+
+### col.flagn must have unique values in tab.flags. Otherwise we can't rank them.
+    if(any(duplicated(tab.flags[,col.flagn,with=FALSE]))){
+        messageWrap("tab.flags must have unique numerical flags.")
+    }
     
     cnames.tab.flags <- copy(colnames(tab.flags))
     if(!col.flagn%in%cnames.tab.flags)

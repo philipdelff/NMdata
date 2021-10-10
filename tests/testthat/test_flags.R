@@ -49,9 +49,10 @@ test_that("alternative order",{
     
     pk <- flagsAssign(pk,tab.flags=dt.flags2,col.flagn="FLAG2",col.flagc="flag2",subset.data="EVID==0")
 
-    pk[EVID==1,FLAG2:=0]
-    pk[EVID==1,flag2:="Dosing"]
-
+    ## pk[EVID==1,FLAG2:=0]
+    ## pk[EVID==1,flag2:="Dosing"]
+    pk <- flagsAssign(pk,col.flagn="FLAG2",col.flagc="flag2",subset.data="EVID==1",flagc.0="Dosing")
+    
     ## all excluded due to below LLOQ
     tab.count <- flagsCount(pk[EVID==0],dt.flags2,col.flagn="FLAG2",col.flagc="flag2")
 
@@ -88,27 +89,62 @@ test_that("incresing order",{
     
 })
 
-test_that("Include EVID==1",{
-    
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+if(F){
+    test_that("Include EVID==1",{
+        
+        pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 
-    dt.flags <- fread(text="FLAG,flag,condition
+        dt.flags <- fread(text="FLAG,flag,condition
 0,Dosing,EVID==1
 100,Below LLOQ,EVID==0&BLQ==1
 10,Negative time,EVID==0&TIME<0")
-    
-    pk <- flagsAssign(pk,tab.flags=dt.flags,flags.increasing=T)
+        
+        pk <- flagsAssign(pk,tab.flags=dt.flags,flags.increasing=T)
 
-    pk[EVID==1,FLAG2:=0]
-    pk[EVID==1,flag2:="Dosing"]
+        pk[EVID==1,FLAG2:=0]
+        pk[EVID==1,flag2:="Dosing"]
 
-    ## all excluded due to below LLOQ
-    tab.count <- flagsCount(pk[EVID==0],dt.flags2,col.flagn="FLAG2",col.flagc="flag2",flags.increasing=T)
+        ## all excluded due to below LLOQ
+        tab.count <- flagsCount(pk[EVID==0],dt.flags2,col.flagn="FLAG2",col.flagc="flag2",flags.increasing=T)
 
-    fileRef <- "testReference/flagsAssign_3.rds"
-    expect_equal_to_reference(pk,fileRef)
-    fileRef <- "testReference/flagsCount_3.rds"
-    expect_equal_to_reference(tab.count,fileRef)
-    
-})
+        fileRef <- "testReference/flagsAssign_4.rds"
+        expect_equal_to_reference(pk,fileRef)
+        fileRef <- "testReference/flagsCount_4.rds"
+        expect_equal_to_reference(tab.count,fileRef)
+        
+    })
 
+    test_that("With and without EVID==0 in tab.fkags",{
+        
+        pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+        pk[,(c("FLAG","flag")):=NULL]
+        dt.flags.0 <- fread(text="FLAG,flag,condition
+100,Below LLOQ,EVID==0&BLQ==1
+10,Negative time,EVID==0&TIME<0")
+
+        dt.flags.1 <- fread(text="FLAG,flag,condition
+0,Analysis set 22,
+100,Below LLOQ,EVID==0&BLQ==1
+10,Negative time,EVID==0&TIME<0")
+        
+        pk.0 <- flagsAssign(pk,tab.flags=dt.flags.0,flags.increasing=T)
+        pk.1 <- flagsAssign(pk,tab.flags=dt.flags.1,flags.increasing=T)
+
+        dt.flags.nonobs <- fread(text="FLAG,flag,condition
+0,Dose,EVID==1
+0,Reset,EVID==3
+0,Dose,EVID==4"
+)
+        pk.1 <- flagsAssign(pk,subset.data="EVID!=0",dt.flags.nonobs)
+        pk.1 <- flagsAssign(pk,subset.data="EVID==1")
+        pk.1 <- flagsAssign(pk)
+
+        pk[,.N,by=.(EVID,FLAG,flag)]
+        pk.0[,.N,by=.(EVID,FLAG,flag)]
+        pk.1[,.N,by=.(EVID,FLAG,flag)]
+        
+        expect_equal(pk.0,pk.1)
+        
+        
+    })
+}
