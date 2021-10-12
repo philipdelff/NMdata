@@ -25,6 +25,8 @@
 ##'     statement from IGNORE(FLAG.NE.0) to say IGNORE(FLAG.GT.10) if
 ##'     BLQ's have FLAG=10, and you decide to include these in the
 ##'     analysis.
+##' @param flagc.0 The character flag to assign to rows that are not
+##'     matched by exclusion conditions (numerical flag 0).
 ##' @param as.fun The default is to return data.tables if input data
 ##'     is a data.table, and return a data.frame for all other input
 ##'     classes. Pass a function in as.fun to convert to something
