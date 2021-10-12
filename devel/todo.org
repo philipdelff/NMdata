@@ -225,6 +225,8 @@ See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
 is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMwriteData
+**** TODO [#A] Bug in inclusion of filename in text
+     See poster example
 **** TODO [#B] Include a randomly generated ID in meta data that we can check files against?
 **** DONE Add support for custom fwrite arguments
      CLOSED: [2021-05-14 Fri 21:01]
@@ -270,6 +272,8 @@ Not warning. Warning if standard variable?
 This could be EVID==0 or maybe one study in a meta analysis
 
 It's fairly easy to implement. Paste in front of the expression.use column.
+**** TODO Can we assign FLAG=0, flag=Dosing to EVID==1?
+     Or is FLAG==0 reserved?
 *** flagsCount
 **** DONE OK respect decreasing or increasing order.flags
 **** DONE add .cum of N and Nobs

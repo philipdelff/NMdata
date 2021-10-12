@@ -38,6 +38,8 @@
 ##'     when counting flags.
 ##' @param save Save file? Default is TRUE, meaning that a file will
 ##'     be written if file argument is supplied.
+##' @param flagc.0 The character flag to assign to rows that are not
+##'     matched by exclusion conditions (numerical flag 0).
 ##' @param as.fun The default is to return a data.table if input data
 ##'     is a data.table, and return a data.frame for all other input
 ##'     classes. Pass a function in as.fun to convert to something
@@ -53,11 +55,15 @@
 ##' @details This function is used to count flags as assigned by the
 ##'     flagsAssign function.
 ##'
-##' Notice number of subjects in N.discarded mode can be
-##'     misunderstood. If two is reported, it can mean that the
-##'     remaining one observation of these two subjects are discarded
-##'     due to this flag. The majority of the samples can have been
-##'     discarded by earlier flags.
+##' Notice that the character flags reported in the output table are
+##' taken from tab.flags. The data column named by the value of
+##' col.flagc (default is flag) is not used.
+##' 
+##' In the returned table, N.discarded is the difference in number of
+##'     subjects since previous step. If two is reported, it can mean
+##'     that the remaining one observation of these two subjects are
+##'     discarded due to this flag. The majority of the samples can
+##'     have been discarded by earlier flags.
 ##' @import data.table
 ##' @family DataCreate
 ##' @examples
@@ -75,10 +81,11 @@
 flagsCount <- function(data,tab.flags,file,col.id="ID",
                        col.flagn,col.flagc,
                        by=NULL, flags.increasing=FALSE,
+                       flagc.0="Analysis set",
                        name.all.data="All available data",
                        grp.incomp="EVID",save=TRUE,as.fun=NULL){
     
-#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+#### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
     FLAG <- NULL
     FLAGSORT <- NULL
@@ -97,7 +104,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     isFinal <- NULL
     . <- function() NULL
     
-### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+### Section end: Dummy variables, only not to get NOTE's in package checks
 
     if(missing(as.fun)) as.fun <- NULL
     as.fun.arg <- as.fun
@@ -124,7 +131,6 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
         tab.flags <- copy(tab.flags)
     } else {
         tab.flags <- as.data.table(tab.flags)
-        ##  tab.flags.was.data.frame <- TRUE
         tab.flags.was.data.table <- FALSE
     }
 
@@ -142,6 +148,11 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     
 ### check that tab.flags contains col.flagn and col.flagc and that data contains col.flagn
     if(!col.flagn%in%cnames.data) messageWrap("data must contain a column with same name as value of col.flagn",fun.msg="stop")
+
+### col.flagn must have unique values in tab.flags. Otherwise we can't rank them.
+    if(any(duplicated(tab.flags[,col.flagn,with=FALSE]))){
+        messageWrap("tab.flags must have unique numerical flags.")
+    }
     
     cnames.tab.flags <- copy(colnames(tab.flags))
     if(!col.flagn%in%cnames.tab.flags)
@@ -158,7 +169,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
 ### if 0 and Inf are not in tab.flags, insert them
     if(!0%in%tab.flags[,FLAG]){
         tab.flags <- rbind(tab.flags,
-                           data.table(FLAG=0,flag="Analysis set")
+                           data.table(FLAG=0,flag=flagc.0)
                           ,fill=TRUE
                            )
     }
@@ -191,7 +202,6 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
             resI[,FLAG:=tab.flags[I,FLAG]]
             resI
         })
-        
     }
     
 

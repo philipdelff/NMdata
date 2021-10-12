@@ -1,5 +1,5 @@
 ---
-title: "Data creation tools"
+title: "Data Creation Tools"
 output:  rmarkdown::html_vignette
 Suggests: markdown
 VignetteBuilder: knitr
@@ -272,27 +272,24 @@ dt.flags <- fread(text="FLAG,flag,condition
 100,Negative time,EVID==0&TIME<0")
 
 pk <- flagsAssign(pk,tab.flags=dt.flags,subset.data="EVID==0")
-pk[EVID==1,FLAG:=0]
-pk[EVID==1,flag:="Dosing"]
+pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing")
 ```
 
-Your first question may be why `fread` is used to create a data.table
-(like `read.csv` to create a data.frame). The reason is that this way, we
-can write the information line by line. If you have ten lines in the
-dataset above and do `data.frame(FLAG=...,flag=...,condition=...)` it
-gets impossible to read what elements of the three columns that
-correspond.
-
-`flagsAssign` applies the conditions sequentially and by increasing
+`fread` is used to create a data.table (like `read.csv` to create a
+data.frame) for readability, one line for each row in the data.table created.
+`flagsAssign` applies the conditions sequentially and by decreasing 
 value of `FLAG`. `FLAG=0` means that the observation is included in
 the analysis. You can use any expression that can be evaluated within
 the data.frame. In this case, `BLQ` has to exist in `pk`.
+
+Finally, flags are assigned to `EVID==1` rows. Here, no flag table is
+used. This means that all `EVID==1` rows will get `FLAG=0`. 
 
 In `Nonmem`, you can include `IGNORE=(FLAG.NE.0)` in `$DATA` or `$INFILE`.
 
 Again, the omission will be attributed to the first condition
 matched. Default is to apply the conditions by the order of decreasing
-numerical flag value. There is an argument if you prefer the
+numerical flag value. Use `flags.increasing=TRUE` if you prefer the
 opposite. However, what cannot be modified is that 0 is the numerical
 value for rows that are not matched by any conditions.
 
@@ -323,12 +320,11 @@ away.
 
 
 ## Finalize data format and write to file
-Once you have your dataset in place, `NMdata` provides a few useful
-functions. At this point, ideally you check your data for any
-inconsistency. If you miss an inconsistency, you need to wait for Nonmem
-to finish if the inconsistency is not fatal for Nonmem's ability to
-run the model. Then, you may or may not realize the inconcisteny quickly. `NMdata` is still ways from providing a sufficient set of tests
-to run, but already includes some checks that are useful and easy to run.
+Once the dataset is in place, `NMdata` provides a few useful functions
+to ensure the formatting of the written data is compatible with
+Nonmem. These functions include checks that Nonmem will be able to
+interpret the data as intended, and more features are under
+development in this area.
 
 ### Automated ordering of columns
 The order of columns in Nonmem is important for two reasons. One is
@@ -372,9 +368,19 @@ written back to the user. There are several arguments that will affect
 the proposed text for the Nonmem run, see `?NMwriteData`.
 
 ### Updating Nonmem control streams to read new data file
-I may be the only one, but sometimes during the modeling stage, I want to go back and change or add something to the data creation step. Then once I have written a new data file, my Nonmem `$INPUT` sections no longer match the data file. In `NMwriteData` you can use a `last` argument to get columns pushed towards the back so the Nonmem runs should still work, but maybe you need the column in your nonmem runs, and so you have no way around updating the control streams. And that can be quite a lot of control streams.
+I may be the only one, but sometimes during the modeling stage, I want
+to go back and change or add something to the data creation step. Then
+once I have written a new data file, my Nonmem `$INPUT` sections no
+longer match the data file. In `NMwriteData` you can use a `last`
+argument to get columns pushed towards the back so the Nonmem runs
+should still work, but maybe you need the column in your nonmem runs,
+and so you have no way around updating the control streams. And that
+can be quite a lot of control streams.
 
-`NMdata` has a couple of functions to extract and write sections to Nonmem control streams called `NMreadSection` and `NMwriteSection`. We are not going into detail with what these functions can do, but let's stick to the example above. We can do
+`NMdata` has a couple of functions to extract and write sections to
+Nonmem control streams called `NMreadSection` and `NMwriteSection`. We
+are not going into detail with what these functions can do, but let's
+stick to the example above. We can do
 
 ```{r,eval=FALSE}
 NMwriteSection("run001.mod","INPUT","$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE FLAG2 NOMTIME PART PROFDAY PROFTIME WEIGHTB eff0")
@@ -419,93 +425,4 @@ When using `NMwriteData`, you don't have to call `NMstamp`
 explicitly. Just pass the `script` argument to `NMwriteData` and
 `NMstamp` will be applied automatically.
 
-
-## Subject-level variables
-In a proper PK/PD analysis we need to explore the data at multiple
-variability levels. What we looked at above is at dosing and sampling
-level (one row per dosing or sampling event). `NMdata` provides very
-useful functions to extract information at other levels of
-variability. Before extracting the subject-level information we will
-add an individual exposure measure to the dataset. We will use the
-empirical Bayes' estimate of the individual maximum
-concentration. This is derived as the maximum prediction across the
-sample times - it may be better to simulate the model at a richer time
-scale to get better precision. Again, we make use of `data.table` but
-feel free to use what you prefer. `findCovs` - like other `NMdata`
-functions - will work on `data.frame`'s, `tibble`'s and other
-`data.frame`-like classes 
-(classes that inherit from `data.frame`).
-
-```{r}
-res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),
-                   col.row="ROW",merge.by.row=TRUE,quiet=TRUE,as.fun="data.table")
-res1$trtact <- reorder(res1$trtact,res1$DOSE)
-## with data.table, create a new column representing ID-level Cmax
-res1[,Cmax:=max(IPRED),by=.(ID)]
-## findCovs picks the columns that do not vary within cols.id. One row
-## per value of cols.id.
-res1.id <- findCovs(res1,by="ID")
-dim(res1.id)
-ggplot(res1.id,aes(WEIGHTB,Cmax/DOSE,colour=trtact))+
-    geom_point()+
-    labs(x="Bodyweight at baseline (kg)")
-```
-
-`by` can be longer than one. Include a study column, a treatment column to
-support cross-over, or a model
-column if you are comparing model fits (see below how to do this very easily).
-
-If your model includes occasion variability, you probably also want to
-look at 
-
-```{r}
-## we have no occasion variability in this data
-## res1.id.occ <- findCovs(res1,by=c("ID","OCC"))
-```
-
-The simplest use of `findCovs` is to get variables that are constant
-across the whole dataset:
-
-
-```{r}
-findCovs(res1)
-```
-
-Let's take a look at what is in the
-`res1.id` generated above. It is a mix of variables that vary at subject level and variables
-that are constant across the full dataset. 
-
-```{r}
-dim(res1.id)
-head(res1.id,2)
-```
-
-
-`findCovs` has a counterpart in `findVars` which finds variables that
-do vary within constant values of optional `by` columns. To get only the ones that
-vary within the dataset (i.e. they are truely subject-level
-variables and not say a study number if we only have one study), we can do 
-
-```{r}
-res1.id2 <- findVars(res1.id)
-dim(res1.id2)
-head(res1.id2,2)
-```
-
-`findVars` supports the `by` argument too. So you can use
-`findVars(res1,by="ID")` to find variables that are non-constant
-within (at least one value of) ID. `by` can be of arbitrary length.
-
-Of course, we most often know what covariates or other subject-level
-variables to look at, and we would not search for them after running a
-nonmem model. But in the situation where you are looking at someone
-else's work or you are doing a meta analysis across models where the
-data has been coded slightly differently, these simple tools can be
-very useful. Or if you like writing generic wrapper functions, you may
-find this very handy. Also, remember that if a variable is returned by
-these functions, you know that they fullfill the variability
-requirement. We know that variables in `res1.id` above do not vary
-within `ID`, meaning that no `ID` has more than one value of the
-variable. `NA` counts as any other value, so if a value is returned
-for subject in `res1.id`, this subject does not have `NA`'s in `res1`.
 

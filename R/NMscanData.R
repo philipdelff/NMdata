@@ -1,4 +1,4 @@
-##' Automatically find Nonmem tables and organize data
+##' Automatically find Nonmem input and output tables and organize data
 ##'
 ##' This is a very general solution to automatically identifying, reading, and  merging all output and input data in a Nonmem model. The most important
 ##' steps are

@@ -1,4 +1,4 @@
-##' replace ($)sections of a nonmem control stream
+##' Replace ($)sections of a nonmem control stream
 ##'
 ##' Just give the section name, the new lines and the file path, and the
 ##' "$section", and the input to Nonmem will be updated.

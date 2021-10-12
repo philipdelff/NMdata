@@ -1,4 +1,4 @@
-##' Order columns in dataset for use in Nonmem.
+##' Standardize column order in Nonmem input data
 ##'
 ##' Order data columns for easy export to Nonmem. No data values are
 ##' edited. The order is configurable through multiple arguments. See

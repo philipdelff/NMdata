@@ -1,3 +1,7 @@
+# NMdata 0.0.10
+* Bugfix in NMwriteData. The datafile is now correctly included in the
+  $DATA suggestion for Nonmem. No impact on data file output.
+
 # NMdata 0.0.9
 The only change from 0.0.8 is a patch provided by Matt Dowle ensuring
 that tests pass after the release of data.table v1.14.2.

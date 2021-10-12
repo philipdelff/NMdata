@@ -1,0 +1,19 @@
+group,function,description
+general,NMdataConf,Configure default behavior of NMdata functions
+dataCreate,compareCols,Compare presence and classes of columns across data sets before merge or rbind
+dataCreate,renameByContents,Rename columns based on contents
+dataCreate,mergeCheck,Verify that the rows that come out of the merge are the exact same as in one of the existing datasets
+dataCreate,flagsAssign,Assign exclusion flags to a dataset based on specified table
+dataCreate,flagsCount,Create an overview of number of retained and discarded datapoints
+dataCreate,NMorderColumns,Standardize column order in Nonmem input data
+Nonmem,NMreadSection,Extract ($)sections of Nonmem control streams
+Nonmem,NMwriteSection,Replace ($)sections of a nonmem control stream
+DataRead,NMscanData,Automatically find Nonmem input and output tables and organize data
+DataRead,NMscanTables,Find and read all output data tables in nonmem run
+DataRead,NMreadTab,Read an output table file from NONMEM
+DataRead,NMscanInput,Find and read input data and optionally translate column names according to the $INPUT section
+DataRead,NMreadCsv,Read input data formatted for nonmem
+DataRead,NMinfo,Get metadata from an NMdata object
+debug,NMcheckColnames,Compare $DATA to column names in input data
+misc,findCovs,Extract columns that do not vary within values of other columns
+misc,findVars,Extract columns that vary within values of other columns

@@ -1,5 +1,5 @@
 ---
-title: "NMscanData: Find and combine all output and input data"
+title: "NMscanData: Find And Combine All Output And Input Data"
 output:
 rmarkdown::html_vignette:
     toc: true

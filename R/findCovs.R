@@ -1,4 +1,4 @@
-##' Extract columns that do not vary within variables in data
+##' Extract columns that vary within values of other columns
 ##'
 ##' This function provides an automated method to extract covariate-like
 ##' columns. The user decides which columns these variables cannot vary

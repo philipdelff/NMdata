@@ -25,6 +25,8 @@
 ##'     statement from IGNORE(FLAG.NE.0) to say IGNORE(FLAG.GT.10) if
 ##'     BLQ's have FLAG=10, and you decide to include these in the
 ##'     analysis.
+##' @param flagc.0 The character flag to assign to rows that are not
+##'     matched by exclusion conditions (numerical flag 0).
 ##' @param as.fun The default is to return data.tables if input data
 ##'     is a data.table, and return a data.frame for all other input
 ##'     classes. Pass a function in as.fun to convert to something
@@ -47,13 +49,16 @@
 ##'        condition=c("BLQ==1")
 ##' )
 ##' pk <- flagsAssign(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
-##' unique(pk[,c("flagn","flagc","BLQ")])
+##' pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing",
+##'         col.flagn="flagn",col.flagc="flagc")
+##' unique(pk[,c("EVID","flagn","flagc","BLQ")])
 ##' flagsCount(pk[EVID==0],dt.flags,col.flagn="flagn",col.flagc="flagc")
 ##' @export
 
 
+
 flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
-                        flags.increasing=FALSE, as.fun=NULL){
+                        flags.increasing=FALSE, flagc.0="Analysis set", as.fun=NULL){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -100,11 +105,9 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     
 ### data can contain a column named FLAG - but it is removed
     if(col.flagn%in%datacols) {
-        ## message("Data contains FLAG already. This is overwritten")
         messageWrap(sprintf("Data contains %s already. This is overwritten",col.flagn),fun.msg=message)
     }
     if(col.flagc%in%datacols) {
-        ## message("Data contains flag already. This is overwritten")
         messageWrap(sprintf("Data contains %s already. This is overwritten",col.flagc),fun.msg=message)
     }
     
@@ -112,9 +115,12 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     
 
 ####### Check tab.flags ####
+    if(missing(tab.flags)) {
+        tab.flags <- data.table(FLAG=0, flag=flagc.0, condition="TRUE")
+        setnames(tab.flags,c("FLAG","flag"),c(col.flagn,col.flagc))
+    }
     ## Check that tab.flags contain a numeric called FLAG and a character/factor called flag.
     if(!is.data.frame(tab.flags)||!(all(c(col.flagn,col.flagc,"condition")%in%colnames(tab.flags)))){
-        ## stop("tab.flags must be a data.frame containing FLAG, flag, and condition.")
         messageWrap(sprintf("tab.flags must be a data.frame containing %s, %s, and condition.",col.flagn,col.flagc),fun.msg=stop)
     }
 
@@ -126,10 +132,13 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
         tab.flags.was.data.table <- FALSE
         tab.flags <- as.data.table(tab.flags)
     }
-
     
+### Check that FLAG values are unique. If not, we can't merge flag on to data afterwards.
+    if(tab.flags[,uniqueN(get(col.flagn))!=.N]){
+        messageWrap(sprintf("All rows in tab.flags must contain unique values of %s",col.flagc),fun.msg=stop)
+    }
     
-### For here, FLAG and flag have to be generalized to match args. These are arg checks.
+### Checks of tab.flags column classes
     if(!is.numeric(tab.flags[,get(col.flagn)])) stop(sprintf("column %s in tab.flags must be numeric and non-negative",col.flagn))
     if(any(tab.flags[,get(col.flagn)]<0)) stop(sprintf("column %s in tab.flags must be non-negative",col.flagn))
     if(!is.character(tab.flags[,get(col.flagc)])) stop(sprintf("column %s in tab.flags must be of type character",col.flagc))
@@ -158,7 +167,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
         }
 
         subsetAND <- paste(subset.data,"&")
-    } 
+    }
     
 ####### END Check tab.flags ####
     
@@ -169,7 +178,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
 ### exactly as they were to begin with.
 #### save order for re-arranging in the end
     col.row <- tmpcol(data)
-    data[,(col.row):=1:.N ]
+    data[,(col.row):=.I ]
 
 #### We will not touch the data not matched by the subset
     ## data.noflags <- data[eval(parse(text=paste("!",subsetAND,"1")))]
@@ -186,23 +195,28 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     ## we want to use columns FLAG and flag. So if these exist in
     ## data, copy for backup
     backed.up.old.flags <- FALSE
-    if(any(c("FLAG","flag")%in%colnames(data.flags))){
-        cols.pick <- c(col.row,intersect(c("FLAG","flag"),colnames(data.flags)))
-        ## we only want to keep FLAG and flag if col.flagc and flagn are oter columns. If col.flagn and col.flagc will be called FLAG and flag, they should overwrite the ecxisting anyway.
-        cols.pick <- setdiff(cols.pick,c(col.flagn,col.flagc))
+    colnames.flags <- c(col.flagn,col.flagc)
+    colnames.flags.work <- c("FLAG","flag")
+    ## we only want to keep FLAG and flag if col.flagc and flagn are
+    ## other columns. If col.flagn and col.flagc will be called FLAG
+    ## and flag, they should overwrite the ecxisting anyway.
+    colnames.flags.pick <- setdiff(colnames.flags.work,colnames.flags)
+
+    
+    if(length(colnames.flags.pick)>0){
+        cols.pick <- c(col.row,intersect(colnames.flags.pick,colnames(data.flags)))
+        ## we only want to keep FLAG and flag if col.flagc and flagn are other columns. If col.flagn and col.flagc will be called FLAG and flag, they should overwrite the ecxisting anyway.
+        ## cols.pick <- setdiff(cols.pick,colnames.flags)
         if(length(cols.pick)>0){
             backed.up.old.flags <- TRUE
             flags.orig.data <- data.flags[,cols.pick,with=FALSE]
         }
-        if("FLAG"%in%colnames(data.flags)){
-            data.flags[,FLAG:=NULL]
-        }
-        if("flag"%in%colnames(data.flags)){
-            data.flags[,flag:=NULL]
-        }
+        
+        data.flags[,(setdiff(cols.pick,col.row)):=NULL]
         
     }
-
+    
+    
     if(col.flagn%in%colnames(data.flags)){
         data.flags[,(col.flagn):=NULL]
     }
@@ -214,17 +228,21 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     ## rename tab.flags columns to flag and FLAG
     setnames(tab.flags,c(col.flagn,col.flagc),c("FLAG","flag"))
     
+
 ### FLAG==0 cannot be customized. If not in table, put in table. Return the
 ### table as well. Maybe a reduced table containing only used FLAGS
-    if(!0%in%tab.flags[,"FLAG"]) {
+    
+####### TODO: for now, FLAG=0 is not allowed in tab.flags
+    
+    if(!0%in%tab.flags[,FLAG]) {
         tab.flags <- rbind(
             data.table(FLAG=0,
-                       flag="Analysis set",condition=NA_character_),
+                       flag=flagc.0,condition=NA_character_),
             tab.flags,
             fill=TRUE)
     }
-    tab.flags[FLAG==0,condition:=NA_character_]
 
+    ## tab.flags[FLAG==0,condition:=NA_character_]
     
     ## If a FLAG is not zero and does not have a condition, it is not used.
     tab.flags <- tab.flags[FLAG==0|(!is.na(condition)&condition!="")]
@@ -246,27 +264,25 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     ## tab.flags[,Nmatched:=NA_real_]
     ## tab.flags[,Nobs:=NA_real_]
     ## tab.flags[,NID:=NA_real_]
-    for(fn in 1:tab.flags[,.N]){
-        
-        ##messageWrap(
-        ## this gets so clunky in messageWrap. Running message directly.
-        message(sprintf("Coding %s = %d, %s = %s",col.flagn,tab.flags[fn,FLAG],col.flagc,tab.flags[fn,flag]))
-        ##,fun.msg=message)
-        ## find all affected columns
-        is.matched <- try(with(data.flags,eval(parse(text=tab.flags[fn,condition.used]))),silent=TRUE)
-        if("try-error"%in%class(is.matched)){
-            messageWrap(attr(is.matched,"condition")$message,fun.msg=warning)
-            next
+    nconds <- tab.flags[,.N]
+    if(nconds>0){
+        for(fn in 1:nconds){
+            
+            ##messageWrap(
+            ## this gets so clunky in messageWrap. Running message directly.
+            message(sprintf("Coding %s = %d, %s = %s",col.flagn,tab.flags[fn,FLAG],col.flagc,tab.flags[fn,flag]))
+            ##,fun.msg=message)
+            ## find all affected columns
+            is.matched <- try(with(data.flags,eval(parse(text=tab.flags[fn,condition.used]))),silent=TRUE)
+            if("try-error"%in%class(is.matched)){
+                messageWrap(attr(is.matched,"condition")$message,fun.msg=warning)
+                next
+            }
+            if(any(is.na(is.matched))) stop("Evaluation of criterion returned NA. Missing values in columns used for evaluation?")
+            data.flags[is.matched,FLAG:=tab.flags[fn,FLAG]]
         }
-        if(any(is.na(is.matched))) stop("Evaluation of criterion returned NA. Missing values in columns used for evaluation?")
-        ## tab.flags[fn,Nmatched:=sum(is.matched)]
-        data.flags[is.matched,FLAG:=tab.flags[fn,FLAG]]
-        ## tab.flags[fn,Nobs:=data.flags[FLAG==0,.N]]
-        ## tab.flags[fn,NID:=data.flags[FLAG==0,uniqueN(col.id)]]
     }
 
-    ## tab.flags.0[,Nmatched:=data.flags[FLAG==0,.N]]
-    
     tab.flags <- rbind(tab.flags,tab.flags.0,fill=TRUE)
     
     
@@ -275,16 +291,17 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
         ## stop("NA's found in data.flags$FLAG after assigning FLAGS. Bug in flagsAssign?")
         messageWrap(sprintf("NA's found in %s after assigning flags. Bug in flagsAssign?",col.flagn),fun.msg=stop)
     }
-
+    
+    
     dim0 <- dim(data.flags)
-    data.flags <- mergeCheck(data.flags,unique(tab.flags[,c("FLAG","flag")]),all.x=TRUE,by="FLAG")
-    stopifnot(all(dim(data.flags)==(dim0+c(0,1))))
+    data.flags <- mergeCheck(data.flags,unique(tab.flags[,c("FLAG","flag")]),all.x=TRUE,by="FLAG",ncols.expect=1,fun.commoncols=base::stop)
+    ##    stopifnot(all(dim(data.flags)==(dim0+c(0,1))))
 
 ### rename FLAG and flag, and add back backed up columns if relevant
     setnames(data.flags,c("FLAG","flag"),c(col.flagn,col.flagc))
     ## setnames(tab.flags,c("FLAG","flag"),c(col.flagn,col.flagc))
     if(backed.up.old.flags){
-        data.flags <- mergeCheck(data.flags,flags.orig.data,by=col.row)
+        data.flags <- mergeCheck(data.flags,flags.orig.data,by=col.row,fun.commoncols=base::stop)
     }
 
     ## add the data where flags have not been assigned
@@ -294,6 +311,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     setorderv(data,col.row)
     data[,(col.row):=NULL]
     ## order columns
+    
     
     setcolorder(data,datacols)
 

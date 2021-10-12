@@ -10,8 +10,8 @@
 Pharmacometrics and PK/PD modeling offers unique information for
 decision-making in several steps of drug development. However, the leg work in pharmacometrics remains technical, and this is a typical bottleneck for a pharmacometrician to contributing even more.
 
-Creating datasets - and if you use Nonmem, reading the results data - can be tedious, and mistakes can lead to hours of
-frustration. This package provides useful tools (including automated
+Creating data sets - and if you use Nonmem, reading the results data - can be tedious, and mistakes can lead to hours of
+frustration. NMdata provides useful tools (including automated
 checks) for these trivial tasks. The aim is to automate the book
 keeping and allow more time for the actual analysis.
 
@@ -23,8 +23,7 @@ preferences. Instead, NMdata tries to fit in with how you (or your
 colleague who worked on the project before you) do things.
 
 The data set creation tools in NMdata may be equally interesting to
-users of nlmixr or other proprietary software than Nonmem. However, so
-far, the most elaborated features of the package relates to the final
+users of nlmixr or other proprietary software than Nonmem. However, many features of the package relates to the final
 organization and writing of data for Nonmem, and reading data from
 Nonmem after a model run.
 

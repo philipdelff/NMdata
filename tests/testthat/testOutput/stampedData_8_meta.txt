@@ -1,4 +1,4 @@
 "parameter","value"
 "DataCreateScript","A simple test"
-"CreationTime","2021-07-08 14:40:16"
+"CreationTime","2021-10-12 14:52:33"
 "writtenTo","testOutput/stampedData_8.csv"
