@@ -268,8 +268,8 @@ pk[,`:=`(FLAG=NULL,flag=NULL)]
 ```
 ```{r}
 dt.flags <- fread(text="FLAG,flag,condition
-10,Below LLOQ,EVID==0&BLQ==1
-100,Negative time,EVID==0&TIME<0")
+10,Below LLOQ,BLQ==1
+100,Negative time,TIME<0")
 
 pk <- flagsAssign(pk,tab.flags=dt.flags,subset.data="EVID==0")
 pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing")
