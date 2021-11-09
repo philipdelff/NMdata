@@ -79,9 +79,9 @@ NMreadTab <- function(file,tab.count=TRUE,quiet,as.fun,...) {
         dt1 <- dt1[,unique(cnames),with=FALSE]
     }
 
-    if(!quiet){
-        message("Making sure everything is numeric")
-    }
+    ## if(!quiet){
+    ##     message("Making sure everything is numeric")
+    ## }
 
     ## redoing this because columns have been cleaned since colnames
     ## were extracted.
