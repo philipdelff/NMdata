@@ -261,6 +261,7 @@ Not warning. Warning if standard variable?
 **** DONE Polish
      CLOSED: [2020-12-23 Wed 11:31]
 *** flagsAssign
+**** TODO Only give message about overwriting FLAG/flag if non-NA values are present
 **** DONE Improve messages at each FLAG coding
      CLOSED: [2020-12-23 Wed 11:31]
 **** DONE Make sure we arrange back to original order
@@ -272,8 +273,10 @@ Not warning. Warning if standard variable?
 This could be EVID==0 or maybe one study in a meta analysis
 
 It's fairly easy to implement. Paste in front of the expression.use column.
-**** TODO Can we assign FLAG=0, flag=Dosing to EVID==1?
+**** DONE Can we assign FLAG=0, flag=Dosing to EVID==1?
+     CLOSED: [2021-10-25 Mon 13:45]
      Or is FLAG==0 reserved?
+use flagsAssign(data,subset.data="EVID==1",flagc.0="Dosing")
 *** flagsCount
 **** DONE OK respect decreasing or increasing order.flags
 **** DONE add .cum of N and Nobs
