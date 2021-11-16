@@ -105,7 +105,7 @@
 
     
     
-<p>Built 2021-10-25 using NMdata 0.0.9.902.</p>
+<p>Built 2021-11-16 using NMdata 0.0.9.902.</p>
 <p>This vignette is still under development. Please make sure to see latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
@@ -209,7 +209,7 @@
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dt.cov2</span> <span class="op">&lt;-</span> <span class="va">dt.cov</span><span class="op">[</span><span class="va">ID</span><span class="op">!=</span><span class="fl">31</span><span class="op">]</span>
 <span class="va">pk2.check</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov2</span>,by<span class="op">=</span><span class="st">"ID"</span>,all.x<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p>To ensure the consistency of rows before and after the merge, you could use <code><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge(...,all.x=TRUE)</a></code> and then check dimensions before and after (yes, both <code>all.x=TRUE</code> and the dimension check are necessary). This is not needed if you use <code>mergeCheck</code>.</p>
+<p>To ensure the consistency of rows before and after the merge, you could use <code>merge(...,all.x=TRUE)</code> and then check dimensions before and after (yes, both <code>all.x=TRUE</code> and the dimension check are necessary). This is not needed if you use <code>mergeCheck</code>.</p>
 <p><code>mergeCheck</code> does not try to reimplement merging. Under the hood, the merging is performed by <code><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">data.table::merge.data.table</a></code> to which most arguments are passed. What <code>mergeCheck</code> does is to add the checks that the results are consistent with the criteria outlined above. <code><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">data.table::merge.data.table</a></code> is generally very fast, and even if there is a bit of extra calculations in <code>mergeCheck</code>, it should never be slow.</p>
 <p>Another problem the programmer may not realize during a merge is when column names are shared across <code>x1</code> and <code>x2</code> (in addition to columns that are being merged by). This will silently create column names like <code>col.x</code> and <code>col.y</code> in the output. <code>mergeCheck</code> will by default give a warning if that happens (can be modified using the <code>fun.commoncols</code> argument). Also, there is an optional argument to tell mergeCheck how many columns are expected to be added by the merge, and <code>mergeCheck</code> will fail if another number of columns are added. This can be useful for programming.</p>
 <p>The row order is by default maintained by <code>mergeCheck</code>. Apart from this, there is only one difference from the behavior of the <code>merge.data.frame</code> function syntax, being that the <code>by</code> argument must always be supplied to <code>mergeCheck</code>. Default behavior of <code>merge.data.frame</code> is to merge by all common column names, but for coding transparency, this is intentionally not allowed by <code>mergeCheck</code>.</p>
@@ -328,7 +328,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2021-10-25 17:28:26 UTC"</span></code></pre></div>
+<span class="co">#&gt; [1] "2021-11-16 18:53:42 UTC"</span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>NMstamp</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMstamp.html">NMstamp</a></span><span class="op">(</span><span class="va">pk</span>,script<span class="op">=</span><span class="st">"vignettes/DataCreate.Rmd"</span>,Description<span class="op">=</span><span class="st">"A PK dataset used for examples."</span><span class="op">)</span>
@@ -338,7 +338,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2021-10-25 17:28:26 UTC"</span>
+<span class="co">#&gt; [1] "2021-11-16 18:53:43 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span></code></pre></div>

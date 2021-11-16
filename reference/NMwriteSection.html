@@ -224,65 +224,66 @@ it.  to disk?  Default is FALSE.</p></td>
 <code><a href='NMwriteData.html'>NMwriteData</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>newlines</span> <span class='op'>&lt;-</span> <span class='st'>"$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"</span>
-<span class='fu'>NMwriteSection</span><span class='op'>(</span>file<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"examples/nonmem/xgxr001.mod"</span>, package <span class='op'>=</span> <span class='st'>"NMdata"</span><span class='op'>)</span>,
-section<span class='op'>=</span><span class='st'>"EST"</span>, newlines<span class='op'>=</span><span class='va'>newlines</span>,newfile<span class='op'>=</span><span class='cn'>NULL</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "$PROBLEM    PK"                                                            
-#&gt;  [2] ""                                                                          
-#&gt;  [3] ";@ Variables 17/20 @;"                                                     
-#&gt;  [4] "$INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY"                     
-#&gt;  [5] "BLQ CYCLE DOSE PART PROFDAY PROFTIME WEIGHTB eff0"                         
-#&gt;  [6] ""                                                                          
-#&gt;  [7] "$DATA     ../data/xgxr1.csv IGNORE=@ IGNORE=(FLAG.NE.0)"                   
-#&gt;  [8] ""                                                                          
-#&gt;  [9] "$SUBROUTINE ADVAN4 TRANS4"                                                 
-#&gt; [10] ""                                                                          
-#&gt; [11] "$PK"                                                                       
-#&gt; [12] "TVKA=THETA(1)"                                                             
-#&gt; [13] "TVV2=THETA(2)"                                                             
-#&gt; [14] "TVCL=THETA(3)"                                                             
-#&gt; [15] "TVV3=THETA(4)"                                                             
-#&gt; [16] "TVQ=THETA(5)"                                                              
-#&gt; [17] "                   "                                                       
-#&gt; [18] "KA=TVKA*EXP(ETA(1))"                                                       
-#&gt; [19] "V2=TVV2*EXP(ETA(2))"                                                       
-#&gt; [20] "CL=TVCL*EXP(ETA(3))"                                                       
-#&gt; [21] "V3=TVV3*EXP(ETA(4))"                                                       
-#&gt; [22] "Q=TVQ*EXP(ETA(5))"                                                         
-#&gt; [23] ""                                                                          
-#&gt; [24] "$ERROR"                                                                    
-#&gt; [25] "  IPRED=F"                                                                 
-#&gt; [26] "  IRES=DV-IPRED"                                                           
-#&gt; [27] ""                                                                          
-#&gt; [28] "  IF (IPRED.GT.1) THEN"                                                    
-#&gt; [29] "    W = SQRT(IPRED**2*SIGMA(1,1)**2 + SIGMA(2,2)**2)"                      
-#&gt; [30] "  ELSE"                                                                    
-#&gt; [31] "    W=1"                                                                   
-#&gt; [32] "  ENDIF"                                                                   
-#&gt; [33] ""                                                                          
-#&gt; [34] "  IWRES=IRES/W"                                                            
-#&gt; [35] "  Y=F+F*ERR(1)+ERR(2)"                                                     
-#&gt; [36] ""                                                                          
-#&gt; [37] ";-----------------------INITIAL ESTIMATES---------------------------------"
-#&gt; [38] "$THETA  (0,0.9)           ; POPKA"                                         
-#&gt; [39] "$THETA  (0,4.2)             ; POPCL"                                       
-#&gt; [40] "$THETA  (0,3.6)             ; POPV2"                                       
-#&gt; [41] "$THETA  (0,5.81)             ; POPV3"                                      
-#&gt; [42] "$THETA  (0,3.44)           ; POPQ "                                        
-#&gt; [43] ""                                                                          
-#&gt; [44] "$OMEGA 0.1"                                                                
-#&gt; [45] "$OMEGA 0.1"                                                                
-#&gt; [46] "$OMEGA 0.1"                                                                
-#&gt; [47] "$OMEGA 0 FIX"                                                              
-#&gt; [48] "$OMEGA 0 FIX"                                                              
-#&gt; [49] ""                                                                          
-#&gt; [50] "$SIGMA .2"                                                                 
-#&gt; [51] "$SIGMA .2"                                                                 
-#&gt; [52] ""                                                                          
-#&gt; [53] "$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"      
-#&gt; [54] ""                                                                          
-#&gt; [55] "$TABLE ROW   TVKA   TVV2     TVCL  TVV3  TVQ  KA  V2  CL  V3  Q"           
-#&gt; [56] "       PRED  IPRED  NOPRINT  FILE=xgxr001_res.txt"                         </div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>newlines</span> <span class='op'>&lt;-</span> <span class='st'>"$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"</span></span>
+<span class='r-in'><span class='fu'>NMwriteSection</span><span class='op'>(</span>file<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"examples/nonmem/xgxr001.mod"</span>, package <span class='op'>=</span> <span class='st'>"NMdata"</span><span class='op'>)</span>,</span>
+<span class='r-in'>section<span class='op'>=</span><span class='st'>"EST"</span>, newlines<span class='op'>=</span><span class='va'>newlines</span>,newfile<span class='op'>=</span><span class='cn'>NULL</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "$PROBLEM    PK"                                                            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] ""                                                                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] ";@ Variables 17/20 @;"                                                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] "$INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY"                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "BLQ CYCLE DOSE PART PROFDAY PROFTIME WEIGHTB eff0"                         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6] ""                                                                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "$DATA     ../data/xgxr1.csv IGNORE=@ IGNORE=(FLAG.NE.0)"                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [8] ""                                                                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "$SUBROUTINE ADVAN4 TRANS4"                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [10] ""                                                                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "$PK"                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [12] "TVKA=THETA(1)"                                                             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [13] "TVV2=THETA(2)"                                                             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [14] "TVCL=THETA(3)"                                                             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [15] "TVV3=THETA(4)"                                                             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [16] "TVQ=THETA(5)"                                                              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [17] "                   "                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [18] "KA=TVKA*EXP(ETA(1))"                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [19] "V2=TVV2*EXP(ETA(2))"                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [20] "CL=TVCL*EXP(ETA(3))"                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [21] "V3=TVV3*EXP(ETA(4))"                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [22] "Q=TVQ*EXP(ETA(5))"                                                         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [23] ""                                                                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [24] "$ERROR"                                                                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [25] "  IPRED=F"                                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [26] "  IRES=DV-IPRED"                                                           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [27] ""                                                                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [28] "  IF (IPRED.GT.1) THEN"                                                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [29] "    W = SQRT(IPRED**2*SIGMA(1,1)**2 + SIGMA(2,2)**2)"                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [30] "  ELSE"                                                                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [31] "    W=1"                                                                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [32] "  ENDIF"                                                                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [33] ""                                                                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [34] "  IWRES=IRES/W"                                                            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [35] "  Y=F+F*ERR(1)+ERR(2)"                                                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [36] ""                                                                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [37] ";-----------------------INITIAL ESTIMATES---------------------------------"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [38] "$THETA  (0,0.9)           ; POPKA"                                         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [39] "$THETA  (0,4.2)             ; POPCL"                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [40] "$THETA  (0,3.6)             ; POPV2"                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [41] "$THETA  (0,5.81)             ; POPV3"                                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [42] "$THETA  (0,3.44)           ; POPQ "                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [43] ""                                                                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [44] "$OMEGA 0.1"                                                                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [45] "$OMEGA 0.1"                                                                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [46] "$OMEGA 0.1"                                                                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [47] "$OMEGA 0 FIX"                                                              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [48] "$OMEGA 0 FIX"                                                              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [49] ""                                                                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [50] "$SIGMA .2"                                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [51] "$SIGMA .2"                                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [52] ""                                                                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [53] "$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [54] ""                                                                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [55] "$TABLE ROW   TVKA   TVV2     TVCL  TVV3  TVQ  KA  V2  CL  V3  Q"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [56] "       PRED  IPRED  NOPRINT  FILE=xgxr001_res.txt"                         </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

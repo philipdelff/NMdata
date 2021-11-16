@@ -251,94 +251,95 @@ this function transparently in the code and not in a configuration file
 hidden from other users.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## get current defaults</span>
-<span class='fu'>NMdataConf</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $args.fread
-#&gt; $args.fread$na.strings
-#&gt; [1] "."
-#&gt; 
-#&gt; $args.fread$header
-#&gt; [1] TRUE
-#&gt; 
-#&gt; 
-#&gt; $args.fwrite
-#&gt; $args.fwrite$na
-#&gt; [1] "."
-#&gt; 
-#&gt; $args.fwrite$quote
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $args.fwrite$row.names
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $args.fwrite$scipen
-#&gt; [1] 0
-#&gt; 
-#&gt; 
-#&gt; $as.fun
-#&gt; function (x, row.names = NULL, optional = FALSE, ...) 
-#&gt; {
-#&gt;     if (is.null(x)) 
-#&gt;         return(as.data.frame(list()))
-#&gt;     UseMethod("as.data.frame")
-#&gt; }
-#&gt; &lt;bytecode: 0x7fd56a580b48&gt;
-#&gt; &lt;environment: namespace:base&gt;
-#&gt; 
-#&gt; $check.time
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $col.model
-#&gt; [1] "model"
-#&gt; 
-#&gt; $col.nmout
-#&gt; [1] "nmout"
-#&gt; 
-#&gt; $col.nomtime
-#&gt; [1] "NOMTIME"
-#&gt; 
-#&gt; $col.flagc
-#&gt; [1] "flag"
-#&gt; 
-#&gt; $col.flagn
-#&gt; [1] "FLAG"
-#&gt; 
-#&gt; $col.row
-#&gt; [1] "ROW"
-#&gt; 
-#&gt; $file.mod
-#&gt; function (file) 
-#&gt; fnExtension(file, ext = ".mod")
-#&gt; &lt;bytecode: 0x7fd56a5906b0&gt;
-#&gt; &lt;environment: 0x7fd56a586128&gt;
-#&gt; 
-#&gt; $merge.by.row
-#&gt; [1] "ifAvailable"
-#&gt; 
-#&gt; $modelname
-#&gt; function (file) 
-#&gt; fnExtension(basename(file), "")
-#&gt; &lt;bytecode: 0x7fd56a593f68&gt;
-#&gt; &lt;environment: 0x7fd56a586128&gt;
-#&gt; 
-#&gt; $quiet
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $recover.rows
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $use.input
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $use.rds
-#&gt; [1] TRUE
-#&gt; </div><div class='input'><span class='co'>## change a parameter</span>
-<span class='fu'>NMdataConf</span><span class='op'>(</span>check.time<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
-<span class='co'>## reset one parameter to default value</span>
-<span class='fu'>NMdataConf</span><span class='op'>(</span>modelname<span class='op'>=</span><span class='cn'>NULL</span><span class='op'>)</span>
-<span class='co'>## reset all parameters to defaults</span>
-<span class='fu'>NMdataConf</span><span class='op'>(</span>reset<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>## get current defaults</span></span>
+<span class='r-in'><span class='fu'>NMdataConf</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $args.fread</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $args.fread$na.strings</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $args.fread$header</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $args.fwrite</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $args.fwrite$na</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $args.fwrite$quote</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $args.fwrite$row.names</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $args.fwrite$scipen</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $as.fun</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> function (x, row.names = NULL, optional = FALSE, ...) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     if (is.null(x)) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         return(as.data.frame(list()))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     UseMethod("as.data.frame")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;bytecode: 0x7fc732787b80&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: namespace:base&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $check.time</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $col.model</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "model"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $col.nmout</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "nmout"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $col.nomtime</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "NOMTIME"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $col.flagc</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "flag"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $col.flagn</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "FLAG"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $col.row</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "ROW"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $file.mod</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> function (file) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> fnExtension(file, ext = ".mod")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;bytecode: 0x7fc732795800&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: 0x7fc732787250&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $merge.by.row</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "ifAvailable"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $modelname</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> function (file) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> fnExtension(basename(file), "")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;bytecode: 0x7fc732795170&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: 0x7fc732787250&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $quiet</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $recover.rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $use.input</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $use.rds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='co'>## change a parameter</span></span>
+<span class='r-in'><span class='fu'>NMdataConf</span><span class='op'>(</span>check.time<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'>## reset one parameter to default value</span></span>
+<span class='r-in'><span class='fu'>NMdataConf</span><span class='op'>(</span>modelname<span class='op'>=</span><span class='cn'>NULL</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'>## reset all parameters to defaults</span></span>
+<span class='r-in'><span class='fu'>NMdataConf</span><span class='op'>(</span>reset<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
