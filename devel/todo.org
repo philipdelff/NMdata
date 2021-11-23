@@ -261,6 +261,8 @@ Not warning. Warning if standard variable?
 **** DONE Polish
      CLOSED: [2020-12-23 Wed 11:31]
 *** flagsAssign
+**** TODO [#A] check for whether there are any contents in data - just warning and return nothing
+**** TODO [#A] implement grp.incomp as in flagsCount
 **** TODO Only give message about overwriting FLAG/flag if non-NA values are present
 **** DONE Improve messages at each FLAG coding
      CLOSED: [2020-12-23 Wed 11:31]
