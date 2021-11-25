@@ -28,11 +28,11 @@
 ##' \item all ID's must have doses (EVID in {1,4})
 ##' \item all ID's must have observations (EVID==0)
 ##' }
-##' @import NMdata
-
-##' @import data.table NMdata
+##' @import data.table 
 
 ### TODO
+
+### Requirements to DV for EVID==2 and EVID==3?
 
 ## We check for NA's by a numeric conversion. But what if the NA comes from a value of say "b" that is not a valid NA representation. This has to be addressed before/at NMasNumeric.
 
@@ -76,11 +76,9 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
     if(debug) browser()
     data <- copy(as.data.table(data))
 
-### TODO: check flags for NA's before subsetting on FLAG
-    
     row <- tmpcol(data,base="ROW",prefer.plain=TRUE)
     data[,(row):=.I]
-
+    
     NMasNumeric <- function(x,warn=F) {
         if(warn){
             as.numeric(as.character(x))
@@ -105,7 +103,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
             if(events[check=="Column not found"&column==colname&level=="column",.N]==0){
                 events <- rbind(events,
                                 data.table(check="Column not found",column=colname,level="column")
-                                ,fill=TRUE) }
+                               ,fill=TRUE) }
             return(events)
         }
         
@@ -127,8 +125,45 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
         rbind(events,res,fill=TRUE)
     }
 
+    
     findings <- data.table(check="is NA",column="TIME",row=0,level="row")[0]
 
+####### Checking column names
+    cnames <- colnames(data)
+### Duplicate column names
+    Ntab.cnames <- data.table(col=cnames)[,.N,by=.(col)]
+    dt.dups <- Ntab.cnames[N>1]
+    if(nrow(dt.dups)){
+        findings <- rbind(findings,
+                          data.table(check="Non-unique column names",column=dt.dups[,col],row=NA_integer_,level="column"))
+    }
+
+
+### special chars in col names
+    cnames.spchars <- cnames[grep("[[:punct:]]",cnames)]
+    if(length(cnames.spchars)>0){
+        findings <- rbind(findings,
+                          data.table(check="Special character in column name",column=cnames.spchars,row=NA_integer_,level="column"))
+    }
+
+
+####### End checking column names
+
+### check unique row identifier
+    if(!is.null(col.row)){
+        findings <- listEvents(col.row,"Missing value",
+                               fun=is.na,invert=T,events=findings,debug=FALSE)
+        findings <- listEvents(col.row,"Row identifier decreasing",
+                               fun=function(x)!is.na(c(1,diff(x))) & c(1,diff(x))>0,
+                               events=findings,debug=FALSE)
+        findings <- listEvents(col.row,"Duplicated",
+                               fun=function(x)!is.na(x)&!duplicated(x),events=findings,
+                               new.rows.only=T,debug=FALSE)
+        findings <- listEvents(col.row,"Row identifier not an integer",
+                               fun=is.integer,events=findings)
+    }
+    
+### check flags for NA's before subsetting on FLAG
     if(!is.null(col.flagn)){
         findings <- listEvents(col.flagn,"Missing value",
                                fun=is.na,invert=T,events=findings,debug=FALSE)
@@ -139,6 +174,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
                                fun=function(x)x%%1==0,events=findings,
                                new.rows.only=T)
         if(col.flagn%in%colnames(data)){
+
 ### Done checking flagn. For rest of checks, only consider data where col.flagn==0
             data[,(col.flagn):=NMasNumeric(get(col.flagn))]
             if(is.numeric(data[,get(col.flagn)])){
@@ -223,7 +259,6 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
 ### DV should be NA for dosing records
     findings <- listEvents("DV","DV not NA in dosing recs",fun=is.na,events=findings,dat=data[EVID%in%c(1,4)])
 
-### Requirements to DV for EVID==2 and EVID==3?
 
 #### AMT
     ## positive for EVID 1 and 4
@@ -250,7 +285,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
         data[,reset:=EVID%in%c(3,4)]
         data[,newID:=cumsum(as.numeric(isnewID)+as.numeric(reset))]
         data[,checkTimeInc:=c(TRUE,diff(get(col.time))>=0),by=.(newID)]
-
+        
         findings <- listEvents(col="checkTimeInc",name="Time decreasing",fun=function(x) x==TRUE,
                                colname="TIME",events=findings)
     }
@@ -278,9 +313,10 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
     }
 
 ### Add ID's to row-level findings
-    if(!is.null(col.id)){
-        findings.row <- findings[level=="row"]
+    findings.row <- findings[level=="row"]
+    if(!is.null(col.id)&&nrow(findings.row)>0){
         if(col.id%in%colnames(findings.row)) findings.row[,(col.id):=NULL]
+        
         findings.row <- mergeCheck(findings.row,data[,c(row,col.id),with=F],by.x="row",by.y=row,all.x=T,fun.commoncols=stop)
         
         findings <- rbind(findings[level!="row"],findings.row,fill=T)
@@ -288,15 +324,16 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
 
 ### use the row identifier for reporting
     if(!is.null(col.row)){
-        setcolnames(findings,"row",row)
+        setnames(findings,"row",row)
         findings <- mergeCheck(findings,data[,c(row,col.row),with=F],by=row,all.x=T,fun.commoncols=stop)
         findings[,(row):=NULL]
+        row <- col.row
     }
-    setcolorder(findings,c("row","ID","column","check"))
+    setcolorder(findings,c(row,"ID","column","check"))
 
     if(nrow(findings)==0) {
         message("No findings. Great!")
-        invisible(findings)
+        return(invisible(findings))
     } else {
         print(findings[,.N,by=.(column,check)],row.names=FALSE)
         cat("\n")

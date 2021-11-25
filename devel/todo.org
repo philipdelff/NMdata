@@ -35,7 +35,53 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
-*** TODO [#B] cc - create character vector function
+*** NMcheckData
+**** TODO check for commas in character columns
+**** column names
+***** DONE duplicate column names
+      CLOSED: [2021-11-24 Wed 22:48]
+***** DONE special characters not allowed in column names
+      CLOSED: [2021-11-24 Wed 22:37]
+**** DONE If col.row included, col.row increasing, unique
+     CLOSED: [2021-11-24 Wed 23:24]
+**** TODO For elements that are not numeric, are the characters accepted (like na.char=".")
+**** DONE Duplicated events
+     CLOSED: [2021-11-23 Tue 23:05]
+     Remember, this is between EVID 3 or 4's. What is being done for
+     checking for non-decreasing time to keep track of this should be
+     reused.
+**** Inform what columns Nonmem can use
+***** Which are numeric
+***** Which are before the first non-numeric
+**** DONE NA TIME
+     CLOSED: [2021-06-07 Mon 22:33]
+**** CANCELED actual time since first dose vs Nominal time since first dose
+     CLOSED: [2021-11-17 Wed 11:34]
+**** CANCELED actual time since last dose vs Nominal time since nominal dose
+     CLOSED: [2021-11-17 Wed 11:34]
+**** DONE all subjects have doses?
+     CLOSED: [2021-11-10 Wed 21:20]
+**** DONE All subjects have observations?
+     CLOSED: [2021-11-10 Wed 21:20]
+**** Negative actual time (since first or previous dose) when corresponding nominal time is neg
+**** DONE Negative TIME
+     CLOSED: [2021-11-10 Wed 21:20]
+**** negative doses
+**** DONE negative dose times
+     CLOSED: [2021-11-10 Wed 21:21]
+**** negative concentrations
+**** CANCELED Nomminal dose vs actual dose
+     CLOSED: [2021-11-17 Wed 11:34]
+**** DONE positive AMT for !EVID%in%c(1,4)
+     CLOSED: [2021-11-17 Wed 10:46]
+**** DONE NA EVID, EVID in 1:4
+     CLOSED: [2021-11-17 Wed 10:38]
+**** zero doses (will fail in nonmem)
+**** DONE TIME increasing for subjects between EVID 3 or 4
+     CLOSED: [2021-06-07 Mon 22:35]
+**** tests of text file
+***** A field can't contain more than 24 characters
+*** TODO [#A] cc - create character vector function
 *** Dosing functions
 **** TODO [#B] NMcreateDoses Generate dosing schedule with loading, ADDL etc
      This is available as a suitcase function
@@ -419,14 +465,3 @@ exported so it's not very important.
 
 
 * temp
-  Undocumented arguments in documentation object 'NMinfo'
-  'nullEmpty'
-
-Undocumented arguments in documentation object 'NMscanInput'
-  'col.row'
-
-Undocumented arguments in documentation object 'NMscanTables'
-  'col.row'
-
-Undocumented arguments in documentation object 'NMstamp'
-  'time' 'byRef'
