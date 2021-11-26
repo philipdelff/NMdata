@@ -37,9 +37,12 @@ With load_all():
 ** New functions
 *** NMcheckData
 **** TODO check for commas in character columns
+Implement in same style as checks of cols.num
 **** column names
 ***** DONE duplicate column names
       CLOSED: [2021-11-24 Wed 22:48]
+***** TODO warning if duplicated column names
+      Other checks may be affected
 ***** DONE special characters not allowed in column names
       CLOSED: [2021-11-24 Wed 22:37]
 **** DONE If col.row included, col.row increasing, unique
@@ -124,6 +127,8 @@ https://doi.org/10.1208/s12248-012-9387-9
     Risk now is that arguments are set to NULL
     Export to parent. Not sure check allows though...
 ** Function improvements
+*** egdt
+**** TODO [#A] Report dims(df1,df2,result) unless quiet
 *** NMextractDataFile
 **** DONE Add support for windows absolute paths
      CLOSED: [2021-05-14 Fri 16:11]

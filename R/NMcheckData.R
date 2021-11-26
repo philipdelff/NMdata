@@ -146,9 +146,24 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
                           data.table(check="Special character in column name",column=cnames.spchars,row=NA_integer_,level="column"))
     }
 
-
 ####### End checking column names
 
+#### Section start: commas in character columns ####
+    
+    vars.char <- sapply(data,NMisNumeric)
+    ##    vars.char <- names(vars.char)[!vars.char]
+    commas.found <- data[,lapply(.SD,function(x)any(grepl(",",x))),.SDcols=vars.char]
+    cols.commas <- names(commas.found)[as.logical(commas.found[1,])]
+    if(length(cols.commas)>0){
+        findings <- rbind(findings,
+                          data.table(check="Commas in element values",column=cols.commas,row=NA_integer_,level="column")
+                          )
+    }
+
+### Section end: commas in character columns
+
+
+    
 ### check unique row identifier
     if(!is.null(col.row)){
         findings <- listEvents(col.row,"Missing value",
@@ -183,7 +198,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
         }
     }
     
-    
+######## Default columns
     cols.num <- c()
     
 ### Others that: If column present, must be numeric, and values must be non-NA. Remember eg DV and AMT can be NA.
@@ -271,6 +286,9 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
                            events=findings,
                            dat=data[EVID%in%c(0,2)])
     
+######## End Default columns
+
+
     ## ID-level checks
 ### Warning if the same ID is in non-consequtive rows
     data[,ID.jump:=c(0,diff(get(rowint))),by=col.id]
