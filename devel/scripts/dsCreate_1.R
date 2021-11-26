@@ -115,13 +115,14 @@ pk <- NMorderColumns(pk)
 ## colnames(pk)[24] <- "ret.4"
 ## a dup col name
 ## colnames(pk)[22] <- "NAME"
+pk[2,ret.4:="3,mg"]
 
 dim(pk)
 
 ## pmxtricks:::NMcheckData(pk[FLAG==0])
 load_all("c:/Users/Philip Delff/wdirs/NMdata")
 
-NMcheckData(pk,col.row="ROW",debug=F)
+finds <- NMcheckData(pk,col.row="ROW",debug=F)
 
 #### Section start: Write data to files ####
 

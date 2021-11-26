@@ -72,8 +72,9 @@
 #### format results
 
 
-NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=NULL,debug=F){
+NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=NULL,na.strings,debug=F){
     if(debug) browser()
+    if(missing(na.strings)) na.strings <- "."
     data <- copy(as.data.table(data))
 
     row <- tmpcol(data,base="ROW",prefer.plain=TRUE)
@@ -96,8 +97,9 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
     ##' @param new.rows.only. For nested criteria. Say that CMT is not
     ##' numeric for row 10. Then don't report that it is not an integer
     ##' too.
-    listEvents <- function(col,name,fun,colname=col,dat=data,events=NULL,invert=FALSE,new.rows.only=T,debug=F){
+    listEvents <- function(col,name,fun,colname=col,dat=data,events=NULL,invert=FALSE,new.rows.only=T,debug=F,...){
         if(debug) browser()
+
 
         if(!col%in%colnames(dat)){
             if(events[check=="Column not found"&column==colname&level=="column",.N]==0){
@@ -108,9 +110,9 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
         }
         
         if(invert){
-            row <- dat[fun(get(col))==TRUE,get(row)]
+            row <- dat[fun(get(col),...)==TRUE,get(row)]
         } else {
-            row <- dat[fun(get(col))!=TRUE,get(row)]
+            row <- dat[fun(get(col),...)!=TRUE,get(row)]
         }
 
         if(length(row)==0) {
@@ -150,15 +152,15 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
 
 #### Section start: commas in character columns ####
     
-    vars.char <- sapply(data,NMisNumeric)
-    ##    vars.char <- names(vars.char)[!vars.char]
-    commas.found <- data[,lapply(.SD,function(x)any(grepl(",",x))),.SDcols=vars.char]
-    cols.commas <- names(commas.found)[as.logical(commas.found[1,])]
-    if(length(cols.commas)>0){
-        findings <- rbind(findings,
-                          data.table(check="Commas in element values",column=cols.commas,row=NA_integer_,level="column")
-                          )
-    }
+    
+    cols.char <- sapply(data,NMisNumeric,na.strings=na.strings)
+    cols.char <- names(cols.char)[!cols.char]
+    newfinds <- rbindlist(
+        lapply(cols.char,listEvents,name="Comma in characther string",fun=function(x)grepl(",",x),invert=TRUE,debug=FALSE)
+    )
+    findings <- rbind(findings,
+                      newfinds
+                     ,fill=TRUE)
 
 ### Section end: commas in character columns
 
@@ -184,7 +186,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
                                fun=is.na,invert=T,events=findings,debug=FALSE)
         findings <- listEvents(col.flagn,"Not numeric",
                                fun=NMisNumeric,events=findings,
-                               new.rows.only=T)
+                               new.rows.only=T,na.strings=na.strings)
         findings <- listEvents(col.flagn,"col.flagn not an integer",
                                fun=function(x)x%%1==0,events=findings,
                                new.rows.only=T)
@@ -221,7 +223,8 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
                      ,fill=TRUE)
 
 ### check for  non-numeric in cols.num
-    newfinds <- rbindlist( lapply(cols.num,listEvents,name="Not numeric",fun=NMisNumeric,new.rows.only=T) )
+    newfinds <- rbindlist( lapply(cols.num,listEvents,name="Not numeric",fun=NMisNumeric,
+                                  new.rows.only=T,na.strings=na.strings) )
     findings <- rbind(findings,
                       newfinds
                      ,fill=TRUE)
@@ -245,10 +248,10 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
     
 ### CMT must be a positive integer
     ## findings <- listEvents("CMT","Missing value",
-    ##                        fun=is.na,events=findings)
+    ##                        fun=is.na,events=findings,na.strings=na.strings)
     ## findings <- listEvents("CMT","Not numeric",
     ##                        fun=NMisNumeric,events=findings,
-    ##                        new.rows.only=T)
+    ##                        new.rows.only=T,na.strings=na.strings)
     findings <- listEvents("CMT","CMT not a positive integer",
                            fun=function(x)x>0&x%%1==0,events=findings,
                            new.rows.only=T)
