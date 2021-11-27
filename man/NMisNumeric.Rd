@@ -4,10 +4,19 @@
 \alias{NMisNumeric}
 \title{Test if a variable can be interpreted by Nonmem}
 \usage{
-NMisNumeric(x)
+NMisNumeric(x, na.strings = ".")
 }
 \arguments{
 \item{x}{The vector to check Don't export}
+
+\item{na.strings}{Tolerated strings that do not translate to
+numerics. Default is to accept "." because it's common to
+write missing values that way to Nonmem (even if Nonmem will
+handle them as zeros rather than missing). Notice actual NA's
+are accepted so you may want to use na.strings=NULL if you
+don't code missings as "." and just do this when writing the
+data set to a delimited file (like NMwriteData will do for
+you).}
 }
 \value{
 TRUE or FALSE

@@ -15,7 +15,11 @@
 ##' @param col.row A column with a unique value for each row. Such a
 ##'     column is recommended to use if possible. Default ("ROW") can
 ##'     be modified using NMdataConf.
-##' @param na.strings
+##' @param na.strings Strings to be accepted when trying to convert
+##'     characters to numerics. This will typically be a string that
+##'     represents missing values. Default is "." even though most
+##'     users will use actual NA (NA_character), i.e. not a
+##'     string. See ?NMisNumeric.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
@@ -24,9 +28,8 @@
 ##' @details The following checks are performed. The term "numeric"
 ##'     does not refer to a numeric representation in R, but
 ##'     compatibility with Nonmem. The character string "2" is in this
-##'     sense a valid numeric, "id2" is not.
-##' \itemize{
-##' \item Column names must be unique and not contain special characters
+##'     sense a valid numeric, "id2" is not.  \itemize{ \item Column
+##'     names must be unique and not contain special characters
 ##' 
 ##' \item If an exclusion flag is used (for ACCEPT/IGNORE in Nonmem),
 ##'     elements must be non-missing and integers. If an exclusion
@@ -103,15 +106,15 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
         }
     }
 
-    ##' listEvents is for row-level findings
-    ##' @param col is the actual column to be used for the condition
-    ##' @param name 
-    ##' @param fun if fun does not return TRUE, we have a finding.
-    ##' @param colname is the column name reported to user.
+    ## listEvents is for row-level findings
+    ## @param col is the actual column to be used for the condition
+    ## @param name 
+    ## @param fun if fun does not return TRUE, we have a finding.
+    ## @param colname is the column name reported to user.
 
-    ##' @param new.rows.only. For nested criteria. Say that CMT is not
-    ##' numeric for row 10. Then don't report that it is not an integer
-    ##' too.
+    ## @param new.rows.only. For nested criteria. Say that CMT is not
+    ## numeric for row 10. Then don't report that it is not an integer
+    ## too.
     listEvents <- function(col,name,fun,colname=col,dat=data,events=NULL,invert=FALSE,new.rows.only=T,debug=F,...){
         if(debug) browser()
 

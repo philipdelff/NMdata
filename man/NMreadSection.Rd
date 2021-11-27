@@ -3,7 +3,7 @@
 \name{NMreadSection}
 \alias{NMreadSection}
 \alias{NMgetSection}
-\title{extract sections of Nonmem control streams}
+\title{Extract sections of Nonmem control streams}
 \usage{
 NMreadSection(
   file = NULL,

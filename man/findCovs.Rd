@@ -2,7 +2,7 @@
 % Please edit documentation in R/findCovs.R
 \name{findCovs}
 \alias{findCovs}
-\title{Extract columns that do not vary within variables in data}
+\title{Extract columns that vary within values of other columns}
 \usage{
 findCovs(data, by = NULL, as.fun = NULL)
 }

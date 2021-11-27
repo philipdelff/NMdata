@@ -2,7 +2,7 @@
 % Please edit documentation in R/NMorderColumns.R
 \name{NMorderColumns}
 \alias{NMorderColumns}
-\title{Order columns in dataset for use in Nonmem.}
+\title{Standardize column order in Nonmem input data}
 \usage{
 NMorderColumns(
   data,

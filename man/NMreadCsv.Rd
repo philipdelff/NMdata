@@ -2,7 +2,7 @@
 % Please edit documentation in R/NMreadCsv.R
 \name{NMreadCsv}
 \alias{NMreadCsv}
-\title{read csv data that is written to be read by nonmem}
+\title{Read input data formatted for nonmem}
 \usage{
 NMreadCsv(file, args.fread, as.fun = NULL)
 }

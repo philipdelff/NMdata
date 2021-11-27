@@ -4,7 +4,7 @@
 \alias{egdt}
 \title{Expand grid of data.tables}
 \usage{
-egdt(dt1, dt2)
+egdt(dt1, dt2, quiet)
 }
 \arguments{
 \item{dt1}{a data.table.}

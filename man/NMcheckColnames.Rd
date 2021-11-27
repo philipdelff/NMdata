@@ -23,3 +23,4 @@ when seemingly inexplainable things happen. This function lines up
 input data column names with $DATA and how NMscanData will
 interpret $DATA so you can easily spot if something is off.
 }
+\concept{debug}
