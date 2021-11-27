@@ -118,7 +118,7 @@ NMtransInp <- function(data,file,translate=TRUE){
     dt.colnames[tolower(datafile)!=tolower(DATA),compare:="diff"]
     dt.colnames[compare=="diff"&tolower(DATA)%in%tolower(datafile),compare:="off"]
     dt.colnames[,compare:=factor(compare,levels=c("OK","diff","off"))]
-    writeNMinfo(data,nminfo.data.0)
-    writeNMinfo(data,list(input.colnames=dt.colnames),append=TRUE)
+    writeNMinfo(data,nminfo.data.0,byRef=TRUE)
+    writeNMinfo(data,list(input.colnames=dt.colnames),append=TRUE,byRef=TRUE)
     data
 }

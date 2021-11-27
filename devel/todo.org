@@ -191,7 +191,8 @@ look at - called col.id after the translations.
       CLOSED: [2020-09-17 Thu 15:19]
       Maybe file can be missing/NULL if file.mod is given.
 *** NMtransFilters
-**** TODO [#A] Report translation in NMmeta
+**** DONE [#A] Report translation in NMmeta
+     CLOSED: [2021-11-26 Fri 22:55]
 **** DONE Replace single = with ==
      CLOSED: [2020-06-15 Mon 21:05]
 According to the manual single = can be used for comparisons. This is not and
@@ -291,7 +292,7 @@ See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
 is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMwriteData
-**** DONE [#A] Bug in inclusion of filename in text
+**** DONE Bug in inclusion of filename in text
      CLOSED: [2021-11-23 Tue 22:20]
      See poster example
 **** TODO [#B] Include a randomly generated ID in meta data that we can check files against?

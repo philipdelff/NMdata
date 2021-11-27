@@ -7,7 +7,6 @@
 ##'     the returned vector.
 ##' @details Don't use cc with any special characters - only
 ##'     alphanumerics and no spaces supported.
-
 ##' @export
 
 ##' @examples
