@@ -43,6 +43,9 @@
 ##' @family DataWrangling
 ##' @export
 
+## compareCols(r1.csv,r1.rds)
+## compareCols(r1.csv,r1.rds,fun.class=typeof)
+
 
 compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,fun.class=base::class,quiet,as.fun=NULL){
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -62,7 +65,6 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,fun.cl
     if(ndots==1&&missing(diff.only)) diff.only <- FALSE
     
     if(keepNames){
-        
         names.dots <- setdiff(as.character(match.call(expand.dots=TRUE)),as.character(match.call(expand.dots=FALSE)))
     } else {
         names.dots <- paste0("x",seq(ndots))
@@ -125,5 +127,3 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,fun.cl
 }
 
 
-## compareCols(r1.csv,r1.rds)
-## compareCols(r1.csv,r1.rds,fun.class=typeof)

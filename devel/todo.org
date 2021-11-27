@@ -41,7 +41,8 @@ Implement in same style as checks of cols.num
 **** column names
 ***** DONE duplicate column names
       CLOSED: [2021-11-24 Wed 22:48]
-***** TODO [#A] warning if duplicated column names
+***** DONE [#A] warning if duplicated column names
+      CLOSED: [2021-11-26 Fri 22:26]
       Other checks may be affected
 ***** DONE special characters not allowed in column names
       CLOSED: [2021-11-24 Wed 22:37]
@@ -85,7 +86,8 @@ Implement in same style as checks of cols.num
      CLOSED: [2021-06-07 Mon 22:35]
 **** tests of text file
 ***** A field can't contain more than 24 characters
-*** TODO [#A] cc - create character vector function
+*** DONE [#A] cc - create character vector function
+    CLOSED: [2021-11-26 Fri 22:30]
 *** Dosing functions
 **** TODO [#B] NMcreateDoses Generate dosing schedule with loading, ADDL etc
      This is available as a suitcase function
@@ -131,7 +133,8 @@ https://doi.org/10.1208/s12248-012-9387-9
     Export to parent. Not sure check allows though...
 ** Function improvements
 *** egdt
-**** TODO [#A] Report dims(df1,df2,result) unless quiet
+**** DONE [#A] Report dims(df1,df2,result) unless quiet
+     CLOSED: [2021-11-26 Fri 22:40]
 *** NMextractDataFile
 **** DONE Add support for windows absolute paths
      CLOSED: [2021-05-14 Fri 16:11]
