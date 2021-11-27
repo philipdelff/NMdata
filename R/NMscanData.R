@@ -211,7 +211,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(missing(use.input)) use.input <- NULL
     use.input <- NMdataDecideOption("use.input",use.input)
 
-    if(missing(col.row)||(!is.null(col.row)&&is.na(col.row))||(is.character(col.row)&&any(col.row==""))) {
+    ## a few different ways are allowed for NULL - missing, NA, "" all do the same
+    if(missing(col.row)||(!is.null(col.row)&&is.na(col.row))||(is.character(col.row)&&all(col.row==""))) {
         col.row <- NULL
     }
     col.row <- NMdataDecideOption("col.row",col.row)

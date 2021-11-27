@@ -122,7 +122,8 @@ dim(pk)
 ## pmxtricks:::NMcheckData(pk[FLAG==0])
 load_all("c:/Users/Philip Delff/wdirs/NMdata")
 
-finds <- NMcheckData(pk,col.row="ROW",debug=F)
+finds <- NMcheckData(pk)
+finds <- NMcheckData(pk,col.flagn="FLAG")
 
 #### Section start: Write data to files ####
 

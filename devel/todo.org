@@ -33,13 +33,15 @@ With load_all():
     somehow?
 ** New functions
 *** NMcheckData
+**** TODO [#B] Requirements to DV for EVID==2 and EVID==3?
+**** TODO [#B] Add col.row to findings
 **** DONE check for commas in character columns
      CLOSED: [2021-11-26 Fri 15:30]
 Implement in same style as checks of cols.num
 **** column names
 ***** DONE duplicate column names
       CLOSED: [2021-11-24 Wed 22:48]
-***** TODO warning if duplicated column names
+***** TODO [#A] warning if duplicated column names
       Other checks may be affected
 ***** DONE special characters not allowed in column names
       CLOSED: [2021-11-24 Wed 22:37]
@@ -110,10 +112,12 @@ Implement in same style as checks of cols.num
     right now hidden in metadata
 *** DONE Summary of tables - NMinfo
     CLOSED: [2021-05-14 Fri 15:38]
-*** TODO [#A] A function to check data - NMcheckData
+*** DONE [#A] A function to check data - NMcheckData
+    CLOSED: [2021-11-26 Fri 21:25]
 **** DONE Find previously used code
      CLOSED: [2021-11-23 Tue 22:05]
-**** TODO Implement checks in pmxtricks todo
+**** DONE Implement checks in pmxtricks todo
+     CLOSED: [2021-11-26 Fri 21:25]
 **** TODO [#B] Implement more checks
 https://doi.org/10.1208/s12248-012-9387-9
 **** Additional checks

@@ -1,80 +1,95 @@
 ##' Check data for Nonmem compatibility
 ##'
-##' Under development. Check data in various ways for compatibility
-##' with Nonmem. Some findings will be reported even if they will not
-##' make Nonmem fail but because they are typical dataset issues.
+##' Check data in various ways for compatibility with Nonmem. Some
+##' findings will be reported even if they will not make Nonmem fail
+##' but because they are typical dataset issues.
 ##' 
-##' @param data The data to check
+##' @param data The data to check. data.frame, data.table, tibble,
+##'     anything that can be converted to data.table.
 ##' @param col.id The name of the column that holds the subject
 ##'     identifier. Default is "ID".
-##' @param col.time The name of the column holding actual time
-##' @param col.flagn Optionally, the name of the column holding numeric exclusion flags.
-##' @param col.row 
-##' @param debug Start by calling browser()?
-##' @details The following checks are performed. The term "numeric" does not refer to a numeric representation in R, but compatibility with Nonmem. The character string "2" is in this sense a valid numeric, "id2" is not.
+##' @param col.time The name of the column holding actual time.
+##' @param col.flagn Optionally, the name of the column holding
+##'     numeric exclusion flags. Default value is FLAG and can be
+##'     configured using NMdataConf.
+##' @param col.row A column with a unique value for each row. Such a
+##'     column is recommended to use if possible. Default ("ROW") can
+##'     be modified using NMdataConf.
+##' @param na.strings
+##' @param as.fun The default is to return data as a data.frame. Pass
+##'     a function (say tibble::as_tibble) in as.fun to convert to
+##'     something else. If data.tables are wanted, use
+##'     as.fun="data.table". The default can be configured using
+##'     NMdataConf.
+##' @details The following checks are performed. The term "numeric"
+##'     does not refer to a numeric representation in R, but
+##'     compatibility with Nonmem. The character string "2" is in this
+##'     sense a valid numeric, "id2" is not.
 ##' \itemize{
-##' \item If an exclusion flag is used (for ACCEPT/IGNORE in Nonmem), elements must be non-missing and integers. If an exclusion flag is found, the rest of the checks are performed on rows where that flag equals 0 (zero) only.
-##' \item col.time (TIME), EVID, ID, CMT, MDV: If present, elements must be non-missing and numeric.
+##' \item Column names must be unique and not contain special characters
+##' 
+##' \item If an exclusion flag is used (for ACCEPT/IGNORE in Nonmem),
+##'     elements must be non-missing and integers. If an exclusion
+##'     flag is found, the rest of the checks are performed on rows
+##'     where that flag equals 0 (zero) only.
+##'
+##' \item col.time (TIME),
+##'     EVID, ID, CMT, MDV: If present, elements must be non-missing
+##'     and numeric.
+##'
 ##' \item col.time (TIME) must be non-negative
+##'
 ##' \item EVID must be in {0,1,2,3,4}
+##'
 ##' \item CMT must be positive integers
+##'
 ##' \item MDV must be the binary (1/0) representation of is.na(DV)
+##'
 ##' \item AMT must be 0 or NA for EVID 0 and 2
+##'
 ##' \item AMT must be positive for EVID 1 and 4
+##'
 ##' \item DV must be numeric
+##'
 ##' \item DV must be missing for EVID in {1,4}.
-##' \item ID must be positive and values cannot be disjoint (all records for each ID must be following each other. This is technically not a requirement in Nonmem but most often an error. Use a second ID column if you deliberately want to soften this check)
+##'
+##' \item ID must be positive and values cannot be disjoint (all
+##'     records for each ID must be following each other. This is
+##'     technically not a requirement in Nonmem but most often an
+##'     error. Use a second ID column if you deliberately want to
+##'     soften this check)
+##'
 ##' \item TIME cannot be decreasing within ID, unless EVID in {3,4}.
+##'
 ##' \item all ID's must have doses (EVID in {1,4})
+##'
 ##' \item all ID's must have observations (EVID==0)
-##' }
-##' @import data.table 
-
-### TODO
-
-### Requirements to DV for EVID==2 and EVID==3?
-
-## We check for NA's by a numeric conversion. But what if the NA comes from a value of say "b" that is not a valid NA representation. This has to be addressed before/at NMasNumeric.
-
-## We need several potentially nested checks on several colums:
-## Example: col.time has to be present, numeric, non-negative. These
-## should be done one after another for readibility of code.
-
-## col.row if supplied
-### check for uniqueness, integer, (increasing)
-### use col.row instead of tmprow
-
-## convert to data.table
-
-## checks for NM compatibility.
-### Report which can be used and which cannot.
-### error if EVID, DV, AMT etc are not numeric to Nonmem
-
-## run flagsAssign to summarize all findings? 
-
-## column names
-
-### col.flagn
-### subset to col.flagn==0
-
-#### checks of specific columns - row level
-### TIME
-### CMT
-### AMT - todo
-### DV
-### MDV
-
-#### ID-level checks
-### increasing time within subjects and EVID=3 or 4
-### subjects without obs
-### subjects without doses
-
-#### format results
+##'
+##' \item If a unqique row identifier is used, this must be
+##'     non-missing, increasing, integer
+##'
+##' \item Character values must not contain commas (they will mess up
+##'     writing/reading csv) }
+##' 
+##' @import data.table
+##' @export
 
 
-NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=NULL,na.strings,debug=F){
-    if(debug) browser()
+NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,na.strings,as.fun){
+
+#### Section start: Default parameter values ####
     if(missing(na.strings)) na.strings <- "."
+    if(missing(col.row)||(!is.null(col.row)&&is.na(col.row))||(is.character(col.row)&&all(col.row==""))) {
+        col.row <- NULL
+    }
+    col.row <- NMdataDecideOption("col.row",col.row)
+    if(missing(as.fun)) as.fun <- NULL
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    if(missing(col.flagn)) col.flagn <- NULL
+    col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
+
+### Section end: Default parameter values    
+
     data <- copy(as.data.table(data))
 
     row <- tmpcol(data,base="ROW",prefer.plain=TRUE)
@@ -136,6 +151,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
     Ntab.cnames <- data.table(col=cnames)[,.N,by=.(col)]
     dt.dups <- Ntab.cnames[N>1]
     if(nrow(dt.dups)){
+        warning("Duplicate column names found. Please fix. Other checks may be affected.")
         findings <- rbind(findings,
                           data.table(check="Non-unique column names",column=dt.dups[,col],row=NA_integer_,level="column"))
     }
@@ -151,7 +167,6 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
 ####### End checking column names
 
 #### Section start: commas in character columns ####
-    
     
     cols.char <- sapply(data,NMisNumeric,na.strings=na.strings)
     cols.char <- names(cols.char)[!cols.char]
@@ -352,13 +367,14 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn=NULL,col.row=
     }
     setcolorder(findings,c(row,"ID","column","check"))
 
+
     if(nrow(findings)==0) {
         message("No findings. Great!")
-        return(invisible(findings))
     } else {
         print(findings[,.N,by=.(column,check)],row.names=FALSE)
         cat("\n")
-        return(invisible(findings))
     }
+    findings <- as.fun(findings)
+    return(invisible(findings))
 
 }
