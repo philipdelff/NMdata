@@ -8,7 +8,6 @@ context("flags")
 
 test_that("basic",{
 
-    
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 
 ### two flag tables with different order of the two conditions
@@ -19,6 +18,7 @@ test_that("basic",{
     
     ## add the two different exclusion flags
     pk <- flagsAssign(pk,tab.flags=dt.flags,subset.data="EVID==0")
+
     pk[EVID==1,FLAG:=0]
     pk[EVID==1,flag:="Dosing"]
 
@@ -98,7 +98,8 @@ test_that("Include EVID==1",{
 100,Below LLOQ,EVID==0&BLQ==1
 10,Negative time,EVID==0&TIME<0")
     
-    pk <- flagsAssign(pk,tab.flags=dt.flags,flags.increasing=T)
+    expect_error(flagsAssign(pk,tab.flags=dt.flags,flags.increasing=T))
+    pk <- flagsAssign(pk,tab.flags=dt.flags,flags.increasing=T,subset.data="EVID==0")
     pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing",
                       col.flagn="flagn",col.flagc="flagc")
     

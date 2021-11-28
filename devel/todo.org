@@ -329,9 +329,12 @@ Not warning. Warning if standard variable?
 **** DONE Polish
      CLOSED: [2020-12-23 Wed 11:31]
 *** flagsAssign
-**** TODO [#A] check for whether there are any contents in data - just warning and return nothing
-**** TODO [#A] implement grp.incomp as in flagsCount
-**** TODO [#A] Only give message about overwriting FLAG/flag if non-NA values are present
+**** DONE [#A] check for whether there are any contents in data - just warning and return nothing
+     CLOSED: [2021-11-27 Sat 21:16]
+**** DONE [#A] implement grp.incomp as in flagsCount
+     CLOSED: [2021-11-27 Sat 22:14]
+**** DONE [#A] Only give message about overwriting FLAG/flag if non-NA values are present
+     CLOSED: [2021-11-27 Sat 22:28]
 **** DONE Improve messages at each FLAG coding
      CLOSED: [2020-12-23 Wed 11:31]
 **** DONE Make sure we arrange back to original order
