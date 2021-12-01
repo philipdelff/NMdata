@@ -11,6 +11,7 @@ flagsAssign(
   col.flagn,
   col.flagc,
   flags.increasing = FALSE,
+  grp.incomp = "EVID",
   flagc.0 = "Analysis set",
   as.fun = NULL
 )

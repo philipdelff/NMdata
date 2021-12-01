@@ -29,39 +29,42 @@
 ##' 
 ##' @examples
 ##' newlines <- "$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"
-##' NMwriteSection(file=system.file("examples/nonmem/xgxr001.mod", package = "NMdata"),
+##' NMwriteSection(files=system.file("examples/nonmem/xgxr001.mod", package = "NMdata"),
 ##' section="EST", newlines=newlines,newfile=NULL)
 ##' @export
 
 
-NMwriteSection <- function(file,file.pattern,dir,section,newlines,list.sections,newfile,
-                           backup=TRUE,blank.append=TRUE,write=TRUE){
+NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections,newfile,
+                           backup=TRUE,blank.append=TRUE,data.file,write=TRUE,quiet){
 
     
 #### Section start: handle arguments ####
 
+    if(missing(quiet)) quiet <- NULL
+    quiet <- NMdataDecideOption("quiet",quiet)
+    
     ## supply either file or file.pattern. dir only allowed if file.pattern
-    if( missing(file) && missing(file.pattern) ){
+    if( missing(files) && missing(file.pattern) ){
         stop("You have to supply either file or file.pattern")
     }
-    if(!missing(file)&& (!missing(file.pattern) || !missing(dir))){
-        stop("If supplying file, file.pattern and dir cannot be used")
+    if(!missing(files)&& (!missing(file.pattern) || !missing(dir))){
+        stop("If supplying files, file.pattern and dir cannot be used")
     }
     if(!missing(file.pattern)&&missing(dir)){
         stop("If using file.pattern, you have to supply dir too.")
     }
-    if(!missing(file)){
-        all.files <- file
+    if(!missing(files)){
+        all.files <- files
     }
     
     if(!missing(file.pattern)){
         all.files <- list.files(path=dir,pattern=file.pattern,full.names=TRUE,recursive=FALSE)
     }
 
-    if(!missing(DataFile)){
-        all.files <- all.files[sapply(all.files,function(file)NMextractDataFile(file)==DataFile)]
+    if(!missing(data.file)){
+        all.files <- all.files[sapply(all.files,function(file)NMextractDataFile(file)==data.file)]
     }
-    if(length(all.files==0)) stop("No files to process.")
+    if(length(all.files)==0) stop("No files to process.")
     
     ## supply either section and newlines or a list
     if(!( (!missing(section)&&!missing(newlines)) ||
@@ -79,18 +82,19 @@ NMwriteSection <- function(file,file.pattern,dir,section,newlines,list.sections,
 ###  Section end: handle arguments
 
 
-    NMwriteSectionOne <- function(file,section,newlines,list.sections,newfile,
+    NMwriteSectionOne <- function(file0,section,newlines,list.sections,newfile,
                                   backup=TRUE,blank.append=TRUE,write=TRUE){
-        file <- filePathSimple(file)
-        stopifnot(file.exists(file))
+        
+        file0 <- filePathSimple(file0)
+        stopifnot(file.exists(file0))
 
-        if(missing(newfile)) newfile <- file
+        if(missing(newfile)) newfile <- file0
         if(!is.null(newfile)){
             newfile <- filePathSimple(newfile)
         }
 
         ## see below why we need to read the lines for now
-        lines <- readLines(file)
+        lines <- readLines(file0)
 
         ## put this part in a function to be sequentially applied for all elements in list.
         replaceOnePart <- function(lines,section,newlines){
@@ -145,22 +149,24 @@ NMwriteSection <- function(file,file.pattern,dir,section,newlines,list.sections,
         
         if(is.null(newfile)) return(newlines)
         
-        if(file==newfile && backup ) file.copy (file,
-                                                sub("(.+/)([^/].+$)","\\1backup_\\2",x=file)
+        if(file0==newfile && backup ) file.copy (file0,
+                                                sub("(.+/)([^/].+$)","\\1backup_\\2",x=file0)
                                                 )
 
         if(!write){
             return(newlines)
         }
-
+        
+        if(!quiet) cat("writing",newfile,"\n")
         con.newfile <- file(newfile,"wb")
         writeLines(newlines,con=con.newfile)
         close(con.newfile)
         return(invisible(newlines))
     }
     
-    lapply(all.files,NMwriteSectionOne,section=section,newlines=newlines,
+    res <- lapply(all.files,NMwriteSectionOne,section=section,newlines=newlines,
            list.sections=list.sections,newfile=newfile,
            backup=backup,blank.append=blank.append,write=write)
-    
+
+    return(invisible(res))
 }

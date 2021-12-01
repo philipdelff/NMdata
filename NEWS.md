@@ -1,6 +1,22 @@
 # NMdata 0.0.10
+* NMcheckData
+
+* NMwriteSection
+
+* flagsAssign has got a few updates related to separate handling of
+  different types of events. Often, this will be used to assign flags
+  to observations, doses etc. separately. You can easily speficy a
+  subset of data to run flagsAssign on, and it will by default check
+  for whether values of EVID are unique. This is similar to what
+  flagsCount does.
+
+* NMextractDataFile
+
 * Bugfix in NMwriteData. The datafile is now correctly included in the
   $DATA suggestion for Nonmem. No impact on data file output.
+
+* egdt now reports dimensions of the two data sets to combine and the
+  resulting data. Can be disabled with quiet argument.
 
 # NMdata 0.0.9
 The only change from 0.0.8 is a patch provided by Matt Dowle ensuring

@@ -5,19 +5,21 @@
 \title{Replace ($)sections of a nonmem control stream}
 \usage{
 NMwriteSection(
-  file,
+  files,
+  file.pattern,
+  dir,
   section,
   newlines,
   list.sections,
   newfile,
   backup = TRUE,
   blank.append = TRUE,
-  write = TRUE
+  data.file,
+  write = TRUE,
+  quiet
 )
 }
 \arguments{
-\item{file}{File path to the model (control stream) to edit.}
-
 \item{section}{The name of the section to update. Example:
 section="EST" to edit the sections starting by $EST. See
 NMreadSection}
@@ -41,6 +43,8 @@ want to backup the file (to say, backup_run001.mod)?}
 \item{write}{Default is to write to file. If write=FALSE,
 NMwriteSection returns the resulting input.txt without writing
 it.  to disk?  Default is FALSE.}
+
+\item{file}{File path to the model (control stream) to edit.}
 }
 \value{
 The new section text is returned. If write=TRUE, this is done invisibly.
