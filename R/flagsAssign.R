@@ -58,7 +58,8 @@
 
 
 flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
-                        flags.increasing=FALSE, flagc.0="Analysis set", as.fun=NULL){
+                        flags.increasing=FALSE, grp.incomp="EVID",
+                        flagc.0="Analysis set", as.fun=NULL){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -91,6 +92,13 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
 ####### Check data ######
     if(!is.data.frame(data)){stop("data must be a data.frame")}
     ## make sure data is a data.table
+
+    if(nrow(data)==0) {
+        warning("data is empty. Nothing to do.")
+        as.fun <- NMdataDecideOption("as.fun",as.fun)
+        data <- as.fun(data)
+        return(data)
+    }
     
     data.was.data.table <- TRUE
     if(is.data.table(data)){
@@ -102,15 +110,6 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
 
     datacols <- copy(colnames(data))
 
-    
-### data can contain a column named FLAG - but it is removed
-    if(col.flagn%in%datacols) {
-        messageWrap(sprintf("Data contains %s already. This is overwritten",col.flagn),fun.msg=message)
-    }
-    if(col.flagc%in%datacols) {
-        messageWrap(sprintf("Data contains %s already. This is overwritten",col.flagc),fun.msg=message)
-    }
-    
 ##### End Check data #######
     
 
@@ -165,12 +164,35 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
         if(!(is.character(subset.data)&&length(subset.data)==1)){
             stop("If not missing or NULL, subset.data must be one character string (e.g. \"EVID==0\").")
         }
-
         subsetAND <- paste(subset.data,"&")
     }
     
 ####### END Check tab.flags ####
     
+### check for incompatible groups (say doses and observations)
+    if(subset.data=="") {
+        data.sub <- data
+    } else {
+        data.sub <- data[eval(parse(text=subset.data))]
+    }
+    check.incomp <- intersect(datacols,grp.incomp)
+    if(length(check.incomp)>0) {
+        covs.incomp <- findCovs(data.sub[,check.incomp,with=FALSE])
+        if(length(check.incomp)>ncol(covs.incomp)){
+            cols.incomp <- setdiff(check.incomp,colnames(covs.incomp))
+            stop(sprintf("Incompatible data included. Column(s) %s is non-unique. Consider running on a subset of data or see argument grp.incomp.",paste(cols.incomp,sep=", ")))
+        }
+    }
+
+    
+### data can contain a column named FLAG - but it is removed
+    if(col.flagn%in%datacols&&data.sub[,any(!is.na(get(col.flagn)))]) {
+        messageWrap(sprintf("Data contains %s already. This is overwritten",col.flagn),fun.msg=message)
+    }
+    if(col.flagc%in%datacols&&data.sub[,any(!is.na(get(col.flagc)))]) {
+        messageWrap(sprintf("Data contains %s already. This is overwritten",col.flagc),fun.msg=message)
+    }
+
     
 ####################### CHECKS END ######################
 

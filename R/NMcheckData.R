@@ -44,7 +44,7 @@
 ##'
 ##' \item EVID must be in {0,1,2,3,4}
 ##'
-##' \item CMT must be positive integers
+##' \item CMT must be positive integers. However, can be missing or zero for EVID==3.
 ##'
 ##' \item MDV must be the binary (1/0) representation of is.na(DV)
 ##'
@@ -95,8 +95,8 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
 
     data <- copy(as.data.table(data))
 
-    row <- tmpcol(data,base="ROW",prefer.plain=TRUE)
-    data[,(row):=.I]
+    c.row <- tmpcol(data,base="row",prefer.plain=TRUE)
+    data[,(c.row):=.I]
     
     NMasNumeric <- function(x,warn=F) {
         if(warn){
@@ -117,7 +117,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
     ## too.
     listEvents <- function(col,name,fun,colname=col,dat=data,events=NULL,invert=FALSE,new.rows.only=T,debug=F,...){
         if(debug) browser()
-
+        
 
         if(!col%in%colnames(dat)){
             if(events[check=="Column not found"&column==colname&level=="column",.N]==0){
@@ -128,19 +128,19 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
         }
         
         if(invert){
-            row <- dat[fun(get(col),...)==TRUE,get(row)]
+            rows <- dat[fun(get(col),...)==TRUE,get(c.row)]
         } else {
-            row <- dat[fun(get(col),...)!=TRUE,get(row)]
+            rows <- dat[fun(get(col),...)!=TRUE,get(c.row)]
         }
 
-        if(length(row)==0) {
+        if(length(rows)==0) {
             res <- data.table(check=name,column=colname,row=NA,level="row")[0]
         } else {
             
             if(new.rows.only&&!is.null(events)){
-                row <- setdiff(row,events[column==colname,row])
+                rows <- setdiff(row,events[column==colname,row])
             }
-            res <- data.table(check=name,column=colname,row=row,level="row")
+            res <- data.table(check=name,column=colname,row=rows,level="row")
         }
         rbind(events,res,fill=TRUE)
     }
@@ -221,8 +221,8 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
 ######## Default columns
     cols.num <- c()
     
-### Others that: If column present, must be numeric, and values must be non-NA. Remember eg DV and AMT can be NA.
-    cols.num.if.avail <- c(col.time,"EVID","ID","CMT","MDV")
+### Others that: If column present, must be numeric, and values must be non-NA. Remember eg DV, CMT and AMT can be NA.
+    cols.num.if.avail <- c(col.time,"EVID","ID","MDV")
     for(col in cols.num.if.avail){
         if(!is.null(col)&&col%in%colnames(data)){
             cols.num <- c(cols.num,col)
@@ -264,16 +264,21 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
     findings <- listEvents("EVID","EVID in 0:4",function(x) x%in%c(0:4),events=findings)
 
     
-### CMT must be a positive integer
-    ## findings <- listEvents("CMT","Missing value",
-    ##                        fun=is.na,events=findings,na.strings=na.strings)
-    ## findings <- listEvents("CMT","Not numeric",
-    ##                        fun=NMisNumeric,events=findings,
-    ##                        new.rows.only=T,na.strings=na.strings)
+### CMT must be a positive integer. It can be missing for CMT=3
+    findings <- listEvents("CMT","Missing for EVID!=3",
+                           fun=is.na,invert=TRUE,events=findings,
+                           dat=data[EVID%in%c(1,2,4)])
+    ## For EVID!=3, must be a positive integer 
     findings <- listEvents("CMT","CMT not a positive integer",
                            fun=function(x)x>0&x%%1==0,events=findings,
+                           dat=data[EVID%in%c(1,2,4)],
                            new.rows.only=T)
-
+    ## For EVID==3, if CMT not missing, must be 0 or a positive integer
+    findings <- listEvents("CMT","CMT not a positive integer",
+                           fun=function(x)x>=0&x%%1==0,events=findings,
+                           dat=data[EVID%in%c(3)&!is.na(CMT)]
+                           )
+    
 ### ID must be a positive integer
     findings <- listEvents("ID","ID not a positive integer",
                            fun=function(x)x>0&x%%1==0,events=findings,
@@ -356,24 +361,24 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
     if(!is.null(col.id)&&nrow(findings.row)>0){
         if(col.id%in%colnames(findings.row)) findings.row[,(col.id):=NULL]
         
-        findings.row <- mergeCheck(findings.row,data[,c(row,col.id),with=F],by.x="row",by.y=row,all.x=T,fun.commoncols=stop)
+        findings.row <- mergeCheck(findings.row,data[,c(c.row,col.id),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop)
         
         findings <- rbind(findings[level!="row"],findings.row,fill=T)
     }
 
-### use the row identifier for reporting
-    if(!is.null(col.row)){
-        setnames(findings,"row",row)
-        findings <- mergeCheck(findings,data[,c(row,col.row),with=F],by=row,all.x=T,fun.commoncols=stop)
-        findings[,(row):=NULL]
-        row <- col.row
-    }
-    setcolorder(findings,c(row,"ID","column","check"))
-
-
+    
     if(nrow(findings)==0) {
         message("No findings. Great!")
     } else {
+### use the row identifier for reporting
+        if(!is.null(col.row)){
+            
+            findings <- mergeCheck(findings,data[,c(c.row,col.row),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop)
+        }
+        if(!col.id%in%colnames(findings)) findings[,(col.id):=NA_real_]
+        setcolorder(findings,c(c.row,col.id,"column","check"))
+        setorderv(findings,c(c.row,"column","check"))
+
         print(findings[,.N,by=.(column,check)],row.names=FALSE)
         cat("\n")
     }

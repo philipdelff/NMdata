@@ -32,9 +32,8 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
-*** NMcheckData
-**** TODO [#B] Requirements to DV for EVID==2 and EVID==3?
-**** TODO [#B] Add col.row to findings
+*** DONE NMcheckData
+    CLOSED: [2021-12-01 Wed 09:12]
 **** DONE check for commas in character columns
      CLOSED: [2021-11-26 Fri 15:30]
 Implement in same style as checks of cols.num
@@ -132,6 +131,11 @@ https://doi.org/10.1208/s12248-012-9387-9
     Risk now is that arguments are set to NULL
     Export to parent. Not sure check allows though...
 ** Function improvements
+*** NMcheckData
+**** TODO Only check for special characters in colnames for numeric columns
+     Applies to other colname checks too?
+**** TODO [#B] Requirements to DV for EVID==2 and EVID==3?
+**** TODO [#B] Add col.row to findings
 *** egdt
 **** DONE [#A] Report dims(df1,df2,result) unless quiet
      CLOSED: [2021-11-26 Fri 22:40]
@@ -329,9 +333,12 @@ Not warning. Warning if standard variable?
 **** DONE Polish
      CLOSED: [2020-12-23 Wed 11:31]
 *** flagsAssign
-**** TODO [#A] check for whether there are any contents in data - just warning and return nothing
-**** TODO [#A] implement grp.incomp as in flagsCount
-**** TODO [#A] Only give message about overwriting FLAG/flag if non-NA values are present
+**** DONE [#A] check for whether there are any contents in data - just warning and return nothing
+     CLOSED: [2021-11-27 Sat 21:16]
+**** DONE [#A] implement grp.incomp as in flagsCount
+     CLOSED: [2021-11-27 Sat 22:14]
+**** DONE [#A] Only give message about overwriting FLAG/flag if non-NA values are present
+     CLOSED: [2021-11-27 Sat 22:28]
 **** DONE Improve messages at each FLAG coding
      CLOSED: [2020-12-23 Wed 11:31]
 **** DONE Make sure we arrange back to original order

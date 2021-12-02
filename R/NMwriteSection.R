@@ -29,26 +29,43 @@
 ##' 
 ##' @examples
 ##' newlines <- "$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"
-##' NMwriteSection(file=system.file("examples/nonmem/xgxr001.mod", package = "NMdata"),
+##' NMwriteSection(files=system.file("examples/nonmem/xgxr001.mod", package = "NMdata"),
 ##' section="EST", newlines=newlines,newfile=NULL)
 ##' @export
 
 
-NMwriteSection <- function(file,section,newlines,list.sections,newfile,
-                          backup=TRUE,blank.append=TRUE,write=TRUE){
+NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections,newfile,
+                           backup=TRUE,blank.append=TRUE,data.file,write=TRUE,quiet){
 
-    
     
 #### Section start: handle arguments ####
-    
-    file <- filePathSimple(file)
-    stopifnot(file.exists(file))
 
-    if(missing(newfile)) newfile <- file
-    if(!is.null(newfile)){
-        newfile <- filePathSimple(newfile)
+    if(missing(quiet)) quiet <- NULL
+    quiet <- NMdataDecideOption("quiet",quiet)
+    
+    ## supply either file or file.pattern. dir only allowed if file.pattern
+    if( missing(files) && missing(file.pattern) ){
+        stop("You have to supply either file or file.pattern")
+    }
+    if(!missing(files)&& (!missing(file.pattern) || !missing(dir))){
+        stop("If supplying files, file.pattern and dir cannot be used")
+    }
+    if(!missing(file.pattern)&&missing(dir)){
+        stop("If using file.pattern, you have to supply dir too.")
+    }
+    if(!missing(files)){
+        all.files <- files
+    }
+    
+    if(!missing(file.pattern)){
+        all.files <- list.files(path=dir,pattern=file.pattern,full.names=TRUE,recursive=FALSE)
     }
 
+    if(!missing(data.file)){
+        all.files <- all.files[sapply(all.files,function(file)NMextractDataFile(file)==data.file)]
+    }
+    if(length(all.files)==0) stop("No files to process.")
+    
     ## supply either section and newlines or a list
     if(!( (!missing(section)&&!missing(newlines)) ||
           !missing(list.sections)
@@ -63,77 +80,93 @@ NMwriteSection <- function(file,section,newlines,list.sections,newfile,
     }
     
 ###  Section end: handle arguments
-    
 
-    ## see below why we need to read the lines for now
-    lines <- readLines(file)
 
-    ## put this part in a function to be sequentially applied for all elements in list.
-    replaceOnePart <- function(lines,section,newlines){
+    NMwriteSectionOne <- function(file0,section,newlines,list.sections,newfile,
+                                  backup=TRUE,blank.append=TRUE,write=TRUE){
         
-        ## make sure section is capital and does not start with $.
-        section <- gsub(" ","",section)
-        ## if(!grepl("^\\$",section)){
-        ##     section <- paste0("$",section)
-        ## }
-        section <- sub("^\\$","",section)
-        section <- toupper(section)
+        file0 <- filePathSimple(file0)
+        stopifnot(file.exists(file0))
 
-        ## make sure newlines start with $SECTION
-        newlines <- sub("^ +","",newlines)
-### doesn't work. For now, user has to supply newlines including a valid $SECTION start.
-        ## if(grepl(paste0("^\\",section),newlines,ignore.case=TRUE)){
-        ##     newlines <-
-        ##         sub("^([^ ]+)(\\s.*)","\\1",newlines,perl=TRUE)
-        ## }
-        
-        if(blank.append) newlines <- c(newlines,"")
-        
-        idx.dlines <- NMreadSection(lines=lines,section=section,return="idx",keepEmpty=TRUE,
-                                   keepName=TRUE,keepComments=TRUE,asOne=TRUE,
-                                   cleanSpaces=FALSE)
-
-        stopifnot(length(idx.dlines)>0)
-        
-        if(length(idx.dlines)>1) {
-            ## if th
-            stopifnot(max(diff(idx.dlines))==1)
+        if(missing(newfile)) newfile <- file0
+        if(!is.null(newfile)){
+            newfile <- filePathSimple(newfile)
         }
-        min.dl <- min(idx.dlines)
-        max.dl <- max(idx.dlines)
+
+        ## see below why we need to read the lines for now
+        lines <- readLines(file0)
+
+        ## put this part in a function to be sequentially applied for all elements in list.
+        replaceOnePart <- function(lines,section,newlines){
+            
+            ## make sure section is capital and does not start with $.
+            section <- gsub(" ","",section)
+            section <- sub("^\\$","",section)
+            section <- toupper(section)
+
+            ## make sure newlines start with $SECTION
+            newlines <- sub("^ +","",newlines)
+### doesn't work. For now, user has to supply newlines including a valid $SECTION start.
+            ## if(grepl(paste0("^\\",section),newlines,ignore.case=TRUE)){
+            ##     newlines <-
+            ##         sub("^([^ ]+)(\\s.*)","\\1",newlines,perl=TRUE)
+            ## }
+            
+            if(blank.append) newlines <- c(newlines,"")
+            
+            idx.dlines <- NMreadSection(lines=lines,section=section,return="idx",keepEmpty=TRUE,
+                                        keepName=TRUE,keepComments=TRUE,asOne=TRUE,
+                                        cleanSpaces=FALSE)
+
+            stopifnot(length(idx.dlines)>0)
+            
+            if(length(idx.dlines)>1) {
+                ## if th
+                stopifnot(max(diff(idx.dlines))==1)
+            }
+            min.dl <- min(idx.dlines)
+            max.dl <- max(idx.dlines)
 
 ### these two cases need to be handled slightly differently so not supported for now
-        stopifnot(min.dl>1)
-        stopifnot(max.dl<=length(lines))
+            stopifnot(min.dl>1)
+            stopifnot(max.dl<=length(lines))
 
-        if(min.dl>1){
-            newlines <- c(lines[1:(min.dl-1)],
-                          newlines)
-        }
-        if(max.dl<length(lines)){
-            newlines <- c(newlines,
-                          lines[(max.dl+1):length(lines)])
-        }
+            if(min.dl>1){
+                newlines <- c(lines[1:(min.dl-1)],
+                              newlines)
+            }
+            if(max.dl<length(lines)){
+                newlines <- c(newlines,
+                              lines[(max.dl+1):length(lines)])
+            }
 
-        ##  function end
-        newlines
+            ##  function end
+            newlines
+        }
+        
+        newlines <- lines
+        for (I in 1:length(list.sections)) newlines <- replaceOnePart(lines=newlines,section=names(list.sections)[I],newlines=list.sections[[I]])
+        
+        if(is.null(newfile)) return(newlines)
+        
+        if(file0==newfile && backup ) file.copy (file0,
+                                                sub("(.+/)([^/].+$)","\\1backup_\\2",x=file0)
+                                                )
+
+        if(!write){
+            return(newlines)
+        }
+        
+        if(!quiet) cat("writing",newfile,"\n")
+        con.newfile <- file(newfile,"wb")
+        writeLines(newlines,con=con.newfile)
+        close(con.newfile)
+        return(invisible(newlines))
     }
     
-    newlines <- lines
-    for (I in 1:length(list.sections)) newlines <- replaceOnePart(lines=newlines,section=names(list.sections)[I],newlines=list.sections[[I]])
-    
-    if(is.null(newfile)) return(newlines)
-    
-    if(file==newfile && backup ) file.copy (file,
-                                            sub("(.+/)([^/].+$)","\\1backup_\\2",x=file)
-                                            )
+    res <- lapply(all.files,NMwriteSectionOne,section=section,newlines=newlines,
+           list.sections=list.sections,newfile=newfile,
+           backup=backup,blank.append=blank.append,write=write)
 
-    if(!write){
-        return(newlines)
-    }
-
-    con.newfile <- file(newfile,"wb")
-    writeLines(newlines,con=con.newfile)
-    close(con.newfile)
-    return(invisible(newlines))
+    return(invisible(res))
 }

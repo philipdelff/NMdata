@@ -166,11 +166,7 @@ NMscanInput <- function(file, use.rds, file.mod,
 
     
 ### cnames.input is the names of columns as in input data file
-    data.input <- NMtransInp(data.input,file,translate=translate)
-    ## dt.colnames <- data.input$dt.colnames
-    ## data.input <- data.input$data
-    ## data.filters <- data.input$filters
-    
+    data.input <- NMtransInp(data.input,file,translate=translate)    
     
     col.id.inp <- col.id
     if(translate){
@@ -216,8 +212,9 @@ NMscanInput <- function(file, use.rds, file.mod,
         data.input <- as.fun(data.input)
         writeNMinfo(data.input,meta,byRef=TRUE)
         return(data.input)
+    } else {
+        data.input <- as.fun(data.input)
     }
-
-    data.input <- as.fun(data.input)
+    
     return(data.input)
 }

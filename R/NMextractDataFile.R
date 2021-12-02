@@ -6,8 +6,7 @@
 ##'     and the existence of the file in that directory is not
 ##'     checked.
 ##' @return The path to the input data file.
-
-### To be used internally so far - don't export
+##' @export
 
 NMextractDataFile <- function(file,dir.data=NULL){
     
