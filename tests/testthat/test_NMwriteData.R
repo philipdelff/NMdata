@@ -165,7 +165,7 @@ test_that("with stamp on csv",{
 
     res1 <- NMwriteData(pk,file=outfile
                        ,script="A simple test",write.rds=FALSE,
-                        args.stamp=list(CreationTime=as.POSIXct("2021-11-21 11:00:00")))
+                        args.stamp=list(time=as.POSIXct("2021-11-21 11:00:00")))
     res1 <- fix.input(res1)
 
     expect_equal_to_reference(

@@ -295,13 +295,14 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
     files.written=c()
     if(write.csv){
         file.csv <- fnExtension(file,".csv")
-
+        
         do.call(fwrite,append(list(x=data,file=file.csv),args.fwrite))
         ## fwrite      (data,na=".",quote=FALSE,row.names=FALSE,scipen=0,file=file.csv)
         files.written <- c(files.written,file.csv)
         if(doStamp){
             
-            data <- do.call(NMstamp,append(list(data=data,writtenTo=file.csv),args.stamp))
+            ## data <- do.call(NMstamp,append(list(data=data,writtenTo=file.csv),args.stamp))
+            do.call(NMstamp,append(list(data=data,writtenTo=file.csv),args.stamp))
             data.meta.csv <- NMinfo(data,"dataCreate")
             data.meta.csv <- data.table(parameter=names(data.meta.csv)
                                        ,value=unlist(lapply(data.meta.csv,as.character)))

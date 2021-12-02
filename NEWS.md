@@ -12,14 +12,18 @@
 
 * NMextractDataFile
 
+* egdt now reports dimensions of the two data sets to combine and the
+  resulting data. Can be disabled with quiet argument.
+
+* NMcheckColumns Change of column name from DATA to INPUT in order to
+  match $INPUT in the control streams.
+
 * Bugfix in NMwriteData. The datafile is now correctly included in the
   $DATA suggestion for Nonmem. No impact on data file output.
 
 * Bugfix in NMscanData related to searching for candidates for unique
   row identifiers.
 
-* egdt now reports dimensions of the two data sets to combine and the
-  resulting data. Can be disabled with quiet argument.
 
 # NMdata 0.0.9
 The only change from 0.0.8 is a patch provided by Matt Dowle ensuring

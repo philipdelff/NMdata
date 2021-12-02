@@ -106,7 +106,8 @@ NMtransInp <- function(data,file,translate=TRUE){
                       length(colnames(data)) ## result
                       )
     dt.colnames <- data.table(datafile=c(cnames.input.0,rep(NA_character_,length.max-length(cnames.input.0))),
-                              DATA=c(nms0,rep(NA_character_,length.max-length(nms0))),
+                              ## DATA=c(nms0,rep(NA_character_,length.max-length(nms0))),
+                              "INPUT"=c(nms0,rep(NA_character_,length.max-length(nms0))),
                               nonmem=c(nms1,rep(NA_character_,length.max-length(nms1))),
                               ## result.all=c(colnames(data),rep(NA_character_,length.max-length(colnames(data))))
                               result=c(colnames(data),rep(NA_character_,length.max-length(colnames(data))))
@@ -114,9 +115,9 @@ NMtransInp <- function(data,file,translate=TRUE){
 
     
     ## compare: OK, diff, off
-    dt.colnames[tolower(datafile)==tolower(DATA),compare:="OK"]
-    dt.colnames[tolower(datafile)!=tolower(DATA),compare:="diff"]
-    dt.colnames[compare=="diff"&tolower(DATA)%in%tolower(datafile),compare:="off"]
+    dt.colnames[tolower(datafile)==tolower(INPUT),compare:="OK"]
+    dt.colnames[tolower(datafile)!=tolower(INPUT),compare:="diff"]
+    dt.colnames[compare=="diff"&tolower(INPUT)%in%tolower(datafile),compare:="off"]
     dt.colnames[,compare:=factor(compare,levels=c("OK","diff","off"))]
     writeNMinfo(data,nminfo.data.0,byRef=TRUE)
     writeNMinfo(data,list(input.colnames=dt.colnames),append=TRUE,byRef=TRUE)

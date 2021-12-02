@@ -26,7 +26,7 @@ NMstamp <- function(data,script,time=Sys.time(),...){
     writeNMinfo(data,
                 list(dataCreate=list(
                          DataCreateScript=script,
-                         CreationTime=Sys.time(),
+                         CreationTime=time,
                          ...
                      )),byRef=TRUE
                 )
