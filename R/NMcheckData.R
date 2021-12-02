@@ -373,9 +373,9 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
 ### use the row identifier for reporting
         if(!is.null(col.row)){
             
-            findings <- mergeCheck(findings,data[,c(row,col.row),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop)
+            findings <- mergeCheck(findings,data[,c(c.row,col.row),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop)
         }
-        if(!cold.id%in%colnames(findings)) findings[,(col.id):=NA_real_]
+        if(!col.id%in%colnames(findings)) findings[,(col.id):=NA_real_]
         setcolorder(findings,c(c.row,col.id,"column","check"))
         setorderv(findings,c(c.row,"column","check"))
 

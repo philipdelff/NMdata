@@ -259,6 +259,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 ### combine full tables into one
     col.row.in.output <- overview.tables[level=="row",any(has.col.row)]
     
+    
     if(use.input && is.logical(merge.by.row) && merge.by.row) {
         if(!col.row.in.output) {
             messageWrap("Only output data will be returned. Output cannot be merged with input. col.row not found in any full-length (not firstonly) output tables. To include input data, add col.row to the tables, or disable merge.by.row.",fun.msg=warning)
@@ -450,12 +451,9 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 
 ### Section end: Check file modification times
-    
-    
     if(use.input){
         
         cnames.input.nonmem  <- nminfo.input$input.colnames[,nonmem]
-        ## cnames.input <- copy(colnames(data.input$data))
         col.row.in.input <- !is.null(col.row) && col.row %in% cnames.input.nonmem 
 ### in case merge.by.row=="ifAvailable", we need to check if
 ### col.row is avilable in both input and output
@@ -466,7 +464,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
         ## if cbind.by.filters, we have to filter input data now.
         if(cbind.by.filters){
-            
             data.input <- NMapplyFilters(data.input,file=file,as.fun="data.table",quiet=TRUE)
         }
     } else {
@@ -475,7 +472,9 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         }
         cbind.by.filters <- !merge.by.row
     }
-
+    if(merge.by.row){
+        search.col.row <- FALSE
+    }
     
     if(use.input&&!any(tables$meta$full.length)) {
         ## copying so we can modify tab.row        
@@ -514,11 +513,13 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                                ,col.id=col.id
                                                ,as.fun="data.table"))
             
-            cols.row.input <- colnames(dia$data)[dia$data[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
+            cols.row.input <- colnames(dia)[dia[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 
             cols.row.output <- colnames(tab.row)[tab.row[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 
             cols.row.both <- intersect(cols.row.input,cols.row.output)
+            ### we should not merge on these even if unique
+            cols.row.both <- setdiff(cols.row.both,c("AMT","DV"))            
             if(length(cols.row.both)){
                 
                 msg0 <- paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in both input and output data. If this column or one of these columns is not modified by the Nonmem run, consider using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.both,collapse=", "))
