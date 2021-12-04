@@ -37,6 +37,7 @@
 NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections,newfile,
                            backup=TRUE,blank.append=TRUE,data.file,write=TRUE,quiet){
 
+
     
 #### Section start: handle arguments ####
 
@@ -60,9 +61,9 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections
     if(!missing(file.pattern)){
         all.files <- list.files(path=dir,pattern=file.pattern,full.names=TRUE,recursive=FALSE)
     }
-
+    
     if(!missing(data.file)){
-        all.files <- all.files[sapply(all.files,function(file)NMextractDataFile(file)==data.file)]
+        all.files <- all.files[sapply(all.files,function(file)NMextractDataFile(file)$string==data.file)]
     }
     if(length(all.files)==0) stop("No files to process.")
     

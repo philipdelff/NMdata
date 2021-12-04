@@ -44,3 +44,25 @@ if(F){
                    list.section=text["INPUT"],newpath=NULL
                    )
 }
+
+
+
+
+test_that("Dependent on data.file",{
+
+    fileRef <- "testReference/NMwriteSection_1.rds"
+    
+    outfile <- "testOutput/xgxr011_update1.mod"
+    newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
+    section <- "input"
+
+    NMwriteSection(system.file("examples/nonmem/xgxr011.mod", package = "NMdata")
+                  ,section=section
+                  ,data.file="../data/xgxr2.csv"
+                  ,newlines=newlines
+                  ,newfile=outfile)
+
+    res <- readLines(outfile)
+    expect_equal_to_reference(res,fileRef,version=2)
+
+})

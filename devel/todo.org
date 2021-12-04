@@ -145,7 +145,8 @@ https://doi.org/10.1208/s12248-012-9387-9
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
 *** NMwriteSection
-**** TODO [#A] Support for file name pattern in dir
+**** DONE [#A] Support for file name pattern in dir
+     CLOSED: [2021-12-04 Sat 10:01]
      code available in recent script
 **** DONE Support for multiple sections
      CLOSED: [2021-04-05 Mon 12:06]
