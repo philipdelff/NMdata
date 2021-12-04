@@ -145,6 +145,11 @@ https://doi.org/10.1208/s12248-012-9387-9
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
 *** NMwriteSection
+**** TODO [#A] Check if any files matched before running lapply
+**** TODO [#B] When using list.files, give overview of matches by expression and by data.file
+**** DONE [#A] Bug in data.file argument
+     CLOSED: [2021-12-04 Sat 10:05]
+     Error in FUN(X[[i]], ...) : file.exists(file0) is not TRUE
 **** DONE [#A] Support for file name pattern in dir
      CLOSED: [2021-12-04 Sat 10:01]
      code available in recent script
