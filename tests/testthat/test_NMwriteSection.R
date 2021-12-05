@@ -66,3 +66,39 @@ test_that("Dependent on data.file",{
     expect_equal_to_reference(res,fileRef,version=2)
 
 })
+
+
+test_that(".mod does not exist",{
+
+    fileRef <- "testReference/NMwriteSection_1.rds"
+    
+    outfile <- "testOutput/xgxr011_update1.mod"
+    newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
+    section <- "input"
+
+    res <- NMwriteSection(files="doesNotExist.mod",
+                         ,section=section
+                         ,newlines=newlines
+                         ,newfile=outfile)
+        expect_equal(res,NULL)
+    
+})
+
+
+test_that("No files matched",{
+
+    fileRef <- "testReference/NMwriteSection_1.rds"
+    
+    newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
+    section <- "input"
+
+    res <- NMwriteSection(dir=system.file("examples/nonmem/", package = "NMdata")
+                  ,file.pattern="gerge"
+                  ,section=section
+                  ,data.file="../data/xgxr2.csv"
+                  ,newlines=newlines
+                   ,newfile=outfile)
+
+    expect_equal(res,NULL)
+
+})

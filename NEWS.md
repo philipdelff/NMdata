@@ -1,7 +1,23 @@
 # NMdata 0.0.10
-* NMcheckData
+* NMcheckData is a new function that checks data for Nonmem
+  compatibility in numerous ways. It returns a list of all findings
+  making it easy to identify the location of each issue in the
+  data. See the man page of NMcheckData for a complete list of the
+  checks that are done. The function does not modify data in any way,
+  and it is a very simple and easy step to avoid many problems in
+  Nonmem.
 
-* NMwriteSection
+* NMwriteSection has been updated with a few very useful
+  features. Namely these are related to updating multiple nonmem files
+  at once. The user can now supply multiple paths, regular expressions
+  for finding files (like pattern in list.files) and even input data
+  files for nonmem models to match. This is very useful when updating
+  many models after modifying input data. You can specify say all
+  models in a directory names like pd*.mod where * is anything (in
+  regular expressions this would be "pd.+\\.mod") and only the using
+  the data file that was just written. Since NMwriteData generates the
+  $INPUT for you, you just need to add one line to get the update of
+  all your models automatically.
 
 * flagsAssign has got a few updates related to separate handling of
   different types of events. Often, this will be used to assign flags
@@ -10,7 +26,11 @@
   for whether values of EVID are unique. This is similar to what
   flagsCount does.
 
-* NMextractDataFile
+* NMextractDataFile is a function that identifies the input datafile
+  used by a Nonmem model. It reports the string as in the Nonmem
+  control stream, file path and whether the file exists. It also looks
+  for the corresponding rds files. The function is not new in NMdata
+  but was not exported until 0.0.10.
 
 * egdt now reports dimensions of the two data sets to combine and the
   resulting data. Can be disabled with quiet argument.
@@ -18,8 +38,9 @@
 * NMcheckColumns Change of column name from DATA to INPUT in order to
   match $INPUT in the control streams.
 
-* Bugfix in NMwriteData. The datafile is now correctly included in the
-  $DATA suggestion for Nonmem. No impact on data file output.
+## Bugfixes 
+* In NMwriteData the datafile is now correctly included in the $DATA
+  suggestion for Nonmem. No impact on data file output.
 
 * Bugfix in NMscanData related to searching for candidates for unique
   row identifiers.
@@ -276,12 +297,12 @@ This release features numerous improvements to especially the
 NMscanData function. The work is mainly focused around use without a
 row identifier. Even without a row identifier, NMscanData should now
 work for the vast majority of models, including merging with input and
-recovering rows. 
+recovering rows.
 
-An attribute called `vars` has been added to the NMdata objects coming out of
-NMscanData. It features a table of the columns in the returned object
-and information about where they originate from. More work is still to
-be done on this, but hopefully it is useful already.
+An attribute called `vars` has been added to the NMdata objects coming
+out of NMscanData. It features a table of the columns in the returned
+object and information about where they originate from. More work is
+still to be done on this, but hopefully it is useful already.
 
 NMwriteData: Added support for passing arguments to saveRDS.
 
@@ -289,7 +310,10 @@ Last but far from least is a new vignette on using NMscanData. Check
 it out with vignette("NMscanData").
 
 # NMdata 0.0.2
-This release contains bugfixes and experimental support for merging nonmem input and output data without a row identifier. 
+This release contains bugfixes and experimental support for merging
+nonmem input and output data without a row identifier.
 
-A clearer cut has been made between the pmxtricks package (version 0.0.10) and NMdata. The packages should not overlap in exported functionality, and they do not depend on each other.
+A clearer cut has been made between the pmxtricks package (version
+0.0.10) and NMdata. The packages should not overlap in exported
+functionality, and they do not depend on each other.
 

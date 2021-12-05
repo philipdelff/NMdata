@@ -80,6 +80,31 @@
 
 NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,na.strings,as.fun){
 
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+
+    . <- NULL
+    variable <- NULL
+    N <- NULL
+    EVID <- NULL
+    CMT <- NULL
+    MDVDV <- NULL
+    MDV <- NULL
+    DV <- NULL
+    ID.jump <- NULL
+    newID <- NULL
+    ID <- NULL
+    isnewID <- NULL
+    reset <- NULL
+    checkTimeInc <- NULL
+    Nrep <- NULL
+    level <- NULL
+    column <- NULL
+    check <- NULL
+
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+
+
+    
 #### Section start: Default parameter values ####
     if(missing(na.strings)) na.strings <- "."
     if(missing(col.row)||(!is.null(col.row)&&is.na(col.row))||(is.character(col.row)&&all(col.row==""))) {
@@ -161,7 +186,9 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
 
 
 ### special chars in col names
-    cnames.spchars <- cnames[grep("[[:punct:]]",cnames)]
+    are.cols.num <- sapply(data,NMisNumeric,na.strings=na.strings)
+    cnames.num <- colnames(data)[are.cols.num]
+    cnames.spchars <- cnames[grep("[[:punct:]]",cnames.num)]
     if(length(cnames.spchars)>0){
         findings <- rbind(findings,
                           data.table(check="Special character in column name",column=cnames.spchars,row=NA_integer_,level="column"))
@@ -171,8 +198,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
 
 #### Section start: commas in character columns ####
     
-    cols.char <- sapply(data,NMisNumeric,na.strings=na.strings)
-    cols.char <- names(cols.char)[!cols.char]
+    cols.char <- colnames(data)[!are.cols.num]
     newfinds <- rbindlist(
         lapply(cols.char,listEvents,name="Comma in characther string",fun=function(x)grepl(",",x),invert=TRUE,debug=FALSE)
     )

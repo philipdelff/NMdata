@@ -6,23 +6,26 @@
 ##'     or not? If not, an overview of column names in data and in
 ##'     Nonmem code is still returned with the data.
 ##' @return data with column names translated as specified by nonmem
-##'     control stream. Class same as for 'data' argument.
+##'     control stream. Class same as for 'data' argument. Class
+##'     data.table.
+##' @import data.table
 
 ## don't export. An internal function used by NMscanInput. 
 
 NMtransInp <- function(data,file,translate=TRUE){
 
-    ## data is assumed to be a data.table, and a data.table is returned.
+
+
 
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
     datafile <- NULL
     DATA <- NULL
     compare <- NULL    
-
+    INPUT <- NULL
 
 ### Section end: Dummy variables, only not to get NOTE's in package checks ####
 
-
+    stopifnot(is.data.table(data))
 
     ## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    
     lines <- NMreadSection(file,section="INPUT",keepName=FALSE,keepComments=FALSE,cleanSpaces=TRUE)

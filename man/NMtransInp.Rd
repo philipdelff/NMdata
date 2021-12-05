@@ -17,7 +17,8 @@ Nonmem code is still returned with the data.}
 }
 \value{
 data with column names translated as specified by nonmem
-    control stream. Class same as for 'data' argument.
+    control stream. Class same as for 'data' argument. Class
+    data.table.
 }
 \description{
 translate the column names according to the $INPUT section of a control stream

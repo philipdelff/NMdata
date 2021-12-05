@@ -3,7 +3,15 @@
 ##' Just give the section name, the new lines and the file path, and the
 ##' "$section", and the input to Nonmem will be updated.
 ##'
-##' @param file File path to the model (control stream) to edit.
+##' @param files File paths to the models (control stream) to
+##'     edit. See file.pattern too.
+##' @param file.pattern Alternatively to files, you can supply a
+##'     regular expression which will be passed to list.files as the
+##'     pattern argument. If this is used, use dir argument as
+##'     well. Also see data.file to only process models that use a
+##'     specific data file.
+##' @param dir If file.pattern is used, dir is the directory to search
+##'     in.
 ##' @param section The name of the section to update. Example:
 ##'     section="EST" to edit the sections starting by $EST. See
 ##'     NMreadSection
@@ -18,10 +26,16 @@
 ##' @param backup In case you are overwriting the old file, do you
 ##'     want to backup the file (to say, backup_run001.mod)?
 ##' @param blank.append Append a blank line to output?
+##' @param data.file Use this to limit the scope of models to those
+##'     that use a specific input data data file. The string has to
+##'     exactly match the one in $DATA or $INFILE in Nonmem.
 ##' @param write Default is to write to file. If write=FALSE,
 ##'     NMwriteSection returns the resulting input.txt without writing
 ##'     it.  to disk?  Default is FALSE.
-##'
+##' @param quiet The default is to give some information along the way
+##'     on what data is found. But consider setting this to TRUE for
+##'     non-interactive use. Default can be configured using
+##'     NMdataConf.
 ##' @details The new file will be written with unix-style line
 ##'     endings.
 ##' @return The new section text is returned. If write=TRUE, this is done invisibly.
@@ -40,7 +54,6 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections
 
     
 #### Section start: handle arguments ####
-
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
     
@@ -54,13 +67,28 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections
     if(!missing(file.pattern)&&missing(dir)){
         stop("If using file.pattern, you have to supply dir too.")
     }
-    if(!missing(files)){
-        all.files <- files
+    
+    if(!missing(files)&&length(files)>0){
+        
+        if(any(!file.exists(files))){
+            if(!quiet){
+                message("Files not found. Skipping:\n",paste(files[!file.exists(files)],collapse="\n"))
+            }
+        }
+        all.files <- files[file.exists(files)]
     }
+    
     
     if(!missing(file.pattern)){
         all.files <- list.files(path=dir,pattern=file.pattern,full.names=TRUE,recursive=FALSE)
+
     }
+    
+    if(length(all.files)==0){
+        message("No existing files matched. Nothing to do.")
+        return(invisible(NULL))
+    }
+
     
     if(!missing(data.file)){
         all.files <- all.files[sapply(all.files,function(file)NMextractDataFile(file)$string==data.file)]
@@ -164,6 +192,7 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections
         close(con.newfile)
         return(invisible(newlines))
     }
+
     
     res <- lapply(all.files,NMwriteSectionOne,section=section,newlines=newlines,
            list.sections=list.sections,newfile=newfile,

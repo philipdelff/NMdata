@@ -20,6 +20,18 @@ NMwriteSection(
 )
 }
 \arguments{
+\item{files}{File paths to the models (control stream) to
+edit. See file.pattern too.}
+
+\item{file.pattern}{Alternatively to files, you can supply a
+regular expression which will be passed to list.files as the
+pattern argument. If this is used, use dir argument as
+well. Also see data.file to only process models that use a
+specific data file.}
+
+\item{dir}{If file.pattern is used, dir is the directory to search
+in.}
+
 \item{section}{The name of the section to update. Example:
 section="EST" to edit the sections starting by $EST. See
 NMreadSection}
@@ -40,11 +52,18 @@ want to backup the file (to say, backup_run001.mod)?}
 
 \item{blank.append}{Append a blank line to output?}
 
+\item{data.file}{Use this to limit the scope of models to those
+that use a specific input data data file. The string has to
+exactly match the one in $DATA or $INFILE in Nonmem.}
+
 \item{write}{Default is to write to file. If write=FALSE,
 NMwriteSection returns the resulting input.txt without writing
 it.  to disk?  Default is FALSE.}
 
-\item{file}{File path to the model (control stream) to edit.}
+\item{quiet}{The default is to give some information along the way
+on what data is found. But consider setting this to TRUE for
+non-interactive use. Default can be configured using
+NMdataConf.}
 }
 \value{
 The new section text is returned. If write=TRUE, this is done invisibly.
@@ -59,7 +78,7 @@ The new file will be written with unix-style line
 }
 \examples{
 newlines <- "$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"
-NMwriteSection(file=system.file("examples/nonmem/xgxr001.mod", package = "NMdata"),
+NMwriteSection(files=system.file("examples/nonmem/xgxr001.mod", package = "NMdata"),
 section="EST", newlines=newlines,newfile=NULL)
 }
 \seealso{

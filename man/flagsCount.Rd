@@ -106,11 +106,14 @@ In the returned table, N.discarded is the difference in number of
 \examples{
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 dt.flags <- data.frame(
-  flagn=10,
-  flagc="Below LLOQ",
-condition=c("BLQ==1"))
-pk <- flagsAssign(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
-unique(pk[,c("flagn","flagc","flagn")])
+       flagn=10,
+       flagc="Below LLOQ",
+       condition=c("BLQ==1")
+)
+pk <- flagsAssign(pk,dt.flags,subset.data="EVID==0",col.flagn="flagn",col.flagc="flagc")
+pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing",
+        col.flagn="flagn",col.flagc="flagc")
+unique(pk[,c("EVID","flagn","flagc","BLQ")])
 flagsCount(pk[EVID==0],dt.flags,col.flagn="flagn",col.flagc="flagc")
 }
 \seealso{

@@ -45,6 +45,12 @@ statement from IGNORE(FLAG.NE.0) to say IGNORE(FLAG.GT.10) if
 BLQ's have FLAG=10, and you decide to include these in the
 analysis.}
 
+\item{grp.incomp}{Column(s) that distinct incompatible subsets of
+data. Default is "EVID" meaning that if different values of
+EVID are found in data, the function will return an
+error. This is a safeguard not to mix data unintentionally
+when counting flags.}
+
 \item{flagc.0}{The character flag to assign to rows that are not
 matched by exclusion conditions (numerical flag 0).}
 
@@ -76,7 +82,7 @@ dt.flags <- data.frame(
        flagc="Below LLOQ",
        condition=c("BLQ==1")
 )
-pk <- flagsAssign(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
+pk <- flagsAssign(pk,dt.flags,subset.data="EVID==0",col.flagn="flagn",col.flagc="flagc")
 pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing",
         col.flagn="flagn",col.flagc="flagc")
 unique(pk[,c("EVID","flagn","flagc","BLQ")])

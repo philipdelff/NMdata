@@ -68,7 +68,7 @@ The following checks are performed. The term "numeric"
 
 \item EVID must be in {0,1,2,3,4}
 
-\item CMT must be positive integers
+\item CMT must be positive integers. However, can be missing or zero for EVID==3.
 
 \item MDV must be the binary (1/0) representation of is.na(DV)
 

@@ -10,6 +10,11 @@ egdt(dt1, dt2, quiet)
 \item{dt1}{a data.table.}
 
 \item{dt2}{another data.table.}
+
+\item{quiet}{The default is to give some information along the way
+on what data is found. But consider setting this to TRUE for
+non-interactive use. Default can be configured using
+NMdataConf.}
 }
 \value{
 a data.table that expands combinations of rows in dt1 and
