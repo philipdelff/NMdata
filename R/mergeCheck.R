@@ -126,7 +126,7 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
     rows.disappeared <- !(all(df1[,get(rowcol)]%in%df3[,get(rowcol)]))
     rows.created <- !(all(df3[,get(rowcol)]%in%df1[,get(rowcol)]))
 ### this has to be tested before activated 
-    ## rows.dup  <- df3[,.N,by=rowcol][,any(N>1)]
+    rows.dup  <- df3[,.N,by=rowcol][,any(N>1)]
     rows.number.changed <- nrow(df1)!=nrow(df3)
 
     if(any(c(rows.disappeared,rows.created,rows.number.changed))){
@@ -135,7 +135,7 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
             messageWrap("Number of rows changed during merge.\n",fun.msg=message,track.msg=track.msg)
         }
         if(rows.disappeared) messageWrap("Rows disappeared during merge.",fun.msg=message,track.msg=track.msg)
-        ## if(rows.dup) messageWrap("Rows duplicated during merge.",fun.msg=message,track.msg=track.msg)
+        if(rows.dup) messageWrap("Rows duplicated during merge.",fun.msg=message,track.msg=track.msg)
         if(rows.created) messageWrap("New rows appeared during merge.",fun.msg=message,track.msg=track.msg)
         
         dims.rep <- dims(list.data=

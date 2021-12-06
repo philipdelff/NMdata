@@ -131,14 +131,23 @@ https://doi.org/10.1208/s12248-012-9387-9
     Risk now is that arguments are set to NULL
     Export to parent. Not sure check allows though...
 ** Function improvements
+*** compareCols
+**** DONE rows are not being sorted correctly.
+     CLOSED: [2021-04-18 Sun 14:38]
+     Seems not to prioritize columns that only exist in one of the
+     data.tables.
+**** DONE Bug for diff.only=FALSE
+     CLOSED: [2021-04-18 Sun 12:16]
+*** egdt
+**** DONE [#A] Report dims(df1,df2,result) unless quiet
+     CLOSED: [2021-11-26 Fri 22:40]
+*** mergeCheck
+**** TODO [#A] Test the check for row duplications
 *** NMcheckData
 **** TODO [#A] Only check for special characters in colnames for numeric columns
      Applies to other colname checks too?
 **** TODO [#B] Requirements to DV for EVID==2 and EVID==3?
 **** TODO [#B] Add col.row to findings
-*** egdt
-**** DONE [#A] Report dims(df1,df2,result) unless quiet
-     CLOSED: [2021-11-26 Fri 22:40]
 *** NMextractDataFile
 **** DONE Add support for windows absolute paths
      CLOSED: [2021-05-14 Fri 16:11]
@@ -158,13 +167,6 @@ https://doi.org/10.1208/s12248-012-9387-9
      CLOSED: [2021-04-05 Mon 12:06]
 Instead of the section argument, NMreplacepart must accept newlines as a named
 list.
-*** compareCols
-**** DONE rows are not being sorted correctly.
-     CLOSED: [2021-04-18 Sun 14:38]
-     Seems not to prioritize columns that only exist in one of the
-     data.tables.
-**** DONE Bug for diff.only=FALSE
-     CLOSED: [2021-04-18 Sun 12:16]
 *** NMextractText
 **** TODO [#B] reduce lines and text to one argument
 The information is sufficient when taking into account the linesep
@@ -229,6 +231,9 @@ A way to limit rows read into nonmem
 **** DONE Lastonly does the same as firstonly
      CLOSED: [2020-07-13 Mon 19:37]
 *** NMscanData
+**** TODO [#B] Simplify timestamp warnings
+     When .mod is newer than .lst and or tables, reduce to one warning
+     summarizing both findings.
 **** DONE nmout and model must not overwrite existing
      CLOSED: [2021-06-15 Tue 11:49]
      The can still overwrite, but a warning is thrown
