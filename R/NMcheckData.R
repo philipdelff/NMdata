@@ -11,7 +11,7 @@
 ##' @param col.time The name of the column holding actual time.
 ##' @param col.flagn Optionally, the name of the column holding
 ##'     numeric exclusion flags. Default value is FLAG and can be
-##'     configured using NMdataConf.
+##'     configured using NMdataConf. Disable by using col.flagn=FALSE.
 ##' @param col.row A column with a unique value for each row. Such a
 ##'     column is recommended to use if possible. Default ("ROW") can
 ##'     be modified using NMdataConf.
@@ -113,9 +113,13 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
     col.row <- NMdataDecideOption("col.row",col.row)
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
-    if(missing(col.flagn)) col.flagn <- NULL
-    col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
-
+    ## if(!missing(col.flagn)&&is.null(col.flagn)) {
+    ##     col.flagn <- NULL
+    ## } else {
+        if(missing(col.flagn)) col.flagn <- NULL
+        col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
+    ##     }
+    
 ### Section end: Default parameter values    
 
     data <- copy(as.data.table(data))
@@ -163,7 +167,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
         } else {
             
             if(new.rows.only&&!is.null(events)){
-                rows <- setdiff(row,events[column==colname,row])
+                rows <- setdiff(rows,events[column==colname,row])
             }
             res <- data.table(check=name,column=colname,row=rows,level="row")
         }

@@ -1,5 +1,3 @@
-## library(devtools)
-## load_all("c:/Users/delff/working_copies/NMdata")
 
 context("mergeCheck")
 
@@ -74,9 +72,6 @@ test_that("a df and a dt",{
 })
 
 test_that("duplicate column name",{
-    ## library(data.table)
-    
-    ## fileRef <- "testReference/mergeCheck5.rds"
 
     dt1 <- data.table(x = 1:10,
                       y=letters[1:10])
@@ -96,12 +91,12 @@ test_that("handling of common cols",{
     
     fileRef <- "testReference/mergeCheck6.rds"
 
-    dt1=data.table(a=1:3,b=3:5,c=letters[8:10])
-    dt2=data.table(a=1:3,b=3:5,q=letters[8:10])
+    dt1 <- data.table(a=1:3,b=3:5,c=letters[8:10])
+    dt2 <- data.table(a=1:3,b=3:5,q=letters[8:10])
     expect_warning(mergeCheck(dt1,dt2,by="a"))
 
     ## dtres=mergeCheck(dt1,dt2,by="a",fun.commoncols = message)
-    dtres=mergeCheck(dt1,dt2,by="a",fun.commoncols = function(x)NULL)
+    dtres <- mergeCheck(dt1,dt2,by="a",fun.commoncols = function(x)NULL)
     expect_equal_to_reference(dtres,fileRef,version=2)
 
 })
@@ -109,8 +104,8 @@ test_that("handling of common cols",{
 test_that("specifying expected number of new columns",{
     fileRef <- "testReference/mergeCheck7.rds"
 
-    dt1=data.table(a=1:3,b=3:5,c=letters[8:10])
-    dt2=data.table(a=1:3,b=3:5,q=letters[8:10])
+    dt1 <- data.table(a=1:3,b=3:5,c=letters[8:10])
+    dt2 <- data.table(a=1:3,b=3:5,q=letters[8:10])
     dt3 <- dt2[,!c("b")]
 
     ## compareCols(dt1,dt3,diff.only=FALSE)
@@ -123,8 +118,8 @@ test_that("specifying expected number of new columns",{
 
 test_that("Zero-row df1 must give an error",{
 
-    dt1=data.table(a=1:3,b=3:5,c=letters[8:10])[0]
-    dt2=data.table(a=1:3,b=3:5,q=letters[8:10])
+    dt1 <- data.table(a=1:3,b=3:5,c=letters[8:10])[0]
+    dt2 <- data.table(a=1:3,b=3:5,q=letters[8:10])
     dt3 <- dt2[,!c("b")]
 
     ## compareCols(dt1,dt3,diff.only=FALSE)
@@ -132,3 +127,14 @@ test_that("Zero-row df1 must give an error",{
 
 })
 
+test_that("Duplicating input rows",{
+    dt1 <- data.table(a=1:3,b=3:5,c=letters[8:10])
+    dt2 <- data.table(a=c(1:3,3),b=c(3:6),q=letters[8:11])
+    dt3 <- dt2[,!c("b")]
+
+    ## compareCols(dt1,dt3,diff.only=FALSE)
+    expect_error(
+            mergeCheck(dt1,dt3,by="a",ncols.expect = 1)
+    )
+
+})

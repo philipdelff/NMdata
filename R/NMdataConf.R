@@ -46,12 +46,12 @@
 ##' stamps cannot be relied on.
 ##' 
 ##' \item{col.flagc} The name of the column containing the character
-##' flag values for data row omission. Default value is FLAG. Used
+##' flag values for data row omission. Default value is flag. Used
 ##' by flagsAssign, flagsCount.
 ##' 
 ##' \item{col.flagn} The name of the column containing numerical flag
 ##' values for data row omission. Default value is FLAG. Used by
-##' flagsAssign, flagsCount.
+##' flagsAssign, flagsCount, NMcheckData. 
 ##'
 ##' \item{col.model} The name of the column that will hold the name of
 ##' the model. See modelname too (which defines the values that the
@@ -259,9 +259,14 @@ NMdataConfOptions <- function(name){
        ,
         col.flagn=list(
             default="FLAG"
-           ,is.allowed=function(x) (is.character(x) && length(x)==1)
+           ,is.allowed=function(x) length(x)==1 && ((is.logical(x) && x==FALSE) || is.character(x) )
            ,msg.not.allowed="col.flagn must be a character vector of length 1."
-           ,process=identity
+           ,process=function(x) {if(is.logical(x) && x==FALSE) {
+                                     return(NULL)
+                                 } else {
+                                     return(x)
+                                 }
+           }
         )
        ,
         col.row=list(
@@ -369,8 +374,6 @@ NMdataDecideOption <- function(name,argument){
 
     argument <- values.option$process(argument)
 
-
-    
     return(argument)
 }
 
