@@ -132,7 +132,8 @@ https://doi.org/10.1208/s12248-012-9387-9
     Export to parent. Not sure check allows though...
 ** Function improvements
 *** NMcheckData
-**** TODO [#A] Only check for special characters in colnames for numeric columns
+**** DONE [#A] Only check for special characters in colnames for numeric columns
+     CLOSED: [2021-12-08 Wed 21:20]
      Applies to other colname checks too?
 **** TODO [#B] Requirements to DV for EVID==2 and EVID==3?
 **** TODO [#B] Add col.row to findings
