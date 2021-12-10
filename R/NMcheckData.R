@@ -103,7 +103,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
-
+    
     
 #### Section start: Default parameter values ####
     if(missing(na.strings)) na.strings <- "."
@@ -116,8 +116,8 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
     ## if(!missing(col.flagn)&&is.null(col.flagn)) {
     ##     col.flagn <- NULL
     ## } else {
-        if(missing(col.flagn)) col.flagn <- NULL
-        col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
+    if(missing(col.flagn)) col.flagn <- NULL
+    col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
     ##     }
     
 ### Section end: Default parameter values    
@@ -204,7 +204,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
     
     cols.char <- colnames(data)[!are.cols.num]
     newfinds <- rbindlist(
-        lapply(cols.char,listEvents,name="Comma in characther string",fun=function(x)grepl(",",x),invert=TRUE,debug=FALSE)
+        lapply(cols.char,listEvents,name="Comma in character string",fun=function(x)grepl(",",x),invert=TRUE,debug=FALSE)
     )
     findings <- rbind(findings,
                       newfinds
@@ -216,6 +216,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
     
 ### check unique row identifier
     if(!is.null(col.row)){
+        ## if(!col.row%in%colnames(data)) 
         findings <- listEvents(col.row,"Missing value",
                                fun=is.na,invert=T,events=findings,debug=FALSE)
         findings <- listEvents(col.row,"Row identifier decreasing",
@@ -247,8 +248,13 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
             }
         }
     }
+
+    are.cols.num <- sapply(data,NMisNumeric,na.strings=na.strings)
+    cnames.num <- colnames(data)[are.cols.num]
+    data[,(cnames.num):=lapply(.SD,NMasNumeric),.SDcols=cnames.num]
     
-######## Default columns
+    
+######## Default numeric columns. Will be checked for presence, NA, non-numeric (col-level)
     cols.num <- c()
     
 ### Others that: If column present, must be numeric, and values must be non-NA. Remember eg DV, CMT and AMT can be NA.
@@ -332,6 +338,9 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
 
 
 #### AMT
+    ## must be numeric
+    findings <- listEvents("AMT",name="Not numeric",fun=NMisNumeric,
+                                  na.strings=na.strings) 
     ## positive for EVID 1 and 4
     findings <- listEvents("AMT","Non-positive dose amounts",
                            fun=function(x)x>=0,events=findings,
@@ -401,7 +410,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
         message("No findings. Great!")
     } else {
 ### use the row identifier for reporting
-        if(!is.null(col.row)){
+        if(!is.null(col.row)&&col.row%in%colnames(data)){
             
             findings <- mergeCheck(findings,data[,c(c.row,col.row),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop)
         }

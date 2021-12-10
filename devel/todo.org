@@ -144,6 +144,7 @@ https://doi.org/10.1208/s12248-012-9387-9
 *** mergeCheck
 **** TODO [#A] Test the check for row duplications
 *** NMcheckData
+**** TODO [#A] Should more of the checked columns be checked for NMisNumeric?
 **** DONE [#A] Only check for special characters in colnames for numeric columns
      CLOSED: [2021-12-08 Wed 21:20]
      Applies to other colname checks too?
