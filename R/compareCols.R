@@ -48,6 +48,8 @@
 
 
 compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,fun.class=base::class,quiet,as.fun=NULL){
+    
+
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     value <- NULL
@@ -76,7 +78,7 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,fun.cl
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
     getClasses <- function(x){
-        cls <- lapply(x,fun.class)
+        cls <- lapply(x,function(x)paste(fun.class(x),collapse=", "))
         data.table(column=names(cls),class=as.character(unlist(cls)))
     }
     

@@ -45,6 +45,8 @@
 * Bugfix in NMscanData related to searching for candidates for unique
   row identifiers.
 
+* In compareCols multiple classes of single columns would give a
+  warning and sometimes confusing overview of columns. Fixed.
 
 # NMdata 0.0.9
 The only change from 0.0.8 is a patch provided by Matt Dowle ensuring

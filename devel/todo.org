@@ -32,6 +32,14 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
+*** TODO [#B] List missing elements
+For specific columns, look for missing elements (NA, "", length(x)==0
+in case of lists?). Tabulate and list.
+*** TODO NMsummarizeData Summarize data with nonmem in mind. 
+**** Number of doses and obs per subj
+**** Dist of DV
+**** Covariates
+**** Has to take a by arg
 *** DONE NMcheckData
     CLOSED: [2021-12-01 Wed 09:12]
 **** DONE check for commas in character columns
@@ -132,6 +140,10 @@ https://doi.org/10.1208/s12248-012-9387-9
     Export to parent. Not sure check allows though...
 ** Function improvements
 *** compareCols
+**** TODO scope argument
+Sometimes we are interested in specific columns. List these and only
+these in the same order as requested. An inversion option could be
+helpful. Only list other columns than the scope.
 **** DONE rows are not being sorted correctly.
      CLOSED: [2021-04-18 Sun 14:38]
      Seems not to prioritize columns that only exist in one of the
@@ -145,6 +157,10 @@ https://doi.org/10.1208/s12248-012-9387-9
 **** TODO [#A] Test the check for row duplications
 *** NMcheckData
 **** TODO [#A] Should more of the checked columns be checked for NMisNumeric?
+**** TODO [#A] Element-wise NMisNumeric
+There are two distinct uses of NMisNumeric. Column-wise and
+element-wise. When checking for NMisNumeric, columns that must be
+numeric should be using
 **** DONE [#A] Only check for special characters in colnames for numeric columns
      CLOSED: [2021-12-08 Wed 21:20]
      Applies to other colname checks too?
