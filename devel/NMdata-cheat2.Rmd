@@ -1,0 +1,110 @@
+---
+title: "NMscanData: Find And Combine All Output And Input Data"
+output:
+rmarkdown::html:
+    css: cheatsheet.css
+    toc: true
+Suggests: markdown
+VignetteBuilder: knitr
+vignette: >
+  %\VignetteIndexEntry{NMscanData: Find and combine all output and input data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+header-includes:
+- \usepackage{ae}
+---
+<style>
+.main-container {
+    max-width: unset;
+	margin: 50px;
+}
+
+.column-container{
+	/* background-color: hotpink */
+    display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  
+}
+.column-container__column{
+  background-color:green;
+  width:calc(33.3% - 10px)
+	/* margin: 12px;     */
+}
+</style>
+
+```{r, include = FALSE}
+##knitr::opts_chunk$set(dev = "cairo_pdf")
+knitr::opts_chunk$set(
+                      collapse = TRUE
+                     ,comment = "#>"
+                     ,fig.width=7
+                     ,cache=FALSE
+                  )
+
+## this change data.table syntax. I think we can do without.
+## knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
+```
+
+Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
+
+This vignette is still under development. Please make sure to see latest version available [here](https://philipdelff.github.io/NMdata/).
+
+:::: {style="display: flex;" class="column-container"}
+::: {class="column-container__column"}
+
+### Basics
+general,NMdataConf,Configure default behavior of NMdata functions
+
+### Data set generation
+
+dims
+compareCols,Compare presence and classes of columns across data sets before merge or rbind
+
+
+renameByContents,Rename columns based on contents
+mergeCheck,Verify that the rows that come out of the merge are the exact same as in one of the existing datasets
+flagsAssign,Assign exclusion flags to a dataset based on specified table
+flagsCount,Create an overview of number of retained and discarded datapoints
+NMorderColumns,Standardize column order in Nonmem input data
+
+NMwriteData
+NMcheckData
+NMstamp
+
+:::
+
+::: {class="column-container__column"}
+
+### Read from and edit Nonmem control streams
+Nonmem,NMreadSection,Extract sections of Nonmem control streams
+Nonmem,NMwriteSection,Replace sections of a nonmem control stream
+
+### Retrieve Nonmem results
+NMscanData,Automatically find Nonmem input and output tables and organize data
+NMscanTables,Find and read all output data tables in nonmem run
+NMreadTab,Read an output table file from NONMEM
+NMscanInput,Find and read input data and optionally translate column names according to the $INPUT section
+NMreadCsv,Read input data formatted for nonmem
+NMinfo,Get metadata from an NMdata object
+
+:::
+
+::: {class="column-container__column"}
+### Debugging Nonmem and input data
+NMcheckColnames,Compare $DATA to column names in input data
+
+
+### Programming
+egdt
+cc
+findCovs,Extract columns that do not vary within values of other columns
+findVars,Extract columns that vary within values of other columns
+NMextractDataFile
+NMextractText
+NMisNumeric
+tmpcol
+
+:::
+::::
+

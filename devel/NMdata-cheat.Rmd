@@ -33,33 +33,48 @@ This vignette is still under development. Please make sure to see latest version
 
 ::: columns
 :::: column
-### NMdata is 
+### Basics
+general,NMdataConf,Configure default behavior of NMdata functions
 
-An R package that can help
+### Data set generation
 
-*  Creating event-based data sets for PK/PD modeling
-*  Keeping Nonmem code updated to match contents of datasets
-*  Read all output data and combine with input data from Nonmem runs
-- supply output list file (.lst), and the reader is very flexible and automated 
 
-Designed to fit in to the user's setup and coding preferences
-
-* NMdata comes with a configuration tool that can be used to tailor default behaviour to the user's system configuration and preferences.
+dataCreate,compareCols,Compare presence and classes of columns across data sets before merge or rbind
+dataCreate,renameByContents,Rename columns based on contents
+dataCreate,mergeCheck,Verify that the rows that come out of the merge are the exact same as in one of the existing datasets
+dataCreate,flagsAssign,Assign exclusion flags to a dataset based on specified table
+dataCreate,flagsCount,Create an overview of number of retained and discarded datapoints
+dataCreate,NMorderColumns,Standardize column order in Nonmem input data
 
 ::::
 
 :::: column
 
-### NMdata is not
+### Read from and edit Nonmem control streams
+Nonmem,NMreadSection,Extract sections of Nonmem control streams
+Nonmem,NMwriteSection,Replace sections of a nonmem control stream
 
-* A plotting package
+### Retrieve Nonmem results
+DataRead,NMscanData,Automatically find Nonmem input and output tables and organize data
+DataRead,NMscanTables,Find and read all output data tables in nonmem run
+DataRead,NMreadTab,Read an output table file from NONMEM
+DataRead,NMscanInput,Find and read input data and optionally translate column names according to the $INPUT section
+DataRead,NMreadCsv,Read input data formatted for nonmem
+DataRead,NMinfo,Get metadata from an NMdata object
 
-* A tool to retrieve details about model runs
+::::
 
-* A calculation or simulation toolbox
+:::: column
+### Debugging Nonmem and input data
+debug,NMcheckColnames,Compare $DATA to column names in input data
 
-* A "silo" that requires you to do things in a certain way
-- No tools in NMdata requires other NMdata tools to be used
+
+### Programming
+egdt
+misc,findCovs,Extract columns that do not vary within values of other columns
+misc,findVars,Extract columns that vary within values of other columns
+
+
 
 ::::
 :::
