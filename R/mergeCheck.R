@@ -106,7 +106,7 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
         cols.com.notby <- setdiff(cols.common,by)
         commoncols.found <- FALSE
         if(length(cols.com.notby)) {
-            messageWrap(paste0("df1 and df2 have common column names not being merged by. This will create new column names in output. Common but not merged by: ",paste(cols.com.notby,collapse=","),"."),
+            messageWrap(paste0("df1 and df2 have common column names not being merged by. This will create new column names in output. Common but not merged by: ",paste(cols.com.notby,collapse=", "),"."),
                         fun.msg=fun.commoncols,track.msg=track.msg)
             commoncols.found <- TRUE
         }

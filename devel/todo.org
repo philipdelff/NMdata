@@ -140,7 +140,9 @@ https://doi.org/10.1208/s12248-012-9387-9
     Export to parent. Not sure check allows though...
 ** Function improvements
 *** compareCols
-**** TODO scope argument
+**** TODO [#B] Bug - overview of columns is given twice
+ compareCols(ex.001,ex.002,ex.005,diff.only=T) %>% print(topn=100)
+**** TODO [#B] scope argument
 Sometimes we are interested in specific columns. List these and only
 these in the same order as requested. An inversion option could be
 helpful. Only list other columns than the scope.
@@ -156,6 +158,15 @@ helpful. Only list other columns than the scope.
 *** mergeCheck
 **** TODO [#A] Test the check for row duplications
 *** NMcheckData
+**** DONE [#A] Check for , in character column contents not working
+     CLOSED: [2021-12-16 Thu 15:07]
+**** DONE [#A] Checks for availability
+     CLOSED: [2021-12-16 Thu 15:05]
+I ran it on an immature dataset and got this error:
+Error in `[.data.table`(data, , `:=`((cols.num), lapply(.SD, NMasNumeric)),  : 
+  .SDcols should be column numbers or names
+**** TODO [#A] ID and row identifier must not start with a zero
+     That would ruin merging if Nonmem prints as a double or integer
 **** TODO [#A] Should more of the checked columns be checked for NMisNumeric?
 **** TODO [#A] Element-wise NMisNumeric
 There are two distinct uses of NMisNumeric. Column-wise and
@@ -166,6 +177,7 @@ numeric should be using
      Applies to other colname checks too?
 **** TODO [#B] Requirements to DV for EVID==2 and EVID==3?
 **** TODO [#B] Add col.row to findings
+**** TODO [#B] Should be able to run on a model file
 *** NMextractDataFile
 **** DONE Add support for windows absolute paths
      CLOSED: [2021-05-14 Fri 16:11]
@@ -517,4 +529,3 @@ exported so it's not very important.
     CLOSED: [2021-04-12 Mon 16:03]
 
 
-* temp

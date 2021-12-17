@@ -30,16 +30,19 @@ test_that("Misc findings",{
     
 })
 
-test_that("col.flagn missing",{
-    fileRef <- "testReference/NMcheckData_4.rds"
+#### This should give an error but does not
+test_that("TIME with characters",{
+    fileRef <- "testReference/NMcheckData_5.rds"
     
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 
-    colnames(pk)[24] <- "ret.4"
-    ## a dup col name
-    pk[2,ret.4:="3,mg"]
+    ## a character in TIME
+    pk[,TIME:=as.character(TIME)]
+    pk[ROW==204,TIME:=paste0(TIME,"p")]
 
-    res <- NMcheckData(pk,col.flagn="gregewws22")
+    ##    load_all("~/wdirs/NMdata/")
+    
+    res <- NMcheckData(pk)
     expect_equal_to_reference(res,fileRef,version=2)
     
 })

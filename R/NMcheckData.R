@@ -292,7 +292,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
 ##### overwrite cols.num with NMasNumeric of cols.num
     data[,(cols.num):=lapply(.SD,NMasNumeric),.SDcols=cols.num]
 
-
+    
 ### TIME must be positive
     findings <- listEvents(col.time,"Negative time",fun=function(x)x>=0,events=findings,debug=F)
 
@@ -323,7 +323,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
 
 ### MDV should perfectly reflect is.na(DV)
     if("MDV"%in%colnames(data)){
-        ## browser()
+        
         data[,MDVDV:=!is.na(MDV)&MDV==as.numeric(is.na(DV))]
         findings <- listEvents("MDVDV","MDV does not match DV",colname="MDV",fun=function(x)x==TRUE,events=findings)
     }
@@ -339,8 +339,10 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
 
 #### AMT
     ## must be numeric
-    findings <- listEvents("AMT",name="Not numeric",fun=NMisNumeric,
-                                  na.strings=na.strings) 
+    findings <- listEvents("AMT",name="Not numeric",
+                           fun=NMisNumeric,events=findings,
+                           na.strings=na.strings,
+                           dat=data) 
     ## positive for EVID 1 and 4
     findings <- listEvents("AMT","Non-positive dose amounts",
                            fun=function(x)x>=0,events=findings,

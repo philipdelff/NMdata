@@ -59,6 +59,8 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,fun.cl
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
+    
+    
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
     dots <- list(...)
