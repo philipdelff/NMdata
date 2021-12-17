@@ -1,0 +1,66 @@
+---
+title: "NMscanData: Find And Combine All Output And Input Data"
+output:
+rmarkdown::html_vignette:
+    toc: true
+Suggests: markdown
+VignetteBuilder: knitr
+vignette: >
+  %\VignetteIndexEntry{NMscanData: Find and combine all output and input data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+header-includes:
+- \usepackage{ae}
+---
+
+```{r, include = FALSE}
+##knitr::opts_chunk$set(dev = "cairo_pdf")
+knitr::opts_chunk$set(
+                      collapse = TRUE
+                     ,comment = "#>"
+                     ,fig.width=7
+                     ,cache=FALSE
+                  )
+
+## this change data.table syntax. I think we can do without.
+## knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
+```
+
+Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
+
+This vignette is still under development. Please make sure to see latest version available [here](https://philipdelff.github.io/NMdata/).
+
+
+::: columns
+:::: column
+### NMdata is 
+
+An R package that can help
+
+*  Creating event-based data sets for PK/PD modeling
+*  Keeping Nonmem code updated to match contents of datasets
+*  Read all output data and combine with input data from Nonmem runs
+- supply output list file (.lst), and the reader is very flexible and automated 
+
+Designed to fit in to the user's setup and coding preferences
+
+* NMdata comes with a configuration tool that can be used to tailor default behaviour to the user's system configuration and preferences.
+
+::::
+
+:::: column
+
+### NMdata is not
+
+* A plotting package
+
+* A tool to retrieve details about model runs
+
+* A calculation or simulation toolbox
+
+* A "silo" that requires you to do things in a certain way
+- No tools in NMdata requires other NMdata tools to be used
+
+::::
+:::
+
