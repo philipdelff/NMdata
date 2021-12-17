@@ -25,7 +25,7 @@ identifier. Default is "ID".}
 
 \item{col.flagn}{Optionally, the name of the column holding
 numeric exclusion flags. Default value is FLAG and can be
-configured using NMdataConf.}
+configured using NMdataConf. Disable by using col.flagn=FALSE.}
 
 \item{col.row}{A column with a unique value for each row. Such a
 column is recommended to use if possible. Default ("ROW") can

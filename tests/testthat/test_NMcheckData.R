@@ -30,9 +30,8 @@ test_that("Misc findings",{
     
 })
 
-#### This should give an error but does not
 test_that("TIME with characters",{
-    fileRef <- "testReference/NMcheckData_5.rds"
+    fileRef <- "testReference/NMcheckData_4.rds"
     
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 
@@ -40,8 +39,6 @@ test_that("TIME with characters",{
     pk[,TIME:=as.character(TIME)]
     pk[ROW==204,TIME:=paste0(TIME,"p")]
 
-    ##    load_all("~/wdirs/NMdata/")
-    
     res <- NMcheckData(pk)
     expect_equal_to_reference(res,fileRef,version=2)
     
@@ -62,4 +59,34 @@ test_that("Misc findings and dup colname",{
     res <- expect_warning(NMcheckData(pk))
     expect_equal_to_reference(res,fileRef,version=2)
     
+})
+
+test_that("missing EVID",{
+    fileRef <- "testReference/NMcheckData_6.rds"
+    
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk[,EVID:=NULL]
+
+    res <- NMcheckData(pk)
+    expect_equal_to_reference(res,fileRef,version=2)
+    
+})
+
+
+test_that("missing ID",{
+        
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk[,ID:=NULL]
+
+    expect_error( NMcheckData(pk))
+})
+
+test_that("missing ID",{
+    fileRef <- "testReference/NMcheckData_7.rds"
+    
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk[,MDV:=1]
+
+    res <- NMcheckData(pk)
+    expect_equal_to_reference(res,fileRef,version=2)
 })

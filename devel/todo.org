@@ -156,7 +156,8 @@ helpful. Only list other columns than the scope.
 **** DONE [#A] Report dims(df1,df2,result) unless quiet
      CLOSED: [2021-11-26 Fri 22:40]
 *** mergeCheck
-**** TODO [#A] Test the check for row duplications
+**** DONE [#A] Test the check for row duplications
+     CLOSED: [2021-12-16 Thu 21:45]
 *** NMcheckData
 **** DONE [#A] Check for , in character column contents not working
      CLOSED: [2021-12-16 Thu 15:07]
@@ -168,7 +169,8 @@ Error in `[.data.table`(data, , `:=`((cols.num), lapply(.SD, NMasNumeric)),  :
 **** TODO [#A] ID and row identifier must not start with a zero
      That would ruin merging if Nonmem prints as a double or integer
 **** TODO [#A] Should more of the checked columns be checked for NMisNumeric?
-**** TODO [#A] Element-wise NMisNumeric
+**** DONE [#A] Element-wise NMisNumeric
+     CLOSED: [2021-12-16 Thu 21:47]
 There are two distinct uses of NMisNumeric. Column-wise and
 element-wise. When checking for NMisNumeric, columns that must be
 numeric should be using
@@ -257,7 +259,7 @@ A way to limit rows read into nonmem
 ***** diff
 ***** off
 *** NMscanTables
-**** TODO [#A] include meta data as NMinfo
+**** TODO [#B] include meta data as NMinfo
 **** DONE Lastonly does the same as firstonly
      CLOSED: [2020-07-13 Mon 19:37]
 *** NMscanData

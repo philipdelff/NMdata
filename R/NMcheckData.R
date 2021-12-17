@@ -103,7 +103,16 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
+
+#### Section start: Checks of arguments ####
+
+    if(!is.data.frame(data)) stop("Data must be inheriting from data.frame (meaning that more advanced classes like data.table and tibble are OK.")
     
+    if(!col.id %in%colnames(data)) {stop("col.id must point to an existing column in data. If you don't have one, you can create a dummy column with a constant value.")}
+
+### Section end: Checks of arguments
+
+
     
 #### Section start: Default parameter values ####
     if(missing(na.strings)) na.strings <- "."
@@ -123,7 +132,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
 ### Section end: Default parameter values    
 
     data <- copy(as.data.table(data))
-
+    
     c.row <- tmpcol(data,base="row",prefer.plain=TRUE)
     data[,(c.row):=.I]
     
@@ -233,9 +242,13 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
     if(!is.null(col.flagn)){
         findings <- listEvents(col.flagn,"Missing value",
                                fun=is.na,invert=T,events=findings,debug=FALSE)
+        ## not sure if this should be NMisNumeric(...,each=T). I guess
+        ## something is completely wrong with the column if elements
+        ## are not numeric. But other columns are check with each=T.
         findings <- listEvents(col.flagn,"Not numeric",
-                               fun=NMisNumeric,events=findings,
-                               new.rows.only=T,na.strings=na.strings)
+                               fun=function(x)NMisNumeric(x,na.strings=na.strings),
+                               events=findings,
+                               new.rows.only=T)
         findings <- listEvents(col.flagn,"col.flagn not an integer",
                                fun=function(x)x%%1==0,events=findings,
                                new.rows.only=T)
@@ -277,8 +290,10 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
                      ,fill=TRUE)
 
 ### check for  non-numeric in cols.num
-    newfinds <- rbindlist( lapply(cols.num,listEvents,name="Not numeric",fun=NMisNumeric,
-                                  new.rows.only=T,na.strings=na.strings) )
+    newfinds <- rbindlist( lapply(cols.num,listEvents,name="Not numeric",
+                                  fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+                                  new.rows.only=T)
+                          )
     findings <- rbind(findings,
                       newfinds
                      ,fill=TRUE)
@@ -340,8 +355,8 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
 #### AMT
     ## must be numeric
     findings <- listEvents("AMT",name="Not numeric",
-                           fun=NMisNumeric,events=findings,
-                           na.strings=na.strings,
+                           fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+                           events=findings,                           
                            dat=data) 
     ## positive for EVID 1 and 4
     findings <- listEvents("AMT","Non-positive dose amounts",
@@ -375,28 +390,31 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
                                colname="TIME",events=findings)
     }
     
-    data[,Nrep:=.N,by=c("newID","CMT","EVID",col.time)]
+    
+    data[,Nrep:=.N,by=intersect(c("newID","CMT","EVID",col.time),colnames(data))]
     findings <- listEvents(col="Nrep",name="Duplicated event",function(x) x<2,colname="ID, CMT, EVID, TIME",events=findings)
 
+    if("EVID"%in%colnames(data)){
 ### subjects without doses
-    all.ids <- data[,unique(get(col.id))]
-    tab.evid.id <- data[,.N,by=c(col.id,"EVID")]
-    ids.no.doses <- setdiff(all.ids,tab.evid.id[EVID%in%c(1,4),get(col.id)])
+        all.ids <- data[,unique(get(col.id))]
+        tab.evid.id <- data[,.N,by=c(col.id,"EVID")]
+        ids.no.doses <- setdiff(all.ids,tab.evid.id[EVID%in%c(1,4),get(col.id)])
 
-    if(length(ids.no.doses)){
-        findings <- rbind(findings
-                         ,data.table(check="Subject has no doses",column="EVID",ID=ids.no.doses,level="ID")
-                         ,fill=TRUE)
-    }
+        if(length(ids.no.doses)){
+            findings <- rbind(findings ,
+                              data.table(check="Subject has no doses",column="EVID",ID=ids.no.doses,level="ID") ,
+                              fill=TRUE)
+        }
 ### subjects without observations    
-    ids.no.obs <- setdiff(all.ids,tab.evid.id[EVID%in%c(0),get(col.id)])
-    if(length(ids.no.obs)){
-        findings <- rbind(findings
-                         ,
-                          data.table(check="Subject has no obs",column="EVID",ID=ids.no.obs,level="ID")
-                         ,fill=TRUE)
+        ids.no.obs <- setdiff(all.ids,tab.evid.id[EVID%in%c(0),get(col.id)])
+        if(length(ids.no.obs)){
+            findings <- rbind(findings
+                             ,
+                              data.table(check="Subject has no obs",column="EVID",ID=ids.no.obs,level="ID")
+                             ,fill=TRUE)
+        }
     }
-
+    
 ### Add ID's to row-level findings
     findings.row <- findings[level=="row"]
     if(!is.null(col.id)&&nrow(findings.row)>0){
