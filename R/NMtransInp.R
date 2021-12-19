@@ -60,7 +60,7 @@ NMtransInp <- function(data,file,translate=TRUE){
     ## More column names can be specified in the nonmem control stream
     ## than actually found in the input data. We will simply disregard
     ## them.
-    nminfo.data.0 <- NMinfo(data)
+    nminfo.data.0 <- NMinfoDT(data)
     cnames.input.0 <- copy(colnames(data))
     cnames.input <- copy(cnames.input.0)
 

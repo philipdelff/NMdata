@@ -60,7 +60,7 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     ##     details <- TRUE
     ## }
     
-    data.meta <- NMinfo(data)
+    data.meta <- NMinfoDT(data)
 
     text2 <- NMreadSection(lines=lines,section="DATA",keepComments=FALSE)
     text3 <- sub(";.*$","",text2)

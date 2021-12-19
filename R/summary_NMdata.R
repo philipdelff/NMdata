@@ -32,10 +32,16 @@ summary.NMdata <- function(object,...){
         unNMdata(data)
         return(summary(data,...))
     }
+
     
-    if(!is.data.table(data)) data <- as.data.table(data)
+    if(!is.data.table(data)) {
+        NMi <- NMinfoDT(data)
+        data <- as.data.table(data)
+        writeNMinfo(data,NMi)
+        }
     ## derive how many subjects. Need to 
 
+    
     
     s1 <- NMinfoDT(data)
     s1$N.ids1 <- data[,list(N.ids=uniqueN(ID)),by="nmout"]
@@ -52,6 +58,14 @@ summary.NMdata <- function(object,...){
     )
     s1$N.ids1 <- NULL
 
+    
+    if(s1$details$input.used){
+        Nids.out <- s1$N.ids[NMOUT=="Output",N.ids]
+        if(length(Nids.out)==1){
+            s1$tables[,nid:=Nids.out]
+        }
+    }
+    
     s1$N.rows <- data[,list(N.rows=.N),by="nmout"]
     s1$N.evids <- NA
     if("EVID"%in%colnames(data)){
@@ -62,6 +76,14 @@ summary.NMdata <- function(object,...){
 
     s1
 }
+
+
+### fix nid. If ID is not in output tables, the number of ID's are
+### missing even though we know all ID's that are available in
+### output are available in all output tables. So if both input
+### and output are used, we overwrite the number of ID's by the
+### number we find as nmout in result.
+
 
 ##' print method for NMdata summaries
 ##' @param x The summary object to be printed. See ?summary.NMdata

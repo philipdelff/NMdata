@@ -846,10 +846,11 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     }
     meta.input$tables <- NULL
 
+    
     if(use.input){
         writeNMinfo(tab.row,meta.input,append=TRUE)
     }
-
+    
     writeNMinfo(tab.row,list(tables=tables.meta),append=TRUE)
     writeNMinfo(tab.row,list(columns=dt.vars),append=TRUE)
 

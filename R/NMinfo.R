@@ -17,7 +17,7 @@
 ##'     "details".
 ##' @export
 
-NMinfo <- function(data,info,as.fun){
+NMinfo <- function(data,info,as.fun,deb=FALSE){
 
 
     if(missing(as.fun)) as.fun <- NULL
@@ -27,7 +27,7 @@ NMinfo <- function(data,info,as.fun){
     if (inherits(data, "NMdata")) {
         if(!is.null(info)){
             nms.meta <- names(attributes(data)$NMdata)
-
+            
             if(!info%in%nms.meta){
                 stop("Requested info not available. Available",paste(nms.meta,collapse=", "))
             }
@@ -36,8 +36,12 @@ NMinfo <- function(data,info,as.fun){
     
     
     if(is.null(info)) {
+        
         nms.meta <- names(attributes(data)$NMdata)
-        return(setNames(lapply(nms.meta,function(x)NMinfo(data,info=x,as.fun=as.fun)),nms.meta))
+        return(
+            setNames(
+                lapply(nms.meta,function(x)NMinfo(data,info=x,as.fun=as.fun))
+               ,nms.meta))
     }
 
     out <- attributes(data)$NMdata[[info]]
@@ -48,5 +52,5 @@ NMinfo <- function(data,info,as.fun){
 }
 
 
-## dont export. This is used internally not having to remember as.fun="data.table" 
+## dont export. This is used internally not having to remember as.fun="data.table" when reading NMinfo
 NMinfoDT <- function(...) NMinfo(...,as.fun="data.table")
