@@ -2,7 +2,7 @@
 % Please edit documentation in R/NMcheckColnames.R
 \name{NMcheckColnames}
 \alias{NMcheckColnames}
-\title{Compare $DATA to column names in input data}
+\title{Compare $INPUT in control stream to column names in input data}
 \usage{
 NMcheckColnames(file, as.fun, ...)
 }

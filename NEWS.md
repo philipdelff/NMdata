@@ -47,6 +47,8 @@
 
 * In compareCols multiple classes of single columns would give a
   warning and sometimes confusing overview of columns. Fixed.
+  
+* findCovs fixed in ordering output when by argument is of length > 1
 
 # NMdata 0.0.9
 The only change from 0.0.8 is a patch provided by Matt Dowle ensuring

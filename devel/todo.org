@@ -153,15 +153,15 @@ helpful. Only list other columns than the scope.
 **** DONE Bug for diff.only=FALSE
      CLOSED: [2021-04-18 Sun 12:16]
 *** egdt
-**** DONE [#A] Report dims(df1,df2,result) unless quiet
+**** DONE Report dims(df1,df2,result) unless quiet
      CLOSED: [2021-11-26 Fri 22:40]
 *** mergeCheck
-**** DONE [#A] Test the check for row duplications
+**** DONE Test the check for row duplications
      CLOSED: [2021-12-16 Thu 21:45]
 *** NMcheckData
-**** DONE [#A] Check for , in character column contents not working
+**** DONE Check for , in character column contents not working
      CLOSED: [2021-12-16 Thu 15:07]
-**** DONE [#A] Checks for availability
+**** DONE Checks for availability
      CLOSED: [2021-12-16 Thu 15:05]
 I ran it on an immature dataset and got this error:
 Error in `[.data.table`(data, , `:=`((cols.num), lapply(.SD, NMasNumeric)),  : 
@@ -169,12 +169,12 @@ Error in `[.data.table`(data, , `:=`((cols.num), lapply(.SD, NMasNumeric)),  :
 **** TODO [#A] ID and row identifier must not start with a zero
      That would ruin merging if Nonmem prints as a double or integer
 **** TODO [#A] Should more of the checked columns be checked for NMisNumeric?
-**** DONE [#A] Element-wise NMisNumeric
+**** DONE Element-wise NMisNumeric
      CLOSED: [2021-12-16 Thu 21:47]
 There are two distinct uses of NMisNumeric. Column-wise and
 element-wise. When checking for NMisNumeric, columns that must be
 numeric should be using
-**** DONE [#A] Only check for special characters in colnames for numeric columns
+**** DONE Only check for special characters in colnames for numeric columns
      CLOSED: [2021-12-08 Wed 21:20]
      Applies to other colname checks too?
 **** TODO [#B] Requirements to DV for EVID==2 and EVID==3?
@@ -186,13 +186,13 @@ numeric should be using
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
 *** NMwriteSection
-**** DONE [#A] Check if any files matched before running lapply
+**** DONE Check if any files matched before running lapply
      CLOSED: [2021-12-04 Sat 15:35]
 **** TODO [#B] When using list.files, give overview of matches by expression and by data.file
-**** DONE [#A] Bug in data.file argument
+**** DONE Bug in data.file argument
      CLOSED: [2021-12-04 Sat 10:05]
      Error in FUN(X[[i]], ...) : file.exists(file0) is not TRUE
-**** DONE [#A] Support for file name pattern in dir
+**** DONE Support for file name pattern in dir
      CLOSED: [2021-12-04 Sat 10:01]
      code available in recent script
 **** DONE Support for multiple sections
@@ -238,7 +238,7 @@ look at - called col.id after the translations.
       CLOSED: [2020-09-17 Thu 15:19]
       Maybe file can be missing/NULL if file.mod is given.
 *** NMtransFilters
-**** DONE [#A] Report translation in NMmeta
+**** DONE Report translation in NMmeta
      CLOSED: [2021-11-26 Fri 22:55]
 **** DONE Replace single = with ==
      CLOSED: [2020-06-15 Mon 21:05]
@@ -342,6 +342,9 @@ See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
 is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMwriteData
+**** TODO [#A] Remove check for standard columns
+     This is done in NMcheckData
+**** TODO [#B] Separate generation of INPUT text into new function
 **** DONE Bug in inclusion of filename in text
      CLOSED: [2021-11-23 Tue 22:20]
      See poster example
@@ -379,11 +382,11 @@ Not warning. Warning if standard variable?
 **** DONE Polish
      CLOSED: [2020-12-23 Wed 11:31]
 *** flagsAssign
-**** DONE [#A] check for whether there are any contents in data - just warning and return nothing
+**** DONE check for whether there are any contents in data - just warning and return nothing
      CLOSED: [2021-11-27 Sat 21:16]
-**** DONE [#A] implement grp.incomp as in flagsCount
+**** DONE implement grp.incomp as in flagsCount
      CLOSED: [2021-11-27 Sat 22:14]
-**** DONE [#A] Only give message about overwriting FLAG/flag if non-NA values are present
+**** DONE Only give message about overwriting FLAG/flag if non-NA values are present
      CLOSED: [2021-11-27 Sat 22:28]
 **** DONE Improve messages at each FLAG coding
      CLOSED: [2020-12-23 Wed 11:31]
@@ -447,13 +450,12 @@ arguments. NMdata calls this "writtenTo".
 ***** DONE Add result row
       CLOSED: [2021-06-15 Tue 13:59]
 ****** Number of columns has 0-2 extra columns
-** Nonmem examples
-*** DONE Use FLAG
-    CLOSED: [2020-06-29 Mon 21:28]
-rerun xmgr001.mod with IGNORE=(FLAG.NE.0) That would be a nice example
-for the vignette.
-*** DONE Update all runs with updated data file
-    CLOSED: [2020-07-02 Thu 09:28]
+** Tests and documentation
+*** Cheat sheet
+**** TODO Flag example
+*** TODO [#A] input.txt/output.txt example must be generated with plain nonmem
+    Test NMdataConf(file.mod=identity)
+*** TODO [#A] renameByContents example
 ** Discussion
 *** recoverRows can mean mix of variable interpretations
 If recoverRows and a variable is changing interpretation from input to

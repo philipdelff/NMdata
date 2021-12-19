@@ -1,0 +1,232 @@
+---
+title: "NMdata Cheatsheet"
+output:
+rmarkdown::html:
+    toc: true
+Suggests: markdown
+VignetteBuilder: knitr
+vignette: >
+  %\VignetteIndexEntry{NMscanData: Find and combine all output and input data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+header-includes:
+- \usepackage{ae}
+---
+<style>
+.main-container {
+max-width: unset;
+margin: 50px;
+}
+
+.column-container{
+/* background-color: hotpink */
+display:flex;
+flex-direction:row;
+justify-content:space-between;
+
+}
+.column-container__column{
+/* background-color:green; */
+width:calc(33.3% - 10px)
+margin: 12px;
+}
+</style>
+
+```{r, include = FALSE}
+##knitr::opts_chunk$set(dev = "cairo_pdf")
+knitr::opts_chunk$set(
+                      collapse = TRUE
+                     ,comment = "#>"
+                     ,fig.width=7
+                     ,cache=FALSE
+                  )
+
+## library(devtools)
+## load_all()
+
+## this change data.table syntax. I think we can do without.
+## knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
+
+pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+pk[,trtact:=NULL]
+covs <- unique(pk[,.(ID,WEIGHTB)])
+pk[,WEIGHTB:=NULL]
+set.seed(1)
+covs2 <- covs[,.(ID,cov2=sample(c("caucasian","black"),size=.N,replace=T))]
+
+```
+
+<!-- The NMdata logo -->
+```{r, echo=FALSE}
+htmltools::img(src = knitr::image_uri(## file.path(R.home("pkgdown"), "favicon", "apple-touch-icon-152x152.png")),
+                                system.file("pkgdown/favicon/apple-touch-icon-152x152.png",package="NMdata")),
+               alt = 'logo', 
+               style = 'position:absolute; top:0; right:0; padding:10px;')
+```
+
+Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
+
+Please make sure to see latest version available
+[here](https://philipdelff.github.io/NMdata/). 
+
+:::: {style="display: flex;" class="column-container"}
+::: {class="column-container__column"}
+
+This cheat sheet is
+intented to provide an overview and remind of command names. Please
+refer to other vignettes for more details on specefic topics and
+individual manual pages for details on the functions.
+
+### Basics
+Get started
+```{r,eval=FALSE}
+install.packages("NMdata")
+library(NMdata)
+```
+
+Use the many options in NMdataConf to tailor NMdata behaviour to your setup and preferences. Make NMdata functions return data.tables or tibble's:
+```{r}
+NMdataConf(as.fun="data.table")
+NMdataConf(as.fun=tibble::as_tibble)
+```
+
+By default, NMdata is configured to read files from PSN in which case the input control stream is needed to find the input data. Do this if you don't use PSN:
+```{r,eval=FALSE}
+NMdataConf(file.mod=identity)
+```
+
+Loosely speaking, `NMdataConf` changes default values of NMdata function arguments.
+
+### Data set preparation
+
+
+<!-- `dims` - compare dimensions of multiple data sets -->
+<!-- ```{r} -->
+<!-- ## In these examples we use a PK dataset and a set of covariates -->
+<!-- dims(pk,covs) -->
+<!-- ``` -->
+
+`compareCols` - Compare presence and classes of columns across data sets before merging or stacking.
+```{r}
+compareCols(covs,covs2)
+```
+
+
+
+:::
+
+::: {class="column-container__column"}
+### Data set preparation 
+`renameByContents` - Keep track of what columns are compatible with Nonmem by renaming those that aren't. Rename all columns that Nonmem cannot interpret as numeric to lowercase (see `NMisNumeric` in Programming section):
+```{r,echo=F}
+pk <- renameByContents(data=pk,
+                       fun.test = NMisNumeric,
+                       fun.rename = tolower,
+                       invert.test = TRUE)
+## Or append a "C" to the same column names
+pk <- renameByContents(data=pk,
+                       fun.test = NMisNumeric,
+                       fun.rename = function(x)paste0(x,"C"),
+                       invert.test = TRUE)
+```
+
+`mergeCheck(x1,x2)` - Merge and only accept results if all that happened was that columns were added to `x1`. `by` argument is required.
+
+`flagsAssign` - Assign exclusion flags to a dataset based on specified table
+
+`flagsCount` - Create an overview of number of retained and discarded datapoints
+
+`NMorderColumns` - Standardize column order in Nonmem input data
+
+
+`NMcheckData` - Check data for Nonmem compatibility and common issues.
+
+`NMstamp` - Add metadata for documentation and traceability of datasets. Information does not affect the data itself but can be stored together with it and accessed with `NMinfo`.
+
+`NMwriteData` - Write data ensuring compatibility with NONMEM. Text for optional use in `$INPUT` `$DATA` NONMEM sections are returned. `NMwriteSection` can use this information to update NONMEM runs to match the newly generaed input data.
+
+### Read from and edit Nonmem control streams
+`NMreadSection` - Extract sections of Nonmem control streams
+
+`NMwriteSection` - Replace sections of a nonmem control stream
+
+### Debugging Nonmem and input data
+`NMcheckColnames` - Compare `$INPUT` in control stream to column names in input data. 
+```{r,include=F}
+NMcheckColnames <- function(x)NMdata::NMcheckColnames(file.path(system.file(paste0("examples/nonmem/",x), package="NMdata")))
+```
+```{r}
+NMcheckColnames("xgxr001.lst")[1:3,]
+```
+```{r,include=F}
+rm(NMcheckColnames)
+```
+
+:::
+
+::: {class="column-container__column"}
+
+### Retrieve Nonmem results
+`NMscanData` - Automatically find Nonmem input and output tables and organize data
+```{r,include=F}
+NMscanData <- function(x)NMdata::NMscanData(file.path(system.file(paste0("examples/nonmem/",x), package="NMdata")))
+## res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"))
+```
+```{r}
+res1 <- NMscanData("xgxr001.lst")
+```
+```{r,include=F}
+rm(NMscanData)
+```
+
+`NMscanTables` - Find and read all output data tables based on a NONMEM control stream file. A list of tables is returned.
+
+`NMreadTab` - Read an output table file from NONMEM based on path to output data file
+
+`NMscanInput` - Read input data based on NONMEM control stream and optionally translate column names according to the `$INPUT` NONMEM section
+
+`NMreadCsv` - Read input data formatted for nonmem
+
+`NMinfo` - Get metadata from an NMdata object. This will show where and when input data was created, when model was run, results of concistency checks, what tables were read, how they were combined and a complete list of data columns and their origin.
+
+
+:::
+
+::: {class="column-container__column"}
+### Programming
+
+`cc` - create character vectors without typing quotations unless special characters are used
+```{r}
+cc(A , B, "A-B")
+```
+
+Imagine you want to plot random effects against covariates. `findCovs` and `findVars` are fast functions that extract the columns that vary a given level of variability (between subjects, between occasions).
+
+`findCovs` - Extract columns that do not vary within values of other columns
+```{r}
+## columns that don't vary at all. Could be a study number or an ETA that is not used.
+(model.level <- findCovs(pk))
+## columns that don't vary within subjects (by can be of arbitrary length)
+id.level <- findCovs(pk,by="ID")
+```
+
+`findVars` - Extract columns that _vary_ within values of other columns
+```{r,eval=FALSE}
+## in id.level, some do not vary between ID's so in fact they are model-level. Discard those
+actual.id.level <- findVars(id.level,by="ID")
+## find occasion level variability - columns that do vary between ID but do not vary with ID+OCC.
+occ.level <- findCovs(findVars(pk,"ID"),c("ID","OCC"))
+```
+
+
+`NMextractDataFile` - Get the file path to the input data file used in a NONMEM control stream
+
+`NMisNumeric` - Test whether a column or the individual values in a column/vector are compatible with NONMEM (interpretable as numeric)
+
+<!-- `tmpcol` -->
+<!-- `egdt` -->
+ 
+
+:::
+::::
+

@@ -15,10 +15,27 @@
 ##' @details Use this to exclude columns that are constant within by. If
 ##'     by=ID, this could be to get only time-varying covariates.
 ##' @return a data set with as many rows as in data.
+##' @import data.table
+##' @examples
+##' dt1 <- data.table(ID=c(1,1,2,2),OCC=c(1,2,1,2),
+##'                ## ID level
+##'                eta1=c(1,1,3,3)
+##'                ## occasion level
+##'               ,eta2=c(1,3,1,5)
+##'                ## not used
+##'               ,eta3=0
+##'                )
+##' ## model level
+##' findCovs(dt1)
+##' ## ID level
+##' findCovs(dt1,"ID")
+##' ## acual ID level
+##' findVars(findCovs(dt1,"ID"))
+##' ## occasion level
+##' findCovs(findVars(dt1,"ID"),c("ID","OCC"))
 ##' @family DataCreate
 ##' @import data.table
 ##' @export
-
 
 
 findVars <- function(data,by=NULL,as.fun=NULL){

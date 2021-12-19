@@ -1,4 +1,4 @@
-##' Compare $DATA to column names in input data
+##' Compare $INPUT in control stream to column names in input data
 ##'
 ##' Misspecification of column names in $DATA are a common source of
 ##' problems with Nonmem models, and one of the first things to check

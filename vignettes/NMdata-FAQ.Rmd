@@ -132,15 +132,17 @@ fast. If you are noticing some circumstances where NMdata seems
 slow, I am very curious to hear about it.
 
 ### So NMdata uses data.table. Does that mean variables are modified by reference? 
-NMdata definitely modify variables by reference
-internally but this will never affect your workspace. It might improve speed to go all the way, and modify by reference in the user workspace, but using NMdata must be easy for R users
-at all levels of experience. If you don't understand what this is all
-about, you're fine.
+NMdata definitely modify variables by reference internally but this
+will not affect your workspace (only exception is `NMstamp()`). It
+might improve speed to go all the way and modify by reference in the
+user workspace, but using NMdata must be easy for R users at all
+levels of experience. If you don't understand what this is all about,
+you're fine.
 
 ### I want to use a tool from NMdata, but how does it integrate with dplyr or data.table?
-Every function in NMdata has an argument called `as.fun`. You
-can provide a function in this argument which will be applied to data
-before returning it.
+Every function in NMdata has an argument called `as.fun`. You can
+provide a function in this argument which will automatically be
+applied to results.
 
 You can get a tibble if you work with `dplyr`/`tidyverse` tools: 
 

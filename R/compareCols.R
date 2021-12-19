@@ -118,12 +118,17 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,fun.cl
         message("Dimensions:")
         print(dims(list.data=dots))
     }
-    message("\nOverview of columns:")
+
     if(nrow(dt.cols)==0&&ndots==1){
         message("Only one data set supplied.\n")
     } else if(nrow(dt.cols)==0&&ndots>1){
         message("No differences.\n")
     } else {
+        if(diff.only){
+            message("\nColumns that differ:")
+        } else {
+            message("\nOverview of all columns:")
+        }
         print(dt.cols)
     }
     invisible(as.fun(dt.cols))
