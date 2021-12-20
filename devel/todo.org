@@ -169,6 +169,9 @@ Error in `[.data.table`(data, , `:=`((cols.num), lapply(.SD, NMasNumeric)),  :
 **** TODO [#A] ID and row identifier must not start with a zero
      That would ruin merging if Nonmem prints as a double or integer
 **** TODO [#A] Should more of the checked columns be checked for NMisNumeric?
+**** DONE [#A] check RATE, SS
+**** TODO [#B] Check ADDL, II
+**** TODO [#A] Support for file argument (control stream)
 **** DONE Element-wise NMisNumeric
      CLOSED: [2021-12-16 Thu 21:47]
 There are two distinct uses of NMisNumeric. Column-wise and
@@ -455,7 +458,8 @@ arguments. NMdata calls this "writtenTo".
 **** TODO Flag example
 *** TODO [#A] input.txt/output.txt example must be generated with plain nonmem
     Test NMdataConf(file.mod=identity)
-*** TODO [#A] renameByContents example
+*** DONE renameByContents example
+    CLOSED: [2021-12-19 Sun 20:45]
 ** Discussion
 *** recoverRows can mean mix of variable interpretations
 If recoverRows and a variable is changing interpretation from input to

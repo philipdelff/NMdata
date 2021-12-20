@@ -21,7 +21,7 @@ summary.NMdata <- function(object,...){
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
-    data <- object
+    data <- copy(object)
     if(!"NMdata"%in%class(data)) stop("data does not seem to be of class NMdata.")
 
     ## I need to look more into this. Some operations (merge?) drop

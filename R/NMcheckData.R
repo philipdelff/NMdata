@@ -36,6 +36,9 @@
 ##'     flag is found, the rest of the checks are performed on rows
 ##'     where that flag equals 0 (zero) only.
 ##'
+##' \item If a unique row identifier is found, it has to be
+##' non-missing, increasing integers. 
+##'
 ##' \item col.time (TIME),
 ##'     EVID, ID, CMT, MDV: If present, elements must be non-missing
 ##'     and numeric.
@@ -55,6 +58,10 @@
 ##' \item DV must be numeric
 ##'
 ##' \item DV must be missing for EVID in {1,4}.
+##'
+##' \item If found, RATE must be a numeric, equaling -2 or non-negative for dosing events.
+##'
+##' \item If found, SS must be a numeric, equaling 0 or 1.
 ##'
 ##' \item ID must be positive and values cannot be disjoint (all
 ##'     records for each ID must be following each other. This is
@@ -368,6 +375,36 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
                            events=findings,
                            dat=data[EVID%in%c(0,2)])
     
+
+### optional default columns - RATE, SS, ADDL, II
+    if("RATE"%in%colnames(data)){
+        ## must be numeric
+        findings <- listEvents("RATE",name="Not numeric",
+                               fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+                               events=findings,                           
+                               dat=data) 
+        ## -2 or positive for EVID%in%c(1,4)
+        findings <- listEvents("RATE","Must be -2 or non-negative",
+                               fun=function(x)x==-2|x>=0,events=findings,
+                               dat=data[EVID%in%c(1,4)])        
+        
+    }
+
+    if("RATE"%in%colnames(data)){
+        ## must be numeric
+        findings <- listEvents("SS",name="Not numeric",
+                               fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+                               events=findings,                           
+                               dat=data) 
+        ## -2 or positive for EVID%in%c(1,4)
+        findings <- listEvents("SS","must be 0 or 1",
+                               fun=function(x)x%in%c(0,1),events=findings
+                               )
+        
+    }
+    
+    
+
 ######## End Default columns
 
 
