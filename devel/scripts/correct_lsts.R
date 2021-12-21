@@ -1,6 +1,8 @@
 
 load_all()
-lsts <- list.files(system.file("examples/nonmem",package="NMdata"),pattern="xgxr.*\\.lst$",full.names=TRUE)
+## lsts <- list.files(system.file("examples/nonmem",package="NMdata"),pattern="xgxr.*\\.lst$",full.names=TRUE)
+lsts <- list.files(system.file("examples/nonmem/xgxr001dir",package="NMdata"),pattern="output*\\.txt$",full.names=TRUE)
+
 
 ## backup
 ## for(lst in lsts){
@@ -9,7 +11,7 @@ lsts <- list.files(system.file("examples/nonmem",package="NMdata"),pattern="xgxr
 
 
 
-### complete
+### complete stripping of estimation information
 for (lst in lsts){
 
     lines <- readLines(lst)
@@ -26,7 +28,7 @@ for (lst in lsts){
 
 
 
-### only partial stripping
+### only stripping of info that can make trouble
 if(F){
 
     for (lst in lsts){
