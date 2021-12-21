@@ -60,6 +60,7 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
 
     N.result <- NULL
     N.df1 <- NULL
+    N <- NULL
 
 ###  Section end: Dummy variables, only not to get NOTE's in pacakge checks
     

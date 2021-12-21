@@ -1,7 +1,7 @@
 Package: NMdata
 Type: Package
 Title: Preparation, Checking and Post-Processing Data for PK/PD Modeling
-Version: 0.0.9.931
+Version: 0.0.9.933
 Authors@R: person("Philip", "Delff", email = "philip@delff.dk",
                   role = c("aut", "cre"))
 Maintainer: Philip Delff <philip@delff.dk>
@@ -17,7 +17,8 @@ Suggests:
     rmarkdown,
     ggplot2,
     tibble,
-    covr
+    covr,
+    htmltools
 VignetteBuilder: knitr
 Encoding: UTF-8
 URL: https://philipdelff.github.io/NMdata/

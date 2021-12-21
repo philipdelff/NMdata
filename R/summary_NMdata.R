@@ -18,6 +18,8 @@ summary.NMdata <- function(object,...){
     ID <- NULL
     N.ids <- NULL
     nmout <- NULL
+    NMOUT <- NULL
+    nid <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     

@@ -1,10 +1,10 @@
 ---
-title: "Data Creation Tools"
+title: "Data Preparation Tools"
 output:  rmarkdown::html_vignette
 Suggests: markdown
 VignetteBuilder: knitr
 vignette: >
-  %\VignetteIndexEntry{Data creation tools}
+  %\VignetteIndexEntry{Data Preparation Tools}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 header-includes:
@@ -44,10 +44,10 @@ latest version available
 Getting data ready for modeling is a crucial and often underestimated
 task. Mistakes during the process of combining data sets, defining
 time variables etc. can lead to difficulties during modeling, need for
-revisiting data set creation, and in worst case wasted time working
+revisiting data set preparation, and in worst case wasted time working
 with an erroneos data set. Avoiding those mistakes by integrating
-checks into the data creation process is a key element in an efficient
-and reliable data creation work flow.
+checks into the data preparation process is a key element in an efficient
+and reliable data preparation work flow.
 
 Furthermore, Nonmem has a number of restrictions on the format
 of the input data, and problems with the data set is a common

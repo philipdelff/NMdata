@@ -6,7 +6,7 @@ rmarkdown::html:
 Suggests: markdown
 VignetteBuilder: knitr
 vignette: >
-  %\VignetteIndexEntry{NMscanData: Find and combine all output and input data}
+  %\VignetteIndexEntry{NMdata Cheatsheet}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 header-includes:
@@ -40,7 +40,10 @@ knitr::opts_chunk$set(
                      ,fig.width=7
                      ,cache=FALSE
                   )
-
+library(data.table)
+library(NMdata)
+NMdataConf(as.fun="data.table"
+           ,check.time=F)
 ## library(devtools)
 ## load_all()
 
@@ -59,7 +62,8 @@ covs2 <- covs[,.(ID,cov2=sample(c("caucasian","black"),size=.N,replace=T))]
 <!-- The NMdata logo -->
 ```{r, echo=FALSE}
 htmltools::img(src = knitr::image_uri(## file.path(R.home("pkgdown"), "favicon", "apple-touch-icon-152x152.png")),
-                                system.file("pkgdown/favicon/apple-touch-icon-152x152.png",package="NMdata")),
+                                ## system.file("pkgdown/favicon/apple-touch-icon-152x152.png",package="NMdata")),
+                                "apple-touch-icon-180x180.png"),
                alt = 'logo', 
                style = 'position:absolute; top:0; right:0; padding:10px;')
 ```
@@ -84,8 +88,8 @@ install.packages("NMdata")
 library(NMdata)
 ```
 
-Use the many options in NMdataConf to tailor NMdata behaviour to your setup and preferences. Make NMdata functions return data.tables or tibble's:
-```{r}
+Use the many options in `NMdataConf` to tailor NMdata behaviour to your setup and preferences. Make NMdata functions return data.tables or tibble's:
+```{r,eval=FALSE}
 NMdataConf(as.fun="data.table")
 NMdataConf(as.fun=tibble::as_tibble)
 ```
@@ -116,7 +120,7 @@ compareCols(covs,covs2)
 :::
 
 ::: {class="column-container__column"}
-### Data set preparation 
+### Data set preparation cont'd
 `renameByContents` - Keep track of what columns are compatible with Nonmem by renaming those that aren't. Rename all columns that Nonmem cannot interpret as numeric to lowercase (see `NMisNumeric` in Programming section):
 ```{r,echo=F}
 pk <- renameByContents(data=pk,

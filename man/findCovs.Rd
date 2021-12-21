@@ -31,13 +31,14 @@ ID. Or, you can provide a combination of id.cols, say ID and STUDY, and get
 variables that do not vary within unique combinations of these.
 }
 \examples{
-dt1=data.table(ID=c(1,1,2,2),OCC=c(1,2,1,2),
+dt1=data.frame(ID=c(1,1,2,2),
+               OCC=c(1,2,1,2),
                ## ID level
-               eta1=c(1,1,3,3)
+               eta1=c(1,1,3,3),
                ## occasion level
-              ,eta2=c(1,3,1,5)
+               eta2=c(1,3,1,5),
                ## not used
-              ,eta3=0
+               eta3=0
                )
 ## model level
 findCovs(dt1)
@@ -47,7 +48,7 @@ findCovs(dt1,"ID")
 findVars(findCovs(dt1,"ID"))
 ## occasion level
 findCovs(findVars(dt1,"ID"),c("ID","OCC"))
-Based on a "real data example"
+## Based on a "real data example"
 dat <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"))
 findCovs(dat,by="ID")
 ### Without an ID column we get non-varying columns

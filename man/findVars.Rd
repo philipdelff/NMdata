@@ -31,13 +31,14 @@ Use this to exclude columns that are constant within by. If
     by=ID, this could be to get only time-varying covariates.
 }
 \examples{
-dt1 <- data.table(ID=c(1,1,2,2),OCC=c(1,2,1,2),
+dt1 <- data.frame(ID=c(1,1,2,2),
+                  OCC=c(1,2,1,2),
                ## ID level
-               eta1=c(1,1,3,3)
+                  eta1=c(1,1,3,3),
                ## occasion level
-              ,eta2=c(1,3,1,5)
+                  eta2=c(1,3,1,5),
                ## not used
-              ,eta3=0
+                  eta3=0
                )
 ## model level
 findCovs(dt1)

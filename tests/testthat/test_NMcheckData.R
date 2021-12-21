@@ -90,3 +90,32 @@ test_that("missing ID",{
     res <- NMcheckData(pk)
     expect_equal_to_reference(res,fileRef,version=2)
 })
+
+test_that("missing ID",{
+        
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk[,ID:=NULL]
+
+    expect_error( NMcheckData(pk))
+})
+
+test_that("With ADDL, no II",{
+    fileRef <- "testReference/NMcheckData_8.rds"
+    
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk[EVID==1,ADDL:=1]
+
+    res <- NMcheckData(pk)
+    expect_equal_to_reference(res,fileRef,version=2)
+})
+
+
+test_that("With II, no ADDL",{
+    fileRef <- "testReference/NMcheckData_9.rds"
+    
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk[EVID==1,II:=24]
+
+    res <- NMcheckData(pk)
+    expect_equal_to_reference(res,fileRef,version=2)
+})

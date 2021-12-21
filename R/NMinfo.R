@@ -17,7 +17,7 @@
 ##'     "details".
 ##' @export
 
-NMinfo <- function(data,info,as.fun,deb=FALSE){
+NMinfo <- function(data,info,as.fun){
 
 
     if(missing(as.fun)) as.fun <- NULL

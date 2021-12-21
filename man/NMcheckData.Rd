@@ -60,6 +60,9 @@ The following checks are performed. The term "numeric"
     flag is found, the rest of the checks are performed on rows
     where that flag equals 0 (zero) only.
 
+\item If a unique row identifier is found, it has to be
+non-missing, increasing integers. 
+
 \item col.time (TIME),
     EVID, ID, CMT, MDV: If present, elements must be non-missing
     and numeric.
@@ -79,6 +82,14 @@ The following checks are performed. The term "numeric"
 \item DV must be numeric
 
 \item DV must be missing for EVID in {1,4}.
+
+\item If found, RATE must be a numeric, equaling -2 or non-negative for dosing events.
+
+\item If found, SS must be a numeric, equaling 0 or 1 for dosing records.
+
+\item If found, ADDL must be a non-negative integer for dosing records. II must be present.
+
+\item If found, II must be a non-negative integer for dosing records. ADDL must be present.
 
 \item ID must be positive and values cannot be disjoint (all
     records for each ID must be following each other. This is
