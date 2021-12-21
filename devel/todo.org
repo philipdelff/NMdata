@@ -1,5 +1,7 @@
 * NMdata todo
 ** Design
+*** TODO [#B] deprecate "default" option in NMdataConf
+    has no benefit over NULL, so redundant and prevents the use of "default" as an actual param value.
 *** DONE Allow for say input.txt/output.txt
 **** NMtransInput
 *** DONE Support for return as tibble or whatever
@@ -103,6 +105,8 @@ https://doi.org/10.1208/s12248-012-9387-9
     Risk now is that arguments are set to NULL
     Export to parent. Not sure check allows though...
 ** Function improvements
+*** findCovs
+**** TODO soft
 *** compareCols
 **** TODO [#B] Bug - overview of columns is given twice
  compareCols(ex.001,ex.002,ex.005,diff.only=T) %>% print(topn=100)
@@ -327,6 +331,7 @@ use flagsAssign(data,subset.data="EVID==1",flagc.0="Dosing")
 **** TODO [#B] The function could paste an explained overview to the terminal
 **** DONE Add save argument to align with other functions
 *** NMdataConf
+**** TODO [#B] Add col.id
 **** TODO [#B] Add na.strings
      Used in NMisNumeric and NMcheckData
 **** DONE test that function evaluation does not depend on global env
@@ -353,9 +358,10 @@ arguments. NMdata calls this "writtenTo".
 ** Tests and documentation
 *** Cheat sheet
 **** TODO Flag example
-*** TODO [#A] input.txt/output.txt example must be generated with plain nonmem
-    Test NMdataConf(file.mod=identity)
-*** DONE renameByContents example
+*** Tests
+**** DONE Test NMdataConf(file.mod=identity)
+*** Examples
+**** DONE renameByContents example
 ** Discussion
 *** recoverRows can mean mix of variable interpretations
 If recoverRows and a variable is changing interpretation from input to

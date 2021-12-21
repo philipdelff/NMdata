@@ -410,30 +410,61 @@ test_that("dir structure with input.txt/output.txt",{
     
     filedir.lst <- file.nm("xgxr001dir/output.txt")
     res1dir <- NMscanData(filedir.lst,check.time = FALSE,merge.by.row=F)
-    
+
+    ## test model names from NMinfo and in result data
     expect_equal(NMinfo(res1dir,"details")$model,"xgxr001dir")
     umod <- unique(res1dir[,model])
     expect_equal(length(umod),1)
     expect_equal(umod,"xgxr001dir")
 
-    
-    ## options(NMdata.file.mod=NULL)
-    ## options(NMdata.modelname=NULL)
-    NMdataConf(file.mod="default")
-    NMdataConf(modelname=NULL)
-    
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
-    res1 <- NMscanData(file=file.lst,check.time = FALSE)
 
-    unNMdata(res1)
-    unNMdata(res1dir)
-    ## colnames(res1[,!("model")])==
-    ##     colnames(res1dir[,!("model")])
-    ## this test isn't ready. How do I execute the input.txt/output.txt model?
-    ##expect_equal(res1[,!("model")],res1dir[,!("model")])
-
-    NMdataConf(as.fun=NULL)
 })
+
+
+#### compare mod/lst vs input/output
+## this test isn't ready. 
+### Todo: Delete components from NMinfo and then test equality
+if(F){
+    test_that("input.txt/output.txt - unset modelname",{
+        NMdataConf(reset=TRUE)
+        NMdataConf(as.fun="data.table")
+        NMdataConf(file.mod=function(file) file.path(dirname(file),"input.txt"))
+        NMdataConf(modelname=function(file) basename(dirname(normalizePath(file))))
+        
+        filedir.lst <- file.nm("xgxr001dir/output.txt")
+        res1dir <- NMscanData(filedir.lst,check.time = FALSE,merge.by.row=F)
+
+        NMdataConf(file.mod="default")
+        NMdataConf(modelname=NULL)
+        
+        file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
+        res1 <- NMscanData(file=file.lst,check.time = FALSE)
+
+        ## unNMdata(res1)
+        ## unNMdata(res1dir)
+
+        colnames(res1[,!("model")])==
+            colnames(res1dir[,!("model")])
+        ## this test isn't ready. How do I execute the input.txt/output.txt model?
+        expect_equal(res1[,!("model")],res1dir[,!("model")])
+
+        NMdataConf(as.fun=NULL)
+    })
+}
+
+test_that("output.txt, file.mod=identity - NMinfo file.mod=output.txt?",{
+
+    NMdataConf(reset=TRUE)
+    NMdataConf(as.fun="data.table")
+    NMdataConf(file.mod=identity)
+    NMdataConf(modelname=function(file) basename(dirname(normalizePath(file))))
+    
+    filedir.lst <- file.nm("xgxr001dir/output.txt")
+    res1 <- NMscanData(filedir.lst,check.time = FALSE,merge.by.row=F)
+
+    expect_equal(basename(NMinfo(res1,"details")$file.lst),"output.txt")
+})
+## 
 
 
 test_that("Duplicate columns in input data",{

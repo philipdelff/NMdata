@@ -89,10 +89,12 @@
 ##' @export
 
 
-NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,na.strings,as.fun){
+NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row,na.strings,return.summary=FALSE,as.fun){
 
+    
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
+    
     . <- NULL
     variable <- NULL
     N <- NULL
@@ -127,7 +129,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
     
 #### Section start: Default parameter values ####
     if(missing(na.strings)) na.strings <- "."
-    if(missing(col.row)||(!is.null(col.row)&&is.na(col.row))||(is.character(col.row)&&all(col.row==""))) {
+    if(missing(col.row)) {
         col.row <- NULL
     }
     col.row <- NMdataDecideOption("col.row",col.row)
@@ -263,28 +265,28 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
     }
     
 ### check flags for NA's before subsetting on FLAG
-        if(!is.null(col.flagn)){
-            findings <- listEvents(col.flagn,"Missing value",
-                                   fun=is.na,invert=TRUE,events=findings,debug=FALSE)
-            ## not sure if this should be NMisNumeric(...,each=T). I guess
-            ## something is completely wrong with the column if elements
-            ## are not numeric. But other columns are check with each=T.
-            findings <- listEvents(col.flagn,"Not numeric",
-                                   fun=function(x)NMisNumeric(x,na.strings=na.strings),
-                                   events=findings,
-                                   new.rows.only=T)
-            findings <- listEvents(col.flagn,"col.flagn not an integer",
-                                   fun=function(x)x%%1==0,events=findings,
-                                   new.rows.only=)
-            if(col.flagn%in%colnames(data)){
+    if(!is.null(col.flagn)){
+        findings <- listEvents(col.flagn,"Missing value",
+                               fun=is.na,invert=TRUE,events=findings,debug=FALSE)
+        ## not sure if this should be NMisNumeric(...,each=T). I guess
+        ## something is completely wrong with the column if elements
+        ## are not numeric. But other columns are check with each=T.
+        findings <- listEvents(col.flagn,"Not numeric",
+                               fun=function(x)NMisNumeric(x,na.strings=na.strings),
+                               events=findings,
+                               new.rows.only=T)
+        findings <- listEvents(col.flagn,"col.flagn not an integer",
+                               fun=function(x)x%%1==0,events=findings,
+                               new.rows.only=)
+        if(col.flagn%in%colnames(data)){
 
-    ### Done checking flagn. For rest of checks, only consider data where col.flagn==0
-                data[,(col.flagn):=NMasNumeric(get(col.flagn))]
-                if(is.numeric(data[,get(col.flagn)])){
-                    data <- data[get(col.flagn)==0]
-                }
+### Done checking flagn. For rest of checks, only consider data where col.flagn==0
+            data[,(col.flagn):=NMasNumeric(get(col.flagn))]
+            if(is.numeric(data[,get(col.flagn)])){
+                data <- data[get(col.flagn)==0]
             }
         }
+    }
 
 ### if col.row or ID are characters, they must not have leading zeros.
     ## Check ID for leading zeros before converting to numeric
@@ -528,6 +530,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
     
     if(nrow(findings)==0) {
         message("No findings. Great!")
+        summary.findings <- NULL
     } else {
 ### use the row identifier for reporting
         if(!is.null(col.row)&&col.row%in%colnames(data)){
@@ -538,10 +541,18 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row=NULL,
         setcolorder(findings,c(c.row,col.id,"column","check"))
         setorderv(findings,c(c.row,"column","check"))
 
-        print(findings[,.N,by=.(column,check)],row.names=FALSE)
+        summary.findings <- findings[,.N,by=.(column,check)]
+        
+        print(summary.findings,row.names=FALSE)
         cat("\n")
     }
     findings <- as.fun(findings)
-    return(invisible(findings))
+
+    res <- findings
+    if(return.summary){
+        res <- list(findings=findings,summary=summary.findings)
+    }
+    return(invisible(res))
 
 }
+
