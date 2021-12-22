@@ -4,7 +4,7 @@
 \alias{NMextractDataFile}
 \title{Extract the data file used in a control stream}
 \usage{
-NMextractDataFile(file, dir.data = NULL)
+NMextractDataFile(file, dir.data = NULL, file.mod)
 }
 \arguments{
 \item{file}{The input control stream or the list file.}

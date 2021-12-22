@@ -1,8 +1,21 @@
-## checks: existence of input file
-
-
+##' check input data based on control stream
+##'
+##' Finds input data and checks compatibility with nonmem control
+##' stream and runs NMcheckData. Don't call this function directly -
+##' use the file argument in NMcheckData instead.
+##'
+##' @param file a model file (input or output control stream)
+##' @param col.row row identifier
+##' @param col.id subject identifier
+##' @param use.rds use rds file instead of csv. This is typically not wanted because we want to test the input data as read by NONMEM.
+##' @param quiet Keep quiet? Default is FALSE.
+##' @param file.mod How to find the input control stream if you are using the output control stream.
+##' @param as.fun The function to run results through before returning them.
 ##' @param ... passed to NMcheckData
-NMcheckInput <- function(file,col.row,col.id="ID",use.rds=FALSE,quiet=FALSE,file.mod,as.fun,...){
+
+### Don't export. NMcheckData will be the way in.
+
+NMcheckDataFile <- function(file,col.row,col.id="ID",use.rds=FALSE,quiet=FALSE,file.mod,as.fun,...){
 
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)

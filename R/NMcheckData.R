@@ -128,8 +128,7 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
         use.rds <- FALSE
         quiet <- FALSE
         file.mod <- NULL
-        res <- NMcheckInput(file=file,col.time=col.time,col.flagn=col.flagn,col.row=col.row,col.id=col.id,na.strings=na.strings,use.rds=use.rds,quiet=FALSE,file.mod,as.fun=as.fun)
-##        col.time="TIME",col.flagn,col.row,na.strings,return.summary=FALSE,quiet=FALSE,as.fun
+        res <- NMcheckDataFile(file=file,col.time=col.time,col.flagn=col.flagn,col.row=col.row,col.id=col.id,na.strings=na.strings,use.rds=use.rds,quiet=FALSE,file.mod=file.mod,as.fun=as.fun)
         return(invisible(res))
     }
     

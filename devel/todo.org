@@ -167,6 +167,7 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMscanInput
+**** TODO [#B] Model path (mod/lst, whichever used) should be available in meta data
 **** TODO [#B] argument char.comment.inp
      User may write say # (input_data_debug.csv) in front of column
      names in csv and then use IGNORE=# to avoid them in Nonmem. We

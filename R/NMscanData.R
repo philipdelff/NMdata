@@ -518,7 +518,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             cols.row.output <- colnames(tab.row)[tab.row[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 
             cols.row.both <- intersect(cols.row.input,cols.row.output)
-            ### we should not merge on these even if unique
+### we should not merge on these even if unique
             cols.row.both <- setdiff(cols.row.both,c("AMT","DV"))            
             if(length(cols.row.both)){
                 
@@ -835,19 +835,19 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     }
 
 
-
+    
 ### more meta information needed.
     ## meta <- list(details=details)
     writeNMinfo(tab.row,list(details=details),append=FALSE)
 
-    meta.input <- NULL
-    if(exists("data.input")){
-        meta.input <- NMinfoDT(data.input)
-    }
-    meta.input$tables <- NULL
 
-    
     if(use.input){
+        meta.input <- NULL
+        if(exists("data.input")){
+            meta.input <- NMinfoDT(data.input)
+        }
+        meta.input$tables <- NULL
+        
         writeNMinfo(tab.row,meta.input,append=TRUE)
     }
     

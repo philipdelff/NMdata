@@ -88,7 +88,7 @@ NMscanInput <- function(file, use.rds, file.mod,
     result <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
-
+    
     
 ### the lst file only contains the name of the data file, not the path to it. So we need to find the .mod instead.
 
@@ -124,14 +124,15 @@ NMscanInput <- function(file, use.rds, file.mod,
         file.find.data <- file.mod(file)
 
         if(!file.exists(file.find.data)) {
-            messageWrap("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument. Input data not used.",fun.msg=warning)
+            
+            messageWrap("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument.  Input data not used.",fun.msg=warning)
         }
 
     }
 
 
     ## identify the data file name and additional info
-    info.datafile <- NMextractDataFile(file=file.find.data,dir.data)
+    info.datafile <- NMextractDataFile(file=file.find.data,dir.data,file.mod=file.mod)
     
     type.file <- NA_character_
     if(use.rds && info.datafile$exists.file.rds){

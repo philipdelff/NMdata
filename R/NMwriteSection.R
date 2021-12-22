@@ -91,7 +91,7 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections
 
     
     if(!missing(data.file)){
-        all.files <- all.files[sapply(all.files,function(file)NMextractDataFile(file)$string==data.file)]
+        all.files <- all.files[sapply(all.files,function(file)NMextractDataFile(file,dir.data=NULL,file.mod=identity)$string==data.file)]
     }
     if(length(all.files)==0) stop("No files to process.")
     

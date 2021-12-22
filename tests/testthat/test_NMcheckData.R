@@ -1,3 +1,20 @@
+fix.time <- function(x){
+    meta.x <- attr(x,"NMdata")
+    ## meta.x$time.call <- as.POSIXct("2020-02-01 00:01:01",tz="UTC")
+    meta.x$details$time.NMscanData <- NULL
+    meta.x$details$file.lst <- NULL
+    meta.x$details$file.mod <- NULL
+    meta.x$details$file.input <- NULL
+    meta.x$details$mtime.input <- NULL
+    meta.x$details$mtime.lst <- NULL
+    meta.x$details$mtime.mod <- NULL
+    meta.x$datafile$path <- NULL
+    meta.x$datafile$path.rds <- NULL
+    meta.x$tables$file <- NULL
+    meta.x$tables$file.mtime <- NULL
+    setattr(x,"NMdata",meta.x)
+}
+
 
 test_that("basic",{
     fileRef <- "testReference/NMcheckData_1.rds"
@@ -118,4 +135,24 @@ test_that("With II, no ADDL",{
 
     res <- NMcheckData(pk)
     expect_equal_to_reference(res,fileRef,version=2)
+})
+
+
+test_that("Using control stream file",{
+    NMdataConf(reset=TRUE)
+    fileRef <- "testReference/NMcheckData_10.rds"
+
+    file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
+    
+    res1 <- NMcheckData(file=file.lst)
+
+    fix.time(res1)
+    expect_equal_to_reference(res1,fileRef)
+
+
+    res1b <- NMcheckData(file=file.lst)
+    fix.time(res1b)
+
+    expect_equal(res1,res1b)
+
 })
