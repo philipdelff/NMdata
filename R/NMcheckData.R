@@ -63,9 +63,11 @@
 ##'
 ##' \item If found, SS must be a numeric, equaling 0 or 1 for dosing records.
 ##'
-##' \item If found, ADDL must be a non-negative integer for dosing records. II must be present.
+##' \item If found, ADDL must be a non-negative integer for dosing
+##' records. II must be present.
 ##'
-##' \item If found, II must be a non-negative integer for dosing records. ADDL must be present.
+##' \item If found, II must be a non-negative integer for dosing
+##' records. ADDL must be present.
 ##'
 ##' \item ID must be positive and values cannot be disjoint (all
 ##'     records for each ID must be following each other. This is
@@ -89,7 +91,7 @@
 ##' @export
 
 
-NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row,na.strings,return.summary=FALSE,as.fun){
+NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,na.strings,return.summary=FALSE,quiet=FALSE,as.fun){
 
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -119,6 +121,18 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row,na.st
 
 #### Section start: Checks of arguments ####
 
+
+### file mode?
+    if(!missing(file)){
+        col.id <- "ID"
+        use.rds <- FALSE
+        quiet <- FALSE
+        file.mod <- NULL
+        res <- NMcheckInput(file=file,col.time=col.time,col.flagn=col.flagn,col.row=col.row,col.id=col.id,na.strings=na.strings,use.rds=use.rds,quiet=FALSE,file.mod,as.fun=as.fun)
+##        col.time="TIME",col.flagn,col.row,na.strings,return.summary=FALSE,quiet=FALSE,as.fun
+        return(invisible(res))
+    }
+    
     if(!is.data.frame(data)) stop("Data must be inheriting from data.frame (meaning that more advanced classes like data.table and tibble are OK.")
     
     if(!col.id %in%colnames(data)) {stop("col.id must point to an existing column in data. If you don't have one, you can create a dummy column with a constant value.")}
@@ -166,7 +180,7 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row,na.st
     ## @param new.rows.only. For nested criteria. Say that CMT is not
     ## numeric for row 10. Then don't report that it is not an integer
     ## too.
-    listEvents <- function(col,name,fun,colname=col,dat=data,events=NULL,invert=FALSE,new.rows.only=T,debug=F,...){
+    listEvents <- function(col,name,fun,colname=col,dat=data,events=NULL,invert=FALSE,new.rows.only=T,quiet=FALSE,debug=F,...){
         if(debug) browser()
 
         if(!col%in%colnames(dat)){
@@ -543,8 +557,8 @@ NMcheckData <- function(data,col.id="ID",col.time="TIME",col.flagn,col.row,na.st
 
         summary.findings <- findings[,.N,by=.(column,check)]
         
-        print(summary.findings,row.names=FALSE)
-        cat("\n")
+        if(!quiet) message(print(summary.findings,row.names=FALSE))
+
     }
     findings <- as.fun(findings)
 

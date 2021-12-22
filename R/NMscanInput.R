@@ -175,11 +175,12 @@ NMscanInput <- function(file, use.rds, file.mod,
     }
 
     as.fun <- NMdataDecideOption("as.fun",as.fun)
-        
+    
     if(details){
         
-        meta <- NMinfoDT(data.input)
-
+        meta <- list()
+        meta$datafile <- info.datafile
+        
         meta$tables <- data.table(
             source="input",
             file=path.data.input,
@@ -198,6 +199,8 @@ NMscanInput <- function(file, use.rds, file.mod,
         if(!is.null(col.id)){
             meta$tables$has.col.id <- col.id%in%meta$input.colnames[,result]
         }
+
+        meta <- append(meta,NMinfoDT(data.input))
         
         setcolorder(meta$tables,intersect(c("source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype","file.mtime","file"),colnames(meta$tables)))
 

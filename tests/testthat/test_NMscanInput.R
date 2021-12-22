@@ -32,7 +32,7 @@ test_that("basic",{
 ### using as.data.table for as.fun is not recommended but still allowed
     res1 <-
         NMscanInput(file=file.lst,applyFilters = T,as.fun="data.table")
-fix.time(res1)
+    fix.time(res1)
     expect_equal_to_reference(res1,fileRef,version=2)
 })
 
@@ -48,7 +48,7 @@ test_that("input has NMdata meta data",{
     
 
     res1 <- NMscanInput(file=file.lst,applyFilters = T,as.fun="data.table")
-fix.time(res1)
+    fix.time(res1)
     nm1 <- NMinfo(res1)
     expect_equal_to_reference(nm1,fileRef,version=2)
     
@@ -113,7 +113,7 @@ test_that("Erroneously basing a filter on translated column names",{
     expect_error(
         NMscanInput("testData/nonmem/min036mod.mod",applyFilters=TRUE)
     )
-    })
+})
 
 test_that("Including meta data",{
     NMdataConf(reset=T)

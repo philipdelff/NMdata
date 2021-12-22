@@ -17,7 +17,7 @@ writeNMinfo <- function(data,meta,append=FALSE,byRef=TRUE){
         meta.0 <- meta
         meta <- NMinfoDT(data)
         meta <- meta[setdiff(names(meta),names(meta.0))]
-        meta <- append(meta,meta.0)
+        meta <- append(meta.0,meta)
     }
 
     if(byRef){
