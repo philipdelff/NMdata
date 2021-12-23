@@ -21,6 +21,15 @@ NMcheckData(
 \item{data}{The data to check. data.frame, data.table, tibble,
 anything that can be converted to data.table.}
 
+\item{file}{Alternatively to checking a data object, you can use
+file to specify a control stream to check. This can either be
+a (working or non-working) input control stream or an output
+control stream. In this case, NMdataCheck checks column names
+in data against control stream (see NMcheckColnames), reads
+the data as NONMEM would do, and do the same checks on the
+data as NMdataCheck would do using the data argument. The file
+argument is useful for debugging a Nonmem model.}
+
 \item{col.id}{The name of the column that holds the subject
 identifier. Default is "ID".}
 
@@ -39,6 +48,13 @@ characters to numerics. This will typically be a string that
 represents missing values. Default is "." even though most
 users will use actual NA (NA_character), i.e. not a
 string. See ?NMisNumeric.}
+
+\item{return.summary}{If TRUE (not default), the table summary
+that is printed if quiet=FALSE is returned as well. In that
+case, a list is returned, and the findings are in an element
+called findings.}
+
+\item{quiet}{Keep quiet? Default is not to.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to

@@ -1,5 +1,10 @@
-fix.time <- function(x){
-    meta.x <- attr(x,"NMdata")
+fix.time <- function(x,meta=T){
+    if(meta){
+        meta.x <- attr(x,"NMdata")
+    } else {
+        meta.x <- x
+    }
+
     ## meta.x$time.call <- as.POSIXct("2020-02-01 00:01:01",tz="UTC")
     meta.x$details$time.NMscanData <- NULL
     meta.x$details$file.lst <- NULL
@@ -12,7 +17,13 @@ fix.time <- function(x){
     meta.x$datafile$path.rds <- NULL
     meta.x$tables$file <- NULL
     meta.x$tables$file.mtime <- NULL
-    setattr(x,"NMdata",meta.x)
+
+    if(meta){
+        setattr(x,"NMdata",meta.x)
+    } else {
+        x <- meta.x
+    }
+    x
 }
 
 
@@ -91,7 +102,7 @@ test_that("missing EVID",{
 
 
 test_that("missing ID",{
-        
+    
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     pk[,ID:=NULL]
 
@@ -109,7 +120,7 @@ test_that("missing ID",{
 })
 
 test_that("missing ID",{
-        
+    
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     pk[,ID:=NULL]
 
@@ -146,13 +157,29 @@ test_that("Using control stream file",{
     
     res1 <- NMcheckData(file=file.lst)
 
-    fix.time(res1)
+    res1 <- fix.time(res1,meta=F)
     expect_equal_to_reference(res1,fileRef)
 
 
     res1b <- NMcheckData(file=file.lst)
-    fix.time(res1b)
+    res1b <- fix.time(res1b,meta=F)
 
     expect_equal(res1,res1b)
 
+})
+
+
+### ID and row with leading 0
+test_that("basic",{
+    fileRef <- "testReference/NMcheckData_11.rds"
+    
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk[,ID:=paste0("0",ID)]
+    pk[,ROW:=paste0("0",ROW)]
+
+load_all()
+    
+    res <- NMcheckData(pk)
+res
+    expect_equal_to_reference(res,fileRef,version=2)
 })

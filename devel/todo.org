@@ -134,10 +134,11 @@ Error in `[.data.table`(data, , `:=`((cols.num), lapply(.SD, NMasNumeric)),  :
   .SDcols should be column numbers or names
 **** DONE ID and row identifier must not start with a zero
      That would ruin merging if Nonmem prints as a double or integer
-**** TODO [#A] Should more of the checked columns be checked for NMisNumeric?
+**** TODO [#A] Check individual columns with NMisNumeric instead of running NMasNumeric on everything
 **** DONE check RATE, SS
 **** DONE Check ADDL, II
-**** TODO [#A] Support for file argument (control stream)
+**** DONE Support for file argument (control stream)
+     CLOSED: [2021-12-22 Wed 17:04]
 **** DONE Element-wise NMisNumeric
 There are two distinct uses of NMisNumeric. Column-wise and
 element-wise. When checking for NMisNumeric, columns that must be

@@ -13,6 +13,13 @@ NMextractDataFile(file, dir.data = NULL, file.mod)
 mentioned in $DATA is used. dir.data will be used as the path,
 and the existence of the file in that directory is not
 checked.}
+
+\item{file.mod}{The input control stream. Default is to look for
+\"file\" with extension changed to .mod (PSN style). You can
+also supply the path to the file, or you can provide a
+function that translates the output file path to the input
+file path. The default behavior can be configured using
+NMdataConf. See dir.data too.}
 }
 \value{
 The path to the input data file.

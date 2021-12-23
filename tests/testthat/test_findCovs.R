@@ -16,3 +16,8 @@ test_that("with by",{
     res <- findCovs(pk,by="ID")
     expect_equal_to_reference(res,fileRef,version=2)
 })
+
+## 
+test_that("deprecated cols.id",
+          expect_warning(findCovs(data.frame(x=1),cols.id="w"))
+          )
