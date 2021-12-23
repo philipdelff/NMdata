@@ -8,6 +8,7 @@
 ##' @param by optional covariates will be searched for in combinations of
 ##'     values in these columns. Often by will be either empty or ID. But
 ##'     it can also be both say c("ID","DRUG") or c("ID","TRT").
+##' @param cols.id Deprecated. Use by instead.
 ##' @param as.fun The default is to return a data.table if data is a data.table
 ##'     and return a data.frame in all other cases. Pass a function in as.fun to
 ##'     convert to something else. If data is not a data.table, the default can
@@ -38,9 +39,11 @@
 ##' @export
 
 
-findVars <- function(data,by=NULL,as.fun=NULL){
+findVars <- function(data,by=NULL,cols.id,as.fun=NULL){
 
     ## check arguments
+    if(!missing(cols.id)) .Deprecated("by",msg="cols.id argument deprecated. Use by instead.")
+    
     if(!is.data.frame(data)){
         stop("data must be a data.frame (or data.table)")
     }

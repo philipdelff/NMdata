@@ -6,6 +6,14 @@
 ##' 
 ##' @param data The data to check. data.frame, data.table, tibble,
 ##'     anything that can be converted to data.table.
+##' @param file Alternatively to checking a data object, you can use
+##'     file to specify a control stream to check. This can either be
+##'     a (working or non-working) input control stream or an output
+##'     control stream. In this case, NMdataCheck checks column names
+##'     in data against control stream (see NMcheckColnames), reads
+##'     the data as NONMEM would do, and do the same checks on the
+##'     data as NMdataCheck would do using the data argument. The file
+##'     argument is useful for debugging a Nonmem model.
 ##' @param col.id The name of the column that holds the subject
 ##'     identifier. Default is "ID".
 ##' @param col.time The name of the column holding actual time.
@@ -20,6 +28,11 @@
 ##'     represents missing values. Default is "." even though most
 ##'     users will use actual NA (NA_character), i.e. not a
 ##'     string. See ?NMisNumeric.
+##' @param return.summary If TRUE (not default), the table summary
+##'     that is printed if quiet=FALSE is returned as well. In that
+##'     case, a list is returned, and the findings are in an element
+##'     called findings.
+##' @param quiet Keep quiet? Default is not to.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
@@ -96,7 +109,6 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
-    
     . <- NULL
     variable <- NULL
     N <- NULL
@@ -256,9 +268,9 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
                                fun=is.na,invert=TRUE,events=findings,debug=FALSE)
 
         ## leading zeros if character?
-        if(col.row%in%colnames(data)&&is.character(data[,col.row,with=FALSE])){
+        if(col.row%in%colnames(data)&&data[,is.character(get(col.row))]){
             findings <- listEvents(col.row,"Leading zero will corrupt merging",
-                                   fun=function(x)grepl("^0.+",x),
+                                   fun=function(x)grepl("^0.+",x),invert=TRUE,
                                    events=findings,debug=FALSE)
         }
         if(col.row%in%colnames(data)){
@@ -303,12 +315,15 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
 
 ### if col.row or ID are characters, they must not have leading zeros.
     ## Check ID for leading zeros before converting to numeric
-    if(col.id%in%colnames(data)&&is.character(data[,col.id,with=FALSE])){
+    
+    if(col.id%in%colnames(data)&&data[,is.character(get(col.id))]){
+        
         findings <- listEvents(col.id,"Leading zero will corrupt merging",
-                               fun=function(x)grepl("^0.+",x),
+                               fun=function(x)grepl("^0.+",x),invert=T,
                                events=findings,debug=FALSE)
     }
 
+### translating those that are numeric to numeric. 
     are.cols.num <- sapply(data,NMisNumeric,na.strings=na.strings)
     cnames.num <- colnames(data)[are.cols.num]
     data[,(cnames.num):=lapply(.SD,NMasNumeric),.SDcols=cnames.num]
@@ -354,6 +369,7 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
 
     
 ### TIME must be positive
+    ## TODO: NMisNumeric, NMasNumeric
     findings <- listEvents(col.time,"Negative time",fun=function(x)x>=0,events=findings,debug=F)
 
 ### EVID must be in c(0,1,2,3,4)
@@ -556,7 +572,7 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
 
         summary.findings <- findings[,.N,by=.(column,check)]
         
-        if(!quiet) message(print(summary.findings,row.names=FALSE))
+        if(!quiet) print(summary.findings,row.names=FALSE)
 
     }
     findings <- as.fun(findings)
