@@ -134,7 +134,7 @@ Error in `[.data.table`(data, , `:=`((cols.num), lapply(.SD, NMasNumeric)),  :
   .SDcols should be column numbers or names
 **** DONE ID and row identifier must not start with a zero
      That would ruin merging if Nonmem prints as a double or integer
-**** TODO [#A] Check individual columns with NMisNumeric instead of running NMasNumeric on everything
+**** DONE Check individual columns with NMisNumeric instead of running NMasNumeric on everything
 **** DONE check RATE, SS
 **** DONE Check ADDL, II
 **** DONE Support for file argument (control stream)

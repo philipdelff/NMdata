@@ -28,6 +28,7 @@ fix.time <- function(x,meta=T){
 
 
 test_that("basic",{
+load_all()
     fileRef <- "testReference/NMcheckData_1.rds"
     
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
@@ -171,15 +172,20 @@ test_that("Using control stream file",{
 
 ### ID and row with leading 0
 test_that("basic",{
+    load_all()
+    NMdataConf(reset=T)
+    NMdataConf(as.fun="data.table")
     fileRef <- "testReference/NMcheckData_11.rds"
     
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     pk[,ID:=paste0("0",ID)]
     pk[,ROW:=paste0("0",ROW)]
 
-load_all()
+####### we need to report original ID and ROW, not the numeric translations. 
+    
+    
     
     res <- NMcheckData(pk)
-res
+    res
     expect_equal_to_reference(res,fileRef,version=2)
 })

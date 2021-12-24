@@ -170,10 +170,22 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
 ### Section end: Default parameter values    
 
     data <- copy(as.data.table(data))
-    
+
+    ### row counter
     c.row <- tmpcol(data,base="row",prefer.plain=TRUE)
     data[,(c.row):=.I]
+
+### save original col.id and col.row
+    if(!is.null(col.row)&&col.row%in%colnames(data)){
+        col.row.orig <- tmpcol(data,base="row.orig",prefer.plain=TRUE)
+        data[,(col.row.orig):=get(col.row)]
+    }
+    if(col.id%in%colnames(data)){
+        col.id.orig <- tmpcol(data,base="id.orig",prefer.plain=TRUE)
+        data[,(col.id.orig):=get(col.id)]
+    }
     
+
     NMasNumeric <- function(x,warn=F) {
         if(warn){
             as.numeric(as.character(x))
@@ -189,16 +201,19 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
     ## @param colname is the column name reported to user.
 
     ## @param new.rows.only. For nested criteria. Say that CMT is not
+    ## @param col.required Include a finding if column not found?
     ## numeric for row 10. Then don't report that it is not an integer
     ## too.
-    listEvents <- function(col,name,fun,colname=col,dat=data,events=NULL,invert=FALSE,new.rows.only=T,quiet=FALSE,debug=F,...){
+    listEvents <- function(col,name,fun,colname=col,dat=data,events=NULL,invert=FALSE,new.rows.only=T,quiet=FALSE,col.required=TRUE,debug=F,...){
         if(debug) browser()
 
         if(!col%in%colnames(dat)){
-            if(events[check=="Column not found"&column==colname&level=="column",.N]==0){
-                events <- rbind(events,
-                                data.table(check="Column not found",column=colname,level="column")
-                               ,fill=TRUE) }
+            if(col.required){
+                if(events[check=="Column not found"&column==colname&level=="column",.N]==0){
+                    events <- rbind(events,
+                                    data.table(check="Column not found",column=colname,level="column")
+                                   ,fill=TRUE) }
+            }
             return(events)
         }
         
@@ -239,7 +254,7 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
 ### special chars in col names
     are.cols.num <- sapply(data,NMisNumeric,na.strings=na.strings)
     cnames.num <- colnames(data)[are.cols.num]
-    cnames.spchars <- cnames[grep("[[:punct:]]",cnames.num)]
+    cnames.spchars <- cnames.num[grep("[[:punct:]]",cnames.num)]
     if(length(cnames.spchars)>0){
         findings <- rbind(findings,
                           data.table(check="Special character in column name",column=cnames.spchars,row=NA_integer_,level="column"))
@@ -266,7 +281,11 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
 
         findings <- listEvents(col.row,"Missing value",
                                fun=is.na,invert=TRUE,events=findings,debug=FALSE)
-
+        findings <- listEvents(col.row,"Not numeric",
+                               fun=function(x)NMisNumeric(x,na.strings=na.strings),
+                               events=findings,
+                               new.rows.only=T)
+        
         ## leading zeros if character?
         if(col.row%in%colnames(data)&&data[,is.character(get(col.row))]){
             findings <- listEvents(col.row,"Leading zero will corrupt merging",
@@ -313,21 +332,18 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
         }
     }
 
-### if col.row or ID are characters, they must not have leading zeros.
-    ## Check ID for leading zeros before converting to numeric
-    
-    if(col.id%in%colnames(data)&&data[,is.character(get(col.id))]){
-        
-        findings <- listEvents(col.id,"Leading zero will corrupt merging",
-                               fun=function(x)grepl("^0.+",x),invert=T,
-                               events=findings,debug=FALSE)
-    }
 
 ### translating those that are numeric to numeric. 
-    are.cols.num <- sapply(data,NMisNumeric,na.strings=na.strings)
-    cnames.num <- colnames(data)[are.cols.num]
-    data[,(cnames.num):=lapply(.SD,NMasNumeric),.SDcols=cnames.num]
+    ## are.cols.num <- sapply(data,NMisNumeric,na.strings=na.strings)
+    ## cnames.num <- colnames(data)[are.cols.num]
+    ## data[,(cnames.num):=lapply(.SD,NMasNumeric),.SDcols=cnames.num]
     
+
+    ## a new row counter for internal use only. It matches the data we
+    ## are checking but not the data supplied by user.
+    rowint <- tmpcol(data,base="ROWINT",prefer.plain=TRUE)
+    data[,(rowint):=.I]
+
     
 ######## Default numeric columns. Will be checked for presence, NA, non-numeric (col-level)
     cols.num <- c()
@@ -343,6 +359,7 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
                               fill=TRUE)
         }
     }
+
 ### check for missing in cols.num
     newfinds <- rbindlist( lapply(cols.num,listEvents,name="is NA",fun=is.na,invert=TRUE,new.rows.only=T,debug=FALSE) )
     findings <- rbind(findings,
@@ -358,24 +375,54 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
                       newfinds
                      ,fill=TRUE)
 
-    ## a new row counter for internal use only. It matches the data we
-    ## are checking but not the data supplied by user.
-    rowint <- tmpcol(data,base="ROWINT",prefer.plain=TRUE)
-    data[,(rowint):=.I]
 
+###### checks on cols.num before converting to numeric
+### if col.row or ID are characters, they must not have leading zeros.
+    ## Check ID for leading zeros before converting to numeric
     
-##### overwrite cols.num with NMasNumeric of cols.num
+    if(col.id%in%colnames(data)&&data[,is.character(get(col.id))]){
+        
+        findings <- listEvents(col.id,"Leading zero will corrupt merging",
+                               fun=function(x)grepl("^0.+",x),invert=T,
+                               events=findings,debug=FALSE)
+    }
+    
+##### Done checking required columns for NMisNumeric. overwrite cols.num with NMasNumeric of cols.num.
     data[,(cols.num):=lapply(.SD,NMasNumeric),.SDcols=cols.num]
 
     
-### TIME must be positive
-    ## TODO: NMisNumeric, NMasNumeric
+### col.time must be positive
     findings <- listEvents(col.time,"Negative time",fun=function(x)x>=0,events=findings,debug=F)
 
 ### EVID must be in c(0,1,2,3,4)
     findings <- listEvents("EVID","EVID in 0:4",function(x) x%in%c(0:4),events=findings)
+    
+### ID must be a positive integer
+    findings <- listEvents("ID","ID not a positive integer",
+                           fun=function(x)x>0&x%%1==0,events=findings,
+                           new.rows.only=T)
 
     
+### MDV should perfectly reflect is.na(DV)
+    if("MDV"%in%colnames(data)){
+        
+        data[,MDVDV:=!is.na(MDV)&MDV==as.numeric(is.na(DV))]
+        findings <- listEvents("MDVDV","MDV does not match DV",colname="MDV",fun=function(x)x==TRUE,events=findings)
+    }
+
+###  columns that are required for all rows done
+
+#### all other required columns (NA elements OK). Run NMisNumeric for each element, then translate using NMasNumeric
+    cols.req <- cc(CMT,DV,AMT)
+    newfinds <- rbindlist( lapply(cols.req,listEvents,name="Not numeric",
+                                  fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+                                  new.rows.only=T)
+                          )
+    findings <- rbind(findings,
+                      newfinds
+                     ,fill=TRUE)
+    data[,(cols.req):=lapply(.SD,NMasNumeric),.SDcols=cols.req]
+
 ### CMT must be a positive integer. It can be missing for CMT=3
     findings <- listEvents("CMT","Missing for EVID!=3",
                            fun=is.na,invert=TRUE,events=findings,
@@ -391,18 +438,7 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
                            dat=data[EVID%in%c(3)&!is.na(CMT)]
                            )
     
-### ID must be a positive integer
-    findings <- listEvents("ID","ID not a positive integer",
-                           fun=function(x)x>0&x%%1==0,events=findings,
-                           new.rows.only=T)
 
-
-### MDV should perfectly reflect is.na(DV)
-    if("MDV"%in%colnames(data)){
-        
-        data[,MDVDV:=!is.na(MDV)&MDV==as.numeric(is.na(DV))]
-        findings <- listEvents("MDVDV","MDV does not match DV",colname="MDV",fun=function(x)x==TRUE,events=findings)
-    }
 
 
 ###### DV
@@ -432,43 +468,39 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
     
 
 ### optional default columns - RATE, SS, ADDL, II
-    if("RATE"%in%colnames(data)){
-        ## must be numeric
-        findings <- listEvents("RATE",name="Not numeric",
+    cols.opt <- cc(RATE,SS,II,ADDL)
+    for(col in cols.opt){
+        findings <- listEvents(col,name="Not numeric",
                                fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
-                               events=findings,                           
-                               dat=data) 
-        ## -2 or positive for EVID%in%c(1,4)
-        findings <- listEvents("RATE","Must be -2 or non-negative",
-                               fun=function(x)x==-2|x>=0,events=findings,
-                               dat=data[EVID%in%c(1,4)])        
-        
+                               events=findings,
+                               col.required=FALSE,
+                               dat=data)
     }
-
-    if("SS"%in%colnames(data)){
-        ## must be numeric
-        findings <- listEvents("SS",name="Not numeric",
-                               fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
-                               events=findings,                           
-                               dat=data) 
-        ## 0 or 1
-        findings <- listEvents("SS","must be 0 or 1",
-                               fun=function(x)x%in%c(0,1),events=findings
-                               )
-        
+    cols.opt.found <- intersect(cols.opt,colnames(data))
+    if(length(cols.opt.found)>0){
+        data[,(cols.opt.found):=lapply(.SD,NMasNumeric),.SDcols=cols.opt.found]
     }
+    
+    ## RATE -2 or positive for EVID%in%c(1,4)
+    findings <- listEvents("RATE","Must be -2 or non-negative",
+                           fun=function(x)x==-2|x>=0,events=findings,
+                           col.required=FALSE,
+                           dat=data[EVID%in%c(1,4)])        
+        
+    ## SS 0 or 1
+    findings <- listEvents("SS","must be 0 or 1",
+                           col.required=FALSE,
+                           fun=function(x)x%in%c(0,1),events=findings
+                           )
+        
+    
 
     if("ADDL"%in%colnames(data)){
         ## ADDL only makes sense together with II
         findings <- listEvents("II",name="(This label will not be used)",
                                fun=function(x)TRUE,
                                events=findings,
-                               dat=data[EVID%in%c(1,4)]) 
-
-        ## must be numeric
-        findings <- listEvents("ADDL",name="Not numeric",
-                               fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
-                               events=findings,
+                               col.required=TRUE,
                                dat=data[EVID%in%c(1,4)]) 
 
         findings <- listEvents("ADDL","Must be a non-negative integer",
@@ -482,15 +514,9 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
         ## II only makes sense together with II
         findings <- listEvents("ADDL",name="(This label will not be used)",
                                fun=function(x)TRUE,
-                               events=findings,                           
-                               dat=data) 
-
-        ## must be numeric
-        findings <- listEvents("II",name="Not numeric",
-                               fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
                                events=findings,
-                               dat=data[EVID%in%c(1,4)])
-        
+                               col.required=TRUE,
+                               dat=data[EVID%in%c(1,4)])         
 
         findings <- listEvents("II","Must be a non-negative integer",
                                fun=function(x)x>=0&x%%1==0,events=findings,
@@ -527,9 +553,9 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
 
     if("EVID"%in%colnames(data)){
 ### subjects without doses
-        all.ids <- data[,unique(get(col.id))]
-        tab.evid.id <- data[,.N,by=c(col.id,"EVID")]
-        ids.no.doses <- setdiff(all.ids,tab.evid.id[EVID%in%c(1,4),get(col.id)])
+        all.ids <- data[,unique(get(col.id.orig))]
+        tab.evid.id <- data[,.N,by=c(col.id.orig,"EVID")]
+        ids.no.doses <- setdiff(all.ids,tab.evid.id[EVID%in%c(1,4),get(col.id.orig)])
 
         if(length(ids.no.doses)>0){
             findings <- rbind(findings ,
@@ -537,7 +563,7 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
                               fill=TRUE)
         }
 ### subjects without observations    
-        ids.no.obs <- setdiff(all.ids,tab.evid.id[EVID%in%c(0),get(col.id)])
+        ids.no.obs <- setdiff(all.ids,tab.evid.id[EVID%in%c(0),get(col.id.orig)])
         if(length(ids.no.obs)>0){
             findings <- rbind(findings
                              ,
@@ -551,9 +577,10 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
     if(!is.null(col.id)&&nrow(findings.row)>0){
         if(col.id%in%colnames(findings.row)) findings.row[,(col.id):=NULL]
         
-        findings.row <- mergeCheck(findings.row,data[,c(c.row,col.id),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop)
-        
+        findings.row <- mergeCheck(findings.row,data[,c(c.row,col.id.orig),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop)
+        setnames(findings.row,col.id.orig,col.id)        
         findings <- rbind(findings[level!="row"],findings.row,fill=T)
+       
     }
 
     
@@ -563,14 +590,15 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
     } else {
 ### use the row identifier for reporting
         if(!is.null(col.row)&&col.row%in%colnames(data)){
-            
-            findings <- mergeCheck(findings,data[,c(c.row,col.row),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop)
+            findings <- mergeCheck(findings,data[,c(c.row,col.row.orig),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop)
+            setnames(findings,col.row.orig,col.row)
         }
         if(!col.id%in%colnames(findings)) findings[,(col.id):=NA_real_]
         setcolorder(findings,c(c.row,col.id,"column","check"))
         setorderv(findings,c(c.row,"column","check"))
 
-        summary.findings <- findings[,.N,by=.(column,check)]
+        
+        summary.findings <- findings[,.(.N,Nid=uniqueN(get(col.id)[!is.na(get(col.id))])),by=.(column,check)]
         
         if(!quiet) print(summary.findings,row.names=FALSE)
 
