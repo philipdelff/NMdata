@@ -262,17 +262,6 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
 
 ####### End checking column names
 
-#### Section start: commas in character columns ####
-    
-    cols.char <- colnames(data)[!are.cols.num]
-    newfinds <- rbindlist(
-        lapply(cols.char,listEvents,name="Comma in character string",fun=function(x)grepl(",",x),invert=TRUE,debug=FALSE)
-    )
-    findings <- rbind(findings,
-                      newfinds
-                     ,fill=TRUE)
-
-### Section end: commas in character columns
 
 
     
@@ -333,10 +322,17 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
     }
 
 
-### translating those that are numeric to numeric. 
-    ## are.cols.num <- sapply(data,NMisNumeric,na.strings=na.strings)
-    ## cnames.num <- colnames(data)[are.cols.num]
-    ## data[,(cnames.num):=lapply(.SD,NMasNumeric),.SDcols=cnames.num]
+#### Section start: commas in character columns ####
+    
+    cols.char <- colnames(data)[!are.cols.num]
+    newfinds <- rbindlist(
+        lapply(cols.char,listEvents,name="Comma in character string",fun=function(x)grepl(",",x),invert=TRUE,debug=FALSE)
+    )
+    findings <- rbind(findings,
+                      newfinds
+                     ,fill=TRUE)
+
+### Section end: commas in character columns
     
 
     ## a new row counter for internal use only. It matches the data we
@@ -590,6 +586,7 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
     } else {
 ### use the row identifier for reporting
         if(!is.null(col.row)&&col.row%in%colnames(data)){
+            
             findings <- mergeCheck(findings,data[,c(c.row,col.row.orig),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop)
             setnames(findings,col.row.orig,col.row)
         }

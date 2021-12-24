@@ -28,7 +28,6 @@ fix.time <- function(x,meta=T){
 
 
 test_that("basic",{
-load_all()
     fileRef <- "testReference/NMcheckData_1.rds"
     
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
@@ -51,7 +50,7 @@ test_that("Misc findings",{
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 
     colnames(pk)[24] <- "ret.4"
-    ## a dup col name
+    ## a comma in a string - but with FLAG>0
     pk[2,ret.4:="3,mg"]
 
     res <- NMcheckData(pk)
@@ -118,6 +117,7 @@ test_that("missing ID",{
 
     res <- NMcheckData(pk)
     expect_equal_to_reference(res,fileRef,version=2)
+##         expect_equal(as.data.table(res)[level=="row"],as.data.table(readRDS(fileRef))[level=="row"])
 })
 
 test_that("missing ID",{
@@ -172,7 +172,7 @@ test_that("Using control stream file",{
 
 ### ID and row with leading 0
 test_that("basic",{
-    load_all()
+    
     NMdataConf(reset=T)
     NMdataConf(as.fun="data.table")
     fileRef <- "testReference/NMcheckData_11.rds"
@@ -186,6 +186,6 @@ test_that("basic",{
     
     
     res <- NMcheckData(pk)
-    res
+    ## res
     expect_equal_to_reference(res,fileRef,version=2)
 })

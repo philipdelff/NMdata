@@ -46,18 +46,16 @@ NMcheckDataFile <- function(file,col.row,col.id="ID",use.rds=FALSE,quiet=FALSE,f
     
     ## list.res <- append(list.res,list(colnames=res.cnames,res.check.findings=res.check$findings,res.check.summary=res.check$summary))
     if(!quiet){
-        
         message("Meta data on input data file:")
-        message(print(list.res$tables))
+        ## message(print(list.res$tables))
+        print(list.res$tables)
         message("Comparison of variable naming:")
         ##         message(print(list.res$colnames))
         ## cat("\n\n")
-        message(print(list.res$input.colnames))
+        print(list.res$input.colnames)
         message("NMcheckData as NONMEM reads:")
-        message(print(list.res$NMcheckData$summary))
-
+        print(list.res$NMcheckData$summary)
     }
     
     invisible(list.res)
 }
-
