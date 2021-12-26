@@ -150,6 +150,7 @@ NMdataConf <- function(...){
         args <- lapply(1:N.args,function(I){
             val <- dots[[I]]
             if(is.null(val)) val <- "default"
+            ## if(is.character(val)&&length(val)==1&val=="default") val <- NULL
             NMdataDecideOption(names.args[I],val)
         })
 
@@ -367,6 +368,10 @@ NMdataDecideOption <- function(name,argument){
     if(!missing(argument) && is.character(argument) && length(argument)==1 && argument=="default") {
         return(values.option$default)
     }
+    ## if(is.null(argument)) {
+    ##     return(values.option$default)
+    ## }
+
     
 
     if(missing(argument)||is.null(argument)) return(NMdataGetOption(name))
@@ -392,5 +397,3 @@ NMdataGetOption <- function(...){
     .NMdata$options[[dots[[1]]]]
     
 }
-
-

@@ -34,30 +34,36 @@ is.NMdata <- function(x){
 NULL
 
 ##' @rdname NMdataOperations
+##' @export
 merge.NMdata <- function(x,...){
     unNMdata(x)
     merge(x,...)
 }
 
 ##' @rdname NMdataOperations
+##' @export
 t.NMdata <- function(x,...){
     unNMdata(x)
     t(x,...)
 }
 
 ##' @rdname NMdataOperations
+##' @export
 dimnames.NMdata <- function(x,...){
     unNMdata(x)
     dimnames(x,...)
 }
 
 ##' @rdname NMdataOperations
+##' @export
 rbind.NMdata <- function(x,...){
+    
     unNMdata(x)
     rbind(x,...)
 }
 
 ##' @rdname NMdataOperations
+##' @export
 cbind.NMdata <- function(x,...){
     unNMdata(x)
     cbind(x,...)

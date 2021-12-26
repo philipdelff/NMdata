@@ -677,3 +677,23 @@ test_that("redundant output",{
 }
 )
 
+
+
+## check.time (warning)
+### I'm afraid this could give warnings when run in check or on CRAN. 
+test_that("check time warning",{
+    NMdataConf(reset=T)
+    fileRef <- "testReference/NMscanData26.rds"
+    
+    file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
+    
+    res1 <- NMscanData(file=file.lst, quiet=F, order.columns = F, merge.by.row=FALSE)
+    ## dim(res1)'
+    
+    ## without meta
+    expect_equal_to_reference(unNMdata(res1),fileRef)
+    ## data.table(attributes(readRDS(fileRef))$meta$variables$variable,attributes(res1)$meta$variables$variable)
+})
+
+###### find an example that trickers this 
+## use.input&&!any(tables$meta$full.length)

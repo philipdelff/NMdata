@@ -113,3 +113,44 @@ test_that("Include EVID==1",{
     
 })
 
+
+test_that("A NULL data set",{
+    
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    
+    dt.flags <- fread(text="FLAG,flag,condition
+0,Dosing,EVID==1
+100,Below LLOQ,EVID==0&BLQ==1
+10,Negative time,EVID==0&TIME<0")
+    
+    expect_warning(flagsAssign(data=pk[0],tab.flags=dt.flags,flags.increasing=T))
+    
+
+})
+
+
+
+test_that("Writing data - data.frames",{
+
+    testOut <- "testOutput/flagsCount_5.csv"
+    
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- as.data.frame(pk)
+    
+    dt.flags <- read.csv(text="FLAG,flag,condition
+0,Dosing,EVID==1
+100,Below LLOQ,EVID==0&BLQ==1
+10,Negative time,EVID==0&TIME<0")
+    
+    pk <- flagsAssign(pk,tab.flags=dt.flags,flags.increasing=T,subset.data="EVID==0")
+    pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing")
+    
+    ## all excluded due to below LLOQ
+    tab.count <- flagsCount(pk[pk$EVID==0,],dt.flags,flags.increasing=T,file=testOut)
+
+    testRes <- fread(testOut,header=T)
+    
+    fileRef <- "testReference/flagsCount_5.rds"
+    expect_equal_to_reference(testRes,fileRef)
+    
+})
