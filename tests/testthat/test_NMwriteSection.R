@@ -50,13 +50,13 @@ if(F){
 
 test_that("Dependent on data.file",{
 
-    fileRef <- "testReference/NMwriteSection_1.rds"
+    fileRef <- "testReference/NMwriteSection_3.rds"
     
     outfile <- "testOutput/xgxr011_update1.mod"
     newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
     section <- "input"
 
-    NMwriteSection(system.file("examples/nonmem/xgxr011.mod", package = "NMdata")
+    NMwriteSection("testData/nonmem/xgxr011.mod"
                   ,section=section
                   ,data.file="../data/xgxr2.csv"
                   ,newlines=newlines
@@ -70,8 +70,6 @@ test_that("Dependent on data.file",{
 
 test_that(".mod does not exist",{
 
-    fileRef <- "testReference/NMwriteSection_1.rds"
-    
     outfile <- "testOutput/xgxr011_update1.mod"
     newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
     section <- "input"
@@ -87,8 +85,6 @@ test_that(".mod does not exist",{
 
 test_that("No files matched",{
 
-    fileRef <- "testReference/NMwriteSection_1.rds"
-    
     newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
     section <- "input"
 
@@ -100,5 +96,22 @@ test_that("No files matched",{
                    ,newfile=outfile)
 
     expect_equal(res,NULL)
+
+})
+
+
+test_that("basic - write file",{
+
+    fileRef <- "testReference/NMwriteSection_4.rds"
+    
+    outfile <- "testOutput/xgxr011_update1.mod"
+    newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
+    section <- "input"
+    NMwriteSection("testData/nonmem/xgxr011.mod" 
+                  ,section=section
+                  ,newlines=newlines
+                  ,newfile=outfile)
+    res <- readLines(outfile)
+    expect_equal_to_reference(res,fileRef,version=2)
 
 })

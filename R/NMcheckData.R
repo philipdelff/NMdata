@@ -127,6 +127,11 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
     level <- NULL
     column <- NULL
     check <- NULL
+    ADDL <- NULL
+    AMT <- NULL
+    II <- NULL
+    RATE <- NULL
+    SS <- NULL
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 

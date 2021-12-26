@@ -4,7 +4,7 @@
 \alias{findVars}
 \title{Extract columns that vary within values of other columns in a data.frame}
 \usage{
-findVars(data, by = NULL, as.fun = NULL)
+findVars(data, by = NULL, cols.id, as.fun = NULL)
 }
 \arguments{
 \item{data}{data.frame in which to look for covariates}
@@ -12,6 +12,8 @@ findVars(data, by = NULL, as.fun = NULL)
 \item{by}{optional covariates will be searched for in combinations of
 values in these columns. Often by will be either empty or ID. But
 it can also be both say c("ID","DRUG") or c("ID","TRT").}
+
+\item{cols.id}{Deprecated. Use by instead.}
 
 \item{as.fun}{The default is to return a data.table if data is a data.table
 and return a data.frame in all other cases. Pass a function in as.fun to

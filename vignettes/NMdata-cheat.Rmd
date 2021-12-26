@@ -90,8 +90,8 @@ library(NMdata)
 
 Use the many options in `NMdataConf` to tailor NMdata behaviour to your setup and preferences. Make NMdata functions return data.tables or tibble's:
 ```{r,eval=FALSE}
-NMdataConf(as.fun="data.table")
 NMdataConf(as.fun=tibble::as_tibble)
+NMdataConf(as.fun="data.table")
 ```
 
 By default, NMdata is configured to read files from PSN in which case the input control stream is needed to find the input data. Do this if you don't use PSN:
@@ -177,7 +177,12 @@ NMscanData <- function(x)NMdata::NMscanData(file.path(system.file(paste0("exampl
 ## res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"))
 ```
 ```{r}
-res1 <- NMscanData("xgxr001.lst")
+res1.dt <- NMscanData("xgxr003.lst")
+class(res1.dt)
+NMdataConf(as.fun=tibble::as_tibble,quiet=TRUE)
+res1.tbl <- NMscanData("xgxr003.lst")
+class(res1.tbl)
+dims(res1.dt,res1.tbl)
 ```
 ```{r,include=F}
 rm(NMscanData)
