@@ -80,20 +80,18 @@
 
 NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
                         write.RData=FALSE,script,args.stamp,
-                        args.fwrite, args.rds,args.RData,nm.drop,
+                        args.fwrite, args.rds,args.RData,
+                        quiet,args.NMgenText,
+### seprecated NMgenText arguments
+                        nm.drop,
                         nmdir.data,col.flagn, nm.rename,nm.copy,
-                        nm.capitalize=FALSE,allow.char.TIME=TRUE,
-                        quiet){
+                        nm.capitalize,allow.char.TIME){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####    
     TIME <- NULL 
-    name.nm <- NULL
     comma.ok <- NULL
     include <- NULL
-    name.copy <- NULL
     numeric.ok <- NULL
-    occ.cum <- NULL
-    name.rename <- NULL
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
@@ -119,15 +117,50 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
 
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
-    ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     if(missing(col.flagn)) col.flagn <- NULL
     col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
 
-    if(missing(nmdir.data)) nmdir.data <- NULL
-    if(missing(nm.drop)) nm.drop <- NULL
-    if(missing(nm.rename)) nm.rename <- NULL
-    if(missing(nm.copy)) nm.copy <- NULL
     
+    args.text.depr <- c(
+        "nm.drop",
+        "nmdir.data",
+        "col.flagn",
+        "nm.rename",
+        "nm.copy",
+        "nm.capitalize",
+        "allow.char.TIME")
+
+    ## if args.NMgenText is used, the deprecated ags are not allowed
+    all.args <- as.list(match.call(expand.dots=FALSE))
+    if(missing(args.NMgenText)) {
+        args.NMgenText <- NULL
+    } else {
+        if(any(args.text.depr%in%names(all.args))){
+            messageWrap(paste0("Please only use args.NMgenText and not the deprecated arguments ",paste(args.text.depr,collapse=", "),". Those are only accepted if you aren't using the args.NMgenText argument yet.")
+                       ,fun.msg=stop)
+        }
+    }
+    used.args.depr <- all.args[names(all.args)%in%args.text.depr]
+    if(length(used.args.depr)>0){
+        names.used.ad <- names(used.args.depr)
+        names.used.ad[names.used.ad=="nm.drop"] <- "drop"
+        names.used.ad[names.used.ad=="nmdir.data"] <- "dir.data"
+        ##    names.used.ad[names.used.ad=="col.flagn"] <- "col.flagn"
+        names.used.ad[names.used.ad=="nm.rename"] <- "rename"
+        names.used.ad[names.used.ad=="nm.copy"] <- "pseudo"
+        names.used.ad[names.used.ad=="nm.capitalize"] <- "capitalize"
+        ##    names.used.ad[names.used.ad=="allow.char.TIME"] <- "allow.char.TIME"
+        names(used.args.depr) <- names.used.ad
+        args.NMgenText <- used.args.depr
+    }
+### allow overwriting quiet
+    if(!"quiet"%in%names(args.NMgenText))  args.NMgenText$quiet <- quiet
+    if(!"col.flagn"%in%names(args.NMgenText))  args.NMgenText$col.flagn <- col.flagn
+    ## do not allow setting data and file. If that is wanted, use NMgenText instead.
+    if(any(c("data","file")%in%names(args.NMgenText))){
+        messageWrap("data and file are not allowed in args.NMgenText. If you want to set those, use NMgenText directly instead.",fun.msg=stop)
+    }
     
 ### stamp arguments
     doStamp <- TRUE
@@ -169,26 +202,24 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
         }
     }
 
-    if(missing(nm.drop)) {
-        nm.drop <- NULL
-    } else {
-        if(!is.null(nm.drop) && !is.character(nm.drop) ) {
-            stop("If supplied, nm.drop must be of type character.")
-        }
-        if(any(is.na(nm.drop)|nm.drop=="")){
-            stop("nm.drop cannot contain empty strings and NA's.")
-        }
-    }
+
+
     
 ###  Section end: Process arguments
 
     data.dt <- copy(as.data.table(data))
 
     ## Check if character variables contain commas
-    ## This would cause trouble when writing csv    
+    ## This would cause trouble when writing csv
+    
     has.no.comma <- data.dt[,lapply(.SD,function(x){is.numeric(x)||!any(grepl(",",as.character(x)))})]
 
     comma.ok=as.logical(has.no.comma[1])
+
+    if(any(!comma.ok)){
+        messageWrap(paste("You must avoid commas in data values. They will curropt the csv file, so get rid of them before saving data. Comma found in column(s):",paste(colnames(data.dt)[comma.ok==FALSE],sep=", ")),
+                    fun.msg=stop)
+    }
 
     
     ## if any repetetions, give warning, and add numbers
@@ -200,16 +231,6 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
                       paste0(unique(cnames[duplicated(cnames)]),collapse=", ")
                       ))
     }
-
-    nmfile <- file
-
-    if(!is.null(nmdir.data)&&!is.null(nmfile)){
-        nmfile <- file.path(nmdir.data,basename(nmfile))
-    } else if(is.null(nmfile)){
-        nmfile <- "<data file>"
-    }
-    
-
 
     files.written=c()
     if(write.csv){
@@ -260,18 +281,30 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
         
     }
 
+    ## if(missing(nmdir.data)) nmdir.data <- NULL
+    ## if(missing(nm.drop)) nm.drop <- NULL
+    ## if(missing(nm.rename)) nm.rename <- NULL
+    ## if(missing(nm.copy)) nm.copy <- NULL
+
+    
     ## NONMEM text
-    NMtext <- NMgenText(data=data.dt
-                        ,nm.drop=nm.drop
-                        ,nmdir.data=nmdir.data
-                        ,col.flagn=col.flagn
-                       ,nm.rename=nm.rename
-                       ,nm.copy=nm.copy
-                       ,file=nmfile
-                       ,nm.capitalize=nm.capitalize
-                       ,allow.char.TIME=allow.char.TIME
-                       ,quiet=TRUE
-                        )
+    
+    NMtext <- do.call(NMgenText,
+                      append(
+                          list(data=data.dt,file=file)
+                         ,args.NMgenText)
+                      )
+    ## NMtext <- NMgenText(data=data.dt
+    ##                    ,file=file
+    ##                    ,col.flagn=col.flagn
+
+    ##                    ,drop=nm.drop
+    ##                    ,dir.data=nmdir.data
+    ##                    ,rename=nm.rename
+    ##                    ,pseudo=nm.copy
+    ##                    ,capitalize=nm.capitalize
+    ##                    ,allow.char.TIME=allow.char.TIME
+    ##                     )
 
     
     invisible(list(INPUT=NMtext$INPUT,DATA=NMtext$DATA))

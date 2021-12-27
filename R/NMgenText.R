@@ -1,23 +1,62 @@
 ## checks: duplicate column names
 
-## has to be data.table
+## ok has to be data.table
 
-## col.flagn has to be taken from defaults
+## OK quiet has to be taken from defaults
 
-NMgenText <- function(data,nm.drop,
-                      nmdir.data,col.flagn="FLAG", nm.rename,nm.copy,
+## test if a pseudonym was used. Give warning or msg if not
+
+## how do I control quiet from NMwriteData? Same as for NMwriteData I guess
+
+NMgenText <- function(data,
+                      drop,
+                      dir.data,
+                      col.flagn="FLAG",
+                      rename
+                     ,pseudo,
                       file,
-                      nm.capitalize=FALSE,allow.char.TIME=TRUE,
-                      quiet=FALSE){
+                      capitalize=FALSE
+                     ,allow.char.TIME=TRUE
+                     ,quiet){
+
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####    
+    occ.cum <- NULL
+
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
     
+    if(!is.data.frame(data)) messageWrap("data must be a data.frame",fun.msg=stop)    
+    data <- copy(as.data.table(data))
 
-    if(missing(nmdir.data)) nmdir.data <- NULL
-    if(missing(nm.drop)) nm.drop <- NULL
-    if(missing(nm.rename)) nm.rename <- NULL
-    if(missing(nm.copy)) nm.copy <- NULL
+    
+    if(missing(col.flagn)) col.flagn <- NULL
+    col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
+    if(missing(quiet)) quiet <- NULL
+    quiet <- NMdataDecideOption("quiet",quiet)
+    if(missing(dir.data)) dir.data <- NULL
+    if(missing(drop)) drop <- NULL
+    if(missing(rename)) rename <- NULL
+    if(missing(pseudo)) pseudo <- NULL
     if(missing(file)) file <- NULL
 
+    if(!is.null(drop) && !is.character(drop) ) {
+        stop("If supplied, drop must be of type character.")
+    }
+    if(any(is.na(drop)|drop=="")){
+        stop("drop cannot contain empty strings and NA's.")
+    }
+
+    
+### capitalize, allow.char.TIME have to be logical
+    
+
+    file.nm <- file
+
+    if(!is.null(dir.data)&&!is.null(file.nm)){
+        file.nm <- file.path(dir.data,basename(file.nm))
+    } else if(is.null(file.nm)){
+        file.nm <- "<data file>"
+    }
     
     ## only report numerics to user.
     ## Only report until first not interpretable as numeric. 
@@ -42,7 +81,7 @@ NMgenText <- function(data,nm.drop,
 
     ## if wanted, use only capital letters for column names in Nonmem
     dt.num.ok[,name.nm:=col]
-    if(nm.capitalize){
+    if(capitalize){
         dt.num.ok[,name.nm:=toupper(name.nm)]
     }
     
@@ -52,39 +91,40 @@ NMgenText <- function(data,nm.drop,
     
 
     ## apply DROP
-    dt.num.ok[,drop:=FALSE]
-    if(!is.null(nm.drop)){
-        dt.num.ok[col%in%nm.drop,name.nm:=paste0(name.nm,"=DROP")]
-        dt.num.ok[col%in%nm.drop,drop:=TRUE]
-        drops.not.used <- nm.drop[!nm.drop%in%dt.num.ok[,col]]
+    dt.num.ok[,drop.nm:=FALSE]
+    if(!is.null(drop)){
+        
+        dt.num.ok[col%in%drop,name.nm:=paste0(name.nm,"=DROP")]
+        dt.num.ok[col%in%drop,drop.nm:=TRUE]
+        drops.not.used <- drop[!drop%in%dt.num.ok[,col]]
         if(length(drops.not.used)){
-            warning("Elements in nm.drop not found as columns in data:",paste(drops.not.used,collapse=", "))
+            warning("Elements in drop not found as columns in data:",paste(drops.not.used,collapse=", "))
         }
     }
     
-    ## apply nm.copy
-    if(!is.null(nm.copy)){
-        names.copy <- names(nm.copy)
-        dt.num.ok[,name.copy:=names.copy[match(dt.num.ok[,col],nm.copy)]]
-        dt.num.ok[!is.na(name.copy),name.nm:=paste0(name.copy,"=",col)]
+    ## apply pseudo
+    if(!is.null(pseudo)){
+        names.pseudo <- names(pseudo)
+        dt.num.ok[,name.pseudo:=names.pseudo[match(dt.num.ok[,col],pseudo)]]
+        dt.num.ok[!is.na(name.pseudo),name.nm:=paste0(name.pseudo,"=",col)]
     }
 
     
 
-    ## apply nm.rename
-    if(!is.null(nm.rename)){
-        names.rename <- names(nm.rename)
-        dt.num.ok[,name.rename:=names.rename[match(dt.num.ok[,col],nm.rename)]]
+    ## apply rename
+    if(!is.null(rename)){
+        names.rename <- names(rename)
+        dt.num.ok[,name.rename:=names.rename[match(dt.num.ok[,col],rename)]]
         dt.num.ok[!is.na(name.rename),name.nm:=name.rename]
     }
     
     
     
-    dt.num.ok[,include:=cumsum(!numeric.ok&!drop)<1]
+    dt.num.ok[,include:=cumsum(!numeric.ok&!drop.nm)<1]
 
     dt.num.ok[include==TRUE,occ.cum:=1:.N,by=name.nm]
     if(dt.num.ok[occ.cum>1,.N]>0) {
-        warning(paste("Duplicated column name(s) in data after transforming to upper case for Nonmem:\n",
+        warning(paste("Duplicated column name(s) in data for Nonmem:\n",
                       paste0(dt.num.ok[occ.cum>1,unique(name.nm)],collapse=", "),"\n",
                       "Names have been numbered in $INPUT proposal."
                       ))
@@ -97,19 +137,16 @@ NMgenText <- function(data,nm.drop,
         paste0("$INPUT ",paste(colnames.nm,collapse=" "))
     )
 
-    text.nm.data <- NULL
-    if(!is.null(file)){
-        
-        text.nm.data <- c(paste0("$DATA ", file)
-                         ,paste0("IGN=@")
-                          )
+    text.nm.data <- c(paste0("$DATA ", file.nm)
+                     ,paste0("IGN=@")
+                      )
 
-        if(!is.null(col.flagn)&&col.flagn%in%colnames.nm){
-            text.nm.data <- c(text.nm.data,
-                              paste0("IGNORE=(",col.flagn,".NE.0)")
-                              )
-        }
+    if(!is.null(col.flagn)&&col.flagn%in%colnames.nm){
+        text.nm.data <- c(text.nm.data,
+                          paste0("IGNORE=(",col.flagn,".NE.0)")
+                          )
     }
+    
     
     text.nm <- c(
         text.nm.input
