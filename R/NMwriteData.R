@@ -25,11 +25,11 @@
 ##'     configured using NMdataConf.
 ##' @param args.rds A list of arguments to be passed to saveRDS.
 ##' @param args.RData A list of arguments to be passed to save.
-##' @param col.flag Name of a numeric column with zero value for rows
+##' @param col.flagn Name of a numeric column with zero value for rows
 ##'     to include in Nonmem run, non-zero for rows to skip. The
 ##'     argument is only used for generating the proposed text to
 ##'     paste into the Nonmem control stream. To skip this feature,
-##'     use col.flag=NULL.
+##'     use col.flagn=NULL.
 ##' @param nmdir.data For the $DATA text proposal only. The path to
 ##'     the input datafile to be used in the Nonmem $DATA
 ##'     section. Often, a relative path to the actual Nonmem run is
@@ -81,11 +81,11 @@
 NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
                         write.RData=FALSE,script,args.stamp,
                         args.fwrite, args.rds,args.RData,nm.drop,
-                        nmdir.data,col.flag="FLAG", nm.rename,nm.copy,
+                        nmdir.data,col.flagn, nm.rename,nm.copy,
                         nm.capitalize=FALSE,allow.char.TIME=TRUE,
                         quiet){
-#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
-    
+
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####    
     TIME <- NULL 
     name.nm <- NULL
     comma.ok <- NULL
@@ -103,8 +103,6 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
     if(missing(args.fwrite)) args.fwrite <- NULL
     args.fread <- NMdataDecideOption("args.fwrite",args.fwrite)
 
-    if(missing(nmdir.data)) nmdir.data <- NULL
-    
     stopifnot(is.data.frame(data)) 
     if(missing(file)||is.null(file)){
         file <- NULL
@@ -121,6 +119,15 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
 
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
+    ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+    if(missing(col.flagn)) col.flagn <- NULL
+    col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
+
+    if(missing(nmdir.data)) nmdir.data <- NULL
+    if(missing(nm.drop)) nm.drop <- NULL
+    if(missing(nm.rename)) nm.rename <- NULL
+    if(missing(nm.copy)) nm.copy <- NULL
+    
     
 ### stamp arguments
     doStamp <- TRUE
@@ -181,91 +188,19 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
     ## This would cause trouble when writing csv    
     has.no.comma <- data.dt[,lapply(.SD,function(x){is.numeric(x)||!any(grepl(",",as.character(x)))})]
 
-    ## only report numerics to user.
-    ## Only report until first not interpretable as numeric. 
-    as.num.ok <- data.dt[,lapply(.SD,NMisNumeric)]
-
-    
-    ## Allow TIME even if non-numeric. 
-    if(allow.char.TIME){
-        if("TIME"%in%colnames(data.dt) &&
-           as.num.ok[,TIME==FALSE]) {
-            as.num.ok[,TIME:=TRUE]
-        }
-    }
-    
-    dt.num.ok <- data.table(
-        col=colnames(as.num.ok)
-       ,numeric.ok=as.logical(as.num.ok[1])
-       ,comma.ok=as.logical(has.no.comma[1])
-    )
-
-    ## if wanted, use only capital letters for column names in Nonmem
-    dt.num.ok[,name.nm:=col]
-    if(nm.capitalize){
-        dt.num.ok[,name.nm:=toupper(name.nm)]
-    }
-    
-    ## drop .'s from names since they are not allowed in nonmem
-    ##    dt.num.ok[,name.nm:=gsub("\\.","",name.nm)]
-    
-    if(dt.num.ok[,any(!comma.ok)]){
-        messageWrap(paste("You must avoid commas in data values. They will curropt the csv file, so get rid of them before saving data. Comma found in column(s):",paste(dt.num.ok[comma.ok==FALSE,col],sep=", ")),
-                    fun.msg=stop)
-    }
+    comma.ok=as.logical(has.no.comma[1])
 
     
     ## if any repetetions, give warning, and add numbers
     
-### this is input column names. 
-    if(dt.num.ok[,any(duplicated(col))]) {
+### this is input column names.
+    cnames <- colnames(data.dt)
+    if(any(duplicated(cnames))) {
         warning(paste("Duplicated column name(s) in data:",
-                      paste0(dt.num.ok[duplicated(col),unique(col)],collapse=", ")
+                      paste0(unique(cnames[duplicated(cnames)]),collapse=", ")
                       ))
     }
 
-
-    ## apply DROP
-    dt.num.ok[,drop:=FALSE]
-    if(!is.null(nm.drop)){
-        dt.num.ok[col%in%nm.drop,name.nm:=paste0(name.nm,"=DROP")]
-        dt.num.ok[col%in%nm.drop,drop:=TRUE]
-        drops.not.used <- nm.drop[!nm.drop%in%dt.num.ok[,col]]
-        if(length(drops.not.used)){
-            warning("Elements in nm.drop not found as columns in data:",paste(drops.not.used,collapse=", "))
-        }
-    }
-    
-    ## apply nm.copy
-    if(!missing(nm.copy)){
-        names.copy <- names(nm.copy)
-        dt.num.ok[,name.copy:=names.copy[match(dt.num.ok[,col],nm.copy)]]
-        dt.num.ok[!is.na(name.copy),name.nm:=paste0(name.copy,"=",col)]
-    }
-
-    ## apply nm.rename
-    if(!missing(nm.rename)){
-        names.rename <- names(nm.rename)
-        dt.num.ok[,name.rename:=names.rename[match(dt.num.ok[,col],nm.rename)]]
-        dt.num.ok[!is.na(name.rename),name.nm:=name.rename]
-    }
-    
-    
-    
-    dt.num.ok[,include:=cumsum(!numeric.ok&!drop)<1]
-
-    dt.num.ok[include==TRUE,occ.cum:=1:.N,by=name.nm]
-    if(dt.num.ok[occ.cum>1,.N]>0) {
-        warning(paste("Duplicated column name(s) in data after transforming to upper case for Nonmem:\n",
-                      paste0(dt.num.ok[occ.cum>1,unique(name.nm)],collapse=", "),"\n",
-                      "Names have been numbered in $INPUT proposal."
-                      ))
-    }
-    dt.num.ok[occ.cum>1,name.nm:=paste0(name.nm,occ.cum)]
-
-    colnames.nm <- dt.num.ok[include==TRUE,name.nm]
-
-    
     nmfile <- file
 
     if(!is.null(nmdir.data)&&!is.null(nmfile)){
@@ -274,23 +209,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
         nmfile <- "<data file>"
     }
     
-    text.nm.input <- strwrap(
-        paste0("$INPUT ",paste(colnames.nm,collapse=" "))
-    )
-    text.nm.data <- c(paste0("$DATA ", nmfile)
-                     ,paste0("IGN=@")
-                      )
 
-    if(!is.null(col.flag)&&col.flag%in%colnames.nm){
-        text.nm.data <- c(text.nm.data,
-                          paste0("IGNORE=(",col.flag,".NE.0)")
-                          )
-    }
-    
-    text.nm <- c(
-        text.nm.input
-       ,text.nm.data
-    )
 
     files.written=c()
     if(write.csv){
@@ -339,10 +258,22 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
 
         }
         
-        message("For NonMem:\n",
-                paste(text.nm,collapse="\n"))
     }
+
+    ## NONMEM text
+    NMtext <- NMgenText(data=data.dt
+                        ,nm.drop=nm.drop
+                        ,nmdir.data=nmdir.data
+                        ,col.flagn=col.flagn
+                       ,nm.rename=nm.rename
+                       ,nm.copy=nm.copy
+                       ,file=nmfile
+                       ,nm.capitalize=nm.capitalize
+                       ,allow.char.TIME=allow.char.TIME
+                       ,quiet=TRUE
+                        )
+
     
-    invisible(list(INPUT=text.nm.input,DATA=text.nm.data))
+    invisible(list(INPUT=NMtext$INPUT,DATA=NMtext$DATA))
 
 }
