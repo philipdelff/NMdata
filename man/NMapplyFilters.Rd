@@ -41,6 +41,7 @@ This is not bulletproof. Nested conditions are not supported altogether.
 \seealso{
 Other Nonmem: 
 \code{\link{NMextractText}()},
+\code{\link{NMgenText}()},
 \code{\link{NMreadSection}()},
 \code{\link{NMwriteData}()},
 \code{\link{NMwriteSection}()}

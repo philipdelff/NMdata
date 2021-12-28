@@ -1,5 +1,3 @@
-load_all()
-
 context("NMgenText")
 
 test_that("basic",{
@@ -29,6 +27,7 @@ test_that("dir.data",{
 
 test_that("pseudonyms",{
     fileRef <- "testReference/NMgenText_3.rds"
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 #### wrong
     ## NMgenText(pk,file="data1.csv",pseudo=c(PART="SPART"))
     res <- NMgenText(pk,file="data1.csv",pseudo=c(SPART="PART"))
@@ -38,18 +37,21 @@ test_that("pseudonyms",{
 
 test_that("rename - same order as in pseudonym syntax",{
     fileRef <- "testReference/NMgenText_4.rds"
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     res <- NMgenText(pk,file="data1.csv",rename=c(SPART="PART"))
     expect_equal_to_reference(res,fileRef)
 })
 
 test_that("drop",{
     fileRef <- "testReference/NMgenText_5.rds"
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     res <- NMgenText(pk,file="data1.csv",drop=c("PART"))
     expect_equal_to_reference(res,fileRef)
 })
 
 test_that("capitalize",{
     fileRef <- "testReference/NMgenText_6.rds"
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     res <- NMgenText(pk,file="data1.csv",capitalize=T)
     expect_equal_to_reference(res,fileRef)
 })

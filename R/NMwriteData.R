@@ -30,38 +30,30 @@
 ##'     argument is only used for generating the proposed text to
 ##'     paste into the Nonmem control stream. To skip this feature,
 ##'     use col.flagn=NULL.
-##' @param nmdir.data For the $DATA text proposal only. The path to
-##'     the input datafile to be used in the Nonmem $DATA
-##'     section. Often, a relative path to the actual Nonmem run is
-##'     wanted here.
-##' @param nm.copy For the $DATA text proposal only. If you plan to
-##'     rename columns in Nonmem $DATA, NMwriteData can adjust the
-##'     suggested $DATA text. If you plan to use CONC as DV in Nonmem,
-##'     you can include nm.rename=c(DV="CONC").
-##' @param nm.rename For the $DATA text proposal only. If you plan to
-##'     rename columns in Nonmem $DATA, NMwriteData can adjust the
-##'     suggested $DATA text. If you plan to use BBW instead of BWBASE
-##'     in Nonmem, consider nm.rename=c(BWBASE="BBW"). The result is
-##'     different from nm.copy since the nm.copy syntax is only
-##'     allowed by Nonmem for certain standard column names such as
-##'     DV.
-##' @param nm.drop Only used for generation of proposed text for
-##'     Nonmem control stream. Columns to drop in Nonmem $DATA. This
-##'     has two implications. One is that the proposed $DATA indicates
-##'     =DROP after the given column names. The other that in case it
-##'     is a non-numeric column, succeeding columns can still be
-##'     included.
-##' @param nm.capitalize For the $DATA text proposal only. If TRUE,
-##'     the suggested text for Nonmem will only contain capital
-##'     letters in column names.
-##' @param allow.char.TIME For the $DATA text proposal only. Assume
-##'     Nonmem can read TIME even if it can't be translated to
-##'     numeric. This is necessary if using the 00:00 format. Default
-##'     is TRUE.
 ##' @param quiet The default is to give some information along the way
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using
 ##'     NMdataConf.
+##' @param args.NMgenText List of arguments to pass to NMgenText - the
+##'     function that generates text suggestion for INPUT and DATA
+##'     sections in the NONMEM control stream. You can use these
+##'     arguments to get a text suggestion you an use directly in
+##'     NONMEM - and NwriteSection can even update multiple NONMEM
+##'     control streams based on the result. This will update your
+##'     control streams to match your new data file with just one
+##'     command.
+##' @param nmdir.data Deprecated, use
+##'     args.NMgenText=list(dir.data="your/path") instead.
+##' @param nm.copy Deprecated, use
+##'     args.NMgenText=list(pseudo=c(newname="existing")) instead.
+##' @param nm.rename Deprecated, use
+##'     args.NMgenText=list(rename=c(newname="existing")) instead.
+##' @param nm.drop Deprecated, use
+##'     args.NMgenText=list(drop=c("column")) instead.
+##' @param nm.capitalize Deprecated, use
+##'     args.NMgenText=list(capitalize=TRUE) instead.
+##' @param allow.char.TIME Deprecated, use
+##'     args.NMgenText=list(allow.char.TIME=TRUE) instead.
 ##' @return Text for inclusion in Nonmem control stream, invisibly.
 ##' @details When writing csv files, the file will be
 ##'     comma-separated. Because Nonmem does not support quoted
@@ -72,7 +64,7 @@
 ##' of the data columns. Once a column is reached that Nonmem will not
 ##' be able to read as a numeric and column is not in nm.drop, the list
 ##' is stopped. Only exception is TIME which is not tested for whether
-##' character or not.
+##' character or not. 
 ##' 
 ##' @family Nonmem
 ##' @export

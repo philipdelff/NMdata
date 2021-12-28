@@ -85,6 +85,7 @@ section="EST", newlines=newlines,newfile=NULL)
 Other Nonmem: 
 \code{\link{NMapplyFilters}()},
 \code{\link{NMextractText}()},
+\code{\link{NMgenText}()},
 \code{\link{NMreadSection}()},
 \code{\link{NMwriteData}()}
 }

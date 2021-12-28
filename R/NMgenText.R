@@ -1,12 +1,45 @@
-## checks: duplicate column names
+##' Generate text for INPUT and possibly DATA sections of NONMEM
+##' control streams. 
+##' 
+##' The user is provided with text to use in Nonmem. NMwriteSection
+##' can use the results to update the control streams. INPUT lists
+##' names of the data columns while DATA provides a path to data and
+##' ACCEPT/IGNORE statements. Once a column is reached that Nonmem
+##' will not be able to read as a numeric and column is not in
+##' nm.drop, the list is stopped. Only exception is TIME which is not
+##' tested for whether character or not.
+##' 
+##' @param dir.data For the $DATA text proposal only. The path to the
+##'     input datafile to be used in the Nonmem $DATA section. Often,
+##'     a relative path to the actual Nonmem run is wanted here.
+##' @param pseudo For the $INPUT text proposal only. If you plan to
+##'     use additional names for columns in Nonmem $INPUT, NMwriteData
+##'     can adjust the suggested $INPUT text. Say you plan to use CONC
+##'     as DV in Nonmem, use rename=c(DV="CONC"),
+##'     i.e. rename=c(newname="existing"). INPUT suggestion will in
+##'     this case contain DV=CONC.
+##' @param rename For the $INPUT text proposal only. If you want to
+##'     rename columns in NONMEM $DATA, NMwriteData can adjust the
+##'     suggested $DATA text. If you plan to use BBW instead of BWBASE
+##'     in Nonmem, consider nm.rename=c(BBW="BWBASE"). The result will
+##'     include BBW and not BWBASE.
+##' @param drop Only used for generation of proposed text for INPUT
+##'     section. Columns to drop in Nonmem $INPUT. This has two
+##'     implications. One is that the proposed $INPUT indicates =DROP
+##'     after the given column names. The other that in case it is a
+##'     non-numeric column, succeeding columns will still be included
+##'     in $INPUT and can be read by NONMEM.
+##' @param capitalize For the $INPUT text proposal only. If TRUE, all
+##'     column names in $INPUT text will be converted to capital
+##'     letters.
+##' @param allow.char.TIME For the $INPUT text proposal only. Assume
+##'     Nonmem can read TIME even if it can't be translated to
+##'     numeric. This is necessary if using the 00:00 format. Default
+##'     is TRUE.
+##' @return Text for inclusion in Nonmem control stream, invisibly.
+##' @family Nonmem
+##' @export
 
-## ok has to be data.table
-
-## OK quiet has to be taken from defaults
-
-## test if a pseudonym was used. Give warning or msg if not
-
-## how do I control quiet from NMwriteData? Same as for NMwriteData I guess
 
 NMgenText <- function(data,
                       drop,
@@ -21,7 +54,14 @@ NMgenText <- function(data,
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####    
     occ.cum <- NULL
-
+    TIME <- NULL
+    name.nm <- NULL
+    drop.nm <- NULL
+    name.pseudo <- NULL
+    name.rename <- NULL
+    include <- NULL
+    numeric.ok <- NULL
+    
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
     
@@ -154,7 +194,7 @@ NMgenText <- function(data,
     )
 
     if(!quiet){
-        message("For NonMem:\n",
+        message("For NONMEM:\n",
                 paste(text.nm,collapse="\n"))
     }
 

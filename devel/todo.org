@@ -105,6 +105,9 @@ https://doi.org/10.1208/s12248-012-9387-9
     Risk now is that arguments are set to NULL
     Export to parent. Not sure check allows though...
 ** Function improvements
+*** NMgenText
+**** TODO [#B] checks: duplicate column names
+**** TODO [#B]  test if a pseudonym was used. Give warning or msg if not
 *** findCovs
 **** TODO soft
 *** compareCols
