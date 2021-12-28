@@ -104,7 +104,7 @@
 ##' @export
 
 
-NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,na.strings,return.summary=FALSE,quiet=FALSE,as.fun){
+NMcheckData <- function(data,file,covs,covs.occ,vars.num,col.id="ID",col.time="TIME",col.flagn,col.row,na.strings,return.summary=FALSE,quiet=FALSE,as.fun){
 
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -150,14 +150,20 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
     }
     
     if(!is.data.frame(data)) stop("Data must be inheriting from data.frame (meaning that more advanced classes like data.table and tibble are OK.")
+    data <- copy(as.data.table(data))
+    ## for reference as data is edited
+    cnames.data.0 <- colnames(data)
     
-    if(!col.id %in%colnames(data)) {stop("col.id must point to an existing column in data. If you don't have one, you can create a dummy column with a constant value.")}
+    if(!col.id %in%cnames.data.0) {stop("col.id must point to an existing column in data. If you don't have one, you can create a dummy column with a constant value.")}
 
 ### Section end: Checks of arguments
 
 
     
 #### Section start: Default parameter values ####
+    if(missing(covs)) covs <- NULL
+    if(missing(covs.occ)) covs.occ <- NULL
+    if(missing(vars.num)) vars.num <- NULL
     if(missing(na.strings)) na.strings <- "."
     if(missing(col.row)) {
         col.row <- NULL
@@ -174,9 +180,9 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
     
 ### Section end: Default parameter values    
 
-    data <- copy(as.data.table(data))
 
-    ### row counter
+
+### row counter
     c.row <- tmpcol(data,base="row",prefer.plain=TRUE)
     data[,(c.row):=.I]
 
@@ -260,6 +266,7 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
     are.cols.num <- sapply(data,NMisNumeric,na.strings=na.strings)
     cnames.num <- colnames(data)[are.cols.num]
     cnames.spchars <- cnames.num[grep("[[:punct:]]",cnames.num)]
+    cnames.spchars <- setdiff(cnames.spchars,c("id.orig","row.orig"))
     if(length(cnames.spchars)>0){
         findings <- rbind(findings,
                           data.table(check="Special character in column name",column=cnames.spchars,row=NA_integer_,level="column"))
@@ -351,30 +358,42 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
     
 ### Others that: If column present, must be numeric, and values must be non-NA. Remember eg DV, CMT and AMT can be NA.
     cols.num.if.avail <- c(col.time,"EVID","ID","MDV")
-    for(col in cols.num.if.avail){
-        if(!is.null(col)&&col%in%colnames(data)){
-            cols.num <- c(cols.num,col)
-        } else {
-            findings <- rbind(findings,
-                              data.table(check="Column not found",column=col,level="column"),
-                              fill=TRUE)
-        }
-    }
+    ## ### this should not be necessary. listEvents should do it automatically if not finding the columns.
+    ##     for(col in cols.num.if.avail){
+    ##         if(!is.null(col)&&col%in%colnames(data)){
+    ##             cols.num <- c(cols.num,col)
+    ##         } else {
+    ##             findings <- rbind(findings,
+    ##                               data.table(check="Column not found",column=col,level="column"),
+    ##                               fill=TRUE)
+    ##         }
+    ##     }
 
+    cols.num <- c( cols.num.if.avail,vars.num,covs,names(covs.occ),as.character(unlist(covs.occ)))
+    
 ### check for missing in cols.num
-    newfinds <- rbindlist( lapply(cols.num,listEvents,name="is NA",fun=is.na,invert=TRUE,new.rows.only=T,debug=FALSE) )
-    findings <- rbind(findings,
-                      newfinds
-                     ,fill=TRUE)
+    
+    for(col in cols.num){
+        findings <- listEvents(col,name="is NA",fun=is.na,invert=TRUE,new.rows.only=T,debug=FALSE,events=findings) 
+        findings <- listEvents(col,name="Not numeric",
+                               fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+                               new.rows.only=TRUE,events=findings)
+    }
+    
+    ##     newfinds <- rbindlist( lapply(cols.num,listEvents,name="is NA",fun=is.na,invert=TRUE,new.rows.only=T,debug=FALSE,events=findings) )
+    ##     findings <- rbind(findings,
+    ##                       newfinds
+    ##                      ,fill=TRUE)
+    
 
-### check for  non-numeric in cols.num
-    newfinds <- rbindlist( lapply(cols.num,listEvents,name="Not numeric",
-                                  fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
-                                  new.rows.only=T)
-                          )
-    findings <- rbind(findings,
-                      newfinds
-                     ,fill=TRUE)
+    ## ### check for  non-numeric in cols.num
+    ##     newfinds <- rbindlist( lapply(cols.num,listEvents,name="Not numeric",
+    ##                                   fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+    ##                                   new.rows.only=T)
+    ##                           )
+    ##     findings <- rbind(findings,
+    ##                       newfinds
+    ##                      ,fill=TRUE)
 
 
 ###### checks on cols.num before converting to numeric
@@ -387,7 +406,8 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
                                fun=function(x)grepl("^0.+",x),invert=T,
                                events=findings,debug=FALSE)
     }
-    
+
+    cols.num <- intersect(cols.num,cnames.data.0)
 ##### Done checking required columns for NMisNumeric. overwrite cols.num with NMasNumeric of cols.num.
     data[,(cols.num):=lapply(.SD,NMasNumeric),.SDcols=cols.num]
 
@@ -487,13 +507,13 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
                            fun=function(x)x==-2|x>=0,events=findings,
                            col.required=FALSE,
                            dat=data[EVID%in%c(1,4)])        
-        
+    
     ## SS 0 or 1
     findings <- listEvents("SS","must be 0 or 1",
                            col.required=FALSE,
                            fun=function(x)x%in%c(0,1),events=findings
                            )
-        
+    
     
 
     if("ADDL"%in%colnames(data)){
@@ -572,6 +592,71 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
                              ,fill=TRUE)
         }
     }
+
+
+##### Section start: Covariates ####
+
+### Other numeric variable
+    ##     cols.num <- c(cols.num,covs,names(covs.occ),as.character(unlist(covs.occ)))
+    ##     ## checking for existence, non-na, numeric
+    ##     lapply(cols.num,listEvents)
+
+    ##     newfinds <- rbindlist( lapply(cols.num,listEvents,name="is NA",fun=is.na,invert=TRUE,new.rows.only=T,debug=FALSE) )
+    ##     findings <- rbind(findings,
+    ##                       newfinds
+    ##                      ,fill=TRUE)
+
+    ## ### check for  non-numeric in cols.num
+    ##     newfinds <- rbindlist( lapply(cols.num,listEvents,name="Not numeric",
+    ##                                   fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+    ##                                   new.rows.only=T)
+    ##                           )
+    ##     findings <- rbind(findings,
+    ##                       newfinds
+    ##                      ,fill=TRUE)
+
+    
+    
+### Subject-level
+    list.findings.covs <- lapply(covs,function(cov){
+        ncomb.cov <- unique(data[,c(col.id,cov),with=FALSE])[,.N,by=c(col.id)]
+        non.covs <- ncomb.cov[N>1,c(col.id),with=FALSE]
+        non.covs[,`:=`(column=cov,check="Cov not unique within ID",level="ID")]
+        non.covs        
+    })
+    if(length(list.findings.covs)>0){
+        findings <- rbind(findings,rbindlist(list.findings.covs),fill=TRUE)
+    }
+    
+
+### Occasion-level
+    
+    ##     list(PERIOD=c("FED"))
+    all.occ.covs <- rbindlist(lapply(names(covs.occ),function(occ)data.table(occ=occ,cov=covs.occ[[occ]])))
+    all.occ.covs[,ROW:=.I]
+    if(nrow(all.occ.covs)>0){
+        findings.occ <- all.occ.covs[,{
+            obs.cov <- data[,c(col.id,occ,cov),with=F]
+            ncomb.cov <- unique(obs.cov)[,.N,by=c(col.id,occ)]
+            ncomb.cov <- ncomb.cov[N>1,c(col.id),with=FALSE]
+            ncomb.cov[,`:=`(column=paste(occ,cov,sep=", "),level="ID-occasion",check="Cov not unique within ID-occ")]
+            ncomb.cov
+        },by=.(ROW)]
+        
+                                        # findings.occ <- rbindlist(list.findings.occ)
+        findings.occ[,ROW:=NULL]
+        if(length(findings.occ)>0){
+            findings <- rbind(findings,findings.occ,fill=TRUE)
+        }    
+    }
+    
+
+    
+### Section end: Covariates
+
+
+
+
     
 ### Add ID's to row-level findings
     findings.row <- findings[level=="row"]
@@ -581,7 +666,7 @@ NMcheckData <- function(data,file,col.id="ID",col.time="TIME",col.flagn,col.row,
         findings.row <- mergeCheck(findings.row,data[,c(c.row,col.id.orig),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop)
         setnames(findings.row,col.id.orig,col.id)        
         findings <- rbind(findings[level!="row"],findings.row,fill=T)
-       
+        
     }
 
     

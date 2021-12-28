@@ -109,7 +109,7 @@ test_that("missing ID",{
     expect_error( NMcheckData(pk))
 })
 
-test_that("missing ID",{
+test_that("missing MDV",{
     fileRef <- "testReference/NMcheckData_7.rds"
     
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
@@ -117,16 +117,9 @@ test_that("missing ID",{
 
     res <- NMcheckData(pk)
     expect_equal_to_reference(res,fileRef,version=2)
-##         expect_equal(as.data.table(res)[level=="row"],as.data.table(readRDS(fileRef))[level=="row"])
+    ##         expect_equal(as.data.table(res)[level=="row"],as.data.table(readRDS(fileRef))[level=="row"])
 })
 
-test_that("missing ID",{
-    
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
-    pk[,ID:=NULL]
-
-    expect_error( NMcheckData(pk))
-})
 
 test_that("With ADDL, no II",{
     fileRef <- "testReference/NMcheckData_8.rds"
@@ -156,9 +149,9 @@ test_that("Using control stream file",{
 
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
     
-    res1 <- NMcheckData(file=file.lst)
+    res <- NMcheckData(file=file.lst)
 
-    res1 <- fix.time(res1,meta=F)
+    res <- fix.time(res,meta=F)
     expect_equal_to_reference(res1,fileRef)
 
 
@@ -170,8 +163,8 @@ test_that("Using control stream file",{
 })
 
 
-### ID and row with leading 0
-test_that("basic",{
+
+test_that("ID and row with leading 0",{
     
     NMdataConf(reset=T)
     NMdataConf(as.fun="data.table")
@@ -189,3 +182,42 @@ test_that("basic",{
     ## res
     expect_equal_to_reference(res,fileRef,version=2)
 })
+
+
+
+######### Covariates
+test_that("One covariate varying within ID",{
+    
+    NMdataConf(reset=T)
+    NMdataConf(as.fun="data.table")
+    
+    fileRef <- "testReference/NMcheckData_12.rds"
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))    
+
+    pk[1500,WEIGHTB:=30]  
+    res <- NMcheckData(pk,covs=c("trtact","WEIGHTB","CYCLE","DOSE"))
+    ## res
+    expect_equal_to_reference(res,fileRef,version=2)
+})
+
+
+test_that("One covariate varying within ID",{
+    NMdataConf(reset=T)
+    
+    fileRef <- "testReference/NMcheckData_13.rds"
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk[,FED:=0]
+    pk[ID>170,`:=`(PERIOD=1)]
+    pk.fed <- pk[ID>170][,`:=`(TIME=TIME+240,PERIOD=2,FED=1,DV=DV*.79)]
+    ## an error
+    pk.fed[ID==180&TIME>242&TIME<250,FED:=0]
+    pk2 <- rbind(pk,
+                 pk.fed)
+    pk2[,ROW:=.I]
+
+    res <- NMcheckData(pk2,covs.occ=list(PERIOD=c("FED")),vars.num="REE")
+    expect_equal_to_reference(res,fileRef,version=2)
+
+})
+
+##

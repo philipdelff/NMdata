@@ -5,7 +5,11 @@
   data. See the man page of NMcheckData for a complete list of the
   checks that are done. The function does not modify data in any way,
   and it is a very simple and easy step to avoid many problems in
-  Nonmem.
+  Nonmem. NMcheckData can check a data object in R, and it can also
+  check how a control stream reads data and then do all the
+  checks. The latter provides an extensive check of potential issues
+  related to data and getting it into NONMEM. Great for both deugging
+  and QC.
 
 * NMwriteSection has been updated with a few very useful
   features. Namely these are related to updating multiple nonmem files
@@ -25,6 +29,12 @@
   subset of data to run flagsAssign on, and it will by default check
   for whether values of EVID are unique. This is similar to what
   flagsCount does.
+
+* NMgenText is a new function that provides the generation of $INPUT
+  and $DATA. This used to be part of NMwriteData. NMwriteData still
+  calls NMgenText but the separation of the two functionalities allows
+  for more inituitive separate uses of one dataset for different
+  models. 
 
 * NMextractDataFile is a function that identifies the input datafile
   used by a Nonmem model. It reports the string as in the Nonmem
