@@ -17,7 +17,7 @@ test_that("basic",{
 
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 
-    res1 <- NMwriteData(pk,file=system.file("examples/data/xgxr1.csv",package="NMdata"),
+    res1 <- NMwriteData(pk,file="testOutput/NMwriteData1.csv",
                         write.rds=F,write.csv=F,nmdir.data="/example")
     res1 <- fix.input(res1)
     ## lapply(res1,print)
