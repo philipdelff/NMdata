@@ -149,16 +149,16 @@ test_that("Using control stream file",{
 
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
     
-    res <- NMcheckData(file=file.lst)
+    res1a <- NMcheckData(file=file.lst)
 
-    res <- fix.time(res,meta=F)
-    expect_equal_to_reference(res1,fileRef)
+    res1a <- fix.time(res1a,meta=F)
+    expect_equal_to_reference(res1a,fileRef)
 
 
     res1b <- NMcheckData(file=file.lst)
     res1b <- fix.time(res1b,meta=F)
 
-    expect_equal(res1,res1b)
+    expect_equal(res1a,res1b)
 
 })
 
@@ -215,7 +215,7 @@ test_that("One covariate varying within ID",{
                  pk.fed)
     pk2[,ROW:=.I]
 
-    res <- NMcheckData(pk2,covs.occ=list(PERIOD=c("FED")),vars.num="REE")
+    res <- NMcheckData(pk2,covs.occ=list(PERIOD=c("FED")),cols.num="REE")
     expect_equal_to_reference(res,fileRef,version=2)
 
 })

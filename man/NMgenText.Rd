@@ -8,51 +8,64 @@ control streams.}
 NMgenText(
   data,
   drop,
-  dir.data,
   col.flagn = "FLAG",
   rename,
-  pseudo,
+  copy,
   file,
+  dir.data,
   capitalize = FALSE,
   allow.char.TIME = TRUE,
   quiet
 )
 }
 \arguments{
-\item{allow.char.TIME}{For the $DATA text proposal only. Assume
+\item{data}{The data that NONMEM will read.}
+
+\item{drop}{Only used for generation of proposed text for INPUT
+section. Columns to drop in Nonmem $INPUT. This has two
+implications. One is that the proposed $INPUT indicates =DROP
+after the given column names. The other that in case it is a
+non-numeric column, succeeding columns will still be included
+in $INPUT and can be read by NONMEM.}
+
+\item{col.flagn}{Name of a numeric column with zero value for rows
+to include in Nonmem run, non-zero for rows to skip. The
+argument is only used for generating the proposed $DATA text
+to paste into the Nonmem control stream. To skip this feature,
+use col.flagn=NULL. Default is defined by NMdataConf.}
+
+\item{rename}{For the $INPUT text proposal only. If you want to
+rename columns in NONMEM $DATA, NMwriteData can adjust the
+suggested $DATA text. If you plan to use BBW instead of BWBASE
+in Nonmem, consider nm.rename=c(BBW="BWBASE"). The result will
+include BBW and not BWBASE.}
+
+\item{copy}{For the $INPUT text proposal only. If you plan to
+use additional names for columns in Nonmem $INPUT, NMwriteData
+can adjust the suggested $INPUT text. Say you plan to use CONC
+as DV in Nonmem, use rename=c(DV="CONC"),
+i.e. rename=c(newname="existing"). INPUT suggestion will in
+this case contain DV=CONC.}
+
+\item{file}{The file name NONMEM will read the data from (for the
+$DATA section). It can be a full path.}
+
+\item{dir.data}{For the $DATA text proposal only. The path to the
+input datafile to be used in the Nonmem $DATA section. Often,
+a relative path to the actual Nonmem run is wanted here. If
+this is used, only the file name and not the path from the
+file argument is used.}
+
+\item{capitalize}{For the $INPUT text proposal only. If TRUE, all
+column names in $INPUT text will be converted to capital
+letters.}
+
+\item{allow.char.TIME}{For the $INPUT text proposal only. Assume
 Nonmem can read TIME even if it can't be translated to
 numeric. This is necessary if using the 00:00 format. Default
 is TRUE.}
 
-\item{nmdir.data}{Deprecated, use
-args.NMgenText=list(dir.data="your/path") instead. For the
-$DATA text proposal only. The path to the input datafile to be
-used in the Nonmem $DATA section. Often, a relative path to
-the actual Nonmem run is wanted here.}
-
-\item{nm.copy}{For the $DATA text proposal only. If you plan to
-rename columns in Nonmem $DATA, NMwriteData can adjust the
-suggested $DATA text. If you plan to use CONC as DV in Nonmem,
-you can include nm.rename=c(DV="CONC").}
-
-\item{nm.rename}{For the $DATA text proposal only. If you plan to
-rename columns in Nonmem $DATA, NMwriteData can adjust the
-suggested $DATA text. If you plan to use BBW instead of BWBASE
-in Nonmem, consider nm.rename=c(BWBASE="BBW"). The result is
-different from nm.copy since the nm.copy syntax is only
-allowed by Nonmem for certain standard column names such as
-DV.}
-
-\item{nm.drop}{Only used for generation of proposed text for
-Nonmem control stream. Columns to drop in Nonmem $DATA. This
-has two implications. One is that the proposed $DATA indicates
-=DROP after the given column names. The other that in case it
-is a non-numeric column, succeeding columns can still be
-included.}
-
-\item{nm.capitalize}{For the $DATA text proposal only. If TRUE,
-the suggested text for Nonmem will only contain capital
-letters in column names.}
+\item{quiet}{Hold messages back? Default is defined by NMdataConf.}
 }
 \value{
 Text for inclusion in Nonmem control stream, invisibly.

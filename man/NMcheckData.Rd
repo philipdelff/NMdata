@@ -7,6 +7,9 @@
 NMcheckData(
   data,
   file,
+  covs,
+  covs.occ,
+  cols.num,
   col.id = "ID",
   col.time = "TIME",
   col.flagn,
@@ -29,6 +32,20 @@ in data against control stream (see NMcheckColnames), reads
 the data as NONMEM would do, and do the same checks on the
 data as NMdataCheck would do using the data argument. The file
 argument is useful for debugging a Nonmem model.}
+
+\item{covs}{columns that contain subject-level covariates. They
+are expected to be non-missing, numeric and not varying within
+subjects.}
+
+\item{covs.occ}{A list specifying columns that contain
+subject:occasion-level covariates. They are expected to be
+non-missing, numeric and not varying within combinations of
+subject and occasion. covs.occ=list(PERIOD=c("FED")) means
+that FED is the covariate, while PERIOD indicates the
+occasion.}
+
+\item{cols.num}{Columns that are expected to be present, numeric
+and non-NA.}
 
 \item{col.id}{The name of the column that holds the subject
 identifier. Default is "ID".}
@@ -71,7 +88,9 @@ but because they are typical dataset issues.
 The following checks are performed. The term "numeric"
     does not refer to a numeric representation in R, but
     compatibility with Nonmem. The character string "2" is in this
-    sense a valid numeric, "id2" is not.  \itemize{ \item Column
+    sense a valid numeric, "id2" is not.  \itemize{
+
+\item Column
     names must be unique and not contain special characters
 
 \item If an exclusion flag is used (for ACCEPT/IGNORE in Nonmem),
@@ -128,5 +147,17 @@ records. ADDL must be present.
     non-missing, increasing, integer
 
 \item Character values must not contain commas (they will mess up
-    writing/reading csv) }
+    writing/reading csv)
+
+\item Columns specified in covs argument must be non-missing,
+    numeric and not varying within subjects.
+
+\item Columns specified in covs.occ must be
+    non-missing, numeric and not varying within combinations of
+    subject and occasion.
+
+\item Columns specified in cols.num must be present, numeric
+    and non-NA.
+
+}
 }

@@ -14,6 +14,17 @@
 ##'     the data as NONMEM would do, and do the same checks on the
 ##'     data as NMdataCheck would do using the data argument. The file
 ##'     argument is useful for debugging a Nonmem model.
+##' @param covs columns that contain subject-level covariates. They
+##'     are expected to be non-missing, numeric and not varying within
+##'     subjects.
+##' @param covs.occ A list specifying columns that contain
+##'     subject:occasion-level covariates. They are expected to be
+##'     non-missing, numeric and not varying within combinations of
+##'     subject and occasion. covs.occ=list(PERIOD=c("FED")) means
+##'     that FED is the covariate, while PERIOD indicates the
+##'     occasion.
+##' @param cols.num Columns that are expected to be present, numeric
+##'     and non-NA.
 ##' @param col.id The name of the column that holds the subject
 ##'     identifier. Default is "ID".
 ##' @param col.time The name of the column holding actual time.
@@ -41,7 +52,9 @@
 ##' @details The following checks are performed. The term "numeric"
 ##'     does not refer to a numeric representation in R, but
 ##'     compatibility with Nonmem. The character string "2" is in this
-##'     sense a valid numeric, "id2" is not.  \itemize{ \item Column
+##'     sense a valid numeric, "id2" is not.  \itemize{
+##'
+##' \item Column
 ##'     names must be unique and not contain special characters
 ##' 
 ##' \item If an exclusion flag is used (for ACCEPT/IGNORE in Nonmem),
@@ -98,49 +111,112 @@
 ##'     non-missing, increasing, integer
 ##'
 ##' \item Character values must not contain commas (they will mess up
-##'     writing/reading csv) }
+##'     writing/reading csv)
+##'
+##' \item Columns specified in covs argument must be non-missing,
+##'     numeric and not varying within subjects.
+##' 
+##' \item Columns specified in covs.occ must be
+##'     non-missing, numeric and not varying within combinations of
+##'     subject and occasion.
+##'
+##' \item Columns specified in cols.num must be present, numeric
+##'     and non-NA.
+##'
+##' }
+##'
+##'
 ##' 
 ##' @import data.table
 ##' @export
 
 
-NMcheckData <- function(data,file,covs,covs.occ,vars.num,col.id="ID",col.time="TIME",col.flagn,col.row,na.strings,return.summary=FALSE,quiet=FALSE,as.fun){
+NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="TIME",col.flagn,col.row,na.strings,return.summary=FALSE,quiet=FALSE,as.fun){
 
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     . <- NULL
-    variable <- NULL
-    N <- NULL
-    EVID <- NULL
-    CMT <- NULL
-    MDVDV <- NULL
-    MDV <- NULL
-    DV <- NULL
-    ID.jump <- NULL
-    newID <- NULL
-    ID <- NULL
-    isnewID <- NULL
-    reset <- NULL
-    checkTimeInc <- NULL
-    Nrep <- NULL
-    level <- NULL
-    column <- NULL
-    check <- NULL
     ADDL <- NULL
     AMT <- NULL
+    CMT <- NULL
+    DV <- NULL
+    EVID <- NULL
+    ID.jump <- NULL
+    ID <- NULL
     II <- NULL
+    MDVDV <- NULL
+    MDV <- NULL
+    N <- NULL
+    Nrep <- NULL
     RATE <- NULL
+    ROW <- NULL
     SS <- NULL
-
+    column <- NULL
+    check <- NULL
+    checkTimeInc <- NULL
+    cov <- NULL
+    newID <- NULL
+    isnewID <- NULL
+    level <- NULL
+    occ <- NULL
+    reset <- NULL
+    variable <- NULL
+    
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
 
 #### Section start: Checks of arguments ####
 
 
+    if(missing(covs)) covs <- NULL
+    if(missing(covs.occ)) covs.occ <- NULL
+    if(missing(cols.num)) cols.num <- NULL
+    if(missing(na.strings)) na.strings <- "."
+    if(missing(col.row)) {
+        col.row <- NULL
+    }
+    col.row <- NMdataDecideOption("col.row",col.row)
+    if(missing(as.fun)) as.fun <- NULL
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    if(missing(col.flagn)) col.flagn <- NULL
+    col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
+    if(missing(file)) file <- NULL
+
+    if(!is.null(covs) && !is.character(covs)) {
+        messageWrap("covs must be a character vector or a string.",fun.msg=stop)
+    }
+    if(!is.null(cols.num) && !is.character(cols.num)) {
+        messageWrap("cols.num must be a character vector or a string.",fun.msg=stop)
+    }
+    if(!is.null(covs.occ)){
+        if(!is.null(covs.occ)) {
+            if( !is.list(covs.occ) || is.data.frame(covs.occ)) {
+                messageWrap("covs.occ must be a list and not a data.frame.",fun.msg=stop)
+            }
+            if(is.null(names(covs.occ)) || ""%in%gsub(" ","",names(covs.occ))){
+                messageWrap("covs.occ must be a named list.",fun.msg=stop)
+            }
+            if(!(all(sapply(covs.occ,is.character)))){
+                messageWrap("covs.occ must be a named list of character vectors or strings.",fun.msg=stop)
+            }
+        }
+    }
+    
+
+    
+    if(is.null(file)){
+        if(!is.data.frame(data)) stop("Data must be inheriting from data.frame (meaning that more advanced classes like data.table and tibble are OK.")
+        data <- copy(as.data.table(data))
+        ## for reference as data is edited
+        cnames.data.0 <- colnames(data)
+        
+        if(!col.id %in%cnames.data.0) {stop("col.id must point to an existing column in data. If you don't have one, you can create a dummy column with a constant value.")}
+
+    }
+
 ### file mode?
-    if(!missing(file)){
+    if(!is.null(file)){
         col.id <- "ID"
         use.rds <- FALSE
         quiet <- FALSE
@@ -149,37 +225,11 @@ NMcheckData <- function(data,file,covs,covs.occ,vars.num,col.id="ID",col.time="T
         return(invisible(res))
     }
     
-    if(!is.data.frame(data)) stop("Data must be inheriting from data.frame (meaning that more advanced classes like data.table and tibble are OK.")
-    data <- copy(as.data.table(data))
-    ## for reference as data is edited
-    cnames.data.0 <- colnames(data)
-    
-    if(!col.id %in%cnames.data.0) {stop("col.id must point to an existing column in data. If you don't have one, you can create a dummy column with a constant value.")}
 
 ### Section end: Checks of arguments
 
 
     
-#### Section start: Default parameter values ####
-    if(missing(covs)) covs <- NULL
-    if(missing(covs.occ)) covs.occ <- NULL
-    if(missing(vars.num)) vars.num <- NULL
-    if(missing(na.strings)) na.strings <- "."
-    if(missing(col.row)) {
-        col.row <- NULL
-    }
-    col.row <- NMdataDecideOption("col.row",col.row)
-    if(missing(as.fun)) as.fun <- NULL
-    as.fun <- NMdataDecideOption("as.fun",as.fun)
-    ## if(!missing(col.flagn)&&is.null(col.flagn)) {
-    ##     col.flagn <- NULL
-    ## } else {
-    if(missing(col.flagn)) col.flagn <- NULL
-    col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
-    ##     }
-    
-### Section end: Default parameter values    
-
 
 
 ### row counter
@@ -354,49 +404,20 @@ NMcheckData <- function(data,file,covs,covs.occ,vars.num,col.id="ID",col.time="T
 
     
 ######## Default numeric columns. Will be checked for presence, NA, non-numeric (col-level)
-    cols.num <- c()
-    
 ### Others that: If column present, must be numeric, and values must be non-NA. Remember eg DV, CMT and AMT can be NA.
-    cols.num.if.avail <- c(col.time,"EVID","ID","MDV")
-    ## ### this should not be necessary. listEvents should do it automatically if not finding the columns.
-    ##     for(col in cols.num.if.avail){
-    ##         if(!is.null(col)&&col%in%colnames(data)){
-    ##             cols.num <- c(cols.num,col)
-    ##         } else {
-    ##             findings <- rbind(findings,
-    ##                               data.table(check="Column not found",column=col,level="column"),
-    ##                               fill=TRUE)
-    ##         }
-    ##     }
-
-    cols.num <- c( cols.num.if.avail,vars.num,covs,names(covs.occ),as.character(unlist(covs.occ)))
+    cols.num.all <- c( col.time,"EVID","ID","MDV",
+                      cols.num,covs,names(covs.occ),as.character(unlist(covs.occ)))
     
-### check for missing in cols.num
+### check for missing in cols.num.all
     
-    for(col in cols.num){
+    for(col in cols.num.all){
         findings <- listEvents(col,name="is NA",fun=is.na,invert=TRUE,new.rows.only=T,debug=FALSE,events=findings) 
         findings <- listEvents(col,name="Not numeric",
                                fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
                                new.rows.only=TRUE,events=findings)
     }
     
-    ##     newfinds <- rbindlist( lapply(cols.num,listEvents,name="is NA",fun=is.na,invert=TRUE,new.rows.only=T,debug=FALSE,events=findings) )
-    ##     findings <- rbind(findings,
-    ##                       newfinds
-    ##                      ,fill=TRUE)
-    
-
-    ## ### check for  non-numeric in cols.num
-    ##     newfinds <- rbindlist( lapply(cols.num,listEvents,name="Not numeric",
-    ##                                   fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
-    ##                                   new.rows.only=T)
-    ##                           )
-    ##     findings <- rbind(findings,
-    ##                       newfinds
-    ##                      ,fill=TRUE)
-
-
-###### checks on cols.num before converting to numeric
+###### checks on cols.num.all before converting to numeric
 ### if col.row or ID are characters, they must not have leading zeros.
     ## Check ID for leading zeros before converting to numeric
     
@@ -407,9 +428,9 @@ NMcheckData <- function(data,file,covs,covs.occ,vars.num,col.id="ID",col.time="T
                                events=findings,debug=FALSE)
     }
 
-    cols.num <- intersect(cols.num,cnames.data.0)
-##### Done checking required columns for NMisNumeric. overwrite cols.num with NMasNumeric of cols.num.
-    data[,(cols.num):=lapply(.SD,NMasNumeric),.SDcols=cols.num]
+    cols.num.all <- intersect(cols.num.all,cnames.data.0)
+##### Done checking required columns for NMisNumeric. overwrite cols.num.all with NMasNumeric of cols.num.all.
+    data[,(cols.num.all):=lapply(.SD,NMasNumeric),.SDcols=cols.num.all]
 
     
 ### col.time must be positive
@@ -596,26 +617,6 @@ NMcheckData <- function(data,file,covs,covs.occ,vars.num,col.id="ID",col.time="T
 
 ##### Section start: Covariates ####
 
-### Other numeric variable
-    ##     cols.num <- c(cols.num,covs,names(covs.occ),as.character(unlist(covs.occ)))
-    ##     ## checking for existence, non-na, numeric
-    ##     lapply(cols.num,listEvents)
-
-    ##     newfinds <- rbindlist( lapply(cols.num,listEvents,name="is NA",fun=is.na,invert=TRUE,new.rows.only=T,debug=FALSE) )
-    ##     findings <- rbind(findings,
-    ##                       newfinds
-    ##                      ,fill=TRUE)
-
-    ## ### check for  non-numeric in cols.num
-    ##     newfinds <- rbindlist( lapply(cols.num,listEvents,name="Not numeric",
-    ##                                   fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
-    ##                                   new.rows.only=T)
-    ##                           )
-    ##     findings <- rbind(findings,
-    ##                       newfinds
-    ##                      ,fill=TRUE)
-
-    
     
 ### Subject-level
     list.findings.covs <- lapply(covs,function(cov){
@@ -631,7 +632,7 @@ NMcheckData <- function(data,file,covs,covs.occ,vars.num,col.id="ID",col.time="T
 
 ### Occasion-level
     
-    ##     list(PERIOD=c("FED"))
+    ##  syntax:   covs.occ=list(PERIOD=c("FED"))
     all.occ.covs <- rbindlist(lapply(names(covs.occ),function(occ)data.table(occ=occ,cov=covs.occ[[occ]])))
     all.occ.covs[,ROW:=.I]
     if(nrow(all.occ.covs)>0){

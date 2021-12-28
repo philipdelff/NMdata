@@ -27,7 +27,7 @@
 ##' @param args.RData A list of arguments to be passed to save.
 ##' @param col.flagn Name of a numeric column with zero value for rows
 ##'     to include in Nonmem run, non-zero for rows to skip. The
-##'     argument is only used for generating the proposed text to
+##'     argument is only used for generating the proposed $DATA text to
 ##'     paste into the Nonmem control stream. To skip this feature,
 ##'     use col.flagn=NULL.
 ##' @param quiet The default is to give some information along the way
@@ -45,7 +45,7 @@
 ##' @param nmdir.data Deprecated, use
 ##'     args.NMgenText=list(dir.data="your/path") instead.
 ##' @param nm.copy Deprecated, use
-##'     args.NMgenText=list(pseudo=c(newname="existing")) instead.
+##'     args.NMgenText=list(copy=c(newname="existing")) instead.
 ##' @param nm.rename Deprecated, use
 ##'     args.NMgenText=list(rename=c(newname="existing")) instead.
 ##' @param nm.drop Deprecated, use
@@ -140,7 +140,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
         names.used.ad[names.used.ad=="nmdir.data"] <- "dir.data"
         ##    names.used.ad[names.used.ad=="col.flagn"] <- "col.flagn"
         names.used.ad[names.used.ad=="nm.rename"] <- "rename"
-        names.used.ad[names.used.ad=="nm.copy"] <- "pseudo"
+        names.used.ad[names.used.ad=="nm.copy"] <- "copy"
         names.used.ad[names.used.ad=="nm.capitalize"] <- "capitalize"
         ##    names.used.ad[names.used.ad=="allow.char.TIME"] <- "allow.char.TIME"
         names(used.args.depr) <- names.used.ad
@@ -272,12 +272,6 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
         }
         
     }
-
-    ## if(missing(nmdir.data)) nmdir.data <- NULL
-    ## if(missing(nm.drop)) nm.drop <- NULL
-    ## if(missing(nm.rename)) nm.rename <- NULL
-    ## if(missing(nm.copy)) nm.copy <- NULL
-
     
     ## NONMEM text
     
@@ -286,17 +280,6 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
                           list(data=data.dt,file=file)
                          ,args.NMgenText)
                       )
-    ## NMtext <- NMgenText(data=data.dt
-    ##                    ,file=file
-    ##                    ,col.flagn=col.flagn
-
-    ##                    ,drop=nm.drop
-    ##                    ,dir.data=nmdir.data
-    ##                    ,rename=nm.rename
-    ##                    ,pseudo=nm.copy
-    ##                    ,capitalize=nm.capitalize
-    ##                    ,allow.char.TIME=allow.char.TIME
-    ##                     )
 
     
     invisible(list(INPUT=NMtext$INPUT,DATA=NMtext$DATA))

@@ -30,7 +30,7 @@ test_that("pseudonyms",{
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 #### wrong
     ## NMgenText(pk,file="data1.csv",pseudo=c(PART="SPART"))
-    res <- NMgenText(pk,file="data1.csv",pseudo=c(SPART="PART"))
+    res <- NMgenText(pk,file="data1.csv",copy=c(SPART="PART"))
 
     expect_equal_to_reference(res,fileRef)
 })

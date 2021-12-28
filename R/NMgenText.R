@@ -8,27 +8,37 @@
 ##' will not be able to read as a numeric and column is not in
 ##' nm.drop, the list is stopped. Only exception is TIME which is not
 ##' tested for whether character or not.
-##' 
-##' @param dir.data For the $DATA text proposal only. The path to the
-##'     input datafile to be used in the Nonmem $DATA section. Often,
-##'     a relative path to the actual Nonmem run is wanted here.
-##' @param pseudo For the $INPUT text proposal only. If you plan to
-##'     use additional names for columns in Nonmem $INPUT, NMwriteData
-##'     can adjust the suggested $INPUT text. Say you plan to use CONC
-##'     as DV in Nonmem, use rename=c(DV="CONC"),
-##'     i.e. rename=c(newname="existing"). INPUT suggestion will in
-##'     this case contain DV=CONC.
-##' @param rename For the $INPUT text proposal only. If you want to
-##'     rename columns in NONMEM $DATA, NMwriteData can adjust the
-##'     suggested $DATA text. If you plan to use BBW instead of BWBASE
-##'     in Nonmem, consider nm.rename=c(BBW="BWBASE"). The result will
-##'     include BBW and not BWBASE.
+##'
+##' @param data The data that NONMEM will read.
 ##' @param drop Only used for generation of proposed text for INPUT
 ##'     section. Columns to drop in Nonmem $INPUT. This has two
 ##'     implications. One is that the proposed $INPUT indicates =DROP
 ##'     after the given column names. The other that in case it is a
 ##'     non-numeric column, succeeding columns will still be included
 ##'     in $INPUT and can be read by NONMEM.
+##' @param col.flagn Name of a numeric column with zero value for rows
+##'     to include in Nonmem run, non-zero for rows to skip. The
+##'     argument is only used for generating the proposed $DATA text
+##'     to paste into the Nonmem control stream. To skip this feature,
+##'     use col.flagn=NULL. Default is defined by NMdataConf.
+##' @param rename For the $INPUT text proposal only. If you want to
+##'     rename columns in NONMEM $DATA, NMwriteData can adjust the
+##'     suggested $DATA text. If you plan to use BBW instead of BWBASE
+##'     in Nonmem, consider nm.rename=c(BBW="BWBASE"). The result will
+##'     include BBW and not BWBASE.
+##' @param copy For the $INPUT text proposal only. If you plan to
+##'     use additional names for columns in Nonmem $INPUT, NMwriteData
+##'     can adjust the suggested $INPUT text. Say you plan to use CONC
+##'     as DV in Nonmem, use rename=c(DV="CONC"),
+##'     i.e. rename=c(newname="existing"). INPUT suggestion will in
+##'     this case contain DV=CONC.
+##' @param file The file name NONMEM will read the data from (for the
+##'     $DATA section). It can be a full path.
+##' @param dir.data For the $DATA text proposal only. The path to the
+##'     input datafile to be used in the Nonmem $DATA section. Often,
+##'     a relative path to the actual Nonmem run is wanted here. If
+##'     this is used, only the file name and not the path from the
+##'     file argument is used.
 ##' @param capitalize For the $INPUT text proposal only. If TRUE, all
 ##'     column names in $INPUT text will be converted to capital
 ##'     letters.
@@ -36,21 +46,21 @@
 ##'     Nonmem can read TIME even if it can't be translated to
 ##'     numeric. This is necessary if using the 00:00 format. Default
 ##'     is TRUE.
+##' @param quiet Hold messages back? Default is defined by NMdataConf.
 ##' @return Text for inclusion in Nonmem control stream, invisibly.
 ##' @family Nonmem
 ##' @export
 
-
 NMgenText <- function(data,
                       drop,
-                      dir.data,
                       col.flagn="FLAG",
-                      rename
-                     ,pseudo,
+                      rename,
+                      copy,
                       file,
-                      capitalize=FALSE
-                     ,allow.char.TIME=TRUE
-                     ,quiet){
+                      dir.data,
+                      capitalize=FALSE,
+                      allow.char.TIME=TRUE,
+                      quiet){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####    
     occ.cum <- NULL
@@ -64,6 +74,11 @@ NMgenText <- function(data,
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
+### we deal with copy first because it interferes with data.table::copy. 
+    if(missing(copy)) copy <- NULL
+    pseudo <- copy
+    rm(copy)
+
     
     if(!is.data.frame(data)) messageWrap("data must be a data.frame",fun.msg=stop)    
     data <- copy(as.data.table(data))
@@ -76,7 +91,7 @@ NMgenText <- function(data,
     if(missing(dir.data)) dir.data <- NULL
     if(missing(drop)) drop <- NULL
     if(missing(rename)) rename <- NULL
-    if(missing(pseudo)) pseudo <- NULL
+    
     if(missing(file)) file <- NULL
 
     if(!is.null(drop) && !is.character(drop) ) {

@@ -76,7 +76,7 @@ args.NMgenText=list(dir.data="your/path") instead.}
 
 \item{col.flagn}{Name of a numeric column with zero value for rows
 to include in Nonmem run, non-zero for rows to skip. The
-argument is only used for generating the proposed text to
+argument is only used for generating the proposed $DATA text to
 paste into the Nonmem control stream. To skip this feature,
 use col.flagn=NULL.}
 
@@ -84,7 +84,7 @@ use col.flagn=NULL.}
 args.NMgenText=list(rename=c(newname="existing")) instead.}
 
 \item{nm.copy}{Deprecated, use
-args.NMgenText=list(pseudo=c(newname="existing")) instead.}
+args.NMgenText=list(copy=c(newname="existing")) instead.}
 
 \item{nm.capitalize}{Deprecated, use
 args.NMgenText=list(capitalize=TRUE) instead.}
