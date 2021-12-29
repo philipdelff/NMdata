@@ -37,15 +37,6 @@ test_that("list.section",{
 })
 
 
-if(F){
-    text["INPUT"]
-    ## with output from NMwriteData
-    NMwriteSection( system.file("examples/nonmem/xgxr011.mod", package = "NMdata"),
-                   list.section=text["INPUT"],newpath=NULL
-                   )
-}
-
-
 
 
 test_that("Dependent on data.file",{
@@ -78,7 +69,7 @@ test_that(".mod does not exist",{
                          ,section=section
                          ,newlines=newlines
                          ,newfile=outfile)
-        expect_equal(res,NULL)
+    expect_equal(res,NULL)
     
 })
 
@@ -89,11 +80,11 @@ test_that("No files matched",{
     section <- "input"
 
     res <- NMwriteSection(dir=system.file("examples/nonmem/", package = "NMdata")
-                  ,file.pattern="gerge"
-                  ,section=section
-                  ,data.file="../data/xgxr2.csv"
-                  ,newlines=newlines
-                   ,newfile=outfile)
+                         ,file.pattern="gerge"
+                         ,section=section
+                         ,data.file="../data/xgxr2.csv"
+                         ,newlines=newlines
+                         ,newfile=outfile)
 
     expect_equal(res,NULL)
 
@@ -115,3 +106,20 @@ test_that("basic - write file",{
     expect_equal_to_reference(res,fileRef,version=2)
 
 })
+
+
+
+test_that("update INPUT based on NMgenText",{
+    fileRef <- "testReference/NMwriteSection_5.rds"
+
+    text.nm <- NMgenText(NMreadCsv("testData/data/xgxr2.csv"),capitalize = T)
+    res <- NMwriteSection("testData/nonmem/xgxr011.mod",
+                          list.section=text.nm["INPUT"],newfile=NULL
+                          )
+
+    ##input.new
+    input.new <- NMreadSection(lines=res,section="input")
+        
+    expect_equal_to_reference(input.new,fileRef)
+})
+

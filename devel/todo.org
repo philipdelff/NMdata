@@ -366,6 +366,13 @@ arguments. NMdata calls this "writtenTo".
 ****** Number of columns has 0-2 extra columns
 ** Tests and documentation
 *** Cheat sheet
+**** Outline
+***** Intro
+***** Data preparation
+***** Finalize and write for NONMEM
+***** Read and combine input and output data
+***** Debug
+***** Traceability
 **** TODO Flag example
 *** Tests
 **** DONE Test NMdataConf(file.mod=identity)

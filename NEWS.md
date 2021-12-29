@@ -35,6 +35,10 @@
   calls NMgenText but the separation of the two functionalities allows
   for more inituitive separate uses of one dataset for different
   models. 
+  
+* NMcompareCols now takes the argument "cols.wanted" which is a
+  character vector of column names of special interest. Helpful when
+  building a data set with specific column names in mind.
 
 * NMextractDataFile is a function that identifies the input datafile
   used by a Nonmem model. It reports the string as in the Nonmem
@@ -47,6 +51,9 @@
 
 * NMcheckColumns Change of column name from DATA to INPUT in order to
   match $INPUT in the control streams.
+
+* NMreadSection is now case insensitive in the section specification
+  (i.e. "input" is the same as "INPUT").
 
 ## Bugfixes 
 * In NMwriteData the datafile is now correctly included in the $DATA

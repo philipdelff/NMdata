@@ -12,9 +12,10 @@
 ##'     specific data file.
 ##' @param dir If file.pattern is used, dir is the directory to search
 ##'     in.
-##' @param section The name of the section to update. Example:
-##'     section="EST" to edit the sections starting by $EST. See
-##'     NMreadSection
+##' @param section The name of the section to update without
+##'     "$". Example: section="EST" to edit the sections starting by
+##'     $EST. Section specification is not case-sensitive. See
+##'     ?NMreadSection too.
 ##' @param newlines The new text (including "$SECTION"). Better be
 ##'     broken into lines in a character vector since this is simply
 ##'     past to writeLines.
@@ -36,9 +37,14 @@
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using
 ##'     NMdataConf.
+##' @param simplify If TRUE (default) and only one file is edited, the
+##'     resulting rows are returned directly. If more than one file is
+##'     edited, the result will always be a list with one element per
+##'     file.
 ##' @details The new file will be written with unix-style line
 ##'     endings.
-##' @return The new section text is returned. If write=TRUE, this is done invisibly.
+##' @return The new section text is returned. If write=TRUE, this is
+##'     done invisibly.
 ##' @family Nonmem
 ##' 
 ##' @examples
@@ -49,7 +55,7 @@
 
 
 NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections,newfile,
-                           backup=TRUE,blank.append=TRUE,data.file,write=TRUE,quiet){
+                           backup=TRUE,blank.append=TRUE,data.file,write=TRUE,quiet,simplify=TRUE){
 
 
     
@@ -182,7 +188,7 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections
                                                 sub("(.+/)([^/].+$)","\\1backup_\\2",x=file0)
                                                 )
 
-        if(!write){
+        if(!write||is.null(file)){
             return(newlines)
         }
         
@@ -198,5 +204,7 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections
            list.sections=list.sections,newfile=newfile,
            backup=backup,blank.append=blank.append,write=write)
 
+    if(simplify&&length(res)==1) res <- res[[1]]
+    
     return(invisible(res))
 }
