@@ -136,13 +136,14 @@
 <p><code>NMdata</code> is on <a href="https://cran.r-project.org/" class="external-link">CRAN</a>, <a href="https://mran.microsoft.com/" class="external-link">MRAN</a>, and <a href="https://mpn.metworx.com" class="external-link">MPN</a>. To install from the package archive you are already using, do:</p>
 <pre><code><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"NMdata"</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span></code></pre>
-<p>If your archive has not been updated since July 2021, you may not find <code>NMdata</code> that way. In that case you have two other options. You can explicitly select CRAN for the installation. Or if for some reason you should want a version that has not yet reached CRAN, installing from Github is easy too.</p>
-<pre><code><span class="co">## Install explicitly from CRAN</span>
+<p>If your archive has not been updated since July 2021, you may not find <code>NMdata</code> that way. In that case you have two other options. You can explicitly select CRAN for the installation. Or if you should want a version that has not yet reached CRAN, installing from Github is easy too.</p>
+<pre><code><span class="co">## Option 1: Install explicitly from CRAN</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"NMdata"</span>,repos<span class="op">=</span><span class="st">"https://cloud.r-project.org"</span><span class="op">)</span>
-<span class="co">## Install from github</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span>
+
+<span class="co">## Option 2: Install from github</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span>
 <span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"philipdelff/NMdata"</span><span class="op">)</span>
-
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span></code></pre>
 <p>If you use the Github version, you may want to see the <a href="https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html">FAQ</a> for how to install specific releases from Github (ensuring reproducibility).</p>
 </div>
