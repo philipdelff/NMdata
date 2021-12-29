@@ -61,16 +61,20 @@ install.packages("NMdata")
 library(NMdata)
 ```
 
-If your archive has not been updated since July 2021, you may not find `NMdata` that way. In that case you have two other options. You can explicitly select CRAN for the installation. Or if for some reason you should want a version that has not yet reached
-CRAN, installing from Github is easy too.
+If your archive has not been updated since July 2021, you may not find
+`NMdata` that way. In that case you have two other options. You can
+explicitly select CRAN for the installation. Or if you should want a
+version that has not yet reached CRAN, installing from Github is easy
+too.
 
 ```
-## Install explicitly from CRAN
+## Option 1: Install explicitly from CRAN
 install.packages("NMdata",repos="https://cloud.r-project.org")
-## Install from github
+library(NMdata)
+
+## Option 2: Install from github
 library(remotes)
 install_github("philipdelff/NMdata")
-
 library(NMdata)
 ```
 If you use the Github version, you may want to see the
