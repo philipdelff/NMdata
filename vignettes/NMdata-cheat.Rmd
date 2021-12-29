@@ -27,8 +27,7 @@ justify-content:space-between;
 }
 .column-container__column{
 /* background-color:green; */
-width:calc(33.3% - 10px)
-margin: 12px;
+width:calc(25% - 24px);
 }
 </style>
 
@@ -41,11 +40,12 @@ knitr::opts_chunk$set(
                      ,cache=FALSE
                   )
 library(data.table)
-library(NMdata)
+## library(NMdata)
+library(devtools)
+load_all()
+
 NMdataConf(as.fun="data.table"
            ,check.time=F)
-## library(devtools)
-## load_all()
 
 ## this change data.table syntax. I think we can do without.
 ## knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
@@ -65,7 +65,7 @@ htmltools::img(src = knitr::image_uri(## file.path(R.home("pkgdown"), "favicon",
                                 ## system.file("pkgdown/favicon/apple-touch-icon-152x152.png",package="NMdata")),
                                 "apple-touch-icon-180x180.png"),
                alt = 'logo', 
-               style = 'position:absolute; top:0; right:0; padding:10px;')
+               style = 'position:absolute; top:50px; right:50px; padding:0px; width:150px')
 ```
 
 Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
@@ -134,7 +134,7 @@ pk <- renameByContents(data=pk,
                        invert.test = TRUE)
 ```
 
-`mergeCheck(x1,x2)` - Merge and only accept results if all that happened was that columns were added to `x1`. `by` argument is required.
+`mergeCheck(x1,x2)` - Merge and only accept results if all that happened was that columns were added to `x1`.
 
 `flagsAssign` - Assign exclusion flags to a dataset based on specified table
 
@@ -198,44 +198,19 @@ rm(NMscanData)
 
 `NMinfo` - Get metadata from an NMdata object. This will show where and when input data was created, when model was run, results of concistency checks, what tables were read, how they were combined and a complete list of data columns and their origin.
 
-
 :::
 
+
 ::: {class="column-container__column"}
-### Programming
 
-`cc` - create character vectors without typing quotations unless special characters are used
+### Traceability 
+NMinfo
+
 ```{r}
-cc(A , B, "A-B")
+names(NMinfo(res1.dt))
+NMinfo(res1.dt,"datafile")
+NMinfo(res1.dt,"input.colnames")
 ```
-
-Imagine you want to plot random effects against covariates. `findCovs` and `findVars` are fast functions that extract the columns that vary a given level of variability (between subjects, between occasions).
-
-`findCovs` - Extract columns that do not vary within values of other columns
-```{r}
-## columns that don't vary at all. Could be a study number or an ETA that is not used.
-(model.level <- findCovs(pk))
-## columns that don't vary within subjects (by can be of arbitrary length)
-id.level <- findCovs(pk,by="ID")
-```
-
-`findVars` - Extract columns that _vary_ within values of other columns
-```{r,eval=FALSE}
-## in id.level, some do not vary between ID's so in fact they are model-level. Discard those
-actual.id.level <- findVars(id.level,by="ID")
-## find occasion level variability - columns that do vary between ID but do not vary with ID+OCC.
-occ.level <- findCovs(findVars(pk,"ID"),c("ID","OCC"))
-```
-
-
-`NMextractDataFile` - Get the file path to the input data file used in a NONMEM control stream
-
-`NMisNumeric` - Test whether a column or the individual values in a column/vector are compatible with NONMEM (interpretable as numeric)
-
-<!-- `tmpcol` -->
-<!-- `egdt` -->
- 
 
 :::
 ::::
-
