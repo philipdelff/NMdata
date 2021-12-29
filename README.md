@@ -54,26 +54,35 @@ preparations for ensuring readability in Nonmem, and ensuring
 traceability of datasets back to data generation scripts.
 
 ## How to install
-`NMdata` is aimed at CRAN release in near future. Meanwhile, installing
-from Github is easy:
+`NMdata` is on [CRAN](https://cran.r-project.org/), [MRAN](https://mran.microsoft.com/), and [MPN](https://mpn.metworx.com). To install from the package archive you are already using, do:
 
 ```
-library(remotes)
-install_github("philipdelff/NMdata")
+install.packages("NMdata")
 library(NMdata)
 ```
-See the
+
+If your archive has not been updated since July 2021, you may not find `NMdata` that way. In that case you have two other options. You can explicitly select CRAN for the installation. Or if for some reason you should want a version that has not yet reached
+CRAN, installing from Github is easy too.
+
+```
+## Install explicitly from CRAN
+install.packages("NMdata",repos="https://cloud.r-project.org")
+## Install from github
+library(remotes)
+install_github("philipdelff/NMdata")
+
+library(NMdata)
+```
+If you use the Github version, you may want to see the
 [FAQ](https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html)
 for how to install specific releases from Github (ensuring reproducibility).
 
 
 ## Questions?
-Check the [FAQ](https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html), or ask on [github
-page](https://github.com/philipdelff/NMdata/)
+Check the [FAQ](https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html), or ask on [github](https://github.com/philipdelff/NMdata/)
 
-## Feedback?
-The best way to request features, report bugs etc. is by the [github
-page](https://github.com/philipdelff/NMdata/).
+## Issues?
+The best way to report a bug or to request features is on [github](https://github.com/philipdelff/NMdata/).
 
 ## Code of Conduct
 Please note that the patchwork project is released with a [Contributor Code of Conduct](https://philipdelff.github.io/NMdata/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
