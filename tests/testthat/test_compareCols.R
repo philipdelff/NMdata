@@ -80,3 +80,20 @@ test_that("messy names",{
     expect_equal_to_reference(res1,fileRef)
 
 })
+
+
+test_that("cols.wanted",{
+
+    fileRef <- "testReference/compareCols_5.rds"
+
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk.reduced <- copy(pk)
+    pk.reduced <- pk.reduced[1:(.N%/%2)]
+    pk.reduced[,CYCLE:=NULL]
+    pk.reduced[,AMT:=as.character(AMT)]
+
+    res1 <- compareCols(pk,pk.reduced,cols.wanted=c("TIME","NAME","NOEXISTS"))
+
+    expect_equal_to_reference(res1,fileRef)
+
+})

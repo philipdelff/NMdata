@@ -9,9 +9,10 @@ compareCols(
   keepNames = TRUE,
   testEqual = FALSE,
   diff.only = TRUE,
+  cols.wanted,
   fun.class = base::class,
   quiet,
-  as.fun = NULL
+  as.fun
 )
 }
 \arguments{
@@ -26,13 +27,19 @@ names of the two objects are the same? Default is FALSE which
 means to return an overview for interactive use. You might
 want to use TRUE in programming. However, notice that this
 check may be overly rigorous. Many classes are compitable
-enough (say numeric and integer), at compareCols doesn't take
+enough (say numeric and integer), and compareCols doesn't take
 this into account.}
 
 \item{diff.only}{If TRUE, don't report columns where no difference
 found. Default is TRUE if number of data sets supplied is
 greater than one. If only one data set is supplied, the full
 list of columns is shown by default.}
+
+\item{cols.wanted}{Columns of special interest. These will always
+be included in overview and indicated by a prepended * to the
+column names. This argument is often useful when you start by
+defining a set of columns that you want to end up with by
+combining a number of data sets.}
 
 \item{fun.class}{the function that will be run on each column to
 check for differences. base::class is default. Notice that the
