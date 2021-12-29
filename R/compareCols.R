@@ -14,7 +14,7 @@
 ##'     means to return an overview for interactive use. You might
 ##'     want to use TRUE in programming. However, notice that this
 ##'     check may be overly rigorous. Many classes are compitable
-##'     enough (say numeric and integer), at compareCols doesn't take
+##'     enough (say numeric and integer), and compareCols doesn't take
 ##'     this into account.
 ##' @param diff.only If TRUE, don't report columns where no difference
 ##'     found. Default is TRUE if number of data sets supplied is
@@ -26,6 +26,11 @@
 ##'     instance, typeof will not report a difference on numeric vs
 ##'     difftime. You could basically submit any function that takes a
 ##'     vector and returns a single value.
+##' @param cols.wanted Columns of special interest. These will always
+##'     be included in overview and indicated by a prepended * to the
+##'     column names. This argument is often useful when you start by
+##'     defining a set of columns that you want to end up with by
+##'     combining a number of data sets.
 ##' @param quiet The default is to give some information along the way
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using
@@ -43,11 +48,8 @@
 ##' @family DataWrangling
 ##' @export
 
-## compareCols(r1.csv,r1.rds)
-## compareCols(r1.csv,r1.rds,fun.class=typeof)
 
-
-compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,fun.class=base::class,quiet,as.fun=NULL){
+compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,cols.wanted,fun.class=base::class,quiet,as.fun){
     
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -59,14 +61,13 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,fun.cl
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
-    
-    
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
     dots <- list(...)
     ndots <- length(dots)
     if(ndots==0) stop("No data supplied.")
     if(ndots==1&&missing(diff.only)) diff.only <- FALSE
+    if(missing(cols.wanted)) cols.wanted <- NULL
     
     if(keepNames){
         names.dots <- setdiff(as.character(match.call(expand.dots=TRUE)),as.character(match.call(expand.dots=FALSE)))
@@ -74,8 +75,11 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,fun.cl
         names.dots <- paste0("x",seq(ndots))
     }
     names(dots) <- names.dots
+
+    
     
     df1.was.dt <- is.data.table(dots[[1]])
+    if(missing(as.fun)) as.fun <- NULL
     if(df1.was.dt && is.null(as.fun)) as.fun <- "data.table"
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
@@ -87,6 +91,12 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,fun.cl
     cols <- lapply(dots,getClasses)
     for(n in 1:ndots) setnames(cols[[n]],"class",names.dots[n])
 
+    col.wanted <- tmpcol(names=sapply(cols,names),base="wanted",prefer.plain=TRUE)
+    if(!is.null(cols.wanted)) {
+        dt.wanted <- data.table(column=cols.wanted)
+        dt.wanted[,(col.wanted):=.I]
+        ##    cols <- append(list(wanted=dt.wanted),cols)
+    }
     
     dt.cols <- Reduce(function(...)merge(...,by="column",all=TRUE),cols)
 
@@ -95,20 +105,26 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,fun.cl
     nu.classes <- dt.cols.l[!is.na(value),.(nu=uniqueN(value),n=.N),by=.(column)]
 
     ## merge back on
-    dt.cols <- mergeCheck(dt.cols,nu.classes,by="column")
+    dt.cols <- mergeCheck(dt.cols,nu.classes,by="column",quiet=TRUE)
 
     if(testEqual) return(dt.cols[n<ndots|nu>1,.N]==0)
 
+    if(is.null(cols.wanted)){
+        dt.cols[,(col.wanted):=0]
+    } else {
+        dt.cols <- merge(dt.cols,dt.wanted,all=T)
+        dt.cols[!is.na(get(col.wanted)),column:=paste0("*",column)]
+    }
     ## criteria whether to show if nu=1 (all equal class)
-    ## sorting options. By diff, alpha. Or by diff, location in first df?
-
-    if(diff.only) dt.cols <- dt.cols[n<ndots|nu>1]
+    if(diff.only) dt.cols <- dt.cols[n<ndots|nu>1|get(col.wanted)>0]
 ### this one orders by number of occurance, unique classses, column name
 
     if(ndots>1){
-        setorder(dt.cols,n,-nu,column)
+        dt.cols[,nu:=-nu]
+        dt.cols[is.na(wanted),wanted:=1e5]
+        setorderv(dt.cols,c(col.wanted,"n","nu","column"))
     }
-    cols.rm <- c("nu","n")
+    cols.rm <- c("nu","n","wanted")
     dt.cols[,(cols.rm):=NULL]
     
     
