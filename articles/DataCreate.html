@@ -27,6 +27,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -39,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.9.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.903</span>
       </span>
     </div>
 
@@ -76,13 +78,20 @@
   <a href="../news/index.html">News</a>
 </li>
 <li>
-  <a href="https://github.com/philipdelff/NMdata">
+  <a href="https://github.com/philipdelff/NMdata" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/philipdelff/NMdata" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -98,24 +107,24 @@
       <h1 data-toc-skip>Data Creation Tools</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/master/vignettes/DataCreate.Rmd"><code>vignettes/DataCreate.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/vignettes/DataCreate.Rmd" class="external-link"><code>vignettes/DataCreate.Rmd</code></a></small>
       <div class="hidden name"><code>DataCreate.Rmd</code></div>
 
     </div>
 
     
     
-<p>Built 2021-11-24 using NMdata 0.0.9.903.</p>
+<p>Built 2021-12-29 using NMdata 0.0.9.903.</p>
 <p>This vignette is still under development. Please make sure to see latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
-<div id="introduction" class="section level2">
-<h2 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h2>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
 <p>Getting data ready for modeling is a crucial and often underestimated task. Mistakes during the process of combining data sets, defining time variables etc. can lead to difficulties during modeling, need for revisiting data set creation, and in worst case wasted time working with an erroneos data set. Avoiding those mistakes by integrating checks into the data creation process is a key element in an efficient and reliable data creation work flow.</p>
 <p>Furthermore, Nonmem has a number of restrictions on the format of the input data, and problems with the data set is a common reason for Nonmem not to behave as expected. When this happens, debugging can be time-consuming. <code>NMdata</code> includes some simple functions to prevent these situations.</p>
 <p>This vignette uses <code>data.table</code> syntax for the little bit of data manipulation performed. However, you don’t need to use data.table <em>at all</em> to use these or any tool in <code>NMdata</code>. The data set is a <code>data.table</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span>file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span>file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span>
 <span class="co">#&gt; [1] "data.table" "data.frame"</span></code></pre></div>
 <p>If you are not familiar with <code>data.table</code>, you can keep reading this vignette and learn what <code>NMdata</code> can do. In all brevity, <code>data.table</code> is a powerful enhancement to the <code>data.frame</code> class. The syntax differ from <code>data.frame</code>, and the few places where this affects the examples provided here, explanations will be given.</p>
 <!-- Because the data is a `data.table`  -->
@@ -124,12 +133,12 @@
 <!-- If this was a `data.frame` (and not a `data.table`), the `NMdata` functions would keep returning objects -->
 <!-- of class `data.frame`. -->
 </div>
-<div id="data-assembly" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-assembly" class="anchor"></a>Data assembly</h2>
-<div id="compare-presence-and-class-of-columns-across-data-sets" class="section level3">
-<h3 class="hasAnchor">
-<a href="#compare-presence-and-class-of-columns-across-data-sets" class="anchor"></a>Compare presence and class of columns across data sets</h3>
+<div class="section level2">
+<h2 id="data-assembly">Data assembly<a class="anchor" aria-label="anchor" href="#data-assembly"></a>
+</h2>
+<div class="section level3">
+<h3 id="compare-presence-and-class-of-columns-across-data-sets">Compare presence and class of columns across data sets<a class="anchor" aria-label="anchor" href="#compare-presence-and-class-of-columns-across-data-sets"></a>
+</h3>
 <p>When stacking (<code>rbind</code>) and merging, it is most often necessary to check if two or more data sets are compatible for the operation. <code>compareCols</code> compares columns across two or more data sets.</p>
 <p>To illustrate the output of <code>compareCols</code>, a slightly modified version of the <code>pk</code> dataset has been created. One column (<code>CYCLE</code>) has been removed, and <code>AMT</code> has been recoded to character. <code>compareCols</code> tells us about exactly these two differences:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -145,9 +154,9 @@
 <span class="co">#&gt; 2:    AMT integer  character</span></code></pre></div>
 <p>Before merging or stacking, we may want to recode <code>AMT</code> in one of the datasets to get the class we need, and decide what to do about the <code>CYCLE</code> column which is missing in one of the datasets (add information or fill with <code>NA</code>?).</p>
 </div>
-<div id="rename-columns-based-on-contents" class="section level3">
-<h3 class="hasAnchor">
-<a href="#rename-columns-based-on-contents" class="anchor"></a>Rename columns based on contents</h3>
+<div class="section level3">
+<h3 id="rename-columns-based-on-contents">Rename columns based on contents<a class="anchor" aria-label="anchor" href="#rename-columns-based-on-contents"></a>
+</h3>
 <p>The model estimation step is heavily dependent (and in Nonmem almost entirely based) on numeric data values. The source data will often contain character variables, i.e. columns with non-numeric data values.</p>
 <p>If the column names reflect whether the values are numeric, double-checking can be avoided. <code>renameByContents</code> renames columns if a function of their contents returns <code>TRUE</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -171,14 +180,14 @@
 <span class="co">#&gt; 6: timeunit      &lt;NA&gt;  character</span></code></pre></div>
 <p>We can now easily see that if we wish to include the information contained in <code>eventu</code>, <code>pktmp</code>, and <code>pk.renamed</code>, we have to modify or translate their contents first.</p>
 </div>
-<div id="automated-checks-of-merge-results" class="section level3">
-<h3 class="hasAnchor">
-<a href="#automated-checks-of-merge-results" class="anchor"></a>Automated checks of merge results</h3>
+<div class="section level3">
+<h3 id="automated-checks-of-merge-results">Automated checks of merge results<a class="anchor" aria-label="anchor" href="#automated-checks-of-merge-results"></a>
+</h3>
 <p>Merges are a very common source of data creation bugs. As simple as they may seem, merges can leave you with an unexpected number of rows, some repeated and/or some omitted. Often, we can impose restrictions on the merge operation that allows for automated validation of the results.</p>
 <p>Imagine the very common example that we have a longitudinal PK data set (called <code>pk</code>), and we want to add subject-level covariates from a secondary data set (<code>dt.cov</code>). We want to merge by <code>ID</code>, and all we can allow to happen is columns to be added to <code>pk</code> from <code>dt.cov</code>. If rows disappear or get repeated, or if columns get renamed, it’s unintended and should return an error.</p>
 <p>We merge the two data sets and the check of the dimensions raises no alarm - the number of rows is unchanged from <code>pk</code> to <code>pk2</code>, and one of two columns in <code>dt.cov</code> was added.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/dims.html">dims</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,<span class="va">pk2</span><span class="op">)</span>
 <span class="co">#&gt;      data nrows ncols</span>
 <span class="co">#&gt; 1:     pk  1502    24</span>
@@ -192,7 +201,7 @@
 <span class="co">#&gt; [1] 20</span></code></pre></div>
 <p>Using <code>mergeCheck</code>, we get an error. This is because <code>mergeCheck</code> compares the actual rows going in and out of the merge and not just the dimensions:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/try.html">try</a></span><span class="op">(</span><span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Rows disappeared during merge.</span>
 <span class="co">#&gt; Overview of dimensions of input and output data:</span>
 <span class="co">#&gt;         data nrows ncols</span>
@@ -210,24 +219,24 @@
 <code class="sourceCode R"><span class="va">dt.cov2</span> <span class="op">&lt;-</span> <span class="va">dt.cov</span><span class="op">[</span><span class="va">ID</span><span class="op">!=</span><span class="fl">31</span><span class="op">]</span>
 <span class="va">pk2.check</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov2</span>,by<span class="op">=</span><span class="st">"ID"</span>,all.x<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>To ensure the consistency of rows before and after the merge, you could use <code>merge(...,all.x=TRUE)</code> and then check dimensions before and after (yes, both <code>all.x=TRUE</code> and the dimension check are necessary). This is not needed if you use <code>mergeCheck</code>.</p>
-<p><code>mergeCheck</code> does not try to reimplement merging. Under the hood, the merging is performed by <code><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">data.table::merge.data.table</a></code> to which most arguments are passed. What <code>mergeCheck</code> does is to add the checks that the results are consistent with the criteria outlined above. <code><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">data.table::merge.data.table</a></code> is generally very fast, and even if there is a bit of extra calculations in <code>mergeCheck</code>, it should never be slow.</p>
+<p><code>mergeCheck</code> does not try to reimplement merging. Under the hood, the merging is performed by <code><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">data.table::merge.data.table</a></code> to which most arguments are passed. What <code>mergeCheck</code> does is to add the checks that the results are consistent with the criteria outlined above. <code><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">data.table::merge.data.table</a></code> is generally very fast, and even if there is a bit of extra calculations in <code>mergeCheck</code>, it should never be slow.</p>
 <p>Another problem the programmer may not realize during a merge is when column names are shared across <code>x1</code> and <code>x2</code> (in addition to columns that are being merged by). This will silently create column names like <code>col.x</code> and <code>col.y</code> in the output. <code>mergeCheck</code> will by default give a warning if that happens (can be modified using the <code>fun.commoncols</code> argument). Also, there is an optional argument to tell mergeCheck how many columns are expected to be added by the merge, and <code>mergeCheck</code> will fail if another number of columns are added. This can be useful for programming.</p>
 <p>The row order is by default maintained by <code>mergeCheck</code>. Apart from this, there is only one difference from the behavior of the <code>merge.data.frame</code> function syntax, being that the <code>by</code> argument must always be supplied to <code>mergeCheck</code>. Default behavior of <code>merge.data.frame</code> is to merge by all common column names, but for coding transparency, this is intentionally not allowed by <code>mergeCheck</code>.</p>
 <p>In summary, <code>mergeCheck</code> verifies that the rows that result from the merge are the exact same as in one of the existing datasets, only columns added from the second input dataset. You may think that this will limit your merges, and that you need merges for inner and outer joins etc. You are exactly right - <code>mergeCheck</code> is not intended for those merges and does not support them. When that is said, the kind of merges that are supported by <code>mergeCheck</code> are indeed very common. All merges in the <code>NMdata</code> package are performed with <code>mergeCheck</code>.</p>
 </div>
 </div>
-<div id="exclusion-flags" class="section level2">
-<h2 class="hasAnchor">
-<a href="#exclusion-flags" class="anchor"></a>Exclusion flags</h2>
+<div class="section level2">
+<h2 id="exclusion-flags">Exclusion flags<a class="anchor" aria-label="anchor" href="#exclusion-flags"></a>
+</h2>
 <p>It is good practice not to discard records from a dataset but to flag them and omit them in model estimation. When reporting the analysis, we also need to account for how many data records were discarded due to which criteria. A couple of functons in <code>NMdata</code> help you do this in a way that is easy to integrate with Nonmem.</p>
 <p>The implementation in <code>NMdata</code> is based on sequentially checking exclusion conditions. This means we can summarize how many records and subjects were excluded from the analysis due to the different criteria. The information is represented in one numerical column for Nonmem, and one (value-to-value corresponding) character column for the rest of us in the resulting data.</p>
-<div id="assign-and-count-flags" class="section level3">
-<h3 class="hasAnchor">
-<a href="#assign-and-count-flags" class="anchor"></a>Assign and count flags</h3>
+<div class="section level3">
+<h3 id="assign-and-count-flags">Assign and count flags<a class="anchor" aria-label="anchor" href="#assign-and-count-flags"></a>
+</h3>
 <p>For use in Nonmem, the easiest is that inclusion/exclusion is determined by a single column in data - we call that column <code>FLAG</code> here, but any column name can be used. <code>FLAG</code> obviously draws on information from other columns such as <code>TIME</code>, <code>DV</code>, and many others, depending on your dataset and your way of working.</p>
 <p>The function that applies inclusion/excluasion rules is called <code>flagsAssign</code>, and it takes a dataset and a data.frame with rules as arguments.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span>text<span class="op">=</span><span class="st">"FLAG,flag,condition
+<code class="sourceCode R"><span class="va">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span>text<span class="op">=</span><span class="st">"FLAG,flag,condition
 10,Below LLOQ,BLQ==1
 100,Negative time,TIME&lt;0"</span><span class="op">)</span>
 
@@ -243,13 +252,13 @@
 <p>Again, the omission will be attributed to the first condition matched. Default is to apply the conditions by the order of decreasing numerical flag value. Use <code>flags.increasing=TRUE</code> if you prefer the opposite. However, what cannot be modified is that 0 is the numerical value for rows that are not matched by any conditions.</p>
 <p>What rows to omit from a dataset can vary from one analysis to another. Hence, the aim with the chosen design is that the inclusion criteria can be changed and applied to overwrite an existing inclusion/exclusion selection. For another analysis we want to include the observations below LLOQ. We have two options. Either we simply change the <code>IGNORE</code> statement given above to <code>IGNORE=(FLAG.LT.10)</code>, or you create a different exclusion flag for that one. If you prefer to create a new set of exclusion flags, just use new names for the numerical and the character flag columns so you don’t overwrite the old ones. See help of <code>flagsAssign</code> and <code>flagsCount</code> for how.</p>
 </div>
-<div id="summarize-data-exclusions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#summarize-data-exclusions" class="anchor"></a>Summarize data exclusions</h3>
+<div class="section level3">
+<h3 id="summarize-data-exclusions">Summarize data exclusions<a class="anchor" aria-label="anchor" href="#summarize-data-exclusions"></a>
+</h3>
 <p>An overview of the number of observations disregarded due to the different conditions is then obtained using <code>flagsCount</code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tab.count</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsCount.html">flagsCount</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">pk</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">]</span>,tab.flags<span class="op">=</span><span class="va">dt.flags</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">tab.count</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tab.count</span><span class="op">)</span>
 <span class="co">#&gt;                  flag N.left Nobs.left N.discard N.disc.cum Nobs.discard</span>
 <span class="co">#&gt; 1: All available data    150      1352        NA          0           NA</span>
 <span class="co">#&gt; 2:      Negative time    150      1350         0          0            2</span>
@@ -263,13 +272,13 @@
 <p><code>flagsCount</code> includes a <code>file</code> argument to save the the table right away.</p>
 </div>
 </div>
-<div id="finalize-data-format-and-write-to-file" class="section level2">
-<h2 class="hasAnchor">
-<a href="#finalize-data-format-and-write-to-file" class="anchor"></a>Finalize data format and write to file</h2>
+<div class="section level2">
+<h2 id="finalize-data-format-and-write-to-file">Finalize data format and write to file<a class="anchor" aria-label="anchor" href="#finalize-data-format-and-write-to-file"></a>
+</h2>
 <p>Once the dataset is in place, <code>NMdata</code> provides a few useful functions to ensure the formatting of the written data is compatible with Nonmem. These functions include checks that Nonmem will be able to interpret the data as intended, and more features are under development in this area.</p>
-<div id="automated-ordering-of-columns" class="section level3">
-<h3 class="hasAnchor">
-<a href="#automated-ordering-of-columns" class="anchor"></a>Automated ordering of columns</h3>
+<div class="section level3">
+<h3 id="automated-ordering-of-columns">Automated ordering of columns<a class="anchor" aria-label="anchor" href="#automated-ordering-of-columns"></a>
+</h3>
 <p>The order of columns in Nonmem is important for two reasons. One is that a character in a variable read into Nonmem will make the run fail. The other is that there are restrictions on the number of variables you can read into Nonmem, depending on the version. <code>NMorderColumns</code> tries to put the used columns first, and other or maybe even unusable columns in the back of the dataset. It does so by a mix of recognition of column names and analysis of the column contents.</p>
 <p>Columns that cannot be converted to numeric are put in the back, while column bearing standard Nonmem variable names like <code>ID</code>, <code>TIME</code>, <code>EVID</code> etc. will be pulled up front. You can of course add column names to prioritize to front (<code>first</code>) or back (<code>last</code>). See <code><a href="../reference/NMorderColumns.html">?NMorderColumns</a></code> for more options.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -277,9 +286,9 @@
 <span class="co">#&gt; These standard nonmem columns were not found in data: MDV</span></code></pre></div>
 <p>We may want to add <code>MDV</code> and rerun <code>NMorderColumns</code>.</p>
 </div>
-<div id="writing-data-to-files" class="section level3">
-<h3 class="hasAnchor">
-<a href="#writing-data-to-files" class="anchor"></a>Writing data to files</h3>
+<div class="section level3">
+<h3 id="writing-data-to-files">Writing data to files<a class="anchor" aria-label="anchor" href="#writing-data-to-files"></a>
+</h3>
 <p>For the final step of writing the dataset, <code>NMwriteData</code> is provided. Most importantly, it writes a csv file with appropriate options for Nonmem to read it as well as possible. It can also write an rds for R with equal contents (or RData if you prefer), but with the rds including all information (such as factor levels) which cannot be saved in csv. If you should use <code>NMscanData</code> to read Nonmem results, this information can be used automatically. It also provides a proposal for text to include in the <code>$INPUT</code> and <code>$DATA</code> sections of the Nonmem control streams.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/NMwriteData.html">NMwriteData</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span>
@@ -293,9 +302,9 @@
 <p>Notice, <code>NMwriteData</code> detected the exclusion flag and suggests to include it in <code>$DATA</code>.</p>
 <p>If a file name had been provided, the data would have been written, and the path to the data file would have been included in the message written back to the user. There are several arguments that will affect the proposed text for the Nonmem run, see <code><a href="../reference/NMwriteData.html">?NMwriteData</a></code>.</p>
 </div>
-<div id="updating-nonmem-control-streams-to-read-new-data-file" class="section level3">
-<h3 class="hasAnchor">
-<a href="#updating-nonmem-control-streams-to-read-new-data-file" class="anchor"></a>Updating Nonmem control streams to read new data file</h3>
+<div class="section level3">
+<h3 id="updating-nonmem-control-streams-to-read-new-data-file">Updating Nonmem control streams to read new data file<a class="anchor" aria-label="anchor" href="#updating-nonmem-control-streams-to-read-new-data-file"></a>
+</h3>
 <p>I may be the only one, but sometimes during the modeling stage, I want to go back and change or add something to the data creation step. Then once I have written a new data file, my Nonmem <code>$INPUT</code> sections no longer match the data file. In <code>NMwriteData</code> you can use a <code>last</code> argument to get columns pushed towards the back so the Nonmem runs should still work, but maybe you need the column in your nonmem runs, and so you have no way around updating the control streams. And that can be quite a lot of control streams.</p>
 <p><code>NMdata</code> has a couple of functions to extract and write sections to Nonmem control streams called <code>NMreadSection</code> and <code>NMwriteSection</code>. We are not going into detail with what these functions can do, but let’s stick to the example above. We can do</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -316,9 +325,9 @@
 <p>If you run this in a loop over the control streams that use the created data set, you are all set to rerun the models as needed.</p>
 </div>
 </div>
-<div id="stamp-objects-for-traceability" class="section level2">
-<h2 class="hasAnchor">
-<a href="#stamp-objects-for-traceability" class="anchor"></a>Stamp objects for traceability</h2>
+<div class="section level2">
+<h2 id="stamp-objects-for-traceability">Stamp objects for traceability<a class="anchor" aria-label="anchor" href="#stamp-objects-for-traceability"></a>
+</h2>
 <p>The last couple of functions that will be introduced here are used for tracing datasets to data creation scripts, including time stamps and other information you want to include with the data set.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMstamp.html">NMstamp</a></span><span class="op">(</span><span class="va">pk</span>,script<span class="op">=</span><span class="st">"vignettes/DataCreate.Rmd"</span><span class="op">)</span>
@@ -328,7 +337,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2021-11-24 03:57:50 UTC"</span></code></pre></div>
+<span class="co">#&gt; [1] "2021-12-29 15:10:02 UTC"</span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>NMstamp</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMstamp.html">NMstamp</a></span><span class="op">(</span><span class="va">pk</span>,script<span class="op">=</span><span class="st">"vignettes/DataCreate.Rmd"</span>,Description<span class="op">=</span><span class="st">"A PK dataset used for examples."</span><span class="op">)</span>
@@ -338,7 +347,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2021-11-24 03:57:50 UTC"</span>
+<span class="co">#&gt; [1] "2021-12-29 15:10:03 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span></code></pre></div>
@@ -358,11 +367,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Philip Delff.</p>
+  <p></p>
+<p>Developed by Philip Delff.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -370,6 +381,8 @@
 
   
 
+
+  
 
   </body>
 </html>

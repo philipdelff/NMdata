@@ -27,6 +27,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -39,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.9.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.903</span>
       </span>
     </div>
 
@@ -76,13 +78,20 @@
   <a href="news/index.html">News</a>
 </li>
 <li>
-  <a href="https://github.com/philipdelff/NMdata">
+  <a href="https://github.com/philipdelff/NMdata" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/philipdelff/NMdata" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -94,55 +103,62 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="nmdata-" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#nmdata-" class="anchor"></a>NMdata <a href="https://philipdelff.github.io/NMdata/"><img src="reference/figures/NMdata_logo_v01.png" align="right" height="131.5"></a>
+<div class="section level1">
+<div class="page-header"><h1 id="nmdata-">NMdata <a href="https://philipdelff.github.io/NMdata/"><img src="reference/figures/NMdata_logo_v01.png" align="right" height="131.5"></a>
+<a class="anchor" aria-label="anchor" href="#nmdata-"></a>
 </h1></div>
 <!-- badges: start -->
 
-<div id="a-fast-r-package-for-efficient-data-preparation-consistency-checking-and-post-processing-in-pkpd-modeling" class="section level2">
-<h2 class="hasAnchor">
-<a href="#a-fast-r-package-for-efficient-data-preparation-consistency-checking-and-post-processing-in-pkpd-modeling" class="anchor"></a>A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling</h2>
+<div class="section level2">
+<h2 id="a-fast-r-package-for-efficient-data-preparation-consistency-checking-and-post-processing-in-pkpd-modeling">A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling<a class="anchor" aria-label="anchor" href="#a-fast-r-package-for-efficient-data-preparation-consistency-checking-and-post-processing-in-pkpd-modeling"></a>
+</h2>
 <p>Pharmacometrics and PK/PD modeling offers unique information for decision-making in several steps of drug development. However, the leg work in pharmacometrics remains technical, and this is a typical bottleneck for a pharmacometrician to contributing even more.</p>
 <p>Creating data sets - and if you use Nonmem, reading the results data - can be tedious, and mistakes can lead to hours of frustration. NMdata provides useful tools (including automated checks) for these trivial tasks. The aim is to automate the book keeping and allow more time for the actual analysis.</p>
 <p>A central design feature of NMdata is that all included tools require as little as possible about how the user works. Any functionality in the package can be used independently of the rest of the package, and NMdata is not intended to force you to change any habits or preferences. Instead, NMdata tries to fit in with how you (or your colleague who worked on the project before you) do things.</p>
 <p>The data set creation tools in NMdata may be equally interesting to users of nlmixr or other proprietary software than Nonmem. However, many features of the package relates to the final organization and writing of data for Nonmem, and reading data from Nonmem after a model run.</p>
 <p>The best place to browse information about the package is <a href="https://philipdelff.github.io/NMdata/">here</a>. All documentation is of course included in the package itself too.</p>
 </div>
-<div id="automated-and-general-reader-of-nonmem-results-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#automated-and-general-reader-of-nonmem-results-data" class="anchor"></a>Automated and general reader of Nonmem results data</h2>
+<div class="section level2">
+<h2 id="automated-and-general-reader-of-nonmem-results-data">Automated and general reader of Nonmem results data<a class="anchor" aria-label="anchor" href="#automated-and-general-reader-of-nonmem-results-data"></a>
+</h2>
 <p>Reading the resulting data from Nonmem can require a few manual steps. Especially because all modelers seem to do things a little differently. <code>NMscanData</code> can return all data output (<code>$TABLE</code>) from Nonmem combined, and if wanted with additional columns and rows in input data. It’s as simple as</p>
-<pre class="{r}"><code>results &lt;- NMscanData("run001.lst")</code></pre>
+<pre class="{r}"><code><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"run001.lst"</span><span class="op">)</span></code></pre>
 <p>Take a look at <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html">this vignette</a> for more info on the Nonmem data reader.</p>
 </div>
-<div id="create-data-export-to-nonmem" class="section level2">
-<h2 class="hasAnchor">
-<a href="#create-data-export-to-nonmem" class="anchor"></a>Create data, export to Nonmem</h2>
+<div class="section level2">
+<h2 id="create-data-export-to-nonmem">Create data, export to Nonmem<a class="anchor" aria-label="anchor" href="#create-data-export-to-nonmem"></a>
+</h2>
 <p>On the data-generation side, functionality is provided for documentation of the datasets while generating them. Check out <a href="https://philipdelff.github.io/NMdata/articles/DataCreate.html">this vignette</a> on the topic. There are functions for automatic checks of (some) data merges, handling and counting of exclusions flags, final preparations for ensuring readability in Nonmem, and ensuring traceability of datasets back to data generation scripts.</p>
 </div>
-<div id="how-to-install" class="section level2">
-<h2 class="hasAnchor">
-<a href="#how-to-install" class="anchor"></a>How to install</h2>
-<p><code>NMdata</code> is aimed at CRAN release in near future. Meanwhile, installing from Github is easy:</p>
-<pre><code><a href="https://remotes.r-lib.org">library(remotes)
-install_github("philipdelff/NMdata")
-library(NMdata)</a></code></pre>
-<p>See the <a href="https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html">FAQ</a> for how to install specific releases from Github (ensuring reproducibility).</p>
+<div class="section level2">
+<h2 id="how-to-install">How to install<a class="anchor" aria-label="anchor" href="#how-to-install"></a>
+</h2>
+<p><code>NMdata</code> is on <a href="https://cran.r-project.org/" class="external-link">CRAN</a>, <a href="https://mran.microsoft.com/" class="external-link">MRAN</a>, and <a href="https://mpn.metworx.com" class="external-link">MPN</a>. To install from the package archive you are already using, do:</p>
+<pre><code><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"NMdata"</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span></code></pre>
+<p>If your archive has not been updated since July 2021, you may not find <code>NMdata</code> that way. In that case you have two other options. You can explicitly select CRAN for the installation. Or if for some reason you should want a version that has not yet reached CRAN, installing from Github is easy too.</p>
+<pre><code><span class="co">## Install explicitly from CRAN</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"NMdata"</span>,repos<span class="op">=</span><span class="st">"https://cloud.r-project.org"</span><span class="op">)</span>
+<span class="co">## Install from github</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span>
+<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"philipdelff/NMdata"</span><span class="op">)</span>
+
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span></code></pre>
+<p>If you use the Github version, you may want to see the <a href="https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html">FAQ</a> for how to install specific releases from Github (ensuring reproducibility).</p>
 </div>
-<div id="questions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#questions" class="anchor"></a>Questions?</h2>
-<p>Check the <a href="https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html">FAQ</a>, or ask on <a href="https://github.com/philipdelff/NMdata/">github page</a></p>
+<div class="section level2">
+<h2 id="questions">Questions?<a class="anchor" aria-label="anchor" href="#questions"></a>
+</h2>
+<p>Check the <a href="https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html">FAQ</a>, or ask on <a href="https://github.com/philipdelff/NMdata/" class="external-link">github</a></p>
 </div>
-<div id="feedback" class="section level2">
-<h2 class="hasAnchor">
-<a href="#feedback" class="anchor"></a>Feedback?</h2>
-<p>The best way to request features, report bugs etc. is by the <a href="https://github.com/philipdelff/NMdata/">github page</a>.</p>
+<div class="section level2">
+<h2 id="issues">Issues?<a class="anchor" aria-label="anchor" href="#issues"></a>
+</h2>
+<p>The best way to report a bug or to request features is on <a href="https://github.com/philipdelff/NMdata/" class="external-link">github</a>.</p>
 </div>
-<div id="code-of-conduct" class="section level2">
-<h2 class="hasAnchor">
-<a href="#code-of-conduct" class="anchor"></a>Code of Conduct</h2>
+<div class="section level2">
+<h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
+</h2>
 <p>Please note that the patchwork project is released with a <a href="https://philipdelff.github.io/NMdata/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>
@@ -150,56 +166,66 @@ library(NMdata)</a></code></pre>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=NMdata">https://​cloud.r-project.org/​package=NMdata</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/philipdelff/NMdata/">https://​github.com/​philipdelff/​NMdata/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/philipdelff/NMdata/issues">https://​github.com/​philipdelff/​NMdata/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=NMdata" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/philipdelff/NMdata/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/philipdelff/NMdata/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
+<a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
+
 <div class="community">
-<h2>Community</h2>
+<h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
 </ul>
 </div>
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing NMdata</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Philip Delff <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
-<li><a href="https://github.com/philipdelff/NMdata/actions"><img src="https://github.com/philipdelff/NMdata/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://codecov.io/gh/philipdelff/NMdata?branch=master"><img src="https://codecov.io/gh/philipdelff/NMdata/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://CRAN.R-project.org/package=NMdata"><img src="https://www.r-pkg.org/badges/version/NMdata" alt="CRAN status"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="https://github.com/philipdelff/NMdata/actions" class="external-link"><img src="https://github.com/philipdelff/NMdata/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://codecov.io/gh/philipdelff/NMdata?branch=master" class="external-link"><img src="https://codecov.io/gh/philipdelff/NMdata/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://CRAN.R-project.org/package=NMdata" class="external-link"><img src="https://www.r-pkg.org/badges/version/NMdata" alt="CRAN status"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Philip Delff.</p>
+  <p></p>
+<p>Developed by Philip Delff.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -207,6 +233,8 @@ library(NMdata)</a></code></pre>
 
   
 
+
+  
 
   </body>
 </html>

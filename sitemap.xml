@@ -1,7 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://philipdelff.github.io/NMdata/404.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/CODE_OF_CONDUCT.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/articles/DataCreate.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/articles/NMscanData.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/authors.html</loc>
+  </url>
+  <url>
     <loc>https://philipdelff.github.io/NMdata/index.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/news/index.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMapplyFilters.html</loc>
@@ -103,6 +130,9 @@
     <loc>https://philipdelff.github.io/NMdata/reference/fnExtension.html</loc>
   </url>
   <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/index.html</loc>
+  </url>
+  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/is.NMdata.html</loc>
   </url>
   <url>
@@ -128,14 +158,5 @@
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/writeNMinfo.html</loc>
-  </url>
-  <url>
-    <loc>https://philipdelff.github.io/NMdata/articles/DataCreate.html</loc>
-  </url>
-  <url>
-    <loc>https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html</loc>
-  </url>
-  <url>
-    <loc>https://philipdelff.github.io/NMdata/articles/NMscanData.html</loc>
   </url>
 </urlset>
