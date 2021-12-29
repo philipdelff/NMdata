@@ -617,7 +617,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                          ]
 
                 dt.vars <- rbind(dt.vars,dt.vars1)
-                tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=TRUE,as.fun="data.table")
+                tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=TRUE,as.fun="data.table",quiet=TRUE)
                 
             }
             
@@ -685,7 +685,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                     tab.idlevel[,(col.id):=NULL]
                 }
                 
-                tab.idlevel <- mergeCheck(tab.idlevel,unique(tab.row[,c(col.row,col.id),with=FALSE]),by=col.row)
+                tab.idlevel <- mergeCheck(tab.idlevel,unique(tab.row[,c(col.row,col.id),with=FALSE]),by=col.row,quiet=TRUE)
                 tab.idlevel[,(col.row):=NULL]
                 id.cols.not.new <- c(col.row,col.id)
                 
@@ -704,7 +704,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             if(!skip.idlevel){
                 cols.to.use <- unique(c(col.id,setdiff(colnames(tab.idlevel),dt.vars[source=="output",variable])))
                 tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=FALSE]
-                tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="data.table")
+                tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="data.table",quiet=TRUE)
                 
                 dt.vars.id1[,included:=FALSE]
                 dt.vars.id1[variable%in%setdiff(cols.to.use,id.cols.not.new),included:=TRUE]

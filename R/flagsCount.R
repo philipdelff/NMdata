@@ -249,7 +249,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     ##  tab.flags <- rbind(tab.flags,data.table(FLAG=-Inf,flag="All data"),fill=TRUE)
 ### this is how many N/obs are left after the flags/conditions are applied
     allres[is.na(alldata),alldata:=FALSE]
-    allres <- mergeCheck(allres,rbind(tab.flags.0,tab.flags)[,.(FLAG,flag)],by="FLAG",all.x=TRUE)
+    allres <- mergeCheck(allres,rbind(tab.flags.0,tab.flags)[,.(FLAG,flag)],by="FLAG",all.x=TRUE,quiet=TRUE)
     allres[alldata==TRUE,flag:=name.all.data]
     allres[,notAll:=alldata!=1]
     allres[,isFinal:=FLAG==0]

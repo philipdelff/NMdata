@@ -138,7 +138,7 @@ print.summary_NMdata <- function(x,...){
     vars[,included:=!is.na(COLNUM)]
     vars <- mergeCheck(vars,data.table(included=c(TRUE,FALSE),
                                        inc=c("included","not")),
-                       by="included")
+                       by="included",quiet=TRUE)
 
     
     ## calc number of used and available columns
@@ -152,7 +152,7 @@ print.summary_NMdata <- function(x,...){
     tabs.out[,tabn:=1:.N]
     ## assuming that all ID's present somewhere in output is present in all output tables
     ## tabs.out[source=="output",nid:=x$N.ids[NMOUT=="Output",N.ids]]
-    vars.sum2 <- mergeCheck(vars.sum1,tabs.out[,.(file=name,source,level,tabn,nrow,nid)],by="file",all.x=TRUE)
+    vars.sum2 <- mergeCheck(vars.sum1,tabs.out[,.(file=name,source,level,tabn,nrow,nid)],by="file",all.x=TRUE,quiet=TRUE)
 
     
     
@@ -194,7 +194,7 @@ print.summary_NMdata <- function(x,...){
     ## how many ids (broken down on output vs. input-only)
     
     n2 <- melt(x$N.rows,id.vars="nmout",variable.name="N")
-    n3 <- mergeCheck(n2,dt.nmout,by="nmout",all.x=TRUE)
+    n3 <- mergeCheck(n2,dt.nmout,by="nmout",all.x=TRUE,quiet=TRUE)
     n4 <- dcast(n3,N~NMOUT,value.var="value")
 
     N.ids <- dcast(x$N.ids,.~NMOUT,value.var="N.ids")
@@ -229,7 +229,7 @@ Nonmem data filters (not recommended).")
         ## how many rows in output (broken down on EVID)
 
         ## if rows recovered, how many (broken down on EVID)
-        evids1 <- mergeCheck(x$N.evids,dt.nmout,by="nmout",all.x=TRUE)
+        evids1 <- mergeCheck(x$N.evids,dt.nmout,by="nmout",all.x=TRUE,quiet=TRUE)
         
         evids2 <- dcast(evids1,EVID~NMOUT,value.var="N")
         evids2[is.na(evids2)] <- 0
