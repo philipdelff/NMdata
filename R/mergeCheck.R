@@ -14,7 +14,7 @@
 ##'     ordered like df1.
 ##' @param df2 A data.frame that will be merged onto df1.
 ##' @param by The column(s) to merge by. Character string
-##'     (vector). Must be supplied.
+##'     (vector). by or by.x and by.y must be supplied.
 ##' @param as.fun The default is to return a data.table if df1 is a
 ##'     data.table and return a data.frame in all other cases. Pass a
 ##'     function in as.fun to convert to something else.
@@ -33,8 +33,10 @@
 ##' @param track.msg If using mergeCheck inside other functions, it
 ##'     can be useful to use track.msg=TRUE. This will add information
 ##'     to messages/warnings/errors that they came from mergCheck.
-##' @param ... additional arguments passed to merge. If all is among
-##'     them, an error will be returned.
+##' @param quiet If FALSE, the names of the added columns are
+##'     reported. Default value controlled by NMdataConf.
+##' @param ... additional arguments passed to data.table::merge. If
+##'     all is among them, an error will be returned.
 ##' @details Besides merging and checking rows, mergeCheck makes sure
 ##'     the order in df1 is retained in the resulting data. Also, a
 ##'     warning is given if column names are overlapping, making merge
@@ -53,7 +55,7 @@
 ##'
 ##' @export
 
-mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols.expect,track.msg=FALSE,...){
+mergeCheck <- function(df1,df2,by,fun.commoncols=base::warning,ncols.expect,track.msg=FALSE,quiet,as.fun,...){
 
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -72,6 +74,8 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
     if(length(name.df1)!=1) name.df1 <- "df1"
     if(length(name.df2)!=1) name.df2 <- "df2"
 
+    if(missing(quiet)) quiet <- NULL
+    quiet <- NMdataDecideOption("quiet",quiet)
     
     name.df3 <- "merged.df"
     if("all"%in%names(list(...))) {
@@ -101,6 +105,13 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
     if(!is.data.table(df2)){
         df2 <- as.data.table(df2)
     }
+
+    if(missing(as.fun)) as.fun <- NULL
+    if(df1.was.dt && is.null(as.fun)) as.fun <- "data.table"
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+
+    ### this has to be refined. by.x+by.y will do too.
+    ## if(missing(by) || is.null(by)) stop("The \"by\" argument must be supplied.") 
 
     if(!missing(by)){
         cols.common <- intersect(colnames(df1),colnames(df2))
@@ -144,8 +155,8 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
                          )
         
         message("Overview of dimensions of input and output data:\n",
-            paste0(capture.output(dims.rep), collapse = "\n"),"\n"
-        )
+                paste0(capture.output(dims.rep), collapse = "\n"),"\n"
+                )
         
         dtcheck <- merge(df1[,.N,by=by],
                          df3[,.N,by=by]
@@ -166,20 +177,22 @@ mergeCheck <- function(df1,df2,by,as.fun=NULL,fun.commoncols=base::warning,ncols
         df3[,(rowcol):=NULL]
     }
 
+    newcols <- setdiff(colnames(df3),colnames(df1))
 ### checking number of new columns
     if(!missing(ncols.expect)) {
         df1[,(rowcol):=NULL]
         n.newcols <- ncol(df3)-ncol(df1)
         if(n.newcols!=ncols.expect) {
-            newcols <- setdiff(colnames(df3),colnames(df1))
             messageWrap(sprintf("Number of new columns (%d) does not mactch the expected (%d). New columns are: %s.",n.newcols,ncols.expect,paste(newcols,", ")),fun.msg=stop,track.msg=track.msg)
         }
     }
-
-    if(df1.was.dt && is.null(as.fun)) as.fun <- "data.table"
-    as.fun <- NMdataDecideOption("as.fun",as.fun)
-    df3 <- as.fun(df3)
     
+    df3 <- as.fun(df3)
+
+    if(!quiet){
+        msg <- paste0("The following columns were added: ",paste(newcols,collapse=", "))
+        message(msg)
+    }
     
     df3
 }

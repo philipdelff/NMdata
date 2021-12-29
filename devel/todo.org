@@ -107,7 +107,7 @@ https://doi.org/10.1208/s12248-012-9387-9
 ** Function improvements
 *** NMgenText
 **** TODO [#B] checks: duplicate column names
-**** TODO [#B]  test if a pseudonym was used. Give warning or msg if not
+**** TODO [#B] test if a pseudonym was used. Give warning or msg if not
 *** findCovs
 **** TODO soft
 *** compareCols
@@ -124,6 +124,10 @@ helpful. Only list other columns than the scope.
 *** egdt
 **** DONE Report dims(df1,df2,result) unless quiet
 *** mergeCheck
+**** TODO [#B] Check that by or by.x+by.y were supplied
+**** TODO [#B] derive by.x and by.y from by and by.x+by.y and then use by.x and by.y
+     That will make the code clearer because we will know exactly how
+     the merge is done.
 **** DONE Test the check for row duplications
 *** NMcheckData
 **** TODO [#B] Checks for presense of II and ADDL don't report dependence
