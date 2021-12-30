@@ -57,6 +57,7 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,cols.w
     value <- NULL
     column <- NULL
     nu <- NULL
+    wanted <- NULL
     . <- function() NULL
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks

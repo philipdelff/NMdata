@@ -49,9 +49,9 @@ knitr::opts_chunk$set(
                      ,class.source="Code"
                   )
 library(data.table)
-## library(NMdata)
-library(devtools)
-load_all()
+library(NMdata)
+## library(devtools)
+## load_all()
 
 NMdataConf(as.fun="data.table"
           ,check.time=F)
