@@ -3,7 +3,7 @@ url: https://philipdelff.github.io/NMdata
 template:
   opengraph:
     image:
-      src: man/figures/NMdata_logo_v01.png
+      src: man/figures/apple-touch-icon-180x180.png
       height: 131.5
       alt: "Efficient data preparation, consistency-checking and post-processing in PK/PD modeling"
 
