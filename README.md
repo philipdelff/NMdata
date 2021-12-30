@@ -1,4 +1,5 @@
-# NMdata <a href='https://philipdelff.github.io/NMdata/'><img src='man/figures/NMdata_logo_v01.png' align="right" height="131.5" /></a>
+# NMdata<a href='https://philipdelff.github.io/NMdata/'><img src='man/figures/NMdata_logo_v01.png' align="right" height="131.5px" /></a>
+
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R-CMD-check](https://github.com/philipdelff/NMdata/workflows/R-CMD-check/badge.svg)](https://github.com/philipdelff/NMdata/actions)
@@ -68,11 +69,11 @@ version that has not yet reached CRAN, installing from Github is easy
 too.
 
 ```
-## Option 1: Install explicitly from CRAN
+## Option 2: Install explicitly from CRAN
 install.packages("NMdata",repos="https://cloud.r-project.org")
 library(NMdata)
 
-## Option 2: Install from github
+## Option 3: Install from github
 library(remotes)
 install_github("philipdelff/NMdata")
 library(NMdata)
