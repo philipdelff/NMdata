@@ -1,5 +1,4 @@
-# NMdata<a href='https://philipdelff.github.io/NMdata/'><img src='man/figures/NMdata_logo_v01.png' align="right" height="131.5px" /></a>
-
+# NMdata<a href='https://philipdelff.github.io/NMdata/'><img src='man/figures/NMdata_logo_v01.png' align="right" height="131.5" /></a>
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R-CMD-check](https://github.com/philipdelff/NMdata/workflows/R-CMD-check/badge.svg)](https://github.com/philipdelff/NMdata/actions)
