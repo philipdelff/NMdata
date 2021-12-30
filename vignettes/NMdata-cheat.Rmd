@@ -97,7 +97,7 @@ install.packages("NMdata")
 library(NMdata)
 ```
 
-Use the many options in `NMdataConf` to tailor NMdata behaviour to your setup and preferences. Make NMdata functions return data.tables or tibble's:
+Use the many options in `NMdataConf` to tailor NMdata behaviour to your setup and preferences. Make NMdata functions return data.tables or tibbles:
 ```{r,eval=FALSE}
 NMdataConf(as.fun=tibble::as_tibble)
 NMdataConf(as.fun="data.table")
