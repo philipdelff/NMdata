@@ -44,7 +44,7 @@ read and combine all output and input data based only on (the path to) the Nonme
 
 * Including input data rows that were not processed by Nonmem (`ACCEPT` and `IGNORE`)
 
-* Combining such data sets for of a multiple models
+* Combining such data sets for multiple models
 
 * If available, using an rds file to represent the input data in order to preserve all data properties (e.g. factor levels) from data set preparation
 

@@ -1,0 +1,5 @@
+flag,N.left,Nobs.left,N.discard,N.disc.cum,Nobs.discard,Nobs.disc.cum
+All available data,150,1352,,0,,0
+Negative time,150,1350,0,0,2,2
+Below LLOQ,131,755,19,19,595,597
+Dosing,131,755,,19,,597

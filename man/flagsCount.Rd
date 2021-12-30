@@ -13,6 +13,7 @@ flagsCount(
   col.flagc,
   by = NULL,
   flags.increasing = FALSE,
+  flagc.0 = "Analysis set",
   name.all.data = "All available data",
   grp.incomp = "EVID",
   save = TRUE,
@@ -53,6 +54,9 @@ statement from IGNORE(FLAG.NE.0) to say IGNORE(FLAG.GT.10) if
 BLQ's have FLAG=10, and you decide to include these in the
 analysis.}
 
+\item{flagc.0}{The character flag to assign to rows that are not
+matched by exclusion conditions (numerical flag 0).}
+
 \item{name.all.data}{What to call the total set of data before
 applying exclusion flags. Default is "All available data".}
 
@@ -89,20 +93,27 @@ flag.
 This function is used to count flags as assigned by the
     flagsAssign function.
 
-Notice number of subjects in N.discarded mode can be
-    misunderstood. If two is reported, it can mean that the
-    remaining one observation of these two subjects are discarded
-    due to this flag. The majority of the samples can have been
-    discarded by earlier flags.
+Notice that the character flags reported in the output table are
+taken from tab.flags. The data column named by the value of
+col.flagc (default is flag) is not used.
+
+In the returned table, N.discarded is the difference in number of
+    subjects since previous step. If two is reported, it can mean
+    that the remaining one observation of these two subjects are
+    discarded due to this flag. The majority of the samples can
+    have been discarded by earlier flags.
 }
 \examples{
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 dt.flags <- data.frame(
-  flagn=10,
-  flagc="Below LLOQ",
-condition=c("BLQ==1"))
-pk <- flagsAssign(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
-unique(pk[,c("flagn","flagc","flagn")])
+       flagn=10,
+       flagc="Below LLOQ",
+       condition=c("BLQ==1")
+)
+pk <- flagsAssign(pk,dt.flags,subset.data="EVID==0",col.flagn="flagn",col.flagc="flagc")
+pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing",
+        col.flagn="flagn",col.flagc="flagc")
+unique(pk[,c("EVID","flagn","flagc","BLQ")])
 flagsCount(pk[EVID==0],dt.flags,col.flagn="flagn",col.flagc="flagc")
 }
 \seealso{

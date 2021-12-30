@@ -1,3 +1,7 @@
+;; emacs backup
+\.\#*
+\#*\#
+;; other
 \.Rproj.user
 \.Rhistory
 \.RData

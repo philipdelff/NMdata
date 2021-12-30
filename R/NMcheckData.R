@@ -1,0 +1,703 @@
+##' Check data for Nonmem compatibility
+##'
+##' Check data in various ways for compatibility with Nonmem. Some
+##' findings will be reported even if they will not make Nonmem fail
+##' but because they are typical dataset issues.
+##' 
+##' @param data The data to check. data.frame, data.table, tibble,
+##'     anything that can be converted to data.table.
+##' @param file Alternatively to checking a data object, you can use
+##'     file to specify a control stream to check. This can either be
+##'     a (working or non-working) input control stream or an output
+##'     control stream. In this case, NMdataCheck checks column names
+##'     in data against control stream (see NMcheckColnames), reads
+##'     the data as NONMEM would do, and do the same checks on the
+##'     data as NMdataCheck would do using the data argument. The file
+##'     argument is useful for debugging a Nonmem model.
+##' @param covs columns that contain subject-level covariates. They
+##'     are expected to be non-missing, numeric and not varying within
+##'     subjects.
+##' @param covs.occ A list specifying columns that contain
+##'     subject:occasion-level covariates. They are expected to be
+##'     non-missing, numeric and not varying within combinations of
+##'     subject and occasion. covs.occ=list(PERIOD=c("FED")) means
+##'     that FED is the covariate, while PERIOD indicates the
+##'     occasion.
+##' @param cols.num Columns that are expected to be present, numeric
+##'     and non-NA.
+##' @param col.id The name of the column that holds the subject
+##'     identifier. Default is "ID".
+##' @param col.time The name of the column holding actual time.
+##' @param col.flagn Optionally, the name of the column holding
+##'     numeric exclusion flags. Default value is FLAG and can be
+##'     configured using NMdataConf. Disable by using col.flagn=FALSE.
+##' @param col.row A column with a unique value for each row. Such a
+##'     column is recommended to use if possible. Default ("ROW") can
+##'     be modified using NMdataConf.
+##' @param na.strings Strings to be accepted when trying to convert
+##'     characters to numerics. This will typically be a string that
+##'     represents missing values. Default is "." even though most
+##'     users will use actual NA (NA_character), i.e. not a
+##'     string. See ?NMisNumeric.
+##' @param return.summary If TRUE (not default), the table summary
+##'     that is printed if quiet=FALSE is returned as well. In that
+##'     case, a list is returned, and the findings are in an element
+##'     called findings.
+##' @param quiet Keep quiet? Default is not to.
+##' @param as.fun The default is to return data as a data.frame. Pass
+##'     a function (say tibble::as_tibble) in as.fun to convert to
+##'     something else. If data.tables are wanted, use
+##'     as.fun="data.table". The default can be configured using
+##'     NMdataConf.
+##' @details The following checks are performed. The term "numeric"
+##'     does not refer to a numeric representation in R, but
+##'     compatibility with Nonmem. The character string "2" is in this
+##'     sense a valid numeric, "id2" is not.  \itemize{
+##'
+##' \item Column
+##'     names must be unique and not contain special characters
+##' 
+##' \item If an exclusion flag is used (for ACCEPT/IGNORE in Nonmem),
+##'     elements must be non-missing and integers. If an exclusion
+##'     flag is found, the rest of the checks are performed on rows
+##'     where that flag equals 0 (zero) only.
+##'
+##' \item If a unique row identifier is found, it has to be
+##' non-missing, increasing integers. 
+##'
+##' \item col.time (TIME),
+##'     EVID, ID, CMT, MDV: If present, elements must be non-missing
+##'     and numeric.
+##'
+##' \item col.time (TIME) must be non-negative
+##'
+##' \item EVID must be in {0,1,2,3,4}
+##'
+##' \item CMT must be positive integers. However, can be missing or zero for EVID==3.
+##'
+##' \item MDV must be the binary (1/0) representation of is.na(DV)
+##'
+##' \item AMT must be 0 or NA for EVID 0 and 2
+##'
+##' \item AMT must be positive for EVID 1 and 4
+##'
+##' \item DV must be numeric
+##'
+##' \item DV must be missing for EVID in {1,4}.
+##'
+##' \item If found, RATE must be a numeric, equaling -2 or non-negative for dosing events.
+##'
+##' \item If found, SS must be a numeric, equaling 0 or 1 for dosing records.
+##'
+##' \item If found, ADDL must be a non-negative integer for dosing
+##' records. II must be present.
+##'
+##' \item If found, II must be a non-negative integer for dosing
+##' records. ADDL must be present.
+##'
+##' \item ID must be positive and values cannot be disjoint (all
+##'     records for each ID must be following each other. This is
+##'     technically not a requirement in Nonmem but most often an
+##'     error. Use a second ID column if you deliberately want to
+##'     soften this check)
+##'
+##' \item TIME cannot be decreasing within ID, unless EVID in {3,4}.
+##'
+##' \item all ID's must have doses (EVID in {1,4})
+##'
+##' \item all ID's must have observations (EVID==0)
+##'
+##' \item If a unqique row identifier is used, this must be
+##'     non-missing, increasing, integer
+##'
+##' \item Character values must not contain commas (they will mess up
+##'     writing/reading csv)
+##'
+##' \item Columns specified in covs argument must be non-missing,
+##'     numeric and not varying within subjects.
+##' 
+##' \item Columns specified in covs.occ must be
+##'     non-missing, numeric and not varying within combinations of
+##'     subject and occasion.
+##'
+##' \item Columns specified in cols.num must be present, numeric
+##'     and non-NA.
+##'
+##' }
+##'
+##'
+##' 
+##' @import data.table
+##' @export
+
+
+NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="TIME",col.flagn,col.row,na.strings,return.summary=FALSE,quiet=FALSE,as.fun){
+
+    
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+
+    . <- NULL
+    ADDL <- NULL
+    AMT <- NULL
+    CMT <- NULL
+    DV <- NULL
+    EVID <- NULL
+    ID.jump <- NULL
+    ID <- NULL
+    II <- NULL
+    MDVDV <- NULL
+    MDV <- NULL
+    N <- NULL
+    Nrep <- NULL
+    RATE <- NULL
+    ROW <- NULL
+    SS <- NULL
+    column <- NULL
+    check <- NULL
+    checkTimeInc <- NULL
+    cov <- NULL
+    newID <- NULL
+    isnewID <- NULL
+    level <- NULL
+    occ <- NULL
+    reset <- NULL
+    variable <- NULL
+    
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+
+
+#### Section start: Checks of arguments ####
+
+
+    if(missing(covs)) covs <- NULL
+    if(missing(covs.occ)) covs.occ <- NULL
+    if(missing(cols.num)) cols.num <- NULL
+    if(missing(na.strings)) na.strings <- "."
+    if(missing(col.row)) {
+        col.row <- NULL
+    }
+    col.row <- NMdataDecideOption("col.row",col.row)
+    if(missing(as.fun)) as.fun <- NULL
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    if(missing(col.flagn)) col.flagn <- NULL
+    col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
+    if(missing(file)) file <- NULL
+
+    if(!is.null(covs) && !is.character(covs)) {
+        messageWrap("covs must be a character vector or a string.",fun.msg=stop)
+    }
+    if(!is.null(cols.num) && !is.character(cols.num)) {
+        messageWrap("cols.num must be a character vector or a string.",fun.msg=stop)
+    }
+    if(!is.null(covs.occ)){
+        if(!is.null(covs.occ)) {
+            if( !is.list(covs.occ) || is.data.frame(covs.occ)) {
+                messageWrap("covs.occ must be a list and not a data.frame.",fun.msg=stop)
+            }
+            if(is.null(names(covs.occ)) || ""%in%gsub(" ","",names(covs.occ))){
+                messageWrap("covs.occ must be a named list.",fun.msg=stop)
+            }
+            if(!(all(sapply(covs.occ,is.character)))){
+                messageWrap("covs.occ must be a named list of character vectors or strings.",fun.msg=stop)
+            }
+        }
+    }
+    
+
+    
+    if(is.null(file)){
+        if(!is.data.frame(data)) stop("Data must be inheriting from data.frame (meaning that more advanced classes like data.table and tibble are OK.")
+        data <- copy(as.data.table(data))
+        ## for reference as data is edited
+        cnames.data.0 <- colnames(data)
+        
+        if(!col.id %in%cnames.data.0) {stop("col.id must point to an existing column in data. If you don't have one, you can create a dummy column with a constant value.")}
+
+    }
+
+### file mode?
+    if(!is.null(file)){
+        col.id <- "ID"
+        use.rds <- FALSE
+        quiet <- FALSE
+        file.mod <- NULL
+        res <- NMcheckDataFile(file=file,col.time=col.time,col.flagn=col.flagn,col.row=col.row,col.id=col.id,na.strings=na.strings,use.rds=use.rds,quiet=FALSE,file.mod=file.mod,as.fun=as.fun)
+        return(invisible(res))
+    }
+    
+
+### Section end: Checks of arguments
+
+
+    
+
+
+### row counter
+    c.row <- tmpcol(data,base="row",prefer.plain=TRUE)
+    data[,(c.row):=.I]
+
+### save original col.id and col.row
+    if(!is.null(col.row)&&col.row%in%colnames(data)){
+        col.row.orig <- tmpcol(data,base="row.orig",prefer.plain=TRUE)
+        data[,(col.row.orig):=get(col.row)]
+    }
+    if(col.id%in%colnames(data)){
+        col.id.orig <- tmpcol(data,base="id.orig",prefer.plain=TRUE)
+        data[,(col.id.orig):=get(col.id)]
+    }
+    
+
+    NMasNumeric <- function(x,warn=F) {
+        if(warn){
+            as.numeric(as.character(x))
+        } else {
+            suppressWarnings(as.numeric(as.character(x)))
+        }
+    }
+
+    ## listEvents is for row-level findings
+    ## @param col is the actual column to be used for the condition
+    ## @param name 
+    ## @param fun if fun does not return TRUE, we have a finding.
+    ## @param colname is the column name reported to user.
+
+    ## @param new.rows.only. For nested criteria. Say that CMT is not
+    ## @param col.required Include a finding if column not found?
+    ## numeric for row 10. Then don't report that it is not an integer
+    ## too.
+    listEvents <- function(col,name,fun,colname=col,dat=data,events=NULL,invert=FALSE,new.rows.only=T,quiet=FALSE,col.required=TRUE,debug=F,...){
+        if(debug) browser()
+
+        if(!col%in%colnames(dat)){
+            if(col.required){
+                if(events[check=="Column not found"&column==colname&level=="column",.N]==0){
+                    events <- rbind(events,
+                                    data.table(check="Column not found",column=colname,level="column")
+                                   ,fill=TRUE) }
+            }
+            return(events)
+        }
+        
+        
+        if(invert){
+            rows <- dat[fun(get(col),...)==TRUE,get(c.row)]
+        } else {
+            rows <- dat[fun(get(col),...)==FALSE,get(c.row)]
+        }
+
+        if(length(rows)==0) {
+            res <- data.table(check=name,column=colname,row=NA,level="row")[0]
+        } else {
+            
+            if(new.rows.only&&!is.null(events)){
+                rows <- setdiff(rows,events[column==colname,row])
+            }
+            res <- data.table(check=name,column=colname,row=rows,level="row")
+        }
+        rbind(events,res,fill=TRUE)
+    }
+
+    
+    findings <- data.table(check="is NA",column="TIME",row=0,level="row")[0]
+
+####### Checking column names
+    cnames <- colnames(data)
+### Duplicate column names
+    Ntab.cnames <- data.table(col=cnames)[,.N,by=.(col)]
+    dt.dups <- Ntab.cnames[N>1]
+    if(nrow(dt.dups)){
+        warning("Duplicate column names found. Please fix. Other checks may be affected.")
+        findings <- rbind(findings,
+                          data.table(check="Non-unique column names",column=dt.dups[,col],row=NA_integer_,level="column"))
+    }
+
+
+### special chars in col names
+    are.cols.num <- sapply(data,NMisNumeric,na.strings=na.strings)
+    cnames.num <- colnames(data)[are.cols.num]
+    cnames.spchars <- cnames.num[grep("[[:punct:]]",cnames.num)]
+    cnames.spchars <- setdiff(cnames.spchars,c("id.orig","row.orig"))
+    if(length(cnames.spchars)>0){
+        findings <- rbind(findings,
+                          data.table(check="Special character in column name",column=cnames.spchars,row=NA_integer_,level="column"))
+    }
+
+####### End checking column names
+
+
+
+    
+### check unique row identifier
+    if(!is.null(col.row)){
+
+        findings <- listEvents(col.row,"Missing value",
+                               fun=is.na,invert=TRUE,events=findings,debug=FALSE)
+        findings <- listEvents(col.row,"Not numeric",
+                               fun=function(x)NMisNumeric(x,na.strings=na.strings),
+                               events=findings,
+                               new.rows.only=T)
+        
+        ## leading zeros if character?
+        if(col.row%in%colnames(data)&&data[,is.character(get(col.row))]){
+            findings <- listEvents(col.row,"Leading zero will corrupt merging",
+                                   fun=function(x)grepl("^0.+",x),invert=TRUE,
+                                   events=findings,debug=FALSE)
+        }
+        if(col.row%in%colnames(data)){
+            data[,(col.row):=NMasNumeric(get(col.row))]
+        }
+        
+        ## translate to numeric for rest of checks
+        
+        findings <- listEvents(col.row,"Row identifier decreasing",
+                               fun=function(x)!is.na(c(1,diff(x))) & c(1,diff(x))>0,
+                               events=findings,debug=FALSE)
+        findings <- listEvents(col.row,"Duplicated",
+                               fun=function(x)!is.na(x)&!duplicated(x),events=findings,
+                               new.rows.only=T,debug=FALSE)
+        findings <- listEvents(col.row,"Row identifier not an integer",
+                               fun=function(x)x%%1==0,events=findings,new.rows.only=T)
+    }
+    
+### check flags for NA's before subsetting on FLAG
+    if(!is.null(col.flagn)){
+        findings <- listEvents(col.flagn,"Missing value",
+                               fun=is.na,invert=TRUE,events=findings,debug=FALSE)
+        ## not sure if this should be NMisNumeric(...,each=T). I guess
+        ## something is completely wrong with the column if elements
+        ## are not numeric. But other columns are check with each=T.
+        findings <- listEvents(col.flagn,"Not numeric",
+                               fun=function(x)NMisNumeric(x,na.strings=na.strings),
+                               events=findings,
+                               new.rows.only=T)
+        findings <- listEvents(col.flagn,"col.flagn not an integer",
+                               fun=function(x)x%%1==0,events=findings,
+                               new.rows.only=)
+        if(col.flagn%in%colnames(data)){
+
+### Done checking flagn. For rest of checks, only consider data where col.flagn==0
+            data[,(col.flagn):=NMasNumeric(get(col.flagn))]
+            if(is.numeric(data[,get(col.flagn)])){
+                data <- data[get(col.flagn)==0]
+            }
+        }
+    }
+
+
+#### Section start: commas in character columns ####
+    
+    cols.char <- colnames(data)[!are.cols.num]
+    newfinds <- rbindlist(
+        lapply(cols.char,listEvents,name="Comma in character string",fun=function(x)grepl(",",x),invert=TRUE,debug=FALSE)
+    )
+    findings <- rbind(findings,
+                      newfinds
+                     ,fill=TRUE)
+
+### Section end: commas in character columns
+    
+
+    ## a new row counter for internal use only. It matches the data we
+    ## are checking but not the data supplied by user.
+    rowint <- tmpcol(data,base="ROWINT",prefer.plain=TRUE)
+    data[,(rowint):=.I]
+
+    
+######## Default numeric columns. Will be checked for presence, NA, non-numeric (col-level)
+### Others that: If column present, must be numeric, and values must be non-NA. Remember eg DV, CMT and AMT can be NA.
+    cols.num.all <- c( col.time,"EVID","ID","MDV",
+                      cols.num,covs,names(covs.occ),as.character(unlist(covs.occ)))
+    
+### check for missing in cols.num.all
+    
+    for(col in cols.num.all){
+        findings <- listEvents(col,name="is NA",fun=is.na,invert=TRUE,new.rows.only=T,debug=FALSE,events=findings) 
+        findings <- listEvents(col,name="Not numeric",
+                               fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+                               new.rows.only=TRUE,events=findings)
+    }
+    
+###### checks on cols.num.all before converting to numeric
+### if col.row or ID are characters, they must not have leading zeros.
+    ## Check ID for leading zeros before converting to numeric
+    
+    if(col.id%in%colnames(data)&&data[,is.character(get(col.id))]){
+        
+        findings <- listEvents(col.id,"Leading zero will corrupt merging",
+                               fun=function(x)grepl("^0.+",x),invert=T,
+                               events=findings,debug=FALSE)
+    }
+
+    cols.num.all <- intersect(cols.num.all,cnames.data.0)
+##### Done checking required columns for NMisNumeric. overwrite cols.num.all with NMasNumeric of cols.num.all.
+    data[,(cols.num.all):=lapply(.SD,NMasNumeric),.SDcols=cols.num.all]
+
+    
+### col.time must be positive
+    findings <- listEvents(col.time,"Negative time",fun=function(x)x>=0,events=findings,debug=F)
+
+### EVID must be in c(0,1,2,3,4)
+    findings <- listEvents("EVID","EVID in 0:4",function(x) x%in%c(0:4),events=findings)
+    
+### ID must be a positive integer
+    findings <- listEvents("ID","ID not a positive integer",
+                           fun=function(x)x>0&x%%1==0,events=findings,
+                           new.rows.only=T)
+
+    
+### MDV should perfectly reflect is.na(DV)
+    if("MDV"%in%colnames(data)){
+        
+        data[,MDVDV:=!is.na(MDV)&MDV==as.numeric(is.na(DV))]
+        findings <- listEvents("MDVDV","MDV does not match DV",colname="MDV",fun=function(x)x==TRUE,events=findings)
+    }
+
+###  columns that are required for all rows done
+
+#### all other required columns (NA elements OK). Run NMisNumeric for each element, then translate using NMasNumeric
+    cols.req <- cc(CMT,DV,AMT)
+    newfinds <- rbindlist( lapply(cols.req,listEvents,name="Not numeric",
+                                  fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+                                  new.rows.only=T)
+                          )
+    findings <- rbind(findings,
+                      newfinds
+                     ,fill=TRUE)
+    data[,(cols.req):=lapply(.SD,NMasNumeric),.SDcols=cols.req]
+
+### CMT must be a positive integer. It can be missing for CMT=3
+    findings <- listEvents("CMT","Missing for EVID!=3",
+                           fun=is.na,invert=TRUE,events=findings,
+                           dat=data[EVID%in%c(1,2,4)])
+    ## For EVID!=3, must be a positive integer 
+    findings <- listEvents("CMT","CMT not a positive integer",
+                           fun=function(x)x>0&x%%1==0,events=findings,
+                           dat=data[EVID%in%c(1,2,4)],
+                           new.rows.only=T)
+    ## For EVID==3, if CMT not missing, must be 0 or a positive integer
+    findings <- listEvents("CMT","CMT not a positive integer",
+                           fun=function(x)x>=0&x%%1==0,events=findings,
+                           dat=data[EVID%in%c(3)&!is.na(CMT)]
+                           )
+    
+
+
+
+###### DV
+### DV must be present
+### DV must be numeric for EVID==0
+    findings <- listEvents("DV","DV not numeric",fun=is.na,events=findings,invert=TRUE,dat=data[EVID%in%c(0)])
+
+### DV should be NA for dosing records
+    findings <- listEvents("DV","DV not NA in dosing recs",fun=is.na,events=findings,dat=data[EVID%in%c(1,4)])
+
+
+#### AMT
+    ## must be numeric
+    findings <- listEvents("AMT",name="Not numeric",
+                           fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+                           events=findings,                           
+                           dat=data) 
+    ## positive for EVID 1 and 4
+    findings <- listEvents("AMT","Non-positive dose amounts",
+                           fun=function(x)x>=0,events=findings,
+                           dat=data[EVID%in%c(1,4)])
+    ## must be 0 or NA for EVID 0 and 2
+    findings <- listEvents("AMT","Non-zero dose for obs or sim record",
+                           fun=function(x)is.na(x)|x==0,
+                           events=findings,
+                           dat=data[EVID%in%c(0,2)])
+    
+
+### optional default columns - RATE, SS, ADDL, II
+    cols.opt <- cc(RATE,SS,II,ADDL)
+    for(col in cols.opt){
+        findings <- listEvents(col,name="Not numeric",
+                               fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+                               events=findings,
+                               col.required=FALSE,
+                               dat=data)
+    }
+    cols.opt.found <- intersect(cols.opt,colnames(data))
+    if(length(cols.opt.found)>0){
+        data[,(cols.opt.found):=lapply(.SD,NMasNumeric),.SDcols=cols.opt.found]
+    }
+    
+    ## RATE -2 or positive for EVID%in%c(1,4)
+    findings <- listEvents("RATE","Must be -2 or non-negative",
+                           fun=function(x)x==-2|x>=0,events=findings,
+                           col.required=FALSE,
+                           dat=data[EVID%in%c(1,4)])        
+    
+    ## SS 0 or 1
+    findings <- listEvents("SS","must be 0 or 1",
+                           col.required=FALSE,
+                           fun=function(x)x%in%c(0,1),events=findings
+                           )
+    
+    
+
+    if("ADDL"%in%colnames(data)){
+        ## ADDL only makes sense together with II
+        findings <- listEvents("II",name="(This label will not be used)",
+                               fun=function(x)TRUE,
+                               events=findings,
+                               col.required=TRUE,
+                               dat=data[EVID%in%c(1,4)]) 
+
+        findings <- listEvents("ADDL","Must be a non-negative integer",
+                               fun=function(x)x>=0&x%%1==0,events=findings,
+                               dat=data[EVID%in%c(1,4)],
+                               new.rows.only=T)
+    }
+
+
+    if("II"%in%colnames(data)){
+        ## II only makes sense together with II
+        findings <- listEvents("ADDL",name="(This label will not be used)",
+                               fun=function(x)TRUE,
+                               events=findings,
+                               col.required=TRUE,
+                               dat=data[EVID%in%c(1,4)])         
+
+        findings <- listEvents("II","Must be a non-negative integer",
+                               fun=function(x)x>=0&x%%1==0,events=findings,
+                               new.rows.only=T,
+                               dat=data[EVID%in%c(1,4)])
+    }    
+    
+
+######## End Default columns
+
+
+    ## ID-level checks
+### Warning if the same ID is in non-consequtive rows
+    data[,ID.jump:=c(0,diff(get(rowint))),by=col.id]
+    findings <- listEvents("ID.jump",colname="ID",name="ID disjoint",fun=function(x) x<=1,events=findings)
+
+### within ID, time must be increasing. Unless EVID%in% c(3,4) or events are jumped
+    data[,newID:=ID]
+    if(col.time%in%colnames(data)){
+        
+        data[,isnewID:=get(col.id)!=shift(get(col.id),n=1)]
+        data[1,isnewID:=TRUE]
+        data[,reset:=EVID%in%c(3,4)]
+        data[,newID:=cumsum(as.numeric(isnewID)+as.numeric(reset))]
+        data[,checkTimeInc:=c(TRUE,diff(get(col.time))>=0),by=.(newID)]
+        
+        findings <- listEvents(col="checkTimeInc",name="Time decreasing",fun=function(x) x==TRUE,
+                               colname="TIME",events=findings)
+    }
+    
+    
+    data[,Nrep:=.N,by=intersect(c("newID","CMT","EVID",col.time),colnames(data))]
+    findings <- listEvents(col="Nrep",name="Duplicated event",function(x) x<2,colname="ID, CMT, EVID, TIME",events=findings)
+
+    if("EVID"%in%colnames(data)){
+### subjects without doses
+        all.ids <- data[,unique(get(col.id.orig))]
+        tab.evid.id <- data[,.N,by=c(col.id.orig,"EVID")]
+        ids.no.doses <- setdiff(all.ids,tab.evid.id[EVID%in%c(1,4),get(col.id.orig)])
+
+        if(length(ids.no.doses)>0){
+            findings <- rbind(findings ,
+                              data.table(check="Subject has no doses",column="EVID",ID=ids.no.doses,level="ID") ,
+                              fill=TRUE)
+        }
+### subjects without observations    
+        ids.no.obs <- setdiff(all.ids,tab.evid.id[EVID%in%c(0),get(col.id.orig)])
+        if(length(ids.no.obs)>0){
+            findings <- rbind(findings
+                             ,
+                              data.table(check="Subject has no obs",column="EVID",ID=ids.no.obs,level="ID")
+                             ,fill=TRUE)
+        }
+    }
+
+
+##### Section start: Covariates ####
+
+    
+### Subject-level
+    list.findings.covs <- lapply(covs,function(cov){
+        ncomb.cov <- unique(data[,c(col.id,cov),with=FALSE])[,.N,by=c(col.id)]
+        non.covs <- ncomb.cov[N>1,c(col.id),with=FALSE]
+        non.covs[,`:=`(column=cov,check="Cov not unique within ID",level="ID")]
+        non.covs        
+    })
+    if(length(list.findings.covs)>0){
+        findings <- rbind(findings,rbindlist(list.findings.covs),fill=TRUE)
+    }
+    
+
+### Occasion-level
+    
+    ##  syntax:   covs.occ=list(PERIOD=c("FED"))
+    all.occ.covs <- rbindlist(lapply(names(covs.occ),function(occ)data.table(occ=occ,cov=covs.occ[[occ]])))
+    all.occ.covs[,ROW:=.I]
+    if(nrow(all.occ.covs)>0){
+        findings.occ <- all.occ.covs[,{
+            obs.cov <- data[,c(col.id,occ,cov),with=F]
+            ncomb.cov <- unique(obs.cov)[,.N,by=c(col.id,occ)]
+            ncomb.cov <- ncomb.cov[N>1,c(col.id),with=FALSE]
+            ncomb.cov[,`:=`(column=paste(occ,cov,sep=", "),level="ID-occasion",check="Cov not unique within ID-occ")]
+            ncomb.cov
+        },by=.(ROW)]
+        
+                                        # findings.occ <- rbindlist(list.findings.occ)
+        findings.occ[,ROW:=NULL]
+        if(length(findings.occ)>0){
+            findings <- rbind(findings,findings.occ,fill=TRUE)
+        }    
+    }
+    
+
+    
+### Section end: Covariates
+
+
+
+
+    
+### Add ID's to row-level findings
+    findings.row <- findings[level=="row"]
+    if(!is.null(col.id)&&nrow(findings.row)>0){
+        if(col.id%in%colnames(findings.row)) findings.row[,(col.id):=NULL]
+        
+        findings.row <- mergeCheck(findings.row,data[,c(c.row,col.id.orig),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop,quiet=TRUE)
+        setnames(findings.row,col.id.orig,col.id)        
+        findings <- rbind(findings[level!="row"],findings.row,fill=T)
+        
+    }
+
+    
+    if(nrow(findings)==0) {
+        message("No findings. Great!")
+        summary.findings <- NULL
+    } else {
+### use the row identifier for reporting
+        if(!is.null(col.row)&&col.row%in%colnames(data)){
+            
+            findings <- mergeCheck(findings,data[,c(c.row,col.row.orig),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop,quiet=TRUE)
+            setnames(findings,col.row.orig,col.row)
+        }
+        if(!col.id%in%colnames(findings)) findings[,(col.id):=NA_real_]
+        setcolorder(findings,c(c.row,col.id,"column","check"))
+        setorderv(findings,c(c.row,"column","check"))
+
+        
+        summary.findings <- findings[,.(.N,Nid=uniqueN(get(col.id)[!is.na(get(col.id))])),by=.(column,check)]
+        
+        if(!quiet) print(summary.findings,row.names=FALSE)
+
+    }
+    findings <- as.fun(findings)
+
+    res <- findings
+    if(return.summary){
+        res <- list(findings=findings,summary=summary.findings)
+    }
+    return(invisible(res))
+
+}
+

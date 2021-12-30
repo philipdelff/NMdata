@@ -25,6 +25,8 @@
 ##'     this is in one element, called data, and meta is another
 ##'     element. If not, only the data is
 ##'     returned.
+##' @examples
+##' tabs1 <- NMscanTables(system.file("examples/nonmem/xgxr001.lst", package="NMdata"))
 ##' @family DataRead
 ##' @import data.table
 ##' @export

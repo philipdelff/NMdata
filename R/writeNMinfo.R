@@ -14,10 +14,11 @@ writeNMinfo <- function(data,meta,append=FALSE,byRef=TRUE){
 
     
     if(append) {
-        meta.0 <- meta
-        meta <- NMinfo(data)
-        meta <- meta[setdiff(names(meta),names(meta.0))]
-        meta <- append(meta,meta.0)
+        
+        meta.new <- meta
+        meta.0 <- NMinfoDT(data)
+        meta.0 <- meta.0[setdiff(names(meta.0),names(meta.new))]
+        meta <- append(meta.0,meta.new)
     }
 
     if(byRef){

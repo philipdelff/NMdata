@@ -1,9 +1,71 @@
 # NMdata 0.0.10
-* Bugfix in NMwriteData. The datafile is now correctly included in the
-  $DATA suggestion for Nonmem. No impact on data file output.
+* NMcheckData is a new function that checks data for Nonmem
+  compatibility in numerous ways. It returns a list of all findings
+  making it easy to identify the location of each issue in the
+  data. See the man page of NMcheckData for a complete list of the
+  checks that are done. The function does not modify data in any way,
+  and it is a very simple and easy step to avoid many problems in
+  Nonmem. NMcheckData can check a data object in R, and it can also
+  check how a control stream reads data and then do all the
+  checks. The latter provides an extensive check of potential issues
+  related to data and getting it into NONMEM. Great for both deugging
+  and QC.
 
-* Change of column name from DATA to INPUT in NMcheckColumns in order
-  to match $INPUT in the control streams.
+* NMwriteSection has been updated with a few very useful
+  features. Namely these are related to updating multiple nonmem files
+  at once. The user can now supply multiple paths, regular expressions
+  for finding files (like pattern in list.files) and even input data
+  files for nonmem models to match. This is very useful when updating
+  many models after modifying input data. You can specify say all
+  models in a directory names like pd*.mod where * is anything (in
+  regular expressions this would be "pd.+\\.mod") and only the using
+  the data file that was just written. Since NMwriteData generates the
+  $INPUT for you, you just need to add one line to get the update of
+  all your models automatically.
+
+* flagsAssign has got a few updates related to separate handling of
+  different types of events. Often, this will be used to assign flags
+  to observations, doses etc. separately. You can easily speficy a
+  subset of data to run flagsAssign on, and it will by default check
+  for whether values of EVID are unique. This is similar to what
+  flagsCount does.
+
+* NMgenText is a new function that provides the generation of $INPUT
+  and $DATA. This used to be part of NMwriteData. NMwriteData still
+  calls NMgenText but the separation of the two functionalities allows
+  for more inituitive separate uses of one dataset for different
+  models. 
+  
+* NMcompareCols now takes the argument "cols.wanted" which is a
+  character vector of column names of special interest. Helpful when
+  building a data set with specific column names in mind.
+
+* NMextractDataFile is a function that identifies the input datafile
+  used by a Nonmem model. It reports the string as in the Nonmem
+  control stream, file path and whether the file exists. It also looks
+  for the corresponding rds files. The function is not new in NMdata
+  but was not exported until 0.0.10.
+
+* egdt now reports dimensions of the two data sets to combine and the
+  resulting data. Can be disabled with quiet argument.
+
+* NMcheckColumns Change of column name from DATA to INPUT in order to
+  match $INPUT in the control streams.
+
+* NMreadSection is now case insensitive in the section specification
+  (i.e. "input" is the same as "INPUT").
+
+## Bugfixes 
+* In NMwriteData the datafile is now correctly included in the $DATA
+  suggestion for Nonmem. No impact on data file output.
+
+* Bugfix in NMscanData related to searching for candidates for unique
+  row identifiers.
+
+* In compareCols multiple classes of single columns would give a
+  warning and sometimes confusing overview of columns. Fixed.
+  
+* findCovs fixed in ordering output when by argument is of length > 1
 
 # NMdata 0.0.9
 The only change from 0.0.8 is a patch provided by Matt Dowle ensuring
@@ -256,12 +318,12 @@ This release features numerous improvements to especially the
 NMscanData function. The work is mainly focused around use without a
 row identifier. Even without a row identifier, NMscanData should now
 work for the vast majority of models, including merging with input and
-recovering rows. 
+recovering rows.
 
-An attribute called `vars` has been added to the NMdata objects coming out of
-NMscanData. It features a table of the columns in the returned object
-and information about where they originate from. More work is still to
-be done on this, but hopefully it is useful already.
+An attribute called `vars` has been added to the NMdata objects coming
+out of NMscanData. It features a table of the columns in the returned
+object and information about where they originate from. More work is
+still to be done on this, but hopefully it is useful already.
 
 NMwriteData: Added support for passing arguments to saveRDS.
 
@@ -269,7 +331,10 @@ Last but far from least is a new vignette on using NMscanData. Check
 it out with vignette("NMscanData").
 
 # NMdata 0.0.2
-This release contains bugfixes and experimental support for merging nonmem input and output data without a row identifier. 
+This release contains bugfixes and experimental support for merging
+nonmem input and output data without a row identifier.
 
-A clearer cut has been made between the pmxtricks package (version 0.0.10) and NMdata. The packages should not overlap in exported functionality, and they do not depend on each other.
+A clearer cut has been made between the pmxtricks package (version
+0.0.10) and NMdata. The packages should not overlap in exported
+functionality, and they do not depend on each other.
 

@@ -8,10 +8,11 @@ mergeCheck(
   df1,
   df2,
   by,
-  as.fun = NULL,
   fun.commoncols = base::warning,
   ncols.expect,
   track.msg = FALSE,
+  quiet,
+  as.fun,
   ...
 )
 }
@@ -23,11 +24,7 @@ ordered like df1.}
 \item{df2}{A data.frame that will be merged onto df1.}
 
 \item{by}{The column(s) to merge by. Character string
-(vector). Must be supplied.}
-
-\item{as.fun}{The default is to return a data.table if df1 is a
-data.table and return a data.frame in all other cases. Pass a
-function in as.fun to convert to something else.}
+(vector). by or by.x and by.y must be supplied.}
 
 \item{fun.commoncols}{If common columns are found in df1 and df2,
 and they are not used in by, this will create columns named
@@ -47,8 +44,15 @@ column more than df1 - if not, an error will be returned.}
 can be useful to use track.msg=TRUE. This will add information
 to messages/warnings/errors that they came from mergCheck.}
 
-\item{...}{additional arguments passed to merge. If all is among
-them, an error will be returned.}
+\item{quiet}{If FALSE, the names of the added columns are
+reported. Default value controlled by NMdataConf.}
+
+\item{as.fun}{The default is to return a data.table if df1 is a
+data.table and return a data.frame in all other cases. Pass a
+function in as.fun to convert to something else.}
+
+\item{...}{additional arguments passed to data.table::merge. If
+all is among them, an error will be returned.}
 }
 \value{
 a data.frame resulting from merging df1 and df2. Class as

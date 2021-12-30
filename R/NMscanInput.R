@@ -88,7 +88,7 @@ NMscanInput <- function(file, use.rds, file.mod,
     result <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
-
+    
     
 ### the lst file only contains the name of the data file, not the path to it. So we need to find the .mod instead.
 
@@ -124,14 +124,15 @@ NMscanInput <- function(file, use.rds, file.mod,
         file.find.data <- file.mod(file)
 
         if(!file.exists(file.find.data)) {
-            messageWrap("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument. Input data not used.",fun.msg=warning)
+            
+            messageWrap("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument.  Input data not used.",fun.msg=warning)
         }
 
     }
 
 
     ## identify the data file name and additional info
-    info.datafile <- NMextractDataFile(file=file.find.data,dir.data)
+    info.datafile <- NMextractDataFile(file=file.find.data,dir.data,file.mod=file.mod)
     
     type.file <- NA_character_
     if(use.rds && info.datafile$exists.file.rds){
@@ -166,11 +167,7 @@ NMscanInput <- function(file, use.rds, file.mod,
 
     
 ### cnames.input is the names of columns as in input data file
-    data.input <- NMtransInp(data.input,file,translate=translate)
-    ## dt.colnames <- data.input$dt.colnames
-    ## data.input <- data.input$data
-    ## data.filters <- data.input$filters
-    
+    data.input <- NMtransInp(data.input,file,translate=translate)    
     
     col.id.inp <- col.id
     if(translate){
@@ -179,11 +176,12 @@ NMscanInput <- function(file, use.rds, file.mod,
     }
 
     as.fun <- NMdataDecideOption("as.fun",as.fun)
-        
+    
     if(details){
         
-        meta <- NMinfoDT(data.input)
-
+        meta <- list()
+        meta$datafile <- info.datafile
+        
         meta$tables <- data.table(
             source="input",
             file=path.data.input,
@@ -202,6 +200,8 @@ NMscanInput <- function(file, use.rds, file.mod,
         if(!is.null(col.id)){
             meta$tables$has.col.id <- col.id%in%meta$input.colnames[,result]
         }
+
+        meta <- append(meta,NMinfoDT(data.input))
         
         setcolorder(meta$tables,intersect(c("source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype","file.mtime","file"),colnames(meta$tables)))
 
@@ -216,8 +216,9 @@ NMscanInput <- function(file, use.rds, file.mod,
         data.input <- as.fun(data.input)
         writeNMinfo(data.input,meta,byRef=TRUE)
         return(data.input)
+    } else {
+        data.input <- as.fun(data.input)
     }
-
-    data.input <- as.fun(data.input)
+    
     return(data.input)
 }

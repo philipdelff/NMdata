@@ -75,6 +75,7 @@ NMextractText <- function(file, lines, text, section, char.section,
     }
 
     
+    
     if(!return%in%c("idx","text")) stop("text must be one of text or idx.")
     
     ## works with both .mod and .lst

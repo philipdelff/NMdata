@@ -96,6 +96,7 @@ NMreadSection(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"),sec
 \seealso{
 Other Nonmem: 
 \code{\link{NMapplyFilters}()},
+\code{\link{NMgenText}()},
 \code{\link{NMreadSection}()},
 \code{\link{NMwriteData}()},
 \code{\link{NMwriteSection}()}

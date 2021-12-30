@@ -46,12 +46,12 @@ and input data. Set this to FALSE if you are in an environment where time
 stamps cannot be relied on.
 
 \item{col.flagc} The name of the column containing the character
-flag values for data row omission. Default value is FLAG. Used
+flag values for data row omission. Default value is flag. Used
 by flagsAssign, flagsCount.
 
 \item{col.flagn} The name of the column containing numerical flag
 values for data row omission. Default value is FLAG. Used by
-flagsAssign, flagsCount.
+flagsAssign, flagsCount, NMcheckData. 
 
 \item{col.model} The name of the column that will hold the name of
 the model. See modelname too (which defines the values that the

@@ -18,10 +18,12 @@ summary.NMdata <- function(object,...){
     ID <- NULL
     N.ids <- NULL
     nmout <- NULL
+    NMOUT <- NULL
+    nid <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
-    data <- object
+    data <- copy(object)
     if(!"NMdata"%in%class(data)) stop("data does not seem to be of class NMdata.")
 
     ## I need to look more into this. Some operations (merge?) drop
@@ -32,10 +34,16 @@ summary.NMdata <- function(object,...){
         unNMdata(data)
         return(summary(data,...))
     }
+
     
-    if(!is.data.table(data)) data <- as.data.table(data)
+    if(!is.data.table(data)) {
+        NMi <- NMinfoDT(data)
+        data <- as.data.table(data)
+        writeNMinfo(data,NMi)
+        }
     ## derive how many subjects. Need to 
 
+    
     
     s1 <- NMinfoDT(data)
     s1$N.ids1 <- data[,list(N.ids=uniqueN(ID)),by="nmout"]
@@ -52,6 +60,14 @@ summary.NMdata <- function(object,...){
     )
     s1$N.ids1 <- NULL
 
+    
+    if(s1$details$input.used){
+        Nids.out <- s1$N.ids[NMOUT=="Output",N.ids]
+        if(length(Nids.out)==1){
+            s1$tables[,nid:=Nids.out]
+        }
+    }
+    
     s1$N.rows <- data[,list(N.rows=.N),by="nmout"]
     s1$N.evids <- NA
     if("EVID"%in%colnames(data)){
@@ -62,6 +78,14 @@ summary.NMdata <- function(object,...){
 
     s1
 }
+
+
+### fix nid. If ID is not in output tables, the number of ID's are
+### missing even though we know all ID's that are available in
+### output are available in all output tables. So if both input
+### and output are used, we overwrite the number of ID's by the
+### number we find as nmout in result.
+
 
 ##' print method for NMdata summaries
 ##' @param x The summary object to be printed. See ?summary.NMdata
@@ -114,7 +138,7 @@ print.summary_NMdata <- function(x,...){
     vars[,included:=!is.na(COLNUM)]
     vars <- mergeCheck(vars,data.table(included=c(TRUE,FALSE),
                                        inc=c("included","not")),
-                       by="included")
+                       by="included",quiet=TRUE)
 
     
     ## calc number of used and available columns
@@ -128,7 +152,7 @@ print.summary_NMdata <- function(x,...){
     tabs.out[,tabn:=1:.N]
     ## assuming that all ID's present somewhere in output is present in all output tables
     ## tabs.out[source=="output",nid:=x$N.ids[NMOUT=="Output",N.ids]]
-    vars.sum2 <- mergeCheck(vars.sum1,tabs.out[,.(file=name,source,level,tabn,nrow,nid)],by="file",all.x=TRUE)
+    vars.sum2 <- mergeCheck(vars.sum1,tabs.out[,.(file=name,source,level,tabn,nrow,nid)],by="file",all.x=TRUE,quiet=TRUE)
 
     
     
@@ -170,7 +194,7 @@ print.summary_NMdata <- function(x,...){
     ## how many ids (broken down on output vs. input-only)
     
     n2 <- melt(x$N.rows,id.vars="nmout",variable.name="N")
-    n3 <- mergeCheck(n2,dt.nmout,by="nmout",all.x=TRUE)
+    n3 <- mergeCheck(n2,dt.nmout,by="nmout",all.x=TRUE,quiet=TRUE)
     n4 <- dcast(n3,N~NMOUT,value.var="value")
 
     N.ids <- dcast(x$N.ids,.~NMOUT,value.var="N.ids")
@@ -205,7 +229,7 @@ Nonmem data filters (not recommended).")
         ## how many rows in output (broken down on EVID)
 
         ## if rows recovered, how many (broken down on EVID)
-        evids1 <- mergeCheck(x$N.evids,dt.nmout,by="nmout",all.x=TRUE)
+        evids1 <- mergeCheck(x$N.evids,dt.nmout,by="nmout",all.x=TRUE,quiet=TRUE)
         
         evids2 <- dcast(evids1,EVID~NMOUT,value.var="N")
         evids2[is.na(evids2)] <- 0

@@ -2,7 +2,7 @@
 % Please edit documentation in R/NMcheckColnames.R
 \name{NMcheckColnames}
 \alias{NMcheckColnames}
-\title{Compare $DATA to column names in input data}
+\title{Compare $INPUT in control stream to column names in input data}
 \usage{
 NMcheckColnames(file, as.fun, ...)
 }
@@ -23,3 +23,4 @@ when seemingly inexplainable things happen. This function lines up
 input data column names with $DATA and how NMscanData will
 interpret $DATA so you can easily spot if something is off.
 }
+\concept{debug}

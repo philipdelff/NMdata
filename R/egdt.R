@@ -2,7 +2,10 @@
 ##'
 ##' @param dt1 a data.table.
 ##' @param dt2 another data.table.
-##'
+##' @param quiet The default is to give some information along the way
+##'     on what data is found. But consider setting this to TRUE for
+##'     non-interactive use. Default can be configured using
+##'     NMdataConf.
 ##' @details Merging works mostly similarly for data.table and
 ##'     data.table. However, for data.table the merge must be done by
 ##'     one or more columns. This means that the convenient way to
@@ -26,7 +29,11 @@
 
 ##' @export
 
-egdt <- function(dt1,dt2){
+egdt <- function(dt1,dt2,quiet){
+
+    if(missing(quiet)) quiet <- NULL
+    quiet <- NMdataDecideOption("quiet",quiet)
+    
     dt1 <- copy(dt1)
     dt2 <- copy(dt2)
     ## check for common columns
@@ -37,7 +44,11 @@ egdt <- function(dt1,dt2){
     dt1[,(tc):=1]
     dt2[,(tc):=1]
 
-    dt3 <- merge(dt1,dt2,by=tc,allow.cartesian = TRUE)
-    dt3[,(tc):=NULL]
-    dt3[]
+    result <- merge(dt1,dt2,by=tc,allow.cartesian = TRUE)
+    result[,(tc):=NULL]
+
+    if(!quiet){
+        print(dims(dt1,dt2,result))
+    }
+    result[]
 }

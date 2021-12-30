@@ -2,7 +2,7 @@
 % Please edit documentation in R/NMscanData.R
 \name{NMscanData}
 \alias{NMscanData}
-\title{Automatically find Nonmem tables and organize data}
+\title{Automatically find Nonmem input and output tables and organize data}
 \usage{
 NMscanData(
   file,
@@ -181,6 +181,9 @@ list of known limitations:
  \item{RECORDS}{The RECORDS option to limit the part of the input data being used is not searched for. Using merge.by.row=TRUE will work unaffectedly.}
  \item{NULL}{The NULL argument to specify missing value string in input data is not respected. If delimited input data is read (as opposed to rds files), missing values are assumed to be represented by dots (.).}
 }
+}
+\examples{
+res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"))
 }
 \seealso{
 Other DataRead: 

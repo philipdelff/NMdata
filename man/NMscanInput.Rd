@@ -2,7 +2,7 @@
 % Please edit documentation in R/NMscanInput.R
 \name{NMscanInput}
 \alias{NMscanInput}
-\title{read input data and translate column names according to the $INPUT section}
+\title{Find and read input data and optionally translate column names according to the $INPUT section}
 \usage{
 NMscanInput(
   file,

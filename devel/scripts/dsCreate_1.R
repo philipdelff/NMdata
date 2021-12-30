@@ -7,15 +7,17 @@ library(ggplot2)
 
 ### pmxtricks is only used for individual plotting, so it's not necessary. 
 ## we need to ensure a specific version of pmxtricks is used. 0.0.7 is a candidate
-
+library(remotes)
+## install_github("philipdelff/pmxtricks")
 library(pmxtricks)
 
 ## library(remotes)
 ## install_github("philipdelff/NMdata")
-library(NMdata)
+## library(NMdata)
 
-## library(devtools)
+library(devtools)
 ## load_all("c:/Users/delff/working_copies/NMdata")
+load_all("c:/Users/Philip Delff/wdirs/NMdata")
 
 NMdata_filepath <- function(...) {
     system.file(..., package = "NMdata")
@@ -85,6 +87,7 @@ dt.flags <- fread(text="FLAG,flag,condition
 
 pk[EVID==1,FLAG:=0]
 pk[EVID==1,flag:="Dosing"]
+pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing",tab.flags=dt.flags)
 
 ### OK!
 pk <- flagsAssign(pk,subset.data="EVID==0",tab.flags=dt.flags)
@@ -102,7 +105,6 @@ if(F){
     tab.count2
 ### forgetting EVID
     tab.count3 <- flagsCount(pk,dt.flags)
-
 }
 
 
@@ -110,10 +112,17 @@ pk <- pk[order(ID,TIME,CMT)]
 pk <- pk[DOSE>0]
 pk[,ROW:=.I]
 pk <- NMorderColumns(pk)
-colnames(pk)
+## colnames(pk)[24] <- "ret.4"
+## a dup col name
+## colnames(pk)[22] <- "NAME"
+## pk[2,ret.4:="3,mg"]
+
 dim(pk)
 
-pmxtricks:::NMcheckData(pk[FLAG==0])
+load_all("c:/Users/Philip Delff/wdirs/NMdata")
+
+finds <- NMcheckData(pk)
+finds <- NMcheckData(pk,col.flagn="FLAG")
 
 #### Section start: Write data to files ####
 
@@ -230,4 +239,5 @@ NMwriteSection(file.nm("xgxr001dir/input.txt"),section="DATA",newlines=sec.data.
 
 
 ###  Section end: Create xgxr001dir
+
 

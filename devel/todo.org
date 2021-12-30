@@ -1,22 +1,17 @@
 * NMdata todo
 ** Design
-*** DONE For a version 0.2.0, omit the extra variability levels
-    CLOSED: [2020-06-23 Tue 20:51]
-just provide functions to get them
+*** TODO [#B] deprecate "default" option in NMdataConf
+    has no benefit over NULL, so redundant and prevents the use of "default" as an actual param value.
 *** DONE Allow for say input.txt/output.txt
-    CLOSED: [2020-06-29 Mon 21:28]
 **** NMtransInput
 *** DONE Support for return as tibble or whatever
-    CLOSED: [2020-12-23 Wed 11:21]
 Could we use an option, NMdata.return="dplyr::as.tibble" which could then be
 reached and applied from within NMdata? It would have to not create extra
 dependencies. This solution is being tested on pmxtricks.
 *** DONE Where does NMcode2R belong?
-    CLOSED: [2020-12-23 Wed 11:21]
 It is needed in NMdata but should it be exported from NMdata?
 Conclusion: export from pmxtricks, internal in NMdata.
 *** DONE Check assign by ref inside package
-    CLOSED: [2021-04-02 Fri 11:18]
  copyOrNot <- function(data){
      data[,newcol:=1]
      }
@@ -35,74 +30,152 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
-*** TODO [#B] cc - create character vector function
+*** TODO [#B] List missing elements
+For specific columns, look for missing elements (NA, "", length(x)==0
+in case of lists?). Tabulate and list.
+*** TODO NMsummarizeData Summarize data with nonmem in mind. 
+**** Number of doses and obs per subj
+**** Dist of DV
+**** Covariates
+**** Has to take a by arg
+*** DONE NMcheckData
+**** DONE check for commas in character columns
+Implement in same style as checks of cols.num
+**** column names
+***** DONE duplicate column names
+***** DONE warning if duplicated column names
+      Other checks may be affected
+***** DONE special characters not allowed in column names
+**** DONE If col.row included, col.row increasing, unique
+**** DONE For elements that are not numeric, are the characters accepted (like na.char=".")
+**** DONE Duplicated events
+     Remember, this is between EVID 3 or 4's. What is being done for
+     checking for non-decreasing time to keep track of this should be
+     reused.
+**** Inform what columns Nonmem can use
+***** Which are numeric
+***** Which are before the first non-numeric
+**** DONE NA TIME
+**** CANCELED actual time since first dose vs Nominal time since first dose
+**** CANCELED actual time since last dose vs Nominal time since nominal dose
+**** DONE all subjects have doses?
+**** DONE All subjects have observations?
+**** Negative actual time (since first or previous dose) when corresponding nominal time is neg
+**** DONE Negative TIME
+**** negative doses
+**** DONE negative dose times
+**** negative concentrations
+**** CANCELED Nomminal dose vs actual dose
+**** DONE positive AMT for !EVID%in%c(1,4)
+**** DONE NA EVID, EVID in 1:4
+**** zero doses (will fail in nonmem)
+**** DONE TIME increasing for subjects between EVID 3 or 4
+**** tests of text file
+***** A field can't contain more than 24 characters
+*** DONE cc - create character vector function
 *** Dosing functions
 **** TODO [#B] NMcreateDoses Generate dosing schedule with loading, ADDL etc
      This is available as a suitcase function
 **** TODO [#B] Function for complex dosing regimens
 **** TODO [#B] Function to unfold ADDL/II doses to multiple rows
 *** DONE NMcheckColNames
-    CLOSED: [2021-06-10 Thu 20:20]
 **** return input column names and Nonmem interpretation for user to spot errors
 **** Bad name, what could we call it?
 *** TODO [#B] NMfreezeModels
     Remember to add chmod and describe that only a flat dir structure is supported so far
 *** DONE NMtransInp
-    CLOSED: [2021-05-20 Thu 11:29]
     Translate column names according to Nonmem. Take the code from
     NMscanInput.
 *** DONE function to replace file name extension - fnExtension
-    CLOSED: [2021-04-18 Sun 12:06]
 *** DONE summary.NMdata
-    CLOSED: [2020-12-23 Wed 11:22]
 *** DONE NMgetSection
-    CLOSED: [2020-12-23 Wed 11:25]
 *** DONE Summary of the columns - NMinfo
-    CLOSED: [2021-05-14 Fri 15:38]
     right now hidden in metadata
 *** DONE Summary of tables - NMinfo
-    CLOSED: [2021-05-14 Fri 15:38]
-*** TODO [#A] A function to check data - NMcheckData
+*** DONE A function to check data - NMcheckData
 **** DONE Find previously used code
-     CLOSED: [2021-11-23 Tue 22:05]
-**** TODO Implement checks in pmxtricks todo
+**** DONE Implement checks in pmxtricks todo
 **** TODO [#B] Implement more checks
 https://doi.org/10.1208/s12248-012-9387-9
 **** Additional checks
 ***** DONE Having NA in FLAG is dangerous
-      CLOSED: [2021-11-23 Tue 22:19]
       It makes it unclear how the filter will work
 ***** DONE AMT>0 for EVID=0 is not allowed (I believe)
-      CLOSED: [2021-11-23 Tue 22:19]
 *** TODO [#B] A function that defines NULL variables
     Risk now is that arguments are set to NULL
     Export to parent. Not sure check allows though...
 ** Function improvements
-*** NMextractDataFile
-**** DONE Add support for windows absolute paths
-     CLOSED: [2021-05-14 Fri 16:11]
-     I don't think this was ever an issue. The regular expression used
-     should match both unix and windows absolute paths.
-*** NMwriteSection
-**** TODO [#A] Support for file name pattern in dir
-     code available in recent script
-**** DONE Support for multiple sections
-     CLOSED: [2021-04-05 Mon 12:06]
-Instead of the section argument, NMreplacepart must accept newlines as a named
-list.
+*** NMgenText
+**** TODO [#B] checks: duplicate column names
+**** TODO [#B] test if a pseudonym was used. Give warning or msg if not
+*** findCovs
+**** TODO soft
 *** compareCols
+**** TODO [#B] Bug - overview of columns is given twice
+ compareCols(ex.001,ex.002,ex.005,diff.only=T) %>% print(topn=100)
+**** TODO [#B] scope argument
+Sometimes we are interested in specific columns. List these and only
+these in the same order as requested. An inversion option could be
+helpful. Only list other columns than the scope.
 **** DONE rows are not being sorted correctly.
-     CLOSED: [2021-04-18 Sun 14:38]
      Seems not to prioritize columns that only exist in one of the
      data.tables.
 **** DONE Bug for diff.only=FALSE
-     CLOSED: [2021-04-18 Sun 12:16]
+*** egdt
+**** DONE Report dims(df1,df2,result) unless quiet
+*** mergeCheck
+**** TODO [#B] Check that by or by.x+by.y were supplied
+**** TODO [#B] derive by.x and by.y from by and by.x+by.y and then use by.x and by.y
+     That will make the code clearer because we will know exactly how
+     the merge is done.
+**** DONE Test the check for row duplications
+*** NMcheckData
+**** TODO [#B] Checks for presense of II and ADDL don't report dependence
+     If one is present, presence of the other is tested. If not found,
+     it says "II Column not found". Would be helpful to know that it
+     is because ADDL is found.
+**** DONE Check for , in character column contents not working
+**** DONE Checks for availability
+I ran it on an immature dataset and got this error:
+Error in `[.data.table`(data, , `:=`((cols.num), lapply(.SD, NMasNumeric)),  : 
+  .SDcols should be column numbers or names
+**** DONE ID and row identifier must not start with a zero
+     That would ruin merging if Nonmem prints as a double or integer
+**** DONE Check individual columns with NMisNumeric instead of running NMasNumeric on everything
+**** DONE check RATE, SS
+**** DONE Check ADDL, II
+**** DONE Support for file argument (control stream)
+     CLOSED: [2021-12-22 Wed 17:04]
+**** DONE Element-wise NMisNumeric
+There are two distinct uses of NMisNumeric. Column-wise and
+element-wise. When checking for NMisNumeric, columns that must be
+numeric should be using
+**** DONE Only check for special characters in colnames for numeric columns
+     Applies to other colname checks too?
+**** TODO [#B] Requirements to DV for EVID==2 and EVID==3?
+**** TODO [#B] Add col.row to findings
+**** TODO [#B] Should be able to run on a model file
+*** NMextractDataFile
+**** DONE Add support for windows absolute paths
+     I don't think this was ever an issue. The regular expression used
+     should match both unix and windows absolute paths.
+*** NMwriteSection
+**** DONE Check if any files matched before running lapply
+**** TODO [#B] When using list.files, give overview of matches by expression and by data.file
+**** DONE Bug in data.file argument
+     Error in FUN(X[[i]], ...) : file.exists(file0) is not TRUE
+**** DONE Support for file name pattern in dir
+     code available in recent script
+**** DONE Support for multiple sections
+Instead of the section argument, NMreplacepart must accept newlines as a named
+list.
 *** NMextractText
 **** TODO [#B] reduce lines and text to one argument
 The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMscanInput
+**** TODO [#B] Model path (mod/lst, whichever used) should be available in meta data
 **** TODO [#B] argument char.comment.inp
      User may write say # (input_data_debug.csv) in front of column
      names in csv and then use IGNORE=# to avoid them in Nonmem. We
@@ -110,39 +183,31 @@ issued. Once done, NMgetSection must be updated as well.
      column name. However, only relevant if column names are not
      translated.
 **** DONE Get number of subjects as before filtering
-     CLOSED: [2021-06-08 Tue 18:54]
 Challenge is that the filters are applied before the cplumn names are
 changed. So we need access to the old data and know what column to
 look at - called col.id after the translations.
 **** Pseudonyms A=B
 ***** TODO [#C] A=B pseudonym labels should be matched against reserved variable names
 ***** DONE copy data to have acces using both names
-      CLOSED: [2021-05-17 Mon 22:51]
 ****** Edit these lines in NMscanInput
        ## For now, we just take the first name used in A=B labeling. 
        nms <- sub(".*=(.*)","\\1",nms)
 ***** DONE Names of variables must be taken from lst, not mod
-      CLOSED: [2020-06-06 Sat 23:43]
  mod should only be used for path to dataset.
 ***** DONE Add support for absolute paths
-      CLOSED: [2020-06-09 Tue 23:22]
 ***** DONE SKIP like DROP
-      CLOSED: [2020-06-15 Mon 21:36]
 ***** TODO [#B] TIME and related columns
  I still don't really understand the documentation on this, but it doesnt seem
  too hard to implement. It should NOT only be interpreted when the A=B format is used in
  $INPUT. If something is called TIME, it must be checked for format.
 ***** DONE .mod files should be accepted as the file argument
-      CLOSED: [2020-09-17 Thu 15:19]
       Maybe file can be missing/NULL if file.mod is given.
 *** NMtransFilters
-**** TODO [#A] Report translation in NMmeta
+**** DONE Report translation in NMmeta
 **** DONE Replace single = with ==
-     CLOSED: [2020-06-15 Mon 21:05]
 According to the manual single = can be used for comparisons. This is not and
 should not be translated by NMcode2R.
 **** DONE $INPT is an alias for $INPUT
-     CLOSED: [2020-06-15 Mon 21:09]
 **** TODO [#B] Implement NULL
 The way to change the missing string in nonmem. User could use
 NULL=NAN which would mean that NA should be interpreted as NA in R.
@@ -156,51 +221,40 @@ A way to limit rows read into nonmem
 ***** diff
 ***** off
 *** NMscanTables
-**** TODO [#A] include meta data as NMinfo
+**** TODO [#B] include meta data as NMinfo
 **** DONE Lastonly does the same as firstonly
-     CLOSED: [2020-07-13 Mon 19:37]
 *** NMscanData
+**** TODO [#B] Simplify timestamp warnings
+     When .mod is newer than .lst and or tables, reduce to one warning
+     summarizing both findings.
 **** DONE nmout and model must not overwrite existing
-     CLOSED: [2021-06-15 Tue 11:49]
      The can still overwrite, but a warning is thrown
 **** DONE Check that no new values of col.row are found in output
-     CLOSED: [2021-06-12 Sat 00:13]
 **** DONE Test for disjoint ID's
-     CLOSED: [2021-06-12 Sat 00:13]
      If ID's are disjoint, it's actually really easy to make a new ID
      and use that for merging firstonly. But only if a row identifier
      is used. If not the same new ID is to be added to the
      firstonly. This will need testing.
 **** DONE Move time checks up
-     CLOSED: [2021-05-22 Sat 00:18]
 Now, if number of rows don't match in input and output, the user don't
 get warnings about time. This is bad because updates to input data is
 a likely reason.
 **** DONE Add support for merge.by.row="ifAvailable"
-     CLOSED: [2021-05-20 Thu 11:29]
 **** DONE Make sure all options in NMdataConf are documented
-     CLOSED: [2021-05-22 Sat 00:18]
 **** DONE input file name in meta columns
-     CLOSED: [2021-05-15 Sat 21:05]
 ***** table column should be called file
 **** DONE intro translate.input argument
-     CLOSED: [2021-04-18 Sun 11:22]
 **** DONE method.combine to merge.by.row
-     CLOSED: [2021-04-04 Sun 23:17]
      Since we only have and will only have two methods, this should be
      a binary switch between the methods.
 **** DONE Check if col.row is being modified in Nonmem.
-     CLOSED: [2021-05-14 Fri 15:39]
 **** TODO [#B] check overview.tables
 Either they must be firstonly, or they must be full.length.
 **** TODO [#B] Limitation: tables with EXCLUDE_BY
 **** DONE Limitation: FIRSTLASTONLY
-     CLOSED: [2020-07-13 Mon 19:37]
 **** DONE Implement recoverRows using mergeByFilters
-     CLOSED: [2020-06-23 Tue 20:52]
 **** TODO [#B] Add support for col.row of length>1
 **** DONE Consistent behaviour when missing data arguments
-     CLOSED: [2020-09-17 Thu 16:03]
 ***** use.input (default)
 ****** Means that output data will be merged onto input data
 ****** If input data is missing or merge not possible, give warning
@@ -213,7 +267,6 @@ Either they must be firstonly, or they must be full.length.
   We can implement taking the sequence of IDs from input and restore
   ID's from that
 **** DONE Improve summary of what tables were used and how.
-     CLOSED: [2021-02-23 Tue 22:24]
 Right now it only says if input or output. Table name would be helpful.
 **** TODO [#B] Support for no ID, no ROW in firstonly tables
 If mergeByFilters we can take the sequence of ID in the input
@@ -226,61 +279,48 @@ when writing tables from Nonmem.
 **** TODO [#B] New argument to define columns to read from input data
 ID should be default. Maybe TIME too?
 **** DONE Run NMorderColumns in the end
-     CLOSED: [2020-12-23 Wed 11:29]
 Remember to use what we know about col.row. 
 **** DONE source for nmout and model must be internal
-     CLOSED: [2020-07-18 Sat 23:13]
 in var table 
 **** TODO [#B] report tables that are not used
 See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
 is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMwriteData
-**** DONE [#A] Bug in inclusion of filename in text
-     CLOSED: [2021-11-23 Tue 22:20]
+**** TODO [#B] Separate generation of INPUT text into new function
+**** DONE Bug in inclusion of filename in text
      See poster example
 **** TODO [#B] Include a randomly generated ID in meta data that we can check files against?
 **** DONE Add support for custom fwrite arguments
-     CLOSED: [2021-05-14 Fri 21:01]
 **** DONE When writing a CSV, write meta data to separate file
-     CLOSED: [2021-05-14 Fri 17:53]
 **** DONE Support for pseudonyms
-     CLOSED: [2021-04-21 Wed 23:16]
      It's called nm.rename. You can only add A in A=B.
 **** DONE Check if character variables contain commas
-     CLOSED: [2020-09-19 Sat 09:52]
 This will cause trouble when writing csv
 **** DONE Use fwrite rather than write.csv
-     CLOSED: [2021-04-02 Fri 11:33]
 **** TODO [#B] Improve support for custom IGNORE/ACCEPT statements
 Support for both ignore and accept? A list?
 **** DONE Returned text should be a list of sections.
-     CLOSED: [2021-04-18 Sun 14:39]
 Ultimately, NMreplacePart must accept this as argument.
 **** DONE The Nonmem instructions should not include character variables
-     CLOSED: [2020-09-17 Thu 22:13]
 **** DONE Include an argument to do =DROP
-     CLOSED: [2020-09-19 Sat 09:27]
 This will only affect the instructions to pass into Nonmem. If =DROP
 is on a character variable, subsequent numerics can still be used in
 Nonmem.
 **** DONE print out dropped variables? 
-     CLOSED: [2020-09-19 Sat 09:27]
 Not warning. Warning if standard variable?
 *** NMordercolumns
+**** DONE Remove check for standard columns
+     This is now done in NMcheckData instead
 **** DONE Don't warn about missing SS, ADDL, II
-     CLOSED: [2021-04-11 Sun 12:08]
 **** DONE Polish
-     CLOSED: [2020-12-23 Wed 11:31]
 *** flagsAssign
-**** TODO [#A] check for whether there are any contents in data - just warning and return nothing
-**** TODO [#A] implement grp.incomp as in flagsCount
-**** TODO [#A] Only give message about overwriting FLAG/flag if non-NA values are present
+**** DONE check for whether there are any contents in data - just warning and return nothing
+**** DONE implement grp.incomp as in flagsCount
+**** DONE Only give message about overwriting FLAG/flag if non-NA values are present
 **** DONE Improve messages at each FLAG coding
-     CLOSED: [2020-12-23 Wed 11:31]
 **** DONE Make sure we arrange back to original order
 **** DONE Introduce a way to apply to a subset only
-     CLOSED: [2021-04-05 Mon 09:42]
      - State "DELEGATED"  from "CANCELED"   [2021-04-21 Wed 16:46]
      - State "CANCELED"   from "DELEGATED"  [2021-04-21 Wed 16:46]
      - State "DELEGATED"  from "DONE"       [2021-04-21 Wed 16:46]
@@ -288,61 +328,56 @@ This could be EVID==0 or maybe one study in a meta analysis
 
 It's fairly easy to implement. Paste in front of the expression.use column.
 **** DONE Can we assign FLAG=0, flag=Dosing to EVID==1?
-     CLOSED: [2021-10-25 Mon 13:45]
      Or is FLAG==0 reserved?
 use flagsAssign(data,subset.data="EVID==1",flagc.0="Dosing")
 *** flagsCount
 **** DONE OK respect decreasing or increasing order.flags
 **** DONE add .cum of N and Nobs
-     CLOSED: [2021-04-26 Mon 10:01]
 **** DONE add argument to name "all available data" in table. 
 **** DONE Add check on EVID - who wants to mix these?
 **** TODO [#B] allow skipping and disabling flags.
 ***** For this we will need additional two columns - Nobs.matched and N.(entirely.)matched
 **** TODO [#B] The function could paste an explained overview to the terminal
 **** DONE Add save argument to align with other functions
-     CLOSED: [2021-05-14 Fri 16:17]
 *** NMdataConf
+**** TODO [#B] Add col.id
+**** TODO [#B] Add na.strings
+     Used in NMisNumeric and NMcheckData
 **** DONE test that function evaluation does not depend on global env
-     CLOSED: [2021-06-15 Tue 13:57]
 **** DONE Add support for add.name
-     CLOSED: [2021-01-30 Sat 14:29]
 **** DONE use.input
-     CLOSED: [2021-01-28 Thu 22:17]
 **** DONE recover.rows
-     CLOSED: [2021-01-28 Thu 22:17]
 **** DONE use.rds
-     CLOSED: [2021-04-11 Sun 15:59]
 **** DONE quiet
-     CLOSED: [2021-04-11 Sun 15:59]
 **** DONE col.row
-     CLOSED: [2021-04-02 Fri 11:34]
 This is two steps. 
 ***** A method.merge argument must be introduced in NMscanData
 ***** col.row can be non-NULL even if using cbind for combining data
 **** DONE order.columns
-     CLOSED: [2021-04-02 Fri 11:35]
 *** stampObj
 **** CANCELED Include output filename in stamp
-     CLOSED: [2021-05-14 Fri 21:02]
 This belong in write functions. stampObj does support extra
 arguments. NMdata calls this "writtenTo".
 *** summary.NMdata
 **** Rethink and tidy up message
 ***** DONE Combine first two tables
-      CLOSED: [2021-05-20 Thu 23:22]
 ***** DONE Add number of rows
-      CLOSED: [2021-05-20 Thu 23:22]
 ***** DONE Add result row
-      CLOSED: [2021-06-15 Tue 13:59]
 ****** Number of columns has 0-2 extra columns
-** Nonmem examples
-*** DONE Use FLAG
-    CLOSED: [2020-06-29 Mon 21:28]
-rerun xmgr001.mod with IGNORE=(FLAG.NE.0) That would be a nice example
-for the vignette.
-*** DONE Update all runs with updated data file
-    CLOSED: [2020-07-02 Thu 09:28]
+** Tests and documentation
+*** Cheat sheet
+**** Outline
+***** Intro
+***** Data preparation
+***** Finalize and write for NONMEM
+***** Read and combine input and output data
+***** Debug
+***** Traceability
+**** TODO Flag example
+*** Tests
+**** DONE Test NMdataConf(file.mod=identity)
+*** Examples
+**** DONE renameByContents example
 ** Discussion
 *** recoverRows can mean mix of variable interpretations
 If recoverRows and a variable is changing interpretation from input to
@@ -350,85 +385,43 @@ output, the resulting table will carry two distinct variables
 depending on nmout TRUE or FALSE.
 ** Prepare first CRAN release
 *** DONE Get overview of functionality contents
-    CLOSED: [2020-09-17 Thu 16:06]
 *** DONE Remove all debug arguments
-    CLOSED: [2020-09-20 Sun 15:31]
 *** DONE Polish NMwriteData
-    CLOSED: [2020-09-20 Sun 13:52]
 *** DONE Polish NMordercolumns
-    CLOSED: [2020-09-27 Sun 10:04]
 *** DONE Support for tibbles
-    CLOSED: [2020-09-22 Tue 13:39]
 *** DONE Improve flagsAssign messages at each FLAG coding
-    CLOSED: [2020-09-22 Tue 21:12]
 *** DONE Read through all documentation
-    CLOSED: [2020-10-15 Thu 20:02]
 *** DONE Function family DataRead for NMscanData and others
-    CLOSED: [2020-09-27 Sun 10:32]
 *** DONE Rename DataWrangling to DataCreate
-    CLOSED: [2020-09-27 Sun 10:31]
 *** DONE NMtransFilters - read through and clean comments
-    CLOSED: [2020-09-22 Tue 19:28]
 *** DONE messageWrap cites the messages from within
-    CLOSED: [2020-09-22 Tue 19:20]
     Should be possible to make say a warning seem like it's coming
     from one level up.
 *** DONE vignette on data set creation
-    CLOSED: [2020-10-09 Fri 21:13]
 *** DONE vignette on FAQ
-    CLOSED: [2020-10-09 Fri 21:13]
 *** DONE Fix NMscanData messages to be just one.
-    CLOSED: [2020-10-15 Thu 13:09]
 *** DONE Vignettes should mostly use data.frame's.
-    CLOSED: [2020-11-24 Tue 19:46]
 *** DONE Release 0.0.6
-    CLOSED: [2020-10-18 Sun 11:00]
 **** DONE Look for file.mod option
-     CLOSED: [2020-10-15 Thu 20:50]
 **** DONE Release 0.0.6.1
-     CLOSED: [2020-11-24 Tue 19:46]
  with only diff from 0.0.6 that it returns data.frames by default
 *** DONE check of mtimes relative to each other
-    CLOSED: [2020-11-25 Wed 10:33]
 *** DONE Test input with duplicated column names
-    CLOSED: [2020-11-27 Fri 22:06]
 *** DONE summary.NMdata: no visible global function definition for '.'
-    CLOSED: [2020-12-22 Tue 19:01]
 replaced a couple of calls to . by list. Not sure why this happens for
 exactly these uses of ".". Anyway, no consequence to functionality.
 *** DONE Drop filepath_NMdata
-    CLOSED: [2020-12-22 Tue 19:01]
 *** DONE Release 0.0.7
-    CLOSED: [2021-04-18 Sun 11:22]
 **** DONE Go through all manuals and update according to new config system
-     CLOSED: [2021-01-30 Sat 14:35]
 **** Update vignettes
 ***** DONE NMscanData
-      CLOSED: [2021-02-23 Tue 22:34]
 ***** DONE FAQ
-      CLOSED: [2021-02-23 Tue 22:34]
 ***** DONE DataCreate
-      CLOSED: [2021-02-23 Tue 22:34]
 **** DONE document data objects
-     CLOSED: [2021-01-20 Wed 19:53]
 See how it's done in pmxtricks.  This is done. However, the datasets are not
 exported so it's not very important.
 ** BUGS
 *** DONE flagsCount does not print data.table
-    CLOSED: [2021-04-12 Mon 16:03]
 *** DONE flagsAssign cannot handle missing subset
-    CLOSED: [2021-04-12 Mon 16:03]
 
-
-* temp
-  Undocumented arguments in documentation object 'NMinfo'
-  'nullEmpty'
-
-Undocumented arguments in documentation object 'NMscanInput'
-  'col.row'
-
-Undocumented arguments in documentation object 'NMscanTables'
-  'col.row'
-
-Undocumented arguments in documentation object 'NMstamp'
-  'time' 'byRef'
+#+TODO: TODO(t) WAIT(w) DONE(d)
