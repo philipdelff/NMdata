@@ -4,7 +4,6 @@ template:
   opengraph:
     image:
       src: man/figures/apple-touch-icon-180x180.png
-      height: 131.5
       alt: "Efficient data preparation, consistency-checking and post-processing in PK/PD modeling"
 
 navbar:
