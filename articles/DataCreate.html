@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Data Creation Tools • NMdata</title>
+<title>Data Preparation Tools • NMdata</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Data Creation Tools">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Data Preparation Tools">
 <meta property="og:description" content="NMdata">
 <meta property="og:image" content="https://philipdelff.github.io/NMdata/reference/figures/NMdata_logo_v01.png">
 <meta property="og:image:alt" content="Efficient data preparation, consistency-checking and post-processing in PK/PD modeling">
@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.952</span>
       </span>
     </div>
 
@@ -104,7 +104,7 @@
       </header><script src="DataCreate_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Data Creation Tools</h1>
+      <h1 data-toc-skip>Data Preparation Tools</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/vignettes/DataCreate.Rmd" class="external-link"><code>vignettes/DataCreate.Rmd</code></a></small>
@@ -114,12 +114,12 @@
 
     
     
-<p>Built 2021-12-29 using NMdata 0.0.9.903.</p>
+<p>Built 2021-12-30 using NMdata 0.0.9.952.</p>
 <p>This vignette is still under development. Please make sure to see latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Getting data ready for modeling is a crucial and often underestimated task. Mistakes during the process of combining data sets, defining time variables etc. can lead to difficulties during modeling, need for revisiting data set creation, and in worst case wasted time working with an erroneos data set. Avoiding those mistakes by integrating checks into the data creation process is a key element in an efficient and reliable data creation work flow.</p>
+<p>Getting data ready for modeling is a crucial and often underestimated task. Mistakes during the process of combining data sets, defining time variables etc. can lead to difficulties during modeling, need for revisiting data set preparation, and in worst case wasted time working with an erroneos data set. Avoiding those mistakes by integrating checks into the data preparation process is a key element in an efficient and reliable data preparation work flow.</p>
 <p>Furthermore, Nonmem has a number of restrictions on the format of the input data, and problems with the data set is a common reason for Nonmem not to behave as expected. When this happens, debugging can be time-consuming. <code>NMdata</code> includes some simple functions to prevent these situations.</p>
 <p>This vignette uses <code>data.table</code> syntax for the little bit of data manipulation performed. However, you don’t need to use data.table <em>at all</em> to use these or any tool in <code>NMdata</code>. The data set is a <code>data.table</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -148,7 +148,7 @@
 <span class="co">#&gt; 1:         pk  1502    24</span>
 <span class="co">#&gt; 2: pk.reduced   751    23</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Overview of columns:</span>
+<span class="co">#&gt; Columns that differ:</span>
 <span class="co">#&gt;    column      pk pk.reduced</span>
 <span class="co">#&gt; 1:  CYCLE integer       &lt;NA&gt;</span>
 <span class="co">#&gt; 2:    AMT integer  character</span></code></pre></div>
@@ -170,7 +170,7 @@
 <span class="co">#&gt; 1:      pktmp  1502    23</span>
 <span class="co">#&gt; 2: pk.renamed  1502    23</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Overview of columns:</span>
+<span class="co">#&gt; Columns that differ:</span>
 <span class="co">#&gt;      column     pktmp pk.renamed</span>
 <span class="co">#&gt; 1:   EVENTU character       &lt;NA&gt;</span>
 <span class="co">#&gt; 2:     NAME character       &lt;NA&gt;</span>
@@ -203,6 +203,7 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Rows disappeared during merge.</span>
+<span class="co">#&gt; Rows duplicated during merge.</span>
 <span class="co">#&gt; Overview of dimensions of input and output data:</span>
 <span class="co">#&gt;         data nrows ncols</span>
 <span class="co">#&gt; 1:        pk  1502    25</span>
@@ -217,7 +218,8 @@
 <p>Notice that <code>mergeCheck</code> tells us for which values of <code>ID</code> the input and output differ so we can quickly look into the data sets and make a decision how we want to handle this. In this case we discard the covariate value for subject 31 and use <code>all.x=TRUE</code> argument to get <code>NA</code> for subjects 31 and 180:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dt.cov2</span> <span class="op">&lt;-</span> <span class="va">dt.cov</span><span class="op">[</span><span class="va">ID</span><span class="op">!=</span><span class="fl">31</span><span class="op">]</span>
-<span class="va">pk2.check</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov2</span>,by<span class="op">=</span><span class="st">"ID"</span>,all.x<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<span class="va">pk2.check</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov2</span>,by<span class="op">=</span><span class="st">"ID"</span>,all.x<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; The following columns were added: COV</span></code></pre></div>
 <p>To ensure the consistency of rows before and after the merge, you could use <code>merge(...,all.x=TRUE)</code> and then check dimensions before and after (yes, both <code>all.x=TRUE</code> and the dimension check are necessary). This is not needed if you use <code>mergeCheck</code>.</p>
 <p><code>mergeCheck</code> does not try to reimplement merging. Under the hood, the merging is performed by <code><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">data.table::merge.data.table</a></code> to which most arguments are passed. What <code>mergeCheck</code> does is to add the checks that the results are consistent with the criteria outlined above. <code><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">data.table::merge.data.table</a></code> is generally very fast, and even if there is a bit of extra calculations in <code>mergeCheck</code>, it should never be slow.</p>
 <p>Another problem the programmer may not realize during a merge is when column names are shared across <code>x1</code> and <code>x2</code> (in addition to columns that are being merged by). This will silently create column names like <code>col.x</code> and <code>col.y</code> in the output. <code>mergeCheck</code> will by default give a warning if that happens (can be modified using the <code>fun.commoncols</code> argument). Also, there is an optional argument to tell mergeCheck how many columns are expected to be added by the merge, and <code>mergeCheck</code> will fail if another number of columns are added. This can be useful for programming.</p>
@@ -243,9 +245,7 @@
 <span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsAssign.html">flagsAssign</a></span><span class="op">(</span><span class="va">pk</span>,tab.flags<span class="op">=</span><span class="va">dt.flags</span>,subset.data<span class="op">=</span><span class="st">"EVID==0"</span><span class="op">)</span>
 <span class="co">#&gt; Coding FLAG = 100, flag = Negative time</span>
 <span class="co">#&gt; Coding FLAG = 10, flag = Below LLOQ</span>
-<span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsAssign.html">flagsAssign</a></span><span class="op">(</span><span class="va">pk</span>,subset.data<span class="op">=</span><span class="st">"EVID==1"</span>,flagc.0<span class="op">=</span><span class="st">"Dosing"</span><span class="op">)</span>
-<span class="co">#&gt; Data contains FLAG already. This is overwritten</span>
-<span class="co">#&gt; Data contains flag already. This is overwritten</span></code></pre></div>
+<span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsAssign.html">flagsAssign</a></span><span class="op">(</span><span class="va">pk</span>,subset.data<span class="op">=</span><span class="st">"EVID==1"</span>,flagc.0<span class="op">=</span><span class="st">"Dosing"</span><span class="op">)</span></code></pre></div>
 <p><code>fread</code> is used to create a data.table (like <code>read.csv</code> to create a data.frame) for readability, one line for each row in the data.table created. <code>flagsAssign</code> applies the conditions sequentially and by decreasing value of <code>FLAG</code>. <code>FLAG=0</code> means that the observation is included in the analysis. You can use any expression that can be evaluated within the data.frame. In this case, <code>BLQ</code> has to exist in <code>pk</code>.</p>
 <p>Finally, flags are assigned to <code>EVID==1</code> rows. Here, no flag table is used. This means that all <code>EVID==1</code> rows will get <code>FLAG=0</code>.</p>
 <p>In <code>Nonmem</code>, you can include <code>IGNORE=(FLAG.NE.0)</code> in <code>$DATA</code> or <code>$INFILE</code>.</p>
@@ -282,8 +282,7 @@
 <p>The order of columns in Nonmem is important for two reasons. One is that a character in a variable read into Nonmem will make the run fail. The other is that there are restrictions on the number of variables you can read into Nonmem, depending on the version. <code>NMorderColumns</code> tries to put the used columns first, and other or maybe even unusable columns in the back of the dataset. It does so by a mix of recognition of column names and analysis of the column contents.</p>
 <p>Columns that cannot be converted to numeric are put in the back, while column bearing standard Nonmem variable names like <code>ID</code>, <code>TIME</code>, <code>EVID</code> etc. will be pulled up front. You can of course add column names to prioritize to front (<code>first</code>) or back (<code>last</code>). See <code><a href="../reference/NMorderColumns.html">?NMorderColumns</a></code> for more options.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMorderColumns.html">NMorderColumns</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span>
-<span class="co">#&gt; These standard nonmem columns were not found in data: MDV</span></code></pre></div>
+<code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMorderColumns.html">NMorderColumns</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span></code></pre></div>
 <p>We may want to add <code>MDV</code> and rerun <code>NMorderColumns</code>.</p>
 </div>
 <div class="section level3">
@@ -293,7 +292,7 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/NMwriteData.html">NMwriteData</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span>
 <span class="co">#&gt; Data _not_ witten to any files.</span>
-<span class="co">#&gt; For NonMem:</span>
+<span class="co">#&gt; For NONMEM:</span>
 <span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span>
 <span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB eff0</span>
 <span class="co">#&gt; $DATA &lt;data file&gt;</span>
@@ -313,7 +312,7 @@
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">text.nm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMwriteData.html">NMwriteData</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span>
 <span class="co">#&gt; Data _not_ witten to any files.</span>
-<span class="co">#&gt; For NonMem:</span>
+<span class="co">#&gt; For NONMEM:</span>
 <span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span>
 <span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB eff0</span>
 <span class="co">#&gt; $DATA &lt;data file&gt;</span>
@@ -337,7 +336,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2021-12-29 15:18:37 UTC"</span></code></pre></div>
+<span class="co">#&gt; [1] "2021-12-30 01:00:23 UTC"</span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>NMstamp</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMstamp.html">NMstamp</a></span><span class="op">(</span><span class="va">pk</span>,script<span class="op">=</span><span class="st">"vignettes/DataCreate.Rmd"</span>,Description<span class="op">=</span><span class="st">"A PK dataset used for examples."</span><span class="op">)</span>
@@ -347,7 +346,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2021-12-29 15:18:37 UTC"</span>
+<span class="co">#&gt; [1] "2021-12-30 01:00:23 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span></code></pre></div>

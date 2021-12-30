@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.952</span>
       </span>
     </div>
 
@@ -114,7 +114,7 @@
 
     
     
-<p>Built 2021-12-29 using NMdata 0.0.9.903.</p>
+<p>Built 2021-12-30 using NMdata 0.0.9.952.</p>
 <p>This vignette is still under development. Please make sure to see latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
 <h2 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
@@ -126,7 +126,7 @@
 <li><p>Configuring <code>NMdata</code> to return the data class of your preference (say <code>data.table</code> or <code>tbl</code>) instead of <code>data.frame</code> which is default</p></li>
 <li><p>Using automatically generated meta data to look up information on input and output tables, how they were combined, and results of checks performed by <code>NMscanData</code>.</p></li>
 <li><p>Including input data rows that were not processed by Nonmem (<code>ACCEPT</code> and <code>IGNORE</code>)</p></li>
-<li><p>Combining such data sets for of a multiple models</p></li>
+<li><p>Combining such data sets for multiple models</p></li>
 <li><p>If available, using an rds file to represent the input data in order to preserve all data properties (e.g. factor levels) from data set preparation</p></li>
 <li><p>After having checked the rare exceptions, feeling confident that <code>NMscanData</code> should work on all your Nonmem models</p></li>
 </ul>
@@ -182,7 +182,7 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Used tables, contents shown as used/total:</span>
 <span class="co">#&gt;                  file     rows columns     IDs</span>
-<span class="co">#&gt;       xgxr018_res.txt  905/905     6/6   NA/NA</span>
+<span class="co">#&gt;       xgxr018_res.txt  905/905     6/6 150/150</span>
 <span class="co">#&gt;  xgxr018_res_vols.txt  905/905     3/7 150/150</span>
 <span class="co">#&gt;    xgxr018_res_fo.txt  150/150     1/2 150/150</span>
 <span class="co">#&gt;     xgxr4.rds (input) 905/1502   21/23 150/150</span>
@@ -256,7 +256,7 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Used tables, contents shown as used/total:</span>
 <span class="co">#&gt;                  file     rows columns     IDs</span>
-<span class="co">#&gt;       xgxr003_res.txt  905/905     7/7   NA/NA</span>
+<span class="co">#&gt;       xgxr003_res.txt  905/905     7/7 150/150</span>
 <span class="co">#&gt;  xgxr003_res_vols.txt  905/905     3/7 150/150</span>
 <span class="co">#&gt;    xgxr003_res_fo.txt  150/150     1/2 150/150</span>
 <span class="co">#&gt;     xgxr1.csv (input) 905/1502   21/24 150/150</span>
@@ -350,7 +350,7 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Used tables, contents shown as used/total:</span>
 <span class="co">#&gt;               file      rows columns     IDs</span>
-<span class="co">#&gt;    xgxr014_res.txt   905/905   12/12   NA/NA</span>
+<span class="co">#&gt;    xgxr014_res.txt   905/905   12/12 150/150</span>
 <span class="co">#&gt;  xgxr2.rds (input) 1502/1502   22/24 150/150</span>
 <span class="co">#&gt;           (result)      1502    34+2     150</span>
 <span class="co">#&gt; </span>

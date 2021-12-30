@@ -24,7 +24,7 @@ described above."><meta property="og:image" content="https://philipdelff.github.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.952</span>
       </span>
     </div>
 
@@ -99,10 +99,11 @@ described above.</p>
   <span class="va">df1</span>,
   <span class="va">df2</span>,
   <span class="va">by</span>,
-  as.fun <span class="op">=</span> <span class="cn">NULL</span>,
   fun.commoncols <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span>,
   <span class="va">ncols.expect</span>,
   track.msg <span class="op">=</span> <span class="cn">FALSE</span>,
+  <span class="va">quiet</span>,
+  <span class="va">as.fun</span>,
   <span class="va">...</span>
 <span class="op">)</span></code></pre></div>
     </div>
@@ -117,11 +118,7 @@ ordered like df1.</p></dd>
 <dd><p>A data.frame that will be merged onto df1.</p></dd>
 <dt>by</dt>
 <dd><p>The column(s) to merge by. Character string
-(vector). Must be supplied.</p></dd>
-<dt>as.fun</dt>
-<dd><p>The default is to return a data.table if df1 is a
-data.table and return a data.frame in all other cases. Pass a
-function in as.fun to convert to something else.</p></dd>
+(vector). by or by.x and by.y must be supplied.</p></dd>
 <dt>fun.commoncols</dt>
 <dd><p>If common columns are found in df1 and df2,
 and they are not used in by, this will create columns named
@@ -140,9 +137,16 @@ column more than df1 - if not, an error will be returned.</p></dd>
 <dd><p>If using mergeCheck inside other functions, it
 can be useful to use track.msg=TRUE. This will add information
 to messages/warnings/errors that they came from mergCheck.</p></dd>
+<dt>quiet</dt>
+<dd><p>If FALSE, the names of the added columns are
+reported. Default value controlled by NMdataConf.</p></dd>
+<dt>as.fun</dt>
+<dd><p>The default is to return a data.table if df1 is a
+data.table and return a data.frame in all other cases. Pass a
+function in as.fun to convert to something else.</p></dd>
 <dt>...</dt>
-<dd><p>additional arguments passed to merge. If all is among
-them, an error will be returned.</p></dd>
+<dd><p>additional arguments passed to data.table::merge. If
+all is among them, an error will be returned.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

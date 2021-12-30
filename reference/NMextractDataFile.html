@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.952</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMextractDataFile</span><span class="op">(</span><span class="va">file</span>, dir.data <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMextractDataFile</span><span class="op">(</span><span class="va">file</span>, dir.data <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">file.mod</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -93,6 +93,13 @@
 mentioned in $DATA is used. dir.data will be used as the path,
 and the existence of the file in that directory is not
 checked.</p></dd>
+<dt>file.mod</dt>
+<dd><p>The input control stream. Default is to look for
+\"file\" with extension changed to .mod (PSN style). You can
+also supply the path to the file, or you can provide a
+function that translates the output file path to the input
+file path. The default behavior can be configured using
+NMdataConf. See dir.data too.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

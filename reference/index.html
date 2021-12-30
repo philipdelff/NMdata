@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.952</span>
       </span>
     </div>
 
@@ -85,7 +85,15 @@
       </tr><tr><td>
           <p><code><a href="NMcheckColnames.html">NMcheckColnames()</a></code> </p>
         </td>
-        <td><p>Compare $DATA to column names in input data</p></td>
+        <td><p>Compare $INPUT in control stream to column names in input data</p></td>
+      </tr><tr><td>
+          <p><code><a href="NMcheckData.html">NMcheckData()</a></code> </p>
+        </td>
+        <td><p>Check data for Nonmem compatibility</p></td>
+      </tr><tr><td>
+          <p><code><a href="NMcheckDataFile.html">NMcheckDataFile()</a></code> </p>
+        </td>
+        <td><p>check input data based on control stream</p></td>
       </tr><tr><td>
           <p><code><a href="NMcode2R.html">NMcode2R()</a></code> </p>
         </td>
@@ -119,6 +127,11 @@
         </td>
         <td><p>Versatile text extractor from Nonmem (input or output) control streams</p></td>
       </tr><tr><td>
+          <p><code><a href="NMgenText.html">NMgenText()</a></code> </p>
+        </td>
+        <td><p>Generate text for INPUT and possibly DATA sections of NONMEM
+control streams.</p></td>
+      </tr><tr><td>
           <p><code><a href="NMinfo.html">NMinfo()</a></code> </p>
         </td>
         <td><p>Get metadata from an NMdata object</p></td>
@@ -129,15 +142,15 @@
       </tr><tr><td>
           <p><code><a href="NMorderColumns.html">NMorderColumns()</a></code> </p>
         </td>
-        <td><p>Order columns in dataset for use in Nonmem.</p></td>
+        <td><p>Standardize column order in Nonmem input data</p></td>
       </tr><tr><td>
           <p><code><a href="NMreadCsv.html">NMreadCsv()</a></code> </p>
         </td>
-        <td><p>read csv data that is written to be read by nonmem</p></td>
+        <td><p>Read input data formatted for nonmem</p></td>
       </tr><tr><td>
           <p><code><a href="NMreadSection.html">NMreadSection()</a></code> <code><a href="NMreadSection.html">NMgetSection()</a></code> </p>
         </td>
-        <td><p>extract sections of Nonmem control streams</p></td>
+        <td><p>Extract sections of Nonmem control streams</p></td>
       </tr><tr><td>
           <p><code><a href="NMreadTab.html">NMreadTab()</a></code> </p>
         </td>
@@ -145,15 +158,15 @@
       </tr><tr><td>
           <p><code><a href="NMscanData.html">NMscanData()</a></code> </p>
         </td>
-        <td><p>Automatically find Nonmem tables and organize data</p></td>
+        <td><p>Automatically find Nonmem input and output tables and organize data</p></td>
       </tr><tr><td>
           <p><code><a href="NMscanInput.html">NMscanInput()</a></code> </p>
         </td>
-        <td><p>read input data and translate column names according to the $INPUT section</p></td>
+        <td><p>Find and read input data and optionally translate column names according to the $INPUT section</p></td>
       </tr><tr><td>
           <p><code><a href="NMscanTables.html">NMscanTables()</a></code> </p>
         </td>
-        <td><p>read all output data tables in nonmem run</p></td>
+        <td><p>Find and read all output data tables in nonmem run</p></td>
       </tr><tr><td>
           <p><code><a href="NMstamp.html">NMstamp()</a></code> </p>
         </td>
@@ -169,7 +182,11 @@
       </tr><tr><td>
           <p><code><a href="NMwriteSection.html">NMwriteSection()</a></code> </p>
         </td>
-        <td><p>replace ($)sections of a nonmem control stream</p></td>
+        <td><p>Replace ($)sections of a nonmem control stream</p></td>
+      </tr><tr><td>
+          <p><code><a href="cc.html">cc()</a></code> </p>
+        </td>
+        <td><p>Create character vectors without quotation marks</p></td>
       </tr><tr><td>
           <p><code><a href="checkColRow.html">checkColRow()</a></code> </p>
         </td>
@@ -193,7 +210,7 @@
       </tr><tr><td>
           <p><code><a href="findCovs.html">findCovs()</a></code> </p>
         </td>
-        <td><p>Extract columns that do not vary within variables in data</p></td>
+        <td><p>Extract columns that vary within values of other columns</p></td>
       </tr><tr><td>
           <p><code><a href="findVars.html">findVars()</a></code> </p>
         </td>

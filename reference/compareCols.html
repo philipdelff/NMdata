@@ -20,7 +20,7 @@ to check the compatibility of the data."><meta property="og:image" content="http
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.952</span>
       </span>
     </div>
 
@@ -92,9 +92,10 @@ to check the compatibility of the data.</p>
   keepNames <span class="op">=</span> <span class="cn">TRUE</span>,
   testEqual <span class="op">=</span> <span class="cn">FALSE</span>,
   diff.only <span class="op">=</span> <span class="cn">TRUE</span>,
+  <span class="va">cols.wanted</span>,
   fun.class <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span>,
   <span class="va">quiet</span>,
-  as.fun <span class="op">=</span> <span class="cn">NULL</span>
+  <span class="va">as.fun</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -112,13 +113,19 @@ names of the two objects are the same? Default is FALSE which
 means to return an overview for interactive use. You might
 want to use TRUE in programming. However, notice that this
 check may be overly rigorous. Many classes are compitable
-enough (say numeric and integer), at compareCols doesn't take
+enough (say numeric and integer), and compareCols doesn't take
 this into account.</p></dd>
 <dt>diff.only</dt>
 <dd><p>If TRUE, don't report columns where no difference
 found. Default is TRUE if number of data sets supplied is
 greater than one. If only one data set is supplied, the full
 list of columns is shown by default.</p></dd>
+<dt>cols.wanted</dt>
+<dd><p>Columns of special interest. These will always
+be included in overview and indicated by a prepended * to the
+column names. This argument is often useful when you start by
+defining a set of columns that you want to end up with by
+combining a number of data sets.</p></dd>
 <dt>fun.class</dt>
 <dd><p>the function that will be run on each column to
 check for differences. base::class is default. Notice that the

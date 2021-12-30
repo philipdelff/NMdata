@@ -4,8 +4,9 @@ pkgdown_sha: ~
 articles:
   DataCreate: DataCreate.html
   NMdata-FAQ: NMdata-FAQ.html
+  NMdata-cheat: NMdata-cheat.html
   NMscanData: NMscanData.html
-last_built: 2021-12-29T15:18Z
+last_built: 2021-12-30T01:00Z
 urls:
   reference: https://philipdelff.github.io/NMdata/reference
   article: https://philipdelff.github.io/NMdata/articles

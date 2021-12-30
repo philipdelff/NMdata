@@ -16,6 +16,9 @@
     <loc>https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html</loc>
   </url>
   <url>
+    <loc>https://philipdelff.github.io/NMdata/articles/NMdata-cheat.html</loc>
+  </url>
+  <url>
     <loc>https://philipdelff.github.io/NMdata/articles/NMscanData.html</loc>
   </url>
   <url>
@@ -35,6 +38,12 @@
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMcheckColnames.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMcheckData.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMcheckDataFile.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMcode2R.html</loc>
@@ -59,6 +68,9 @@
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMextractText.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMgenText.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMinfo.html</loc>
@@ -98,6 +110,9 @@
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMwriteSection.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/cc.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/checkColRow.html</loc>

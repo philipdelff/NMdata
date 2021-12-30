@@ -23,7 +23,7 @@ in the file argument."><meta property="og:image" content="https://philipdelff.gi
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.952</span>
       </span>
     </div>
 
@@ -104,14 +104,15 @@ in the file argument.</p>
   <span class="va">args.fwrite</span>,
   <span class="va">args.rds</span>,
   <span class="va">args.RData</span>,
+  <span class="va">quiet</span>,
+  <span class="va">args.NMgenText</span>,
   <span class="va">nm.drop</span>,
   <span class="va">nmdir.data</span>,
-  col.flag <span class="op">=</span> <span class="st">"FLAG"</span>,
+  <span class="va">col.flagn</span>,
   <span class="va">nm.rename</span>,
   <span class="va">nm.copy</span>,
-  nm.capitalize <span class="op">=</span> <span class="cn">FALSE</span>,
-  allow.char.TIME <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">quiet</span>
+  <span class="va">nm.capitalize</span>,
+  <span class="va">allow.char.TIME</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -144,51 +145,44 @@ configured using NMdataConf.</p></dd>
 <dd><p>A list of arguments to be passed to saveRDS.</p></dd>
 <dt>args.RData</dt>
 <dd><p>A list of arguments to be passed to save.</p></dd>
-<dt>nm.drop</dt>
-<dd><p>Only used for generation of proposed text for
-Nonmem control stream. Columns to drop in Nonmem $DATA. This
-has two implications. One is that the proposed $DATA indicates
-=DROP after the given column names. The other that in case it
-is a non-numeric column, succeeding columns can still be
-included.</p></dd>
-<dt>nmdir.data</dt>
-<dd><p>For the $DATA text proposal only. The path to
-the input datafile to be used in the Nonmem $DATA
-section. Often, a relative path to the actual Nonmem run is
-wanted here.</p></dd>
-<dt>col.flag</dt>
-<dd><p>Name of a numeric column with zero value for rows
-to include in Nonmem run, non-zero for rows to skip. The
-argument is only used for generating the proposed text to
-paste into the Nonmem control stream. To skip this feature,
-use col.flag=NULL.</p></dd>
-<dt>nm.rename</dt>
-<dd><p>For the $DATA text proposal only. If you plan to
-rename columns in Nonmem $DATA, NMwriteData can adjust the
-suggested $DATA text. If you plan to use BBW instead of BWBASE
-in Nonmem, consider nm.rename=c(BWBASE="BBW"). The result is
-different from nm.copy since the nm.copy syntax is only
-allowed by Nonmem for certain standard column names such as
-DV.</p></dd>
-<dt>nm.copy</dt>
-<dd><p>For the $DATA text proposal only. If you plan to
-rename columns in Nonmem $DATA, NMwriteData can adjust the
-suggested $DATA text. If you plan to use CONC as DV in Nonmem,
-you can include nm.rename=c(DV="CONC").</p></dd>
-<dt>nm.capitalize</dt>
-<dd><p>For the $DATA text proposal only. If TRUE,
-the suggested text for Nonmem will only contain capital
-letters in column names.</p></dd>
-<dt>allow.char.TIME</dt>
-<dd><p>For the $DATA text proposal only. Assume
-Nonmem can read TIME even if it can't be translated to
-numeric. This is necessary if using the 00:00 format. Default
-is TRUE.</p></dd>
 <dt>quiet</dt>
 <dd><p>The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
 non-interactive use. Default can be configured using
 NMdataConf.</p></dd>
+<dt>args.NMgenText</dt>
+<dd><p>List of arguments to pass to NMgenText - the
+function that generates text suggestion for INPUT and DATA
+sections in the NONMEM control stream. You can use these
+arguments to get a text suggestion you an use directly in
+NONMEM - and NwriteSection can even update multiple NONMEM
+control streams based on the result. This will update your
+control streams to match your new data file with just one
+command.</p></dd>
+<dt>nm.drop</dt>
+<dd><p>Deprecated, use
+args.NMgenText=list(drop=c("column")) instead.</p></dd>
+<dt>nmdir.data</dt>
+<dd><p>Deprecated, use
+args.NMgenText=list(dir.data="your/path") instead.</p></dd>
+<dt>col.flagn</dt>
+<dd><p>Name of a numeric column with zero value for rows
+to include in Nonmem run, non-zero for rows to skip. The
+argument is only used for generating the proposed $DATA text to
+paste into the Nonmem control stream. To skip this feature,
+use col.flagn=NULL.</p></dd>
+<dt>nm.rename</dt>
+<dd><p>Deprecated, use
+args.NMgenText=list(rename=c(newname="existing")) instead.</p></dd>
+<dt>nm.copy</dt>
+<dd><p>Deprecated, use
+args.NMgenText=list(copy=c(newname="existing")) instead.</p></dd>
+<dt>nm.capitalize</dt>
+<dd><p>Deprecated, use
+args.NMgenText=list(capitalize=TRUE) instead.</p></dd>
+<dt>allow.char.TIME</dt>
+<dd><p>Deprecated, use
+args.NMgenText=list(allow.char.TIME=TRUE) instead.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -211,6 +205,7 @@ character or not.</p>
     <div class="dont-index"><p>Other Nonmem: 
 <code><a href="NMapplyFilters.html">NMapplyFilters</a>()</code>,
 <code><a href="NMextractText.html">NMextractText</a>()</code>,
+<code><a href="NMgenText.html">NMgenText</a>()</code>,
 <code><a href="NMreadSection.html">NMreadSection</a>()</code>,
 <code><a href="NMwriteSection.html">NMwriteSection</a>()</code></p></div>
     </div>

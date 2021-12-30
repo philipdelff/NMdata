@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.952</span>
       </span>
     </div>
 
@@ -114,7 +114,7 @@
 
     
     
-<p>Built 2021-12-29 using NMdata 0.0.9.903.</p>
+<p>Built 2021-12-30 using NMdata 0.0.9.952.</p>
 <p>This vignette is still under development. Please make sure to see latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
 <h2 id="general-nmdata-questions">General NMdata questions<a class="anchor" aria-label="anchor" href="#general-nmdata-questions"></a>
@@ -196,12 +196,12 @@
 <div class="section level3">
 <h3 id="so-nmdata-uses-data-table--does-that-mean-variables-are-modified-by-reference">So NMdata uses data.table. Does that mean variables are modified by reference?<a class="anchor" aria-label="anchor" href="#so-nmdata-uses-data-table--does-that-mean-variables-are-modified-by-reference"></a>
 </h3>
-<p>NMdata definitely modify variables by reference internally but this will never affect your workspace. It might improve speed to go all the way, and modify by reference in the user workspace, but using NMdata must be easy for R users at all levels of experience. If you don’t understand what this is all about, you’re fine.</p>
+<p>NMdata definitely modify variables by reference internally but this will not affect your workspace (only exception is <code><a href="../reference/NMstamp.html">NMstamp()</a></code>). It might improve speed to go all the way and modify by reference in the user workspace, but using NMdata must be easy for R users at all levels of experience. If you don’t understand what this is all about, you’re fine.</p>
 </div>
 <div class="section level3">
 <h3 id="i-want-to-use-a-tool-from-nmdata-but-how-does-it-integrate-with-dplyr-or-data-table">I want to use a tool from NMdata, but how does it integrate with dplyr or data.table?<a class="anchor" aria-label="anchor" href="#i-want-to-use-a-tool-from-nmdata-but-how-does-it-integrate-with-dplyr-or-data-table"></a>
 </h3>
-<p>Every function in NMdata has an argument called <code>as.fun</code>. You can provide a function in this argument which will be applied to data before returning it.</p>
+<p>Every function in NMdata has an argument called <code>as.fun</code>. You can provide a function in this argument which will automatically be applied to results.</p>
 <p>You can get a tibble if you work with <code>dplyr</code>/<code>tidyverse</code> tools:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="va">...</span>,as.fun<span class="op">=</span><span class="fu">tibble</span><span class="fu">::</span><span class="va"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">)</span></code></pre></div>
