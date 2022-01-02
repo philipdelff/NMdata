@@ -28,7 +28,7 @@ NMcheckDataFile <- function(file,col.row,col.id="ID",use.rds=FALSE,quiet=FALSE,f
     }
     col.row <- NMdataDecideOption("col.row",col.row)
 
-    inp <- NMscanInput(file,use.rds=use.rds,col.id=col.id,col.row=col.row,quiet=T,as.fun=as.fun)
+    inp <- NMscanInput(file,use.rds=use.rds,col.id=col.id,col.row=col.row,quiet=TRUE,as.fun=as.fun)
     
     res.check <- NMcheckData(inp,return.summary=TRUE,col.id=col.id,col.row=col.row,quiet=TRUE,as.fun=as.fun,...)
 
@@ -43,7 +43,7 @@ NMcheckDataFile <- function(file,col.row,col.id="ID",use.rds=FALSE,quiet=FALSE,f
         ##         message(print(list.res$colnames))
         ## cat("\n\n")
         print(list.res$input.colnames)
-        message("NMcheckData as NONMEM reads:")
+        message("NMcheckData on data as read by NONMEM:")
         print(list.res$NMcheckData$summary)
     }
     

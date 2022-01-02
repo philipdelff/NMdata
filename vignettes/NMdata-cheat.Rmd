@@ -210,7 +210,13 @@ NMcheckColnames <- function(x)NMdata::NMcheckColnames(file.path(system.file(past
 ```
 ```{r}
 NMdataConf(as.fun="data.table")
-NMcheckData(file="nonmem/run201.mod")
+res.debug <- NMcheckData(file="nonmem/run201.mod",quiet=T)
+names(res.debug)
+## Meta data on input data file:
+res.debug$tables
+## Comparison of variable naming:
+res.debug$input.colnames[c(1:2)]
+res.debug$input.colnames[c(9:12)]
 ```
 ```{r,include=F}
 rm(NMcheckColnames)
@@ -229,7 +235,9 @@ rm(NMcheckColnames)
 ```{r}
 names(NMinfo(res1.dt))
 NMinfo(res1.dt,"dataCreate")
-NMinfo(res1.dt,"input.colnames")
+names(NMinfo(res1.dt,"details"))
+NMinfo(res1.dt,"columns")[1:8]
+NMinfo(res1.dt,"columns")[30:33]
 ```
 
 :::
