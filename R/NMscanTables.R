@@ -93,8 +93,9 @@ NMscanTables <- function(file,details=FALSE,as.fun,quiet,tab.count=FALSE,col.id=
     })
 
     meta <- rbindlist(tab.files)
-    meta[,`:=`(sep=ifelse(grepl(",",format),","," ")
-              ,nrow=NA_real_
+    ## seperator is not being used, so left out from metadata
+    ##sep=ifelse(grepl(",",format),","," "),
+    meta[,`:=`(nrow=NA_real_
               ,ncol=NA_real_
                )]
 
@@ -158,7 +159,9 @@ file?"))
 ## test if all  have same length within level. 
     
     meta[,file.mtime:=file.mtime(file)]
-    setcolorder(meta,intersect(c("source","name","nrow","ncol","nid","level","scope","has.col.row","has.col.id","full.length","filetype","format","sep","file.mtime","file"),colnames(meta)))
+    ## sep not used so omitted 
+    setcolorder(meta,intersect(c("source","name","nrow","ncol","nid","level","scope","has.col.row","has.col.id","full.length","filetype","format",
+                                 "file.mtime","file"),colnames(meta)))
     
     
     if(!quiet){

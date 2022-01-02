@@ -1,3 +1,4 @@
+## meta is if x is metadata rather than an NMdata object
 fix.time <- function(x,meta=T){
     if(meta){
         meta.x <- attr(x,"NMdata")

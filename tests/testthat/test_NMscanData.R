@@ -38,12 +38,12 @@ test_that("basic",{
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
     ## NMreadSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
-    res1 <- NMscanData(file=file.lst, quiet=T, order.columns = F, merge.by.row=FALSE, check.time = FALSE)
-    ## dim(res1)
+    res <- NMscanData(file=file.lst, quiet=T, order.columns = F, merge.by.row=FALSE, check.time = FALSE)
+    ## dim(res)
 
-    fix.time(res1)
+    fix.time(res)
     
-    expect_equal_to_reference(res1,fileRef,version=2)
+    expect_equal_to_reference(res,fileRef,version=2)
     ## without meta
     ##    expect_equal(unNMdata(res1),unNMdata(readRDS(fileRef)))
     ## data.table(attributes(readRDS(fileRef))$meta$variables$variable,attributes(res1)$meta$variables$variable)
@@ -440,47 +440,47 @@ test_that("dir structure with input.txt/output.txt",{
 #### compare mod/lst vs input/output
 ## this test isn't ready. 
 ### Todo: Delete components from NMinfo and then test equality
-if(F){
-    test_that("input.txt/output.txt - unset modelname",{
-        NMdataConf(reset=TRUE)
-        NMdataConf(as.fun="data.table")
-        NMdataConf(file.mod=function(file) file.path(dirname(file),"input.txt"))
-        NMdataConf(modelname=function(file) basename(dirname(normalizePath(file))))
-        
-        filedir.lst <- file.nm("xgxr001dir/output.txt")
-        res1dir <- NMscanData(filedir.lst,check.time = FALSE,merge.by.row=T)
 
-        NMdataConf(file.mod="default")
-        NMdataConf(modelname=NULL)
-        
-        file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
-        res1 <- NMscanData(file=file.lst,check.time = FALSE)
+test_that("input.txt/output.txt - unset modelname",{
+    NMdataConf(reset=TRUE)
+    NMdataConf(as.fun="data.table")
+    NMdataConf(file.mod=function(file) file.path(dirname(file),"input.txt"))
+    NMdataConf(modelname=function(file) basename(dirname(normalizePath(file))))
+    
+    filedir.lst <- file.nm("xgxr001dir/output.txt")
+    res1dir <- NMscanData(filedir.lst,check.time = FALSE,merge.by.row=T)
 
-        ## unNMdata(res1)
-        ## unNMdata(res1dir)
+    NMdataConf(file.mod="default")
+    NMdataConf(modelname=NULL)
+    
+    file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
+    res1 <- NMscanData(file=file.lst,check.time = FALSE)
 
-        ## this test isn't ready. How do I execute the input.txt/output.txt model?
+    ## unNMdata(res1)
+    ## unNMdata(res1dir)
 
-        els.details <- c("call","model","file.lst","file.mod")
-        for(elem in els.details){
-            attributes(res1)$NMdata$details[elem] <- NULL
-            attributes(res1dir)$NMdata$details[elem] <- NULL
-        }
-        
-        attributes(res1)$NMdata$datafile$DATA <- NULL
-        attributes(res1dir)$NMdata$datafile$DATA <- NULL
+    ## this test isn't ready. How do I execute the input.txt/output.txt model?
 
-        attributes(res1)$NMdata$datafile$string <- NULL
-        attributes(res1dir)$NMdata$datafile$string <- NULL
+    els.details <- c("call","model","file.lst","file.mod")
+    for(elem in els.details){
+        attributes(res1)$NMdata$details[elem] <- NULL
+        attributes(res1dir)$NMdata$details[elem] <- NULL
+    }
+    
+    attributes(res1)$NMdata$datafile$DATA <- NULL
+    attributes(res1dir)$NMdata$datafile$DATA <- NULL
 
-        fix.time(res1)
-        fix.time(res1dir)
+    attributes(res1)$NMdata$datafile$string <- NULL
+    attributes(res1dir)$NMdata$datafile$string <- NULL
 
-        expect_equal(res1[,!("model")],res1dir[,!("model")])
+    fix.time(res1)
+    fix.time(res1dir)
 
-        NMdataConf(as.fun=NULL)
-    })
-}
+    expect_equal(res1[,!("model")],res1dir[,!("model")])
+
+    NMdataConf(as.fun=NULL)
+})
+
 
 test_that("output.txt, file.mod=identity - NMinfo file.mod=output.txt?",{
 
@@ -549,7 +549,8 @@ test_that("merge.by.row=ifAvailable when available",{
     res1 <- NMscanData(file=file.lst,merge.by.row="ifAvailable",check.time=FALSE)
     ## dim(res1)
 
-    fix.time(res1)
+### we don't need metadata for this test
+    unNMdata(res1)
     
     expect_equal_to_reference(res1,fileRef,version=2)
 

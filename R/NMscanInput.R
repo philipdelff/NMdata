@@ -171,7 +171,6 @@ NMscanInput <- function(file, use.rds, file.mod,
     
     col.id.inp <- col.id
     if(translate){
-        
         col.id.inp <- NMinfoDT(data.input,"input.colnames")[result==col.id,datafile][1]
     }
 
@@ -192,6 +191,9 @@ NMscanInput <- function(file, use.rds, file.mod,
             ncol=ncol(data.input.0),
             nid=NA_real_
         )
+        
+        meta <- append(meta,NMinfoDT(data.input))
+
         meta$tables$has.col.row <- NA
         if(!is.null(col.row)){
             meta$tables$has.col.row <- col.row%in%meta$input.colnames[,result]
@@ -201,8 +203,6 @@ NMscanInput <- function(file, use.rds, file.mod,
             meta$tables$has.col.id <- col.id%in%meta$input.colnames[,result]
         }
 
-        meta <- append(meta,NMinfoDT(data.input))
-        
         setcolorder(meta$tables,intersect(c("source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype","file.mtime","file"),colnames(meta$tables)))
 
         
