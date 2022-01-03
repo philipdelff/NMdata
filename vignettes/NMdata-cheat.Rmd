@@ -74,41 +74,29 @@ htmltools::img(src = knitr::image_uri(## file.path(R.home("pkgdown"), "favicon",
                                 ## system.file("pkgdown/favicon/apple-touch-icon-152x152.png",package="NMdata")),
                                 "apple-touch-icon-180x180.png"),
                alt = 'logo', 
-               style = 'position:absolute; top:50px; right:50px; padding:0px; width:150px')
+               style = 'position:absolute; top:15px; right:70px; padding:0px; width:150px')
 ```
+
+
+:::: {style="display: flex;" class="column-container"}
+::: {class="column-container__column"}
 
 Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
 Please make sure to see latest version available
 [here](https://philipdelff.github.io/NMdata/). 
 
-:::: {style="display: flex;" class="column-container"}
-::: {class="column-container__column"}
-
 This cheat sheet is
 intented to provide an overview and remind of command names. Please
 refer to other vignettes for more details on specefic topics and
 individual manual pages for details on the functions.
 
-### Basics
-Get started
+### Get started
 ```{r,eval=FALSE}
 install.packages("NMdata")
 library(NMdata)
 ```
 
-Use the many options in `NMdataConf` to tailor NMdata behaviour to your setup and preferences. Make NMdata functions return data.tables or tibbles:
-```{r,eval=FALSE}
-NMdataConf(as.fun=tibble::as_tibble)
-NMdataConf(as.fun="data.table")
-```
-
-By default, NMdata is configured to read files from PSN in which case the input control stream is needed to find the input data. Do this if you don't use PSN:
-```{r,eval=FALSE}
-NMdataConf(file.mod=identity)
-```
-
-Loosely speaking, `NMdataConf` changes default values of NMdata function arguments.
 
 ### Data preparation
 In building the data set, key steps are stacking data sets (like doses, samples, and simulation records) and adding additional information such as covariates. We often use `rbind` and merge or join operations for these steps. `NMdata` helps explore how to do these steps and ensure the results are as expected.
@@ -126,10 +114,6 @@ compareCols(covs,covs2)
 Use the `cols.wanted` argument for the overview to especially focus on the columns you need in your final data set. 
 
 
-:::
-
-::: {class="column-container__column"}
-### Data preparation cont'd
 `renameByContents` - Keep track of what columns are compatible with Nonmem by renaming those that aren't. Rename all columns that Nonmem cannot interpret as numeric to lowercase (see `NMisNumeric` in Programming section):
 ```{r,eval=FALSE}
 ## Append an "N" to columns that NONMEM can read (as numeric)
@@ -145,15 +129,36 @@ pk <- renameByContents(data=pk,
 
 `mergeCheck(x1,x2,...)` - Merges data and only accept results if all that happened was that columns from `x1` were added to `x1`. Row order of `x1` is retained. Arguments are passed to data.table which does the actual merge. This automates the checks we need to do after say merging covariates onto data.
 
+```{r}
+pk2 <- mergeCheck(pk,covs2,by="ID")
+```
+
+
 `flagsAssign` - Assign exclusion flags to a dataset based on specified table
 
 `flagsCount` - Create an overview of number of retained and discarded datapoints
 
-### Finalize, save and update NONMEM control streams accordingly
+```{r}
+dt.flags <- fread(text="FLAG,flag,condition
+10,Below LLOQ,BLQ==1
+100,Negative time,TIME<0")
+
+pk <- flagsAssign(pk,tab.flags=dt.flags,subset.data="EVID==0")
+pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing")
+flagsCount(pk[EVID==0],tab.flags=dt.flags)[,.( flag, N.left, Nobs.left, N.discard, Nobs.discard)]
+```
+
 
 `NMorderColumns` - Standardize column order. Columns that can be read by NONMEM are prioritized towards left.
 
 `NMcheckData` - Extensive data checks for NONMEM compatibility and common issues.
+
+
+:::
+
+::: {class="column-container__column"}
+
+### Write data and update NONMEM control streams accordingly
 
 `NMwriteData` - Write data ensuring compatibility with NONMEM. By defaults saves both a csv (for NONMEM) and an rds (for R, retaining factor levels etc). Text for optional use in `$INPUT` and `$DATA` NONMEM sections is returned. `script` and `args.stamp` are optional arguments, see "Traceability" section for their purpose.
 
@@ -169,41 +174,9 @@ NMwriteSection(dir="nonmem",
 ```
 `NMwriteSection` has the argument `data.file` to further limit the scope of files to update based on what data file the control streams use. It only makes sense to use the auto-generated text for control streams that use this data set.
 
-The text for NONMEM can be generated without saving data using `NMgenText`. You can tailor the generation of the text to copy `(DV=CONC)`, drop `(RACECHAR=DROP)`, rename (`DV` instead of `CONC`) and more.
+The text for NONMEM can be generated without saving data using `NMgenText`. You can tailor the generation of the text to copy `(DV=CONC)`, drop `(COL=DROP)`, rename (`DV` instead of `CONC`) and more.
 
-:::
-
-::: {class="column-container__column"}
-
-### Retrieve Nonmem results
-`NMscanData` - Automatically find Nonmem input and output tables and organize data. By default, available column names are taken from the NONMEM control stream. Additional column names (columns not read by NONMEM) are taken from input data file.
-```{r,include=F}
-##NMscanData <- function(x)NMdata::NMscanData(file.path(system.file(paste0("examples/nonmem/",x), package="NMdata")))
-## res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"))
-```
-```{r}
-res1.dt <- NMscanData("nonmem/run101.lst")
-class(res1.dt)
-NMdataConf(as.fun=tibble::as_tibble,quiet=TRUE)
-res1.tbl <- NMscanData("nonmem/run101.lst")
-class(res1.tbl)
-dims(res1.dt,res1.tbl)
-```
-```{r,include=F}
-rm(NMscanData)
-```
-
-#### Additional functions to read (NONMEM) data files
-`NMscanTables` - Find and read all output data tables based on a NONMEM control stream file. A list of tables is returned.
-
-`NMreadTab` - Read an output table file from NONMEM based on path to output data file
-
-`NMscanInput` - Read input data based on NONMEM control stream and optionally translate column names according to the `$INPUT` NONMEM section
-
-`NMreadCsv` - Read input data formatted for nonmem
-
-
-### Debugging Nonmem and input data
+### Debugging input data (and control stream)
 `NMcheckData` - Run on a path to an control stream, it will check column names in INPUT section against data and then run a full check of the data set. In the following model we forgot to update the control stream INPUT section after adding a column to data ("off" means that INPUT text can be reorganized to match data file better).
 ```{r,include=F}
 NMcheckColnames <- function(x)NMdata::NMcheckColnames(file.path(system.file(paste0("examples/nonmem/",x), package="NMdata")))
@@ -217,28 +190,95 @@ res.debug$tables
 ## Comparison of variable naming:
 res.debug$input.colnames[c(1:2)]
 res.debug$input.colnames[c(9:12)]
+res.debug$NMcheckData$summary
 ```
 ```{r,include=F}
 rm(NMcheckColnames)
 ```
 
+:::
+::: {class="column-container__column"}
+
+### Retrieve Nonmem results
+`NMscanData` - Automatically find Nonmem input and output tables and organize data. By default, available column names are taken from the NONMEM control stream. Additional column names (columns not read by NONMEM) are taken from input data file.
+```{r,include=F}
+##NMscanData <- function(x)NMdata::NMscanData(file.path(system.file(paste0("examples/nonmem/",x), package="NMdata")))
+## res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"))
+```
+```{r}
+NMdataConf(as.fun="data.table")
+res1.dt <- NMscanData("nonmem/run101.lst")
+class(res1.dt)
+NMdataConf(as.fun=tibble::as_tibble,quiet=TRUE)
+res1.tbl <- NMscanData("nonmem/run101.lst")
+class(res1.tbl)
+dims(res1.dt,res1.tbl)
+```
+```{r,include=F}
+rm(NMscanData)
+```
+
+```{r}
+library(ggplot2)
+NMdataConf(as.fun="data.table")
+res1.dt <- NMscanData("nonmem/run101.lst",recover.rows=TRUE)
+ggplot(res1.dt[ID==135&EVID==0],aes(TIME))+
+    geom_point(aes(y=DV,colour=flag))+
+    geom_line(aes(y=PRED))
+```
+
+#### Additional functions to read (NONMEM) data files
+`NMscanTables` - Find and read all output data tables based on a NONMEM control stream file. A list of tables is returned.
+
+`NMreadTab` - Read an output table file from NONMEM based on path to output data file
+
+`NMscanInput` - Read input data based on NONMEM control stream and optionally translate column names according to the `$INPUT` NONMEM section
+
+`NMreadCsv` - Read input data formatted for nonmem
+
+
 
 :::
 
-
 ::: {class="column-container__column"}
+
+### Configuration
+
+Use the many options in `NMdataConf` to tailor NMdata behaviour to your setup and preferences. Make NMdata functions return data.tables or tibbles:
+```{r,eval=FALSE}
+NMdataConf(as.fun=tibble::as_tibble)
+NMdataConf(as.fun="data.table")
+```
+
+By default, NMdata is configured to read files from PSN in which case the input control stream is needed to find the input data. Do this if you don't use PSN:
+```{r,eval=FALSE}
+NMdataConf(file.mod=identity)
+```
+
+Loosely speaking, `NMdataConf` changes default values of NMdata function arguments.
+
 
 ### Traceability 
 `NMinfo` - Get metadata from an NMdata object. This will show where and when input data was created, when model was run, results of concistency checks, what tables were read, how they were combined and a complete list of data columns and their origin.
 
 
+A list of the available elements:
 ```{r}
+NMdataConf(as.fun="data.table")
 names(NMinfo(res1.dt))
+```
+The information recorded during saving of the input data
+```{r}
 NMinfo(res1.dt,"dataCreate")
-names(NMinfo(res1.dt,"details"))
+```
+A full list of columns in all columns in output and input data is included. The source data file and the column number in the result (`COLNUM`) are listed.
+```{r}
 NMinfo(res1.dt,"columns")[1:8]
+```
+We saw earlier that we got "30+2" columns back. We see that the additional two were added by NMscanData (`source`). `DV` was already included from another table so the redundant `DV` column is omitted.
+```{r}
 NMinfo(res1.dt,"columns")[30:33]
 ```
 
-:::
+::: 
 ::::
