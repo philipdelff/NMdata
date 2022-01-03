@@ -339,7 +339,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     }
 
 ### Section end: col.nmout and col.model
-
     
 
 #### Section start:  merge to max one idlevel and max one row ####
@@ -479,11 +478,12 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(use.input&&!any(tables$meta$full.length)) {
         ## copying so we can modify tab.row        
         tab.row <- copy(data.input)
-        setattr(tab.row,"file",NULL)
-        setattr(tab.row,"type.file",NULL)
-        setattr(tab.row,"mtime.file",NULL)
+        ## setattr(tab.row,"file",NULL)
+        ## setattr(tab.row,"type.file",NULL)
+        ## setattr(tab.row,"mtime.file",NULL)
+## <- unNMdata instead of unsetting those attributes?
+        ## unNMdata(data.input)
 
-        
         dt.vars <- rbind(dt.vars,
                          data.table(
                              variable=colnames(tab.row)
@@ -494,6 +494,13 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                          )
         
         tab.row[,(col.nmout):=FALSE]
+        dt.vars <- rbind(dt.vars,
+                         data.table(variable=col.nmout
+                                   ,file=NA_character_
+                                   ,included=TRUE 
+                                   ,source="NMscanData"
+                                   ,level="row"
+                                    ))
     }
 
     if(use.input&&any(tables$meta$full.length)) {

@@ -29,7 +29,7 @@ NMinfo <- function(data,info,as.fun){
             nms.meta <- names(attributes(data)$NMdata)
             
             if(!info%in%nms.meta){
-                stop("Requested info not available. Available",paste(nms.meta,collapse=", "))
+                stop("Requested info not available. Available info: ",paste(nms.meta,collapse=", "))
             }
         }
     }

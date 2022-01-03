@@ -133,11 +133,12 @@ file?"))
     has.row.level <- meta[,any((firstonly+lastonly+firstlastonly)==0)]
     ## level is the observed level. If a first only table has as many
     ## rows as a row-level table, it's row label.
-    meta[,full.length:=(nrow==max(nrow))]
-    if(has.row.level){   
+    if(has.row.level){
+        meta[,full.length:=(nrow==max(nrow))]
         meta[full.length==TRUE,level:="row"]
         meta[full.length==FALSE,level:="id"]
     } else {
+        meta[,full.length:=FALSE]
         meta[,level:="id"]
     }
     ## not supported
