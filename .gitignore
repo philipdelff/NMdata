@@ -3,6 +3,7 @@
 \#*\#
 ;; other
 modelfit_dir*
+nonmem
 FCON
 FDATA
 FMSG
