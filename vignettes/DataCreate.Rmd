@@ -49,9 +49,9 @@ with an erroneos data set. Avoiding those mistakes by integrating
 checks into the data preparation process is a key element in an efficient
 and reliable data preparation work flow.
 
-Furthermore, Nonmem has a number of restrictions on the format
+Furthermore, NONMEM has a number of restrictions on the format
 of the input data, and problems with the data set is a common
-reason for Nonmem not to behave as expected. When this happens,
+reason for NONMEM not to behave as expected. When this happens,
 debugging can be time-consuming. `NMdata` includes some simple
 functions to prevent these situations.
 
@@ -65,10 +65,9 @@ pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 class(pk)
 ```
 
-If you are not familiar with `data.table`, you can keep reading this
-vignette and learn what `NMdata` can do. In all brevity, `data.table`
-is a powerful enhancement to the `data.frame` class. The syntax differ
-from `data.frame`, and the few places where this affects the examples
+If you are not familiar with `data.table`, you can still keep reading this
+vignette and learn what `NMdata` can do. `data.table`
+is a powerful enhancement to the `data.frame` class, and the syntax is a little different from `data.frame`. The few places where this affects the examples
 provided here, explanations will be given.
 
 <!-- Because the data is a `data.table`  -->
@@ -110,7 +109,7 @@ datasets to get the class we need, and decide what to do about the
 
 
 ### Rename columns based on contents
-The model estimation step is heavily dependent (and in Nonmem almost entirely based) on numeric data values. 
+The model estimation step is heavily dependent (and in NONMEM almost entirely based) on numeric data values. 
 The source data will often contain character variables, i.e. columns with non-numeric data values.
 
 If the column names reflect whether the values are numeric, double-checking can be avoided. `renameByContents` renames columns if a function of their contents returns `TRUE`.
@@ -126,13 +125,13 @@ pk.renamed <- renameByContents(data=pktmp,fun.test=NMisNumeric,fun.rename = tolo
                                invert.test = TRUE)
 ```
 
-We make use of the function `NMisNumeric` which tests if `Nonmem` can
+We make use of the function `NMisNumeric` which tests if NONMEM can
 interpret the contents as numeric. If say the subject ID is of
-character class, it can be valid to `Nonmem`. Subject ID `"1039"` will
-be a numeric in Nonmem, `"1-039"` will not. `NMisNumeric` will return
+character class, it can be valid to NONMEM. Subject ID `"1039"` will
+be a numeric in NONMEM, `"1-039"` will not. `NMisNumeric` will return
 `TRUE` if and only if all elements are either missing or interpretable
 as numeric. We invert the condition (`invert.test=TRUE`), and _the
-names_ of the columns that Nonmem cannot interpret as numeric become
+names_ of the columns that NONMEM cannot interpret as numeric become
 lowercase. We use `compareCols` to illustrate that three columns were
 renamed:
 
@@ -241,17 +240,17 @@ It is good practice not to discard records from a dataset but to flag
 them and omit them in model estimation. When reporting the analysis,
 we also need to account for how many data records were discarded due
 to which criteria. A couple of functons in `NMdata` help you do this
-in a way that is easy to integrate with Nonmem. 
+in a way that is easy to integrate with NONMEM. 
 
 The implementation in `NMdata` is based on sequentially checking
 exclusion conditions. This means we can summarize how many records and
 subjects were excluded from the analysis due to the different
 criteria. The information is represented in one numerical column for
-Nonmem, and one (value-to-value corresponding) character column for
+NONMEM, and one (value-to-value corresponding) character column for
 the rest of us in the resulting data.
 
 ### Assign and count flags
-For use in Nonmem, the easiest is that inclusion/exclusion is
+For use in NONMEM, the easiest is that inclusion/exclusion is
 determined by a single column in data - we call that column `FLAG`
 here, but any column name can be used. `FLAG` obviously draws on
 information from other columns such as `TIME`, `DV`, and many others,
@@ -285,7 +284,7 @@ the data.frame. In this case, `BLQ` has to exist in `pk`.
 Finally, flags are assigned to `EVID==1` rows. Here, no flag table is
 used. This means that all `EVID==1` rows will get `FLAG=0`. 
 
-In `Nonmem`, you can include `IGNORE=(FLAG.NE.0)` in `$DATA` or `$INFILE`.
+In NONMEM, you can include `IGNORE=(FLAG.NE.0)` in `$DATA` or `$INFILE`.
 
 Again, the omission will be attributed to the first condition
 matched. Default is to apply the conditions by the order of decreasing
@@ -322,22 +321,22 @@ away.
 ## Finalize data format and write to file
 Once the dataset is in place, `NMdata` provides a few useful functions
 to ensure the formatting of the written data is compatible with
-Nonmem. These functions include checks that Nonmem will be able to
+NONMEM. These functions include checks that NONMEM will be able to
 interpret the data as intended, and more features are under
 development in this area.
 
 ### Automated ordering of columns
-The order of columns in Nonmem is important for two reasons. One is
-that a character in a variable read into Nonmem will make the run
+The order of columns in NONMEM is important for two reasons. One is
+that a character in a variable read into NONMEM will make the run
 fail. The other is that there are restrictions on the number of
-variables you can read into Nonmem, depending on the
+variables you can read into NONMEM, depending on the
 version. `NMorderColumns` tries to put the used columns first, and
 other or maybe even unusable columns in the back of the dataset. It
 does so by a mix of recognition of column names and analysis of the
 column contents. 
 
 Columns that cannot be converted to numeric are put in the back, while
-column bearing standard Nonmem variable names like `ID`, `TIME`, `EVID` etc.
+column bearing standard NONMEM variable names like `ID`, `TIME`, `EVID` etc.
 will be pulled up front. You can of course add column names to
 prioritize to front (`first`) or back (`last`). See `?NMorderColumns` for
 more options.
@@ -351,10 +350,10 @@ We may want to add `MDV` and rerun `NMorderColumns`.
 
 ### Writing data to files
 For the final step of writing the dataset, `NMwriteData` is
-provided. Most importantly, it writes a csv file with appropriate options for Nonmem to read it as well as possible. It can also write an rds for
+provided. Most importantly, it writes a csv file with appropriate options for NONMEM to read it as well as possible. It can also write an rds for
 R with equal contents (or RData if you prefer), but with the rds including all information
-(such as factor levels) which cannot be saved in csv. If you should use `NMscanData` to read Nonmem results,  this information can be used automatically. It also provides a proposal for text to include in the
-`$INPUT` and `$DATA` sections of the Nonmem control
+(such as factor levels) which cannot be saved in csv. If you should use `NMscanData` to read NONMEM results,  this information can be used automatically. It also provides a proposal for text to include in the
+`$INPUT` and `$DATA` sections of the NONMEM control
 streams. 
 
 ```{r}
@@ -365,20 +364,20 @@ Notice, `NMwriteData` detected the exclusion flag and suggests to include it in 
 If a file name had been provided, the data would have been written,
 and the path to the data file would have been included in the message
 written back to the user. There are several arguments that will affect
-the proposed text for the Nonmem run, see `?NMwriteData`.
+the proposed text for the NONMEM run, see `?NMwriteData`.
 
-### Updating Nonmem control streams to read new data file
+### Updating NONMEM control streams to read new data file
 I may be the only one, but sometimes during the modeling stage, I want
 to go back and change or add something to the data creation step. Then
-once I have written a new data file, my Nonmem `$INPUT` sections no
+once I have written a new data file, my NONMEM `$INPUT` sections no
 longer match the data file. In `NMwriteData` you can use a `last`
-argument to get columns pushed towards the back so the Nonmem runs
+argument to get columns pushed towards the back so the NONMEM runs
 should still work, but maybe you need the column in your nonmem runs,
 and so you have no way around updating the control streams. And that
 can be quite a lot of control streams.
 
 `NMdata` has a couple of functions to extract and write sections to
-Nonmem control streams called `NMreadSection` and `NMwriteSection`. We
+NONMEM control streams called `NMreadSection` and `NMwriteSection`. We
 are not going into detail with what these functions can do, but let's
 stick to the example above. We can do
 
