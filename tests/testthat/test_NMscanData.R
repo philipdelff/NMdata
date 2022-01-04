@@ -310,7 +310,7 @@ test_that("Only a firstonly without ID but with ROW",{
     ## tabs
 
     res1 <- expect_error(
-        #expect_warning(
+                                        #expect_warning(
         NMscanData(file=file.lst,merge.by.row=FALSE,check.time = FALSE)
         ## )
     )
@@ -707,9 +707,23 @@ test_that("check time warning",{
     NMdataConf(reset=T)
     fileRef <- "testReference/NMscanData26.rds"
     
-    file.lst <- "testData/nonmem/xgxr001.lst"
+    ## file.lst <- "testData/nonmem/xgxr001.lst"
+
+    dir.test <- "testData/nonmem/check.time"
+    if(dir.exists(dir.test)) unlink(dir.test,recursive=TRUE)
+    dir.create(dir.test)
+
+
+    file.copy("testData/nonmem/xgxr001.lst",dir.test)
+    file.copy("testData/nonmem/xgxr001_res.txt",dir.test)
+    file.copy("testData/nonmem/xgxr001.mod",dir.test)
+
+    file.lst <- file.path(dir.test,"xgxr001.lst")
+    file.mod <- fnExtension(file.lst,".mod")
+    data.new <- sub("../data","../../data",NMreadSection(file.mod,section="data"))
+    NMwriteSection(file.mod,section="data",newlines=data.new)
     
-    res1 <- NMscanData(file=file.lst, quiet=F, order.columns = F, merge.by.row=FALSE)
+    res1 <- expect_warning(NMscanData(file=file.lst, quiet=F, order.columns = F, merge.by.row=FALSE))
     ## dim(res1)'
     
     ## without meta
@@ -719,6 +733,9 @@ test_that("check time warning",{
 
 
 test_that("$INPUT copy",{
+    NMdataConf(reset=T)
+    NMdataConf(check.time=FALSE)
+    
     file.lst.1 <- "testData/nonmem/xgxr022.lst"
     res.1 <- NMscanData(file.lst.1)
 
@@ -740,20 +757,21 @@ test_that("$INPUT copy",{
 
 })
 
-if(F){
-
-    test_that("$INPUT copy",{
+test_that("only firstonly. Has col.id, no col.row.",{
 ######  trickers this 
-        ## use.input&&!any(tables$meta$full.length)
+    ## use.input&&!any(tables$meta$full.length)
+    NMdataConf(reset=T)
+    NMdataConf(check.time=FALSE)
 
-        fileRef <- "testReference/NMscanData27.rds"
-        
-        file.lst <- "testData/nonmem/xgxr023.lst"
-        res <- NMscanData(file.lst,quiet=F)
-fix.time(res)
+    
+    fileRef <- "testReference/NMscanData27.rds"
+    
+    file.lst <- "testData/nonmem/xgxr023.lst"
+    res <- NMscanData(file.lst,quiet=F)
+    res <- fix.time(res)
 
-        expect_equal_to_reference(res,fileRef)
+    expect_equal_to_reference(res,fileRef)
 
-    })
+})
 
-}
+

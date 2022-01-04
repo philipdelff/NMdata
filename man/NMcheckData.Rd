@@ -30,8 +30,10 @@ a (working or non-working) input control stream or an output
 control stream. In this case, NMdataCheck checks column names
 in data against control stream (see NMcheckColnames), reads
 the data as NONMEM would do, and do the same checks on the
-data as NMdataCheck would do using the data argument. The file
-argument is useful for debugging a Nonmem model.}
+data as NMdataCheck would do using the data
+argument. col.flagn is ignored in this case - instead,
+ACCEPT/IGNORE statements in control stream are applied. The
+file argument is useful for debugging a Nonmem model.}
 
 \item{covs}{columns that contain subject-level covariates. They
 are expected to be non-missing, numeric and not varying within

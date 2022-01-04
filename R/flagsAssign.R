@@ -20,11 +20,12 @@
 ##'     flag values in tab.flags. This will be added to data. Default
 ##'     value is flag and can be configured using NMdataConf.
 ##' @param flags.increasing The flags are applied by either decreasing
-##'     (default) or increasing value of col.flagn. By using
-##'     decreasing order, you can easily adjust the Nonmem IGNORE
-##'     statement from IGNORE(FLAG.NE.0) to say IGNORE(FLAG.GT.10) if
-##'     BLQ's have FLAG=10, and you decide to include these in the
-##'     analysis.
+##'     (default) or increasing value of col.flagn. Decreasing order
+##'     means that conditions associated with higher values of
+##'     col.flagn will be evaluated first. By using decreasing order,
+##'     you can easily adjust the Nonmem IGNORE statement from
+##'     IGNORE(FLAG.NE.0) to say IGNORE(FLAG.GT.10) if BLQ's have
+##'     FLAG=10, and you decide to include these in the analysis.
 ##' @param grp.incomp Column(s) that distinct incompatible subsets of
 ##'     data. Default is "EVID" meaning that if different values of
 ##'     EVID are found in data, the function will return an
