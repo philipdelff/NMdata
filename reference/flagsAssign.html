@@ -18,7 +18,7 @@ pre-specified table of flags, assign the flags automatically."><meta property="o
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.954</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.961</span>
       </span>
     </div>
 
@@ -124,11 +124,12 @@ flag values in tab.flags. This will be added to data. Default
 value is flag and can be configured using NMdataConf.</p></dd>
 <dt>flags.increasing</dt>
 <dd><p>The flags are applied by either decreasing
-(default) or increasing value of col.flagn. By using
-decreasing order, you can easily adjust the Nonmem IGNORE
-statement from IGNORE(FLAG.NE.0) to say IGNORE(FLAG.GT.10) if
-BLQ's have FLAG=10, and you decide to include these in the
-analysis.</p></dd>
+(default) or increasing value of col.flagn. Decreasing order
+means that conditions associated with higher values of
+col.flagn will be evaluated first. By using decreasing order,
+you can easily adjust the Nonmem IGNORE statement from
+IGNORE(FLAG.NE.0) to say IGNORE(FLAG.GT.10) if BLQ's have
+FLAG=10, and you decide to include these in the analysis.</p></dd>
 <dt>grp.incomp</dt>
 <dd><p>Column(s) that distinct incompatible subsets of
 data. Default is "EVID" meaning that if different values of

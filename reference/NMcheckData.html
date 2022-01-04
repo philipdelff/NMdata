@@ -19,7 +19,7 @@ but because they are typical dataset issues."><meta property="og:image" content=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.954</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.961</span>
       </span>
     </div>
 
@@ -117,8 +117,10 @@ a (working or non-working) input control stream or an output
 control stream. In this case, NMdataCheck checks column names
 in data against control stream (see NMcheckColnames), reads
 the data as NONMEM would do, and do the same checks on the
-data as NMdataCheck would do using the data argument. The file
-argument is useful for debugging a Nonmem model.</p></dd>
+data as NMdataCheck would do using the data
+argument. col.flagn is ignored in this case - instead,
+ACCEPT/IGNORE statements in control stream are applied. The
+file argument is useful for debugging a Nonmem model.</p></dd>
 <dt>covs</dt>
 <dd><p>columns that contain subject-level covariates. They
 are expected to be non-missing, numeric and not varying within
