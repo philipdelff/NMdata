@@ -23,8 +23,8 @@ navbar:
         href: articles/NMdata-cheat.html
       - text: "NMscanData: find and combine all output and input data"
         href: articles/NMscanData.html
-      - text: "Data creation tools"
-        href: articles/DataCreate.html
+      - text: "Data Preparation Tools"
+        href: articles/DataPrepare.html
       - text: "FAQ"
         href: articles/NMdata-FAQ.html
     reference:

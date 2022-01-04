@@ -45,10 +45,10 @@ results <- NMscanData("run001.lst")
 Take a look at [this vignette](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
 for more info on the Nonmem data reader.
 
-## Create data, export to Nonmem
+## Prepare data, export to Nonmem
 On the data-generation side, functionality is provided for
 documentation of the datasets while generating them. Check out [this
-vignette](https://philipdelff.github.io/NMdata/articles/DataCreate.html)
+vignette](https://philipdelff.github.io/NMdata/articles/DataPrepare.html)
 on the topic. There are functions for automatic checks of (some) data
 merges, handling and counting of exclusions flags, final
 preparations for ensuring readability in Nonmem, and ensuring

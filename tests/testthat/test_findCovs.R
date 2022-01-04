@@ -17,6 +17,16 @@ test_that("with by",{
     expect_equal_to_reference(res,fileRef,version=2)
 })
 
+test_that("with by of length 2",{
+    fileRef <- "testReference/findCovs_3.rds"
+    
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+
+    res <- findCovs(pk,by=c("ID","trtact"))
+    expect_equal_to_reference(res,fileRef,version=2)
+})
+
+
 ## 
 test_that("deprecated cols.id",
           expect_warning(findCovs(data.frame(x=1),cols.id="w"))

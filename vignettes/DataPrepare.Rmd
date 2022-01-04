@@ -40,6 +40,24 @@ This vignette is still under development. Please make sure to see
 latest version available
 [here](https://philipdelff.github.io/NMdata/).
 
+## Objectives
+This vignettes aims at enabling you at 
+
+* Using NMdata's data preparation tools to assist building your data set
+
+* Using `mergeCheck` to automatically check merge results, ensuring rows do not get lost or duplicated
+
+* Assigning exclusion flags and obtain a table summary counting data exclusions from source data to analysis data set
+
+* Easily and consistently order data columns using `NMorderColumns`
+
+* Using `NMcheckData` to perform a extensive data check before exporting for Nonmem
+
+* NMwriteData
+
+* NMwriteSection
+
+
 ## Introduction
 Getting data ready for modeling is a crucial and often underestimated
 task. Mistakes during the process of combining data sets, defining
@@ -70,13 +88,6 @@ vignette and learn what `NMdata` can do. `data.table`
 is a powerful enhancement to the `data.frame` class, and the syntax is a little different from `data.frame`. The few places where this affects the examples
 provided here, explanations will be given.
 
-<!-- Because the data is a `data.table`  -->
-
-<!-- The reason why the -->
-<!-- functions return data.table objects is that -->
-
-<!-- If this was a `data.frame` (and not a `data.table`), the `NMdata` functions would keep returning objects -->
-<!-- of class `data.frame`. -->
 
 ## Data assembly
 
