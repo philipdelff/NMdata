@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.961</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9.963</span>
       </span>
     </div>
 
@@ -117,19 +117,19 @@
 
     
     
-<p>Built 2022-01-04 using NMdata 0.0.9.961.</p>
+<p>Built 2022-01-04 using NMdata 0.0.9.963.</p>
 <p>This vignette is still under development. Please make sure to see latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>Getting data ready for modeling is a crucial and often underestimated task. Mistakes during the process of combining data sets, defining time variables etc. can lead to difficulties during modeling, need for revisiting data set preparation, and in worst case wasted time working with an erroneos data set. Avoiding those mistakes by integrating checks into the data preparation process is a key element in an efficient and reliable data preparation work flow.</p>
-<p>Furthermore, Nonmem has a number of restrictions on the format of the input data, and problems with the data set is a common reason for Nonmem not to behave as expected. When this happens, debugging can be time-consuming. <code>NMdata</code> includes some simple functions to prevent these situations.</p>
+<p>Furthermore, NONMEM has a number of restrictions on the format of the input data, and problems with the data set is a common reason for NONMEM not to behave as expected. When this happens, debugging can be time-consuming. <code>NMdata</code> includes some simple functions to prevent these situations.</p>
 <p>This vignette uses <code>data.table</code> syntax for the little bit of data manipulation performed. However, you don’t need to use data.table <em>at all</em> to use these or any tool in <code>NMdata</code>. The data set is a <code>data.table</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span>file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span>
 <span class="co">#&gt; [1] "data.table" "data.frame"</span></code></pre></div>
-<p>If you are not familiar with <code>data.table</code>, you can keep reading this vignette and learn what <code>NMdata</code> can do. In all brevity, <code>data.table</code> is a powerful enhancement to the <code>data.frame</code> class. The syntax differ from <code>data.frame</code>, and the few places where this affects the examples provided here, explanations will be given.</p>
+<p>If you are not familiar with <code>data.table</code>, you can still keep reading this vignette and learn what <code>NMdata</code> can do. <code>data.table</code> is a powerful enhancement to the <code>data.frame</code> class, and the syntax is a little different from <code>data.frame</code>. The few places where this affects the examples provided here, explanations will be given.</p>
 <!-- Because the data is a `data.table`  -->
 <!-- The reason why the -->
 <!-- functions return data.table objects is that -->
@@ -160,12 +160,12 @@
 <div class="section level3">
 <h3 id="rename-columns-based-on-contents">Rename columns based on contents<a class="anchor" aria-label="anchor" href="#rename-columns-based-on-contents"></a>
 </h3>
-<p>The model estimation step is heavily dependent (and in Nonmem almost entirely based) on numeric data values. The source data will often contain character variables, i.e. columns with non-numeric data values.</p>
+<p>The model estimation step is heavily dependent (and in NONMEM almost entirely based) on numeric data values. The source data will often contain character variables, i.e. columns with non-numeric data values.</p>
 <p>If the column names reflect whether the values are numeric, double-checking can be avoided. <code>renameByContents</code> renames columns if a function of their contents returns <code>TRUE</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk.renamed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/renameByContents.html">renameByContents</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">pktmp</span>,fun.test<span class="op">=</span><span class="va">NMisNumeric</span>,fun.rename <span class="op">=</span> <span class="va">tolower</span>,
                                invert.test <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p>We make use of the function <code>NMisNumeric</code> which tests if <code>Nonmem</code> can interpret the contents as numeric. If say the subject ID is of character class, it can be valid to <code>Nonmem</code>. Subject ID <code>"1039"</code> will be a numeric in Nonmem, <code>"1-039"</code> will not. <code>NMisNumeric</code> will return <code>TRUE</code> if and only if all elements are either missing or interpretable as numeric. We invert the condition (<code>invert.test=TRUE</code>), and <em>the names</em> of the columns that Nonmem cannot interpret as numeric become lowercase. We use <code>compareCols</code> to illustrate that three columns were renamed:</p>
+<p>We make use of the function <code>NMisNumeric</code> which tests if NONMEM can interpret the contents as numeric. If say the subject ID is of character class, it can be valid to NONMEM. Subject ID <code>"1039"</code> will be a numeric in NONMEM, <code>"1-039"</code> will not. <code>NMisNumeric</code> will return <code>TRUE</code> if and only if all elements are either missing or interpretable as numeric. We invert the condition (<code>invert.test=TRUE</code>), and <em>the names</em> of the columns that NONMEM cannot interpret as numeric become lowercase. We use <code>compareCols</code> to illustrate that three columns were renamed:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/compareCols.html">compareCols</a></span><span class="op">(</span><span class="va">pktmp</span>,<span class="va">pk.renamed</span><span class="op">)</span>
 <span class="co">#&gt; Dimensions:</span>
@@ -233,12 +233,12 @@
 <div class="section level2">
 <h2 id="exclusion-flags">Exclusion flags<a class="anchor" aria-label="anchor" href="#exclusion-flags"></a>
 </h2>
-<p>It is good practice not to discard records from a dataset but to flag them and omit them in model estimation. When reporting the analysis, we also need to account for how many data records were discarded due to which criteria. A couple of functons in <code>NMdata</code> help you do this in a way that is easy to integrate with Nonmem.</p>
-<p>The implementation in <code>NMdata</code> is based on sequentially checking exclusion conditions. This means we can summarize how many records and subjects were excluded from the analysis due to the different criteria. The information is represented in one numerical column for Nonmem, and one (value-to-value corresponding) character column for the rest of us in the resulting data.</p>
+<p>It is good practice not to discard records from a dataset but to flag them and omit them in model estimation. When reporting the analysis, we also need to account for how many data records were discarded due to which criteria. A couple of functons in <code>NMdata</code> help you do this in a way that is easy to integrate with NONMEM.</p>
+<p>The implementation in <code>NMdata</code> is based on sequentially checking exclusion conditions. This means we can summarize how many records and subjects were excluded from the analysis due to the different criteria. The information is represented in one numerical column for NONMEM, and one (value-to-value corresponding) character column for the rest of us in the resulting data.</p>
 <div class="section level3">
 <h3 id="assign-and-count-flags">Assign and count flags<a class="anchor" aria-label="anchor" href="#assign-and-count-flags"></a>
 </h3>
-<p>For use in Nonmem, the easiest is that inclusion/exclusion is determined by a single column in data - we call that column <code>FLAG</code> here, but any column name can be used. <code>FLAG</code> obviously draws on information from other columns such as <code>TIME</code>, <code>DV</code>, and many others, depending on your dataset and your way of working.</p>
+<p>For use in NONMEM, the easiest is that inclusion/exclusion is determined by a single column in data - we call that column <code>FLAG</code> here, but any column name can be used. <code>FLAG</code> obviously draws on information from other columns such as <code>TIME</code>, <code>DV</code>, and many others, depending on your dataset and your way of working.</p>
 <p>The function that applies inclusion/excluasion rules is called <code>flagsAssign</code>, and it takes a dataset and a data.frame with rules as arguments.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span>text<span class="op">=</span><span class="st">"FLAG,flag,condition
@@ -251,7 +251,7 @@
 <span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsAssign.html">flagsAssign</a></span><span class="op">(</span><span class="va">pk</span>,subset.data<span class="op">=</span><span class="st">"EVID==1"</span>,flagc.0<span class="op">=</span><span class="st">"Dosing"</span><span class="op">)</span></code></pre></div>
 <p><code>fread</code> is used to create a data.table (like <code>read.csv</code> to create a data.frame) for readability, one line for each row in the data.table created. <code>flagsAssign</code> applies the conditions sequentially and by decreasing value of <code>FLAG</code>. <code>FLAG=0</code> means that the observation is included in the analysis. You can use any expression that can be evaluated within the data.frame. In this case, <code>BLQ</code> has to exist in <code>pk</code>.</p>
 <p>Finally, flags are assigned to <code>EVID==1</code> rows. Here, no flag table is used. This means that all <code>EVID==1</code> rows will get <code>FLAG=0</code>.</p>
-<p>In <code>Nonmem</code>, you can include <code>IGNORE=(FLAG.NE.0)</code> in <code>$DATA</code> or <code>$INFILE</code>.</p>
+<p>In NONMEM, you can include <code>IGNORE=(FLAG.NE.0)</code> in <code>$DATA</code> or <code>$INFILE</code>.</p>
 <p>Again, the omission will be attributed to the first condition matched. Default is to apply the conditions by the order of decreasing numerical flag value. Use <code>flags.increasing=TRUE</code> if you prefer the opposite. However, what cannot be modified is that 0 is the numerical value for rows that are not matched by any conditions.</p>
 <p>What rows to omit from a dataset can vary from one analysis to another. Hence, the aim with the chosen design is that the inclusion criteria can be changed and applied to overwrite an existing inclusion/exclusion selection. For another analysis we want to include the observations below LLOQ. We have two options. Either we simply change the <code>IGNORE</code> statement given above to <code>IGNORE=(FLAG.LT.10)</code>, or you create a different exclusion flag for that one. If you prefer to create a new set of exclusion flags, just use new names for the numerical and the character flag columns so you don’t overwrite the old ones. See help of <code>flagsAssign</code> and <code>flagsCount</code> for how.</p>
 </div>
@@ -278,12 +278,12 @@
 <div class="section level2">
 <h2 id="finalize-data-format-and-write-to-file">Finalize data format and write to file<a class="anchor" aria-label="anchor" href="#finalize-data-format-and-write-to-file"></a>
 </h2>
-<p>Once the dataset is in place, <code>NMdata</code> provides a few useful functions to ensure the formatting of the written data is compatible with Nonmem. These functions include checks that Nonmem will be able to interpret the data as intended, and more features are under development in this area.</p>
+<p>Once the dataset is in place, <code>NMdata</code> provides a few useful functions to ensure the formatting of the written data is compatible with NONMEM. These functions include checks that NONMEM will be able to interpret the data as intended, and more features are under development in this area.</p>
 <div class="section level3">
 <h3 id="automated-ordering-of-columns">Automated ordering of columns<a class="anchor" aria-label="anchor" href="#automated-ordering-of-columns"></a>
 </h3>
-<p>The order of columns in Nonmem is important for two reasons. One is that a character in a variable read into Nonmem will make the run fail. The other is that there are restrictions on the number of variables you can read into Nonmem, depending on the version. <code>NMorderColumns</code> tries to put the used columns first, and other or maybe even unusable columns in the back of the dataset. It does so by a mix of recognition of column names and analysis of the column contents.</p>
-<p>Columns that cannot be converted to numeric are put in the back, while column bearing standard Nonmem variable names like <code>ID</code>, <code>TIME</code>, <code>EVID</code> etc. will be pulled up front. You can of course add column names to prioritize to front (<code>first</code>) or back (<code>last</code>). See <code><a href="../reference/NMorderColumns.html">?NMorderColumns</a></code> for more options.</p>
+<p>The order of columns in NONMEM is important for two reasons. One is that a character in a variable read into NONMEM will make the run fail. The other is that there are restrictions on the number of variables you can read into NONMEM, depending on the version. <code>NMorderColumns</code> tries to put the used columns first, and other or maybe even unusable columns in the back of the dataset. It does so by a mix of recognition of column names and analysis of the column contents.</p>
+<p>Columns that cannot be converted to numeric are put in the back, while column bearing standard NONMEM variable names like <code>ID</code>, <code>TIME</code>, <code>EVID</code> etc. will be pulled up front. You can of course add column names to prioritize to front (<code>first</code>) or back (<code>last</code>). See <code><a href="../reference/NMorderColumns.html">?NMorderColumns</a></code> for more options.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMorderColumns.html">NMorderColumns</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span></code></pre></div>
 <p>We may want to add <code>MDV</code> and rerun <code>NMorderColumns</code>.</p>
@@ -291,7 +291,7 @@
 <div class="section level3">
 <h3 id="writing-data-to-files">Writing data to files<a class="anchor" aria-label="anchor" href="#writing-data-to-files"></a>
 </h3>
-<p>For the final step of writing the dataset, <code>NMwriteData</code> is provided. Most importantly, it writes a csv file with appropriate options for Nonmem to read it as well as possible. It can also write an rds for R with equal contents (or RData if you prefer), but with the rds including all information (such as factor levels) which cannot be saved in csv. If you should use <code>NMscanData</code> to read Nonmem results, this information can be used automatically. It also provides a proposal for text to include in the <code>$INPUT</code> and <code>$DATA</code> sections of the Nonmem control streams.</p>
+<p>For the final step of writing the dataset, <code>NMwriteData</code> is provided. Most importantly, it writes a csv file with appropriate options for NONMEM to read it as well as possible. It can also write an rds for R with equal contents (or RData if you prefer), but with the rds including all information (such as factor levels) which cannot be saved in csv. If you should use <code>NMscanData</code> to read NONMEM results, this information can be used automatically. It also provides a proposal for text to include in the <code>$INPUT</code> and <code>$DATA</code> sections of the NONMEM control streams.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/NMwriteData.html">NMwriteData</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span>
 <span class="co">#&gt; Data _not_ witten to any files.</span>
@@ -302,13 +302,13 @@
 <span class="co">#&gt; IGN=@</span>
 <span class="co">#&gt; IGNORE=(FLAG.NE.0)</span></code></pre></div>
 <p>Notice, <code>NMwriteData</code> detected the exclusion flag and suggests to include it in <code>$DATA</code>.</p>
-<p>If a file name had been provided, the data would have been written, and the path to the data file would have been included in the message written back to the user. There are several arguments that will affect the proposed text for the Nonmem run, see <code><a href="../reference/NMwriteData.html">?NMwriteData</a></code>.</p>
+<p>If a file name had been provided, the data would have been written, and the path to the data file would have been included in the message written back to the user. There are several arguments that will affect the proposed text for the NONMEM run, see <code><a href="../reference/NMwriteData.html">?NMwriteData</a></code>.</p>
 </div>
 <div class="section level3">
-<h3 id="updating-nonmem-control-streams-to-read-new-data-file">Updating Nonmem control streams to read new data file<a class="anchor" aria-label="anchor" href="#updating-nonmem-control-streams-to-read-new-data-file"></a>
+<h3 id="updating-nonmem-control-streams-to-read-new-data-file">Updating NONMEM control streams to read new data file<a class="anchor" aria-label="anchor" href="#updating-nonmem-control-streams-to-read-new-data-file"></a>
 </h3>
-<p>I may be the only one, but sometimes during the modeling stage, I want to go back and change or add something to the data creation step. Then once I have written a new data file, my Nonmem <code>$INPUT</code> sections no longer match the data file. In <code>NMwriteData</code> you can use a <code>last</code> argument to get columns pushed towards the back so the Nonmem runs should still work, but maybe you need the column in your nonmem runs, and so you have no way around updating the control streams. And that can be quite a lot of control streams.</p>
-<p><code>NMdata</code> has a couple of functions to extract and write sections to Nonmem control streams called <code>NMreadSection</code> and <code>NMwriteSection</code>. We are not going into detail with what these functions can do, but let’s stick to the example above. We can do</p>
+<p>I may be the only one, but sometimes during the modeling stage, I want to go back and change or add something to the data creation step. Then once I have written a new data file, my NONMEM <code>$INPUT</code> sections no longer match the data file. In <code>NMwriteData</code> you can use a <code>last</code> argument to get columns pushed towards the back so the NONMEM runs should still work, but maybe you need the column in your nonmem runs, and so you have no way around updating the control streams. And that can be quite a lot of control streams.</p>
+<p><code>NMdata</code> has a couple of functions to extract and write sections to NONMEM control streams called <code>NMreadSection</code> and <code>NMwriteSection</code>. We are not going into detail with what these functions can do, but let’s stick to the example above. We can do</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/NMwriteSection.html">NMwriteSection</a></span><span class="op">(</span><span class="st">"run001.mod"</span>,<span class="st">"INPUT"</span>,<span class="st">"$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE FLAG2 NOMTIME PART PROFDAY PROFTIME WEIGHTB eff0"</span><span class="op">)</span></code></pre></div>
 <p>But in fact, we can go a step further and take the information straight from NMwriteData</p>
@@ -339,7 +339,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-01-04 03:19:48 UTC"</span></code></pre></div>
+<span class="co">#&gt; [1] "2022-01-04 13:34:35 UTC"</span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>NMstamp</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMstamp.html">NMstamp</a></span><span class="op">(</span><span class="va">pk</span>,script<span class="op">=</span><span class="st">"vignettes/DataCreate.Rmd"</span>,Description<span class="op">=</span><span class="st">"A PK dataset used for examples."</span><span class="op">)</span>
@@ -349,7 +349,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-01-04 03:19:48 UTC"</span>
+<span class="co">#&gt; [1] "2022-01-04 13:34:35 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span></code></pre></div>
