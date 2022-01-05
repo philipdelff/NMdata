@@ -112,8 +112,8 @@ theme_set(theme_bw()+theme(legend.position="bottom"))
 ```
 
 ```{r,eval=FALSE,include=FALSE}
-library(devtools)
-load_all()
+## library(devtools)
+## load_all()
 ```
 
 For the examples we will be using files that are available in the

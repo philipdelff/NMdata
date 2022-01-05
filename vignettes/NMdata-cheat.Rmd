@@ -154,7 +154,6 @@ pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing")
 flagsCount(pk[EVID==0],tab.flags=dt.flags)[,.( flag, N.left, Nobs.left, N.discard, Nobs.discard)]
 ```
 
-
 `NMorderColumns` - Standardize column order. Columns that can be read
 by NONMEM are prioritized towards left.
 ```{r,include=FALSE}

@@ -21,8 +21,8 @@ knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 ```
 
 ```{r,eval=TRUE,include=FALSE}
-library(devtools)
-load_all()
+## library(devtools)
+## load_all()
 ```
 
 ```{r,setup,include=F}
@@ -56,9 +56,9 @@ This vignettes aims at enabling you at
 
 * Using `NMcheckData` to perform a extensive data check before
   exporting for Nonmem
-
+ 
 * Writing the prepared data to file ensuring compatibility with NONMEM
-  and for post-processing in R using NMwriteData
+  and for post-processing in R using `NMwriteData`
 
 * Updating multiple NONMEM control streams to read the updated data
   file using one simple call of the `NMwriteSection` function

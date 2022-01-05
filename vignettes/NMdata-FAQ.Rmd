@@ -210,7 +210,7 @@ the input control stream will work too, but this is not
 recommended). It has no requirement to the naming of files. 
 
 `NMdata` by default assumes a [PSN](https://uupharmacometrics.github.io/PsN/) setup. The reason this makes a difference is a little technical but briefly, the path to the input data is not available in the list file when using PSN. If you don't use PSN, all information will probably be available in the output control stream. Enough talking, just do this:
-```{r}
+```{r,eval=FALSE}
 NMdataConf(file.mod=identity)
 ```
 
