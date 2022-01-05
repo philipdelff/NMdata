@@ -503,7 +503,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     findings <- listEvents(col.time,"Negative time",fun=function(x)x>=0,events=findings,debug=F)
 
 ### EVID must be in c(0,1,2,3,4)
-    findings <- listEvents("EVID","EVID in 0:4",function(x) x%in%c(0:4),events=findings)
+    findings <- listEvents("EVID","EVID not in 0:4",function(x) x%in%c(0:4),events=findings)
     
 ### ID must be a positive integer
     findings <- listEvents("ID","ID not a positive integer",
@@ -566,7 +566,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
                            dat=data) 
     ## positive for EVID 1 and 4
     findings <- listEvents("AMT","Non-positive dose amounts",
-                           fun=function(x)x>=0,events=findings,
+                           fun=function(x)x>0,events=findings,
                            dat=data[EVID%in%c(1,4)])
     ## must be 0 or NA for EVID 0 and 2
     findings <- listEvents("AMT","Non-zero dose for obs or sim record",
