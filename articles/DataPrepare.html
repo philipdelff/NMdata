@@ -67,7 +67,7 @@
       <a href="../articles/NMscanData.html">NMscanData: find and combine all output and input data</a>
     </li>
     <li>
-      <a href="../articles/DataCreate.html">Data creation tools</a>
+      <a href="../articles/DataPrepare.html">Data Preparation Tools</a>
     </li>
     <li>
       <a href="../articles/NMdata-FAQ.html">FAQ</a>
@@ -104,21 +104,35 @@
 
       
 
-      </header><script src="DataCreate_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="DataPrepare_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Data Preparation Tools</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/vignettes/DataCreate.Rmd" class="external-link"><code>vignettes/DataCreate.Rmd</code></a></small>
-      <div class="hidden name"><code>DataCreate.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/vignettes/DataPrepare.Rmd" class="external-link"><code>vignettes/DataPrepare.Rmd</code></a></small>
+      <div class="hidden name"><code>DataPrepare.Rmd</code></div>
 
     </div>
 
     
     
-<p>Built 2022-01-04 using NMdata 0.0.9.963.</p>
+<p>Built 2022-01-05 using NMdata 0.0.9.963.</p>
 <p>This vignette is still under development. Please make sure to see latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
+<div class="section level2">
+<h2 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
+</h2>
+<p>This vignettes aims at enabling you at</p>
+<ul>
+<li><p>Using NMdata’s data preparation tools to assist building your data set</p></li>
+<li><p>Using <code>mergeCheck</code> to automatically check merge results, ensuring rows do not get lost or duplicated</p></li>
+<li><p>Assigning exclusion flags and obtain a table summary counting data exclusions from source data to analysis data set</p></li>
+<li><p>Easily and consistently order data columns using <code>NMorderColumns</code></p></li>
+<li><p>Using <code>NMcheckData</code> to perform a extensive data check before exporting for Nonmem</p></li>
+<li><p>NMwriteData</p></li>
+<li><p>NMwriteSection</p></li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -130,11 +144,6 @@
 <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span>
 <span class="co">#&gt; [1] "data.table" "data.frame"</span></code></pre></div>
 <p>If you are not familiar with <code>data.table</code>, you can still keep reading this vignette and learn what <code>NMdata</code> can do. <code>data.table</code> is a powerful enhancement to the <code>data.frame</code> class, and the syntax is a little different from <code>data.frame</code>. The few places where this affects the examples provided here, explanations will be given.</p>
-<!-- Because the data is a `data.table`  -->
-<!-- The reason why the -->
-<!-- functions return data.table objects is that -->
-<!-- If this was a `data.frame` (and not a `data.table`), the `NMdata` functions would keep returning objects -->
-<!-- of class `data.frame`. -->
 </div>
 <div class="section level2">
 <h2 id="data-assembly">Data assembly<a class="anchor" aria-label="anchor" href="#data-assembly"></a>
@@ -339,7 +348,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-01-04 13:34:35 UTC"</span></code></pre></div>
+<span class="co">#&gt; [1] "2022-01-05 00:01:43 UTC"</span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>NMstamp</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMstamp.html">NMstamp</a></span><span class="op">(</span><span class="va">pk</span>,script<span class="op">=</span><span class="st">"vignettes/DataCreate.Rmd"</span>,Description<span class="op">=</span><span class="st">"A PK dataset used for examples."</span><span class="op">)</span>
@@ -349,7 +358,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-01-04 13:34:35 UTC"</span>
+<span class="co">#&gt; [1] "2022-01-05 00:01:43 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span></code></pre></div>
