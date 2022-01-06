@@ -32,6 +32,15 @@ The best place to browse information about the package is
 [here](https://philipdelff.github.io/NMdata/). All documentation is of
 course included in the package itself too.
 
+## Prepare, check, and export data for NONMEM
+On the data-generation side, functionality is provided for
+documentation of the datasets while generating them. Check out [this
+vignette](https://philipdelff.github.io/NMdata/articles/DataPrepare.html)
+on the topic. There are functions for automatic checks of (some) data
+merges, handling and counting of exclusions flags, final
+preparations for ensuring readability in Nonmem, and ensuring
+traceability of datasets back to data generation scripts.
+
 
 ## Automated and general reader of Nonmem results data
 Reading the resulting data from Nonmem can require a few
@@ -45,14 +54,6 @@ results <- NMscanData("run001.lst")
 Take a look at [this vignette](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
 for more info on the Nonmem data reader.
 
-## Prepare data, export to Nonmem
-On the data-generation side, functionality is provided for
-documentation of the datasets while generating them. Check out [this
-vignette](https://philipdelff.github.io/NMdata/articles/DataPrepare.html)
-on the topic. There are functions for automatic checks of (some) data
-merges, handling and counting of exclusions flags, final
-preparations for ensuring readability in Nonmem, and ensuring
-traceability of datasets back to data generation scripts.
 
 ## How to install
 `NMdata` is on [CRAN](https://cran.r-project.org/), [MRAN](https://mran.microsoft.com/), and [MPN](https://mpn.metworx.com). To install from the package archive you are already using, do:
