@@ -12,9 +12,20 @@ knitr::opts_chunk$set(
                       out.width = "100%"
                   )
 library(NMdata)
+library(data.table)
 ## library(tibble)
 
 NMscanData <- function(x,...)NMdata::NMscanData(file.path(system.file(paste0("examples/nonmem/",x), package="NMdata")),...)
+
+## res1.dt %>%
+##     filter(ID==135&EVID==0) %>%
+##     ggplot(aes(TIME))+
+##     geom_point(aes(y=DV,colour=flag))+
+##     geom_line(aes(y=PRED))+
+##     labs(y="Concentration (unit)",subtitle=unique(res1.dt$model))+
+##     theme_bw()
+
+
 ```
 
 # NMdata
@@ -68,18 +79,18 @@ little differently. `NMscanData` can return all data output (`$TABLE`) from Nonm
 input data. It's as simple as
 ```{r,NMscanData-example1}
 ## tell NMdata functions to return data.tables
-NMdataConf(as.fun=tibble::as_tibble)
+## NMdataConf(as.fun=tibble::as_tibble)
+NMdataConf(as.fun="data.table")
 res1.dt <- NMscanData("xgxr001.lst",recover.rows=TRUE)
 ## plot a subset of the result
 library(ggplot2)
-library(dplyr)
-res1.dt %>%
-    filter(ID==135&EVID==0) %>%
-    ggplot(aes(TIME))+
+ggplot(res1.dt[ID==135&EVID==0],aes(TIME))+
     geom_point(aes(y=DV,colour=flag))+
     geom_line(aes(y=PRED))+
     labs(y="Concentration (unit)",subtitle=unique(res1.dt$model))+
     theme_bw()
+
+
 ```
 
 Take a look at [this vignette](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
