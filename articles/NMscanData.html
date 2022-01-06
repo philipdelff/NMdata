@@ -439,7 +439,7 @@
 <li>Reading speed may be improved (NMdata uses <code>fread</code> from <code>data.table</code> which is extremely fast for delimited files so in many cases this difference can be small).</li>
 <li>File sizes are greatly reduced from text to <code>rds</code>. This can be a big advantage if you are transfering files or reading over a network connection. <code>NMdata</code> is generally very fast (thanks to <code>data.table</code>) so file/network access (I/O) is likely to be the main bottleneck.</li>
 </ul>
-<p>If you write Nonmem datasets with the <code><a href="../reference/NMwriteData.html">NMdata::NMwriteData</a></code>, you can get an <code>rds</code> file automatically, exactly where <code>NMscanData</code> will look for it. Creating datasets using <code>NMdata</code> is described in <a href="https://philipdelff.github.io/NMdata/articles/DataCreate.html">this vignette</a>.</p>
+<p>If you write Nonmem datasets with the <code><a href="../reference/NMwriteData.html">NMdata::NMwriteData</a></code>, you can get an <code>rds</code> file automatically, exactly where <code>NMscanData</code> will look for it. Preparing datasets using <code>NMdata</code> is described in <a href="https://philipdelff.github.io/NMdata/articles/DataPrepare.html">this vignette</a>.</p>
 <p>You probably want to use <code>NMdataConf</code> to change the default behavior if you don’t want to use <code>rds</code> files.</p>
 </div>
 </div>
