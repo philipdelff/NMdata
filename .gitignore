@@ -1,8 +1,9 @@
 ;; emacs backup
 \.\#*
 \#*\#
-;; other
+;; psn
 modelfit_dir*
+;; nonmem
 nonmem
 FCON
 FDATA
@@ -30,10 +31,12 @@ input.shm
 input.xml
 nmprd4p.mod
 temp_dir
+;; R
 \.Rproj.user
 \.Rhistory
 \.RData
 \.Ruserdata
+;; other
 Meta
 NMdata\.Rproj
 devel/NMdata_Rpackage/figure
