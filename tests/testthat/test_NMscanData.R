@@ -704,34 +704,37 @@ test_that("redundant output",{
 
 ## check.time (warning)
 ### I'm afraid this could give warnings when run in check or on CRAN. 
-test_that("check time warning",{
-    NMdataConf(reset=T)
-    fileRef <- "testReference/NMscanData26.rds"
-    
-    ## file.lst <- "testData/nonmem/xgxr001.lst"
+if(FALSE){
+    test_that("check time warning",{
+        NMdataConf(reset=T)
+        fileRef <- "testReference/NMscanData26.rds"
+        
+        ## file.lst <- "testData/nonmem/xgxr001.lst"
 
-    dir.test <- "testData/nonmem/check.time"
-    if(dir.exists(dir.test)) unlink(dir.test,recursive=TRUE)
-    dir.create(dir.test)
+        dir.test <- "testData/nonmem/check.time"
+        if(dir.exists(dir.test)) unlink(dir.test,recursive=TRUE)
+        dir.create(dir.test)
 
 
-    file.copy("testData/nonmem/xgxr001.lst",dir.test)
-    file.copy("testData/nonmem/xgxr001_res.txt",dir.test)
-    file.copy("testData/nonmem/xgxr001.mod",dir.test)
+        file.copy("testData/nonmem/xgxr001.lst",dir.test)
+        file.copy("testData/nonmem/xgxr001_res.txt",dir.test)
+        file.copy("testData/nonmem/xgxr001.mod",dir.test)
 
-    file.lst <- file.path(dir.test,"xgxr001.lst")
-    file.mod <- fnExtension(file.lst,".mod")
-    data.new <- sub("../data","../../data",NMreadSection(file.mod,section="data"))
-    NMwriteSection(file.mod,section="data",newlines=data.new)
-    
-    res1 <- expect_warning(NMscanData(file=file.lst, quiet=F, order.columns = F, merge.by.row=FALSE))
-    ## dim(res1)'
-    
-    ## without meta
-    expect_equal_to_reference(unNMdata(res1),fileRef)
-    ## data.table(attributes(readRDS(fileRef))$meta$variables$variable,attributes(res1)$meta$variables$variable)
-})
-
+        file.lst <- file.path(dir.test,"xgxr001.lst")
+        file.mod <- fnExtension(file.lst,".mod")
+        data.new <- sub("../data","../../data",NMreadSection(file.mod,section="data"))
+        NMwriteSection(file.mod,section="data",newlines=data.new)
+        
+        res1 <- expect_warning(
+            NMscanData(file=file.lst, quiet=F, order.columns = F, merge.by.row=FALSE)
+        )
+        ## dim(res1)'
+        
+        ## without meta
+        expect_equal_to_reference(unNMdata(res1),fileRef)
+        ## data.table(attributes(readRDS(fileRef))$meta$variables$variable,attributes(res1)$meta$variables$variable)
+    })
+}
 
 test_that("$INPUT copy",{
     NMdataConf(reset=T)
