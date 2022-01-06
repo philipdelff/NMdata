@@ -8,7 +8,7 @@
   Nonmem. NMcheckData can check a data object in R, and it can also
   check how a control stream reads data and then do all the
   checks. The latter provides an extensive check of potential issues
-  related to data and getting it into NONMEM. Great for both deugging
+  related to data and getting it into NONMEM. Great for both debugging
   and QC.
 
 * NMwriteSection has been updated with a few very useful
