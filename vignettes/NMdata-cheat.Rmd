@@ -168,7 +168,6 @@ pk <- NMorderColumns(pk)
 ::: {class="column-container__column"}
 
 ### Write data and update NONMEM control streams accordingly
-
 `NMwriteData` - Write data ensuring compatibility with NONMEM. By defaults saves both a csv (for NONMEM) and an rds (for R, retaining factor levels etc). Text for optional use in `$INPUT` and `$DATA` NONMEM sections is returned. `script` and `args.stamp` are optional arguments, see "Traceability" section for their purpose.
 
 ```{r}
@@ -238,7 +237,7 @@ res1.dt <- NMscanData("nonmem/run101.lst",recover.rows=TRUE)
 ggplot(res1.dt[ID==135&EVID==0],aes(TIME))+
     geom_point(aes(y=DV,colour=flag))+
     geom_line(aes(y=PRED))+
-    labs(subtitle=unique(res1.dt$model))
+    labs(y="Concentration (unit)",subtitle=unique(res1.dt$model))
 ```
 
 Read the messages from `NMwriteData` and `NMscanData` carefully and notice that an rds file was written and read. This bypasses the loss of information caused by writing and reading csv, and so we have kept factor levels from the input data we generated:
