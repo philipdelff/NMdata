@@ -45,6 +45,7 @@ vignettes/*\.pdf
 vignettes/*\.html
 vignettes/*\.md
 vignettes/*\.R
+vignettes/derived/*
 inst/examples/nonmem/modelfit_dir*
 inst/examples/nonmem/trashed_*
 inst/examples/nonmem/backup_*

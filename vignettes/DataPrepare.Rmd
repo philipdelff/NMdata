@@ -451,7 +451,7 @@ dat.inp <- NMreadCsv("derived/pkdata.csv")
 NMinfo(dat.inp)
 ```
 
-With the flexibility of the `rds` format, we don't need such an additional file:
+With the flexibility of the `rds` format, we don't need such an additional file. Only difference on the metadata for the rds file is the filename:
 ```{r}
 dat.inp.rds <- readRDS("derived/pkdata.rds")
 NMinfo(dat.inp.rds)
@@ -485,7 +485,7 @@ The text for NONMEM can be generated without saving data using `NMgenText`. You 
 
 
 ## Stamp objects for traceability
-We saw how `NMwriteDatat` saves metadata automatically. Even if we `NMwriteData` can actually be used as a simple rds writer that adds meta data the same way, we may want to save data for analysis in R using `writeRDS`. In that case, use `NMstamp` (which is also what `NMwriteData` does).
+We saw how `NMwriteDatat` saves metadata automatically. Even if `NMwriteData` can actually be used as a simple rds writer that adds meta data the same way, we may want to save data or any R object using `saveRDS`. In that case, use `NMstamp` (which is also what `NMwriteData` does).
 
 ```{r}
 pk <- NMstamp(pk,script="vignettes/DataCreate.Rmd")

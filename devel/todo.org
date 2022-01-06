@@ -25,7 +25,9 @@ With load_all():
 > dt1
    a newcol
 1: 1      1
-*** TODO [#B] messageWrap internal/external
+*** DONE [#B] messageWrap internal/external
+    This is called track.msg
+    
     The mentioning of where a message comes from is only useful if a
     function is called from other functions. Possible to distinguish
     somehow?
@@ -33,7 +35,7 @@ With load_all():
 *** TODO [#B] List missing elements
 For specific columns, look for missing elements (NA, "", length(x)==0
 in case of lists?). Tabulate and list.
-*** TODO NMsummarizeData Summarize data with nonmem in mind. 
+*** TODO [#B] NMsummarizeData Summarize data with nonmem in mind. 
 **** Number of doses and obs per subj
 **** Dist of DV
 **** Covariates
@@ -109,12 +111,13 @@ https://doi.org/10.1208/s12248-012-9387-9
 **** TODO [#B] checks: duplicate column names
 **** TODO [#B] test if a pseudonym was used. Give warning or msg if not
 *** findCovs
-**** TODO soft
 *** compareCols
-**** TODO [#B] Bug - overview of columns is given twice
+**** TODO [#A] Bug - overview of columns is given twice
  compareCols(ex.001,ex.002,ex.005,diff.only=T) %>% print(topn=100)
-**** TODO [#B] scope argument
-Sometimes we are interested in specific columns. List these and only
+**** DONE [#B] scope argument
+     This is called columns.wanted
+
+     Sometimes we are interested in specific columns. List these and only
 these in the same order as requested. An inversion option could be
 helpful. Only list other columns than the scope.
 **** DONE rows are not being sorted correctly.
@@ -145,7 +148,6 @@ Error in `[.data.table`(data, , `:=`((cols.num), lapply(.SD, NMasNumeric)),  :
 **** DONE check RATE, SS
 **** DONE Check ADDL, II
 **** DONE Support for file argument (control stream)
-     CLOSED: [2021-12-22 Wed 17:04]
 **** DONE Element-wise NMisNumeric
 There are two distinct uses of NMisNumeric. Column-wise and
 element-wise. When checking for NMisNumeric, columns that must be
@@ -153,8 +155,7 @@ numeric should be using
 **** DONE Only check for special characters in colnames for numeric columns
      Applies to other colname checks too?
 **** TODO [#B] Requirements to DV for EVID==2 and EVID==3?
-**** TODO [#B] Add col.row to findings
-**** TODO [#B] Should be able to run on a model file
+**** DONE [#B] Add col.row to findings
 *** NMextractDataFile
 **** DONE Add support for windows absolute paths
      I don't think this was ever an issue. The regular expression used
@@ -183,7 +184,7 @@ issued. Once done, NMgetSection must be updated as well.
      column name. However, only relevant if column names are not
      translated.
 **** DONE Get number of subjects as before filtering
-Challenge is that the filters are applied before the cplumn names are
+Challenge is that the filters are applied before the column names are
 changed. So we need access to the old data and know what column to
 look at - called col.id after the translations.
 **** Pseudonyms A=B
@@ -214,7 +215,7 @@ NULL=NAN which would mean that NA should be interpreted as NA in R.
 **** TODO [#B] Implement or at least detect RECORDS
 A way to limit rows read into nonmem
 *** NMtransInput
-**** TODO [#B] Add comparison column input-nonmem
+**** DONE [#B] Add comparison column input-nonmem
 ***** if input!=nonmem,
 ***** nonmem %in% all(input)
 ***** tolower(nonmem)==tolower(input) OK
@@ -248,8 +249,6 @@ a likely reason.
      Since we only have and will only have two methods, this should be
      a binary switch between the methods.
 **** DONE Check if col.row is being modified in Nonmem.
-**** TODO [#B] check overview.tables
-Either they must be firstonly, or they must be full.length.
 **** TODO [#B] Limitation: tables with EXCLUDE_BY
 **** DONE Limitation: FIRSTLASTONLY
 **** DONE Implement recoverRows using mergeByFilters
@@ -287,7 +286,8 @@ See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
 is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMwriteData
-**** TODO [#B] Separate generation of INPUT text into new function
+**** DONE Separate generation of INPUT text into new function
+     Called NMgenText
 **** DONE Bug in inclusion of filename in text
      See poster example
 **** TODO [#B] Include a randomly generated ID in meta data that we can check files against?
@@ -299,7 +299,7 @@ data. It should be based on tables in meta$tables.
 This will cause trouble when writing csv
 **** DONE Use fwrite rather than write.csv
 **** TODO [#B] Improve support for custom IGNORE/ACCEPT statements
-Support for both ignore and accept? A list?
+Nested statements
 **** DONE Returned text should be a list of sections.
 Ultimately, NMreplacePart must accept this as argument.
 **** DONE The Nonmem instructions should not include character variables
@@ -321,9 +321,6 @@ Not warning. Warning if standard variable?
 **** DONE Improve messages at each FLAG coding
 **** DONE Make sure we arrange back to original order
 **** DONE Introduce a way to apply to a subset only
-     - State "DELEGATED"  from "CANCELED"   [2021-04-21 Wed 16:46]
-     - State "CANCELED"   from "DELEGATED"  [2021-04-21 Wed 16:46]
-     - State "DELEGATED"  from "DONE"       [2021-04-21 Wed 16:46]
 This could be EVID==0 or maybe one study in a meta analysis
 
 It's fairly easy to implement. Paste in front of the expression.use column.
@@ -340,7 +337,7 @@ use flagsAssign(data,subset.data="EVID==1",flagc.0="Dosing")
 **** TODO [#B] The function could paste an explained overview to the terminal
 **** DONE Add save argument to align with other functions
 *** NMdataConf
-**** TODO [#B] Add col.id
+**** TODO [#B] Add col.id. Generally, support for custom col.id may be missing.
 **** TODO [#B] Add na.strings
      Used in NMisNumeric and NMcheckData
 **** DONE test that function evaluation does not depend on global env

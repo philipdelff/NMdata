@@ -245,6 +245,7 @@ test_that("FO and row-level output. No ID, no row.",{
     file.lst <- "testData/nonmem/xgxr013.lst"
     NMreadSection(file.lst,section="PROBLEM")
     ## NMreadSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+    NMreadSection(file.lst,section="TABLE")
 
     ## tabs <- NMscanTables(file=file.lst)
     res1 <- expect_warning(

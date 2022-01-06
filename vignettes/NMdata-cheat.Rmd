@@ -222,21 +222,17 @@ If you are preparing a data set, run `NMcheckData` directly on the data (using t
 ## res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"))
 ```
 ```{r}
-NMdataConf(as.fun="data.table")
-res1.dt <- NMscanData("nonmem/run101.lst")
-class(res1.dt)
-NMdataConf(as.fun=tibble::as_tibble,quiet=TRUE)
-res1.tbl <- NMscanData("nonmem/run101.lst")
-class(res1.tbl)
-dims(res1.dt,res1.tbl)
+res1 <- NMscanData("nonmem/run101.lst")
+class(res1)
 ```
 ```{r,include=F}
-rm(NMscanData)
+## rm(NMscanData)
 ```
 
 The following plot serves to illustrate that the obtained data set combines output tables (`PRED` is from a $TABLE statement) with input data (exclusion flags are represented as character variables). Moreover, the "below LLOQ" samples are included in the result even though they were not in the analysis (excluded using `IGNORE` in control stream, recovered in `NMscanData` using `recover.rows=TRUE`)
 ```{r}
 library(ggplot2)
+## tell NMdata functions to return data.tables
 NMdataConf(as.fun="data.table")
 res1.dt <- NMscanData("nonmem/run101.lst",recover.rows=TRUE)
 ggplot(res1.dt[ID==135&EVID==0],aes(TIME))+
@@ -275,12 +271,20 @@ NMdataConf(as.fun=tibble::as_tibble)
 NMdataConf(as.fun="data.table")
 ```
 
+By default, NMdata functions will look for a unique row identifier in columns called `ROW`. If you call this column `REC`, do
+```{r,eval=FALSE}
+NMdataConf(col.row="REC")
+```
+
 By default, NMdata is configured to read files from PSN in which case the input control stream is needed to find the input data. Do this if you don't use PSN:
 ```{r,eval=FALSE}
 NMdataConf(file.mod=identity)
 ```
 
-Loosely speaking, `NMdataConf` changes default values of NMdata function arguments.
+Loosely speaking, `NMdataConf` changes default values of NMdata
+function arguments. Many options can be configured this way so you
+don't have to remember to type in those arguments every time you call
+an NMdata funtion.
 
 
 ### Traceability 
@@ -289,7 +293,6 @@ Loosely speaking, `NMdataConf` changes default values of NMdata function argumen
 
 A list of the available elements:
 ```{r}
-NMdataConf(as.fun="data.table")
 names(NMinfo(res1.dt))
 ```
 The information recorded during saving of the input data:
