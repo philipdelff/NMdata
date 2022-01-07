@@ -21,15 +21,15 @@ decision-making in several steps of drug development. However, the leg
 work in pharmacometrics remains technical, and this is a typical
 bottleneck for a pharmacometrician to contributing even more.
 
-Creating data sets - and if you use Nonmem, reading the results data -
+Preparing data sets - and if you use Nonmem, reading the results data -
 can be tedious, and mistakes can lead to hours of frustration. NMdata
 provides useful tools (including automated checks) for these trivial
 tasks. The aim is to automate the book keeping and allow more time for
-the actual analysis.
+actual modeling.
 
 A central design feature of NMdata is that all included tools require as
-little as possible about how the user works. Any functionality in the
-package can be used independently of the rest of the package, and NMdata
+little as possible about how the user works. *Any functionality in the
+NMdata can be used independently of the rest of the package*, and NMdata
 is not intended to force you to change any habits or preferences.
 Instead, NMdata tries to fit in with how you (or your colleague who
 worked on the project before you) do things.
@@ -53,6 +53,13 @@ merges, handling and counting of exclusions flags, final preparations
 for ensuring readability in Nonmem, and ensuring traceability of
 datasets back to data generation scripts.
 
+## Check data as read by NONMEM
+
+Finally, the `NMcheckData` function will do an extensive and fully
+automated set of checks of the data before you run NONMEM. And did
+NONMEM not behave? `NMcheckData` can debug the data *as seen by NONMEM*.
+That’s right - it has never been easier to find data bugs.
+
 ## Automated and general reader of Nonmem results data
 
 Reading the resulting data from Nonmem can require a few manual steps.
@@ -62,10 +69,7 @@ and if wanted with additional columns and rows in input data. It’s as
 simple as
 
 ``` r
-## tell NMdata functions to return data.tables
-## NMdataConf(as.fun=tibble::as_tibble)
-NMdataConf(as.fun="data.table")
-res1.dt <- NMscanData("xgxr001.lst",recover.rows=TRUE)
+res <- NMscanData("xgxr001.lst",recover.rows=TRUE)
 #> Model:  xgxr001 
 #> Input and output data merged by: ROW 
 #> 
@@ -80,12 +84,13 @@ res1.dt <- NMscanData("xgxr001.lst",recover.rows=TRUE)
 #>     0        597    755
 #>     1          0    150
 ## plot a subset of the result
+res.plot <- subset(res,ID%in%c(113,135)&EVID==0)
 library(ggplot2)
-ggplot(res1.dt[ID%in%c(113,135)&EVID==0],aes(TIME))+
+ggplot(res.plot,aes(TIME))+
     geom_point(aes(y=DV,colour=flag))+
     geom_line(aes(y=PRED))+
     facet_wrap(~trtact)+
-    labs(y="Concentration (unit)",subtitle=unique(res1.dt$model),colour="Observations",
+    labs(y="Concentration (unit)",subtitle=unique(res.plot$model),colour="Observations",
          caption="NOTICE:\nObservations are coloured by a character column fetched from input data.\nSamples below LLOQ are rows added from input data.\nPlots are correctly sorted because factor levels of dose are preserved from input data.")+
     theme_bw()+theme(legend.position="bottom")
 #> Warning: Removed 4 row(s) containing missing values (geom_path).
@@ -93,9 +98,27 @@ ggplot(res1.dt[ID%in%c(113,135)&EVID==0],aes(TIME))+
 
 <img src="man/figures/README-NMscanData-example1-1.png" width="100%" />
 
-Take a look at [this
+Want a tibble instead? Easy:
+
+``` r
+res.tibble <- NMscanData("xgxr001.lst",as.fun=tibble::as_tibble,quiet=TRUE)
+```
+
+Or a data.table? This time, we’ll configure NMdata to return data.tables
+by default:
+
+``` r
+NMdataConf(as.fun="data.table")
+res.dt <- NMscanData("xgxr001.lst",quiet=TRUE)
+```
+
+NMscanData is very general, and should work with all kinds of models,
+and all kinds of other software and configurations. Take a look at [this
 vignette](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
-for more info on the Nonmem data reader.
+for more info on the Nonmem data reader. Then you will learn how to
+access the meta data that will allow you to trace every step that was
+taken combining the data and the many checks that were done along the
+way too.
 
 ## How to install
 
