@@ -83,7 +83,9 @@ little differently. `NMscanData` can return all data output (`$TABLE`) from Nonm
 input data. It's as simple as
 ```{r,NMscanData-example1}
 res <- NMscanData("xgxr014.lst",recover.rows=TRUE)
-## plot a subset of the result
+```
+And we are ready to plot (a subset of) the result:
+```{r,NMscanData-example1-plot}
 res.plot <- subset(res,ID%in%c(113,135)&EVID==0)
 library(ggplot2)
 ggplot(res.plot,aes(TIME))+

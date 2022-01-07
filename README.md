@@ -78,7 +78,11 @@ res <- NMscanData("xgxr014.lst",recover.rows=TRUE)
 #>  EVID Input only Output
 #>     0        597    755
 #>     1          0    150
-## plot a subset of the result
+```
+
+And we are ready to plot (a subset of) the result:
+
+``` r
 res.plot <- subset(res,ID%in%c(113,135)&EVID==0)
 library(ggplot2)
 ggplot(res.plot,aes(TIME))+
@@ -91,7 +95,7 @@ ggplot(res.plot,aes(TIME))+
 #> Warning: Removed 2 row(s) containing missing values (geom_path).
 ```
 
-<img src="man/figures/README-NMscanData-example1-1.png" width="100%" />
+<img src="man/figures/README-NMscanData-example1-plot-1.png" width="100%" />
 
 Want a tibble instead? Easy:
 
