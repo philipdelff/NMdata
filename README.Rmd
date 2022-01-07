@@ -25,7 +25,7 @@ NMscanData <- function(x,...)NMdata::NMscanData(file.path(system.file(paste0("ex
 ##     labs(y="Concentration (unit)",subtitle=unique(res1.dt$model))+
 ##     theme_bw()
 
-set_theme(theme_bw())
+
 ```
 
 # NMdata
