@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 library(NMdata)
 library(data.table)
 library(tibble)
-
+NMdataConf(check.time=FALSE)
 NMscanData <- function(x,...)NMdata::NMscanData(file.path(system.file(paste0("examples/nonmem/",x), package="NMdata")),...)
 
 ## res1.dt %>%
