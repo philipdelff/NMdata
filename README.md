@@ -81,12 +81,14 @@ res1.dt <- NMscanData("xgxr001.lst",recover.rows=TRUE)
 #>     1          0    150
 ## plot a subset of the result
 library(ggplot2)
-ggplot(res1.dt[ID==135&EVID==0],aes(TIME))+
+ggplot(res1.dt[ID%in%c(113,135)&EVID==0],aes(TIME))+
     geom_point(aes(y=DV,colour=flag))+
     geom_line(aes(y=PRED))+
-    labs(y="Concentration (unit)",subtitle=unique(res1.dt$model))+
-    theme_bw()
-#> Warning: Removed 2 row(s) containing missing values (geom_path).
+    facet_wrap(~trtact)+
+    labs(y="Concentration (unit)",subtitle=unique(res1.dt$model),colour="Observations",
+         caption="NOTICE:\nObservations are coloured by a character column fetched from input data.\nSamples below LLOQ are rows added from input data.\nPlots are correctly sorted because factor levels of dose are preserved from input data.")+
+    theme_bw()+theme(legend.position="bottom")
+#> Warning: Removed 4 row(s) containing missing values (geom_path).
 ```
 
 <img src="man/figures/README-NMscanData-example1-1.png" width="100%" />
