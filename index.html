@@ -135,12 +135,6 @@
 <p>Reading the resulting data from Nonmem can require a few manual steps. Especially because all modelers seem to do things a little differently. <code>NMscanData</code> can return all data output (<code>$TABLE</code>) from Nonmem combined, and if wanted with additional columns and rows in input data. It’s as simple as</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr014.lst"</span>,recover.rows<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; Warning: input control stream (C:/Users/Philip</span>
-<span class="co">#&gt; Delff/AppData/Local/Temp/RtmpAdzsmA/temp_libpath4028ca27c55/NMdata/examples/nonmem/xgxr014.mod)</span>
-<span class="co">#&gt; is newer than output control stream (C:/Users/Philip</span>
-<span class="co">#&gt; Delff/AppData/Local/Temp/RtmpAdzsmA/temp_libpath4028ca27c55/NMdata/examples/nonmem/xgxr014.lst)</span>
-<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
-<span class="co">#&gt; edited, this can corrupt results.</span>
 <span class="co">#&gt; Model:  xgxr014 </span>
 <span class="co">#&gt; Input and output data merged by: ROW </span>
 <span class="co">#&gt; </span>
@@ -168,23 +162,11 @@
 <p><img src="reference/figures/README-NMscanData-example1-1.png" width="100%"></p>
 <p>Want a tibble instead? Easy:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res.tibble</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr001.lst"</span>,as.fun<span class="op">=</span><span class="fu">tibble</span><span class="fu">::</span><span class="va"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; Warning: input control stream (C:/Users/Philip</span>
-<span class="co">#&gt; Delff/AppData/Local/Temp/RtmpAdzsmA/temp_libpath4028ca27c55/NMdata/examples/nonmem/xgxr001.mod)</span>
-<span class="co">#&gt; is newer than output control stream (C:/Users/Philip</span>
-<span class="co">#&gt; Delff/AppData/Local/Temp/RtmpAdzsmA/temp_libpath4028ca27c55/NMdata/examples/nonmem/xgxr001.lst)</span>
-<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
-<span class="co">#&gt; edited, this can corrupt results.</span></code></pre></div>
+<code class="sourceCode R"><span class="va">res.tibble</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr001.lst"</span>,as.fun<span class="op">=</span><span class="fu">tibble</span><span class="fu">::</span><span class="va"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>Or a data.table? This time, we’ll configure NMdata to return data.tables by default:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>as.fun<span class="op">=</span><span class="st">"data.table"</span><span class="op">)</span>
-<span class="va">res.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr001.lst"</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; Warning: input control stream (C:/Users/Philip</span>
-<span class="co">#&gt; Delff/AppData/Local/Temp/RtmpAdzsmA/temp_libpath4028ca27c55/NMdata/examples/nonmem/xgxr001.mod)</span>
-<span class="co">#&gt; is newer than output control stream (C:/Users/Philip</span>
-<span class="co">#&gt; Delff/AppData/Local/Temp/RtmpAdzsmA/temp_libpath4028ca27c55/NMdata/examples/nonmem/xgxr001.lst)</span>
-<span class="co">#&gt; Seems like model has been edited since last run. If data sections have been</span>
-<span class="co">#&gt; edited, this can corrupt results.</span></code></pre></div>
+<span class="va">res.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr001.lst"</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>NMscanData is very general, and should work with all kinds of models, and all kinds of other software and configurations. Take a look at <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html">this vignette</a> for more info on the Nonmem data reader. Then you will learn how to access the meta data that will allow you to trace every step that was taken combining the data and the many checks that were done along the way too.</p>
 </div>
 <div class="section level2">
