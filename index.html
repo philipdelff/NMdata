@@ -115,8 +115,8 @@
 <h2 id="a-fast-r-package-for-efficient-data-preparation-consistency-checking-and-post-processing-in-pkpd-modeling">A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling<a class="anchor" aria-label="anchor" href="#a-fast-r-package-for-efficient-data-preparation-consistency-checking-and-post-processing-in-pkpd-modeling"></a>
 </h2>
 <p>Pharmacometrics and PK/PD modeling offers unique information for decision-making in several steps of drug development. However, the leg work in pharmacometrics remains technical, and this is a typical bottleneck for a pharmacometrician to contributing even more.</p>
-<p>Creating data sets - and if you use Nonmem, reading the results data - can be tedious, and mistakes can lead to hours of frustration. NMdata provides useful tools (including automated checks) for these trivial tasks. The aim is to automate the book keeping and allow more time for the actual analysis.</p>
-<p>A central design feature of NMdata is that all included tools require as little as possible about how the user works. Any functionality in the package can be used independently of the rest of the package, and NMdata is not intended to force you to change any habits or preferences. Instead, NMdata tries to fit in with how you (or your colleague who worked on the project before you) do things.</p>
+<p>Preparing data sets - and if you use Nonmem, reading the results data - can be tedious, and mistakes can lead to hours of frustration. NMdata provides useful tools (including automated checks) for these trivial tasks. The aim is to automate the book keeping and allow more time for actual modeling.</p>
+<p>A central design feature of NMdata is that all included tools require as little as possible about how the user works. <em>Any functionality in the NMdata can be used independently of the rest of the package</em>, and NMdata is not intended to force you to change any habits or preferences. Instead, NMdata tries to fit in with how you (or your colleague who worked on the project before you) do things.</p>
 <p>The data set creation tools in NMdata may be equally interesting to users of nlmixr or other proprietary software than Nonmem. However, many features of the package relates to the final organization and writing of data for Nonmem, and reading data from Nonmem after a model run.</p>
 <p>The best place to browse information about the package is <a href="https://philipdelff.github.io/NMdata/">here</a>. All documentation is of course included in the package itself too.</p>
 </div>
@@ -126,14 +126,16 @@
 <p>On the data-generation side, functionality is provided for documentation of the datasets while generating them. Check out <a href="https://philipdelff.github.io/NMdata/articles/DataPrepare.html">this vignette</a> on the topic. There are functions for automatic checks of (some) data merges, handling and counting of exclusions flags, final preparations for ensuring readability in Nonmem, and ensuring traceability of datasets back to data generation scripts.</p>
 </div>
 <div class="section level2">
+<h2 id="check-data-as-read-by-nonmem">Check data as read by NONMEM<a class="anchor" aria-label="anchor" href="#check-data-as-read-by-nonmem"></a>
+</h2>
+<p>Finally, the <code>NMcheckData</code> function will do an extensive and fully automated set of checks of the data before you run NONMEM. And did NONMEM not behave? <code>NMcheckData</code> can debug the data <em>as seen by NONMEM</em>. That’s right - it has never been easier to find data bugs.</p>
+</div>
+<div class="section level2">
 <h2 id="automated-and-general-reader-of-nonmem-results-data">Automated and general reader of Nonmem results data<a class="anchor" aria-label="anchor" href="#automated-and-general-reader-of-nonmem-results-data"></a>
 </h2>
 <p>Reading the resulting data from Nonmem can require a few manual steps. Especially because all modelers seem to do things a little differently. <code>NMscanData</code> can return all data output (<code>$TABLE</code>) from Nonmem combined, and if wanted with additional columns and rows in input data. It’s as simple as</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## tell NMdata functions to return data.tables</span>
-<span class="co">## NMdataConf(as.fun=tibble::as_tibble)</span>
-<span class="fu"><a href="reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>as.fun<span class="op">=</span><span class="st">"data.table"</span><span class="op">)</span>
-<span class="va">res1.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr001.lst"</span>,recover.rows<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr001.lst"</span>,recover.rows<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; Model:  xgxr001 </span>
 <span class="co">#&gt; Input and output data merged by: ROW </span>
 <span class="co">#&gt; </span>
@@ -148,33 +150,41 @@
 <span class="co">#&gt;     0        597    755</span>
 <span class="co">#&gt;     1          0    150</span>
 <span class="co">## plot a subset of the result</span>
+<span class="va">res.plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">res</span>,<span class="va">ID</span><span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">113</span>,<span class="fl">135</span><span class="op">)</span><span class="op">&amp;</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">res1.dt</span><span class="op">[</span><span class="va">ID</span><span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">113</span>,<span class="fl">135</span><span class="op">)</span><span class="op">&amp;</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">]</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">TIME</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">res.plot</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">TIME</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">DV</span>,colour<span class="op">=</span><span class="va">flag</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">PRED</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">trtact</span><span class="op">)</span><span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y<span class="op">=</span><span class="st">"Concentration (unit)"</span>,subtitle<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">res1.dt</span><span class="op">$</span><span class="va">model</span><span class="op">)</span>,colour<span class="op">=</span><span class="st">"Observations"</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y<span class="op">=</span><span class="st">"Concentration (unit)"</span>,subtitle<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">res.plot</span><span class="op">$</span><span class="va">model</span><span class="op">)</span>,colour<span class="op">=</span><span class="st">"Observations"</span>,
          caption<span class="op">=</span><span class="st">"NOTICE:\nObservations are coloured by a character column fetched from input data.\nSamples below LLOQ are rows added from input data.\nPlots are correctly sorted because factor levels of dose are preserved from input data."</span><span class="op">)</span><span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position<span class="op">=</span><span class="st">"bottom"</span><span class="op">)</span>
 <span class="co">#&gt; Warning: Removed 4 row(s) containing missing values (geom_path).</span></code></pre></div>
 <p><img src="reference/figures/README-NMscanData-example1-1.png" width="100%"></p>
-<p>Take a look at <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html">this vignette</a> for more info on the Nonmem data reader.</p>
+<p>Want a tibble instead? Easy:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">res.tibble</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr001.lst"</span>,as.fun<span class="op">=</span><span class="fu">tibble</span><span class="fu">::</span><span class="va"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p>Or a data.table? This time, we’ll configure NMdata to return data.tables by default:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>as.fun<span class="op">=</span><span class="st">"data.table"</span><span class="op">)</span>
+<span class="va">res.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr001.lst"</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p>NMscanData is very general, and should work with all kinds of models, and all kinds of other software and configurations. Take a look at <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html">this vignette</a> for more info on the Nonmem data reader. Then you will learn how to access the meta data that will allow you to trace every step that was taken combining the data and the many checks that were done along the way too.</p>
 </div>
 <div class="section level2">
 <h2 id="how-to-install">How to install<a class="anchor" aria-label="anchor" href="#how-to-install"></a>
 </h2>
 <p><code>NMdata</code> is on <a href="https://cran.r-project.org/" class="external-link">CRAN</a>, <a href="https://mran.microsoft.com/" class="external-link">MRAN</a>, and <a href="https://mpn.metworx.com" class="external-link">MPN</a>. To install from the package archive you are already using, do:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">install.packages</span>(<span class="st">"NMdata"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">library</span>(NMdata)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">install.packages</span>(<span class="st">"NMdata"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="kw">library</span>(NMdata)</span></code></pre></div>
 <p>If your archive has not been updated since July 2021, you may not find <code>NMdata</code> that way. In that case you have two other options. You can explicitly select CRAN for the installation. Or if you should want a version that has not yet reached CRAN, installing from Github is easy too.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">## Option 2: Install explicitly from CRAN</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">install.packages</span>(<span class="st">"NMdata"</span>,<span class="dt">repos=</span><span class="st">"https://cloud.r-project.org"</span>)</span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="kw">library</span>(NMdata)</span>
-<span id="cb3-4"><a href="#cb3-4"></a></span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="co">## Option 3: Install from github</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="kw">library</span>(remotes)</span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="kw">install_github</span>(<span class="st">"philipdelff/NMdata"</span>)</span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="kw">library</span>(NMdata)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">## Option 2: Install explicitly from CRAN</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">install.packages</span>(<span class="st">"NMdata"</span>,<span class="dt">repos=</span><span class="st">"https://cloud.r-project.org"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="kw">library</span>(NMdata)</span>
+<span id="cb5-4"><a href="#cb5-4"></a></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="co">## Option 3: Install from github</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="kw">library</span>(remotes)</span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="kw">install_github</span>(<span class="st">"philipdelff/NMdata"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="kw">library</span>(NMdata)</span></code></pre></div>
 <p>If you use the Github version, you may want to see the <a href="https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html">FAQ</a> for how to install specific releases from Github (ensuring reproducibility).</p>
 </div>
 <div class="section level2">
