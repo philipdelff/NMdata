@@ -66,9 +66,9 @@ simple as
 ``` r
 res <- NMscanData("xgxr014.lst",recover.rows=TRUE)
 #> Warning: input control stream (C:/Users/Philip
-#> Delff/AppData/Local/Temp/RtmpAdzsmA/temp_libpath4028242d625/NMdata/examples/nonmem/xgxr014.mod)
+#> Delff/AppData/Local/Temp/RtmpAdzsmA/temp_libpath4028ca27c55/NMdata/examples/nonmem/xgxr014.mod)
 #> is newer than output control stream (C:/Users/Philip
-#> Delff/AppData/Local/Temp/RtmpAdzsmA/temp_libpath4028242d625/NMdata/examples/nonmem/xgxr014.lst)
+#> Delff/AppData/Local/Temp/RtmpAdzsmA/temp_libpath4028ca27c55/NMdata/examples/nonmem/xgxr014.lst)
 #> Seems like model has been edited since last run. If data sections have been
 #> edited, this can corrupt results.
 #> Model:  xgxr014 
@@ -103,6 +103,12 @@ Want a tibble instead? Easy:
 
 ``` r
 res.tibble <- NMscanData("xgxr001.lst",as.fun=tibble::as_tibble,quiet=TRUE)
+#> Warning: input control stream (C:/Users/Philip
+#> Delff/AppData/Local/Temp/RtmpAdzsmA/temp_libpath4028ca27c55/NMdata/examples/nonmem/xgxr001.mod)
+#> is newer than output control stream (C:/Users/Philip
+#> Delff/AppData/Local/Temp/RtmpAdzsmA/temp_libpath4028ca27c55/NMdata/examples/nonmem/xgxr001.lst)
+#> Seems like model has been edited since last run. If data sections have been
+#> edited, this can corrupt results.
 ```
 
 Or a data.table? This time, we’ll configure NMdata to return data.tables
@@ -111,6 +117,12 @@ by default:
 ``` r
 NMdataConf(as.fun="data.table")
 res.dt <- NMscanData("xgxr001.lst",quiet=TRUE)
+#> Warning: input control stream (C:/Users/Philip
+#> Delff/AppData/Local/Temp/RtmpAdzsmA/temp_libpath4028ca27c55/NMdata/examples/nonmem/xgxr001.mod)
+#> is newer than output control stream (C:/Users/Philip
+#> Delff/AppData/Local/Temp/RtmpAdzsmA/temp_libpath4028ca27c55/NMdata/examples/nonmem/xgxr001.lst)
+#> Seems like model has been edited since last run. If data sections have been
+#> edited, this can corrupt results.
 ```
 
 NMscanData is very general, and should work with all kinds of models,
