@@ -64,15 +64,21 @@ and if wanted with additional columns and rows in input data. It’s as
 simple as
 
 ``` r
-res <- NMscanData("xgxr001.lst",recover.rows=TRUE)
-#> Model:  xgxr001 
+res <- NMscanData("xgxr014.lst",recover.rows=TRUE)
+#> Warning: input control stream (C:/Users/Philip
+#> Delff/AppData/Local/Temp/RtmpAdzsmA/temp_libpath4028242d625/NMdata/examples/nonmem/xgxr014.mod)
+#> is newer than output control stream (C:/Users/Philip
+#> Delff/AppData/Local/Temp/RtmpAdzsmA/temp_libpath4028242d625/NMdata/examples/nonmem/xgxr014.lst)
+#> Seems like model has been edited since last run. If data sections have been
+#> edited, this can corrupt results.
+#> Model:  xgxr014 
 #> Input and output data merged by: ROW 
 #> 
 #> Used tables, contents shown as used/total:
 #>               file      rows columns     IDs
-#>    xgxr001_res.txt   905/905   16/16 150/150
-#>  xgxr1.csv (input) 1502/1502   22/24 150/150
-#>           (result)      1502    38+2     150
+#>    xgxr014_res.txt   905/905   12/12 150/150
+#>  xgxr2.rds (input) 1502/1502   22/24 150/150
+#>           (result)      1502    34+2     150
 #> 
 #> Distribution of rows on event types in returned data:
 #>  EVID Input only Output
@@ -88,7 +94,7 @@ ggplot(res.plot,aes(TIME))+
     labs(y="Concentration (unit)",subtitle=unique(res.plot$model),colour="Observations",
          caption="NOTICE:\nObservations are coloured by a character column fetched from input data.\nSamples below LLOQ are rows added from input data.\nPlots are correctly sorted because factor levels of dose are preserved from input data.")+
     theme_bw()+theme(legend.position="bottom")
-#> Warning: Removed 4 row(s) containing missing values (geom_path).
+#> Warning: Removed 2 row(s) containing missing values (geom_path).
 ```
 
 <img src="man/figures/README-NMscanData-example1-1.png" width="100%" />
