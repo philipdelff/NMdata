@@ -41,35 +41,32 @@ NMscanData <- function(x,...)NMdata::NMscanData(file.path(system.file(paste0("ex
 Pharmacometrics and PK/PD modeling offers unique information for
 decision-making in several steps of drug development. However, the leg work in pharmacometrics remains technical, and this is a typical bottleneck for a pharmacometrician to contributing even more.
 
+The NMdata objective: *Automate the book
+keeping and allow more time for actual modeling*
 Preparing data sets - and if you use Nonmem, reading the results data - can be tedious, and mistakes can lead to hours of
 frustration. NMdata provides useful tools (including automated
-checks) for these trivial tasks. The aim is to automate the book
-keeping and allow more time for actual modeling.
+checks) for these trivial tasks. 
 
-A central design feature of NMdata is that all included tools require
-as little as possible about how the user works. _Any functionality in
-the NMdata can be used independently of the rest of the package_, and
+*Any functionality in
+the NMdata can be used independently of the rest of the package*, and
 NMdata is not intended to force you to change any habits or
 preferences. Instead, NMdata tries to fit in with how you (or your
 colleague who worked on the project before you) do things.
 
-The data set creation tools in NMdata may be equally interesting to
-users of nlmixr or other proprietary software than Nonmem. However, many features of the package relates to the final
-organization and writing of data for Nonmem, and reading data from
-Nonmem after a model run.
-
 The best place to browse information about the package is
-[here](https://philipdelff.github.io/NMdata/). All documentation is of
-course included in the package itself too.
+[here](https://philipdelff.github.io/NMdata/). The quickest way in is
+probably the
+[Cheatsheet](https://philipdelff.github.io/NMdata/articles/NMdata-cheat.html). All
+documentation is of course included in the package itself too.
 
 
-## Prepare, check, and export data for NONMEM
+## Prepare, check, and export PK/PD data 
 On the data-generation side, functionality is provided for
 documentation of the datasets while generating them. Check out [this
 vignette](https://philipdelff.github.io/NMdata/articles/DataPrepare.html)
 on the topic. There are functions for automatic checks of (some) data
 merges, handling and counting of exclusions flags, final preparations
-for ensuring readability in Nonmem, and ensuring traceability of
+for ensuring readability in NONMEM, and ensuring traceability of
 datasets back to data generation scripts. 
 
 ## Check data as read by NONMEM
