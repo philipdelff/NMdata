@@ -117,7 +117,7 @@
 
     
     
-<p>Built 2022-01-07 using NMdata 0.0.10.</p>
+<p>Built 2022-01-11 using NMdata 0.0.10.</p>
 <p>This vignette is still under development. Please make sure to see latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
 <h2 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
@@ -218,7 +218,7 @@
 <p>Imagine the very common example that we have a longitudinal PK data set (called <code>pk</code>), and we want to add subject-level covariates from a secondary data set (<code>dt.cov</code>). We want to merge by <code>ID</code>, and all we can allow to happen is columns to be added to <code>pk</code> from <code>dt.cov</code>. If rows disappear or get repeated, or if columns get renamed, it’s unintended and should return an error. That is what <code>mergeCheck</code> is for.</p>
 <p>Often people check the dimensions of the result to make sure nothing unintended happened. The following example shows that this is not enough, and that <code>mergeCheck</code> works differently. After merging the two data sets the check of the dimensions raises no alarm - the number of rows is unchanged from <code>pk</code> to <code>pk2</code>, and one of two columns in <code>dt.cov</code> was added. <code>dims</code> is just a <code>dim</code>-like function that can compare multiple data sets - handy for interactive analysis.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/dims.html">dims</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,<span class="va">pk2</span><span class="op">)</span>
 <span class="co">#&gt;      data nrows ncols</span>
 <span class="co">#&gt; 1:     pk  1502    24</span>
@@ -251,7 +251,7 @@
 <span class="va">pk2.check</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov2</span>,by<span class="op">=</span><span class="st">"ID"</span>,all.x<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; The following columns were added: COV</span></code></pre></div>
 <p>To ensure the consistency of rows before and after the merge, you could use <code>merge(...,all.x=TRUE)</code> and then check dimensions before and after (yes, both <code>all.x=TRUE</code> and the dimension check are necessary). This is not needed if you use <code>mergeCheck</code>.</p>
-<p><code>mergeCheck</code> does not try to reimplement merging. Under the hood, the merge is performed by <code><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">data.table::merge.data.table</a></code> to which most arguments are passed. What <code>mergeCheck</code> does is to add the checks that the results are consistent with the criteria outlined above. <code><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">data.table::merge.data.table</a></code> is generally very fast, and even if there is a bit of extra calculations in <code>mergeCheck</code>, it should never be slow.</p>
+<p><code>mergeCheck</code> does not try to reimplement merging. Under the hood, the merge is performed by <code><a href="https://rdrr.io/pkg/data.table/man/merge.html" class="external-link">data.table::merge.data.table</a></code> to which most arguments are passed. What <code>mergeCheck</code> does is to add the checks that the results are consistent with the criteria outlined above. <code><a href="https://rdrr.io/pkg/data.table/man/merge.html" class="external-link">data.table::merge.data.table</a></code> is generally very fast, and even if there is a bit of extra calculations in <code>mergeCheck</code>, it should never be slow.</p>
 <p>In summary, <code>mergeCheck</code> verifies that the rows that result from the merge are the exact same as in one of the existing datasets, only columns added from the second input dataset. You may think that this will limit your merges, and that you need merges for inner and outer joins etc. You are exactly right - <code>mergeCheck</code> is not intended for those merges and does not support them. When that is said, the kind of merges that are supported by <code>mergeCheck</code> are indeed very common. All merges in the <code>NMdata</code> package are performed with <code>mergeCheck</code>.</p>
 <div class="section level4">
 <h4 id="additional-mergecheck-features">Additional <code>mergeCheck</code> features<a class="anchor" aria-label="anchor" href="#additional-mergecheck-features"></a>
@@ -273,7 +273,7 @@
 <p>For use in NONMEM’s <code>IGNORE</code> feature, the easiest is that inclusion/exclusion is determined by a single column in data - we call that column <code>FLAG</code> here, but any column name can be used. <code>FLAG</code> obviously draws on information from other columns such as <code>TIME</code>, <code>DV</code>, and many others, depending on your dataset and your way of working.</p>
 <p>The function that applies inclusion/excluasion rules is called <code>flagsAssign</code>, and it takes a dataset and a data.frame with rules as arguments. In this simple example we only exclude data due to two different reasons - and only samples (keeping all doses in the analysis). We exclude all pre-dose samples. For post-dose samples, we exclude those below LLOQ.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span>text<span class="op">=</span><span class="st">"FLAG,flag,condition
+<code class="sourceCode R"><span class="va">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span>text<span class="op">=</span><span class="st">"FLAG,flag,condition
 10,Below LLOQ,BLQ==1
 100,Negative time,TIME&lt;0"</span><span class="op">)</span>
 
@@ -362,7 +362,7 @@
 <span class="co">#&gt; 23 1480 178    EVID           EVID not in 0:4    row 1480</span></code></pre></div>
 <p>Depending on <code>level</code> we can now take a look at single rows, data from a subject or fix a column to address these. The fact that some subjects are missing observations in this case is not necessarily an error (they are in this case all BLQ), but <code>WEIGHTB</code> has to be constant within subjects, and for NONMEM to even run, <code>EVID</code> must be in <code>0:4</code>. So those have to be fixed. For the rest of the vighnette, assume we fixed those issues.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/copy.html" class="external-link">copy</a></span><span class="op">(</span><span class="va">pk.copy</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/copy.html" class="external-link">copy</a></span><span class="op">(</span><span class="va">pk.copy</span><span class="op">)</span></code></pre></div>
 <div class="section level3">
 <h3 id="writing-data-to-files">Writing data to files<a class="anchor" aria-label="anchor" href="#writing-data-to-files"></a>
 </h3>
@@ -393,7 +393,7 @@
 <span class="co">#&gt; [1] "DataPrepare.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-01-07 03:26:52"</span>
+<span class="co">#&gt; [1] "2022-01-11 04:25:43"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$writtenTo</span>
 <span class="co">#&gt; [1] "derived/pkdata.csv"</span>
@@ -409,7 +409,7 @@
 <span class="co">#&gt; [1] "DataPrepare.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-01-07 03:26:52 UTC"</span>
+<span class="co">#&gt; [1] "2022-01-11 04:25:43 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$writtenTo</span>
 <span class="co">#&gt; [1] "derived/pkdata.rds"</span>
@@ -443,7 +443,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-01-07 03:26:52 UTC"</span></code></pre></div>
+<span class="co">#&gt; [1] "2022-01-11 04:25:43 UTC"</span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>NMstamp</code>, but you can add anything to this. We want to keep descriptive note too. Another often useful piece of information is what source data files were read in order to generate the saved data. <code>Description</code> and <code>Source.Files</code> are only examples - any name can be used.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMstamp.html">NMstamp</a></span><span class="op">(</span><span class="va">pk</span>,script<span class="op">=</span><span class="st">"vignettes/DataCreate.Rmd"</span>,Description<span class="op">=</span><span class="st">"A PK dataset used for examples."</span>,Source.Files<span class="op">=</span><span class="st">"/path/to/adpc.sas7bdat,/path/to/adsl.sas7bdat"</span><span class="op">)</span>
@@ -453,7 +453,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-01-07 03:26:52 UTC"</span>
+<span class="co">#&gt; [1] "2022-01-11 04:25:43 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span>
