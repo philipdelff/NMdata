@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# NMdata
+# NMdata<a href='https://philipdelff.github.io/NMdata/'><img src='man/figures/logo.png' align="right" height="120" /></a>
 
 <!-- badges: start -->
 
@@ -65,19 +65,36 @@ simple as
 
 ``` r
 res <- NMscanData("xgxr014.lst",recover.rows=TRUE)
+#> In NMdata::NMscanData(file.path(system.file(paste0("examples/nonmem/", : Input
+#> data columns will be appended to output data. However, column(s) were
+#> identified as unique identifiers, present in both input and output data. If
+#> this column or one of these columns is not modified by the Nonmem run,
+#> consider using this in col.row for a robust merge of input and output data.
+#> Candidate columns: ROW To skip this check, please specify either col.row
+#> (recommended) or cbind.by.filters.
+#> In x), package = "NMdata")), ...) : Input data columns will be appended to
+#> output data. However, column(s) were identified as unique identifiers, present
+#> in both input and output data. If this column or one of these columns is not
+#> modified by the Nonmem run, consider using this in col.row for a robust merge
+#> of input and output data. Candidate columns: ROW To skip this check, please
+#> specify either col.row (recommended) or cbind.by.filters.
+#> 
 #> Model:  xgxr014 
-#> Input and output data merged by: ROW 
 #> 
-#> Used tables, contents shown as used/total:
-#>               file      rows columns     IDs
-#>    xgxr014_res.txt   905/905   12/12 150/150
-#>  xgxr2.rds (input) 1502/1502   22/24 150/150
-#>           (result)      1502    34+2     150
+#> Tables, number of columns in tables, and their detail level:
+#>            table used/total level
+#>  xgxr014_res.txt      12/12   row
+#>            input      22/22   row
 #> 
-#> Distribution of rows on event types in returned data:
-#>  EVID Input only Output
-#>     0        597    755
-#>     1          0    150
+#> Numbers of ID's and rows in data
+#>       N From input data only From output tables
+#>  N.rows                  595                905
+#>   N.ids                    0                150
+#> 
+#> Distribution of rows on event types
+#>  EVID From input data only From output tables
+#>     0                  595                755
+#>     1                    0                150
 ```
 
 And we are ready to plot (a subset of) the result:
@@ -101,6 +118,19 @@ Want a tibble instead? Easy:
 
 ``` r
 res.tibble <- NMscanData("xgxr001.lst",as.fun=tibble::as_tibble,quiet=TRUE)
+#> In NMdata::NMscanData(file.path(system.file(paste0("examples/nonmem/", : Input
+#> data columns will be appended to output data. However, column(s) were
+#> identified as unique identifiers, present in both input and output data. If
+#> this column or one of these columns is not modified by the Nonmem run,
+#> consider using this in col.row for a robust merge of input and output data.
+#> Candidate columns: ROW To skip this check, please specify either col.row
+#> (recommended) or cbind.by.filters.
+#> In x), package = "NMdata")), ...) : Input data columns will be appended to
+#> output data. However, column(s) were identified as unique identifiers, present
+#> in both input and output data. If this column or one of these columns is not
+#> modified by the Nonmem run, consider using this in col.row for a robust merge
+#> of input and output data. Candidate columns: ROW To skip this check, please
+#> specify either col.row (recommended) or cbind.by.filters.
 ```
 
 Or a data.table? This time, we’ll configure NMdata to return data.tables
@@ -109,6 +139,19 @@ by default:
 ``` r
 NMdataConf(as.fun="data.table")
 res.dt <- NMscanData("xgxr001.lst",quiet=TRUE)
+#> In NMdata::NMscanData(file.path(system.file(paste0("examples/nonmem/", : Input
+#> data columns will be appended to output data. However, column(s) were
+#> identified as unique identifiers, present in both input and output data. If
+#> this column or one of these columns is not modified by the Nonmem run,
+#> consider using this in col.row for a robust merge of input and output data.
+#> Candidate columns: ROW To skip this check, please specify either col.row
+#> (recommended) or cbind.by.filters.
+#> In x), package = "NMdata")), ...) : Input data columns will be appended to
+#> output data. However, column(s) were identified as unique identifiers, present
+#> in both input and output data. If this column or one of these columns is not
+#> modified by the Nonmem run, consider using this in col.row for a robust merge
+#> of input and output data. Candidate columns: ROW To skip this check, please
+#> specify either col.row (recommended) or cbind.by.filters.
 ```
 
 NMscanData is very general, and should work with all kinds of models,
@@ -137,7 +180,7 @@ too.
     ## Option 2: Install explicitly from CRAN
     install.packages("NMdata",repos="https://cloud.r-project.org")
     library(NMdata)
-
+    
     ## Option 3: Install from github
     library(remotes)
     install_github("philipdelff/NMdata")
