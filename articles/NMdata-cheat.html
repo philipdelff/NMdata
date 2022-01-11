@@ -192,7 +192,7 @@
 <p><code>flagsCount</code> - Create an overview of number of retained and discarded datapoints</p>
 <p>This is a simple example where we use only two exclusion flags. If time is negative, we assign exclusion flag <code>FLAG=100</code>. If (time is non-negative and) <code>BLQ==1</code> we assign <code>FLAG=10</code>. If none of these conditions are met, <code>FLAG=0</code>, and the row will be included in the analysis. <code>fread</code> is just a way to write the table row-wise for readability.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span>text<span class="op">=</span><span class="st">"FLAG,flag,condition
+<code class="sourceCode R"><span class="va">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span>text<span class="op">=</span><span class="st">"FLAG,flag,condition
 10,Below LLOQ,BLQ==1
 100,Negative time,TIME&lt;0"</span><span class="op">)</span>
 
@@ -241,7 +241,7 @@
 <span class="co">## Meta data on input data file:</span>
 <span class="va">res.debug</span><span class="op">$</span><span class="va">tables</span>
 <span class="co">#&gt;    source       name nrow ncol nid filetype          file.mtime</span>
-<span class="co">#&gt; 1:  input pkdata.csv 1502   23 150     text 2022-01-11 04:25:51</span>
+<span class="co">#&gt; 1:  input pkdata.csv 1502   23 150     text 2022-01-11 20:08:33</span>
 <span class="co">#&gt;                            file has.col.row has.col.id</span>
 <span class="co">#&gt; 1: nonmem/../derived/pkdata.csv        TRUE       TRUE</span></code></pre></div>
 <p>In this model we forgot to update the control stream INPUT section after adding a column to data (“off” means that INPUT text can be reorganized to match data file better):</p>
@@ -311,7 +311,7 @@
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">res1.dt</span><span class="op">[</span><span class="va">ID</span><span class="op">==</span><span class="fl">135</span><span class="op">&amp;</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">]</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">TIME</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">DV</span>,colour<span class="op">=</span><span class="va">flag</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">PRED</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y<span class="op">=</span><span class="st">"Concentration (unit)"</span>,subtitle<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">res1.dt</span><span class="op">$</span><span class="va">model</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y<span class="op">=</span><span class="st">"Concentration (unit)"</span>,subtitle<span class="op">=</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">res1.dt</span><span class="op">$</span><span class="va">model</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Warning: Removed 2 row(s) containing missing values (geom_path).</span></code></pre></div>
 <p><img src="NMdata-cheat_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
 <p>Read the messages from <code>NMwriteData</code> and <code>NMscanData</code> carefully and notice that an rds file was written and read. This bypasses the loss of information caused by writing and reading csv, and so we have kept factor levels from the input data we generated:</p>
@@ -351,7 +351,7 @@
 <span class="co">#&gt; [1] "NMdata-cheat.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $CreationTime</span>
-<span class="co">#&gt; [1] "2022-01-11 04:25:51 UTC"</span>
+<span class="co">#&gt; [1] "2022-01-11 20:08:33 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $writtenTo</span>
 <span class="co">#&gt; [1] "derived/pkdata.rds"</span>
