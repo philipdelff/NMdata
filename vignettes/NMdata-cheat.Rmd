@@ -114,7 +114,7 @@ compareCols(covs,covs2)
 Use the `cols.wanted` argument for the overview to especially focus on the columns you need in your final data set. 
 
 
-`renameByContents` - Keep track of what columns are compatible with Nonmem by renaming those that aren't. Rename all columns that Nonmem cannot interpret as numeric to lowercase (see `NMisNumeric` in Programming section):
+`renameByContents` - Keep track of what columns are compatible with Nonmem by renaming those that aren't. Rename columns dependent on whether Nonmem cannot interpret as numeric:
 ```{r,eval=FALSE}
 ## Append an "N" to columns that NONMEM can read (as numeric)
 pk <- renameByContents(data=pk,
