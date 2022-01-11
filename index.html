@@ -107,8 +107,7 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="nmdata">NMdata<a href="https://philipdelff.github.io/NMdata/"><img src="reference/figures/logo.png" align="right" height="120"></a>
-<a class="anchor" aria-label="anchor" href="#nmdata"></a>
+<div class="page-header"><h1 id="nmdata">NMdata<a class="anchor" aria-label="anchor" href="#nmdata"></a>
 </h1></div>
 <!-- badges: start -->
 
@@ -136,36 +135,19 @@
 <p>Reading the resulting data from Nonmem can require a few manual steps. Especially because all modelers seem to do things a little differently. <code>NMscanData</code> can return all data output (<code>$TABLE</code>) from Nonmem combined, and if wanted with additional columns and rows in input data. It’s as simple as</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr014.lst"</span>,recover.rows<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; In NMdata::NMscanData(file.path(system.file(paste0("examples/nonmem/", : Input</span>
-<span class="co">#&gt; data columns will be appended to output data. However, column(s) were</span>
-<span class="co">#&gt; identified as unique identifiers, present in both input and output data. If</span>
-<span class="co">#&gt; this column or one of these columns is not modified by the Nonmem run,</span>
-<span class="co">#&gt; consider using this in col.row for a robust merge of input and output data.</span>
-<span class="co">#&gt; Candidate columns: ROW To skip this check, please specify either col.row</span>
-<span class="co">#&gt; (recommended) or cbind.by.filters.</span>
-<span class="co">#&gt; In x), package = "NMdata")), ...) : Input data columns will be appended to</span>
-<span class="co">#&gt; output data. However, column(s) were identified as unique identifiers, present</span>
-<span class="co">#&gt; in both input and output data. If this column or one of these columns is not</span>
-<span class="co">#&gt; modified by the Nonmem run, consider using this in col.row for a robust merge</span>
-<span class="co">#&gt; of input and output data. Candidate columns: ROW To skip this check, please</span>
-<span class="co">#&gt; specify either col.row (recommended) or cbind.by.filters.</span>
-<span class="co">#&gt; </span>
 <span class="co">#&gt; Model:  xgxr014 </span>
+<span class="co">#&gt; Input and output data merged by: ROW </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Tables, number of columns in tables, and their detail level:</span>
-<span class="co">#&gt;            table used/total level</span>
-<span class="co">#&gt;  xgxr014_res.txt      12/12   row</span>
-<span class="co">#&gt;            input      22/22   row</span>
+<span class="co">#&gt; Used tables, contents shown as used/total:</span>
+<span class="co">#&gt;               file      rows columns     IDs</span>
+<span class="co">#&gt;    xgxr014_res.txt   905/905   12/12 150/150</span>
+<span class="co">#&gt;  xgxr2.rds (input) 1502/1502   22/24 150/150</span>
+<span class="co">#&gt;           (result)      1502    34+2     150</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Numbers of ID's and rows in data</span>
-<span class="co">#&gt;       N From input data only From output tables</span>
-<span class="co">#&gt;  N.rows                  595                905</span>
-<span class="co">#&gt;   N.ids                    0                150</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Distribution of rows on event types</span>
-<span class="co">#&gt;  EVID From input data only From output tables</span>
-<span class="co">#&gt;     0                  595                755</span>
-<span class="co">#&gt;     1                    0                150</span></code></pre></div>
+<span class="co">#&gt; Distribution of rows on event types in returned data:</span>
+<span class="co">#&gt;  EVID Input only Output</span>
+<span class="co">#&gt;     0        597    755</span>
+<span class="co">#&gt;     1          0    150</span></code></pre></div>
 <p>And we are ready to plot (a subset of) the result:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res.plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">res</span>,<span class="va">ID</span><span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">113</span>,<span class="fl">135</span><span class="op">)</span><span class="op">&amp;</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">)</span>
@@ -181,37 +163,11 @@
 <p><img src="reference/figures/README-NMscanData-example1-plot-1.png" width="100%"></p>
 <p>Want a tibble instead? Easy:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res.tibble</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr001.lst"</span>,as.fun<span class="op">=</span><span class="fu">tibble</span><span class="fu">::</span><span class="va"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; In NMdata::NMscanData(file.path(system.file(paste0("examples/nonmem/", : Input</span>
-<span class="co">#&gt; data columns will be appended to output data. However, column(s) were</span>
-<span class="co">#&gt; identified as unique identifiers, present in both input and output data. If</span>
-<span class="co">#&gt; this column or one of these columns is not modified by the Nonmem run,</span>
-<span class="co">#&gt; consider using this in col.row for a robust merge of input and output data.</span>
-<span class="co">#&gt; Candidate columns: ROW To skip this check, please specify either col.row</span>
-<span class="co">#&gt; (recommended) or cbind.by.filters.</span>
-<span class="co">#&gt; In x), package = "NMdata")), ...) : Input data columns will be appended to</span>
-<span class="co">#&gt; output data. However, column(s) were identified as unique identifiers, present</span>
-<span class="co">#&gt; in both input and output data. If this column or one of these columns is not</span>
-<span class="co">#&gt; modified by the Nonmem run, consider using this in col.row for a robust merge</span>
-<span class="co">#&gt; of input and output data. Candidate columns: ROW To skip this check, please</span>
-<span class="co">#&gt; specify either col.row (recommended) or cbind.by.filters.</span></code></pre></div>
+<code class="sourceCode R"><span class="va">res.tibble</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr001.lst"</span>,as.fun<span class="op">=</span><span class="fu">tibble</span><span class="fu">::</span><span class="va"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>Or a data.table? This time, we’ll configure NMdata to return data.tables by default:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>as.fun<span class="op">=</span><span class="st">"data.table"</span><span class="op">)</span>
-<span class="va">res.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr001.lst"</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; In NMdata::NMscanData(file.path(system.file(paste0("examples/nonmem/", : Input</span>
-<span class="co">#&gt; data columns will be appended to output data. However, column(s) were</span>
-<span class="co">#&gt; identified as unique identifiers, present in both input and output data. If</span>
-<span class="co">#&gt; this column or one of these columns is not modified by the Nonmem run,</span>
-<span class="co">#&gt; consider using this in col.row for a robust merge of input and output data.</span>
-<span class="co">#&gt; Candidate columns: ROW To skip this check, please specify either col.row</span>
-<span class="co">#&gt; (recommended) or cbind.by.filters.</span>
-<span class="co">#&gt; In x), package = "NMdata")), ...) : Input data columns will be appended to</span>
-<span class="co">#&gt; output data. However, column(s) were identified as unique identifiers, present</span>
-<span class="co">#&gt; in both input and output data. If this column or one of these columns is not</span>
-<span class="co">#&gt; modified by the Nonmem run, consider using this in col.row for a robust merge</span>
-<span class="co">#&gt; of input and output data. Candidate columns: ROW To skip this check, please</span>
-<span class="co">#&gt; specify either col.row (recommended) or cbind.by.filters.</span></code></pre></div>
+<span class="va">res.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr001.lst"</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>NMscanData is very general, and should work with all kinds of models, and all kinds of other software and configurations. Take a look at <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html">this vignette</a> for more info on the Nonmem data reader. Then you will learn how to access the meta data that will allow you to trace every step that was taken combining the data and the many checks that were done along the way too.</p>
 </div>
 <div class="section level2">
