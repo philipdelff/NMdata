@@ -315,6 +315,9 @@ Not warning. Warning if standard variable?
 **** DONE Don't warn about missing SS, ADDL, II
 **** DONE Polish
 *** flagsAssign
+**** TODO [#A] We need to work in IDhasNoObs and IDhasNoDos
+This likely means a restructure so all tables have to be given
+together and these subject-level flags are set across EVID after 
 **** DONE check for whether there are any contents in data - just warning and return nothing
 **** DONE implement grp.incomp as in flagsCount
 **** DONE Only give message about overwriting FLAG/flag if non-NA values are present
@@ -328,6 +331,8 @@ It's fairly easy to implement. Paste in front of the expression.use column.
      Or is FLAG==0 reserved?
 use flagsAssign(data,subset.data="EVID==1",flagc.0="Dosing")
 *** flagsCount
+**** TODO [#A] bug in 0.0.9: Nobs.disc.cum ignores by
+Test if the bug is still not fixed
 **** DONE OK respect decreasing or increasing order.flags
 **** DONE add .cum of N and Nobs
 **** DONE add argument to name "all available data" in table. 
