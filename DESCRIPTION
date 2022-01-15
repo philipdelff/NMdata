@@ -5,7 +5,7 @@ Version: 0.0.10
 Authors@R: person("Philip", "Delff", email = "philip@delff.dk",
                   role = c("aut", "cre"))
 Maintainer: Philip Delff <philip@delff.dk>
-Description: Efficient tools for preparation, checking and post-processing of data in PK/PD (pharmacokinetics/pharmacodynamics) modeling, with focus on use of Nonmem. Helps with trivial but tedious tasks and tries to identify errors to save time on debugging. Implemented in 'data.table', but easily integrated with 'base' and 'tidyverse'.
+Description: Efficient tools for preparation, checking and post-processing of data in PK/PD (pharmacokinetics/pharmacodynamics) modeling, with focus on use of NONMEM. Helps with trivial but tedious tasks and tries to identify errors to save time on debugging. Implemented in 'data.table', but easily integrated with 'base' and 'tidyverse'.
 License: MIT + file LICENSE
 RoxygenNote: 7.1.2
 Roxygen: list(roclets=c("collate", "namespace", "rd", "vignette"))

@@ -1,5 +1,5 @@
 "parameter","value"
 "DataCreateScript","NMdata-cheat.Rmd"
-"CreationTime","2022-01-05 22:54:01"
+"CreationTime","2022-01-15 00:12:05"
 "writtenTo","derived/pkdata.csv"
 "Description","PK data for the NMdata Cheatsheet"

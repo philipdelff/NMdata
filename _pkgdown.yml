@@ -12,8 +12,8 @@ navbar:
   components:
     home:
       title: Efficient data preparation, consistency-checking and post-processing in PK/PD modeling
-      description: >
-        Efficient and fast tools for preparation, checking and post-processing of data in PK/PD modeling and pharmacometrics, with focus on use of Nonmem. Save time and avoid time-consuming errors. Implemented in data.table, but integratable with base and dplyr and tidyverse.
+      desc: >
+        Efficient and fast tools for preparation, checking and post-processing of data in PK/PD modeling and pharmacometrics, with focus on use of NONMEM. Save time and avoid time-consuming errors. Implemented in data.table, but integratable with base and dplyr and tidyverse.
       icon: fas fa-home fa-lg
       href: index.html
     articles:
@@ -27,12 +27,59 @@ navbar:
         href: articles/DataPrepare.html
       - text: "FAQ"
         href: articles/NMdata-FAQ.html
-    reference:
-      text: Manual
-      href: reference/index.html
-    news:
-      text: News
-      href: news/index.html
-    github:
-      icon: fab fa-github fa-lg
-      href: https://github.com/philipdelff/NMdata
+reference:
+      - title: "Configuration"
+        desc: "Configure NMdata behaviour"
+        contents:
+          - NMdataConf
+      - title: "Data Preparation"
+        desc: "Functions for preparation of PK/PD data sets"
+        contents:
+          - NMorderColumns
+          - compareCols
+          - mergeCheck
+          - renameByContents
+          - flagsAssign
+          - flagsCount
+      - title: "Write data"
+        desc: "Write data and edit update NONMEM control streams"
+        contents:
+          - NMwriteData
+          - NMgenText
+          - NMstamp
+          - NMwriteSection
+      - title: "Retrieve NONMEM data"
+        desc: "Functions for retrieving NONMEM input and output data"
+        contents:
+          - NMscanData
+          - NMscanTables
+          - NMscanInput
+          - NMreadCsv
+          - NMreadTab
+          - NMinfo 
+      - title: "Checking and Debugging"
+        desc: "Functions for checking data and input control streams"
+        contents:
+          - NMcheckColnames
+          - NMcheckData
+      - title: "Programming"
+        desc: "Additional functions for programming"
+        contents:
+          - cc
+          - NMisNumeric
+          - egdt
+          - dims
+          - findCovs
+          - findVars
+          - fnExtension
+          - is.NMdata
+          - unNMdata
+          - NMreadSection
+          - NMextractDataFile
+          - NMextractText
+news:
+       text: News
+       href: news/index.html
+github:
+       icon: fab fa-github fa-lg
+       href: https://github.com/philipdelff/NMdata
