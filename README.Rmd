@@ -59,6 +59,7 @@ probably the
 [Cheatsheet](https://philipdelff.github.io/NMdata/articles/NMdata-cheat.html). All
 documentation is of course included in the package itself too.
 
+<!-- https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html -->
 
 ## Prepare, check, and export PK/PD data 
 On the data-generation side, functionality is provided for
