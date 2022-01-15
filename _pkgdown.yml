@@ -27,7 +27,6 @@ navbar:
       - text: "FAQ"
         href: articles/NMdata-FAQ.html
 functions:
-      text: Functions
       - title: "Configuration"
         desc: "Configure NMdata behaviour"
         contents:
