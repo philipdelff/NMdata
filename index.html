@@ -72,10 +72,11 @@
   </ul>
 </li>
 <li>
+  <a href="reference/index.html">Reference</a>
+</li>
+<li>
   <a href="news/index.html">Changelog</a>
 </li>
-      </ul>
-<ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
@@ -83,6 +84,7 @@
   </a>
 </li>
       </ul>
+<ul class="nav navbar-nav navbar-right"></ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -104,9 +106,12 @@
 <h2 id="a-fast-r-package-for-efficient-data-preparation-consistency-checking-and-post-processing-in-pkpd-modeling">A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling<a class="anchor" aria-label="anchor" href="#a-fast-r-package-for-efficient-data-preparation-consistency-checking-and-post-processing-in-pkpd-modeling"></a>
 </h2>
 <p>Pharmacometrics and PK/PD modeling offers unique information for decision-making in several steps of drug development. However, the leg work in pharmacometrics remains technical, and this is a typical bottleneck for a pharmacometrician to contributing even more.</p>
-<p>The NMdata objective: <em>Automate the book keeping and allow more time for actual modeling</em> Preparing data sets - and if you use Nonmem, reading the results data - can be tedious, and mistakes can lead to hours of frustration. NMdata provides useful tools (including automated checks) for these trivial tasks.</p>
+<p>The NMdata objective: <em>Automate the book keeping and allow more time for actual modeling</em> Preparing data sets - and if you use NONMEM, reading the results data - can be tedious, and mistakes can lead to hours of frustration. NMdata provides useful tools (including automated checks) for these trivial tasks.</p>
 <p><em>Any functionality in the NMdata can be used independently of the rest of the package</em>, and NMdata is not intended to force you to change any habits or preferences. Instead, NMdata tries to fit in with how you (or your colleague who worked on the project before you) do things.</p>
-<p>The best place to browse information about the package is <a href="https://philipdelff.github.io/NMdata/">here</a>. The quickest way in is probably the <a href="https://philipdelff.github.io/NMdata/articles/NMdata-cheat.html">Cheatsheet</a>. All documentation is of course included in the package itself too.</p>
+<p>The best place to browse information about the package is <a href="https://philipdelff.github.io/NMdata/">here</a>. The quickest way in is the the <a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html" class="external-link">Cheatsheet</a>.</p>
+<!-- ![Cheatsheet](man/figures/cheatsheet_icon_0010.png){width="15%"} -->
+<!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html) -->
+<p><a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html" class="external-link"><img src="reference/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"></a></p>
 </div>
 <div class="section level2">
 <h2 id="prepare-check-and-export-pkpd-data">Prepare, check, and export PK/PD data<a class="anchor" aria-label="anchor" href="#prepare-check-and-export-pkpd-data"></a>
@@ -119,9 +124,9 @@
 <p>Finally, the <code>NMcheckData</code> function will do an extensive and fully automated set of checks of the data before you run NONMEM. And did NONMEM not behave? <code>NMcheckData</code> can debug the data <em>as seen by NONMEM</em>. That’s right - it has never been easier to find data bugs.</p>
 </div>
 <div class="section level2">
-<h2 id="automated-and-general-reader-of-nonmem-results-data">Automated and general reader of Nonmem results data<a class="anchor" aria-label="anchor" href="#automated-and-general-reader-of-nonmem-results-data"></a>
+<h2 id="automated-and-general-reader-of-nonmem-results-data">Automated and general reader of NONMEM results data<a class="anchor" aria-label="anchor" href="#automated-and-general-reader-of-nonmem-results-data"></a>
 </h2>
-<p>Reading the resulting data from Nonmem can require a few manual steps. Especially because all modelers seem to do things a little differently. <code>NMscanData</code> can return all data output (<code>$TABLE</code>) from Nonmem combined, and if wanted with additional columns and rows in input data. It’s as simple as</p>
+<p>Reading the resulting data from NONMEM can require a few manual steps. Especially because all modelers seem to do things a little differently. <code>NMscanData</code> can return all data output (<code>$TABLE</code>) from NONMEM combined, and if wanted with additional columns and rows in input data. It’s as simple as</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr014.lst"</span>,recover.rows<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; Model:  xgxr014 </span>
@@ -157,7 +162,7 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>as.fun<span class="op">=</span><span class="st">"data.table"</span><span class="op">)</span>
 <span class="va">res.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr001.lst"</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p>NMscanData is very general, and should work with all kinds of models, and all kinds of other software and configurations. Take a look at <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html">this vignette</a> for more info on the Nonmem data reader. Then you will learn how to access the meta data that will allow you to trace every step that was taken combining the data and the many checks that were done along the way too.</p>
+<p>NMscanData is very general, and should work with all kinds of models, and all kinds of other software and configurations. Take a look at <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html">this vignette</a> for more info on the NONMEM data reader. Then you will learn how to access the meta data that will allow you to trace every step that was taken combining the data and the many checks that were done along the way too.</p>
 </div>
 <div class="section level2">
 <h2 id="how-to-install">How to install<a class="anchor" aria-label="anchor" href="#how-to-install"></a>

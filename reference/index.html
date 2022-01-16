@@ -45,15 +45,18 @@
     </li>
   </ul></li>
 <li>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li>
   <a href="../news/index.html">Changelog</a>
 </li>
-      </ul><ul class="nav navbar-nav navbar-right"><li>
+<li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
-      </ul></div><!--/.nav-collapse -->
+      </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
@@ -66,14 +69,95 @@
     </div>
 
     <table class="ref-index"><colgroup><col class="alias"><col class="title"></colgroup><tbody><tr><th colspan="2">
-          <h2 id="all-functions">All functions <a href="#all-functions" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p>
+          <h2 id="configuration">Configuration <a href="#configuration" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Configure NMdata behaviour</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="NMapplyFilters.html">NMapplyFilters()</a></code> </p>
+          <p><code><a href="NMdataConf.html">NMdataConf()</a></code> </p>
         </td>
-        <td><p>Translate filters in Nonmem and apply to data</p></td>
+        <td><p>Configure default behavior of NMdata functions</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="data-preparation">Data Preparation <a href="#data-preparation" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Functions for preparation of PK/PD data sets</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="NMorderColumns.html">NMorderColumns()</a></code> </p>
+        </td>
+        <td><p>Standardize column order in Nonmem input data</p></td>
       </tr><tr><td>
+          <p><code><a href="compareCols.html">compareCols()</a></code> </p>
+        </td>
+        <td><p>Compare elements in lists with aim of combining</p></td>
+      </tr><tr><td>
+          <p><code><a href="mergeCheck.html">mergeCheck()</a></code> </p>
+        </td>
+        <td><p>Merge, order, and check resulting rows and columns.</p></td>
+      </tr><tr><td>
+          <p><code><a href="renameByContents.html">renameByContents()</a></code> </p>
+        </td>
+        <td><p>Rename columns matching properties of data contents</p></td>
+      </tr><tr><td>
+          <p><code><a href="flagsAssign.html">flagsAssign()</a></code> </p>
+        </td>
+        <td><p>Assign exclusion flags to a dataset based on specified table</p></td>
+      </tr><tr><td>
+          <p><code><a href="flagsCount.html">flagsCount()</a></code> </p>
+        </td>
+        <td><p>Create an overview of number of retained and discarded datapoints.</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="write-data">Write data <a href="#write-data" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Write data and edit update NONMEM control streams</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="NMwriteData.html">NMwriteData()</a></code> </p>
+        </td>
+        <td><p>Write dataset for use in Nonmem (and R)</p></td>
+      </tr><tr><td>
+          <p><code><a href="NMgenText.html">NMgenText()</a></code> </p>
+        </td>
+        <td><p>Generate text for INPUT and possibly DATA sections of NONMEM
+control streams.</p></td>
+      </tr><tr><td>
+          <p><code><a href="NMstamp.html">NMstamp()</a></code> </p>
+        </td>
+        <td><p>stamp a dataset or any other object</p></td>
+      </tr><tr><td>
+          <p><code><a href="NMwriteSection.html">NMwriteSection()</a></code> </p>
+        </td>
+        <td><p>Replace ($)sections of a nonmem control stream</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="retrieve-nonmem-data">Retrieve NONMEM data <a href="#retrieve-nonmem-data" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Functions for retrieving NONMEM input and output data</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="NMscanData.html">NMscanData()</a></code> </p>
+        </td>
+        <td><p>Automatically find Nonmem input and output tables and organize data</p></td>
+      </tr><tr><td>
+          <p><code><a href="NMscanTables.html">NMscanTables()</a></code> </p>
+        </td>
+        <td><p>Find and read all output data tables in nonmem run</p></td>
+      </tr><tr><td>
+          <p><code><a href="NMscanInput.html">NMscanInput()</a></code> </p>
+        </td>
+        <td><p>Find and read input data and optionally translate column names according to the $INPUT section</p></td>
+      </tr><tr><td>
+          <p><code><a href="NMreadCsv.html">NMreadCsv()</a></code> </p>
+        </td>
+        <td><p>Read input data formatted for nonmem</p></td>
+      </tr><tr><td>
+          <p><code><a href="NMreadTab.html">NMreadTab()</a></code> </p>
+        </td>
+        <td><p>Read an output table file from NONMEM</p></td>
+      </tr><tr><td>
+          <p><code><a href="NMinfo.html">NMinfo()</a></code> </p>
+        </td>
+        <td><p>Get metadata from an NMdata object</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="checking-and-debugging">Checking and Debugging <a href="#checking-and-debugging" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Functions for checking data and input control streams</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
           <p><code><a href="NMcheckColnames.html">NMcheckColnames()</a></code> </p>
         </td>
         <td><p>Compare $INPUT in control stream to column names in input data</p></td>
@@ -81,123 +165,26 @@
           <p><code><a href="NMcheckData.html">NMcheckData()</a></code> </p>
         </td>
         <td><p>Check data for Nonmem compatibility</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMcheckDataFile.html">NMcheckDataFile()</a></code> </p>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="programming">Programming <a href="#programming" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Additional functions for programming</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="cc.html">cc()</a></code> </p>
         </td>
-        <td><p>check input data based on control stream</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMcode2R.html">NMcode2R()</a></code> </p>
-        </td>
-        <td><p>Translate Nonmem $PK, $PRED sections or other Nonmem code to R code</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMdataConf.html">NMdataConf()</a></code> </p>
-        </td>
-        <td><p>Configure default behavior of NMdata functions</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMdataConfOptions.html">NMdataConfOptions()</a></code> </p>
-        </td>
-        <td><p>Get NMdataConf parameter properties</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMdataDecideOption.html">NMdataDecideOption()</a></code> </p>
-        </td>
-        <td><p>Determine active parameter value based on argument and NMdataConf setting</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMdataGetOption.html">NMdataGetOption()</a></code> </p>
-        </td>
-        <td><p>Look up default configuration of an argument</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMdataOperations.html">merge(<i>&lt;NMdata&gt;</i>)</a></code> <code><a href="NMdataOperations.html">t(<i>&lt;NMdata&gt;</i>)</a></code> <code><a href="NMdataOperations.html">dimnames(<i>&lt;NMdata&gt;</i>)</a></code> <code><a href="NMdataOperations.html">rbind(<i>&lt;NMdata&gt;</i>)</a></code> <code><a href="NMdataOperations.html">cbind(<i>&lt;NMdata&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Basic arithmetic</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMextractDataFile.html">NMextractDataFile()</a></code> </p>
-        </td>
-        <td><p>Extract the data file used in a control stream</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMextractText.html">NMextractText()</a></code> </p>
-        </td>
-        <td><p>Versatile text extractor from Nonmem (input or output) control streams</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMgenText.html">NMgenText()</a></code> </p>
-        </td>
-        <td><p>Generate text for INPUT and possibly DATA sections of NONMEM
-control streams.</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMinfo.html">NMinfo()</a></code> </p>
-        </td>
-        <td><p>Get metadata from an NMdata object</p></td>
+        <td><p>Create character vectors without quotation marks</p></td>
       </tr><tr><td>
           <p><code><a href="NMisNumeric.html">NMisNumeric()</a></code> </p>
         </td>
         <td><p>Test if a variable can be interpreted by Nonmem</p></td>
       </tr><tr><td>
-          <p><code><a href="NMorderColumns.html">NMorderColumns()</a></code> </p>
-        </td>
-        <td><p>Standardize column order in Nonmem input data</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMreadCsv.html">NMreadCsv()</a></code> </p>
-        </td>
-        <td><p>Read input data formatted for nonmem</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMreadSection.html">NMreadSection()</a></code> <code><a href="NMreadSection.html">NMgetSection()</a></code> </p>
-        </td>
-        <td><p>Extract sections of Nonmem control streams</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMreadTab.html">NMreadTab()</a></code> </p>
-        </td>
-        <td><p>Read an output table file from NONMEM</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMscanData.html">NMscanData()</a></code> </p>
-        </td>
-        <td><p>Automatically find Nonmem input and output tables and organize data</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMscanInput.html">NMscanInput()</a></code> </p>
-        </td>
-        <td><p>Find and read input data and optionally translate column names according to the $INPUT section</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMscanTables.html">NMscanTables()</a></code> </p>
-        </td>
-        <td><p>Find and read all output data tables in nonmem run</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMstamp.html">NMstamp()</a></code> </p>
-        </td>
-        <td><p>stamp a dataset or any other object</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMtransInp.html">NMtransInp()</a></code> </p>
-        </td>
-        <td><p>translate the column names according to the $INPUT section of a control stream</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMwriteData.html">NMwriteData()</a></code> </p>
-        </td>
-        <td><p>Write dataset for use in Nonmem (and R)</p></td>
-      </tr><tr><td>
-          <p><code><a href="NMwriteSection.html">NMwriteSection()</a></code> </p>
-        </td>
-        <td><p>Replace ($)sections of a nonmem control stream</p></td>
-      </tr><tr><td>
-          <p><code><a href="cc.html">cc()</a></code> </p>
-        </td>
-        <td><p>Create character vectors without quotation marks</p></td>
-      </tr><tr><td>
-          <p><code><a href="checkColRow.html">checkColRow()</a></code> </p>
-        </td>
-        <td><p>check that col.row is not edited in Nonmem control stream</p></td>
-      </tr><tr><td>
-          <p><code><a href="compareCols.html">compareCols()</a></code> </p>
-        </td>
-        <td><p>Compare elements in lists with aim of combining</p></td>
-      </tr><tr><td>
-          <p><code><a href="dims.html">dims()</a></code> </p>
-        </td>
-        <td><p>Get dimensions of multiple objects</p></td>
-      </tr><tr><td>
           <p><code><a href="egdt.html">egdt()</a></code> </p>
         </td>
         <td><p>Expand grid of data.tables</p></td>
       </tr><tr><td>
-          <p><code><a href="filePathSimple.html">filePathSimple()</a></code> </p>
+          <p><code><a href="dims.html">dims()</a></code> </p>
         </td>
-        <td><p>Clean and standardize file system paths</p></td>
+        <td><p>Get dimensions of multiple objects</p></td>
       </tr><tr><td>
           <p><code><a href="findCovs.html">findCovs()</a></code> </p>
         </td>
@@ -207,14 +194,6 @@ control streams.</p></td>
         </td>
         <td><p>Extract columns that vary within values of other columns in a data.frame</p></td>
       </tr><tr><td>
-          <p><code><a href="flagsAssign.html">flagsAssign()</a></code> </p>
-        </td>
-        <td><p>Assign exclusion flags to a dataset based on specified table</p></td>
-      </tr><tr><td>
-          <p><code><a href="flagsCount.html">flagsCount()</a></code> </p>
-        </td>
-        <td><p>Create an overview of number of retained and discarded datapoints.</p></td>
-      </tr><tr><td>
           <p><code><a href="fnExtension.html">fnExtension()</a></code> </p>
         </td>
         <td><p>Change file name extension</p></td>
@@ -223,37 +202,37 @@ control streams.</p></td>
         </td>
         <td><p>Check if an object is 'NMdata'</p></td>
       </tr><tr><td>
-          <p><code><a href="mergeCheck.html">mergeCheck()</a></code> </p>
-        </td>
-        <td><p>Merge, order, and check resulting rows and columns.</p></td>
-      </tr><tr><td>
-          <p><code><a href="messageWrap.html">messageWrap()</a></code> </p>
-        </td>
-        <td><p>Pretty wrapping of lines in NMdata vignettes</p></td>
-      </tr><tr><td>
-          <p><code><a href="print.summary_NMdata.html">print(<i>&lt;summary_NMdata&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>print method for NMdata summaries</p></td>
-      </tr><tr><td>
-          <p><code><a href="renameByContents.html">renameByContents()</a></code> </p>
-        </td>
-        <td><p>Rename columns matching properties of data contents</p></td>
-      </tr><tr><td>
-          <p><code><a href="summary.NMdata.html">summary(<i>&lt;NMdata&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>summary method for NMdata objects</p></td>
-      </tr><tr><td>
-          <p><code><a href="tmpcol.html">tmpcol()</a></code> </p>
-        </td>
-        <td><p>generate a name for a new data column that is not already in use.</p></td>
-      </tr><tr><td>
           <p><code><a href="unNMdata.html">unNMdata()</a></code> </p>
         </td>
         <td><p>Remove NMdata class and discard NMdata meta data</p></td>
       </tr><tr><td>
-          <p><code><a href="writeNMinfo.html">writeNMinfo()</a></code> </p>
+          <p><code><a href="NMreadSection.html">NMreadSection()</a></code> <code><a href="NMreadSection.html">NMgetSection()</a></code> </p>
         </td>
-        <td><p>Do the actual writing of meta data</p></td>
+        <td><p>Extract sections of Nonmem control streams</p></td>
+      </tr><tr><td>
+          <p><code><a href="NMextractDataFile.html">NMextractDataFile()</a></code> </p>
+        </td>
+        <td><p>Extract the data file used in a control stream</p></td>
+      </tr><tr><td>
+          <p><code><a href="NMextractText.html">NMextractText()</a></code> </p>
+        </td>
+        <td><p>Versatile text extractor from Nonmem (input or output) control streams</p></td>
+      </tr><tr><td>
+          <p><code><a href="NMdataOperations.html">merge(<i>&lt;NMdata&gt;</i>)</a></code> <code><a href="NMdataOperations.html">t(<i>&lt;NMdata&gt;</i>)</a></code> <code><a href="NMdataOperations.html">dimnames(<i>&lt;NMdata&gt;</i>)</a></code> <code><a href="NMdataOperations.html">rbind(<i>&lt;NMdata&gt;</i>)</a></code> <code><a href="NMdataOperations.html">cbind(<i>&lt;NMdata&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Basic arithmetic</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="misc">Misc <a href="#misc" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Miscellaneous</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="summary.NMdata.html">summary(<i>&lt;NMdata&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>summary method for NMdata objects</p></td>
+      </tr><tr><td>
+          <p><code><a href="print.summary_NMdata.html">print(<i>&lt;summary_NMdata&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>print method for NMdata summaries</p></td>
       </tr></tbody></table></div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
