@@ -20,6 +20,8 @@ navbar:
     articles:
       text: Vignettes
       menu:
+      - text: "Cheat Sheet"
+        href: https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html
       - text: "NMscanData: find and combine all output and input data"
         href: articles/NMscanData.html
       - text: "Data Preparation Tools"
