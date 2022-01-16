@@ -55,10 +55,10 @@ datasets back to data generation scripts.
 
 ## Check data as read by NONMEM
 
-Finally, the `NMcheckData` function will do an extensive and fully
-automated set of checks of the data before you run NONMEM. And did
-NONMEM not behave? `NMcheckData` can debug the data *as seen by NONMEM*.
-That’s right - it has never been easier to find data bugs.
+The `NMcheckData` function will do an extensive and fully automated set
+of checks of the data before you run NONMEM. And did NONMEM not behave?
+`NMcheckData` can debug the data *as seen by NONMEM*. That’s right - it
+has never been easier to find data bugs.
 
 ## Automated and general reader of NONMEM results data
 

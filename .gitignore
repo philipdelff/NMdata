@@ -39,6 +39,7 @@ temp_dir
 ;; other
 Meta
 NMdata\.Rproj
+README.html
 devel/NMdata_Rpackage/figure
 devel/NMdata_Rpackage/derived
 devel/NMdata_Rpackage/NMdata_Rpackage\.pdf

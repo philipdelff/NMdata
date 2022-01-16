@@ -63,7 +63,7 @@ for ensuring readability in NONMEM, and ensuring traceability of
 datasets back to data generation scripts. 
 
 ## Check data as read by NONMEM
-Finally, the `NMcheckData`
+The `NMcheckData`
 function will do an extensive and fully automated set of checks of the
 data before you run NONMEM. And did NONMEM not behave? `NMcheckData`
 can debug the data _as seen by NONMEM_. That's right - it has never
