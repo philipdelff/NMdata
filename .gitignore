@@ -45,7 +45,9 @@ devel/NMdata_Rpackage/NMdata_Rpackage\.pdf
 doc
 docs
 vignettes/*\.pdf
-vignettes/*\.html
+vignettes/NMdata-FAQ.html
+vignettes/DataPrepare.html
+vignettes/NMscanData.html
 vignettes/*\.md
 vignettes/*\.R
 inst/examples/nonmem/modelfit_dir*
