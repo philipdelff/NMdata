@@ -20,3 +20,4 @@ Use this to tidy up paths. Combines pieces of a path like
     possibly shorten path.
 }
 \concept{FileSystem}
+\keyword{internal}

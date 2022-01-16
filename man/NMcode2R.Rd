@@ -19,3 +19,4 @@ Translate Nonmem $PK, $PRED sections or other Nonmem code to R code
 You probably want to run this on text obtained by using
     the NMreadSection function.
 }
+\keyword{internal}

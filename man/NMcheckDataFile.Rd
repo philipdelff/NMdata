@@ -37,3 +37,4 @@ Finds input data and checks compatibility with nonmem control
 stream and runs NMcheckData. Don't call this function directly -
 use the file argument in NMcheckData instead.
 }
+\keyword{internal}

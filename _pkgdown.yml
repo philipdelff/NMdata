@@ -8,8 +8,8 @@ template:
 
 navbar:
   structure:
-    left:  [home, articles, functions, news]
-    right: [github]
+    left:  [home, articles, cheatsheet, reference, news, github]
+    right: []
   components:
     home:
       title: Efficient data preparation, consistency-checking and post-processing in PK/PD modeling
@@ -26,7 +26,7 @@ navbar:
         href: articles/DataPrepare.html
       - text: "FAQ"
         href: articles/NMdata-FAQ.html
-functions:
+reference:
       - title: "Configuration"
         desc: "Configure NMdata behaviour"
         contents:
@@ -76,6 +76,12 @@ functions:
           - NMreadSection
           - NMextractDataFile
           - NMextractText
+          - NMdataOperations
+      - title: "Misc"
+        desc: "Miscellaneous"
+        contents:
+          - summary.NMdata
+          - print.summary_NMdata
 news:
        text: News
        href: news/index.html
@@ -84,4 +90,4 @@ github:
        href: https://github.com/philipdelff/NMdata
 cheatsheet:
        text: CheatSheet
-       href: https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html
+       href: "https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html" 
