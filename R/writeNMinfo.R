@@ -7,6 +7,7 @@
 ##'     this will not work recursively.
 ##' @param byRef Should always be TRUE.
 ##' @return The data with meta data attached
+##' @keywords internal
 
 ## do not export
 

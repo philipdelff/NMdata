@@ -17,15 +17,6 @@ library(tibble)
 NMdataConf(check.time=FALSE)
 NMscanData <- function(x,...)NMdata::NMscanData(file.path(system.file(paste0("examples/nonmem/",x), package="NMdata")),...)
 
-## res1.dt %>%
-##     filter(ID==135&EVID==0) %>%
-##     ggplot(aes(TIME))+
-##     geom_point(aes(y=DV,colour=flag))+
-##     geom_line(aes(y=PRED))+
-##     labs(y="Concentration (unit)",subtitle=unique(res1.dt$model))+
-##     theme_bw()
-
-
 ```
 
 # NMdata<a href='https://philipdelff.github.io/NMdata/'><img src='man/figures/logo.png' align="right" height="120" /></a>
@@ -43,7 +34,7 @@ decision-making in several steps of drug development. However, the leg work in p
 
 The NMdata objective: *Automate the book
 keeping and allow more time for actual modeling*
-Preparing data sets - and if you use Nonmem, reading the results data - can be tedious, and mistakes can lead to hours of
+Preparing data sets - and if you use NONMEM, reading the results data - can be tedious, and mistakes can lead to hours of
 frustration. NMdata provides useful tools (including automated
 checks) for these trivial tasks. 
 
@@ -55,10 +46,12 @@ colleague who worked on the project before you) do things.
 
 The best place to browse information about the package is
 [here](https://philipdelff.github.io/NMdata/). The quickest way in is
-probably the
-[Cheatsheet](https://philipdelff.github.io/NMdata/articles/NMdata-cheat.html). All
-documentation is of course included in the package itself too.
+the the
+[Cheatsheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html). 
 
+<!-- ![Cheatsheet](man/figures/cheatsheet_icon_0010.png){width="15%"} -->
+<!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html) -->
+<a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html"><img src="man/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"/></a>
 
 ## Prepare, check, and export PK/PD data 
 On the data-generation side, functionality is provided for
@@ -70,16 +63,16 @@ for ensuring readability in NONMEM, and ensuring traceability of
 datasets back to data generation scripts. 
 
 ## Check data as read by NONMEM
-Finally, the `NMcheckData`
+The `NMcheckData`
 function will do an extensive and fully automated set of checks of the
 data before you run NONMEM. And did NONMEM not behave? `NMcheckData`
 can debug the data _as seen by NONMEM_. That's right - it has never
 been easier to find data bugs.
 
-## Automated and general reader of Nonmem results data
-Reading the resulting data from Nonmem can require a few
+## Automated and general reader of NONMEM results data
+Reading the resulting data from NONMEM can require a few
 manual steps. Especially because all modelers seem to do things a
-little differently. `NMscanData` can return all data output (`$TABLE`) from Nonmem combined, and if wanted with additional columns and rows in
+little differently. `NMscanData` can return all data output (`$TABLE`) from NONMEM combined, and if wanted with additional columns and rows in
 input data. It's as simple as
 ```{r,NMscanData-example1}
 res <- NMscanData("xgxr014.lst",recover.rows=TRUE)
@@ -111,7 +104,7 @@ NMscanData is very general, and should work with all kinds of models,
 and all kinds of other software and configurations. Take a look at
 [this
 vignette](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
-for more info on the Nonmem data reader. Then you will learn how to
+for more info on the NONMEM data reader. Then you will learn how to
 access the meta data that will allow you to trace every step that was
 taken combining the data and the many checks that were done along the
 way too.

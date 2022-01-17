@@ -23,3 +23,4 @@ data with column names translated as specified by nonmem
 \description{
 translate the column names according to the $INPUT section of a control stream
 }
+\keyword{internal}

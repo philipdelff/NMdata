@@ -16,6 +16,7 @@
 ##'     errors. Default is FALSE.
 ##' @details This is not bulletproof. Nested conditions are not supported altogether.
 ##' @return data with filters applied
+##' @keywords internal
 ##' @family Nonmem
 
 ## Don't export. This is only being used by NMscanInput at this point.

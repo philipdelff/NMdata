@@ -39,6 +39,11 @@ header-includes:
 
 ```
 
+<!-- Todo: -->
+<!-- merge.by.row=F -->
+<!-- better explanation for flagsAssign -->
+
+
 ```{r, include = FALSE}
 ##knitr::opts_chunk$set(dev = "cairo_pdf")
 knitr::opts_chunk$set(
@@ -56,6 +61,9 @@ library(NMdata)
 NMdataConf(as.fun="data.table"
           ,check.time=F)
 
+library(ggplot2)
+theme_set(theme_bw()+theme(legend.position="bottom"))
+
 ## this change data.table syntax. I think we can do without.
 ## knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 
@@ -64,7 +72,7 @@ pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 covs <- unique(pk[,.(ID,WEIGHTB)])
 pk[,WEIGHTB:=NULL]
 set.seed(1)
-covs2 <- covs[,.(ID,cov2=sample(c("caucasian","black"),size=.N,replace=T))]
+covs2 <- covs[,.(ID,race=sample(c("caucasian","black"),size=.N,replace=T))]
 
 ```
 
@@ -91,6 +99,11 @@ intented to provide an overview and remind of command names. Please
 refer to other vignettes for more details on specefic topics and
 individual manual pages for details on the functions.
 
+The order of the contents loosely follows a workflow example (except for
+the configuration part). The steps can be applied in any order and
+independently from each other.
+
+
 ### Get started
 ```{r,eval=FALSE}
 install.packages("NMdata")
@@ -99,7 +112,7 @@ library(NMdata)
 
 
 ### Data preparation
-In building the data set, key steps are stacking data sets (like doses, samples, and simulation records) and adding additional information such as covariates. We often use `rbind` and merge or join operations for these steps. `NMdata` helps explore how to do these steps and ensure the results are as expected.
+We have read some source data files and need to combine them into one data set for NONMEM. Key steps are stacking data sets (like doses, samples, and simulation records) and adding additional information such as covariates. We often use `rbind` and merge or join operations for these steps. NMdata helps explore how to do these steps and ensure that merge/join results are as expected.
 
 <!-- `dims` - compare dimensions of multiple data sets -->
 <!-- ```{r} -->
@@ -114,31 +127,33 @@ compareCols(covs,covs2)
 Use the `cols.wanted` argument for the overview to especially focus on the columns you need in your final data set. 
 
 
-`renameByContents` - Keep track of what columns are compatible with Nonmem by renaming those that aren't. Rename columns dependent on whether Nonmem cannot interpret as numeric:
+`mergeCheck(x1,x2,...)` - Merges data and only accept results if all that happened was that columns from `x2` were added to `x1`. Row order of `x1` is retained. Arguments are passed to data.table which does the actual merge. This completely automates the necessary checks when say merging covariates onto data.
+
+```{r}
+pk2 <- mergeCheck(pk,covs2,by="ID")
+```
+We did not get an error from `mergeCheck` so we know that the rows in `pk2` are exactly identical to those in `pk`, except the addition of a column called `cov2`. If rows duplicate or disappear `mergeCheck` does a good job telling you where in data to address the issues. 
+
+`renameByContents` - Keep track of what columns are compatible with NONMEM by renaming columns accordingly. `NMisNumeric` evaluates whether NONMEM can interpret contents as numeric (different from `is.numeric`):
 ```{r,eval=FALSE}
-## Append an "N" to columns that NONMEM can read (as numeric)
+## Example 1: Append an "N" to columns that NONMEM _can_ read (as numeric)
 pk <- renameByContents(data=pk,
                        fun.test = NMisNumeric,
                        fun.rename = function(x)paste0(x,"N"))
-## lowercase names of columns that NONMEM cannot read as numeric
+## Example 2: lowercase names of columns that NONMEM _cannot_ read
 pk <- renameByContents(data=pk,
                        fun.test = NMisNumeric,
                        fun.rename = tolower,
                        invert.test = TRUE)
 ```
 
-`mergeCheck(x1,x2,...)` - Merges data and only accept results if all that happened was that columns from `x1` were added to `x1`. Row order of `x1` is retained. Arguments are passed to data.table which does the actual merge. This automates the checks we need to do after say merging covariates onto data.
 
-```{r}
-pk2 <- mergeCheck(pk,covs2,by="ID")
-```
-We did not get an error from `mergeCheck` so we know that the rows in `pk2` are exactly identical to those in `pk`, except the addition of a column called `cov2`.
+`flagsAssign` - Sequentially assign exclusion flags to a dataset based
+on a set of user-specified exclusion criteria.
 
-`flagsAssign` - Assign exclusion flags to a dataset based on specified table
+`flagsCount` - Create an overview of number of retained and discarded datapoints.
 
-`flagsCount` - Create an overview of number of retained and discarded datapoints
-
-This is a simple example where we use only two exclusion flags. If time is negative, we assign exclusion flag `FLAG=100`. If (time is non-negative and) `BLQ==1` we assign `FLAG=10`. If none of these conditions are met, `FLAG=0`, and the row will be included in the analysis. `fread` is just a way to write the table row-wise for readability.
+Example with only two exclusion flags applied to samples. If time is negative, we assign exclusion flag `FLAG=100`. If (time is non-negative and) `BLQ==1` we assign `FLAG=10`. If none of these conditions are met, `FLAG=0`, and the row is to be included in the analysis. (`fread` is just for row-wise readability.)
 
 ```{r,include=FALSE}
 pk[,(cc(FLAG,flag)):=NULL]
@@ -148,20 +163,19 @@ pk[,(cc(FLAG,flag)):=NULL]
 dt.flags <- fread(text="FLAG,flag,condition
 10,Below LLOQ,BLQ==1
 100,Negative time,TIME<0")
-
 pk <- flagsAssign(pk,tab.flags=dt.flags,subset.data="EVID==0")
 pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing")
 flagsCount(pk[EVID==0],tab.flags=dt.flags)[,.( flag, N.left, Nobs.left, N.discard, Nobs.discard)]
 ```
+You may also want to apply a couple of exclusion criteria to dose records (for missing time, zero or missing amounts?) by modifying the steps above and applying to `EVID==1`.
 
 `NMorderColumns` - Standardize column order. Columns that can be read
-by NONMEM are prioritized towards left.
+by NONMEM are prioritized. Row identifier and standard column names have special priorities.
 ```{r,include=FALSE}
 pk <- NMorderColumns(pk)
 ```
 
-`NMcheckData` - Extensive data checks for NONMEM compatibility and common issues.
-
+`NMcheckData` - Extensive data checks for NONMEM compatibility and common issues. Should be run before saving data but see the "Debuging..." section for example on output.
 
 :::
 
@@ -179,7 +193,7 @@ text.nm <- NMwriteData(pk,file="derived/pkdata.csv",script="NMdata-cheat.Rmd",ar
 NMwriteData(pk,file="derived/pkdata.csv",script="NMdata-cheat.Rmd",args.stamp=list(Description="PK data for the NMdata Cheatsheet"),args.rds=list(version=2))
 ```
 
-`NMwriteSection` - Replace sections of a nonmem control stream. `NMwriteSection` can use the text generated by `NMwriteData` to update NONMEM runs to match the newly generated input data. Update INPUT section (and not DATA) for all control streams in directory "nonmem" which file names start with "run1" and end in ".mod" (say "run101.mod" to "run199.mod"):
+`NMwriteSection` - Replace sections of a NONMEM control stream. Can use the text generated by `NMwriteData` to update NONMEM runs to match the newly generated input data. Update INPUT section (and not DATA) for all control streams in directory "nonmem" which file names start with "run1" and end in ".mod" (say "run101.mod" to "run199.mod"):
 ```{r,eval=FALSE}
 NMwriteSection(dir="nonmem",
                file.pattern="run1.*\\.mod",
@@ -187,10 +201,10 @@ NMwriteSection(dir="nonmem",
 ```
 `NMwriteSection` has the argument `data.file` to further limit the scope of files to update based on what data file the control streams use. It only makes sense to use the auto-generated text for control streams that use this data set.
 
-The text for NONMEM can be generated without saving data using `NMgenText`. You can tailor the generation of the text to copy `(DV=CONC)`, drop `(COL=DROP)`, rename (`DV` instead of `CONC`) and more.
+The text for NONMEM is generated by `NMgenText`. Use that to generate alternative `$INPUT` sections (e.g. for models that use other columns as dependent variables) without saving data again. You can tailor the generation of the text to copy `(DV=CONC)`, drop `(COL=DROP)`, rename (`DV` instead of `CONC`) and more.
 
 ### Debugging input data (and control stream)
-`NMcheckData` was mentioned under "Data preparation" because it can check a data set before it's written to file. However, it can also be on a path to a control stream, in which case it checks column names in INPUT section against data and then runs a full check of the data set as read by NONMEM (according to column names in $INPUT and ACCEPT/IGNORE statements in $DATA). We suppress the default print to terminal (`quiet=T`) and provide selected parts of the results here.
+`NMcheckData` can check a `data.frame`. However, it can also be run on a path to a control stream, in which case it provides a full check of how data is read by NONMEM and then checks the data _as read by NONMEM_. It checks column names in INPUT section against data and then runs a full check of the data set as read by NONMEM (according to column names in $INPUT and ACCEPT/IGNORE statements in $DATA). We suppress the default print to terminal (`quiet=T`) and provide selected parts of the results here.
 
 ```{r}
 res.debug <- NMcheckData(file="nonmem/run201.mod",quiet=T)
@@ -214,15 +228,14 @@ If you are preparing a data set, run `NMcheckData` directly on the data (using t
 :::
 ::: {class="column-container__column"}
 
-### Retrieve Nonmem results
-`NMscanData` - Automatically find Nonmem input and output tables and organize data. By default, available column names are taken from the NONMEM control stream. Additional column names (columns not read by NONMEM) are taken from input data file.
+### Retrieve NONMEM results
+`NMscanData` - Automatically find NONMEM input and output tables and organize data. By default, available column names are taken from the NONMEM control stream. Additional column names (columns not read by NONMEM) are taken from input data file.
 ```{r,include=F}
 ##NMscanData <- function(x)NMdata::NMscanData(file.path(system.file(paste0("examples/nonmem/",x), package="NMdata")))
 ## res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"))
 ```
 ```{r}
 res1 <- NMscanData("nonmem/run101.lst")
-class(res1)
 ```
 ```{r,include=F}
 ## rm(NMscanData)
@@ -230,34 +243,23 @@ class(res1)
 
 The following plot serves to illustrate that the obtained data set combines output tables (`PRED` is from a $TABLE statement) with input data (exclusion flags are represented as character variables). Moreover, the "below LLOQ" samples are included in the result even though they were not in the analysis (excluded using `IGNORE` in control stream, recovered in `NMscanData` using `recover.rows=TRUE`)
 ```{r}
+## Recover rows that were not read by NONMEM (due to ACCEPT/IGNORE)
+res2 <- NMscanData("nonmem/run101.lst",recover.rows=TRUE)
+```
+```{r}
 library(ggplot2)
-## tell NMdata functions to return data.tables
-NMdataConf(as.fun="data.table")
-res1.dt <- NMscanData("nonmem/run101.lst",recover.rows=TRUE)
-ggplot(res1.dt[ID==135&EVID==0],aes(TIME))+
+res2.plot <- subset(res2,ID==135&EVID==0)
+ggplot(res2.plot,aes(TIME))+
     geom_point(aes(y=DV,colour=flag))+
     geom_line(aes(y=PRED))+
-    labs(y="Concentration (unit)",subtitle=unique(res1.dt$model))
+    labs(y="Concentration (unit)",subtitle=unique(res2$model))
 ```
 
 Read the messages from `NMwriteData` and `NMscanData` carefully and notice that an rds file was written and read. This bypasses the loss of information caused by writing and reading csv, and so we have kept factor levels from the input data we generated:
 
 ```{r}
-levels(res1.dt$trtact)
+levels(res1$trtact)
 ```
-
-
-#### Additional functions to read (NONMEM) data files
-`NMscanTables` - Find and read all output data tables based on a NONMEM control stream file. A list of tables is returned.
-
-`NMreadTab` - Read an output table file from NONMEM based on path to output data file
-
-`NMscanInput` - Read input data based on NONMEM control stream and optionally translate column names according to the `$INPUT` NONMEM section
-
-`NMreadCsv` - Read input data formatted for nonmem
-
-
-
 :::
 
 ::: {class="column-container__column"}
@@ -292,20 +294,29 @@ an NMdata funtion.
 
 A list of the available elements:
 ```{r}
-names(NMinfo(res1.dt))
+names(NMinfo(res1))
 ```
 The information recorded during saving of the input data:
 ```{r}
-NMinfo(res1.dt,"dataCreate")
+NMinfo(res1,"dataCreate")
 ```
 A full list of columns in all columns in output and input data is included. The source data file and the column number in the result (`COLNUM`) are listed.
 ```{r}
-NMinfo(res1.dt,"columns")[1:8]
+NMinfo(res1,"columns")[1:8]
 ```
 We saw earlier that we got "30+2" columns back. We see that the additional two were added by NMscanData (`source`). `DV` was already included from another table so the redundant `DV` column is omitted.
 ```{r}
-NMinfo(res1.dt,"columns")[30:33]
+NMinfo(res1,"columns")[30:33]
 ```
+
+### Additional functions to read (NONMEM) data files
+`NMscanTables` - Find and read all output data tables based on a NONMEM control stream file. A list of tables is returned.
+
+`NMreadTab` - Read an output table file from NONMEM based on path to output data file
+
+`NMscanInput` - Read input data based on NONMEM control stream and optionally translate column names according to the `$INPUT` NONMEM section
+
+`NMreadCsv` - Read input data formatted for NONMEM
 
 ::: 
 ::::

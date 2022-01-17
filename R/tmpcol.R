@@ -11,6 +11,7 @@
 ##' @return A character string
 ##' @seealso make.names
 ##' @family DataCreate
+##' @keywords internal
 
 ### export from pmxtricks. It's not a Nonmem or pmx data specific thing.
 

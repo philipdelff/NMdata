@@ -80,16 +80,10 @@ summary.NMdata <- function(object,...){
 }
 
 
-### fix nid. If ID is not in output tables, the number of ID's are
-### missing even though we know all ID's that are available in
-### output are available in all output tables. So if both input
-### and output are used, we overwrite the number of ID's by the
-### number we find as nmout in result.
-
 
 ##' print method for NMdata summaries
 ##' @param x The summary object to be printed. See ?summary.NMdata
-##' @param ... Arguments passed to print.
+##' @param ... Arguments passed to other print methods.
 ##'
 ##' @import data.table
 ##' @export

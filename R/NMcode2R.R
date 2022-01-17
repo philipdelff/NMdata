@@ -4,6 +4,7 @@
 ##' @details You probably want to run this on text obtained by using
 ##'     the NMreadSection function.
 ##' @return R code as text
+##' @keywords internal
 
 ### Do not export. For an exported function, see the pmxtricks package.
 

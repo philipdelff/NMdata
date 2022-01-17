@@ -47,3 +47,4 @@ Other Nonmem:
 \code{\link{NMwriteSection}()}
 }
 \concept{Nonmem}
+\keyword{internal}

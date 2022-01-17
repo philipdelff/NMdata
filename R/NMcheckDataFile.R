@@ -12,6 +12,7 @@
 ##' @param file.mod How to find the input control stream if you are using the output control stream.
 ##' @param as.fun The function to run results through before returning them.
 ##' @param ... passed to NMcheckData
+##' @keywords internal
 
 ### Don't export. NMcheckData will be the way in.
 

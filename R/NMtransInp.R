@@ -9,6 +9,7 @@
 ##'     control stream. Class same as for 'data' argument. Class
 ##'     data.table.
 ##' @import data.table
+##' @keywords internal
 
 ## don't export. An internal function used by NMscanInput. 
 

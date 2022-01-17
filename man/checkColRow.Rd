@@ -20,3 +20,4 @@ In order to safely merge by a unique row identifier,
     output. checkColRow helps checking that based on the control
     stream.
 }
+\keyword{internal}
