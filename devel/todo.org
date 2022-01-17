@@ -133,6 +133,11 @@ helpful. Only list other columns than the scope.
      the merge is done.
 **** DONE Test the check for row duplications
 *** NMcheckData
+**** TODO cols.num split on other columns
+Many variables are only expected to exist for say samples. Example:
+LLOQ can very well be missing for doses. And the check may depend on
+study, compound etc too. So We need to split or subset data for the
+check. Maybe check in a subset and expect NA in the rest?
 **** TODO [#B] Checks for presense of II and ADDL don't report dependence
      If one is present, presence of the other is tested. If not found,
      it says "II Column not found". Would be helpful to know that it
