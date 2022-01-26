@@ -5,7 +5,10 @@ template:
     image:
       src: man/figures/apple-touch-icon-180x180.png
       alt: "Efficient data preparation, consistency-checking and post-processing in PK/PD modeling"
-
+  includes:
+    after_body: >
+      <script data-goatcounter="https://nmdata.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 navbar:
   structure:
     left:  [home, articles, cheatsheet, reference, news, github]
