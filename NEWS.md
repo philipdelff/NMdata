@@ -1,3 +1,8 @@
+# NMdata 0.0.11
+
+## Bugfixes
+* NMwriteData now respects NMdataConf()$args.fwrite
+
 # NMdata 0.0.10
 * NMcheckData is a new function that checks data for Nonmem
   compatibility in numerous ways. It returns a list of all findings

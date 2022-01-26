@@ -32,9 +32,11 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
+*** TODO NMasNumeric?
+Error if not convertible and not NA or ""? "b" should be an error right?
 *** TODO [#B] List missing elements
 For specific columns, look for missing elements (NA, "", length(x)==0
-in case of lists?). Tabulate and list.
+in case of lists?). Tabulate and list. Align reporting with NMcheckData?
 *** TODO [#B] NMsummarizeData Summarize data with nonmem in mind. 
 **** Number of doses and obs per subj
 **** Dist of DV
@@ -125,8 +127,21 @@ helpful. Only list other columns than the scope.
      data.tables.
 **** DONE Bug for diff.only=FALSE
 *** egdt
+**** TODO [#A] BUG the tmp by col has to be removed before reporting dims
 **** DONE Report dims(df1,df2,result) unless quiet
 *** mergeCheck
+**** TODO Add at least number of NA's to message about what was added
+Probably add class too.
+Number of unique combinations of by? This seems too advanced
+4|3|2 -> 4
+Numer of NA's in right and in result
+**** TODO [#A] Warning if NA in by columns
+**** TODO merge in try
+If the merge actually fails, we want to prepend something to the
+data.table::merge error.
+**** TODO second merge in try
+If first merge isn't accepte, the second merge can fail. Or is it
+because by and by.x+by.y are handled differently the second time? Clen this.
 **** TODO [#B] Check that by or by.x+by.y were supplied
 **** TODO [#B] derive by.x and by.y from by and by.x+by.y and then use by.x and by.y
      That will make the code clearer because we will know exactly how
@@ -162,6 +177,7 @@ numeric should be using
 **** TODO [#B] Requirements to DV for EVID==2 and EVID==3?
 **** DONE [#B] Add col.row to findings
 *** NMextractDataFile
+**** TODO Check whether NA's are coded with .'s
 **** DONE Add support for windows absolute paths
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
@@ -181,6 +197,8 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMscanInput
+**** TODO BUG tabs in column names?
+    REC\t  ID\t     TIME    TAD\t DOSE\t AMT\t RATE CMT  DV\t MDV\t EVID
 **** TODO [#B] Model path (mod/lst, whichever used) should be available in meta data
 **** TODO [#B] argument char.comment.inp
      User may write say # (input_data_debug.csv) in front of column
@@ -291,6 +309,9 @@ See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
 is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMwriteData
+**** DONE [#A] BUG NA's are not .
+     CLOSED: [2022-01-25 Tue 16:22]
+does fwrite use args.fwrite at all?
 **** DONE Separate generation of INPUT text into new function
      Called NMgenText
 **** DONE Bug in inclusion of filename in text

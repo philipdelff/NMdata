@@ -91,7 +91,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
 #### Section start: Process arguments ####
 
     if(missing(args.fwrite)) args.fwrite <- NULL
-    args.fread <- NMdataDecideOption("args.fwrite",args.fwrite)
+    args.fwrite <- NMdataDecideOption("args.fwrite",args.fwrite)
 
     stopifnot(is.data.frame(data)) 
     if(missing(file)||is.null(file)){
