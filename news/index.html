@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.10.902</span>
       </span>
     </div>
 
@@ -72,6 +72,15 @@
       <small>Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.0.11" id="nmdata-0011">NMdata 0.0.11<a class="anchor" aria-label="anchor" href="#nmdata-0011"></a></h2>
+<div class="section level3">
+<h3 id="bugfixes-0-0-11">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-0-11"></a></h3>
+<ul><li>NMwriteData now respects NMdataConf()$args.fwrite</li>
+<li>egdt was reporting one column too many in inputs (in terminal, not in results). Fixed.</li>
+<li>Column names in control stream $INPUT statements weren’t adjusted for possible tabulator characters. Fixed.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.10" id="nmdata-0010">NMdata 0.0.10<small>2022-01-06</small><a class="anchor" aria-label="anchor" href="#nmdata-0010"></a></h2>
 <ul><li><p>NMcheckData is a new function that checks data for Nonmem compatibility in numerous ways. It returns a list of all findings making it easy to identify the location of each issue in the data. See the man page of NMcheckData for a complete list of the checks that are done. The function does not modify data in any way, and it is a very simple and easy step to avoid many problems in Nonmem. NMcheckData can check a data object in R, and it can also check how a control stream reads data and then do all the checks. The latter provides an extensive check of potential issues related to data and getting it into NONMEM. Great for both debugging and QC.</p></li>
