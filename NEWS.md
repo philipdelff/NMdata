@@ -2,6 +2,10 @@
 
 ## Bugfixes
 * NMwriteData now respects NMdataConf()$args.fwrite
+* egdt was reporting one column too many
+  in inputs (in terminal, not in results). Fixed.
+* Column names in control stream $INPUT statements weren't adjusted
+  for possible tabulator characters. Fixed.
 
 # NMdata 0.0.10
 * NMcheckData is a new function that checks data for Nonmem

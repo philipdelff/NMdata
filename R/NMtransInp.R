@@ -14,7 +14,7 @@
 ## don't export. An internal function used by NMscanInput. 
 
 NMtransInp <- function(data,file,translate=TRUE){
-
+    
 
 
 
@@ -37,11 +37,13 @@ NMtransInp <- function(data,file,translate=TRUE){
     
     ## names can be separated by , or " " or both. So one , between alphanumerics is replaced by a single space
     lines <- gsub("([[:alnum:]]) *, *([[:alnum:]])","\\1 \\2",lines)
+    ## editors may include \t for a tidy view. Replace by space.
+    lines <- gsub("\t"," ",lines)
     ## get rid of redundant spaces
     line <- gsub(" +"," ",paste(lines,collapse=" "))
     line <- sub("^ ","",line)
     line <- sub(" $","",line)
-
+        
 ### nms is the names of columns as in nonmem control stream
     nms <- strsplit(line," ")[[1]]
     nms0 <- nms

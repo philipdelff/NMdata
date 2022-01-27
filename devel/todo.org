@@ -115,7 +115,6 @@ https://doi.org/10.1208/s12248-012-9387-9
 *** findCovs
 *** compareCols
 **** DONE [#A] Bug - overview of columns is given twice
-     CLOSED: [2022-01-26 Wed 20:00]
  compareCols(ex.001,ex.002,ex.005,diff.only=T) %>% print(topn=100)
 
 No, they werent. It was the print call. But one change was made. now quiet=T suppresses all the info, so in the example above, use quiet=T to print a subset with print(topn=...).
@@ -130,7 +129,7 @@ helpful. Only list other columns than the scope.
      data.tables.
 **** DONE Bug for diff.only=FALSE
 *** egdt
-**** TODO [#A] BUG the tmp by col has to be removed before reporting dims
+**** DONE [#A] BUG the tmp by col has to be removed before reporting dims
 **** DONE Report dims(df1,df2,result) unless quiet
 *** mergeCheck
 **** TODO Add at least number of NA's to message about what was added
@@ -154,7 +153,7 @@ because by and by.x+by.y are handled differently the second time? Clen this.
 **** TODO cols.num split on other columns
 Many variables are only expected to exist for say samples. Example:
 LLOQ can very well be missing for doses. And the check may depend on
-study, compound etc too. So We need to split or subset data for the
+study, compound etc too. So we need to split or subset data for the
 check. Maybe check in a subset and expect NA in the rest?
 **** TODO [#B] Checks for presense of II and ADDL don't report dependence
      If one is present, presence of the other is tested. If not found,
@@ -200,8 +199,10 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMscanInput
-**** TODO BUG tabs in column names?
+**** DONE BUG tabs in column names?
     REC\t  ID\t     TIME    TAD\t DOSE\t AMT\t RATE CMT  DV\t MDV\t EVID
+
+Included a gsub("\t"," ",lines)
 **** TODO [#B] Model path (mod/lst, whichever used) should be available in meta data
 **** TODO [#B] argument char.comment.inp
      User may write say # (input_data_debug.csv) in front of column
@@ -312,8 +313,7 @@ See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
 is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMwriteData
-**** DONE [#A] BUG NA's are not .
-     CLOSED: [2022-01-25 Tue 16:22]
+**** DONE BUG NA's are not .
 does fwrite use args.fwrite at all?
 **** DONE Separate generation of INPUT text into new function
      Called NMgenText
@@ -405,11 +405,9 @@ arguments. NMdata calls this "writtenTo".
 ***** Debug
 ***** Traceability
 **** DONE Flag example
-     CLOSED: [2022-01-02 Sun 22:57]
 *** Tests
 **** DONE Test NMdataConf(file.mod=identity)
 **** DONE [#B] NMscanData with copy in $INPUT
-     CLOSED: [2022-01-03 Mon 19:17]
      Especially, look at colnames.input
 *** Examples
 **** DONE renameByContents example
