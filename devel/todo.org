@@ -114,8 +114,11 @@ https://doi.org/10.1208/s12248-012-9387-9
 **** TODO [#B] test if a pseudonym was used. Give warning or msg if not
 *** findCovs
 *** compareCols
-**** TODO [#A] Bug - overview of columns is given twice
+**** DONE [#A] Bug - overview of columns is given twice
+     CLOSED: [2022-01-26 Wed 20:00]
  compareCols(ex.001,ex.002,ex.005,diff.only=T) %>% print(topn=100)
+
+No, they werent. It was the print call. But one change was made. now quiet=T suppresses all the info, so in the example above, use quiet=T to print a subset with print(topn=...).
 **** DONE [#B] scope argument
      This is called columns.wanted
 
