@@ -114,7 +114,7 @@ https://doi.org/10.1208/s12248-012-9387-9
 **** TODO [#B] test if a pseudonym was used. Give warning or msg if not
 *** findCovs
 *** compareCols
-**** DONE [#A] Bug - overview of columns is given twice
+**** DONE Bug - overview of columns is given twice
  compareCols(ex.001,ex.002,ex.005,diff.only=T) %>% print(topn=100)
 
 No, they werent. It was the print call. But one change was made. now quiet=T suppresses all the info, so in the example above, use quiet=T to print a subset with print(topn=...).
@@ -360,8 +360,7 @@ It's fairly easy to implement. Paste in front of the expression.use column.
      Or is FLAG==0 reserved?
 use flagsAssign(data,subset.data="EVID==1",flagc.0="Dosing")
 *** flagsCount
-**** TODO [#A] bug in 0.0.9: Nobs.disc.cum ignores by
-Test if the bug is still not fixed
+**** DONE bug in 0.0.9: Nobs.disc.cum ignores by
 **** DONE OK respect decreasing or increasing order.flags
 **** DONE add .cum of N and Nobs
 **** DONE add argument to name "all available data" in table. 
@@ -458,3 +457,6 @@ exported so it's not very important.
 *** DONE flagsAssign cannot handle missing subset
 
 #+TODO: TODO(t) WAIT(w) DONE(d)
+:PROPERTIES:
+:LOGGING: nil
+  :END:

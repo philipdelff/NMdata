@@ -211,7 +211,6 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     allres0 <- rbindlist(allres.l)
 
 ### All data
-
     FLAG.alldata <- Inf
     if(flags.increasing){
         FLAG.alldata <- -FLAG.alldata
@@ -262,10 +261,10 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
 
     allres[,N.discard.0:=N.discard]
     allres[is.na(N.discard),N.discard.0:=0]
-    allres[,N.disc.cum:=cumsum(N.discard.0)]
+    allres[,N.disc.cum:=cumsum(N.discard.0),by=by]
     allres[,Nobs.discard.0:=Nobs.discard]
     allres[is.na(Nobs.discard),Nobs.discard.0:=0]
-    allres[,Nobs.disc.cum:=cumsum(Nobs.discard.0)]
+    allres[,Nobs.disc.cum:=cumsum(Nobs.discard.0),by=by]
 
 ### select columns to report, depending on argument
     allres[,`:=`(FLAG=NULL
