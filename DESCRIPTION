@@ -1,7 +1,7 @@
 Package: NMdata
 Type: Package
 Title: Preparation, Checking and Post-Processing Data for PK/PD Modeling
-Version: 0.0.10.902
+Version: 0.0.10.904
 Authors@R: person("Philip", "Delff", email = "philip@delff.dk",
                   role = c("aut", "cre"))
 Maintainer: Philip Delff <philip@delff.dk>
@@ -14,6 +14,8 @@ Imports: data.table
 Suggests: 
     testthat,
     knitr,
+    formatR,
+    mime,
     rmarkdown,
     ggplot2,
     tibble,

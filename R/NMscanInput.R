@@ -36,6 +36,9 @@
 ##'     interpreted by Nonmem (in $INPUT). If data file contains more
 ##'     columns than mentioned in $INPUT, these will be named as in
 ##'     data file (if data file contains named variables).
+##' @param recover.cols recover columns that were not used in the
+##'     NONMEM control stream? Default is TRUE. Can only be negtive
+##'     when translate=FALSE.
 ##' @param details If TRUE, metadata is added to output. In this case,
 ##'     you get a list. Typically, this is mostly useful if
 ##'     programming up functions which behavior must depend on
@@ -74,7 +77,7 @@
 ##' @export
 
 NMscanInput <- function(file, use.rds, file.mod,
-                        dir.data=NULL, applyFilters=FALSE, translate=TRUE,
+                        dir.data=NULL, applyFilters=FALSE, translate=TRUE,recover.cols=TRUE,
                         details=TRUE, col.id="ID", col.row, quiet, args.fread,
                         invert=FALSE,
                         as.fun) {
@@ -90,10 +93,11 @@ NMscanInput <- function(file, use.rds, file.mod,
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
     
-### the lst file only contains the name of the data file, not the path to it. So we need to find the .mod instead.
+### the lst file only contains the name of the data file, not the path
+### to it. So we need to find the .mod instead.
 
     if(missing(file)) {
-        stop("file is needed. If you want to use input control stream only, use that as file and ignore the file.mod argument.")
+        messageWrap("file is needed. If you want to use input control stream only, use that as file and ignore the file.mod argument.",fun.msg=stop)
     }
     if(!file.exists(file)){
         stop("file has to be a valid path to an existing file.")
@@ -167,7 +171,7 @@ NMscanInput <- function(file, use.rds, file.mod,
 
     
 ### cnames.input is the names of columns as in input data file
-    data.input <- NMtransInp(data.input,file,translate=translate)    
+    data.input <- NMtransInp(data.input,file,translate=translate,recover.cols=recover.cols)
     
     col.id.inp <- col.id
     if(translate){
@@ -209,9 +213,6 @@ NMscanInput <- function(file, use.rds, file.mod,
         if(col.id%in%NMinfoDT(data.input,"input.colnames")[,result]) {
             meta$tables[,nid:=data.input.0[,uniqueN(get(col.id.inp))]]
         }
-
-        ## meta$NMinfo.input <- nminfo.input.0
-        ## meta$colnames <- dt.colnames
 
         data.input <- as.fun(data.input)
         writeNMinfo(data.input,meta,byRef=TRUE)

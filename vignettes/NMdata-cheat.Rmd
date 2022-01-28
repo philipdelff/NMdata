@@ -78,9 +78,7 @@ covs2 <- covs[,.(ID,race=sample(c("caucasian","black"),size=.N,replace=T))]
 
 <!-- The NMdata logo -->
 ```{r, echo=FALSE}
-htmltools::img(src = knitr::image_uri(## file.path(R.home("pkgdown"), "favicon", "apple-touch-icon-152x152.png")),
-                                ## system.file("pkgdown/favicon/apple-touch-icon-152x152.png",package="NMdata")),
-                                "apple-touch-icon-180x180.png"),
+htmltools::img(src = knitr::image_uri("apple-touch-icon-180x180.png"),
                alt = 'logo', 
                style = 'position:absolute; top:15px; right:70px; padding:0px; width:150px')
 ```

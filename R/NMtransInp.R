@@ -5,6 +5,9 @@
 ##' @param translate logical. Do translation according to Nonmem code
 ##'     or not? If not, an overview of column names in data and in
 ##'     Nonmem code is still returned with the data.
+##' @param recover.cols recover columns that were not used in the
+##'     NONMEM control stream? Default is TRUE. Can only be negtive
+##'     when translate=FALSE.
 ##' @return data with column names translated as specified by nonmem
 ##'     control stream. Class same as for 'data' argument. Class
 ##'     data.table.
@@ -13,7 +16,7 @@
 
 ## don't export. An internal function used by NMscanInput. 
 
-NMtransInp <- function(data,file,translate=TRUE){
+NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
     
 
 
@@ -28,6 +31,8 @@ NMtransInp <- function(data,file,translate=TRUE){
 
     stopifnot(is.data.table(data))
 
+    if( !translate && !recover.cols ) {messageWrap("recover.rows=FALSE is only allowed when translate=TRUE.",fun.msg=stop)}
+    
     ## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    
     lines <- NMreadSection(file,section="INPUT",keepName=FALSE,keepComments=FALSE,cleanSpaces=TRUE)
     if(is.null(lines)) {
@@ -72,11 +77,12 @@ NMtransInp <- function(data,file,translate=TRUE){
             nms <- nms[1:length(cnames.input)]
             messageWrap("More column names specified in Nonmem $INPUT than found in data file. The additional names have been disregarded.",fun.msg=warning)
         }
+        if(!recover.cols) data <- data[,1:length(nms)]
         
         cnames.input[1:length(nms)] <- nms
         colnames(data) <- cnames.input
-
-        ## add the pseudonyms
+        
+        ## add the synononyms
         if(!is.null(renamed.from)){
             data <- cbind(data,
                           setnames(data[,c(renamed.to),with=FALSE],old=renamed.to,new=renamed.from)
@@ -88,7 +94,6 @@ NMtransInp <- function(data,file,translate=TRUE){
             nms2 <- cnames.input[-(1:length(nms))]
             if(any(duplicated(nms))){
                 messageWrap(paste("Duplicated variable names declared in nonmem $INPUT section. Only first of the columns will be used:",paste(nms[duplicated(nms)],collapse=", ")),fun.msg=warning)
-                ## nms.u <- unique(nms)
             } 
             if(length(nms2)&&any(duplicated(nms2))){
                 messageWrap(paste("Duplicated variable names detected in input data not processed by Nonmem. Only first of the columns will be used:",paste(nms2[duplicated(nms2)],collapse=", ")),fun.msg=warning)
