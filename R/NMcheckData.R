@@ -473,7 +473,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 ### Others that: If column present, must be numeric, and values must be non-NA. Remember eg DV, CMT and AMT can be NA.
     cols.num.all <- c( col.time,"EVID","ID","MDV",
                       cols.num,covs,names(covs.occ),as.character(unlist(covs.occ)))
-    
+    cols.num.all <- unique(cols.num.all)
 ### check for missing in cols.num.all
     
     for(col in cols.num.all){
