@@ -1,5 +1,8 @@
 # NMdata 0.0.11
 
+* NMscanInput has the new argument recover.cols. Default is TRUE - use
+  FALSE to not include columns that NONMEM did not read.
+
 ## Bugfixes
 * NMwriteData now respects NMdataConf()$args.fwrite
 * flagsCount was not respecting by columns. Fixed.

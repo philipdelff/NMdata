@@ -32,7 +32,7 @@ test_that("basic",{
 
     fileRef <- "testReference/flagsCount_1.rds"
     expect_equal_to_reference(tab.count,fileRef)
-  
+    
 })
 
 
@@ -155,14 +155,18 @@ test_that("Writing data - data.frames",{
 
 test_that("count by",{
 
-        fileRef <- "testReference/flagsCount_6.rds"
+    fileRef <- "testReference/flagsCount_6.rds"
 
     pk <- readRDS("testReference/flagsAssign_1.rds")
+
+    dt.flags <- fread(text="FLAG,flag,condition
+10,Below LLOQ,EVID==0&BLQ==1
+100,Negative time,EVID==0&TIME<0")
 
 ### and count the two different exclusions
     ## two obs are discarded due to negative time
     tab.count <- flagsCount(pk[EVID==0],dt.flags,col.flagn="FLAG",col.flagc="flag",by="TRTACT")
 
     expect_equal_to_reference(tab.count,fileRef)
-  
+    
 })
