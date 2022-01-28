@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.10.902</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.10.904</span>
       </span>
     </div>
 
@@ -74,9 +74,11 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.11" id="nmdata-0011">NMdata 0.0.11<a class="anchor" aria-label="anchor" href="#nmdata-0011"></a></h2>
-<div class="section level3">
+<ul><li>NMscanInput has the new argument recover.cols. Default is TRUE - use FALSE to not include columns that NONMEM did not read.</li>
+</ul><div class="section level3">
 <h3 id="bugfixes-0-0-11">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-0-11"></a></h3>
 <ul><li>NMwriteData now respects NMdataConf()$args.fwrite</li>
+<li>flagsCount was not respecting by columns. Fixed.</li>
 <li>egdt was reporting one column too many in inputs (in terminal, not in results). Fixed.</li>
 <li>Column names in control stream $INPUT statements weren’t adjusted for possible tabulator characters. Fixed.</li>
 </ul></div>

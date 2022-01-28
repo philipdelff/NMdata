@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.10.902</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.10.904</span>
       </span>
     </div>
 
@@ -78,7 +78,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMtransInp</span><span class="op">(</span><span class="va">data</span>, <span class="va">file</span>, translate <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMtransInp</span><span class="op">(</span><span class="va">data</span>, <span class="va">file</span>, translate <span class="op">=</span> <span class="cn">TRUE</span>, recover.cols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -91,6 +91,10 @@
 <dd><p>logical. Do translation according to Nonmem code
 or not? If not, an overview of column names in data and in
 Nonmem code is still returned with the data.</p></dd>
+<dt>recover.cols</dt>
+<dd><p>recover columns that were not used in the
+NONMEM control stream? Default is TRUE. Can only be negtive
+when translate=FALSE.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

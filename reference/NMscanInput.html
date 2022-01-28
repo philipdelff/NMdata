@@ -20,7 +20,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.10.902</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.10.904</span>
       </span>
     </div>
 
@@ -91,6 +91,7 @@
   dir.data <span class="op">=</span> <span class="cn">NULL</span>,
   applyFilters <span class="op">=</span> <span class="cn">FALSE</span>,
   translate <span class="op">=</span> <span class="cn">TRUE</span>,
+  recover.cols <span class="op">=</span> <span class="cn">TRUE</span>,
   details <span class="op">=</span> <span class="cn">TRUE</span>,
   col.id <span class="op">=</span> <span class="st">"ID"</span>,
   <span class="va">col.row</span>,
@@ -141,6 +142,10 @@ returning the data.</p></dd>
 interpreted by Nonmem (in $INPUT). If data file contains more
 columns than mentioned in $INPUT, these will be named as in
 data file (if data file contains named variables).</p></dd>
+<dt>recover.cols</dt>
+<dd><p>recover columns that were not used in the
+NONMEM control stream? Default is TRUE. Can only be negtive
+when translate=FALSE.</p></dd>
 <dt>details</dt>
 <dd><p>If TRUE, metadata is added to output. In this case,
 you get a list. Typically, this is mostly useful if
