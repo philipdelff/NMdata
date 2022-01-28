@@ -32,9 +32,9 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
-*** TODO NMasNumeric?
+*** TODO [#B] NMasNumeric?
 Error if not convertible and not NA or ""? "b" should be an error right?
-*** TODO [#B] List missing elements
+*** TODO [#A] List missing elements
 For specific columns, look for missing elements (NA, "", length(x)==0
 in case of lists?). Tabulate and list. Align reporting with NMcheckData?
 *** TODO [#B] NMsummarizeData Summarize data with nonmem in mind. 
@@ -78,7 +78,7 @@ Implement in same style as checks of cols.num
 ***** A field can't contain more than 24 characters
 *** DONE cc - create character vector function
 *** Dosing functions
-**** TODO [#B] NMcreateDoses Generate dosing schedule with loading, ADDL etc
+**** TODO [#A] NMcreateDoses Generate dosing schedule with loading, ADDL etc
      This is available as a suitcase function
 **** TODO [#B] Function for complex dosing regimens
 **** TODO [#B] Function to unfold ADDL/II doses to multiple rows
@@ -111,14 +111,16 @@ https://doi.org/10.1208/s12248-012-9387-9
 ** Function improvements
 *** NMgenText
 **** TODO [#B] checks: duplicate column names
-**** TODO [#B] test if a pseudonym was used. Give warning or msg if not
+**** TODO [#B] test if a synonym was used. Give warning or msg if not
+**** TODO [#B] test if variables are used in more than one arg
+like copy, synonym etc. Doesn't make sense to use in more than one.
 *** findCovs
 *** compareCols
-**** DONE [#A] Bug - overview of columns is given twice
+**** DONE Bug - overview of columns is given twice
  compareCols(ex.001,ex.002,ex.005,diff.only=T) %>% print(topn=100)
 
 No, they werent. It was the print call. But one change was made. now quiet=T suppresses all the info, so in the example above, use quiet=T to print a subset with print(topn=...).
-**** DONE [#B] scope argument
+**** DONE scope argument
      This is called columns.wanted
 
      Sometimes we are interested in specific columns. List these and only
@@ -129,20 +131,20 @@ helpful. Only list other columns than the scope.
      data.tables.
 **** DONE Bug for diff.only=FALSE
 *** egdt
-**** DONE [#A] BUG the tmp by col has to be removed before reporting dims
+**** DONE BUG the tmp by col has to be removed before reporting dims
 **** DONE Report dims(df1,df2,result) unless quiet
 *** mergeCheck
-**** TODO Add at least number of NA's to message about what was added
+**** TODO [#B] Add at least number of NA's to message about what was added
 Probably add class too.
 Number of unique combinations of by? This seems too advanced
 4|3|2 -> 4
 Numer of NA's in right and in result
 **** TODO [#A] Warning if NA in by columns
-**** TODO merge in try
+**** TODO [#A] merge in try
 If the merge actually fails, we want to prepend something to the
 data.table::merge error.
-**** TODO second merge in try
-If first merge isn't accepte, the second merge can fail. Or is it
+**** TODO [#B] second merge in try
+If first merge isn't accepted, the second merge can fail. Or is it
 because by and by.x+by.y are handled differently the second time? Clen this.
 **** TODO [#B] Check that by or by.x+by.y were supplied
 **** TODO [#B] derive by.x and by.y from by and by.x+by.y and then use by.x and by.y
@@ -150,7 +152,7 @@ because by and by.x+by.y are handled differently the second time? Clen this.
      the merge is done.
 **** DONE Test the check for row duplications
 *** NMcheckData
-**** TODO cols.num split on other columns
+**** TODO [#A] cols.num split on other columns
 Many variables are only expected to exist for say samples. Example:
 LLOQ can very well be missing for doses. And the check may depend on
 study, compound etc too. So we need to split or subset data for the
@@ -177,9 +179,12 @@ numeric should be using
 **** DONE Only check for special characters in colnames for numeric columns
      Applies to other colname checks too?
 **** TODO [#B] Requirements to DV for EVID==2 and EVID==3?
-**** DONE [#B] Add col.row to findings
+**** DONE Add col.row to findings
+*** NMcheckDataFile
+**** TODO [#A] Check all columns as cols.num
+**** TODO [#A] Return data, summary and more
+**** TODO [#B] Check whether NA's are coded with .'s
 *** NMextractDataFile
-**** TODO Check whether NA's are coded with .'s
 **** DONE Add support for windows absolute paths
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
@@ -215,7 +220,7 @@ Challenge is that the filters are applied before the column names are
 changed. So we need access to the old data and know what column to
 look at - called col.id after the translations.
 **** Pseudonyms A=B
-***** TODO [#C] A=B pseudonym labels should be matched against reserved variable names
+***** TODO [#C] A=B synonym labels should be matched against reserved variable names
 ***** DONE copy data to have acces using both names
 ****** Edit these lines in NMscanInput
        ## For now, we just take the first name used in A=B labeling. 
@@ -298,7 +303,7 @@ Right now it only says if input or output. Table name would be helpful.
 If mergeByFilters we can take the sequence of ID in the input
 data. But what if an ID comes back? I think a record is in FIRSTONLY
 whenever ID changes, but test this.
-**** TODO [#C] Check if ID has been corrupted by output format
+**** TODO [#B] Check if ID has been corrupted by output format
 check if variables are consistent within ROW: ID (others?) This is
 fatal and will happen when using long ID's and non-matching format
 when writing tables from Nonmem.
