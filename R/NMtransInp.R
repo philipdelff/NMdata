@@ -19,7 +19,7 @@
 NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
     
 
-
+    
 
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
     datafile <- NULL
@@ -48,7 +48,7 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
     line <- gsub(" +"," ",paste(lines,collapse=" "))
     line <- sub("^ ","",line)
     line <- sub(" $","",line)
-        
+    
 ### nms is the names of columns as in nonmem control stream
     nms <- strsplit(line," ")[[1]]
     nms0 <- nms
@@ -77,9 +77,13 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
             nms <- nms[1:length(cnames.input)]
             messageWrap("More column names specified in Nonmem $INPUT than found in data file. The additional names have been disregarded.",fun.msg=warning)
         }
-        if(!recover.cols) data <- data[,1:length(nms)]
         
         cnames.input[1:length(nms)] <- nms
+        if(!recover.cols){
+            data <- data[,1:length(nms)]
+            cnames.input <- cnames.input[1:length(nms)]
+        }
+        
         colnames(data) <- cnames.input
         
         ## add the synononyms

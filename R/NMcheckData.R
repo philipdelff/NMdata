@@ -272,7 +272,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     ## @param col.required Include a finding if column not found?
     ## numeric for row 10. Then don't report that it is not an integer
     ## too.
-    listEvents <- function(col,name,fun,colname=col,dat=data,events=NULL,invert=FALSE,new.rows.only=T,quiet=FALSE,col.required=TRUE,debug=F,...){
+    listEvents <- function(col,name,fun,colname=col,dat=data,events=NULL,invert=FALSE,new.rows.only=T,quiet=FALSE,col.required=TRUE,debug=F,args.fun=NULL){
         if(debug) browser()
 
         if(!col%in%colnames(dat)){
@@ -287,9 +287,9 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
         
         
         if(invert){
-            rows <- dat[fun(get(col),...)==TRUE,get(c.row)]
+            rows <- dat[do.call(fun,append(list(get(col)),args.fun))==TRUE,get(c.row)]
         } else {
-            rows <- dat[fun(get(col),...)==FALSE,get(c.row)]
+            rows <- dat[do.call(fun,append(list(get(col)),args.fun))==FALSE,get(c.row)]
         }
 
         if(length(rows)==0) {
@@ -414,8 +414,10 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
         findings <- listEvents(col.row,"Duplicated",
                                fun=function(x)!is.na(x)&!duplicated(x),events=findings,
                                new.rows.only=T,debug=FALSE)
-        findings <- listEvents(col.row,"Row identifier not an integer",
-                               fun=function(x)x%%1==0,events=findings,new.rows.only=T)
+        findings <- listEvents(col.row,
+                               "Row identifier not an integer",
+                               fun=function(x)x%%1==0,events=findings,
+                               new.rows.only=T,debug=F)
     }
     
 ### check flags for NA's before subsetting on FLAG
@@ -431,7 +433,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
                                new.rows.only=T)
         findings <- listEvents(col.flagn,"col.flagn not an integer",
                                fun=function(x)x%%1==0,events=findings,
-                               new.rows.only=)
+                               new.rows.only=T)
         if(col.flagn%in%colnames(data)){
 
 ### Done checking flagn. For rest of checks, only consider data where col.flagn==0
@@ -482,6 +484,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
                                fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
                                new.rows.only=TRUE,events=findings)
     }
+
     
 ###### checks on cols.num.all before converting to numeric
 ### if col.row or ID are characters, they must not have leading zeros.
@@ -490,7 +493,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     if(col.id%in%colnames(data)&&data[,is.character(get(col.id))]){
         
         findings <- listEvents(col.id,"Leading zero will corrupt merging",
-                               fun=function(x)grepl("^0.+",x),invert=T,
+                               fun=function(x)grepl("^0.+",x),invert=TRUE,
                                events=findings,debug=FALSE)
     }
 

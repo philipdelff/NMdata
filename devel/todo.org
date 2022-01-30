@@ -1,4 +1,8 @@
 * NMdata todo
+#+TODO: TODO(t) WAIT(w) DONE(d)
+# :PROPERTIES:
+:LOGGING: nil
+  :END:
 ** Design
 *** TODO [#B] deprecate "default" option in NMdataConf
     has no benefit over NULL, so redundant and prevents the use of "default" as an actual param value.
@@ -82,7 +86,7 @@ For specific columns, look for missing elements (NA, "", length(x)==0
 in case of lists?). Tabulate and list. Align reporting with NMcheckData?
 *** TODO [#B] NMasNumeric                                       :newFunction:
 Error if not convertible and not NA or ""? "b" should be an error right?
-*** TODO [#B] NMsummarizeData Summarize data with nonmem in mind.   :newFunction:
+*** TODO [#B] NMsummarizeData Summarize data with nonmem in mind. :newFunction:
 **** Number of doses and obs per subj
 **** Dist of DV
 **** Covariates
@@ -97,8 +101,8 @@ Probably add class too.
 Number of unique combinations of by? This seems too advanced
 4|3|2 -> 4
 Numer of NA's in right and in result
-**** TODO [#A] Warning if NA in by columns :v0_0_11:
-**** TODO [#A] merge in try :v0_0_11:
+**** TODO [#A] Warning if NA in by columns                          :v0_0_11:
+**** TODO [#A] merge in try                                         :v0_0_11:
 If the merge actually fails, we want to prepend something to the
 data.table::merge error.
 **** TODO [#B] second merge in try
@@ -110,6 +114,10 @@ because by and by.x+by.y are handled differently the second time? Clen this.
      the merge is done.
 **** DONE Test the check for row duplications
 *** NMcheckData
+**** DONE Note when installing                                      :v0_0_11:
+     Note: ... may be used in an incorrect context at NMcheckData.R:290 
+     Solution: listEvents must have a args.fun rather than ...
+     This will be cleaner anyway. But it will require a do.call.
 **** DONE Find previously used code
 **** DONE Implement checks in pmxtricks todo
 **** TODO [#B] Implement more checks
@@ -151,7 +159,7 @@ Implement in same style as checks of cols.num
 **** DONE TIME increasing for subjects between EVID 3 or 4
 **** tests of text file
 ***** A field can't contain more than 24 characters
-**** TODO [#A] cols.num split on other columns :v0_0_11:
+**** TODO [#A] cols.num split on other columns                      :v0_0_11:
 Many variables are only expected to exist for say samples. Example:
 LLOQ can very well be missing for doses. And the check may depend on
 study, compound etc too. So we need to split or subset data for the
@@ -180,8 +188,8 @@ numeric should be using
 **** TODO [#B] Requirements to DV for EVID==2 and EVID==3?
 **** DONE Add col.row to findings
 *** NMcheckDataFile
-**** TODO [#A] Check all columns as cols.num                        :v0_0_11:
-**** TODO [#A] Return data, summary and more :v0_0_11:
+**** DONE Check all columns as cols.num                             :v0_0_11:
+**** DONE Return data, summary and more                             :v0_0_11:
 **** TODO [#B] Check whether NA's are coded with .'s
 *** NMextractDataFile
 **** DONE Add support for windows absolute paths
@@ -462,11 +470,4 @@ exactly these uses of ".". Anyway, no consequence to functionality.
 **** DONE document data objects
 See how it's done in pmxtricks.  This is done. However, the datasets are not
 exported so it's not very important.
-** BUGS
-*** DONE flagsCount does not print data.table
-*** DONE flagsAssign cannot handle missing subset
-
-#+TODO: TODO(t) WAIT(w) DONE(d)
-:PROPERTIES:
-:LOGGING: nil
-  :END:
+** Misc
