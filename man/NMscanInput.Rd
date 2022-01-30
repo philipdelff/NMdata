@@ -11,6 +11,7 @@ NMscanInput(
   dir.data = NULL,
   applyFilters = FALSE,
   translate = TRUE,
+  recover.cols = TRUE,
   details = TRUE,
   col.id = "ID",
   col.row,
@@ -58,6 +59,10 @@ returning the data.}
 interpreted by Nonmem (in $INPUT). If data file contains more
 columns than mentioned in $INPUT, these will be named as in
 data file (if data file contains named variables).}
+
+\item{recover.cols}{recover columns that were not used in the
+NONMEM control stream? Default is TRUE. Can only be negtive
+when translate=FALSE.}
 
 \item{details}{If TRUE, metadata is added to output. In this case,
 you get a list. Typically, this is mostly useful if

@@ -1,6 +1,6 @@
 ## library(devtools)
 ## setwd("tests/testthat")
-## load_all("../../")
+## load_all()
 
 context("compareCols")
 

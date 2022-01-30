@@ -112,8 +112,8 @@ theme_set(theme_bw()+theme(legend.position="bottom"))
 ```
 
 ```{r,eval=FALSE,include=FALSE}
-library(devtools)
-load_all()
+## library(devtools)
+## load_all()
 ```
 
 For the examples we will be using files that are available in the
@@ -494,8 +494,8 @@ so file/network access (I/O) is likely to be the main bottleneck.
 
 If you write Nonmem datasets with the `NMdata::NMwriteData`, you can
 get an `rds` file automatically, exactly where `NMscanData` will look
-for it. Creating datasets using `NMdata` is described in [this
-vignette](https://philipdelff.github.io/NMdata/articles/DataCreate.html).
+for it. Preparing datasets using `NMdata` is described in [this
+vignette](https://philipdelff.github.io/NMdata/articles/DataPrepare.html).
 
 You probably want to use `NMdataConf` to change the default behavior
 if you don't want to use `rds` files.

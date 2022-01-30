@@ -1,3 +1,4 @@
+## meta is if x is metadata rather than an NMdata object
 fix.time <- function(x,meta=T){
     if(meta){
         meta.x <- attr(x,"NMdata")
@@ -30,7 +31,7 @@ fix.time <- function(x,meta=T){
 test_that("basic",{
     fileRef <- "testReference/NMcheckData_1.rds"
     
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds")
     res <- NMcheckData(pk)
 
     expect_equal_to_reference(res,fileRef,version=2)
@@ -39,7 +40,7 @@ test_that("basic",{
 test_that("No col.flagn",{
     fileRef <- "testReference/NMcheckData_2.rds"
     
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds")
     res <- NMcheckData(pk,col.flagn=FALSE)
     expect_equal_to_reference(res,fileRef,version=2)
 })
@@ -47,7 +48,7 @@ test_that("No col.flagn",{
 test_that("Misc findings",{
     fileRef <- "testReference/NMcheckData_3.rds"
     
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds")
 
     colnames(pk)[24] <- "ret.4"
     ## a comma in a string - but with FLAG>0
@@ -61,7 +62,7 @@ test_that("Misc findings",{
 test_that("TIME with characters",{
     fileRef <- "testReference/NMcheckData_4.rds"
     
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds")
 
     ## a character in TIME
     pk[,TIME:=as.character(TIME)]
@@ -77,7 +78,7 @@ test_that("TIME with characters",{
 test_that("Misc findings and dup colname",{
     fileRef <- "testReference/NMcheckData_5.rds"
     
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds")
 
     colnames(pk)[24] <- "ret.4"
     ## a dup col name
@@ -92,7 +93,7 @@ test_that("Misc findings and dup colname",{
 test_that("missing EVID",{
     fileRef <- "testReference/NMcheckData_6.rds"
     
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds")
     pk[,EVID:=NULL]
 
     res <- NMcheckData(pk)
@@ -103,7 +104,7 @@ test_that("missing EVID",{
 
 test_that("missing ID",{
     
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds")
     pk[,ID:=NULL]
 
     expect_error( NMcheckData(pk))
@@ -112,7 +113,7 @@ test_that("missing ID",{
 test_that("missing MDV",{
     fileRef <- "testReference/NMcheckData_7.rds"
     
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds")
     pk[,MDV:=1]
 
     res <- NMcheckData(pk)
@@ -124,7 +125,7 @@ test_that("missing MDV",{
 test_that("With ADDL, no II",{
     fileRef <- "testReference/NMcheckData_8.rds"
     
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds")
     pk[EVID==1,ADDL:=1]
 
     res <- NMcheckData(pk)
@@ -135,7 +136,7 @@ test_that("With ADDL, no II",{
 test_that("With II, no ADDL",{
     fileRef <- "testReference/NMcheckData_9.rds"
     
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds")
     pk[EVID==1,II:=24]
 
     res <- NMcheckData(pk)
@@ -147,14 +148,18 @@ test_that("Using control stream file",{
     NMdataConf(reset=TRUE)
     fileRef <- "testReference/NMcheckData_10.rds"
 
-    file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
+    file.lst <- "testData/nonmem/xgxr001.lst"
     
     res1a <- NMcheckData(file=file.lst)
 
     res1a <- fix.time(res1a,meta=F)
     expect_equal_to_reference(res1a,fileRef)
 
-
+    ## res.ref <- readRDS(fileRef)
+    ## res <- lapply(names(res.ref),function(name){
+    ##     expect_equal(res.ref[[name]],res1a[[name]])
+    ## })
+    
     res1b <- NMcheckData(file=file.lst)
     res1b <- fix.time(res1b,meta=F)
 
@@ -170,7 +175,7 @@ test_that("ID and row with leading 0",{
     NMdataConf(as.fun="data.table")
     fileRef <- "testReference/NMcheckData_11.rds"
     
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds")
     pk[,ID:=paste0("0",ID)]
     pk[,ROW:=paste0("0",ROW)]
 
@@ -192,7 +197,7 @@ test_that("One covariate varying within ID",{
     NMdataConf(as.fun="data.table")
     
     fileRef <- "testReference/NMcheckData_12.rds"
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))    
+    pk <- readRDS(file="testData/data/xgxr2.rds")    
 
     pk[1500,WEIGHTB:=30]  
     res <- NMcheckData(pk,covs=c("trtact","WEIGHTB","CYCLE","DOSE"))
@@ -205,7 +210,7 @@ test_that("One covariate varying within ID",{
     NMdataConf(reset=T)
     
     fileRef <- "testReference/NMcheckData_13.rds"
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds")
     pk[,FED:=0]
     pk[ID>170,`:=`(PERIOD=1)]
     pk.fed <- pk[ID>170][,`:=`(TIME=TIME+240,PERIOD=2,FED=1,DV=DV*.79)]

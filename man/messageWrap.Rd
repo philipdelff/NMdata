@@ -36,3 +36,4 @@ Nothing.
 \description{
 Pretty wrapping of lines in NMdata vignettes
 }
+\keyword{internal}

@@ -134,21 +134,24 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,cols.w
     if(!quiet) {
         message("Dimensions:")
         print(dims(list.data=dots))
-    }
 
-    if(nrow(dt.cols)==0&&ndots==1){
-        message("Only one data set supplied.\n")
-    } else if(nrow(dt.cols)==0&&ndots>1){
-        message("No differences.\n")
-    } else {
-        if(diff.only){
-            message("\nColumns that differ:")
+        if(nrow(dt.cols)==0&&ndots==1){
+            message("Only one data set supplied.\n")
+        } else if(nrow(dt.cols)==0&&ndots>1){
+            message("No differences.\n")
         } else {
-            message("\nOverview of all columns:")
+            if(diff.only){
+                message("\nColumns that differ:")
+            } else {
+                message("\nOverview of all columns:")
+            }
+            print(dt.cols)
         }
-        print(dt.cols)
+        return(invisible(as.fun(dt.cols)))
+    } else {
+        return(as.fun(dt.cols))
     }
-    invisible(as.fun(dt.cols))
+    
 
 }
 

@@ -2,6 +2,8 @@
 load_all()
 ## lsts <- list.files(system.file("examples/nonmem",package="NMdata"),pattern="xgxr.*\\.lst$",full.names=TRUE)
 lsts <- list.files(system.file("examples/nonmem/xgxr001dir",package="NMdata"),pattern="output*\\.txt$",full.names=TRUE)
+lsts <- list.files("testData/nonmem",pattern="xgxr.*\\.lst$",full.names=TRUE)
+lsts <- list.files("testData/nonmem/xgxr001dir",pattern="output*\\.txt$",full.names=TRUE)
 
 
 ## backup

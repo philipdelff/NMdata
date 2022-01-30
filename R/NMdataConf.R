@@ -172,6 +172,7 @@ NMdataConf <- function(...){
 ##' @return If name is provided, a list representing one argument,
 ##'     otherwise a list with an element for each argument that can be
 ##'     customized using NMdataConf.
+##' @keywords internal
 
 ## do not export
 
@@ -359,6 +360,7 @@ NMdataConfOptions <- function(name){
 ##' @param name The name of the parameter, say "as.fun"
 ##' @param argument The value to pass. If missing or NULL, the value returned by NMdataConf/NMdataGetOption will typically be used.
 ##' @return Active argument value.
+##' @keywords internal
 
 ## Do not export.
 NMdataDecideOption <- function(name,argument){
@@ -385,6 +387,7 @@ NMdataDecideOption <- function(name,argument){
 ##' Look up default configuration of an argument
 ##' @param ... argument to look up. Only one argument can be looked up.
 ##' @return The value active in configuration
+##' @keywords internal
 
 ## This is only used by NMdataDecideOption
 ## do not export.

@@ -32,10 +32,10 @@ test_that("basic",{
 
     ## res1 <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")
 ### using as.data.table for as.fun is not recommended but still allowed
-    res1 <-
+    res <-
         NMscanInput(file=file.lst,applyFilters = T,as.fun="data.table")
-    fix.time(res1)
-    expect_equal_to_reference(res1,fileRef,version=2)
+    fix.time(res)
+    expect_equal_to_reference(res,fileRef,version=2)
 })
 
 
@@ -49,11 +49,11 @@ test_that("input has NMdata meta data",{
     ## NMgetSection(file.lst,section="DATA")
     
 
-    res1 <- NMscanInput(file=file.lst,applyFilters = T,as.fun="data.table")
-    fix.time(res1)
-    nm1 <- NMinfo(res1)
+    res <- NMscanInput(file=file.lst,applyFilters = T,as.fun="data.table")
+    fix.time(res)
+    nm1 <- NMinfo(res)
     expect_equal_to_reference(nm1,fileRef,version=2)
-    
+## readRDS(fileRef)$tables; nm1$tables    
     
 })
 
@@ -65,8 +65,8 @@ test_that("single = filter",{
     file.lst <- "testData/nonmem/xgxr009.lst"
     ## NMgetSection(file.lst,section="PROBLEM")
     ## NMgetSection(file.lst,section="DATA")
-    res1 <- NMscanInput(file=file.lst,applyFilters = T,as.fun="data.table")
-    expect_equal(res1[,unique(DOSE)],10)
+    res <- NMscanInput(file=file.lst,applyFilters = T,as.fun="data.table")
+    expect_equal(res[,unique(DOSE)],10)
     
 })
 
@@ -91,11 +91,11 @@ test_that("single-char ignore",{
     file.lst <- "testData/nonmem/estim_debug.lst"
 
     ## inpdat <- NMscanInput(file=file.lst,applyFilters=T,file.mod=function(x)sub("\\.lst$",".ctl",x))
-    inpdat <- NMscanInput(file=file.lst,applyFilters=T,file.mod=function(x)fnExtension(x,".ctl"))
-    expect_equal(nrow(inpdat),98)
+    res <- NMscanInput(file=file.lst,applyFilters=T,file.mod=function(x)fnExtension(x,".ctl"))
+    expect_equal(nrow(res),98)
     
-    fix.time(inpdat)
-    expect_equal_to_reference(inpdat,fileRef,version=2)
+    fix.time(res)
+    expect_equal_to_reference(res,fileRef,version=2)
 
 })
 
@@ -124,14 +124,14 @@ test_that("Including meta data",{
     fileRef <- "testReference/NMscanInput6.rds"
     file.lst <- "testData/nonmem/xgxr004.lst"
 
-    res1 <-
+    res <-
         NMscanInput(file=file.lst,applyFilters = T,details=T, as.fun="data.table")
 
-    ## res1$meta$details$file <- "file"
-    ## res1$meta$details$file.mtime <- NULL
-    fix.time(res1)    
+    ## res$meta$details$file <- "file"
+    ## res$meta$details$file.mtime <- NULL
+    fix.time(res)    
     
-    expect_equal_to_reference(res1,fileRef,version=2)
+    expect_equal_to_reference(res,fileRef,version=2)
     
     
 })
@@ -142,12 +142,12 @@ test_that("CYCLE=DROP",{
     fileRef <- "testReference/NMscanInput_7.rds"
     file.lst <- system.file("examples/nonmem/xgxr002.lst",package="NMdata")
 
-    ## res1 <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")
+    ## res <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")
 ### using as.data.table for as.fun is not recommended but still allowed
-    res1 <-
+    res <-
         NMscanInput(file=file.lst,applyFilters = T,as.fun="data.table")
 
-    fix.time(res1)
-    nm1 <- NMinfo(res1)
+    fix.time(res)
+    nm1 <- NMinfo(res)
     expect_equal_to_reference(nm1,fileRef,version=2)
 })

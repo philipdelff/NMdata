@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{The summary object to be printed. See ?summary.NMdata}
 
-\item{...}{Arguments passed to print.}
+\item{...}{Arguments passed to other print methods.}
 }
 \description{
 print method for NMdata summaries

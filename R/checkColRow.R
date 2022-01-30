@@ -7,6 +7,7 @@
 ##' @param col.row The name of the unique row identifier (say "ROW").
 ##' @param file a list file or input control stream file path.
 ##' @return TRUE if no issues found
+##' @keywords internal
 
 ## not to be exported. This is a helper function for NMscanData.
 

@@ -1,3 +1,16 @@
+# NMdata 0.0.11
+
+* NMscanInput has the new argument recover.cols. Default is TRUE - use
+  FALSE to not include columns that NONMEM did not read.
+
+## Bugfixes
+* NMwriteData now respects NMdataConf()$args.fwrite
+* flagsCount was not respecting by columns. Fixed.
+* egdt was reporting one column too many
+  in inputs (in terminal, not in results). Fixed.
+* Column names in control stream $INPUT statements weren't adjusted
+  for possible tabulator characters. Fixed.
+
 # NMdata 0.0.10
 * NMcheckData is a new function that checks data for Nonmem
   compatibility in numerous ways. It returns a list of all findings
@@ -8,7 +21,7 @@
   Nonmem. NMcheckData can check a data object in R, and it can also
   check how a control stream reads data and then do all the
   checks. The latter provides an extensive check of potential issues
-  related to data and getting it into NONMEM. Great for both deugging
+  related to data and getting it into NONMEM. Great for both debugging
   and QC.
 
 * NMwriteSection has been updated with a few very useful

@@ -12,8 +12,10 @@
 ##'     control stream. In this case, NMdataCheck checks column names
 ##'     in data against control stream (see NMcheckColnames), reads
 ##'     the data as NONMEM would do, and do the same checks on the
-##'     data as NMdataCheck would do using the data argument. The file
-##'     argument is useful for debugging a Nonmem model.
+##'     data as NMdataCheck would do using the data
+##'     argument. col.flagn is ignored in this case - instead,
+##'     ACCEPT/IGNORE statements in control stream are applied. The
+##'     file argument is useful for debugging a Nonmem model.
 ##' @param covs columns that contain subject-level covariates. They
 ##'     are expected to be non-missing, numeric and not varying within
 ##'     subjects.
@@ -167,8 +169,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 
 
 #### Section start: Checks of arguments ####
-
-
+    
     if(missing(covs)) covs <- NULL
     if(missing(covs.occ)) covs.occ <- NULL
     if(missing(cols.num)) cols.num <- NULL
@@ -179,7 +180,9 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     col.row <- NMdataDecideOption("col.row",col.row)
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
+
     if(missing(col.flagn)) col.flagn <- NULL
+    col.flagn.orig <- col.flagn
     col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
     if(missing(file)) file <- NULL
 
@@ -206,6 +209,10 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 
     
     if(is.null(file)){
+        if(missing(data)||is.null(data)) {
+            message("No data supplied")
+            return(invisible(NULL))
+        }
         if(!is.data.frame(data)) stop("Data must be inheriting from data.frame (meaning that more advanced classes like data.table and tibble are OK.")
         data <- copy(as.data.table(data))
         ## for reference as data is edited
@@ -215,20 +222,20 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 
     }
 
-### file mode?
+### file mode
     if(!is.null(file)){
+        if(!is.null(col.flagn.orig)){warning("col.flagn is not used when file is specified.")}
         col.id <- "ID"
         use.rds <- FALSE
-        quiet <- FALSE
         file.mod <- NULL
-        res <- NMcheckDataFile(file=file,col.time=col.time,col.flagn=col.flagn,col.row=col.row,col.id=col.id,na.strings=na.strings,use.rds=use.rds,quiet=FALSE,file.mod=file.mod,as.fun=as.fun)
+        res <- NMcheckDataFile(file=file,col.time=col.time,col.row=col.row,col.id=col.id,na.strings=na.strings,use.rds=use.rds,quiet=quiet,file.mod=file.mod,as.fun=as.fun)
         return(invisible(res))
     }
     
 
 ### Section end: Checks of arguments
 
-
+    
     
 
 
@@ -265,7 +272,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     ## @param col.required Include a finding if column not found?
     ## numeric for row 10. Then don't report that it is not an integer
     ## too.
-    listEvents <- function(col,name,fun,colname=col,dat=data,events=NULL,invert=FALSE,new.rows.only=T,quiet=FALSE,col.required=TRUE,debug=F,...){
+    listEvents <- function(col,name,fun,colname=col,dat=data,events=NULL,invert=FALSE,new.rows.only=T,quiet=FALSE,col.required=TRUE,debug=F,args.fun=NULL){
         if(debug) browser()
 
         if(!col%in%colnames(dat)){
@@ -280,9 +287,9 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
         
         
         if(invert){
-            rows <- dat[fun(get(col),...)==TRUE,get(c.row)]
+            rows <- dat[do.call(fun,append(list(get(col)),args.fun))==TRUE,get(c.row)]
         } else {
-            rows <- dat[fun(get(col),...)==FALSE,get(c.row)]
+            rows <- dat[do.call(fun,append(list(get(col)),args.fun))==FALSE,get(c.row)]
         }
 
         if(length(rows)==0) {
@@ -296,6 +303,51 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
         }
         rbind(events,res,fill=TRUE)
     }
+
+    reportFindings <- function(findings,data,col.id,col.row,c.row,col.row.orig,col.id.orig,quiet,as.fun,return.summary){
+
+### Add ID's to row-level findings
+        findings.row <- findings[level=="row"]
+        if(!is.null(col.id)&&nrow(findings.row)>0){
+            if(col.id%in%colnames(findings.row)) findings.row[,(col.id):=NULL]
+            
+            findings.row <- mergeCheck(findings.row,data[,c(c.row,col.id.orig),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop,quiet=TRUE)
+            setnames(findings.row,col.id.orig,col.id)        
+            findings <- rbind(findings[level!="row"],findings.row,fill=T)
+            
+        }
+
+        
+        if(nrow(findings)==0) {
+            if(!quiet) message("No findings. Great!")
+            summary.findings <- NULL
+        } else {
+### use the row identifier for reporting
+            if(!is.null(col.row)&&col.row%in%colnames(data)){
+                
+                findings <- mergeCheck(findings,data[,c(c.row,col.row.orig),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop,quiet=TRUE)
+                setnames(findings,col.row.orig,col.row)
+            }
+            if(!col.id%in%colnames(findings)) findings[,(col.id):=NA_real_]
+            setcolorder(findings,c(c.row,col.id,"column","check"))
+            setorderv(findings,c(c.row,"column","check"))
+
+            
+            summary.findings <- findings[,.(.N,Nid=uniqueN(get(col.id)[!is.na(get(col.id))])),by=.(column,check)]
+            
+            if(!quiet) print(summary.findings,row.names=FALSE)
+
+        }
+        findings <- as.fun(findings)
+
+        res <- findings
+        if(return.summary){
+            res <- list(findings=findings,summary=summary.findings)
+        }
+        return(invisible(res))
+
+    }
+
 
     
     findings <- data.table(check="is NA",column="TIME",row=0,level="row")[0]
@@ -325,7 +377,14 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 ####### End checking column names
 
 
+    if(nrow(data)==0){
+        findings <- rbind(findings,
+                          data.table(check="No rows in data",level="data"),
+                          fill=T)
+        return(reportFindings(findings=findings,data=data,col.id=col.id,col.row=col.row,c.row=c.row,col.row.orig=col.row.orig,col.id.orig=col.id.orig,as.fun=as.fun,return.summary=return.summary,quiet=quiet))
+    }
 
+    
     
 ### check unique row identifier
     if(!is.null(col.row)){
@@ -355,8 +414,10 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
         findings <- listEvents(col.row,"Duplicated",
                                fun=function(x)!is.na(x)&!duplicated(x),events=findings,
                                new.rows.only=T,debug=FALSE)
-        findings <- listEvents(col.row,"Row identifier not an integer",
-                               fun=function(x)x%%1==0,events=findings,new.rows.only=T)
+        findings <- listEvents(col.row,
+                               "Row identifier not an integer",
+                               fun=function(x)x%%1==0,events=findings,
+                               new.rows.only=T,debug=F)
     }
     
 ### check flags for NA's before subsetting on FLAG
@@ -372,7 +433,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
                                new.rows.only=T)
         findings <- listEvents(col.flagn,"col.flagn not an integer",
                                fun=function(x)x%%1==0,events=findings,
-                               new.rows.only=)
+                               new.rows.only=T)
         if(col.flagn%in%colnames(data)){
 
 ### Done checking flagn. For rest of checks, only consider data where col.flagn==0
@@ -383,7 +444,14 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
         }
     }
 
+    if(nrow(data)==0){
+        findings <- rbind(findings,
+                          data.table(check="Data empty after applying exclusion flags",level="data"),
+                          fill=T)
+        return(reportFindings(findings=findings,data=data,col.id=col.id,col.row=col.row,c.row=c.row,col.row.orig=col.row.orig,col.id.orig=col.id.orig,as.fun=as.fun,return.summary=return.summary,quiet=quiet))
+    }
 
+    
 #### Section start: commas in character columns ####
     
     cols.char <- colnames(data)[!are.cols.num]
@@ -407,7 +475,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 ### Others that: If column present, must be numeric, and values must be non-NA. Remember eg DV, CMT and AMT can be NA.
     cols.num.all <- c( col.time,"EVID","ID","MDV",
                       cols.num,covs,names(covs.occ),as.character(unlist(covs.occ)))
-    
+    cols.num.all <- unique(cols.num.all)
 ### check for missing in cols.num.all
     
     for(col in cols.num.all){
@@ -416,6 +484,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
                                fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
                                new.rows.only=TRUE,events=findings)
     }
+
     
 ###### checks on cols.num.all before converting to numeric
 ### if col.row or ID are characters, they must not have leading zeros.
@@ -424,7 +493,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     if(col.id%in%colnames(data)&&data[,is.character(get(col.id))]){
         
         findings <- listEvents(col.id,"Leading zero will corrupt merging",
-                               fun=function(x)grepl("^0.+",x),invert=T,
+                               fun=function(x)grepl("^0.+",x),invert=TRUE,
                                events=findings,debug=FALSE)
     }
 
@@ -437,7 +506,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     findings <- listEvents(col.time,"Negative time",fun=function(x)x>=0,events=findings,debug=F)
 
 ### EVID must be in c(0,1,2,3,4)
-    findings <- listEvents("EVID","EVID in 0:4",function(x) x%in%c(0:4),events=findings)
+    findings <- listEvents("EVID","EVID not in 0:4",function(x) x%in%c(0:4),events=findings)
     
 ### ID must be a positive integer
     findings <- listEvents("ID","ID not a positive integer",
@@ -500,7 +569,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
                            dat=data) 
     ## positive for EVID 1 and 4
     findings <- listEvents("AMT","Non-positive dose amounts",
-                           fun=function(x)x>=0,events=findings,
+                           fun=function(x)x>0,events=findings,
                            dat=data[EVID%in%c(1,4)])
     ## must be 0 or NA for EVID 0 and 2
     findings <- listEvents("AMT","Non-zero dose for obs or sim record",
@@ -575,8 +644,10 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     data[,ID.jump:=c(0,diff(get(rowint))),by=col.id]
     findings <- listEvents("ID.jump",colname="ID",name="ID disjoint",fun=function(x) x<=1,events=findings)
 
+    
+    
 ### within ID, time must be increasing. Unless EVID%in% c(3,4) or events are jumped
-    data[,newID:=ID]
+    data[,newID:=get(col.id)]
     if(col.time%in%colnames(data)){
         
         data[,isnewID:=get(col.id)!=shift(get(col.id),n=1)]
@@ -591,7 +662,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     
     
     data[,Nrep:=.N,by=intersect(c("newID","CMT","EVID",col.time),colnames(data))]
-    findings <- listEvents(col="Nrep",name="Duplicated event",function(x) x<2,colname="ID, CMT, EVID, TIME",events=findings)
+    findings <- listEvents(col="Nrep",name="Duplicated event",function(x) x<2,colname=paste(col.id,"CMT, EVID", col.time,sep=", "),events=findings)
 
     if("EVID"%in%colnames(data)){
 ### subjects without doses
@@ -655,49 +726,8 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     
 ### Section end: Covariates
 
-
-
-
-    
-### Add ID's to row-level findings
-    findings.row <- findings[level=="row"]
-    if(!is.null(col.id)&&nrow(findings.row)>0){
-        if(col.id%in%colnames(findings.row)) findings.row[,(col.id):=NULL]
-        
-        findings.row <- mergeCheck(findings.row,data[,c(c.row,col.id.orig),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop,quiet=TRUE)
-        setnames(findings.row,col.id.orig,col.id)        
-        findings <- rbind(findings[level!="row"],findings.row,fill=T)
-        
-    }
-
-    
-    if(nrow(findings)==0) {
-        message("No findings. Great!")
-        summary.findings <- NULL
-    } else {
-### use the row identifier for reporting
-        if(!is.null(col.row)&&col.row%in%colnames(data)){
-            
-            findings <- mergeCheck(findings,data[,c(c.row,col.row.orig),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop,quiet=TRUE)
-            setnames(findings,col.row.orig,col.row)
-        }
-        if(!col.id%in%colnames(findings)) findings[,(col.id):=NA_real_]
-        setcolorder(findings,c(c.row,col.id,"column","check"))
-        setorderv(findings,c(c.row,"column","check"))
-
-        
-        summary.findings <- findings[,.(.N,Nid=uniqueN(get(col.id)[!is.na(get(col.id))])),by=.(column,check)]
-        
-        if(!quiet) print(summary.findings,row.names=FALSE)
-
-    }
-    findings <- as.fun(findings)
-
-    res <- findings
-    if(return.summary){
-        res <- list(findings=findings,summary=summary.findings)
-    }
-    return(invisible(res))
+    return(reportFindings(findings=findings,data=data,col.id=col.id,c.row=c.row,col.row=col.row,col.row.orig=col.row.orig,col.id.orig=col.id.orig,return.summary=return.summary,as.fun=as.fun,quiet=quiet))
 
 }
+
 

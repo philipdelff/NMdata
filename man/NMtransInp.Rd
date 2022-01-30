@@ -4,7 +4,7 @@
 \alias{NMtransInp}
 \title{translate the column names according to the $INPUT section of a control stream}
 \usage{
-NMtransInp(data, file, translate = TRUE)
+NMtransInp(data, file, translate = TRUE, recover.cols = TRUE)
 }
 \arguments{
 \item{data}{the data to translate}
@@ -14,6 +14,10 @@ NMtransInp(data, file, translate = TRUE)
 \item{translate}{logical. Do translation according to Nonmem code
 or not? If not, an overview of column names in data and in
 Nonmem code is still returned with the data.}
+
+\item{recover.cols}{recover columns that were not used in the
+NONMEM control stream? Default is TRUE. Can only be negtive
+when translate=FALSE.}
 }
 \value{
 data with column names translated as specified by nonmem
@@ -23,3 +27,4 @@ data with column names translated as specified by nonmem
 \description{
 translate the column names according to the $INPUT section of a control stream
 }
+\keyword{internal}

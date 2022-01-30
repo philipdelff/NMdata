@@ -8,6 +8,7 @@
 ##' @param ... additional arguments passed to file.path().
 ##' @return A (character) file path
 ##' @family FileSystem
+##' @keywords internal
 
 ### This function is exported from pmxtricks. It is included in NMdata not to
 ### depend on pmxtricks. However, please align.

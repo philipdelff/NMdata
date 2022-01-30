@@ -1,4 +1,8 @@
 * NMdata todo
+#+TODO: TODO(t) WAIT(w) DONE(d)
+# :PROPERTIES:
+:LOGGING: nil
+  :END:
 ** Design
 *** TODO [#B] deprecate "default" option in NMdataConf
     has no benefit over NULL, so redundant and prevents the use of "default" as an actual param value.
@@ -25,20 +29,103 @@ With load_all():
 > dt1
    a newcol
 1: 1      1
-*** TODO [#B] messageWrap internal/external
+*** DONE [#B] messageWrap internal/external
+    This is called track.msg
+    
     The mentioning of where a message comes from is only useful if a
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
-*** TODO [#B] List missing elements
+*** DONE NMcheckColNames
+**** return input column names and Nonmem interpretation for user to spot errors
+**** Bad name, what could we call it?
+*** TODO [#B] NMfreezeModels
+    Remember to add chmod and describe that only a flat dir structure is supported so far
+*** DONE NMtransInp
+    Translate column names according to Nonmem. Take the code from
+    NMscanInput.
+*** DONE function to replace file name extension - fnExtension
+*** DONE summary.NMdata
+*** DONE NMgetSection
+*** DONE Summary of the columns - NMinfo
+    right now hidden in metadata
+*** DONE Summary of tables - NMinfo
+*** TODO [#B] A function that defines NULL variables
+    Risk now is that arguments are set to NULL
+    Export to parent. Not sure check allows though...
+** Function improvements
+*** cc - create character vector function
+*** NMgenText
+**** TODO [#B] checks: duplicate column names
+**** TODO [#B] test if a synonym was used. Give warning or msg if not
+**** TODO [#B] test if variables are used in more than one arg
+like copy, synonym etc. Doesn't make sense to use in more than one.
+*** findCovs
+*** compareCols
+**** DONE Bug - overview of columns is given twice
+ compareCols(ex.001,ex.002,ex.005,diff.only=T) %>% print(topn=100)
+
+No, they werent. It was the print call. But one change was made. now quiet=T suppresses all the info, so in the example above, use quiet=T to print a subset with print(topn=...).
+**** DONE scope argument
+     This is called columns.wanted
+
+     Sometimes we are interested in specific columns. List these and only
+these in the same order as requested. An inversion option could be
+helpful. Only list other columns than the scope.
+**** DONE rows are not being sorted correctly.
+     Seems not to prioritize columns that only exist in one of the
+     data.tables.
+**** DONE Bug for diff.only=FALSE
+*** egdt
+**** DONE BUG the tmp by col has to be removed before reporting dims
+**** DONE Report dims(df1,df2,result) unless quiet
+*** TODO [#A] listMissings                              :v0_0_11:newFunction:
+List missing elements
+
 For specific columns, look for missing elements (NA, "", length(x)==0
-in case of lists?). Tabulate and list.
-*** TODO NMsummarizeData Summarize data with nonmem in mind. 
+in case of lists?). Tabulate and list. Align reporting with NMcheckData?
+*** TODO [#B] NMasNumeric                                       :newFunction:
+Error if not convertible and not NA or ""? "b" should be an error right?
+*** TODO [#B] NMsummarizeData Summarize data with nonmem in mind. :newFunction:
 **** Number of doses and obs per subj
 **** Dist of DV
 **** Covariates
 **** Has to take a by arg
-*** DONE NMcheckData
+*** TODO [#A] NMcreateDoses Generate dosing schedule with loading, ADDL etc :v0_0_11:newFunction:
+    This is available as a suitcase function
+*** TODO [#B] Function for complex dosing regimens              :newFunction:
+*** TODO [#B] Function to unfold ADDL/II doses to multiple rows :newFunction:
+*** mergeCheck
+**** TODO [#B] Add at least number of NA's to message about what was added
+Probably add class too.
+Number of unique combinations of by? This seems too advanced
+4|3|2 -> 4
+Numer of NA's in right and in result
+**** TODO [#A] Warning if NA in by columns                          :v0_0_11:
+**** TODO [#A] merge in try                                         :v0_0_11:
+If the merge actually fails, we want to prepend something to the
+data.table::merge error.
+**** TODO [#B] second merge in try
+If first merge isn't accepted, the second merge can fail. Or is it
+because by and by.x+by.y are handled differently the second time? Clen this.
+**** TODO [#B] Check that by or by.x+by.y were supplied
+**** TODO [#B] derive by.x and by.y from by and by.x+by.y and then use by.x and by.y
+     That will make the code clearer because we will know exactly how
+     the merge is done.
+**** DONE Test the check for row duplications
+*** NMcheckData
+**** DONE Note when installing                                      :v0_0_11:
+     Note: ... may be used in an incorrect context at NMcheckData.R:290 
+     Solution: listEvents must have a args.fun rather than ...
+     This will be cleaner anyway. But it will require a do.call.
+**** DONE Find previously used code
+**** DONE Implement checks in pmxtricks todo
+**** TODO [#B] Implement more checks
+https://doi.org/10.1208/s12248-012-9387-9
+**** Additional checks
+***** DONE Having NA in FLAG is dangerous
+      It makes it unclear how the filter will work
+***** DONE AMT>0 for EVID=0 is not allowed (I believe)
 **** DONE check for commas in character columns
 Implement in same style as checks of cols.num
 **** column names
@@ -72,64 +159,11 @@ Implement in same style as checks of cols.num
 **** DONE TIME increasing for subjects between EVID 3 or 4
 **** tests of text file
 ***** A field can't contain more than 24 characters
-*** DONE cc - create character vector function
-*** Dosing functions
-**** TODO [#B] NMcreateDoses Generate dosing schedule with loading, ADDL etc
-     This is available as a suitcase function
-**** TODO [#B] Function for complex dosing regimens
-**** TODO [#B] Function to unfold ADDL/II doses to multiple rows
-*** DONE NMcheckColNames
-**** return input column names and Nonmem interpretation for user to spot errors
-**** Bad name, what could we call it?
-*** TODO [#B] NMfreezeModels
-    Remember to add chmod and describe that only a flat dir structure is supported so far
-*** DONE NMtransInp
-    Translate column names according to Nonmem. Take the code from
-    NMscanInput.
-*** DONE function to replace file name extension - fnExtension
-*** DONE summary.NMdata
-*** DONE NMgetSection
-*** DONE Summary of the columns - NMinfo
-    right now hidden in metadata
-*** DONE Summary of tables - NMinfo
-*** DONE A function to check data - NMcheckData
-**** DONE Find previously used code
-**** DONE Implement checks in pmxtricks todo
-**** TODO [#B] Implement more checks
-https://doi.org/10.1208/s12248-012-9387-9
-**** Additional checks
-***** DONE Having NA in FLAG is dangerous
-      It makes it unclear how the filter will work
-***** DONE AMT>0 for EVID=0 is not allowed (I believe)
-*** TODO [#B] A function that defines NULL variables
-    Risk now is that arguments are set to NULL
-    Export to parent. Not sure check allows though...
-** Function improvements
-*** NMgenText
-**** TODO [#B] checks: duplicate column names
-**** TODO [#B] test if a pseudonym was used. Give warning or msg if not
-*** findCovs
-**** TODO soft
-*** compareCols
-**** TODO [#B] Bug - overview of columns is given twice
- compareCols(ex.001,ex.002,ex.005,diff.only=T) %>% print(topn=100)
-**** TODO [#B] scope argument
-Sometimes we are interested in specific columns. List these and only
-these in the same order as requested. An inversion option could be
-helpful. Only list other columns than the scope.
-**** DONE rows are not being sorted correctly.
-     Seems not to prioritize columns that only exist in one of the
-     data.tables.
-**** DONE Bug for diff.only=FALSE
-*** egdt
-**** DONE Report dims(df1,df2,result) unless quiet
-*** mergeCheck
-**** TODO [#B] Check that by or by.x+by.y were supplied
-**** TODO [#B] derive by.x and by.y from by and by.x+by.y and then use by.x and by.y
-     That will make the code clearer because we will know exactly how
-     the merge is done.
-**** DONE Test the check for row duplications
-*** NMcheckData
+**** TODO [#A] cols.num split on other columns                      :v0_0_11:
+Many variables are only expected to exist for say samples. Example:
+LLOQ can very well be missing for doses. And the check may depend on
+study, compound etc too. So we need to split or subset data for the
+check. Maybe check in a subset and expect NA in the rest?
 **** TODO [#B] Checks for presense of II and ADDL don't report dependence
      If one is present, presence of the other is tested. If not found,
      it says "II Column not found". Would be helpful to know that it
@@ -145,7 +179,6 @@ Error in `[.data.table`(data, , `:=`((cols.num), lapply(.SD, NMasNumeric)),  :
 **** DONE check RATE, SS
 **** DONE Check ADDL, II
 **** DONE Support for file argument (control stream)
-     CLOSED: [2021-12-22 Wed 17:04]
 **** DONE Element-wise NMisNumeric
 There are two distinct uses of NMisNumeric. Column-wise and
 element-wise. When checking for NMisNumeric, columns that must be
@@ -153,8 +186,11 @@ numeric should be using
 **** DONE Only check for special characters in colnames for numeric columns
      Applies to other colname checks too?
 **** TODO [#B] Requirements to DV for EVID==2 and EVID==3?
-**** TODO [#B] Add col.row to findings
-**** TODO [#B] Should be able to run on a model file
+**** DONE Add col.row to findings
+*** NMcheckDataFile
+**** DONE Check all columns as cols.num                             :v0_0_11:
+**** DONE Return data, summary and more                             :v0_0_11:
+**** TODO [#B] Check whether NA's are coded with .'s
 *** NMextractDataFile
 **** DONE Add support for windows absolute paths
      I don't think this was ever an issue. The regular expression used
@@ -175,6 +211,10 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMscanInput
+**** DONE BUG tabs in column names?
+    REC\t  ID\t     TIME    TAD\t DOSE\t AMT\t RATE CMT  DV\t MDV\t EVID
+
+Included a gsub("\t"," ",lines)
 **** TODO [#B] Model path (mod/lst, whichever used) should be available in meta data
 **** TODO [#B] argument char.comment.inp
      User may write say # (input_data_debug.csv) in front of column
@@ -183,11 +223,11 @@ issued. Once done, NMgetSection must be updated as well.
      column name. However, only relevant if column names are not
      translated.
 **** DONE Get number of subjects as before filtering
-Challenge is that the filters are applied before the cplumn names are
+Challenge is that the filters are applied before the column names are
 changed. So we need access to the old data and know what column to
 look at - called col.id after the translations.
 **** Pseudonyms A=B
-***** TODO [#C] A=B pseudonym labels should be matched against reserved variable names
+***** TODO [#C] A=B synonym labels should be matched against reserved variable names
 ***** DONE copy data to have acces using both names
 ****** Edit these lines in NMscanInput
        ## For now, we just take the first name used in A=B labeling. 
@@ -214,7 +254,7 @@ NULL=NAN which would mean that NA should be interpreted as NA in R.
 **** TODO [#B] Implement or at least detect RECORDS
 A way to limit rows read into nonmem
 *** NMtransInput
-**** TODO [#B] Add comparison column input-nonmem
+**** DONE [#B] Add comparison column input-nonmem
 ***** if input!=nonmem,
 ***** nonmem %in% all(input)
 ***** tolower(nonmem)==tolower(input) OK
@@ -248,8 +288,6 @@ a likely reason.
      Since we only have and will only have two methods, this should be
      a binary switch between the methods.
 **** DONE Check if col.row is being modified in Nonmem.
-**** TODO [#B] check overview.tables
-Either they must be firstonly, or they must be full.length.
 **** TODO [#B] Limitation: tables with EXCLUDE_BY
 **** DONE Limitation: FIRSTLASTONLY
 **** DONE Implement recoverRows using mergeByFilters
@@ -272,7 +310,7 @@ Right now it only says if input or output. Table name would be helpful.
 If mergeByFilters we can take the sequence of ID in the input
 data. But what if an ID comes back? I think a record is in FIRSTONLY
 whenever ID changes, but test this.
-**** TODO [#C] Check if ID has been corrupted by output format
+**** TODO [#B] Check if ID has been corrupted by output format
 check if variables are consistent within ROW: ID (others?) This is
 fatal and will happen when using long ID's and non-matching format
 when writing tables from Nonmem.
@@ -287,7 +325,10 @@ See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
 is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMwriteData
-**** TODO [#B] Separate generation of INPUT text into new function
+**** DONE BUG NA's are not .
+does fwrite use args.fwrite at all?
+**** DONE Separate generation of INPUT text into new function
+     Called NMgenText
 **** DONE Bug in inclusion of filename in text
      See poster example
 **** TODO [#B] Include a randomly generated ID in meta data that we can check files against?
@@ -299,7 +340,7 @@ data. It should be based on tables in meta$tables.
 This will cause trouble when writing csv
 **** DONE Use fwrite rather than write.csv
 **** TODO [#B] Improve support for custom IGNORE/ACCEPT statements
-Support for both ignore and accept? A list?
+Nested statements
 **** DONE Returned text should be a list of sections.
 Ultimately, NMreplacePart must accept this as argument.
 **** DONE The Nonmem instructions should not include character variables
@@ -315,15 +356,15 @@ Not warning. Warning if standard variable?
 **** DONE Don't warn about missing SS, ADDL, II
 **** DONE Polish
 *** flagsAssign
+**** TODO [#A] We need to work in IDhasNoObs and IDhasNoDos 
+This likely means a restructure so all tables have to be given
+together and these subject-level flags are set across EVID after 
 **** DONE check for whether there are any contents in data - just warning and return nothing
 **** DONE implement grp.incomp as in flagsCount
 **** DONE Only give message about overwriting FLAG/flag if non-NA values are present
 **** DONE Improve messages at each FLAG coding
 **** DONE Make sure we arrange back to original order
 **** DONE Introduce a way to apply to a subset only
-     - State "DELEGATED"  from "CANCELED"   [2021-04-21 Wed 16:46]
-     - State "CANCELED"   from "DELEGATED"  [2021-04-21 Wed 16:46]
-     - State "DELEGATED"  from "DONE"       [2021-04-21 Wed 16:46]
 This could be EVID==0 or maybe one study in a meta analysis
 
 It's fairly easy to implement. Paste in front of the expression.use column.
@@ -331,6 +372,7 @@ It's fairly easy to implement. Paste in front of the expression.use column.
      Or is FLAG==0 reserved?
 use flagsAssign(data,subset.data="EVID==1",flagc.0="Dosing")
 *** flagsCount
+**** DONE bug in 0.0.9: Nobs.disc.cum ignores by
 **** DONE OK respect decreasing or increasing order.flags
 **** DONE add .cum of N and Nobs
 **** DONE add argument to name "all available data" in table. 
@@ -340,7 +382,7 @@ use flagsAssign(data,subset.data="EVID==1",flagc.0="Dosing")
 **** TODO [#B] The function could paste an explained overview to the terminal
 **** DONE Add save argument to align with other functions
 *** NMdataConf
-**** TODO [#B] Add col.id
+**** TODO [#B] Add col.id. Generally, support for custom col.id may be missing.
 **** TODO [#B] Add na.strings
      Used in NMisNumeric and NMcheckData
 **** DONE test that function evaluation does not depend on global env
@@ -373,11 +415,19 @@ arguments. NMdata calls this "writtenTo".
 ***** Read and combine input and output data
 ***** Debug
 ***** Traceability
-**** TODO Flag example
+**** DONE Flag example
 *** Tests
 **** DONE Test NMdataConf(file.mod=identity)
+**** DONE [#B] NMscanData with copy in $INPUT
+     Especially, look at colnames.input
 *** Examples
 **** DONE renameByContents example
+*** Vignettes
+**** TODO [#A] Take cheatsheet out of package                       :v0_0_11:
+*** pkgdown
+**** TODO Add bug list
+**** TODO Rename menu items
+**** TODO Automate Function overview from tags
 ** Discussion
 *** recoverRows can mean mix of variable interpretations
 If recoverRows and a variable is changing interpretation from input to
@@ -420,8 +470,4 @@ exactly these uses of ".". Anyway, no consequence to functionality.
 **** DONE document data objects
 See how it's done in pmxtricks.  This is done. However, the datasets are not
 exported so it's not very important.
-** BUGS
-*** DONE flagsCount does not print data.table
-*** DONE flagsAssign cannot handle missing subset
-
-#+TODO: TODO(t) WAIT(w) DONE(d)
+** Misc

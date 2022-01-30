@@ -5,17 +5,21 @@
 ##' @param translate logical. Do translation according to Nonmem code
 ##'     or not? If not, an overview of column names in data and in
 ##'     Nonmem code is still returned with the data.
+##' @param recover.cols recover columns that were not used in the
+##'     NONMEM control stream? Default is TRUE. Can only be negtive
+##'     when translate=FALSE.
 ##' @return data with column names translated as specified by nonmem
 ##'     control stream. Class same as for 'data' argument. Class
 ##'     data.table.
 ##' @import data.table
+##' @keywords internal
 
 ## don't export. An internal function used by NMscanInput. 
 
-NMtransInp <- function(data,file,translate=TRUE){
+NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
+    
 
-
-
+    
 
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
     datafile <- NULL
@@ -27,6 +31,8 @@ NMtransInp <- function(data,file,translate=TRUE){
 
     stopifnot(is.data.table(data))
 
+    if( !translate && !recover.cols ) {messageWrap("recover.rows=FALSE is only allowed when translate=TRUE.",fun.msg=stop)}
+    
     ## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    
     lines <- NMreadSection(file,section="INPUT",keepName=FALSE,keepComments=FALSE,cleanSpaces=TRUE)
     if(is.null(lines)) {
@@ -36,11 +42,13 @@ NMtransInp <- function(data,file,translate=TRUE){
     
     ## names can be separated by , or " " or both. So one , between alphanumerics is replaced by a single space
     lines <- gsub("([[:alnum:]]) *, *([[:alnum:]])","\\1 \\2",lines)
+    ## editors may include \t for a tidy view. Replace by space.
+    lines <- gsub("\t"," ",lines)
     ## get rid of redundant spaces
     line <- gsub(" +"," ",paste(lines,collapse=" "))
     line <- sub("^ ","",line)
     line <- sub(" $","",line)
-
+    
 ### nms is the names of columns as in nonmem control stream
     nms <- strsplit(line," ")[[1]]
     nms0 <- nms
@@ -71,9 +79,14 @@ NMtransInp <- function(data,file,translate=TRUE){
         }
         
         cnames.input[1:length(nms)] <- nms
+        if(!recover.cols){
+            data <- data[,1:length(nms)]
+            cnames.input <- cnames.input[1:length(nms)]
+        }
+        
         colnames(data) <- cnames.input
-
-        ## add the pseudonyms
+        
+        ## add the synononyms
         if(!is.null(renamed.from)){
             data <- cbind(data,
                           setnames(data[,c(renamed.to),with=FALSE],old=renamed.to,new=renamed.from)
@@ -85,7 +98,6 @@ NMtransInp <- function(data,file,translate=TRUE){
             nms2 <- cnames.input[-(1:length(nms))]
             if(any(duplicated(nms))){
                 messageWrap(paste("Duplicated variable names declared in nonmem $INPUT section. Only first of the columns will be used:",paste(nms[duplicated(nms)],collapse=", ")),fun.msg=warning)
-                ## nms.u <- unique(nms)
             } 
             if(length(nms2)&&any(duplicated(nms2))){
                 messageWrap(paste("Duplicated variable names detected in input data not processed by Nonmem. Only first of the columns will be used:",paste(nms2[duplicated(nms2)],collapse=", ")),fun.msg=warning)
