@@ -187,7 +187,8 @@ numeric should be using
      Applies to other colname checks too?
 **** TODO [#B] Requirements to DV for EVID==2 and EVID==3?
 **** DONE Add col.row to findings
-**** TODO [#A] Check splits of cols.num                             :v0_0_11:
+**** DONE Check splits of cols.num                                  :v0_0_11:
+**** TODO Document splits of cols.num                               :v0_0_11:
 *** NMcheckDataFile
 **** DONE Check all columns as cols.num                             :v0_0_11:
 **** DONE Return data, summary and more                             :v0_0_11:

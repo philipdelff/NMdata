@@ -192,6 +192,10 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     if(!is.null(cols.num) && !is.list(cols.num) ){
         cols.num <- list("TRUE"=cols.num)
     }
+    
+    names.cols.num <- names(cols.num)
+    names.cols.num[gsub(" +","",names.cols.num)==""] <- "TRUE"
+    names(cols.num) <- names.cols.num
     if(!is.null(cols.num)) {
         lapply(cols.num, function(x){if(!is.character(x)) {
         messageWrap("cols.num must be a character vector or a string.",fun.msg=stop)
@@ -279,7 +283,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     ## too.
     listEvents <- function(col,name,fun,colname=col,dat=data,events=NULL,invert=FALSE,new.rows.only=T,quiet=FALSE,col.required=TRUE,debug=F,args.fun=NULL){
         if(debug) browser()
-#if(length(col)>1)browser()
+
         if(!col%in%colnames(dat)){
             if(col.required){
                 if(events[check=="Column not found"&column==colname&level=="column",.N]==0){
@@ -503,10 +507,11 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
                 findings <- listEvents(col,name="Not numeric",
                                    fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
                                    new.rows.only=TRUE,events=findings,dat=data[eval(parse(text=expr.sub))])
-            ## not expecting values if outside subset
+                ## not expecting values if outside subset
+                
             findings <- listEvents(col,name="NA expected",
-                                   fun=NMisMissing,invert=TRUE,
-                                   new.rows.only=FALSE,events=findings,dat=data[!rowint%in%rows.sub])
+                                   fun=NMisMissing,
+                                   new.rows.only=FALSE,events=findings,dat=data[!get(rowint)%in%rows.sub])
             }
             }
     }

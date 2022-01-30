@@ -1,5 +1,11 @@
 # NMdata 0.0.11
 
+* The cols.num argument in NMcheckData has been improved to support a
+  list specifying columns that are numeric within subsets of
+  data. This is often useful for columns that are only meaningful for
+  say samples (eg LLOQ) or doses (eg injection site).
+* When run on a control stream, NMcheckData now checks all columns
+  specified in the control stream to be numeric.
 * NMscanInput has the new argument recover.cols. Default is TRUE - use
   FALSE to not include columns that NONMEM did not read.
 
