@@ -208,6 +208,7 @@ test_that("One covariate varying within ID",{
 
 test_that("One covariate varying within ID",{
     NMdataConf(reset=T)
+    ##    NMdataConf(as.fun=data.table)
     
     fileRef <- "testReference/NMcheckData_13.rds"
     pk <- readRDS(file="testData/data/xgxr2.rds")

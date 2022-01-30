@@ -159,7 +159,7 @@ Implement in same style as checks of cols.num
 **** DONE TIME increasing for subjects between EVID 3 or 4
 **** tests of text file
 ***** A field can't contain more than 24 characters
-**** TODO [#A] cols.num split on other columns                      :v0_0_11:
+**** DONE cols.num split on other columns                           :v0_0_11:
 Many variables are only expected to exist for say samples. Example:
 LLOQ can very well be missing for doses. And the check may depend on
 study, compound etc too. So we need to split or subset data for the
@@ -187,6 +187,7 @@ numeric should be using
      Applies to other colname checks too?
 **** TODO [#B] Requirements to DV for EVID==2 and EVID==3?
 **** DONE Add col.row to findings
+**** TODO [#A] Check splits of cols.num                             :v0_0_11:
 *** NMcheckDataFile
 **** DONE Check all columns as cols.num                             :v0_0_11:
 **** DONE Return data, summary and more                             :v0_0_11:

@@ -189,9 +189,13 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     if(!is.null(covs) && !is.character(covs)) {
         messageWrap("covs must be a character vector or a string.",fun.msg=stop)
     }
-    if(!is.null(cols.num) && !is.character(cols.num)) {
-        messageWrap("cols.num must be a character vector or a string.",fun.msg=stop)
+    if(!is.null(cols.num) && !is.list(cols.num) ){
+        cols.num <- list("TRUE"=cols.num)
     }
+    if(!is.null(cols.num)) {
+        lapply(cols.num, function(x){if(!is.character(x)) {
+        messageWrap("cols.num must be a character vector or a string.",fun.msg=stop)
+    }})}
     if(!is.null(covs.occ)){
         if(!is.null(covs.occ)) {
             if( !is.list(covs.occ) || is.data.frame(covs.occ)) {
@@ -261,6 +265,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
             suppressWarnings(as.numeric(as.character(x)))
         }
     }
+    NMisMissing <- function(x) is.na(x) | (is.character(x) & x %in% na.strings)
 
     ## listEvents is for row-level findings
     ## @param col is the actual column to be used for the condition
@@ -274,7 +279,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     ## too.
     listEvents <- function(col,name,fun,colname=col,dat=data,events=NULL,invert=FALSE,new.rows.only=T,quiet=FALSE,col.required=TRUE,debug=F,args.fun=NULL){
         if(debug) browser()
-
+#if(length(col)>1)browser()
         if(!col%in%colnames(dat)){
             if(col.required){
                 if(events[check=="Column not found"&column==colname&level=="column",.N]==0){
@@ -474,7 +479,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 ######## Default numeric columns. Will be checked for presence, NA, non-numeric (col-level)
 ### Others that: If column present, must be numeric, and values must be non-NA. Remember eg DV, CMT and AMT can be NA.
     cols.num.all <- c( col.time,"EVID","ID","MDV",
-                      cols.num,covs,names(covs.occ),as.character(unlist(covs.occ)))
+                      covs,names(covs.occ),as.character(unlist(covs.occ)))
     cols.num.all <- unique(cols.num.all)
 ### check for missing in cols.num.all
     
@@ -483,6 +488,27 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
         findings <- listEvents(col,name="Not numeric",
                                fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
                                new.rows.only=TRUE,events=findings)
+    }
+
+    ## cols.num is a named list. Names are subsets.
+    if(!is.null(cols.num)){
+        
+        subsets.cols.num <- names(cols.num)
+        
+        
+        for(n in 1:length(cols.num)){
+            expr.sub <- subsets.cols.num[n]
+            rows.sub <- data[eval(parse(text=expr.sub)),get(rowint)]
+            for(col in cols.num[[n]]){
+                findings <- listEvents(col,name="Not numeric",
+                                   fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+                                   new.rows.only=TRUE,events=findings,dat=data[eval(parse(text=expr.sub))])
+            ## not expecting values if outside subset
+            findings <- listEvents(col,name="NA expected",
+                                   fun=NMisMissing,invert=TRUE,
+                                   new.rows.only=FALSE,events=findings,dat=data[!rowint%in%rows.sub])
+            }
+            }
     }
 
     
