@@ -32,17 +32,92 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
-*** TODO [#B] NMasNumeric?
-Error if not convertible and not NA or ""? "b" should be an error right?
-*** TODO [#A] List missing elements
+*** DONE NMcheckColNames
+**** return input column names and Nonmem interpretation for user to spot errors
+**** Bad name, what could we call it?
+*** TODO [#B] NMfreezeModels
+    Remember to add chmod and describe that only a flat dir structure is supported so far
+*** DONE NMtransInp
+    Translate column names according to Nonmem. Take the code from
+    NMscanInput.
+*** DONE function to replace file name extension - fnExtension
+*** DONE summary.NMdata
+*** DONE NMgetSection
+*** DONE Summary of the columns - NMinfo
+    right now hidden in metadata
+*** DONE Summary of tables - NMinfo
+*** TODO [#B] A function that defines NULL variables
+    Risk now is that arguments are set to NULL
+    Export to parent. Not sure check allows though...
+** Function improvements
+*** cc - create character vector function
+*** NMgenText
+**** TODO [#B] checks: duplicate column names
+**** TODO [#B] test if a synonym was used. Give warning or msg if not
+**** TODO [#B] test if variables are used in more than one arg
+like copy, synonym etc. Doesn't make sense to use in more than one.
+*** findCovs
+*** compareCols
+**** DONE Bug - overview of columns is given twice
+ compareCols(ex.001,ex.002,ex.005,diff.only=T) %>% print(topn=100)
+
+No, they werent. It was the print call. But one change was made. now quiet=T suppresses all the info, so in the example above, use quiet=T to print a subset with print(topn=...).
+**** DONE scope argument
+     This is called columns.wanted
+
+     Sometimes we are interested in specific columns. List these and only
+these in the same order as requested. An inversion option could be
+helpful. Only list other columns than the scope.
+**** DONE rows are not being sorted correctly.
+     Seems not to prioritize columns that only exist in one of the
+     data.tables.
+**** DONE Bug for diff.only=FALSE
+*** egdt
+**** DONE BUG the tmp by col has to be removed before reporting dims
+**** DONE Report dims(df1,df2,result) unless quiet
+*** TODO [#A] listMissings                              :v0_0_11:newFunction:
+List missing elements
+
 For specific columns, look for missing elements (NA, "", length(x)==0
 in case of lists?). Tabulate and list. Align reporting with NMcheckData?
-*** TODO [#B] NMsummarizeData Summarize data with nonmem in mind. 
+*** TODO [#B] NMasNumeric                                       :newFunction:
+Error if not convertible and not NA or ""? "b" should be an error right?
+*** TODO [#B] NMsummarizeData Summarize data with nonmem in mind.   :newFunction:
 **** Number of doses and obs per subj
 **** Dist of DV
 **** Covariates
 **** Has to take a by arg
-*** DONE NMcheckData
+*** TODO [#A] NMcreateDoses Generate dosing schedule with loading, ADDL etc :v0_0_11:newFunction:
+    This is available as a suitcase function
+*** TODO [#B] Function for complex dosing regimens              :newFunction:
+*** TODO [#B] Function to unfold ADDL/II doses to multiple rows :newFunction:
+*** mergeCheck
+**** TODO [#B] Add at least number of NA's to message about what was added
+Probably add class too.
+Number of unique combinations of by? This seems too advanced
+4|3|2 -> 4
+Numer of NA's in right and in result
+**** TODO [#A] Warning if NA in by columns :v0_0_11:
+**** TODO [#A] merge in try :v0_0_11:
+If the merge actually fails, we want to prepend something to the
+data.table::merge error.
+**** TODO [#B] second merge in try
+If first merge isn't accepted, the second merge can fail. Or is it
+because by and by.x+by.y are handled differently the second time? Clen this.
+**** TODO [#B] Check that by or by.x+by.y were supplied
+**** TODO [#B] derive by.x and by.y from by and by.x+by.y and then use by.x and by.y
+     That will make the code clearer because we will know exactly how
+     the merge is done.
+**** DONE Test the check for row duplications
+*** NMcheckData
+**** DONE Find previously used code
+**** DONE Implement checks in pmxtricks todo
+**** TODO [#B] Implement more checks
+https://doi.org/10.1208/s12248-012-9387-9
+**** Additional checks
+***** DONE Having NA in FLAG is dangerous
+      It makes it unclear how the filter will work
+***** DONE AMT>0 for EVID=0 is not allowed (I believe)
 **** DONE check for commas in character columns
 Implement in same style as checks of cols.num
 **** column names
@@ -76,83 +151,7 @@ Implement in same style as checks of cols.num
 **** DONE TIME increasing for subjects between EVID 3 or 4
 **** tests of text file
 ***** A field can't contain more than 24 characters
-*** DONE cc - create character vector function
-*** Dosing functions
-**** TODO [#A] NMcreateDoses Generate dosing schedule with loading, ADDL etc
-     This is available as a suitcase function
-**** TODO [#B] Function for complex dosing regimens
-**** TODO [#B] Function to unfold ADDL/II doses to multiple rows
-*** DONE NMcheckColNames
-**** return input column names and Nonmem interpretation for user to spot errors
-**** Bad name, what could we call it?
-*** TODO [#B] NMfreezeModels
-    Remember to add chmod and describe that only a flat dir structure is supported so far
-*** DONE NMtransInp
-    Translate column names according to Nonmem. Take the code from
-    NMscanInput.
-*** DONE function to replace file name extension - fnExtension
-*** DONE summary.NMdata
-*** DONE NMgetSection
-*** DONE Summary of the columns - NMinfo
-    right now hidden in metadata
-*** DONE Summary of tables - NMinfo
-*** DONE A function to check data - NMcheckData
-**** DONE Find previously used code
-**** DONE Implement checks in pmxtricks todo
-**** TODO [#B] Implement more checks
-https://doi.org/10.1208/s12248-012-9387-9
-**** Additional checks
-***** DONE Having NA in FLAG is dangerous
-      It makes it unclear how the filter will work
-***** DONE AMT>0 for EVID=0 is not allowed (I believe)
-*** TODO [#B] A function that defines NULL variables
-    Risk now is that arguments are set to NULL
-    Export to parent. Not sure check allows though...
-** Function improvements
-*** NMgenText
-**** TODO [#B] checks: duplicate column names
-**** TODO [#B] test if a synonym was used. Give warning or msg if not
-**** TODO [#B] test if variables are used in more than one arg
-like copy, synonym etc. Doesn't make sense to use in more than one.
-*** findCovs
-*** compareCols
-**** DONE Bug - overview of columns is given twice
- compareCols(ex.001,ex.002,ex.005,diff.only=T) %>% print(topn=100)
-
-No, they werent. It was the print call. But one change was made. now quiet=T suppresses all the info, so in the example above, use quiet=T to print a subset with print(topn=...).
-**** DONE scope argument
-     This is called columns.wanted
-
-     Sometimes we are interested in specific columns. List these and only
-these in the same order as requested. An inversion option could be
-helpful. Only list other columns than the scope.
-**** DONE rows are not being sorted correctly.
-     Seems not to prioritize columns that only exist in one of the
-     data.tables.
-**** DONE Bug for diff.only=FALSE
-*** egdt
-**** DONE BUG the tmp by col has to be removed before reporting dims
-**** DONE Report dims(df1,df2,result) unless quiet
-*** mergeCheck
-**** TODO [#B] Add at least number of NA's to message about what was added
-Probably add class too.
-Number of unique combinations of by? This seems too advanced
-4|3|2 -> 4
-Numer of NA's in right and in result
-**** TODO [#A] Warning if NA in by columns
-**** TODO [#A] merge in try
-If the merge actually fails, we want to prepend something to the
-data.table::merge error.
-**** TODO [#B] second merge in try
-If first merge isn't accepted, the second merge can fail. Or is it
-because by and by.x+by.y are handled differently the second time? Clen this.
-**** TODO [#B] Check that by or by.x+by.y were supplied
-**** TODO [#B] derive by.x and by.y from by and by.x+by.y and then use by.x and by.y
-     That will make the code clearer because we will know exactly how
-     the merge is done.
-**** DONE Test the check for row duplications
-*** NMcheckData
-**** TODO [#A] cols.num split on other columns
+**** TODO [#A] cols.num split on other columns :v0_0_11:
 Many variables are only expected to exist for say samples. Example:
 LLOQ can very well be missing for doses. And the check may depend on
 study, compound etc too. So we need to split or subset data for the
@@ -181,8 +180,8 @@ numeric should be using
 **** TODO [#B] Requirements to DV for EVID==2 and EVID==3?
 **** DONE Add col.row to findings
 *** NMcheckDataFile
-**** TODO [#A] Check all columns as cols.num
-**** TODO [#A] Return data, summary and more
+**** TODO [#A] Check all columns as cols.num                        :v0_0_11:
+**** TODO [#A] Return data, summary and more :v0_0_11:
 **** TODO [#B] Check whether NA's are coded with .'s
 *** NMextractDataFile
 **** DONE Add support for windows absolute paths
@@ -349,7 +348,7 @@ Not warning. Warning if standard variable?
 **** DONE Don't warn about missing SS, ADDL, II
 **** DONE Polish
 *** flagsAssign
-**** TODO [#A] We need to work in IDhasNoObs and IDhasNoDos
+**** TODO [#A] We need to work in IDhasNoObs and IDhasNoDos 
 This likely means a restructure so all tables have to be given
 together and these subject-level flags are set across EVID after 
 **** DONE check for whether there are any contents in data - just warning and return nothing
@@ -415,6 +414,12 @@ arguments. NMdata calls this "writtenTo".
      Especially, look at colnames.input
 *** Examples
 **** DONE renameByContents example
+*** Vignettes
+**** TODO [#A] Take cheatsheet out of package                       :v0_0_11:
+*** pkgdown
+**** TODO Add bug list
+**** TODO Rename menu items
+**** TODO Automate Function overview from tags
 ** Discussion
 *** recoverRows can mean mix of variable interpretations
 If recoverRows and a variable is changing interpretation from input to
