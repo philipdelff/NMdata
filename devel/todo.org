@@ -41,12 +41,8 @@ With load_all():
 **** Bad name, what could we call it?
 *** TODO [#B] NMfreezeModels
     Remember to add chmod and describe that only a flat dir structure is supported so far
-*** DONE NMtransInp
-    Translate column names according to Nonmem. Take the code from
-    NMscanInput.
 *** DONE function to replace file name extension - fnExtension
 *** DONE summary.NMdata
-*** DONE NMgetSection
 *** DONE Summary of the columns - NMinfo
     right now hidden in metadata
 *** DONE Summary of tables - NMinfo
@@ -114,6 +110,8 @@ because by and by.x+by.y are handled differently the second time? Clen this.
      the merge is done.
 **** DONE Test the check for row duplications
 *** NMcheckData
+**** TODO The summary should take a by argument
+**** TODO Define a NMfindings class and create a summary function?
 **** DONE Note when installing                                      :v0_0_11:
      Note: ... may be used in an incorrect context at NMcheckData.R:290 
      Solution: listEvents must have a args.fun rather than ...
@@ -189,6 +187,7 @@ numeric should be using
 **** DONE Add col.row to findings
 **** DONE Check splits of cols.num                                  :v0_0_11:
 **** TODO Document splits of cols.num                               :v0_0_11:
+**** TODO Document col.cmt                                          :v0_0_11:
 *** NMcheckDataFile
 **** DONE Check all columns as cols.num                             :v0_0_11:
 **** DONE Return data, summary and more                             :v0_0_11:
@@ -256,6 +255,7 @@ NULL=NAN which would mean that NA should be interpreted as NA in R.
 **** TODO [#B] Implement or at least detect RECORDS
 A way to limit rows read into nonmem
 *** NMtransInput
+    Translate column names according to Nonmem.
 **** DONE [#B] Add comparison column input-nonmem
 ***** if input!=nonmem,
 ***** nonmem %in% all(input)

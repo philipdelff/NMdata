@@ -133,7 +133,7 @@
 ##' @export
 
 
-NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="TIME",col.flagn,col.row,na.strings,return.summary=FALSE,quiet=FALSE,as.fun){
+NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="TIME",col.cmt="CMT",col.flagn,col.row,na.strings,return.summary=FALSE,quiet=FALSE,as.fun){
 
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -198,8 +198,8 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     names(cols.num) <- names.cols.num
     if(!is.null(cols.num)) {
         lapply(cols.num, function(x){if(!is.character(x)) {
-        messageWrap("cols.num must be a character vector or a string.",fun.msg=stop)
-    }})}
+                                         messageWrap("cols.num must be a character vector or a string.",fun.msg=stop)
+                                     }})}
     if(!is.null(covs.occ)){
         if(!is.null(covs.occ)) {
             if( !is.list(covs.occ) || is.data.frame(covs.occ)) {
@@ -479,6 +479,8 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     rowint <- tmpcol(data,base="ROWINT",prefer.plain=TRUE)
     data[,(rowint):=.I]
 
+
+    
     
 ######## Default numeric columns. Will be checked for presence, NA, non-numeric (col-level)
 ### Others that: If column present, must be numeric, and values must be non-NA. Remember eg DV, CMT and AMT can be NA.
@@ -505,15 +507,15 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
             rows.sub <- data[eval(parse(text=expr.sub)),get(rowint)]
             for(col in cols.num[[n]]){
                 findings <- listEvents(col,name="Not numeric",
-                                   fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
-                                   new.rows.only=TRUE,events=findings,dat=data[eval(parse(text=expr.sub))])
+                                       fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+                                       new.rows.only=TRUE,events=findings,dat=data[eval(parse(text=expr.sub))])
                 ## not expecting values if outside subset
                 
-            findings <- listEvents(col,name="NA expected",
-                                   fun=NMisMissing,
-                                   new.rows.only=FALSE,events=findings,dat=data[!get(rowint)%in%rows.sub])
+                findings <- listEvents(col,name="NA expected",
+                                       fun=NMisMissing,
+                                       new.rows.only=FALSE,events=findings,dat=data[!get(rowint)%in%rows.sub])
             }
-            }
+        }
     }
 
     
@@ -555,31 +557,38 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 ###  columns that are required for all rows done
 
 #### all other required columns (NA elements OK). Run NMisNumeric for each element, then translate using NMasNumeric
-    cols.req <- cc(CMT,DV,AMT)
-    newfinds <- rbindlist( lapply(cols.req,listEvents,name="Not numeric",
-                                  fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
-                                  new.rows.only=T)
-                          )
-    findings <- rbind(findings,
-                      newfinds
-                     ,fill=TRUE)
-    data[,(cols.req):=lapply(.SD,NMasNumeric),.SDcols=cols.req]
-
-### CMT must be a positive integer. It can be missing for CMT=3
-    findings <- listEvents("CMT","Missing for EVID!=3",
-                           fun=is.na,invert=TRUE,events=findings,
-                           dat=data[EVID%in%c(1,2,4)])
-    ## For EVID!=3, must be a positive integer 
-    findings <- listEvents("CMT","CMT not a positive integer",
-                           fun=function(x)x>0&x%%1==0,events=findings,
-                           dat=data[EVID%in%c(1,2,4)],
-                           new.rows.only=T)
-    ## For EVID==3, if CMT not missing, must be 0 or a positive integer
-    findings <- listEvents("CMT","CMT not a positive integer",
-                           fun=function(x)x>=0&x%%1==0,events=findings,
-                           dat=data[EVID%in%c(3)&!is.na(CMT)]
-                           )
     
+    cols.req <- c(col.cmt,cc(DV,AMT))
+    for(col in cols.req){
+        findings <- listEvents(col,name="Not numeric",fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+                               new.rows.only=T,events=findings)
+    }
+    ## newfinds <- rbindlist( lapply(cols.req,listEvents,name="Not numeric",
+    ##                               fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+    ##                               new.rows.only=T)
+    ##                       )
+    ## findings <- rbind(findings,
+    ##                   newfinds
+    ##                  ,fill=TRUE)
+    cols.req.found <- intersect(cols.req,colnames(data))
+    data[,(cols.req.found):=lapply(.SD,NMasNumeric),.SDcols=cols.req.found]
+
+    for(cmt in col.cmt){
+### CMT must be a positive integer. It can be missing for CMT=3
+        findings <- listEvents(cmt,"Missing for EVID!=3",
+                               fun=is.na,invert=TRUE,events=findings,
+                               dat=data[EVID%in%c(1,2,4)])
+        ## For EVID!=3, must be a positive integer 
+        findings <- listEvents(cmt,"CMT not a positive integer",
+                               fun=function(x)x>0&x%%1==0,events=findings,
+                               dat=data[EVID%in%c(1,2,4)],
+                               new.rows.only=T)
+        ## For EVID==3, if CMT not missing, must be 0 or a positive integer
+        findings <- listEvents(cmt,"CMT not a positive integer",
+                               fun=function(x)x>=0&x%%1==0,events=findings,
+                               dat=data[EVID%in%c(3)&!is.na(CMT)]
+                               )
+    }
 
 
 
@@ -692,9 +701,31 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     }
     
     
-    data[,Nrep:=.N,by=intersect(c("newID","CMT","EVID",col.time),colnames(data))]
-    findings <- listEvents(col="Nrep",name="Duplicated event",function(x) x<2,colname=paste(col.id,"CMT, EVID", col.time,sep=", "),events=findings)
+    ## if(any(cols.cmt %in% colnames(data))){
+    ##     data.rep <- melt(data,measure.vars=cols.cmt,variable.name="col.cmt",value.name="CMT")        
+    ##     cols.cmt.rep <- "col.cmt"
+    ## } else {
+    ##     data.rep <- data
+    ##     cols.cmt.rep <- NULL
+    ## }
+    ## data.rep[,Nrep:=.N,by=intersect(c("newID",col.cmt.rep,"EVID",col.time),colnames(data))]
 
+    ## data[,Nrep:=.N,by=intersect(c("newID","CMT","EVID",col.time),colnames(data))]    
+    ## findings <- listEvents(col="Nrep",name="Duplicated event",function(x) x<2,colname=paste(col.id,"CMT, EVID", col.time,sep=", "),events=findings)
+
+    col.cmt.found <- intersect(col.cmt,colnames(data))
+    nruns <- length(col.cmt.found)
+    if(length(col.cmt.found)==0){
+        col.cmt.found <- NULL
+        nruns <- 1
+    } 
+    for(count.cmt in 1:nruns){
+        
+        data[,Nrep:=.N,by=intersect(c("newID",col.cmt.found[count.cmt],"EVID",col.time),colnames(data))]
+        
+        findings <- listEvents(col="Nrep",name="Duplicated event",function(x) x<2,colname=paste(c(col.id,col.cmt.found[count.cmt], "EVID", col.time),collapse=", "),events=findings)
+    }
+    
     if("EVID"%in%colnames(data)){
 ### subjects without doses
         all.ids <- data[,unique(get(col.id.orig))]
@@ -752,8 +783,6 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
             findings <- rbind(findings,findings.occ,fill=TRUE)
         }    
     }
-    
-
     
 ### Section end: Covariates
 

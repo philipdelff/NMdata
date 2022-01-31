@@ -6,6 +6,10 @@
   say samples (eg LLOQ) or doses (eg injection site).
 * When run on a control stream, NMcheckData now checks all columns
   specified in the control stream to be numeric.
+* The NMcheckData argument, col.cmt now supports a vector of
+  length>1. This is helpful to support data where switching CMT column
+  is used to switch between definitions for different compounds or
+  even just models where compartment numbers are not compatible.
 * NMscanInput has the new argument recover.cols. Default is TRUE - use
   FALSE to not include columns that NONMEM did not read.
 
