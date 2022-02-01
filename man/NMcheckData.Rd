@@ -12,6 +12,7 @@ NMcheckData(
   cols.num,
   col.id = "ID",
   col.time = "TIME",
+  col.cmt = "CMT",
   col.flagn,
   col.row,
   na.strings,
@@ -47,12 +48,19 @@ that FED is the covariate, while PERIOD indicates the
 occasion.}
 
 \item{cols.num}{Columns that are expected to be present, numeric
-and non-NA.}
+and non-NA. If a character vector is given, the columns are
+expected to be used in all rows. If a column is only used for
+a subset of rows, use a list and name the elements by
+subsetting strings. See examples.}
 
 \item{col.id}{The name of the column that holds the subject
 identifier. Default is "ID".}
 
 \item{col.time}{The name of the column holding actual time.}
+
+\item{col.cmt}{The name(s) of the compartment column(s). These
+will be checked to be positive integers for all rows. They are
+also used in checks for row duplicates.}
 
 \item{col.flagn}{Optionally, the name of the column holding
 numeric exclusion flags. Default value is FLAG and can be
@@ -162,4 +170,11 @@ records. ADDL must be present.
     and non-NA.
 
 }
+}
+\examples{
+dat <- readRDS(system.file("examples/data/xgxr2.rds", package="NMdata"))
+NMcheckData(dat)
+dat[EVID==0,LLOQ:=3.5]
+## expecting LLOQ only for samples
+NMcheckData(dat,cols.num=list(c("STUDY"),"EVID==0"=c("LLOQ")))
 }

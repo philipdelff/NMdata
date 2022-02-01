@@ -34,7 +34,7 @@ test_that("basic",{
     pk <- readRDS(file="testData/data/xgxr2.rds")
     res <- NMcheckData(pk)
 
-    expect_equal_to_reference(res,fileRef,version=2)
+   expect_equal_to_reference(res,fileRef,version=2)
 })
 
 test_that("No col.flagn",{
@@ -230,7 +230,7 @@ test_that("covariates within subsets",{
     NMdataConf(reset=T)
     ##    NMdataConf(as.fun=data.table)
     
-    fileRef <- "testReference/NMcheckData_13.rds"
+    fileRef <- "testReference/NMcheckData_14.rds"
     pk <- readRDS(file="testData/data/xgxr2.rds")
     pk[EVID==0,LLOQ:=1]
     pk[EVID==1,site:="home"]
