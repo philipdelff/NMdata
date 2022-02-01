@@ -1,17 +1,23 @@
-
+## library(devtools)
 load_all()
-## lsts <- list.files(system.file("examples/nonmem",package="NMdata"),pattern="xgxr.*\\.lst$",full.names=TRUE)
-lsts <- list.files(system.file("examples/nonmem/xgxr001dir",package="NMdata"),pattern="output*\\.txt$",full.names=TRUE)
-lsts <- list.files("testData/nonmem",pattern="xgxr.*\\.lst$",full.names=TRUE)
-lsts <- list.files("testData/nonmem/xgxr001dir",pattern="output*\\.txt$",full.names=TRUE)
 
+setwd("../tests/testthat/")
+lsts1 <- list.files(system.file("examples/nonmem",package="NMdata"),pattern="xgxr.*\\.lst$",full.names=TRUE)
+lsts2 <- list.files(system.file("examples/nonmem/xgxr001dir",package="NMdata"),pattern="output*\\.txt$",full.names=TRUE)
+lsts3 <- list.files("testData/nonmem",pattern=".*\\.lst$",full.names=TRUE)
+lsts4 <- list.files("testData/nonmem/xgxr001dir",pattern="output*\\.txt$",full.names=TRUE)
+
+lsts1
+lsts2
+lsts3
+lsts4
 
 ## backup
 ## for(lst in lsts){
 ##     file.copy(lst,file.path("~/tmp",basename(lst)))
 ## }
 
-
+lsts  <- c(lsts1,lsts2,lsts3,lsts4)
 
 ### complete stripping of estimation information
 for (lst in lsts){
