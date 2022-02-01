@@ -30,8 +30,12 @@ for (lst in lsts){
     block.start <- grep("^ *NM-TRAN MESSAGES",lines)
     if(length(block.start) ){
         lines <- lines[1:(block.start-1)]
+        writeLines(lines,con=lst)
+        cat(lst,"updated\n" )
+    } else {
+        cat("Nothing to be done\n")
     }
-    writeLines(lines,con=lst)
+
 }
 
 
