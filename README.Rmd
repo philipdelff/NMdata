@@ -30,23 +30,23 @@ NMscanData <- function(x,...)NMdata::NMscanData(file.path(system.file(paste0("ex
 
 ##  A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
 Pharmacometrics and PK/PD modeling offers unique information for
-decision-making in several steps of drug development. However, the leg work in pharmacometrics remains technical, and this is a typical bottleneck for a pharmacometrician to contributing even more.
+decision-making in several steps of drug development. However, it often takes a lot of work to get there, and there are many pitfalls along the way. NMdata helps simplifying this work and steering around the pitfalls or at least making sure we didn't fall into them.
 
-The NMdata objective: *Automate the book
-keeping and allow more time for actual modeling*
+### Automate the book keeping and allow more time for actual modeling
 Preparing data sets - and if you use NONMEM, reading the results data - can be tedious, and mistakes can lead to hours of
 frustration. NMdata provides useful tools (including automated
 checks) for these trivial tasks. 
 
-*Any functionality in
-the NMdata can be used independently of the rest of the package*, and
+### NMdata is not a silo 
+Any functionality in
+the NMdata can be used independently of the rest of the package, and
 NMdata is not intended to force you to change any habits or
 preferences. Instead, NMdata tries to fit in with how you (or your
-colleague who worked on the project before you) do things.
+colleague who worked on the project before you) do things. It likely provides helpful additions no matter what other tools you already use. 
 
 The best place to browse information about the package is
 [here](https://philipdelff.github.io/NMdata/). The quickest way in is
-the the
+the
 [Cheatsheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html). 
 
 <!-- ![Cheatsheet](man/figures/cheatsheet_icon_0010.png){width="15%"} -->
