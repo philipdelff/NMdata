@@ -38,6 +38,8 @@ your colleague who worked on the project before you) do things. It
 likely provides helpful additions no matter what other tools you already
 use.
 
+### More information
+
 The best place to browse information about the package is
 [here](https://philipdelff.github.io/NMdata/). The quickest way in is
 the
@@ -48,6 +50,18 @@ the
 <!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html) -->
 
 <a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html"><img src="man/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"/></a>
+
+### How to install
+
+`NMdata` is on [CRAN](https://cran.r-project.org/),
+[MRAN](https://mran.microsoft.com/), and [MPN](https://mpn.metworx.com).
+To install from the package archive you are already using, do:
+
+    install.packages("NMdata")
+    library(NMdata)
+
+See further below for instructions on how to install from other sources
+than your default archive, if need be.
 
 ## Prepare, check, and export PK/PD data
 
@@ -130,20 +144,13 @@ access the meta data that will allow you to trace every step that was
 taken combining the data and the many checks that were done along the
 way too.
 
-## How to install
-
-`NMdata` is on [CRAN](https://cran.r-project.org/),
-[MRAN](https://mran.microsoft.com/), and [MPN](https://mpn.metworx.com).
-To install from the package archive you are already using, do:
-
-    install.packages("NMdata")
-    library(NMdata)
+## Get the most recent version
 
 If your archive has not been updated since July 2021, you may not find
-`NMdata` that way. In that case you have two other options. You can
-explicitly select CRAN for the installation. Or if you should want a
-version that has not yet reached CRAN, installing from Github is easy
-too.
+`NMdata` if you try to install with `install.packages` (option 1). In
+that case you have two other options. You can explicitly select CRAN for
+the installation. Or if you should want a version that has not yet
+reached CRAN, installing from Github is easy too.
 
     ## Option 2: Install explicitly from CRAN
     install.packages("NMdata",repos="https://cloud.r-project.org")
