@@ -118,10 +118,22 @@
 <h3 id="nmdata-is-not-a-silo">NMdata is not a silo<a class="anchor" aria-label="anchor" href="#nmdata-is-not-a-silo"></a>
 </h3>
 <p>Any functionality in the NMdata can be used independently of the rest of the package, and NMdata is not intended to force you to change any habits or preferences. Instead, NMdata tries to fit in with how you (or your colleague who worked on the project before you) do things. It likely provides helpful additions no matter what other tools you already use.</p>
+</div>
+<div class="section level3">
+<h3 id="more-information">More information<a class="anchor" aria-label="anchor" href="#more-information"></a>
+</h3>
 <p>The best place to browse information about the package is <a href="https://philipdelff.github.io/NMdata/">here</a>. The quickest way in is the <a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html" class="external-link">Cheatsheet</a>.</p>
 <!-- ![Cheatsheet](man/figures/cheatsheet_icon_0010.png){width="15%"} -->
 <!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html) -->
 <p><a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html" class="external-link"><img src="reference/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"></a></p>
+</div>
+<div class="section level3">
+<h3 id="how-to-install">How to install<a class="anchor" aria-label="anchor" href="#how-to-install"></a>
+</h3>
+<p><code>NMdata</code> is on <a href="https://cran.r-project.org/" class="external-link">CRAN</a>, <a href="https://mran.microsoft.com/" class="external-link">MRAN</a>, and <a href="https://mpn.metworx.com" class="external-link">MPN</a>. To install from the package archive you are already using, do:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">"NMdata"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(NMdata)</span></code></pre></div>
+<p>See further below for instructions on how to install from other sources than your default archive, if need be.</p>
 </div>
 </div>
 <div class="section level2">
@@ -138,7 +150,7 @@
 <h2 id="automated-and-general-reader-of-nonmem-results-data">Automated and general reader of NONMEM results data<a class="anchor" aria-label="anchor" href="#automated-and-general-reader-of-nonmem-results-data"></a>
 </h2>
 <p>Reading the resulting data from NONMEM can require a few manual steps. Especially because all modelers seem to do things a little differently. <code>NMscanData</code> can return all data output (<code>$TABLE</code>) from NONMEM combined, and if wanted with additional columns and rows in input data. It’s as simple as</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr014.lst"</span>,recover.rows<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; Model:  xgxr014 </span>
 <span class="co">#&gt; Input and output data merged by: ROW </span>
@@ -154,7 +166,7 @@
 <span class="co">#&gt;     0        597    755</span>
 <span class="co">#&gt;     1          0    150</span></code></pre></div>
 <p>And we are ready to plot (a subset of) the result:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res.plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">res</span>,<span class="va">ID</span><span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">113</span>,<span class="fl">135</span><span class="op">)</span><span class="op">&amp;</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">res.plot</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">TIME</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
@@ -167,21 +179,18 @@
 <span class="co">#&gt; Warning: Removed 2 row(s) containing missing values (geom_path).</span></code></pre></div>
 <p><img src="reference/figures/README-NMscanData-example1-plot-1.png" width="100%"></p>
 <p>Want a tibble instead? Easy:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res.tibble</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr001.lst"</span>,as.fun<span class="op">=</span><span class="fu">tibble</span><span class="fu">::</span><span class="va"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>Or a data.table? This time, we’ll configure NMdata to return data.tables by default:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>as.fun<span class="op">=</span><span class="st">"data.table"</span><span class="op">)</span>
 <span class="va">res.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr001.lst"</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>NMscanData is very general, and should work with all kinds of models, and all kinds of other software and configurations. Take a look at <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html">this vignette</a> for more info on the NONMEM data reader. Then you will learn how to access the meta data that will allow you to trace every step that was taken combining the data and the many checks that were done along the way too.</p>
 </div>
 <div class="section level2">
-<h2 id="how-to-install">How to install<a class="anchor" aria-label="anchor" href="#how-to-install"></a>
+<h2 id="get-the-most-recent-version">Get the most recent version<a class="anchor" aria-label="anchor" href="#get-the-most-recent-version"></a>
 </h2>
-<p><code>NMdata</code> is on <a href="https://cran.r-project.org/" class="external-link">CRAN</a>, <a href="https://mran.microsoft.com/" class="external-link">MRAN</a>, and <a href="https://mpn.metworx.com" class="external-link">MPN</a>. To install from the package archive you are already using, do:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">install.packages</span>(<span class="st">"NMdata"</span>)</span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">library</span>(NMdata)</span></code></pre></div>
-<p>If your archive has not been updated since July 2021, you may not find <code>NMdata</code> that way. In that case you have two other options. You can explicitly select CRAN for the installation. Or if you should want a version that has not yet reached CRAN, installing from Github is easy too.</p>
+<p>If your archive has not been updated since July 2021, you may not find <code>NMdata</code> if you try to install with <code>install.packages</code> (option 1). In that case you have two other options. You can explicitly select CRAN for the installation. Or if you should want a version that has not yet reached CRAN, installing from Github is easy too.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">## Option 2: Install explicitly from CRAN</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="kw">install.packages</span>(<span class="st">"NMdata"</span>,<span class="dt">repos=</span><span class="st">"https://cloud.r-project.org"</span>)</span>
 <span id="cb6-3"><a href="#cb6-3"></a><span class="kw">library</span>(NMdata)</span>
