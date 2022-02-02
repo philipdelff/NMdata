@@ -8,6 +8,8 @@ mergeCheck(
   df1,
   df2,
   by,
+  by.x,
+  by.y,
   fun.commoncols = base::warning,
   ncols.expect,
   track.msg = FALSE,

@@ -15,6 +15,8 @@
 ##' @param df2 A data.frame that will be merged onto df1.
 ##' @param by The column(s) to merge by. Character string
 ##'     (vector). by or by.x and by.y must be supplied.
+##' @param by.x
+##' @param by.y
 ##' @param as.fun The default is to return a data.table if df1 is a
 ##'     data.table and return a data.frame in all other cases. Pass a
 ##'     function in as.fun to convert to something else.
@@ -55,8 +57,8 @@
 ##'
 ##' @export
 
-mergeCheck <- function(df1,df2,by,fun.commoncols=base::warning,ncols.expect,track.msg=FALSE,quiet,as.fun,...){
-
+mergeCheck <- function(df1,df2,by,by.x,by.y,fun.commoncols=base::warning,ncols.expect,track.msg=FALSE,quiet,as.fun,...){
+    
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -76,15 +78,26 @@ mergeCheck <- function(df1,df2,by,fun.commoncols=base::warning,ncols.expect,trac
 
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
+
+    dots <- list(...)
+    names.dots <- names(dots)
+
+    if(!xor(missing(by),missing(by.x)&&missing(by.y))){
+        messageWrap("Either by or both by.x and by.y must be provided",fun.msg=stop)
+    }
+    if(!missing(by)) {
+        by.x <- by
+        by.y <- by
+    }
     
     name.df3 <- "merged.df"
-    if("all"%in%names(list(...))) {
+    if("all"%in%names.dots) {
         messageWrap("option all not supported. mergeCheck is intended for merges that result in column additions to df1, that's all.",
                     fun.msg=stop,track.msg=track.msg)
     }
 
 ### check if sort is in ... That cannot be passed.
-    if("sort"%in%names(list(...))) messageWrap("sort is not meaningful in combination with mergeCheck because mergeCheck will preserve order of df1. Please drop sort argument.",fun.msg=stop,track.msg=track.msg)
+    if("sort"%in%names.dots) messageWrap("sort is not meaningful in combination with mergeCheck because mergeCheck will preserve order of df1. Please drop sort argument.",fun.msg=stop,track.msg=track.msg)
 
 ### df1 cannot be of nrow==0. There would be no way to add columns to a zero row data set
     if(nrow(df1)==0) messageWrap(paste(name.df1," has no rows. df1 must have existing rows so that values of the columns in by can be used for the merge."),fun.msg=stop,track.msg=track.msg)
@@ -110,19 +123,17 @@ mergeCheck <- function(df1,df2,by,fun.commoncols=base::warning,ncols.expect,trac
     if(df1.was.dt && is.null(as.fun)) as.fun <- "data.table"
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
-    ### this has to be refined. by.x+by.y will do too.
+### this has to be refined. by.x+by.y will do too.
     ## if(missing(by) || is.null(by)) stop("The \"by\" argument must be supplied.") 
 
-    if(!missing(by)){
-        cols.common <- intersect(colnames(df1),colnames(df2))
-        cols.com.notby <- setdiff(cols.common,by)
-        commoncols.found <- FALSE
-        if(length(cols.com.notby)) {
-            messageWrap(paste0("df1 and df2 have common column names not being merged by. This will create new column names in output. Common but not merged by: ",paste(cols.com.notby,collapse=", "),"."),
-                        fun.msg=fun.commoncols,track.msg=track.msg)
-            commoncols.found <- TRUE
-        }
+    cols.common.notby <- intersect(setdiff(colnames(df1),by.x),setdiff(colnames(df2),by.y))
+    commoncols.found <- FALSE
+    if(length(cols.common.notby)) {
+        messageWrap(paste0("df1 and df2 have common column names not being merged by. This will create new column names in output. Common but not merged by: ",paste(cols.common.notby,collapse=", "),"."),
+                    fun.msg=fun.commoncols,track.msg=track.msg)
+        commoncols.found <- TRUE
     }
+    
     rowcol <- tmpcol(names=c(colnames(df1),colnames(df2)))
 
     if(nrow(df1)) {
@@ -133,7 +144,10 @@ mergeCheck <- function(df1,df2,by,fun.commoncols=base::warning,ncols.expect,trac
         reorder <- FALSE
     }
     
-    df3 <- merge(df1,df2,by=by,sort=FALSE,...)
+    df3 <- tryCatch(merge(df1,df2,by.x=by.x,by.y=by.y,sort=FALSE,...),error=identity)
+    if("error"%in%class(df3)){
+        stop(paste0("Merge failed. This error was returned by merge.data.table:\n",df3$message))
+    }
 
     rows.disappeared <- !(all(df1[,get(rowcol)]%in%df3[,get(rowcol)]))
     rows.created <- !(all(df3[,get(rowcol)]%in%df1[,get(rowcol)]))
@@ -160,7 +174,7 @@ mergeCheck <- function(df1,df2,by,fun.commoncols=base::warning,ncols.expect,trac
         
         dtcheck <- merge(df1[,.N,by=by],
                          df3[,.N,by=by]
-                        ,by=by,all=TRUE,suffixes=c(".df1",".result")
+                        ,by=by.x,all=TRUE,suffixes=c(".df1",".result")
                          )
         dtcheck[is.na(N.df1),N.df1:=0]
         dtcheck[is.na(N.result),N.result:=0]

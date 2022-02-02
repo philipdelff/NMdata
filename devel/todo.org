@@ -98,9 +98,9 @@ Number of unique combinations of by? This seems too advanced
 4|3|2 -> 4
 Numer of NA's in right and in result
 **** TODO [#A] Warning if NA in by columns                          :v0_0_11:
-**** TODO [#A] merge in try                                         :v0_0_11:
-If the merge actually fails, we want to prepend something to the
-data.table::merge error.
+**** DONE merge in try                                              :v0_0_11:
+     If the merge actually fails, we want to prepend something to the
+     data.table::merge error.
 **** TODO [#B] second merge in try
 If first merge isn't accepted, the second merge can fail. Or is it
 because by and by.x+by.y are handled differently the second time? Clen this.
@@ -425,7 +425,6 @@ arguments. NMdata calls this "writtenTo".
 *** Examples
 **** DONE renameByContents example
 *** Vignettes
-**** TODO [#A] Take cheatsheet out of package                       :v0_0_11:
 *** pkgdown
 **** TODO Add bug list
 **** TODO Rename menu items
