@@ -39,7 +39,7 @@ With load_all():
 *** DONE NMcheckColNames
 **** return input column names and Nonmem interpretation for user to spot errors
 **** Bad name, what could we call it?
-*** TODO [#B] NMfreezeModels
+*** TODO [#B] NMfreezeModels                                    :newFunction:
     Remember to add chmod and describe that only a flat dir structure is supported so far
 *** DONE function to replace file name extension - fnExtension
 *** DONE summary.NMdata
@@ -97,6 +97,7 @@ Probably add class too.
 Number of unique combinations of by? This seems too advanced
 4|3|2 -> 4
 Numer of NA's in right and in result
+**** TODO Deprecate df1 and df2 arguments                           :v0_0_11:
 **** TODO [#A] Warning if NA in by columns                          :v0_0_11:
 **** DONE merge in try                                              :v0_0_11:
      If the merge actually fails, we want to prepend something to the
