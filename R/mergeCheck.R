@@ -36,11 +36,11 @@
 ##'     to messages/warnings/errors that they came from mergCheck.
 ##' @param quiet If FALSE, the names of the added columns are
 ##'     reported. Default value controlled by NMdataConf.
-##' @param fun.na.by If NA's are found in by columns in both x and
-##'     why, what should we do? This could be OK, but in many cases,
-##'     it's because something unexpected is happening. Use
+##' @param fun.na.by If NA's are found in (matched) by columns in both
+##'     x and why, what should we do? This could be OK, but in many
+##'     cases, it's because something unexpected is happening. Use
 ##'     fun.na.by=NULL in cases where you really don't care about
-##'     this.
+##'     this and want to go ahead regardless.
 ##' @param as.fun The default is to return a data.table if x is a
 ##'     data.table and return a data.frame in all other cases. Pass a
 ##'     function in as.fun to convert to something else.
@@ -146,16 +146,13 @@ mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expec
         y <- as.data.table(y)
     }
 
-    ## check for NA in by columns
-    ## missings.by <- rbind(
-    ##     listMissings(x,by.x,quiet=T)
-    ##    ,
-    ##     listMissings(y,by.y,quiet=T)
-    ## )
+    ## check that by columns are 
+    by.not.in.x <- setdiff(by.x,colnames(x))
+    if(length(by.not.in.x)>0) stop(paste("This by.x column is not available in x:",paste(by.not.in.x,collapse=",")))
+    by.not.in.y <- setdiff(by.y,colnames(y))
+    if(length(by.not.in.y)>0) stop(paste("This by.y column is not available in y:",paste(by.not.in.y,collapse=",")))
 
-    ## if(nrow(missings.by)) browser()
-
-    
+    ## check for NA in by columns    
     nas.in.by.x <- x[,sapply(.SD,function(x)any(is.na(x))),.SDcols=by.x]
     nas.in.by.y <- y[,sapply(.SD,function(x)any(is.na(x))),.SDcols=by.y]
     
@@ -187,7 +184,7 @@ mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expec
     }
     
     df3 <- tryCatch(merge(x,y,by.x=by.x,by.y=by.y,sort=FALSE,...),error=identity)
-    if("error"%in%class(df3)){
+    if("error"%in%class(df3)){        
         stop(paste0("Merge failed. This error was returned by merge.data.table:\n",df3$message))
     }
 

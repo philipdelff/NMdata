@@ -123,7 +123,9 @@ test_that("Zero-row df1 must give an error",{
     dt3 <- dt2[,!c("b")]
 
     ## compareCols(dt1,dt3,diff.only=FALSE)
-    expect_error(mergeCheck(dt1,dt3,by="a"))
+    expect_error(
+        mergeCheck(dt1,dt3,by="a")
+    )
 
 })
 
@@ -138,11 +140,11 @@ test_that("Duplicating input rows",{
     )
 
 })
-ff
+
 test_that("deprecated df1 and df2",{
     dt1 <- data.table(x = 1:10,
                       y=letters[1:10])
-    df2 <- data.frame(y=letters[1:11],ff
+    df2 <- data.frame(y=letters[1:11],
                       x2 = 1:11,
                       stringsAsFactors=FALSE)
 
@@ -150,6 +152,7 @@ test_that("deprecated df1 and df2",{
     expect_message(
         mergeCheck(df1=dt1,df2=df2,by="y",ncols.expect = 1)
     )
+
 
 })
 
@@ -161,8 +164,8 @@ test_that("missing values in by",{
 
     ## compareCols(dt1,dt3,diff.only=FALSE)
     ##
-    mergeCheck(dt1,dt2,by="y",ncols.expect = 1)
-    mergeCheck(dt1,dt2,by="y",ncols.expect = 1,all.x=T)
+    ## mergeCheck(dt1,dt2,by="y",ncols.expect = 1)
+    ## mergeCheck(dt1,dt2,by="y",ncols.expect = 1,all.x=T)
     dt2[3,y:=NA]
     expect_error(
         mergeCheck(dt1,dt2,by="y",ncols.expect = 1)
@@ -170,5 +173,5 @@ test_that("missing values in by",{
     expect_error(
         mergeCheck(dt2,dt1,by="y",ncols.expect = 1)
     )
-    
+
 })
