@@ -138,11 +138,11 @@ test_that("Duplicating input rows",{
     )
 
 })
-
+ff
 test_that("deprecated df1 and df2",{
     dt1 <- data.table(x = 1:10,
                       y=letters[1:10])
-    df2 <- data.frame(y=letters[1:11],
+    df2 <- data.frame(y=letters[1:11],ff
                       x2 = 1:11,
                       stringsAsFactors=FALSE)
 
@@ -156,16 +156,19 @@ test_that("deprecated df1 and df2",{
 test_that("missing values in by",{
     dt1 <- data.table(x = 1:10,
                       y=c(letters[1:9],NA))
-    df2 <- data.frame(y=letters[1:11],
-                      x2 = 1:11,
-                      stringsAsFactors=FALSE)
+    dt2 <- data.table(y=letters[1:11],
+                      x2 = 1:11)
 
     ## compareCols(dt1,dt3,diff.only=FALSE)
+    ##
+    mergeCheck(dt1,dt2,by="y",ncols.expect = 1)
+    mergeCheck(dt1,dt2,by="y",ncols.expect = 1,all.x=T)
+    dt2[3,y:=NA]
     expect_error(
-        mergeCheck(dt1,df2,by="y",ncols.expect = 1)
+        mergeCheck(dt1,dt2,by="y",ncols.expect = 1)
     )
     expect_error(
-        mergeCheck(df2,dt1,by="y",ncols.expect = 1)
+        mergeCheck(dt2,dt1,by="y",ncols.expect = 1)
     )
     
 })
