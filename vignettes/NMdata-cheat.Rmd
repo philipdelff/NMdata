@@ -125,7 +125,7 @@ compareCols(covs,covs2)
 Use the `cols.wanted` argument for the overview to especially focus on the columns you need in your final data set. 
 
 
-`mergeCheck(x1,x2,...)` - Merges data and only accept results if all that happened was that columns from `x2` were added to `x1`. Row order of `x1` is retained. Arguments are passed to data.table which does the actual merge. This completely automates the necessary checks when say merging covariates onto data.
+`mergeCheck(x,y,...)` - Merges data and only accept results if all that happened was that columns from `y` were added to `x`. Row order of `x` is retained. Arguments are passed to data.table which does the actual merge. This completely automates the necessary checks when say merging covariates onto data.
 
 ```{r}
 pk2 <- mergeCheck(pk,covs2,by="ID")

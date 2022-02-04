@@ -1,3 +1,5 @@
+context("mergeCheck")
+
 ## meta is if x is metadata rather than an NMdata object
 fix.time <- function(x,meta=T){
     if(meta){
@@ -34,7 +36,7 @@ test_that("basic",{
     pk <- readRDS(file="testData/data/xgxr2.rds")
     res <- NMcheckData(pk)
 
-    expect_equal_to_reference(res,fileRef,version=2)
+   expect_equal_to_reference(res,fileRef,version=2)
 })
 
 test_that("No col.flagn",{
@@ -206,8 +208,9 @@ test_that("One covariate varying within ID",{
 })
 
 
-test_that("One covariate varying within ID",{
+test_that("with IOV",{
     NMdataConf(reset=T)
+    ##    NMdataConf(as.fun=data.table)
     
     fileRef <- "testReference/NMcheckData_13.rds"
     pk <- readRDS(file="testData/data/xgxr2.rds")
@@ -224,5 +227,23 @@ test_that("One covariate varying within ID",{
     expect_equal_to_reference(res,fileRef,version=2)
 
 })
+
+test_that("covariates within subsets",{
+    NMdataConf(reset=T)
+    ##    NMdataConf(as.fun=data.table)
+    
+    fileRef <- "testReference/NMcheckData_14.rds"
+    pk <- readRDS(file="testData/data/xgxr2.rds")
+    pk[EVID==0,LLOQ:=1]
+    pk[EVID==1,site:="home"]
+    pk[EVID==0,ASSAY:=3]
+    pk[EVID==1,ASSAY:=c(rep(NA,3),1,rep(NA,.N-4))]
+
+    ## it finds way too many for ASSAY. Should only find 1.
+    res <- NMcheckData(pk,cols.num=list("EVID==0"=c("LLOQ","ASSAY"),"EVID==1"=c("site"),"WEIGHTB"))
+    expect_equal_to_reference(res,fileRef,version=2)
+
+})
+
 
 ##

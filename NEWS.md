@@ -1,7 +1,24 @@
 # NMdata 0.0.11
 
+* The cols.num argument in NMcheckData has been improved to support a
+  list specifying columns that are numeric within subsets of
+  data. This is often useful for columns that are only meaningful for
+  say samples (eg LLOQ) or doses (eg injection site).
+* When run on a control stream, NMcheckData now checks all columns
+  specified in the control stream to be numeric.
+* The NMcheckData argument, col.cmt now supports a vector of
+  length>1. This is helpful to support data where switching CMT column
+  is used to switch between definitions for different compounds or
+  even just models where compartment numbers are not compatible.
 * NMscanInput has the new argument recover.cols. Default is TRUE - use
   FALSE to not include columns that NONMEM did not read.
+* mergeCheck now retains column order from x. It has a few other
+  improvements too, like checking for missing values in by columns.
+* listMissings is new function that looks for missing values or
+  strings that represent missing values (like "" or ".") in multiple
+  columns. This can be useful when combining source data
+  sets. However, the function is still underdevelopment and what
+  exactly is being reported may change in future releases.
 
 ## Bugfixes
 * NMwriteData now respects NMdataConf()$args.fwrite

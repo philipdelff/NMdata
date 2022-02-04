@@ -42,7 +42,11 @@
 findVars <- function(data,by=NULL,cols.id,as.fun=NULL){
 
     ## check arguments
-    if(!missing(cols.id)) .Deprecated("by",msg="cols.id argument deprecated. Use by instead.")
+    if(!missing(cols.id) && !is.null(by)) stop("\"cols.id\" is a deprecated name for the \"by\" argument. Just use \"by\"")
+    if(!missing(cols.id)) {
+        warning("\"cols.id\" argument deprecated. Use \"by\" instead.")
+        by <- cols.id
+    }
     
     if(!is.data.frame(data)){
         stop("data must be a data.frame (or data.table)")

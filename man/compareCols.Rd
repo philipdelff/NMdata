@@ -76,6 +76,7 @@ tecnically, this function compares classes of elements in
 }
 \seealso{
 Other DataWrangling: 
-\code{\link{dims}()}
+\code{\link{dims}()},
+\code{\link{listMissings}()}
 }
 \concept{DataWrangling}

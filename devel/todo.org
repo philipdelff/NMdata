@@ -39,14 +39,10 @@ With load_all():
 *** DONE NMcheckColNames
 **** return input column names and Nonmem interpretation for user to spot errors
 **** Bad name, what could we call it?
-*** TODO [#B] NMfreezeModels
+*** TODO [#B] NMfreezeModels                                    :newFunction:
     Remember to add chmod and describe that only a flat dir structure is supported so far
-*** DONE NMtransInp
-    Translate column names according to Nonmem. Take the code from
-    NMscanInput.
 *** DONE function to replace file name extension - fnExtension
 *** DONE summary.NMdata
-*** DONE NMgetSection
 *** DONE Summary of the columns - NMinfo
     right now hidden in metadata
 *** DONE Summary of tables - NMinfo
@@ -79,11 +75,13 @@ helpful. Only list other columns than the scope.
 *** egdt
 **** DONE BUG the tmp by col has to be removed before reporting dims
 **** DONE Report dims(df1,df2,result) unless quiet
-*** TODO [#A] listMissings                              :v0_0_11:newFunction:
+*** DONE listMissings                                   :v0_0_11:newFunction:
 List missing elements
 
 For specific columns, look for missing elements (NA, "", length(x)==0
 in case of lists?). Tabulate and list. Align reporting with NMcheckData?
+*** DONE listMissings test                                          :v0_0_11:
+    CLOSED: [2022-02-04 Fri 16:16]
 *** TODO [#B] NMasNumeric                                       :newFunction:
 Error if not convertible and not NA or ""? "b" should be an error right?
 *** TODO [#B] NMsummarizeData Summarize data with nonmem in mind. :newFunction:
@@ -91,7 +89,7 @@ Error if not convertible and not NA or ""? "b" should be an error right?
 **** Dist of DV
 **** Covariates
 **** Has to take a by arg
-*** TODO [#A] NMcreateDoses Generate dosing schedule with loading, ADDL etc :v0_0_11:newFunction:
+*** TODO [#A] NMcreateDoses Generate dosing schedule with loading, ADDL etc :newFunction:
     This is available as a suitcase function
 *** TODO [#B] Function for complex dosing regimens              :newFunction:
 *** TODO [#B] Function to unfold ADDL/II doses to multiple rows :newFunction:
@@ -101,10 +99,11 @@ Probably add class too.
 Number of unique combinations of by? This seems too advanced
 4|3|2 -> 4
 Numer of NA's in right and in result
-**** TODO [#A] Warning if NA in by columns                          :v0_0_11:
-**** TODO [#A] merge in try                                         :v0_0_11:
-If the merge actually fails, we want to prepend something to the
-data.table::merge error.
+**** DONE Deprecate df1 and df2 arguments                           :v0_0_11:
+**** DONE Warning if NA in by columns                               :v0_0_11:
+**** DONE merge in try                                              :v0_0_11:
+     If the merge actually fails, we want to prepend something to the
+     data.table::merge error.
 **** TODO [#B] second merge in try
 If first merge isn't accepted, the second merge can fail. Or is it
 because by and by.x+by.y are handled differently the second time? Clen this.
@@ -114,6 +113,8 @@ because by and by.x+by.y are handled differently the second time? Clen this.
      the merge is done.
 **** DONE Test the check for row duplications
 *** NMcheckData
+**** TODO The summary should take a by argument
+**** TODO Define a NMfindings class and create a summary function?
 **** DONE Note when installing                                      :v0_0_11:
      Note: ... may be used in an incorrect context at NMcheckData.R:290 
      Solution: listEvents must have a args.fun rather than ...
@@ -159,7 +160,7 @@ Implement in same style as checks of cols.num
 **** DONE TIME increasing for subjects between EVID 3 or 4
 **** tests of text file
 ***** A field can't contain more than 24 characters
-**** TODO [#A] cols.num split on other columns                      :v0_0_11:
+**** DONE cols.num split on other columns                           :v0_0_11:
 Many variables are only expected to exist for say samples. Example:
 LLOQ can very well be missing for doses. And the check may depend on
 study, compound etc too. So we need to split or subset data for the
@@ -187,6 +188,9 @@ numeric should be using
      Applies to other colname checks too?
 **** TODO [#B] Requirements to DV for EVID==2 and EVID==3?
 **** DONE Add col.row to findings
+**** DONE Check splits of cols.num                                  :v0_0_11:
+**** DONE Document splits of cols.num                               :v0_0_11:
+**** DONE Document col.cmt                                          :v0_0_11:
 *** NMcheckDataFile
 **** DONE Check all columns as cols.num                             :v0_0_11:
 **** DONE Return data, summary and more                             :v0_0_11:
@@ -254,6 +258,7 @@ NULL=NAN which would mean that NA should be interpreted as NA in R.
 **** TODO [#B] Implement or at least detect RECORDS
 A way to limit rows read into nonmem
 *** NMtransInput
+    Translate column names according to Nonmem.
 **** DONE [#B] Add comparison column input-nonmem
 ***** if input!=nonmem,
 ***** nonmem %in% all(input)
@@ -423,7 +428,6 @@ arguments. NMdata calls this "writtenTo".
 *** Examples
 **** DONE renameByContents example
 *** Vignettes
-**** TODO [#A] Take cheatsheet out of package                       :v0_0_11:
 *** pkgdown
 **** TODO Add bug list
 **** TODO Rename menu items
