@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.10.905</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.10.921</span>
       </span>
     </div>
 
@@ -74,7 +74,12 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.11" id="nmdata-0011">NMdata 0.0.11<a class="anchor" aria-label="anchor" href="#nmdata-0011"></a></h2>
-<ul><li>NMscanInput has the new argument recover.cols. Default is TRUE - use FALSE to not include columns that NONMEM did not read.</li>
+<ul><li>The cols.num argument in NMcheckData has been improved to support a list specifying columns that are numeric within subsets of data. This is often useful for columns that are only meaningful for say samples (eg LLOQ) or doses (eg injection site).</li>
+<li>When run on a control stream, NMcheckData now checks all columns specified in the control stream to be numeric.</li>
+<li>The NMcheckData argument, col.cmt now supports a vector of length&gt;1. This is helpful to support data where switching CMT column is used to switch between definitions for different compounds or even just models where compartment numbers are not compatible.</li>
+<li>NMscanInput has the new argument recover.cols. Default is TRUE - use FALSE to not include columns that NONMEM did not read.</li>
+<li>mergeCheck now retains column order from x. It has a few other improvements too, like checking for missing values in by columns.</li>
+<li>listMissings is new function that looks for missing values or strings that represent missing values (like "" or “.”) in multiple columns. This can be useful when combining source data sets. However, the function is still underdevelopment and what exactly is being reported may change in future releases.</li>
 </ul><div class="section level3">
 <h3 id="bugfixes-0-0-11">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-0-11"></a></h3>
 <ul><li>NMwriteData now respects NMdataConf()$args.fwrite</li>

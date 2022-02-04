@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.10.905</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.10.921</span>
       </span>
     </div>
 
@@ -110,7 +110,7 @@
 
     
     
-<p>Built 2022-02-02 using NMdata 0.0.10.905.</p>
+<p>Built 2022-02-04 using NMdata 0.0.10.921.</p>
 <p>This vignette is still under development. Please make sure to see latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
 <h2 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
@@ -229,14 +229,14 @@
 <span class="co">#&gt; Rows disappeared during merge.</span>
 <span class="co">#&gt; Rows duplicated during merge.</span>
 <span class="co">#&gt; Overview of dimensions of input and output data:</span>
-<span class="co">#&gt;         data nrows ncols</span>
-<span class="co">#&gt; 1:        pk  1502    25</span>
-<span class="co">#&gt; 2:    dt.cov   150     2</span>
-<span class="co">#&gt; 3: merged.df  1502    26</span>
-<span class="co">#&gt; Overview of values of by where number of rows in df1 changes:</span>
-<span class="co">#&gt;     ID N.df1 N.result</span>
-<span class="co">#&gt; 1:  31    10       20</span>
-<span class="co">#&gt; 2: 180    10        0</span>
+<span class="co">#&gt;      data nrows ncols</span>
+<span class="co">#&gt; 1:     pk  1502    25</span>
+<span class="co">#&gt; 2: dt.cov   150     2</span>
+<span class="co">#&gt; 3: result  1502    26</span>
+<span class="co">#&gt; Overview of values of by where number of rows in x changes:</span>
+<span class="co">#&gt;     ID N.x N.result</span>
+<span class="co">#&gt; 1:  31  10       20</span>
+<span class="co">#&gt; 2: 180  10        0</span>
 <span class="co">#&gt; Error in mergeCheck(pk, dt.cov, by = "ID"): Merge added and/or removed rows.</span></code></pre></div>
 <p>Notice that <code>mergeCheck</code> tells us for which values of <code>ID</code> (the <code>by</code> argument which can be of length &gt;1) the input and output differ so we can quickly look into the data sets and make a decision how we want to handle this. In this case we discard the covariate value for subject 31 and use <code>all.x=TRUE</code> argument to get <code>NA</code> for subjects 31 and 180:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -387,7 +387,7 @@
 <span class="co">#&gt; [1] "DataPrepare.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-02-02 02:33:40"</span>
+<span class="co">#&gt; [1] "2022-02-04 22:01:37"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$writtenTo</span>
 <span class="co">#&gt; [1] "derived/pkdata.csv"</span>
@@ -403,7 +403,7 @@
 <span class="co">#&gt; [1] "DataPrepare.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-02-02 02:33:40 UTC"</span>
+<span class="co">#&gt; [1] "2022-02-04 22:01:37 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$writtenTo</span>
 <span class="co">#&gt; [1] "derived/pkdata.rds"</span>
@@ -436,7 +436,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-02-02 02:33:41 UTC"</span></code></pre></div>
+<span class="co">#&gt; [1] "2022-02-04 22:01:38 UTC"</span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>NMstamp</code>, but you can add anything to this. We want to keep descriptive note too. Another often useful piece of information is what source data files were read in order to generate the saved data. <code>Description</code> and <code>Source.Files</code> are only examples - any name can be used.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMstamp.html">NMstamp</a></span><span class="op">(</span><span class="va">pk</span>, script <span class="op">=</span> <span class="st">"vignettes/DataCreate.Rmd"</span>, Description <span class="op">=</span> <span class="st">"A PK dataset used for examples."</span>,
@@ -447,7 +447,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-02-02 02:33:41 UTC"</span>
+<span class="co">#&gt; [1] "2022-02-04 22:01:38 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span>

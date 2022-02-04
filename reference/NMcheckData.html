@@ -19,7 +19,7 @@ but because they are typical dataset issues."><meta property="og:image" content=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.10.905</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.10.921</span>
       </span>
     </div>
 
@@ -90,6 +90,7 @@ but because they are typical dataset issues.</p>
   <span class="va">cols.num</span>,
   col.id <span class="op">=</span> <span class="st">"ID"</span>,
   col.time <span class="op">=</span> <span class="st">"TIME"</span>,
+  col.cmt <span class="op">=</span> <span class="st">"CMT"</span>,
   <span class="va">col.flagn</span>,
   <span class="va">col.row</span>,
   <span class="va">na.strings</span>,
@@ -128,12 +129,19 @@ that FED is the covariate, while PERIOD indicates the
 occasion.</p></dd>
 <dt>cols.num</dt>
 <dd><p>Columns that are expected to be present, numeric
-and non-NA.</p></dd>
+and non-NA. If a character vector is given, the columns are
+expected to be used in all rows. If a column is only used for
+a subset of rows, use a list and name the elements by
+subsetting strings. See examples.</p></dd>
 <dt>col.id</dt>
 <dd><p>The name of the column that holds the subject
 identifier. Default is "ID".</p></dd>
 <dt>col.time</dt>
 <dd><p>The name of the column holding actual time.</p></dd>
+<dt>col.cmt</dt>
+<dd><p>The name(s) of the compartment column(s). These
+will be checked to be positive integers for all rows. They are
+also used in checks for row duplicates.</p></dd>
 <dt>col.flagn</dt>
 <dd><p>Optionally, the name of the column holding
 numeric exclusion flags. Default value is FLAG and can be
@@ -213,6 +221,57 @@ records. ADDL must be present.</p></li>
     and non-NA.</p></li>
 </ul></div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">NMcheckData</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  column              check  N Nid</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    EVID Subject has no obs 19  19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     MDV   Column not found  1   0</span>
+<span class="r-in"><span class="va">dat</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span>,<span class="va">LLOQ</span><span class="op">:=</span><span class="fl">3.5</span><span class="op">]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        ROW  ID NOMTIME     TIME EVID CMT AMT       DV FLAG STUDY BLQ CYCLE DOSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1:    1  31     0.0  0.00000    1   1   3       NA    0     1   0     1    3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2:    2  31     0.1  0.13381    0   2   0 0.050000   10     1   1     1    3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3:    3  31     0.5  0.48619    0   2   0 0.050000   10     1   1     1    3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4:    4  31     1.0  1.00637    0   2   0 0.050000   10     1   1     1    3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5:    5  31     2.0  2.02464    0   2   0 0.050000   10     1   1     1    3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1498: 1498 180     4.0  4.14220    0   2   0 0.614680    0     1   0     1  300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1499: 1499 180     8.0  8.16823    0   2   0 0.241030    0     1   0     1  300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1500: 1500 180    12.0 12.15164    0   2   0 0.097516    0     1   0     1  300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1501: 1501 180    18.0 18.04313    0   2   0 0.080055    0     1   0     1  300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1502: 1502 180    23.9 23.87067    0   2   0 0.065688    0     1   0     1  300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       PART PROFDAY PROFTIME WEIGHTB   eff0 EVENTU             NAME TIMEUNIT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1:    1       1      0.0  87.031 56.461     mg           Dosing    Hours</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2:    1       1      0.1  87.031 56.461  ng/mL PK Concentration    Hours</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3:    1       1      0.5  87.031 56.461  ng/mL PK Concentration    Hours</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4:    1       1      1.0  87.031 56.461  ng/mL PK Concentration    Hours</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5:    1       1      2.0  87.031 56.461  ng/mL PK Concentration    Hours</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1498:    1       1      4.0  98.103 57.835  ng/mL PK Concentration    Hours</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1499:    1       1      8.0  98.103 57.835  ng/mL PK Concentration    Hours</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1500:    1       1     12.0  98.103 57.835  ng/mL PK Concentration    Hours</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1501:    1       1     18.0  98.103 57.835  ng/mL PK Concentration    Hours</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1502:    1       1     23.9  98.103 57.835  ng/mL PK Concentration    Hours</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       TRTACT         flag trtact LLOQ</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1:   3 mg       Dosing   3 mg   NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2:   3 mg   Below LLOQ   3 mg  3.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3:   3 mg   Below LLOQ   3 mg  3.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4:   3 mg   Below LLOQ   3 mg  3.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5:   3 mg   Below LLOQ   3 mg  3.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1498: 300 mg Analysis set 300 mg  3.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1499: 300 mg Analysis set 300 mg  3.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1500: 300 mg Analysis set 300 mg  3.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1501: 300 mg Analysis set 300 mg  3.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1502: 300 mg Analysis set 300 mg  3.5</span>
+<span class="r-in"><span class="co">## expecting LLOQ only for samples</span></span>
+<span class="r-in"><span class="fu">NMcheckData</span><span class="op">(</span><span class="va">dat</span>,cols.num<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDY"</span><span class="op">)</span>,<span class="st">"EVID==0"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LLOQ"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  column              check  N Nid</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    EVID Subject has no obs 19  19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     MDV   Column not found  1   0</span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
