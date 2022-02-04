@@ -41,6 +41,7 @@ reference:
         contents:
           - NMorderColumns
           - compareCols
+          - listMissings
           - mergeCheck
           - renameByContents
           - flagsAssign

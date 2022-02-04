@@ -62,11 +62,11 @@ reported. Default value controlled by NMdataConf.}
 
 \item{df2}{Deprecated. Use y.}
 
-\item{fun.na.by}{If NA's are found in by columns in both x and
-why, what should we do? This could be OK, but in many cases,
-it's because something unexpected is happening. Use
+\item{fun.na.by}{If NA's are found in (matched) by columns in both
+x and why, what should we do? This could be OK, but in many
+cases, it's because something unexpected is happening. Use
 fun.na.by=NULL in cases where you really don't care about
-this.}
+this and want to go ahead regardless.}
 
 \item{as.fun}{The default is to return a data.table if x is a
 data.table and return a data.frame in all other cases. Pass a
