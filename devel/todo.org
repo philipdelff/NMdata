@@ -75,11 +75,12 @@ helpful. Only list other columns than the scope.
 *** egdt
 **** DONE BUG the tmp by col has to be removed before reporting dims
 **** DONE Report dims(df1,df2,result) unless quiet
-*** TODO [#A] listMissings                              :v0_0_11:newFunction:
+*** DONE [#A] listMissings                              :v0_0_11:newFunction:
 List missing elements
 
 For specific columns, look for missing elements (NA, "", length(x)==0
 in case of lists?). Tabulate and list. Align reporting with NMcheckData?
+*** TODO listMissings test                                          :v0_0_11:
 *** TODO [#B] NMasNumeric                                       :newFunction:
 Error if not convertible and not NA or ""? "b" should be an error right?
 *** TODO [#B] NMsummarizeData Summarize data with nonmem in mind. :newFunction:
@@ -97,7 +98,7 @@ Probably add class too.
 Number of unique combinations of by? This seems too advanced
 4|3|2 -> 4
 Numer of NA's in right and in result
-**** TODO Deprecate df1 and df2 arguments                           :v0_0_11:
+**** DONE Deprecate df1 and df2 arguments                           :v0_0_11:
 **** TODO [#A] Warning if NA in by columns                          :v0_0_11:
 **** DONE merge in try                                              :v0_0_11:
      If the merge actually fails, we want to prepend something to the

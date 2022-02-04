@@ -12,7 +12,13 @@
   even just models where compartment numbers are not compatible.
 * NMscanInput has the new argument recover.cols. Default is TRUE - use
   FALSE to not include columns that NONMEM did not read.
-* mergeCheck now retains column order from x.
+* mergeCheck now retains column order from x. It has a few other
+  improvements too, like checking for missing values in by columns.
+* listMissings is new function that looks for missing values or
+  strings that represent missing values (like "" or ".") in multiple
+  columns. This can be useful when combining source data
+  sets. However, the function is still underdevelopment and what
+  exactly is being reported may change in future releases.
 
 ## Bugfixes
 * NMwriteData now respects NMdataConf()$args.fwrite

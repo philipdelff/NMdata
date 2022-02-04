@@ -31,6 +31,7 @@ Get dimensions of multiple objects
 }
 \seealso{
 Other DataWrangling: 
-\code{\link{compareCols}()}
+\code{\link{compareCols}()},
+\code{\link{listMissings}()}
 }
 \concept{DataWrangling}

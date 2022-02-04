@@ -328,7 +328,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     }
 
     reportFindings <- function(findings,data,col.id,col.row,c.row,col.row.orig,col.id.orig,quiet,as.fun,return.summary){
-
+        
 ### Add ID's to row-level findings
         findings.row <- findings[level=="row"]
         if(!is.null(col.id)&&nrow(findings.row)>0){
@@ -348,7 +348,10 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 ### use the row identifier for reporting
             if(!is.null(col.row)&&col.row%in%colnames(data)){
                 
-                findings <- mergeCheck(findings,data[,c(c.row,col.row.orig),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop,quiet=TRUE)
+                findings <- mergeCheck(findings,
+                                       data[,c(c.row,col.row.orig),with=F],
+                                       by.x="row",by.y=c.row,all.x=T,
+                                       fun.commoncols=stop,quiet=TRUE)
                 setnames(findings,col.row.orig,col.row)
             }
             if(!col.id%in%colnames(findings)) findings[,(col.id):=NA_real_]
@@ -659,7 +662,6 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
                            )
     
     
-
     if("ADDL"%in%colnames(data)){
         ## ADDL only makes sense together with II
         findings <- listEvents("II",name="(This label will not be used)",

@@ -5,8 +5,8 @@
 \title{Merge, order, and check resulting rows and columns.}
 \usage{
 mergeCheck(
-  df1,
-  df2,
+  x,
+  y,
   by,
   by.x,
   by.y,
@@ -14,23 +14,32 @@ mergeCheck(
   ncols.expect,
   track.msg = FALSE,
   quiet,
+  df1,
+  df2,
+  fun.na.by = base::stop,
   as.fun,
   ...
 )
 }
 \arguments{
-\item{df1}{A data.frame with the number of rows must should be
+\item{x}{A data.frame with the number of rows must should be
 obtained from the merge. The resulting data.frame will be
-ordered like df1.}
+ordered like x.}
 
-\item{df2}{A data.frame that will be merged onto df1.}
+\item{y}{A data.frame that will be merged onto x.}
 
-\item{by}{The column(s) to merge by. Character string
-(vector). by or by.x and by.y must be supplied.}
+\item{by}{The column(s) to merge by. Character string (vector). by
+or by.x and by.y must be supplied.}
 
-\item{fun.commoncols}{If common columns are found in df1 and df2,
-and they are not used in by, this will create columns named
-like col.x and col.y in result (see ?merge). Often, this is a
+\item{by.x}{If the columns to merge by in x and y are named
+differently. by or by.x and by.y must be supplied.}
+
+\item{by.y}{If the columns to merge by in x and y are named
+differently. by or by.x and by.y must be supplied.}
+
+\item{fun.commoncols}{If common columns are found in x and y, and
+they are not used in by, this will create columns named like
+col.x and col.y in result (see ?merge). Often, this is a
 mistake, and the default is to throw a warning if this
 happens. If using mergeCheck in a function, you may want to
 make sure this is not happening and use
@@ -38,9 +47,9 @@ fun.commoncols=stop. If you want nothing to happen, you can do
 fun.commoncols=NULL.}
 
 \item{ncols.expect}{If you want to include a check of the number
-of columns being added to the dimensions of df1. So if
+of columns being added to the dimensions of x. So if
 ncols.expect=1, the resulting data must have exactly one
-column more than df1 - if not, an error will be returned.}
+column more than x - if not, an error will be returned.}
 
 \item{track.msg}{If using mergeCheck inside other functions, it
 can be useful to use track.msg=TRUE. This will add information
@@ -49,7 +58,17 @@ to messages/warnings/errors that they came from mergCheck.}
 \item{quiet}{If FALSE, the names of the added columns are
 reported. Default value controlled by NMdataConf.}
 
-\item{as.fun}{The default is to return a data.table if df1 is a
+\item{df1}{Deprecated. Use x.}
+
+\item{df2}{Deprecated. Use y.}
+
+\item{fun.na.by}{If NA's are found in by columns in both x and
+why, what should we do? This could be OK, but in many cases,
+it's because something unexpected is happening. Use
+fun.na.by=NULL in cases where you really don't care about
+this.}
+
+\item{as.fun}{The default is to return a data.table if x is a
 data.table and return a data.frame in all other cases. Pass a
 function in as.fun to convert to something else.}
 
@@ -57,12 +76,12 @@ function in as.fun to convert to something else.}
 all is among them, an error will be returned.}
 }
 \value{
-a data.frame resulting from merging df1 and df2. Class as
+a data.frame resulting from merging x and y. Class as
     defined by as.fun.
 }
 \description{
-This function is a useful wrapper for merges where df1 will be
-extended with columns from df2, i.e. all rows in df1 are retained,
+This function is a useful wrapper for merges where x will be
+extended with columns from y, i.e. all rows in x are retained,
 and no new rows can be created. For this very common type of
 (simple) merges, mergeCheck does the merge and ensures that
 exactly this and nothing else happened. Notice, mergeCheck passes
@@ -72,13 +91,14 @@ described above.
 }
 \details{
 Besides merging and checking rows, mergeCheck makes sure
-    the order in df1 is retained in the resulting data. Also, a
-    warning is given if column names are overlapping, making merge
-    create new column names like col.x and col.y. Merges and other
-    operations are done using data.table. If df1 is a data.frame
-    (and not a data.table), it will internally be converted to a
-    data.table, and the resulting data.table will be converted
-    back to a data.frame before returning.
+    the order in x is retained in the resulting data (both rows
+    and column order). Also, a warning is given if column names
+    are overlapping, making merge create new column names like
+    col.x and col.y. Merges and other operations are done using
+    data.table. If x is a data.frame (and not a data.table), it
+    will internally be converted to a data.table, and the
+    resulting data.table will be converted back to a data.frame
+    before returning.
 }
 \seealso{
 Other DataCreate: 

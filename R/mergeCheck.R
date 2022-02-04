@@ -19,9 +19,6 @@
 ##'     differently. by or by.x and by.y must be supplied.
 ##' @param by.y If the columns to merge by in x and y are named
 ##'     differently. by or by.x and by.y must be supplied.
-##' @param as.fun The default is to return a data.table if x is a
-##'     data.table and return a data.frame in all other cases. Pass a
-##'     function in as.fun to convert to something else.
 ##' @param fun.commoncols If common columns are found in x and y, and
 ##'     they are not used in by, this will create columns named like
 ##'     col.x and col.y in result (see ?merge). Often, this is a
@@ -39,6 +36,16 @@
 ##'     to messages/warnings/errors that they came from mergCheck.
 ##' @param quiet If FALSE, the names of the added columns are
 ##'     reported. Default value controlled by NMdataConf.
+##' @param fun.na.by If NA's are found in by columns in both x and
+##'     why, what should we do? This could be OK, but in many cases,
+##'     it's because something unexpected is happening. Use
+##'     fun.na.by=NULL in cases where you really don't care about
+##'     this.
+##' @param as.fun The default is to return a data.table if x is a
+##'     data.table and return a data.frame in all other cases. Pass a
+##'     function in as.fun to convert to something else.
+##' @param df1 Deprecated. Use x.
+##' @param df2 Deprecated. Use y.
 ##' @param ... additional arguments passed to data.table::merge. If
 ##'     all is among them, an error will be returned.
 ##' @details Besides merging and checking rows, mergeCheck makes sure
@@ -60,7 +67,7 @@
 ##'
 ##' @export
 
-mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expect,track.msg=FALSE,quiet,df1,df2,as.fun,...){
+mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expect,track.msg=FALSE,quiet,df1,df2,fun.na.by=base::stop,as.fun,...){
     
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -71,9 +78,24 @@ mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expec
 
 ###  Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
-## deprecate df1 and df2    
-    name.x <- deparse(substitute(x))
-    name.y <- deparse(substitute(y))
+    ## deprecate df1 and df2    
+    if(!xor(missing(x),missing(df1))){stop("You must supply x.")}
+    if(!xor(missing(y),missing(df2))){stop("You must supply y.")}
+    if(!missing(df1)) {
+        message("\"df1\" argument deprecated. Use \"x\" instead.")
+        x <- df1
+        name.x <- deparse(substitute(df1))
+    } else {
+        name.x <- deparse(substitute(x))
+    }
+    if(!missing(df2)) {
+        message("\"df2\" argument deprecated. Use \"y\" instead.")
+        y <- df2
+        name.y <- deparse(substitute(df2))
+    } else{
+        name.y <- deparse(substitute(y))
+    }
+    
     ## in some cases where data.frames are built inside the mergeCheck
     ## call, names can turn out with multiple elements. We must avoid
     ## that.
@@ -107,8 +129,9 @@ mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expec
     if(nrow(x)==0) messageWrap(paste(name.x," has no rows. x must have existing rows so that values of the columns in by can be used for the merge."),fun.msg=stop,track.msg=track.msg)
     
     ## if data is not data.tables, convert to data.tables
-    stopifnot(is.data.frame(x))
-    stopifnot(is.data.frame(y))
+    if(!is.data.frame(x)) stop("x must be a data.frame")
+    if(!is.data.frame(y)) stop("y must be a data.frame")
+
     x.was.dt <- TRUE
     if(is.data.table(x)){
         ## will add a row counter to x, so better avoid editing by ref
@@ -123,13 +146,25 @@ mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expec
         y <- as.data.table(y)
     }
 
+    ## check for NA in by columns
+    ## missings.by <- rbind(
+    ##     listMissings(x,by.x,quiet=T)
+    ##    ,
+    ##     listMissings(y,by.y,quiet=T)
+    ## )
+
+    ## if(nrow(missings.by)) browser()
+    nas.in.by.x <- any(x[,lapply(.SD,function(x)any(is.na(x))),.SDcols=by.x])
+    nas.in.by.y <- any(y[,lapply(.SD,function(x)any(is.na(x))),.SDcols=by.y])
+    if(nas.in.by.x && nas.in.by.y){
+        messageWrap("NA\'s found in x\'s by.x columns and in y\'s by.y columns. If this is expected, use \'fun.na.by\' argument to allow it.",fun.msg=fun.na.by)
+    }
+
     if(missing(as.fun)) as.fun <- NULL
     if(x.was.dt && is.null(as.fun)) as.fun <- "data.table"
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
-### this has to be refined. by.x+by.y will do too.
-    ## if(missing(by) || is.null(by)) stop("The \"by\" argument must be supplied.") 
-
+    
     cols.common.notby <- intersect(setdiff(colnames(x),by.x),setdiff(colnames(y),by.y))
     commoncols.found <- FALSE
     if(length(cols.common.notby)) {
