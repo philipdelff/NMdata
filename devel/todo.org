@@ -107,8 +107,8 @@ Numer of NA's in right and in result
 **** TODO [#B] second merge in try
 If first merge isn't accepted, the second merge can fail. Or is it
 because by and by.x+by.y are handled differently the second time? Clen this.
-**** TODO [#B] Check that by or by.x+by.y were supplied
-**** TODO [#B] derive by.x and by.y from by and by.x+by.y and then use by.x and by.y
+**** DONE Check that by or by.x+by.y were supplied
+**** DONE derive by.x and by.y from by and by.x+by.y and then use by.x and by.y
      That will make the code clearer because we will know exactly how
      the merge is done.
 **** DONE Test the check for row duplications

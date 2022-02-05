@@ -15,6 +15,7 @@ test_that("basic",{
     mc1 <- mergeCheck(df1,df2,by="y")
     
     expect_equal_to_reference(mc1,fileRef,version=2)
+
 })
 
 

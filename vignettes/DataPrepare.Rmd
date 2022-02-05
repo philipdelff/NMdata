@@ -271,7 +271,7 @@ but for coding transparency, this is intentionally not allowed by
 ## Exclusion flags
 There is no way around excluding some of the events in data due to various reasons. And we need to be able to answer to why we excluded each of the points, and to how many points were excluded due to which criteria. `NMdata` provides two functions to handle this - `flagsAssign` assigns exclusion flags to data records (rows), and `flagsCount` summarizes the number of discarded rows and the reasons. 
 
-This implementation makes it easy to keep the rows flagged for exclusion in the dataset and ignore them in NONMEM. Or if you prefer, you can remove the rows after generating an overview of the exclusion counts for your report.
+This implementation makes it easy to keep the rows flagged for exclusion in the dataset and ignore them in NONMEM. Or if you prefer, you can remove the rows after generating an overview of the exclusion counts for your report. 
 
 
 `flagsAssign` and `flagsCount` are based on sequential evaulation

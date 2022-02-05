@@ -1,13 +1,12 @@
 ##' Merge, order, and check resulting rows and columns.
 ##'
-##' This function is a useful wrapper for merges where x will be
-##' extended with columns from y, i.e. all rows in x are retained,
-##' and no new rows can be created. For this very common type of
-##' (simple) merges, mergeCheck does the merge and ensures that
-##' exactly this and nothing else happened. Notice, mergeCheck passes
-##' the hard work to merge.data.table, the contributions lies in
-##' checking that the results are consistent with the simple merge
-##' described above.
+##' Stop checking that the number of rows is unchanged after a merge -
+##' mergeCheck checks what you really want - i.e. x is extended with
+##' columns from y while all rows in x are retained, and no new rows
+##' are created (plus some more checks). mergeCheck is not a merge implementation - it is a
+##' useful merge wrapper. The advantage over using much more flexible
+##' merge or join function lies in the fully automated checking that
+##' the results are consistent with the simple merge described above.
 ##'
 ##' @param x A data.frame with the number of rows must should be
 ##'     obtained from the merge. The resulting data.frame will be
@@ -39,8 +38,8 @@
 ##' @param fun.na.by If NA's are found in (matched) by columns in both
 ##'     x and why, what should we do? This could be OK, but in many
 ##'     cases, it's because something unexpected is happening. Use
-##'     fun.na.by=NULL in cases where you really don't care about
-##'     this and want to go ahead regardless.
+##'     fun.na.by=NULL in cases where you really don't care about this
+##'     and want to go ahead regardless.
 ##' @param as.fun The default is to return a data.table if x is a
 ##'     data.table and return a data.frame in all other cases. Pass a
 ##'     function in as.fun to convert to something else.
@@ -63,8 +62,67 @@
 ##' @importFrom stats setNames
 ##' @return a data.frame resulting from merging x and y. Class as
 ##'     defined by as.fun.
-##' 
+##' @details mergeCheck is for the kind of merges where we think of x
+##'     as the data to be enriched with columns from y - rows
+##'     unchanged. This is even further limited than a left join where
+##'     you can match rows multiple times. A common example of the use
+##'     of mergeCheck is for adding covariates to a pk/pd data set. We
+##'     do not want that to remove or dupicate doses, observations, or
+##'     simulation records. In those cases, mergeCheck does all needed
+##'     checks, and you can run full speed without checking dimensions
+##'     (which is anyway not exactly the right thing to do in the
+##'     general case) or worry that something might go wrong. 
 ##'
+##' Checks performed:
+##' 
+##' \itemize{
+##' \item x has >0 rows
+##'
+##' \item by columns are present in x an y
+##'
+##' \item Merge is not performed on NA values. If by=ID and both x$ID and
+##' y$ID contain NA's, an error is thrown (see argument fun.na.by).
+##'
+##' \item Merge is done by all common column names in x and y. A
+##' warning is thrown if there are column names that are not being
+##' used to merge by. This will result in two columns named like BW.x
+##' and BW.y and is often unintended.
+##'
+##' \item Before merging a row counter is added to x. After the merge, the
+##' result is assured to have exactly one occurance of each of the
+##' values of the row counter in x.
+##'
+##' }
+##'
+##' Moreover, row and column order from x is retained in the result.
+##' 
+##' @examples
+##'  df1 <- data.frame(x = 1:10,
+##'                    y=letters[1:10],
+##'                    stringsAsFactors=FALSE)
+##'  df2 <- data.frame(y=letters[1:11],
+##'                    x2 = 1:11,
+##'                    stringsAsFactors=FALSE)
+##'
+##'  mc1 <- mergeCheck(df1,df2,by="y")
+##' 
+##' ## Notice as opposed to most merge/join algorithms, mergeCheck by
+##' #default retains both row and column order from x
+##' library(data.table)
+##' merge(as.data.table(df1),as.data.table(df2))
+##' ## Here we get a duplicate of a df1 row in the result. If we only
+##' ## check dimensions, we make a mistake. mergeCheck captures the
+##' ## error - and tell us where to find the problem (ID 31 and 180):
+##' \dontrun{
+##' pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+##' dt.cov <- pk[,.(ID=unique(ID))]
+##' dt.cov[,COV:=sample(1:5,size=.N,replace=TRUE)]
+##' dt.cov <- dt.cov[c(1,1:(.N-1))]
+##' dim(pk)
+##' res.merge <- merge(pk,dt.cov,by="ID")
+##' dim(res.merge)
+##' mergeCheck(pk,dt.cov,by="ID")
+##' }
 ##' @export
 
 mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expect,track.msg=FALSE,quiet,df1,df2,fun.na.by=base::stop,as.fun,...){
