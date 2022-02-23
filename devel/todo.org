@@ -75,13 +75,19 @@ helpful. Only list other columns than the scope.
 *** egdt
 **** DONE BUG the tmp by col has to be removed before reporting dims
 **** DONE Report dims(df1,df2,result) unless quiet
-*** DONE listMissings                                   :v0_0_11:newFunction:
+*** listMissings                                        :v0_0_11:newFunction:
 List missing elements
-
 For specific columns, look for missing elements (NA, "", length(x)==0
-in case of lists?). Tabulate and list. Align reporting with NMcheckData?
-*** DONE listMissings test                                          :v0_0_11:
-    CLOSED: [2022-02-04 Fri 16:16]
+in case of lists?). Tabulate and list. 
+**** TODO Align reporting with NMcheckData?
+**** TODO dcast summary when using by
+This is quite powerfull:
+ dcast(missings[,.N,by=.(STUDYID,variable)],variable~STUDYID)
+***** Would be even better to have zeros where columns are found and there are no NA's. 
+***** Include "number of rows" in table.
+      
+**** DONE listMissings test                                         :v0_0_11:
+     CLOSED: [2022-02-04 Fri 16:16]
 *** TODO [#B] NMasNumeric                                       :newFunction:
 Error if not convertible and not NA or ""? "b" should be an error right?
 *** TODO [#B] NMsummarizeData Summarize data with nonmem in mind. :newFunction:
