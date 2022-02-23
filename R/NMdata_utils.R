@@ -17,7 +17,7 @@ is.NMdata <- function(x){
 }
 
 
-##' Basic arithmetic
+##' Basic arithmetic on NMdata objects
 ##'
 ##' @param x an NMdata object
 ##' @param ... arguments passed to other methods.

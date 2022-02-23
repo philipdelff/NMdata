@@ -98,7 +98,7 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
     
 }
 
-#' @describeIn NMreadSection Old function name for NMreadSection
+#' @describeIn NMreadSection Deprecated function name. Use NMreadSection.
 NMgetSection <- function(...){
     .Deprecated("NMreadSection")
     NMreadSection(...)

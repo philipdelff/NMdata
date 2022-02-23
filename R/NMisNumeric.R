@@ -14,9 +14,9 @@
 ##'     data set to a delimited file (like NMwriteData will do for
 ##'     you).
 ##' @param each Use each=TRUE to evaluate each element in a vector
-##'     individually. The default is to return a single-length logical
-##'     for a vector x summarizing whether all the elements are
-##'     numeric-compatible.
+##'     individually. The default (each=FALSE) is to return a
+##'     single-length logical for a vector x summarizing whether all
+##'     the elements are numeric-compatible.
 ##' @return TRUE or FALSE
 ##' @export
 

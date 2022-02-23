@@ -1,4 +1,5 @@
-##' Check data for Nonmem compatibility
+##' Check data for Nonmem compatibility or check control stream for
+##' data compatibility
 ##'
 ##' Check data in various ways for compatibility with Nonmem. Some
 ##' findings will be reported even if they will not make Nonmem fail
