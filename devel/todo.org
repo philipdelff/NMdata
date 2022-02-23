@@ -52,6 +52,7 @@ With load_all():
 ** Function improvements
 *** cc - create character vector function
 *** NMgenText
+**** TODO Add a last/stop argument to specify the last column to use in nonmem
 **** TODO [#B] checks: duplicate column names
 **** TODO [#B] test if a synonym was used. Give warning or msg if not
 **** TODO [#B] test if variables are used in more than one arg
@@ -94,6 +95,7 @@ Error if not convertible and not NA or ""? "b" should be an error right?
 *** TODO [#B] Function for complex dosing regimens              :newFunction:
 *** TODO [#B] Function to unfold ADDL/II doses to multiple rows :newFunction:
 *** mergeCheck
+**** TODO If results are not accepted. Check for whether y is unique in by
 **** TODO [#B] Add at least number of NA's to message about what was added
 Probably add class too.
 Number of unique combinations of by? This seems too advanced
