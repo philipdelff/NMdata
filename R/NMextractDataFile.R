@@ -15,7 +15,7 @@
 ##' @export
 
 NMextractDataFile <- function(file,dir.data=NULL,file.mod){
-
+    
     if(missing(file.mod)) file.mod <- NULL
     file.mod <- NMdataDecideOption("file.mod",file.mod)
 
@@ -46,7 +46,11 @@ NMextractDataFile <- function(file,dir.data=NULL,file.mod){
 
     ## pick $DATA and the next string
     lines.data2 <- paste(lines.data,collapse=" ")
-    string.path.data <- sub(" *([^ ]+) +.*","\\1",lines.data2)
+### remove leading blanks, then only use string until first blank
+    ## doesnt remove leading blanks as supposed to so splitting in two
+    ## string.path.data <- sub("^ *([^ ]+) +.*$","\\1",lines.data2)
+    string.path.data <- sub("^ +","",lines.data2)
+    string.path.data <- sub(" .*","",string.path.data)
 
     if(is.null(dir.data)) {
         pathIsAbs <- function(path) grepl("(^/|^[a-z]:/)",path,perl = TRUE)

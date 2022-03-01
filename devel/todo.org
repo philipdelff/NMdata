@@ -36,9 +36,6 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
-*** DONE NMcheckColNames
-**** return input column names and Nonmem interpretation for user to spot errors
-**** Bad name, what could we call it?
 *** TODO [#B] NMfreezeModels                                    :newFunction:
     Remember to add chmod and describe that only a flat dir structure is supported so far
 *** DONE function to replace file name extension - fnExtension
@@ -50,6 +47,9 @@ With load_all():
     Risk now is that arguments are set to NULL
     Export to parent. Not sure check allows though...
 ** Function improvements
+*** NMcheckColNames
+**** return input column names and Nonmem interpretation for user to spot errors
+**** Bad name, what could we call it?
 *** cc - create character vector function
 *** NMgenText
 **** TODO [#B] checks: duplicate column names
@@ -119,6 +119,8 @@ because by and by.x+by.y are handled differently the second time? Clen this.
      the merge is done.
 **** DONE Test the check for row duplications
 *** NMcheckData
+**** TODO Support for col.dv.
+     Preferably of length>1
 **** TODO The summary should take a by argument
 **** TODO Define a NMfindings class and create a summary function?
 **** DONE Note when installing                                      :v0_0_11:
