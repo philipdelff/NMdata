@@ -36,6 +36,8 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
+*** TODO function to add variables to $TABLE
+**** Which $TABLE to add to?
 *** TODO [#B] NMfreezeModels                                    :newFunction:
     Remember to add chmod and describe that only a flat dir structure is supported so far
 *** DONE function to replace file name extension - fnExtension
