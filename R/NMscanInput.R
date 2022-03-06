@@ -133,7 +133,7 @@ NMscanInput <- function(file, use.rds, file.mod,
         }
 
     }
-
+    
 
     ## identify the data file name and additional info
     info.datafile <- NMextractDataFile(file=file.find.data,dir.data,file.mod=file.mod)

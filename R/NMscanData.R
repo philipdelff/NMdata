@@ -286,6 +286,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
     nminfo.input <- NULL
     if(use.input){
+        
         data.input <- NMscanInput(file
                                  ,file.mod=file.mod
                                  ,dir.data=dir.data
@@ -410,7 +411,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     time.ok <- "Not checked"
     if(check.time){
         time.ok <- c()
-        if(!is.null(file.mod)&file.exists(file.mod)) {
+        if(!is.null(file.mod)&&file.exists(file.mod)) {
             mtime.mod <- file.info.mod$mtime
             
             if(mtime.mod>file.mtime(file)){

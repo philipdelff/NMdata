@@ -17,12 +17,13 @@
 NMextractDataFile <- function(file,dir.data=NULL,file.mod){
     
     if(missing(file.mod)) file.mod <- NULL
-    file.mod <- NMdataDecideOption("file.mod",file.mod)
-
     if(!is.null(file.mod) && !is.null(dir.data)) {
         messageWrap("Both file.mod and dir.data are non-NULL. Not allowed.",
                     fun.msg=stop)
     }
+    
+    file.mod <- NMdataDecideOption("file.mod",file.mod)
+
     if(is.null(dir.data)) {
         
         file.mod <- NMdataDecideOption("file.mod",file.mod)
@@ -68,12 +69,12 @@ NMextractDataFile <- function(file,dir.data=NULL,file.mod){
     exists.file.rds <- file.exists(path.data.rds)
 
     return(list(
-    DATA=lines.data
-   ,string=string.path.data
-   ,path=path.data
-   ,path.rds=path.data.rds
-   ,exists.file=exists.file
-   ,exists.file.rds=exists.file.rds
+        DATA=lines.data
+       ,string=string.path.data
+       ,path=path.data
+       ,path.rds=path.data.rds
+       ,exists.file=exists.file
+       ,exists.file.rds=exists.file.rds
     ))
     
 }
