@@ -1,3 +1,9 @@
+# Since NMdata 0.0.11
+## Bugfixes
+NMextractDataFile was not cleaning all paths correctly. This mostly
+impacts NMcheckData's ability to find data files when using the file
+argument in NMcheckData. Only affects certain models.
+
 # NMdata 0.0.11
 
 * The cols.num argument in NMcheckData has been improved to support a

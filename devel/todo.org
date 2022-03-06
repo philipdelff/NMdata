@@ -36,9 +36,8 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
-*** DONE NMcheckColNames
-**** return input column names and Nonmem interpretation for user to spot errors
-**** Bad name, what could we call it?
+*** TODO function to add variables to $TABLE
+**** Which $TABLE to add to?
 *** TODO [#B] NMfreezeModels                                    :newFunction:
     Remember to add chmod and describe that only a flat dir structure is supported so far
 *** DONE function to replace file name extension - fnExtension
@@ -50,6 +49,9 @@ With load_all():
     Risk now is that arguments are set to NULL
     Export to parent. Not sure check allows though...
 ** Function improvements
+*** NMcheckColNames
+**** return input column names and Nonmem interpretation for user to spot errors
+**** Bad name, what could we call it?
 *** cc - create character vector function
 *** NMgenText
 **** TODO Add a last/stop argument to specify the last column to use in nonmem
@@ -76,12 +78,19 @@ helpful. Only list other columns than the scope.
 *** egdt
 **** DONE BUG the tmp by col has to be removed before reporting dims
 **** DONE Report dims(df1,df2,result) unless quiet
-*** DONE listMissings                                   :v0_0_11:
+*** listMissings                                        :v0_0_11:newFunction:
 List missing elements
-
 For specific columns, look for missing elements (NA, "", length(x)==0
-in case of lists?). Tabulate and list. Align reporting with NMcheckData?
+in case of lists?). Tabulate and list. 
+**** TODO Align reporting with NMcheckData?
+**** TODO dcast summary when using by
+This is quite powerfull:
+ dcast(missings[,.N,by=.(STUDYID,variable)],variable~STUDYID)
+***** Would be even better to have zeros where columns are found and there are no NA's. 
+***** Include "number of rows" in table.
+      
 **** DONE listMissings test                                         :v0_0_11:
+     CLOSED: [2022-02-04 Fri 16:16]
 **** TODO Complete documentation
      It seems like a description is missing. So is value. Explain that
      a summary is printed, and a list i invisibly returned, if that is
@@ -118,6 +127,8 @@ because by and by.x+by.y are handled differently the second time? Clen this.
      the merge is done.
 **** DONE Test the check for row duplications
 *** NMcheckData
+**** TODO Support for col.dv.
+     Preferably of length>1
 **** TODO The summary should take a by argument
 **** TODO Define a NMfindings class and create a summary function?
 **** DONE Note when installing                                      :v0_0_11:
