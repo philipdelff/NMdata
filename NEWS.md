@@ -1,8 +1,9 @@
 # Since NMdata 0.0.11
 ## Bugfixes
-NMextractDataFile was not cleaning all paths correctly. This mostly
-impacts NMcheckData's ability to find data files when using the file
-argument in NMcheckData. Only affects certain models.
+* NMextractDataFile was not cleaning all paths correctly. This mostly
+  impacts NMcheckData's ability to find data files when using the file
+  argument in NMcheckData. Only affects certain models.
+* NMextractDataFile was not working with dir.data. Fixed.
 
 # NMdata 0.0.11
 
