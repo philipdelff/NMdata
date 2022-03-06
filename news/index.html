@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.901</span>
       </span>
     </div>
 
@@ -29,7 +29,7 @@
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -73,6 +73,14 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.0.11" id="since-nmdata-0011">Since NMdata 0.0.11<small>2022-02-05</small><a class="anchor" aria-label="anchor" href="#since-nmdata-0011"></a></h2>
+<div class="section level3">
+<h3 id="bugfixes-0-0-11">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-0-11"></a></h3>
+<ul><li>NMextractDataFile was not cleaning all paths correctly. This mostly impacts NMcheckData’s ability to find data files when using the file argument in NMcheckData. Only affects certain models.</li>
+<li>NMextractDataFile was not working with dir.data. Fixed.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.11" id="nmdata-0011">NMdata 0.0.11<small>2022-02-05</small><a class="anchor" aria-label="anchor" href="#nmdata-0011"></a></h2>
 <ul><li>The cols.num argument in NMcheckData has been improved to support a list specifying columns that are numeric within subsets of data. This is often useful for columns that are only meaningful for say samples (eg LLOQ) or doses (eg injection site).</li>
 <li>When run on a control stream, NMcheckData now checks all columns specified in the control stream to be numeric.</li>
@@ -81,7 +89,7 @@
 <li>mergeCheck now retains column order from x. It has a few other improvements too, like checking for missing values in by columns.</li>
 <li>listMissings is new function that looks for missing values or strings that represent missing values (like "" or “.”) in multiple columns. This can be useful when combining source data sets. However, the function is still underdevelopment and what exactly is being reported may change in future releases.</li>
 </ul><div class="section level3">
-<h3 id="bugfixes-0-0-11">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-0-11"></a></h3>
+<h3 id="bugfixes-0-0-11-1">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-0-11-1"></a></h3>
 <ul><li>NMwriteData now respects NMdataConf()$args.fwrite</li>
 <li>flagsCount was not respecting by columns. Fixed.</li>
 <li>egdt was reporting one column too many in inputs (in terminal, not in results). Fixed.</li>
