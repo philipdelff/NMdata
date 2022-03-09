@@ -212,6 +212,7 @@ numeric should be using
 **** DONE Return data, summary and more                             :v0_0_11:
 **** TODO [#B] Check whether NA's are coded with .'s
 *** NMextractDataFile
+**** TODO Test with absolute path in $DATA
 **** DONE Add support for windows absolute paths
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.

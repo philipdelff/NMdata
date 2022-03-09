@@ -4,6 +4,7 @@
   impacts NMcheckData's ability to find data files when using the file
   argument in NMcheckData. Only affects certain models.
 * NMextractDataFile was not working with dir.data. Fixed.
+* NMextractDataFile Now handles absolute paths correctly.
 
 # NMdata 0.0.11
 

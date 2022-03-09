@@ -57,6 +57,8 @@ NMextractDataFile <- function(file,dir.data=NULL,file.mod){
         pathIsAbs <- function(path) grepl("(^/|^[a-z]:/)",path,perl = TRUE)
         if(!pathIsAbs(string.path.data)) {
             path.data <- filePathSimple(dirname(file),string.path.data)
+        } else {
+            path.data <- filePathSimple(string.path.data)
         }
     } else {
         path.data <- filePathSimple(dir.data,basename(string.path.data))
