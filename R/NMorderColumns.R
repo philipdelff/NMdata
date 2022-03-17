@@ -125,8 +125,9 @@ NMorderColumns <- function(data,
     nms <- names(data)
     nms.dup <- nms[duplicated(nms)]
     if(!quiet && length(nms.dup)) messageWrap(paste0("Duplicated column names:\n",paste(nms.dup,collapse=", ")),fun.msg=warning)
-    missing <- setdiff(setdiff(first1,c("II","ADDL","RATE","SS")),nms)
-    if(!quiet && length(missing)) messageWrap(paste0("These standard nonmem columns were not found in data:\n",paste(missing,collapse="\n")),fun.msg=message)
+    ### these checks are now done in NMcheckData
+    ## missing <- setdiff(setdiff(first1,c("II","ADDL","RATE","SS")),nms)
+    ## if(!quiet && length(missing)) messageWrap(paste0("These standard nonmem columns were not found in data:\n",paste(missing,collapse="\n")),fun.msg=message)
 
     first <- c(first1,first)
 

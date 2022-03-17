@@ -23,3 +23,4 @@ The data with meta data attached
 \description{
 Do the actual writing of meta data
 }
+\keyword{internal}

@@ -32,7 +32,7 @@ latest version available
 *  Creating event-based data sets for PK/PD modeling
 *  Keeping Nonmem code updated to match contents of datasets
 *  Read all output data and combine with input data from Nonmem runs
-  - supply output list file (.lst), and the reader is very flexible and automated 
+   - Very automated - supply output list file (.lst) only
 
 NMdata comes with a configuration tool that can be used to tailor default behaviour to the user's system configuration and preferences.
 
@@ -46,6 +46,12 @@ NMdata comes with a configuration tool that can be used to tailor default behavi
 
 
 ### How do I install NMdata?
+For most users, taking `NMdata` from the package archive you are already using is the prefered way:
+```
+install.packages("NMdata")
+library(NMdata)
+```
+
 To get the development version of NMdata, do the following from
 within R:
 
@@ -132,15 +138,17 @@ fast. If you are noticing some circumstances where NMdata seems
 slow, I am very curious to hear about it.
 
 ### So NMdata uses data.table. Does that mean variables are modified by reference? 
-NMdata definitely modify variables by reference
-internally but this will never affect your workspace. It might improve speed to go all the way, and modify by reference in the user workspace, but using NMdata must be easy for R users
-at all levels of experience. If you don't understand what this is all
-about, you're fine.
+NMdata definitely modify variables by reference internally but this
+will not affect your workspace (only exception is `NMstamp()`). It
+might improve speed to go all the way and modify by reference in the
+user workspace, but using NMdata must be easy for R users at all
+levels of experience. If you don't understand what this is all about,
+you're fine.
 
 ### I want to use a tool from NMdata, but how does it integrate with dplyr or data.table?
-Every function in NMdata has an argument called `as.fun`. You
-can provide a function in this argument which will be applied to data
-before returning it.
+Every function in NMdata has an argument called `as.fun`. You can
+provide a function in this argument which will automatically be
+applied to results.
 
 You can get a tibble if you work with `dplyr`/`tidyverse` tools: 
 
@@ -178,11 +186,6 @@ Absolutely. data.table's and tibble's are data.frame's, and data.frame
 in the documentation refers to any of these structures (that
 technically inherit from the data.frame class).
 
-### The result I am getting back from an NMdata function doesn't print to the R console. Why?
-This should have been taken care of in most recent NMdata releases. This was something that could happen in earlier versions when working with data.tables - and only when working
-with data.tables. If you experience this in a >0.0.7 version, pleae file a bug. You would
-have to print the data.table a couple of times before you see a result
-in the R terminal.
 
 ### Can I request a feature?
 Please open an issue on [github](https://github.com/philipdelff/NMdata/issues).
@@ -201,11 +204,19 @@ returned by `NMscanData` and maybe a call to `findCovs` or
 
 
 ## Questions specific to data reading tools 
-### How do I customize the naming of input and output control streams?
+### I don't use PSN. What should I do?
 `NMscanData` needs the path to the output control stream (technically,
 the input control stream will work too, but this is not
 recommended). It has no requirement to the naming of files. 
 
+`NMdata` by default assumes a [PSN](https://uupharmacometrics.github.io/PsN/) setup. The reason this makes a difference is a little technical but briefly, the path to the input data is not available in the list file when using PSN. If you don't use PSN, all information will probably be available in the output control stream. Enough talking, just do this:
+```{r,eval=FALSE}
+NMdataConf(file.mod=identity)
+```
+
+
+<!--
+### How do I customize the naming of input and output control streams?
 By default, `NMscanData` expects a
 [PSN](https://uupharmacometrics.github.io/PsN/)-style naming of input
 and output control streams. This means that if the input control
@@ -229,8 +240,9 @@ You can use `NMdataConf` to configure the default behaviour to match your setup:
 ```{r,eval=FALSE}
 NMdataConf(file.mod=out2in)
 ```
+-->
 
-
+### How can I customize how NMscanData names models?
 `NMscanData` take the name of the model from the file name and adds it to a column in
 the returned data. If the name of the directory is the model name, you can do the
 following as well:

@@ -28,6 +28,16 @@ test_that("reset",{
     
     
     expect_equal(defaults,defaults2)
+
+    res.conf <- NMdataConf()
+    res.noreset <- NMdataConf(reset=FALSE)
+    expect_equal(res.conf,res.noreset)
+
+    ## we can't reset and do new stuff simultaneously
+    expect_error(NMdataConf(reset=TRUE,file.mod=identity))
+
+    NMdataConf(file.mod="reset")
+    
 })
 
 test_that("unnamed argument",{
@@ -67,4 +77,20 @@ test_that("change fun in globalenv does not affect NMdataConf()",{
     
     
     expect_equal(defaults,defaults2)
+})
+
+
+test_that("reset single option",{
+
+    defaults <- NMdataConf()
+    NMdataConf(as.fun="data.table",file.mod=identity)
+    NMdataConf(as.fun=NULL)
+    c1 <- NMdataConf()
+
+    defaults <- NMdataConf()
+    NMdataConf(as.fun="data.table",file.mod=identity)
+    NMdataConf(as.fun="default")
+    c2 <- NMdataConf()
+    
+    expect_equal(c1,c2)
 })

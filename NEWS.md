@@ -1,3 +1,39 @@
+# Since NMdata 0.0.11
+## Bugfixes
+NMextractDataFile was not cleaning all paths correctly. This mostly
+impacts NMcheckData's ability to find data files when using the file
+argument in NMcheckData. Only affects certain models.
+
+# NMdata 0.0.11
+
+* The cols.num argument in NMcheckData has been improved to support a
+  list specifying columns that are numeric within subsets of
+  data. This is often useful for columns that are only meaningful for
+  say samples (eg LLOQ) or doses (eg injection site).
+* When run on a control stream, NMcheckData now checks all columns
+  specified in the control stream to be numeric.
+* The NMcheckData argument, col.cmt now supports a vector of
+  length>1. This is helpful to support data where switching CMT column
+  is used to switch between definitions for different compounds or
+  even just models where compartment numbers are not compatible.
+* NMscanInput has the new argument recover.cols. Default is TRUE - use
+  FALSE to not include columns that NONMEM did not read.
+* mergeCheck now retains column order from x. It has a few other
+  improvements too, like checking for missing values in by columns.
+* listMissings is new function that looks for missing values or
+  strings that represent missing values (like "" or ".") in multiple
+  columns. This can be useful when combining source data
+  sets. However, the function is still underdevelopment and what
+  exactly is being reported may change in future releases.
+
+## Bugfixes
+* NMwriteData now respects NMdataConf()$args.fwrite
+* flagsCount was not respecting by columns. Fixed.
+* egdt was reporting one column too many
+  in inputs (in terminal, not in results). Fixed.
+* Column names in control stream $INPUT statements weren't adjusted
+  for possible tabulator characters. Fixed.
+
 # NMdata 0.0.10
 ## New functions
 * NMcheckData is a new function that checks data for Nonmem
@@ -6,7 +42,11 @@
   data. See the man page of NMcheckData for a complete list of the
   checks that are done. The function does not modify data in any way,
   and it is a very simple and easy step to avoid many problems in
-  Nonmem.
+  Nonmem. NMcheckData can check a data object in R, and it can also
+  check how a control stream reads data and then do all the
+  checks. The latter provides an extensive check of potential issues
+  related to data and getting it into NONMEM. Great for both debugging
+  and QC.
 
 * NMextractDataFile is a function that identifies the input datafile
   used by a Nonmem model. It reports the string as in the Nonmem
@@ -41,11 +81,24 @@
   for whether values of EVID are unique. This is similar to what
   flagsCount does.
 
+* NMgenText is a new function that provides the generation of $INPUT
+  and $DATA. This used to be part of NMwriteData. NMwriteData still
+  calls NMgenText but the separation of the two functionalities allows
+  for more inituitive separate uses of one dataset for different
+  models. 
+  
+* NMcompareCols now takes the argument "cols.wanted" which is a
+  character vector of column names of special interest. Helpful when
+  building a data set with specific column names in mind.
+
 * egdt now reports dimensions of the two data sets to combine and the
   resulting data. Can be disabled with quiet argument.
 
 * NMcheckColumns Change of column name from DATA to INPUT in order to
   match $INPUT in the control streams.
+
+* NMreadSection is now case insensitive in the section specification
+  (i.e. "input" is the same as "INPUT").
 
 ## Bugfixes 
 * In NMwriteData the datafile is now correctly included in the $DATA
@@ -54,6 +107,10 @@
 * Bugfix in NMscanData related to searching for candidates for unique
   row identifiers.
 
+* In compareCols multiple classes of single columns would give a
+  warning and sometimes confusing overview of columns. Fixed.
+  
+* findCovs fixed in ordering output when by argument is of length > 1
 
 # NMdata 0.0.9
 The only change from 0.0.8 is a patch provided by Matt Dowle ensuring

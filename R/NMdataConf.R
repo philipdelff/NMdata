@@ -46,12 +46,12 @@
 ##' stamps cannot be relied on.
 ##' 
 ##' \item{col.flagc} The name of the column containing the character
-##' flag values for data row omission. Default value is FLAG. Used
+##' flag values for data row omission. Default value is flag. Used
 ##' by flagsAssign, flagsCount.
 ##' 
 ##' \item{col.flagn} The name of the column containing numerical flag
 ##' values for data row omission. Default value is FLAG. Used by
-##' flagsAssign, flagsCount.
+##' flagsAssign, flagsCount, NMcheckData. 
 ##'
 ##' \item{col.model} The name of the column that will hold the name of
 ##' the model. See modelname too (which defines the values that the
@@ -150,6 +150,7 @@ NMdataConf <- function(...){
         args <- lapply(1:N.args,function(I){
             val <- dots[[I]]
             if(is.null(val)) val <- "default"
+            ## if(is.character(val)&&length(val)==1&val=="default") val <- NULL
             NMdataDecideOption(names.args[I],val)
         })
 
@@ -171,6 +172,7 @@ NMdataConf <- function(...){
 ##' @return If name is provided, a list representing one argument,
 ##'     otherwise a list with an element for each argument that can be
 ##'     customized using NMdataConf.
+##' @keywords internal
 
 ## do not export
 
@@ -209,7 +211,7 @@ NMdataConfOptions <- function(name){
           ,msg.not.allowed="as.fun must be a function or the string \"data.table\""
           ,process=function(x){
               if(is.character(x)&&length(x)==1&&x%in%c("none")){
-                  warning("as.fun=none is deprecated (still working but will be removed). Use as.fun=data.table.")
+                  .Deprecated("as.fun=none","as.fun=none deprecated (still working but will be removed). Use as.fun=data.table.")
               }
               if(is.character(x)&&length(x)==1&&x%in%c("none","data.table")){
                   ## return(identity)
@@ -259,9 +261,14 @@ NMdataConfOptions <- function(name){
        ,
         col.flagn=list(
             default="FLAG"
-           ,is.allowed=function(x) (is.character(x) && length(x)==1)
+           ,is.allowed=function(x) length(x)==1 && ((is.logical(x) && x==FALSE) || is.character(x) )
            ,msg.not.allowed="col.flagn must be a character vector of length 1."
-           ,process=identity
+           ,process=function(x) {if(is.logical(x) && x==FALSE) {
+                                     return(NULL)
+                                 } else {
+                                     return(x)
+                                 }
+           }
         )
        ,
         col.row=list(
@@ -353,6 +360,7 @@ NMdataConfOptions <- function(name){
 ##' @param name The name of the parameter, say "as.fun"
 ##' @param argument The value to pass. If missing or NULL, the value returned by NMdataConf/NMdataGetOption will typically be used.
 ##' @return Active argument value.
+##' @keywords internal
 
 ## Do not export.
 NMdataDecideOption <- function(name,argument){
@@ -362,6 +370,10 @@ NMdataDecideOption <- function(name,argument){
     if(!missing(argument) && is.character(argument) && length(argument)==1 && argument=="default") {
         return(values.option$default)
     }
+    ## if(is.null(argument)) {
+    ##     return(values.option$default)
+    ## }
+
     
 
     if(missing(argument)||is.null(argument)) return(NMdataGetOption(name))
@@ -369,14 +381,13 @@ NMdataDecideOption <- function(name,argument){
 
     argument <- values.option$process(argument)
 
-
-    
     return(argument)
 }
 
 ##' Look up default configuration of an argument
 ##' @param ... argument to look up. Only one argument can be looked up.
 ##' @return The value active in configuration
+##' @keywords internal
 
 ## This is only used by NMdataDecideOption
 ## do not export.
@@ -389,5 +400,3 @@ NMdataGetOption <- function(...){
     .NMdata$options[[dots[[1]]]]
     
 }
-
-

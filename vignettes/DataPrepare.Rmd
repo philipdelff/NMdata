@@ -1,0 +1,510 @@
+---
+title: "Data Preparation Tools"
+output:  rmarkdown::html_vignette
+Suggests: markdown
+VignetteBuilder: knitr
+vignette: >
+  %\VignetteIndexEntry{Data Preparation Tools}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+header-includes:
+- \usepackage{ae}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+ ,fig.width=7)
+
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
+```
+
+```{r,eval=TRUE,include=FALSE}
+## library(devtools)
+## load_all()
+```
+
+```{r,setup,include=F}
+library(NMdata)
+NMdataConf(check.time=FALSE)
+## NMdataConf(as.fun="data.table")
+library(data.table)
+library(ggplot2)
+theme_set(theme_bw()+theme(legend.position="bottom"))
+
+```
+Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
+
+This vignette is still under development. Please make sure to see
+latest version available
+[here](https://philipdelff.github.io/NMdata/).
+
+## Objectives
+This vignettes aims at enabling you at 
+
+* Using NMdata's data preparation tools to assist building your data
+  set
+
+* Using `mergeCheck` to automatically check merge results, ensuring
+  rows do not get lost or duplicated
+
+* Assigning exclusion flags and obtain a table summary counting data
+  exclusions from source data to analysis data set
+
+* Easily and consistently order data columns using `NMorderColumns`
+
+* Using `NMcheckData` to perform a extensive data check before
+  exporting for Nonmem
+ 
+* Writing the prepared data to file ensuring compatibility with NONMEM
+  and for post-processing in R using `NMwriteData`
+
+* Updating multiple NONMEM control streams to read the updated data
+  file using one simple call of the `NMwriteSection` function
+
+Only basic R knowledge should be required to follow the instructions. 
+
+## Introduction
+Getting data ready for modeling is a crucial and often underestimated
+task. Mistakes during the process of combining data sets, defining
+time variables etc. can lead to difficulties during modeling, need for
+revisiting data set preparation, and in worst case wasted time working
+with an erroneos data set. Avoiding those mistakes by integrating
+checks into the data preparation process is a key element in an efficient
+and reliable data preparation work flow.
+
+Furthermore, NONMEM has a number of restrictions on the format
+of the input data, and problems with the data set is a common
+reason for NONMEM not to behave as expected. When this happens,
+debugging can be time-consuming. `NMdata` includes some simple
+functions to prevent these situations.
+
+This vignette uses `data.table` syntax for the little bit of data
+manipulation performed. However, you don't need to use data.table _at
+all_ to use these or any tool in `NMdata`. The data set is a
+`data.table`:
+
+```{r}
+pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+class(pk)
+```
+
+If you are not familiar with `data.table`, you can still keep reading
+this vignette and learn what `NMdata` can do. `data.table` is a
+powerful enhancement to the `data.frame` class, and the syntax is a
+little different from `data.frame`. The few places where this affects
+the examples provided here, explanations will be given. You can
+replace all use of `data.table` in this vignette with base R
+functions, tidyverse functions or whatever you prefer.
+
+
+## Data assembly
+
+
+### Compare presence and class of columns across data sets
+When stacking (`rbind`) and merging, it is most often necessary to check
+if two or more data sets are compatible for the
+operation. `compareCols` compares columns across two or more data sets.
+
+```{r,include=FALSE}
+pk.reduced <- copy(pk)
+pk.reduced <- pk.reduced[1:(.N%/%2)]
+pk.reduced[,CYCLE:=NULL]
+pk.reduced[,AMT:=as.character(AMT)]
+```
+
+To illustrate the output of `compareCols`, a slightly modified
+version of the `pk` dataset has been created. One column (`CYCLE`) has
+been removed, and `AMT` has been recoded to character. `compareCols`
+tells us about exactly these two differences: 
+
+```{r,eval=TRUE}
+compareCols(pk,pk.reduced)
+```
+
+Before merging or stacking, we may want to recode `AMT` in one of the
+datasets to get the class we need, and decide what to do about the
+`CYCLE` column which is missing in one of the datasets (add information or fill with
+`NA`?).
+
+When stacking data sets we often know what columns we are looking to
+obtain in the final data. We may already have defined that early in
+our data preparation script, and `compareCols` can use this to
+highlight these columns. `cc` is a shorthand function to create
+character vectors withour quoting the elements.
+
+```{r}
+special.columns <- cc(ID,TIME,CYCLE,STUDY,BW)
+compareCols(pk,pk.reduced,cols.wanted=special.columns)
+```
+
+In this case, we may want to add `diff.only=FALSE` to see if other
+columns could hold the information we are missing for `BW` and
+`CYCLE`.
+
+### Rename columns based on contents
+The model estimation step is heavily dependent (and in NONMEM almost entirely based) on numeric data values. 
+The source data will often contain character variables, i.e. columns with non-numeric data values.
+
+If the column names reflect whether the values are numeric, double-checking can be avoided. `renameByContents` renames columns if a function of their contents returns `TRUE`.
+
+
+```{r,include=FALSE}
+pktmp <- copy(pk)
+pktmp[,TRTACT:=NULL]
+```
+
+```{r}
+pk.renamed <- renameByContents(data=pktmp,fun.test=NMisNumeric,fun.rename = tolower,
+                               invert.test = TRUE)
+```
+
+We make use of the function `NMisNumeric` which tests if NONMEM can
+interpret the contents as numeric. If say the subject ID is of
+character class, it can be valid to NONMEM. Subject ID `"1039"` will
+be a numeric in NONMEM, `"1-039"` will not. `NMisNumeric` will return
+`TRUE` if and only if all elements are either missing or interpretable
+as numeric. We invert the condition (`invert.test=TRUE`), and _the
+names_ of the columns that NONMEM cannot interpret as numeric become
+lowercase. We use `compareCols` to illustrate that three columns were
+renamed:
+
+```{r,eval=TRUE}
+compareCols(pktmp,pk.renamed)
+```
+
+We can now easily see that if we wish to include the information
+contained in `eventu`, `pktmp`, and `pk.renamed`, we have to modify or
+translate their contents first.
+
+### Automated checks of merge results 
+Merge or join operations are a very powerful data preparion tool. But they are also a very common source of bugs. Most of us know too well how merges can leave us with unexpected rows or make rows disappear. However, most often we can impose restrictions
+on the merge operation that allows for automated validation of the
+results. 
+
+Imagine the very common example that we have a longitudinal
+PK data set (called `pk`), and we want to add subject-level covariates
+from a secondary data set (`dt.cov`). We want to merge by `ID`, and
+all we can allow to happen is columns to be added to `pk` from `dt.cov`. If rows
+disappear or get repeated, or if columns get renamed, it's unintended
+and should return an error. That is what `mergeCheck` is for.
+
+```{r,include=FALSE}
+## dt.cov <- pk[,.(ID=unique(ID)[1:10])]
+## dt.cov[,COV:=sample(1:5,size=10,replace=TRUE)]
+dt.cov <- pk[,.(ID=unique(ID))]
+dt.cov[,COV:=sample(1:5,size=.N,replace=TRUE)]
+dt.cov <- dt.cov[c(1,1:(.N-1))]
+```
+
+Often people check the dimensions of the result to make sure nothing unintended happened. The following example shows that this is not enough, and that `mergeCheck` works differently. After merging the two data sets the check of the dimensions raises no alarm - the number of rows is unchanged from `pk` to `pk2`, and one of two columns in `dt.cov` was added. `dims` is just a `dim`-like function that can compare multiple data sets - handy for interactive analysis.
+```{r}
+pk2 <- merge(pk,dt.cov,by="ID")
+dims(pk,dt.cov,pk2)
+```
+
+What we didn't realize is that we now have twice as many rows for subject 31.
+```{r}
+pk[ID==31,.N]
+pk2[ID==31,.N]
+```
+
+If we instead use `mergeCheck`, we get an error. This is because `mergeCheck` compares the actual rows going in and out of the merge and not just the dimensions. 
+
+```{r,error=TRUE}
+mergeCheck(pk,dt.cov,by="ID")
+```
+
+Notice that `mergeCheck` tells us for which values of `ID` (the `by` argument which can be of length >1) the input
+and output differ so we can quickly look into the data sets and make a
+decision how we want to handle this. In this case we discard the
+covariate value for subject 31 and use `all.x=TRUE` argument to get
+`NA` for subjects 31 and 180:
+
+```{r}
+dt.cov2 <- dt.cov[ID!=31]
+pk2.check <- mergeCheck(pk,dt.cov2,by="ID",all.x=TRUE)
+```
+
+To ensure the consistency of rows before and after the merge, you
+could use `merge(...,all.x=TRUE)` and then check dimensions before and
+after (yes, both `all.x=TRUE` and the dimension check are necessary). This is not needed if you use `mergeCheck`.
+
+`mergeCheck` does not try to reimplement merging. Under the hood, the
+merge is performed by `data.table::merge.data.table` to which most
+arguments are passed. What `mergeCheck` does is to add the checks that
+the results are consistent with the criteria outlined
+above. `data.table::merge.data.table` is generally very fast, and even
+if there is a bit of extra calculations in `mergeCheck`, it should
+never be slow.
+
+In summary, `mergeCheck` verifies that the rows that result from the
+merge are the exact same as in one of the existing datasets, only
+columns added from the second input dataset. You may think that this
+will limit your merges, and that you need merges for inner and outer
+joins etc. You are exactly right - `mergeCheck` is not intended for
+those merges and does not support them. When that is said, the kind of
+merges that are supported by `mergeCheck` are indeed very common. All
+merges in the `NMdata` package are performed with `mergeCheck`.
+
+#### Additional `mergeCheck` features
+Another problem the programmer may not realize during a merge is
+when column names are shared across `x1` and `x2` (in addition to
+columns that are being merged by). This will silently create column
+names like `col.x` and `col.y` in the output. `mergeCheck` will by
+default give a warning if that happens (can be modified using the
+`fun.commoncols` argument). Also, there is an optional argument to
+tell mergeCheck how many columns are expected to be added by the
+merge, and `mergeCheck` will fail if another number of columns are
+added. This can be useful for programming.
+
+The row order of the first data set is by default maintained by
+`mergeCheck`. Apart from this, there is only one difference from the
+behavior of the `merge.data.frame` function syntax, being that either the
+`by` argument or `by.x` and `by.y` must always be supplied to `mergeCheck`. Default
+behavior of `merge.data.frame` is to merge by all common column names,
+but for coding transparency, this is intentionally not allowed by
+`mergeCheck`.
+
+
+## Exclusion flags
+There is no way around excluding some of the events in data due to various reasons. And we need to be able to answer to why we excluded each of the points, and to how many points were excluded due to which criteria. `NMdata` provides two functions to handle this - `flagsAssign` assigns exclusion flags to data records (rows), and `flagsCount` summarizes the number of discarded rows and the reasons. 
+
+This implementation makes it easy to keep the rows flagged for exclusion in the dataset and ignore them in NONMEM. Or if you prefer, you can remove the rows after generating an overview of the exclusion counts for your report.
+
+
+`flagsAssign` and `flagsCount` are based on sequential evaulation
+of exclusion criteria. This means we can summarize how many records and
+subjects were excluded from the analysis due to the different
+criteria. The information is represented in one numerical column for
+NONMEM, and one (value-to-value corresponding) character column for
+the rest of us in the resulting data.
+
+### Assign and count flags
+For use in NONMEM's `IGNORE` feature, the easiest is that inclusion/exclusion is
+determined by a single column in data - we call that column `FLAG`
+here, but any column name can be used. `FLAG` obviously draws on
+information from other columns such as `TIME`, `DV`, and many others,
+depending on your dataset and your way of working.
+
+The function that applies inclusion/excluasion rules is called
+`flagsAssign`, and it takes a dataset and a data.frame with rules as
+arguments. In this simple example we only exclude data due to two different reasons - and only samples (keeping all doses in the analysis). We exclude all pre-dose samples. For post-dose samples, we exclude those below LLOQ.
+
+```{r,include=F}
+pk <- readRDS(file=system.file("examples/data/xgxr2.rds", package="NMdata"))
+pk[,`:=`(FLAG=NULL,flag=NULL)]
+```
+```{r}
+dt.flags <- fread(text="FLAG,flag,condition
+10,Below LLOQ,BLQ==1
+100,Negative time,TIME<0")
+
+pk <- flagsAssign(pk,tab.flags=dt.flags,subset.data="EVID==0")
+pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dose")
+```
+
+`fread` is used to create a data.table (like `read.csv` to create a
+data.frame) for readability, one line for each row in the data.table created.
+`flagsAssign` applies the conditions sequentially and by decreasing 
+value of `FLAG`. `FLAG=0` means that the observation is included in
+the analysis. You can use any expression that can be evaluated within
+the data.frame. In this case, `BLQ` has to exist in `pk`.
+
+Finally, flags are assigned to `EVID==1` rows. Here, no flag table is
+used. This means that all `EVID==1` rows will get `FLAG=0` and `flag="Dose"`. You can use a separate data.frame of flags for dosing records as needed.
+
+In NONMEM, you can include `IGNORE=(FLAG.NE.0)` in `$DATA` or `$INFILE`.
+
+Again, the omission will be attributed to the first condition
+matched. Default is to apply the conditions by the order of decreasing
+numerical flag value. Use `flags.increasing=TRUE` if you prefer the
+opposite. However, what cannot be modified is that 0 is the numerical
+value for rows that are not matched by any conditions.
+
+
+What rows to omit from a data set can vary from one analysis to
+another. Hence, the aim with the chosen design is that the inclusion
+criteria can be changed and applied to overwrite an existing
+inclusion/exclusion selection. For another analysis we want to include
+the observations below LLOQ. We have two options. Either we simply
+change the `IGNORE` statement given above to `IGNORE=(FLAG.LT.10)`, or
+you create a different exclusion flag for that one. If you prefer to
+create a new set of exclusion flags, just use new names for the
+numerical and the character flag columns so you don't overwrite the
+old ones. See help of `flagsAssign` and `flagsCount` for how. 
+
+
+### Summarize data exclusions
+An overview of the number of observations disregarded due to the
+different conditions is then obtained using `flagsCount`. As we see
+from the `names` call below, both discarded, cumulative discarded, and
+observations left after application of the respective criterion are
+available. Choose the ones you prefer - here we show how many
+observations and subjects were matched by eached criterion and how
+many were left after application of each criterion.
+
+```{r}
+tab.count <- flagsCount(data=pk[EVID==0],tab.flags=dt.flags)
+names(tab.count)
+tab.count[,.( flag, N.discard, Nobs.discard,N.left, Nobs.left)]
+```
+
+`flagsCount` includes a `file` argument to save the the table right
+away.
+
+
+## Finalize data format and write to file
+Once the dataset is in place, `NMdata` provides a few useful functions
+to ensure the formatting of the written data is compatible with
+NONMEM. These functions include checks that NONMEM will be able to
+interpret the data as intended, and more features are under
+development in this area.
+
+### Automated ordering of columns
+The order of columns in NONMEM is important for two reasons. One is
+that a character in a variable read into NONMEM will make the run
+fail. The other is that there are restrictions on the number of
+variables you can read into NONMEM, depending on the
+version. `NMorderColumns` tries to put the used columns first, and
+other or maybe even unusable columns in the back of the dataset. It
+does so by a mix of recognition of column names and analysis of the
+column contents. 
+
+Columns that cannot be converted to numeric are put in the back, while
+column bearing standard NONMEM variable names like `ID`, `TIME`, `EVID` etc.
+will be pulled up front. You can of course add column names to
+prioritize to front (`first`) or back (`last`). See `?NMorderColumns` for
+more options.
+
+```{r}
+pk <- NMorderColumns(pk)
+```
+
+One trick is worth mentioning here. If you are adding variables to a data set after having started to model with NONMEM, you may not want to have to update and rerun your NONMEM models right away. `NMorderColumns` has options for putting some variable last (to the right) in data. That argument is called `last`. It has several other options to tweak how the columns are ordered so you can hopefully get the order you want.
+
+
+
+## Checking the data set
+Before we save the data and go to model estimation, `NMdata` offers a quite extensive and automated function to check data for consistency and compatibility with NONMEM.
+
+
+`NMcheckData` checks all the standard NONMEM columns against the
+NONMEM requirements and looks for other common data issues. The list
+is quite long. Please see `?NMcheckData` for a list of performed
+checks. 
+
+We can add subject level covariates, and subject-occasion covariates to be checked for whether they are non-missing, numeric and not varying with subject or subject-occasion. We can also add other numeric variables to use in NONMEM to check for missing values.
+
+
+```{r,include=FALSE}
+pk.copy <- copy(pk)
+pk[1500,WEIGHTB:=30]
+pk[1480,EVID:=5]  
+pk[ROW==1403,AMT:=0]  
+```
+
+```{r}
+findings <- NMcheckData(pk,covs=c("DOSE","WEIGHTB"))
+```
+
+Let's look at these findings:
+```{r}
+findings
+```
+
+Depending on `level` we can now take a look at single rows, data from a subject or fix a column to address these. The fact that some subjects are missing observations in this case is not necessarily an error (they are in this case all BLQ), but `WEIGHTB` has to be constant within subjects, and for NONMEM to even run, `EVID` must be in `0:4`. So those have to be fixed. For the rest of the vighnette, assume we fixed those issues.
+
+```{r}
+pk <- copy(pk.copy)
+```
+
+### Writing data to files
+For the final step of writing the dataset, `NMwriteData` is
+provided. Most importantly, it writes a csv file with appropriate
+options for NONMEM to read it as well as possible. It can also write
+an rds for R with equal contents (or RData if you prefer), but with
+the rds including all information (such as factor levels) which cannot
+be saved in csv. If you should use `NMscanData` to read NONMEM
+results, this information can be used automatically. `NMwriteData`
+also by default calls `NMgenText` which provides a proposal for text
+to include in the `$INPUT` and `$DATA` sections of the NONMEM control
+streams. There are several arguments that will affect
+the proposed text for the NONMEM run, see `?NMwriteData` and especially `?NMgenText`.
+
+Let's include the origin script of the data as meta data. `write.csv=TRUE` is default but included here because we often want to use something like `write.csv=writeOutput` where `writeOutput` is a switching variable we set to `TRUE` or `FALSE` in the initialization section of the script.
+
+```{r}
+text.nm <- NMwriteData(pk,file="derived/pkdata.csv",script="DataPrepare.Rmd",write.csv=TRUE,args.stamp=list(Description="PK data for the Data Preparation vignette."))
+```
+
+We are being told that two files were saved, and then we get some text to use in the NONMEM control streams. `NMwriteData` detected the exclusion flag and suggests to include it in `$DATA`.
+
+Let's take a look at what was saved:
+```{r}
+list.files("derived")
+```
+There is a metadata file which `NMreadCsv` will automatically recognize if found. The metadata becomes accessible using `NMinfo`:
+```{r}
+dat.inp <- NMreadCsv("derived/pkdata.csv")
+NMinfo(dat.inp)
+```
+
+With the flexibility of the `rds` format, we don't need such an additional file. Only difference on the metadata for the rds file is the filename:
+```{r}
+dat.inp.rds <- readRDS("derived/pkdata.rds")
+NMinfo(dat.inp.rds)
+```
+
+
+### Updating NONMEM control streams to read new data file
+If we have to update the input data file, the NONMEM `$INPUT` sections no
+longer match the input data. We saw in `NMorderColumns` how we can use the `last`
+argument to get columns pushed towards the back so the NONMEM runs
+should still work. But maybe you need the column in your nonmem runs,
+and so you have no way around updating the control streams. And that
+can be quite a lot of control streams. With `NMdata` that is really easy.
+
+`NMdata` has a couple of functions to extract and write sections to
+NONMEM control streams called `NMreadSection` and `NMwriteSection`. Those functions are very flexible for updating NONMEM control streams, and we will not tgo into detail with them, but let's
+stick to the example above. We can do
+
+```{r,eval=FALSE}
+NMwriteSection(dir="nonmem",
+               file.pattern="run1.*\\.mod",
+               list.sections=text.nm["INPUT"])
+```
+
+This updates the INPUT section (and not DATA) for all control streams in directory "nonmem" which file names start with "run1" and end in ".mod" (say "run101.mod" to "run199.mod"). If we had done simply `list.sections=text.nm` instead of `list.sections=text.nm["INPUT"]`, it would have replaced the `$DATA` section too. However, the `DATA` section rarely needs update following an pdate of the input data file, and oftentimes `$DATA` can vary among control streams that use the same input data (some models may be estimated on a smaller subset of data), so be careful with that.
+
+
+`NMwriteSection` has the argument `data.file` to further limit the scope of files to update based on what data file the control streams use. It only makes sense to use the auto-generated text for control streams that use this data set.
+
+The text for NONMEM can be generated without saving data using `NMgenText`. You can tailor the generation of the text to copy `(DV=CONC)`, drop `(COL=DROP)`, rename (`DV` instead of `CONC`) and more.
+
+
+## Stamp objects for traceability
+We saw how `NMwriteDatat` saves metadata automatically. Even if `NMwriteData` can actually be used as a simple rds writer that adds meta data the same way, we may want to save data or any R object using `saveRDS`. In that case, use `NMstamp` (which is also what `NMwriteData` does).
+
+```{r}
+pk <- NMstamp(pk,script="vignettes/DataCreate.Rmd")
+NMinfo(pk)
+```
+The `script` argument is recognized by `NMstamp`, but you can add anything to this. We want to keep descriptive note too. Another often useful piece of information is what source data files were read in order to generate the saved data. `Description` and `Source.Files` are only examples - any name can be used.
+
+
+```{r}
+pk <- NMstamp(pk,script="vignettes/DataCreate.Rmd",Description="A PK dataset used for examples.",Source.Files="/path/to/adpc.sas7bdat,/path/to/adsl.sas7bdat")
+NMinfo(pk)
+```
+
+These are very simple functions. But hopefully they will help you
+avoid sitting with a data set trying to guess which script generated
+it.
+
+Again, when using `NMwriteData`, you don't have to call `NMstamp`
+explicitly. Just pass the `script` argument to `NMwriteData` and
+`NMstamp` will be applied automatically.
+
+

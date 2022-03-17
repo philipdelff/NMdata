@@ -32,3 +32,18 @@ data with (some) new column names. Class as defined by
 For instance, lowercase all columns that Nonmem
     cannot interpret (as numeric).
 }
+\examples{
+pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+pk[,trtact:=NULL]
+pk <- renameByContents(data=pk,
+                       fun.test = NMisNumeric,
+                       fun.rename = tolower,
+                       invert.test = TRUE)
+## Or append a "C" to the same column names
+pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+pk[,trtact:=NULL]
+pk <- renameByContents(data=pk,
+                       fun.test = NMisNumeric,
+                       fun.rename = function(x)paste0(x,"C"),
+                       invert.test = TRUE)
+}

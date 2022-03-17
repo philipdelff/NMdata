@@ -3,12 +3,12 @@
 ## load_all()
 
 context("NMscanData")
-NMdata_filepath <- function(...) {
-    system.file(..., package = "NMdata")
-}
+## NMdata_filepath <- function(...) {
+##     system.file(..., package = "NMdata")
+## }
 
-file.nm <- function(...) NMdata_filepath("examples/nonmem",...)
-file.data <- function(...) NMdata_filepath("examples/data",...)
+## file.nm <- function(...) NMdata_filepath("examples/nonmem",...)
+## file.data <- function(...) NMdata_filepath("examples/data",...)
 
 fix.time <- function(x){
     meta.x <- attr(x,"NMdata")
@@ -20,6 +20,8 @@ fix.time <- function(x){
     meta.x$details$mtime.input <- NULL
     meta.x$details$mtime.lst <- NULL
     meta.x$details$mtime.mod <- NULL
+    meta.x$datafile$path <- NULL
+    meta.x$datafile$path.rds <- NULL
     meta.x$tables$file <- NULL
     meta.x$tables$file.mtime <- NULL
     setattr(x,"NMdata",meta.x)
@@ -33,15 +35,16 @@ test_that("basic",{
     
     ## file.lst <- "../../inst/examples/nonmem/run001.lst"
     ## file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
-    file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
+    ## file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
+    file.lst <- "testData/nonmem/xgxr001.lst"
     ## NMreadSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
-    res1 <- NMscanData(file=file.lst, quiet=T, order.columns = F, merge.by.row=FALSE, check.time = FALSE)
-    ## dim(res1)
+    res <- NMscanData(file=file.lst, quiet=T, order.columns = F, merge.by.row=FALSE, check.time = FALSE)
+    ## dim(res)
 
-    fix.time(res1)
+    fix.time(res)
     
-    expect_equal_to_reference(res1,fileRef,version=2)
+    expect_equal_to_reference(res,fileRef,version=2)
     ## without meta
     ##    expect_equal(unNMdata(res1),unNMdata(readRDS(fileRef)))
     ## data.table(attributes(readRDS(fileRef))$meta$variables$variable,attributes(res1)$meta$variables$variable)
@@ -53,10 +56,17 @@ test_that("Modifications to column names in $INPUT",{
     fileRef <- "testReference/NMscanData2.rds"
     ## res.ref <- readRDS(fileRef)
     
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr002.lst")
+    ## file.lst <- NMdata_filepath("examples/nonmem/xgxr002.lst")
+    file.lst <- "testData/nonmem/xgxr002.lst"
 
-    res <- NMscanData(file=file.lst, check.time = FALSE, merge.by.row=FALSE)
-    fix.time(res)
+    res1 <- NMscanData(file=file.lst, check.time = FALSE, merge.by.row=FALSE)
+
+    res <- list(
+        NMinfo(res1,"input.colnames"),
+        NMinfo(res1,"columns"),
+        colnames(res1)
+    )
+
     expect_equal_to_reference(res,fileRef,version=2)
     ## without meta
     ## expect_equal(unNMdata(res),unNMdata(readRDS(fileRef)))
@@ -67,7 +77,7 @@ test_that("No translation of column names in $INPUT",{
     fileRef <- "testReference/NMscanData2b.rds"
     ## res.ref <- readRDS(fileRef)
     
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr002.lst")
+    file.lst <- "testData/nonmem/xgxr002.lst"
 
     res1 <- NMscanData(file=file.lst, check.time = FALSE, merge.by.row=FALSE, translate.input = T)
     res2 <- NMscanData(file=file.lst, check.time = FALSE, merge.by.row=FALSE, translate.input = F)
@@ -82,7 +92,8 @@ test_that("Multiple output table formats",{
 
     NMdataConf(reset=TRUE)
     fileRef <- "testReference/NMscanData3.rds"
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr003.lst")
+    ## file.lst <- NMdata_filepath("examples/nonmem/xgxr003.lst")
+    file.lst <- "testData/nonmem/xgxr003.lst"
 
 
     ## res <- NMscanData(file=file.lst)
@@ -98,7 +109,8 @@ test_that("Interpret IGNORE statement",{
 
     NMdataConf(reset=TRUE)
     fileRef <- "testReference/NMscanData4.rds"
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
+    ## file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
+    file.lst <- "testData/nonmem/xgxr004.lst"
 
     ## res <- NMscanData(file=file.lst)
     ## res <- NMscanData(file=file.lst)
@@ -116,8 +128,10 @@ test_that("Interpret IGNORE statement",{
 test_that("List of ACCEPT statements and vs separate statements",{
     NMdataConf(reset=T)
     NMdataConf(as.fun="data.table")
-    file1.lst <- NMdata_filepath("examples/nonmem/xgxr006.lst")
-    file2.lst <- NMdata_filepath("examples/nonmem/xgxr007.lst")
+    ## file1.lst <- NMdata_filepath("examples/nonmem/xgxr006.lst")
+    ## file2.lst <- NMdata_filepath("examples/nonmem/xgxr007.lst")
+    file1.lst <- "testData/nonmem/xgxr006.lst"
+    file2.lst <- "testData/nonmem/xgxr007.lst"
 
     NMreadSection(file1.lst,section="PROBLEM")
     NMreadSection(file2.lst,section="PROBLEM")
@@ -131,9 +145,12 @@ test_that("List of ACCEPT statements and vs separate statements",{
 
 test_that("merge by filters or not",{
     ##    fileRef <- "testReference/NMscanData4.rds"
-    file1.lst <- NMdata_filepath("examples/nonmem/xgxr006.lst")
-    file2.lst <- NMdata_filepath("examples/nonmem/xgxr008.lst")
+    ## file1.lst <- NMdata_filepath("examples/nonmem/xgxr006.lst")
+    ## file2.lst <- NMdata_filepath("examples/nonmem/xgxr008.lst")
+    file1.lst <- "testData/nonmem/xgxr006.lst"
+    file2.lst <- "testData/nonmem/xgxr008.lst"
 
+    
     ## NMreadSection(file1.lst,section="PROBLEM")
     ## NMreadSection(file2.lst,section="PROBLEM")
 
@@ -163,9 +180,11 @@ test_that("merge by filters or not",{
 test_that("Only a firstonly without ID but with ROW",{
 ### This should work because ROW is in firstonly table.
     NMdataConf(reset=TRUE)
+    ## NMdataConf(as.fun="data.table")
     fileRef <- "testReference/NMscanData11.rds"
 
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr011.lst")
+    ## file.lst <- NMdata_filepath("examples/nonmem/xgxr011.lst")
+    file.lst <- "testData/nonmem/xgxr011.lst"
     ## NMreadSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
 ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
@@ -182,7 +201,8 @@ test_that("Only a firstonly without ID but with ROW",{
     ## merge.by.row should be able to merge. 
     res1 <-
         expect_warning(
-            NMscanData(file=file.lst,merge.by.row=TRUE,col.row="ROW",check.time = FALSE))
+            NMscanData(file=file.lst,merge.by.row=TRUE,col.row="ROW",check.time = FALSE)
+        )
     fix.time(res1)
     expect_equal_to_reference(res1,fileRef,version=2)
     ## without meta
@@ -200,7 +220,8 @@ test_that("Only a firstonly, no ID, no ROW",{
 
     fileRef <- "testReference/NMscanData12.rds"
 
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr012.lst")
+    ## file.lst <- NMdata_filepath("examples/nonmem/xgxr012.lst")
+    file.lst <- "testData/nonmem/xgxr012.lst"
     ## NMreadSection(file.lst,section="DATA")
     ## NMreadSection(file.lst,section="PROBLEM")
     ## NMreadSection(file.lst,section="TABLE")
@@ -220,9 +241,11 @@ test_that("FO and row-level output. No ID, no row.",{
 
     fileRef <- "testReference/NMscanData13.rds"
 
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr013.lst")
+    ## file.lst <- NMdata_filepath("examples/nonmem/xgxr013.lst")
+    file.lst <- "testData/nonmem/xgxr013.lst"
     NMreadSection(file.lst,section="PROBLEM")
     ## NMreadSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
+    NMreadSection(file.lst,section="TABLE")
 
     ## tabs <- NMscanTables(file=file.lst)
     res1 <- expect_warning(
@@ -253,7 +276,8 @@ test_that("FO and row-level output. No ID, no row. cbind.by.filters=T",{
     ## row-level output+input returned because cbind.by.filters=T, and firstonly is without ID and row. Correct. 
     fileRef <- "testReference/NMscanData14.rds"
 
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr013.lst")
+    ## file.lst <- NMdata_filepath("examples/nonmem/xgxr013.lst")
+    file.lst <- "testData/nonmem/xgxr013.lst"
     NMreadSection(file.lst,section="PROBLEM")
     
     ## tabs <- NMscanTables(file=file.lst)
@@ -271,13 +295,14 @@ test_that("FO and row-level output. No ID, no row. cbind.by.filters=T",{
 })
 
 
-
+## bug. This should return a meaningful error msg 
 test_that("Only a firstonly without ID but with ROW",{
 ### cbind.by.filters is TRUE, so ROW is not used to recover firstonly data.
 
     fileRef <- "testReference/NMscanData15.rds"
 
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr011.lst")
+    ## file.lst <- NMdata_filepath("examples/nonmem/xgxr011.lst")
+    file.lst <- "testData/nonmem/xgxr011.lst"
     NMreadSection(file.lst,section="DATA")
     NMreadSection(file.lst,section="TABLE")
 
@@ -285,11 +310,10 @@ test_that("Only a firstonly without ID but with ROW",{
     ## tabs <- NMscanTables(file.lst)
     ## tabs
 
-###### Why are we not getting an error or warning here? Because col.row is available?
     res1 <- expect_error(
-        expect_warning(
-            NMscanData(file=file.lst,merge.by.row=FALSE,check.time = FALSE)
-        )
+                                        #expect_warning(
+        NMscanData(file=file.lst,merge.by.row=FALSE,check.time = FALSE)
+        ## )
     )
 
     ##    tabs=NMscanTables(file=file.lst)
@@ -301,7 +325,8 @@ test_that("Only a firstonly without ID but with ROW. Using merge.by.row=TRUE.",{
 
     fileRef <- "testReference/NMscanData15b.rds"
 
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr011.lst")
+    ## file.lst <- NMdata_filepath("examples/nonmem/xgxr011.lst")
+    file.lst <- "testData/nonmem/xgxr011.lst"
     NMreadSection(file.lst,section="DATA")
     NMreadSection(file.lst,section="TABLE")
 
@@ -326,7 +351,8 @@ test_that("recoverRows without a row identifier",{
 
     fileRef <- "testReference/NMscanData16.rds"
 
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
+    ## file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
+    file.lst <- "testData/nonmem/xgxr004.lst"
     NMreadSection(file.lst,section="DATA")
     NMreadSection(file.lst,section="TABLE")
 
@@ -351,7 +377,7 @@ test_that("use as.fun to get a data.frame",{
 
     fileRef <- "testReference/NMscanData17.rds"
 
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
+    file.lst <- "testData/nonmem/xgxr004.lst"
     NMreadSection(file.lst,section="DATA")
     NMreadSection(file.lst,section="TABLE")
 
@@ -375,7 +401,8 @@ test_that("use as.fun to get a tibble",{
 
     fileRef <- "testReference/NMscanData18.rds"
 
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
+    ## file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
+    file.lst <- "testData/nonmem/xgxr004.lst"
     NMreadSection(file.lst,section="DATA")
     NMreadSection(file.lst,section="TABLE")
 
@@ -405,44 +432,98 @@ test_that("dir structure with input.txt/output.txt",{
 
     NMdataConf(reset=TRUE)
     NMdataConf(as.fun="data.table")
-    NMdataConf(file.mod=function(file) file.path(dirname(file),"input.txt"))
+    ## NMdataConf(file.mod=function(file) file.path(dirname(file),"input.txt"))
+    NMdataConf(file.mod=identity)
     NMdataConf(modelname=function(file) basename(dirname(normalizePath(file))))
     
-    filedir.lst <- file.nm("xgxr001dir/output.txt")
+    ## filedir.lst <- file.nm("xgxr001dir/output.txt")
+    filedir.lst <- "testData/nonmem/xgxr001dir/output.txt"
     res1dir <- NMscanData(filedir.lst,check.time = FALSE,merge.by.row=F)
-    
+
+    ## test model names from NMinfo and in result data
     expect_equal(NMinfo(res1dir,"details")$model,"xgxr001dir")
     umod <- unique(res1dir[,model])
     expect_equal(length(umod),1)
     expect_equal(umod,"xgxr001dir")
 
+
+})
+
+
+#### compare mod/lst vs input/output
+## this test isn't ready. 
+### Todo: Delete components from NMinfo and then test equality
+
+test_that("input.txt/output.txt - unset modelname",{
+    NMdataConf(reset=TRUE)
+    NMdataConf(as.fun="data.table")
+    ## NMdataConf(file.mod=function(file) file.path(dirname(file),"input.txt"))
+    NMdataConf(file.mod=identity)
+    NMdataConf(modelname=function(file) basename(dirname(normalizePath(file))))
     
-    ## options(NMdata.file.mod=NULL)
-    ## options(NMdata.modelname=NULL)
+    ## filedir.lst <- file.nm("xgxr001dir/output.txt")
+    filedir.lst <- "testData/nonmem/xgxr001dir/output.txt"
+    res1dir <- NMscanData(filedir.lst,check.time = FALSE,merge.by.row=T)
+
     NMdataConf(file.mod="default")
     NMdataConf(modelname=NULL)
     
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
+    ## file.lst <- NMdata_filepath("examples/nonmem/xgxr001.lst")
+    file.lst <- "testData/nonmem/xgxr001.lst"
     res1 <- NMscanData(file=file.lst,check.time = FALSE)
 
-    unNMdata(res1)
-    unNMdata(res1dir)
-    ## colnames(res1[,!("model")])==
-    ##     colnames(res1dir[,!("model")])
+    ## unNMdata(res1)
+    ## unNMdata(res1dir)
+
     ## this test isn't ready. How do I execute the input.txt/output.txt model?
-    ##expect_equal(res1[,!("model")],res1dir[,!("model")])
+
+    els.details <- c("call","model","file.lst","file.mod")
+    for(elem in els.details){
+        attributes(res1)$NMdata$details[elem] <- NULL
+        attributes(res1dir)$NMdata$details[elem] <- NULL
+    }
+    
+    attributes(res1)$NMdata$datafile$DATA <- NULL
+    attributes(res1dir)$NMdata$datafile$DATA <- NULL
+
+    attributes(res1)$NMdata$datafile$string <- NULL
+    attributes(res1dir)$NMdata$datafile$string <- NULL
+
+    fix.time(res1)
+    fix.time(res1dir)
+
+    ## these differ a little in the two estimates
+    cols.differ <- c("TVKA","TVCL","TVV3","TVQ","KA","CL","V3","Q","V2","IPRED","PRED","RES","WRES")
+    res1[,(cols.differ):=NULL]
+    res1dir[,(cols.differ):=NULL]
+
+    expect_equal(res1[,!("model")],res1dir[,!("model")])
 
     NMdataConf(as.fun=NULL)
 })
 
 
+test_that("output.txt, file.mod=identity - NMinfo file.mod=output.txt?",{
+
+    NMdataConf(reset=TRUE)
+    NMdataConf(as.fun="data.table")
+    NMdataConf(file.mod=identity)
+    NMdataConf(modelname=function(file) basename(dirname(normalizePath(file))))
+    
+    ## filedir.lst <- file.nm("xgxr001dir/output.txt")
+    filedir.lst <- "testData/nonmem/xgxr001dir/output.txt"
+    res1 <- NMscanData(filedir.lst,check.time = FALSE,merge.by.row=F)
+
+    expect_equal(basename(NMinfo(res1,"details")$file.lst),"output.txt")
+})
+## 
+
+
 test_that("Duplicate columns in input data",{
     NMdataConf(reset=TRUE)
     fileRef <- "testReference/NMscanData20.rds"
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr015.lst")
-
-    ## res <- NMscanData(file=file.lst)
-    ## res <- NMscanData(file=file.lst)
+    ## file.lst <- NMdata_filepath("examples/nonmem/xgxr015.lst")
+    file.lst <- "testData/nonmem/xgxr015.lst"
 
     ## debugonce(NMscanData)
     res <- expect_warning(
@@ -471,7 +552,8 @@ test_that("Duplicate columns in input data",{
 
 test_that("Modifying row identifier",{
     NMdataConf(reset=TRUE)
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr016.lst")
+    ## file.lst <- NMdata_filepath("examples/nonmem/xgxr016.lst")
+    file.lst <- "testData/nonmem/xgxr016.lst"
 
     res <-
         expect_error(
@@ -489,7 +571,8 @@ test_that("merge.by.row=ifAvailable when available",{
     res1 <- NMscanData(file=file.lst,merge.by.row="ifAvailable",check.time=FALSE)
     ## dim(res1)
 
-    fix.time(res1)
+### we don't need metadata for this test
+    unNMdata(res1)
     
     expect_equal_to_reference(res1,fileRef,version=2)
 
@@ -500,7 +583,8 @@ test_that("merge.by.row=ifAvailable when not available",{
 
     fileRef <- "testReference/NMscanData22.rds"
 
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
+    ## file.lst <- NMdata_filepath("examples/nonmem/xgxr004.lst")
+    file.lst <- "testData/nonmem/xgxr004.lst"
 
 
     res1 <- NMscanData(file=file.lst,merge.by.row="ifAvailable",recover.rows = T,as.fun="data.table",check.time = FALSE)
@@ -550,7 +634,7 @@ test_that("A filter without operator",{
 
     fileRef <- "testReference/NMscanData23.rds"
 
-    file.lst <- NMdata_filepath("examples/nonmem/xgxr010.lst")
+    file.lst <- "testData/nonmem/xgxr010.lst"
 
     res1 <- NMscanData(file=file.lst,merge.by.row="ifAvailable",as.fun="data.table",check.time = FALSE)
     res1[,.N,by=.(DOSE)]
@@ -568,7 +652,8 @@ test_that("Including a redundant output table",{
     NMdataConf(as.fun="data.table")
 
     fileRef <- "testReference/NMscanData24.rds"
-    file.lst <- file.nm("xgxr019.lst")
+    ## file.lst <- file.nm("xgxr019.lst")
+    file.lst <- "testData/nonmem/xgxr019.lst"
 
     ## notice no cols are taken from the redundant table - correct
     res1 <- NMscanData(file=file.lst,merge.by.row="ifAvailable",as.fun="data.table",check.time = FALSE)
@@ -614,4 +699,83 @@ test_that("redundant output",{
     
 }
 )
+
+
+
+## check.time (warning)
+### I'm afraid this could give warnings when run in check or on CRAN. 
+if(FALSE){
+    test_that("check time warning",{
+        NMdataConf(reset=T)
+        fileRef <- "testReference/NMscanData26.rds"
+        
+        ## file.lst <- "testData/nonmem/xgxr001.lst"
+
+        dir.test <- "testData/nonmem/check.time"
+        if(dir.exists(dir.test)) unlink(dir.test,recursive=TRUE)
+        dir.create(dir.test)
+
+
+        file.copy("testData/nonmem/xgxr001.lst",dir.test)
+        file.copy("testData/nonmem/xgxr001_res.txt",dir.test)
+        file.copy("testData/nonmem/xgxr001.mod",dir.test)
+
+        file.lst <- file.path(dir.test,"xgxr001.lst")
+        file.mod <- fnExtension(file.lst,".mod")
+        data.new <- sub("../data","../../data",NMreadSection(file.mod,section="data"))
+        NMwriteSection(file.mod,section="data",newlines=data.new)
+        
+        res1 <- expect_warning(
+            NMscanData(file=file.lst, quiet=F, order.columns = F, merge.by.row=FALSE)
+        )
+        ## dim(res1)'
+        
+        ## without meta
+        expect_equal_to_reference(unNMdata(res1),fileRef)
+        ## data.table(attributes(readRDS(fileRef))$meta$variables$variable,attributes(res1)$meta$variables$variable)
+    })
+}
+
+test_that("$INPUT copy",{
+    NMdataConf(reset=T)
+    NMdataConf(check.time=FALSE)
+    
+    file.lst.1 <- "testData/nonmem/xgxr022.lst"
+    res.1 <- NMscanData(file.lst.1)
+
+    ## NMinfo(res,"input.colname")
+    NMinfo(res.1,"input.colnames")
+    NMinfo(res.1,"columns")
+
+    file.lst.2 <- "testData/nonmem/xgxr001.lst"
+    res.2 <- NMscanData(file.lst.2)
+
+    expect_equal(ncol(res.1)-ncol(res.2),1)
+    expect_equal(setdiff(colnames(res.1),colnames(res.2)),c("COMP","EFF0"))
+
+    cols.1 <- NMinfo(res.1,"columns")
+    cols.2 <- NMinfo(res.2,"columns")
+
+    expect_equal(setdiff(cols.1$variable,cols.2$variable),c("COMP","EFF0"))
+    expect_equal(setdiff(cols.2$variable,cols.1$variable),c("eff0"))
+
+})
+
+test_that("only firstonly. Has col.id, no col.row.",{
+######  trickers this 
+    ## use.input&&!any(tables$meta$full.length)
+    NMdataConf(reset=T)
+    NMdataConf(check.time=FALSE)
+
+    
+    fileRef <- "testReference/NMscanData27.rds"
+    
+    file.lst <- "testData/nonmem/xgxr023.lst"
+    res <- NMscanData(file.lst,quiet=F)
+    res <- fix.time(res)
+
+    expect_equal_to_reference(res,fileRef)
+
+})
+
 

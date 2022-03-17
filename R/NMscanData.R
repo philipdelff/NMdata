@@ -339,7 +339,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     }
 
 ### Section end: col.nmout and col.model
-
     
 
 #### Section start:  merge to max one idlevel and max one row ####
@@ -479,11 +478,12 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(use.input&&!any(tables$meta$full.length)) {
         ## copying so we can modify tab.row        
         tab.row <- copy(data.input)
-        setattr(tab.row,"file",NULL)
-        setattr(tab.row,"type.file",NULL)
-        setattr(tab.row,"mtime.file",NULL)
+        ## setattr(tab.row,"file",NULL)
+        ## setattr(tab.row,"type.file",NULL)
+        ## setattr(tab.row,"mtime.file",NULL)
+## <- unNMdata instead of unsetting those attributes?
+        ## unNMdata(data.input)
 
-        
         dt.vars <- rbind(dt.vars,
                          data.table(
                              variable=colnames(tab.row)
@@ -494,6 +494,13 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                          )
         
         tab.row[,(col.nmout):=FALSE]
+        dt.vars <- rbind(dt.vars,
+                         data.table(variable=col.nmout
+                                   ,file=NA_character_
+                                   ,included=TRUE 
+                                   ,source="NMscanData"
+                                   ,level="row"
+                                    ))
     }
 
     if(use.input&&any(tables$meta$full.length)) {
@@ -518,7 +525,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             cols.row.output <- colnames(tab.row)[tab.row[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
 
             cols.row.both <- intersect(cols.row.input,cols.row.output)
-            ### we should not merge on these even if unique
+### we should not merge on these even if unique
             cols.row.both <- setdiff(cols.row.both,c("AMT","DV"))            
             if(length(cols.row.both)){
                 
@@ -617,7 +624,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                          ]
 
                 dt.vars <- rbind(dt.vars,dt.vars1)
-                tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=TRUE,as.fun="data.table")
+                tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=TRUE,as.fun="data.table",quiet=TRUE)
                 
             }
             
@@ -685,7 +692,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                     tab.idlevel[,(col.id):=NULL]
                 }
                 
-                tab.idlevel <- mergeCheck(tab.idlevel,unique(tab.row[,c(col.row,col.id),with=FALSE]),by=col.row)
+                tab.idlevel <- mergeCheck(tab.idlevel,unique(tab.row[,c(col.row,col.id),with=FALSE]),by=col.row,quiet=TRUE)
                 tab.idlevel[,(col.row):=NULL]
                 id.cols.not.new <- c(col.row,col.id)
                 
@@ -704,7 +711,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             if(!skip.idlevel){
                 cols.to.use <- unique(c(col.id,setdiff(colnames(tab.idlevel),dt.vars[source=="output",variable])))
                 tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=FALSE]
-                tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="data.table")
+                tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="data.table",quiet=TRUE)
                 
                 dt.vars.id1[,included:=FALSE]
                 dt.vars.id1[variable%in%setdiff(cols.to.use,id.cols.not.new),included:=TRUE]
@@ -835,21 +842,22 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     }
 
 
-
+    
 ### more meta information needed.
     ## meta <- list(details=details)
     writeNMinfo(tab.row,list(details=details),append=FALSE)
 
-    meta.input <- NULL
-    if(exists("data.input")){
-        meta.input <- NMinfoDT(data.input)
-    }
-    meta.input$tables <- NULL
 
     if(use.input){
+        meta.input <- NULL
+        if(exists("data.input")){
+            meta.input <- NMinfoDT(data.input)
+        }
+        meta.input$tables <- NULL
+        
         writeNMinfo(tab.row,meta.input,append=TRUE)
     }
-
+    
     writeNMinfo(tab.row,list(tables=tables.meta),append=TRUE)
     writeNMinfo(tab.row,list(columns=dt.vars),append=TRUE)
 

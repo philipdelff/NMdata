@@ -15,3 +15,4 @@ The value active in configuration
 \description{
 Look up default configuration of an argument
 }
+\keyword{internal}

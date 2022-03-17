@@ -34,8 +34,9 @@ character string, and indicate the line seperator with the
 linesep argument (handled by NMextractText). Use only one of
 file, lines, and text.}
 
-\item{section}{The name of section to extract. Examples: "INPUT",
-"PK", "TABLE", etc.}
+\item{section}{The name of section to extract without
+"$". Examples: "INPUT", "PK", "TABLE", etc. Not case
+sensitive.}
 
 \item{return}{If "text", plain text lines are returned. If "idx",
 matching line numbers are returned. "text" is default.}
@@ -85,6 +86,7 @@ NMreadSection(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),secti
 Other Nonmem: 
 \code{\link{NMapplyFilters}()},
 \code{\link{NMextractText}()},
+\code{\link{NMgenText}()},
 \code{\link{NMwriteData}()},
 \code{\link{NMwriteSection}()}
 }

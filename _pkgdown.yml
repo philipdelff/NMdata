@@ -3,34 +3,96 @@ url: https://philipdelff.github.io/NMdata
 template:
   opengraph:
     image:
-      src: man/figures/NMdata_logo_v01.png
+      src: man/figures/apple-touch-icon-180x180.png
       alt: "Efficient data preparation, consistency-checking and post-processing in PK/PD modeling"
-
+  includes:
+    after_body: >
+      <script data-goatcounter="https://nmdata.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 navbar:
   structure:
-    left:  [home, articles, reference, news, github]
+    left:  [home, articles, cheatsheet, reference, news, github]
+    right: []
   components:
     home:
       title: Efficient data preparation, consistency-checking and post-processing in PK/PD modeling
-      description: >
-        Efficient and fast tools for preparation, checking and post-processing of data in PK/PD modeling and pharmacometrics, with focus on use of Nonmem. Save time and avoid time-consuming errors. Implemented in data.table, but integratable with base and dplyr and tidyverse.
+      desc: >
+        Efficient and fast tools for preparation, checking and post-processing of data in PK/PD modeling and pharmacometrics, with focus on use of NONMEM. Save time and avoid time-consuming errors. Implemented in data.table, but integratable with base and dplyr and tidyverse.
       icon: fas fa-home fa-lg
       href: index.html
     articles:
       text: Vignettes
       menu:
+      - text: "Cheat Sheet"
+        href: https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html
       - text: "NMscanData: find and combine all output and input data"
         href: articles/NMscanData.html
-      - text: "Data creation tools"
-        href: articles/DataCreate.html
+      - text: "Data Preparation Tools"
+        href: articles/DataPrepare.html
       - text: "FAQ"
         href: articles/NMdata-FAQ.html
-    reference:
-      text: Manual
-      href: reference/index.html
-    news:
-      text: News
-      href: news/index.html
-    github:
-      icon: fab fa-github fa-lg
-      href: https://github.com/philipdelff/NMdata
+reference:
+      - title: "Configuration"
+        desc: "Configure NMdata behaviour"
+        contents:
+          - NMdataConf
+      - title: "Data Preparation"
+        desc: "Functions for preparation of PK/PD data sets"
+        contents:
+          - NMorderColumns
+          - compareCols
+          - mergeCheck
+          - renameByContents
+          - flagsAssign
+          - flagsCount
+      - title: "Write data"
+        desc: "Write data and edit update NONMEM control streams"
+        contents:
+          - NMwriteData
+          - NMgenText
+          - NMstamp
+          - NMwriteSection
+      - title: "Retrieve NONMEM data"
+        desc: "Functions for retrieving NONMEM input and output data"
+        contents:
+          - NMscanData
+          - NMscanTables
+          - NMscanInput
+          - NMreadCsv
+          - NMreadTab
+          - NMinfo 
+      - title: "Checking and Debugging"
+        desc: "Functions for checking data and input control streams"
+        contents:
+          - NMcheckColnames
+          - NMcheckData
+      - title: "Programming"
+        desc: "Additional functions for programming"
+        contents:
+          - cc
+          - NMisNumeric
+          - egdt
+          - dims
+          - findCovs
+          - findVars
+          - fnExtension
+          - is.NMdata
+          - unNMdata
+          - NMreadSection
+          - NMextractDataFile
+          - NMextractText
+          - NMdataOperations
+      - title: "Misc"
+        desc: "Miscellaneous"
+        contents:
+          - summary.NMdata
+          - print.summary_NMdata
+news:
+       text: News
+       href: news/index.html
+github:
+       icon: fab fa-github fa-lg
+       href: https://github.com/philipdelff/NMdata
+cheatsheet:
+       text: CheatSheet
+       href: "https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html" 

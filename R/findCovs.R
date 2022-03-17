@@ -11,6 +11,7 @@
 ##' @param by covariates will be searched for in combinations of values in
 ##'     these columns. Often by will be either empty or ID. But it can also
 ##'     be both say c("ID","DRUG") or c("ID","TRT").
+##' @param cols.id Deprecated. Use by instead.
 ##' @param as.fun The default is to return a data.table if data is a data.table
 ##'     and return a data.frame in all other cases. Pass a function in as.fun to
 ##'     convert to something else. If data is not a data.table, the default can
@@ -19,19 +20,43 @@
 ##'     variables listed in by.
 ##' @family DataCreate
 ##' @import data.table
-##' @export
 ##' @examples
+##' dt1=data.frame(ID=c(1,1,2,2),
+##'                OCC=c(1,2,1,2),
+##'                ## ID level
+##'                eta1=c(1,1,3,3),
+##'                ## occasion level
+##'                eta2=c(1,3,1,5),
+##'                ## not used
+##'                eta3=0
+##'                )
+##' ## model level
+##' findCovs(dt1)
+##' ## ID level
+##' findCovs(dt1,"ID")
+##' ## acual ID level
+##' findVars(findCovs(dt1,"ID"))
+##' ## occasion level
+##' findCovs(findVars(dt1,"ID"),c("ID","OCC"))
+##' ## Based on a "real data example"
 ##' dat <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"))
-##' ### very common use
 ##' findCovs(dat,by="ID")
 ##' ### Without an ID column we get non-varying columns
 ##' findCovs(dat)
+##' @export
 
 
 
-findCovs <- function(data,by=NULL,as.fun=NULL){
+findCovs <- function(data,by=NULL,cols.id,as.fun=NULL){
 
+    
     ## check arguments
+    if(!missing(cols.id) && !is.null(by)) stop("\"cols.id\" is a deprecated name for the \"by\" argument. Just use \"by\"")
+    if(!missing(cols.id)) {
+        warning("\"cols.id\" argument deprecated. Use \"by\" instead.")
+        by <- cols.id
+    }
+
     if(!is.data.frame(data)){
         stop("data must be a data.frame (or data.table)")
     }
@@ -56,7 +81,7 @@ findCovs <- function(data,by=NULL,as.fun=NULL){
 
     reduced <- unique(data[,c(by,names.covs),with=FALSE])
     if(!is.null(by)){
-        reduced <- reduced[order(get(by))]
+        setorderv(reduced,by)
     }
 
     

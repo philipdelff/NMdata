@@ -15,14 +15,15 @@ NMwriteData(
   args.fwrite,
   args.rds,
   args.RData,
+  quiet,
+  args.NMgenText,
   nm.drop,
   nmdir.data,
-  col.flag = "FLAG",
+  col.flagn,
   nm.rename,
   nm.copy,
-  nm.capitalize = FALSE,
-  allow.char.TIME = TRUE,
-  quiet
+  nm.capitalize,
+  allow.char.TIME
 )
 }
 \arguments{
@@ -53,50 +54,43 @@ configured using NMdataConf.}
 
 \item{args.RData}{A list of arguments to be passed to save.}
 
-\item{nm.drop}{Only used for generation of proposed text for
-Nonmem control stream. Columns to drop in Nonmem $DATA. This
-has two implications. One is that the proposed $DATA indicates
-=DROP after the given column names. The other that in case it
-is a non-numeric column, succeeding columns can still be
-included.}
-
-\item{nmdir.data}{For the $DATA text proposal only. The path to
-the input datafile to be used in the Nonmem $DATA
-section. Often, a relative path to the actual Nonmem run is
-wanted here.}
-
-\item{col.flag}{Name of a numeric column with zero value for rows
-to include in Nonmem run, non-zero for rows to skip. The
-argument is only used for generating the proposed text to
-paste into the Nonmem control stream. To skip this feature,
-use col.flag=NULL.}
-
-\item{nm.rename}{For the $DATA text proposal only. If you plan to
-rename columns in Nonmem $DATA, NMwriteData can adjust the
-suggested $DATA text. If you plan to use BBW instead of BWBASE
-in Nonmem, consider nm.rename=c(BWBASE="BBW"). The result is
-different from nm.copy since the nm.copy syntax is only
-allowed by Nonmem for certain standard column names such as
-DV.}
-
-\item{nm.copy}{For the $DATA text proposal only. If you plan to
-rename columns in Nonmem $DATA, NMwriteData can adjust the
-suggested $DATA text. If you plan to use CONC as DV in Nonmem,
-you can include nm.rename=c(DV="CONC").}
-
-\item{nm.capitalize}{For the $DATA text proposal only. If TRUE,
-the suggested text for Nonmem will only contain capital
-letters in column names.}
-
-\item{allow.char.TIME}{For the $DATA text proposal only. Assume
-Nonmem can read TIME even if it can't be translated to
-numeric. This is necessary if using the 00:00 format. Default
-is TRUE.}
-
 \item{quiet}{The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
 non-interactive use. Default can be configured using
 NMdataConf.}
+
+\item{args.NMgenText}{List of arguments to pass to NMgenText - the
+function that generates text suggestion for INPUT and DATA
+sections in the NONMEM control stream. You can use these
+arguments to get a text suggestion you an use directly in
+NONMEM - and NwriteSection can even update multiple NONMEM
+control streams based on the result. This will update your
+control streams to match your new data file with just one
+command.}
+
+\item{nm.drop}{Deprecated, use
+args.NMgenText=list(drop=c("column")) instead.}
+
+\item{nmdir.data}{Deprecated, use
+args.NMgenText=list(dir.data="your/path") instead.}
+
+\item{col.flagn}{Name of a numeric column with zero value for rows
+to include in Nonmem run, non-zero for rows to skip. The
+argument is only used for generating the proposed $DATA text to
+paste into the Nonmem control stream. To skip this feature,
+use col.flagn=NULL.}
+
+\item{nm.rename}{Deprecated, use
+args.NMgenText=list(rename=c(newname="existing")) instead.}
+
+\item{nm.copy}{Deprecated, use
+args.NMgenText=list(copy=c(newname="existing")) instead.}
+
+\item{nm.capitalize}{Deprecated, use
+args.NMgenText=list(capitalize=TRUE) instead.}
+
+\item{allow.char.TIME}{Deprecated, use
+args.NMgenText=list(allow.char.TIME=TRUE) instead.}
 }
 \value{
 Text for inclusion in Nonmem control stream, invisibly.
@@ -126,6 +120,7 @@ character or not.
 Other Nonmem: 
 \code{\link{NMapplyFilters}()},
 \code{\link{NMextractText}()},
+\code{\link{NMgenText}()},
 \code{\link{NMreadSection}()},
 \code{\link{NMwriteSection}()}
 }

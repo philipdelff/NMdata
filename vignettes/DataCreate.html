@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Data Creation Tools</title>
+
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Data Creation Tools</h1>
+
+
+
+<p>Built 2021-11-29 using NMdata 0.0.9.911.</p>
+<p>This vignette is still under development. Please make sure to see latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>Getting data ready for modeling is a crucial and often underestimated task. Mistakes during the process of combining data sets, defining time variables etc. can lead to difficulties during modeling, need for revisiting data set creation, and in worst case wasted time working with an erroneos data set. Avoiding those mistakes by integrating checks into the data creation process is a key element in an efficient and reliable data creation work flow.</p>
+<p>Furthermore, Nonmem has a number of restrictions on the format of the input data, and problems with the data set is a common reason for Nonmem not to behave as expected. When this happens, debugging can be time-consuming. <code>NMdata</code> includes some simple functions to prevent these situations.</p>
+<p>This vignette uses <code>data.table</code> syntax for the little bit of data manipulation performed. However, you don’t need to use data.table <em>at all</em> to use these or any tool in <code>NMdata</code>. The data set is a <code>data.table</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">pk &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="kw">system.file</span>(<span class="st">&quot;examples/data/xgxr2.rds&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;NMdata&quot;</span>))</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">class</span>(pk)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; [1] &quot;data.table&quot; &quot;data.frame&quot;</span></a></code></pre></div>
+<p>If you are not familiar with <code>data.table</code>, you can keep reading this vignette and learn what <code>NMdata</code> can do. In all brevity, <code>data.table</code> is a powerful enhancement to the <code>data.frame</code> class. The syntax differ from <code>data.frame</code>, and the few places where this affects the examples provided here, explanations will be given.</p>
+<!-- Because the data is a `data.table`  -->
+<!-- The reason why the -->
+<!-- functions return data.table objects is that -->
+<!-- If this was a `data.frame` (and not a `data.table`), the `NMdata` functions would keep returning objects -->
+<!-- of class `data.frame`. -->
+</div>
+<div id="data-assembly" class="section level2">
+<h2>Data assembly</h2>
+<div id="compare-presence-and-class-of-columns-across-data-sets" class="section level3">
+<h3>Compare presence and class of columns across data sets</h3>
+<p>When stacking (<code>rbind</code>) and merging, it is most often necessary to check if two or more data sets are compatible for the operation. <code>compareCols</code> compares columns across two or more data sets.</p>
+<p>To illustrate the output of <code>compareCols</code>, a slightly modified version of the <code>pk</code> dataset has been created. One column (<code>CYCLE</code>) has been removed, and <code>AMT</code> has been recoded to character. <code>compareCols</code> tells us about exactly these two differences:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">compareCols</span>(pk, pk.reduced)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; Dimensions:</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt;          data nrows ncols</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; 1:         pk  1502    24</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; 2: pk.reduced   751    23</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; Overview of columns:</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt;    column      pk pk.reduced</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; 1:  CYCLE integer       &lt;NA&gt;</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; 2:    AMT integer  character</span></a></code></pre></div>
+<p>Before merging or stacking, we may want to recode <code>AMT</code> in one of the datasets to get the class we need, and decide what to do about the <code>CYCLE</code> column which is missing in one of the datasets (add information or fill with <code>NA</code>?).</p>
+</div>
+<div id="rename-columns-based-on-contents" class="section level3">
+<h3>Rename columns based on contents</h3>
+<p>The model estimation step is heavily dependent (and in Nonmem almost entirely based) on numeric data values. The source data will often contain character variables, i.e. columns with non-numeric data values.</p>
+<p>If the column names reflect whether the values are numeric, double-checking can be avoided. <code>renameByContents</code> renames columns if a function of their contents returns <code>TRUE</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">pk.renamed &lt;-<span class="st"> </span><span class="kw">renameByContents</span>(<span class="dt">data =</span> pktmp, <span class="dt">fun.test =</span> NMisNumeric, </a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">    <span class="dt">fun.rename =</span> tolower, <span class="dt">invert.test =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p>We make use of the function <code>NMisNumeric</code> which tests if <code>Nonmem</code> can interpret the contents as numeric. If say the subject ID is of character class, it can be valid to <code>Nonmem</code>. Subject ID <code>&quot;1039&quot;</code> will be a numeric in Nonmem, <code>&quot;1-039&quot;</code> will not. <code>NMisNumeric</code> will return <code>TRUE</code> if and only if all elements are either missing or interpretable as numeric. We invert the condition (<code>invert.test=TRUE</code>), and <em>the names</em> of the columns that Nonmem cannot interpret as numeric become lowercase. We use <code>compareCols</code> to illustrate that three columns were renamed:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">compareCols</span>(pktmp, pk.renamed)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; Dimensions:</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt;          data nrows ncols</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; 1:      pktmp  1502    23</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; 2: pk.renamed  1502    23</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; Overview of columns:</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;      column     pktmp pk.renamed</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; 1:   EVENTU character       &lt;NA&gt;</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; 2:     NAME character       &lt;NA&gt;</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; 3: TIMEUNIT character       &lt;NA&gt;</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; 4:   eventu      &lt;NA&gt;  character</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; 5:     name      &lt;NA&gt;  character</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; 6: timeunit      &lt;NA&gt;  character</span></a></code></pre></div>
+<p>We can now easily see that if we wish to include the information contained in <code>eventu</code>, <code>pktmp</code>, and <code>pk.renamed</code>, we have to modify or translate their contents first.</p>
+</div>
+<div id="automated-checks-of-merge-results" class="section level3">
+<h3>Automated checks of merge results</h3>
+<p>Merges are a very common source of data creation bugs. As simple as they may seem, merges can leave you with an unexpected number of rows, some repeated and/or some omitted. Often, we can impose restrictions on the merge operation that allows for automated validation of the results.</p>
+<p>Imagine the very common example that we have a longitudinal PK data set (called <code>pk</code>), and we want to add subject-level covariates from a secondary data set (<code>dt.cov</code>). We want to merge by <code>ID</code>, and all we can allow to happen is columns to be added to <code>pk</code> from <code>dt.cov</code>. If rows disappear or get repeated, or if columns get renamed, it’s unintended and should return an error.</p>
+<p>We merge the two data sets and the check of the dimensions raises no alarm - the number of rows is unchanged from <code>pk</code> to <code>pk2</code>, and one of two columns in <code>dt.cov</code> was added.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">pk2 &lt;-<span class="st"> </span><span class="kw">merge</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">dims</span>(pk, dt.cov, pk2)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;      data nrows ncols</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; 1:     pk  1502    24</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; 2: dt.cov   150     2</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; 3:    pk2  1502    25</span></a></code></pre></div>
+<p>What we didn’t realize is that we now have twice as many rows for subject 31.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">pk[ID <span class="op">==</span><span class="st"> </span><span class="dv">31</span>, .N]</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; [1] 10</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">pk2[ID <span class="op">==</span><span class="st"> </span><span class="dv">31</span>, .N]</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; [1] 20</span></a></code></pre></div>
+<p>Using <code>mergeCheck</code>, we get an error. This is because <code>mergeCheck</code> compares the actual rows going in and out of the merge and not just the dimensions:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">try</span>(<span class="kw">mergeCheck</span>(pk, dt.cov, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>))</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; Rows disappeared during merge.</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; Overview of dimensions of input and output data:</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;         data nrows ncols</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 1:        pk  1502    25</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; 2:    dt.cov   150     2</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; 3: merged.df  1502    26</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; Overview of values of by where number of rows in df1 changes:</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;     ID N.df1 N.result</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt; 1:  31    10       20</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; 2: 180    10        0</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; Error in mergeCheck(pk, dt.cov, by = &quot;ID&quot;) : </span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;   Merge added and/or removed rows.</span></a></code></pre></div>
+<p>Notice that <code>mergeCheck</code> tells us for which values of <code>ID</code> the input and output differ so we can quickly look into the data sets and make a decision how we want to handle this. In this case we discard the covariate value for subject 31 and use <code>all.x=TRUE</code> argument to get <code>NA</code> for subjects 31 and 180:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">dt.cov2 &lt;-<span class="st"> </span>dt.cov[ID <span class="op">!=</span><span class="st"> </span><span class="dv">31</span>]</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">pk2.check &lt;-<span class="st"> </span><span class="kw">mergeCheck</span>(pk, dt.cov2, <span class="dt">by =</span> <span class="st">&quot;ID&quot;</span>, <span class="dt">all.x =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p>To ensure the consistency of rows before and after the merge, you could use <code>merge(...,all.x=TRUE)</code> and then check dimensions before and after (yes, both <code>all.x=TRUE</code> and the dimension check are necessary). This is not needed if you use <code>mergeCheck</code>.</p>
+<p><code>mergeCheck</code> does not try to reimplement merging. Under the hood, the merging is performed by <code>data.table::merge.data.table</code> to which most arguments are passed. What <code>mergeCheck</code> does is to add the checks that the results are consistent with the criteria outlined above. <code>data.table::merge.data.table</code> is generally very fast, and even if there is a bit of extra calculations in <code>mergeCheck</code>, it should never be slow.</p>
+<p>Another problem the programmer may not realize during a merge is when column names are shared across <code>x1</code> and <code>x2</code> (in addition to columns that are being merged by). This will silently create column names like <code>col.x</code> and <code>col.y</code> in the output. <code>mergeCheck</code> will by default give a warning if that happens (can be modified using the <code>fun.commoncols</code> argument). Also, there is an optional argument to tell mergeCheck how many columns are expected to be added by the merge, and <code>mergeCheck</code> will fail if another number of columns are added. This can be useful for programming.</p>
+<p>The row order is by default maintained by <code>mergeCheck</code>. Apart from this, there is only one difference from the behavior of the <code>merge.data.frame</code> function syntax, being that the <code>by</code> argument must always be supplied to <code>mergeCheck</code>. Default behavior of <code>merge.data.frame</code> is to merge by all common column names, but for coding transparency, this is intentionally not allowed by <code>mergeCheck</code>.</p>
+<p>In summary, <code>mergeCheck</code> verifies that the rows that result from the merge are the exact same as in one of the existing datasets, only columns added from the second input dataset. You may think that this will limit your merges, and that you need merges for inner and outer joins etc. You are exactly right - <code>mergeCheck</code> is not intended for those merges and does not support them. When that is said, the kind of merges that are supported by <code>mergeCheck</code> are indeed very common. All merges in the <code>NMdata</code> package are performed with <code>mergeCheck</code>.</p>
+</div>
+</div>
+<div id="exclusion-flags" class="section level2">
+<h2>Exclusion flags</h2>
+<p>It is good practice not to discard records from a dataset but to flag them and omit them in model estimation. When reporting the analysis, we also need to account for how many data records were discarded due to which criteria. A couple of functons in <code>NMdata</code> help you do this in a way that is easy to integrate with Nonmem.</p>
+<p>The implementation in <code>NMdata</code> is based on sequentially checking exclusion conditions. This means we can summarize how many records and subjects were excluded from the analysis due to the different criteria. The information is represented in one numerical column for Nonmem, and one (value-to-value corresponding) character column for the rest of us in the resulting data.</p>
+<div id="assign-and-count-flags" class="section level3">
+<h3>Assign and count flags</h3>
+<p>For use in Nonmem, the easiest is that inclusion/exclusion is determined by a single column in data - we call that column <code>FLAG</code> here, but any column name can be used. <code>FLAG</code> obviously draws on information from other columns such as <code>TIME</code>, <code>DV</code>, and many others, depending on your dataset and your way of working.</p>
+<p>The function that applies inclusion/excluasion rules is called <code>flagsAssign</code>, and it takes a dataset and a data.frame with rules as arguments.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">dt.flags &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="dt">text =</span> <span class="st">&quot;FLAG,flag,condition</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">10,Below LLOQ,BLQ==1</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">100,Negative time,TIME&lt;0&quot;</span>)</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">pk &lt;-<span class="st"> </span><span class="kw">flagsAssign</span>(pk, <span class="dt">tab.flags =</span> dt.flags, <span class="dt">subset.data =</span> <span class="st">&quot;EVID==0&quot;</span>)</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; Coding FLAG = 100, flag = Negative time</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; Coding FLAG = 10, flag = Below LLOQ</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">pk &lt;-<span class="st"> </span><span class="kw">flagsAssign</span>(pk, <span class="dt">subset.data =</span> <span class="st">&quot;EVID==1&quot;</span>, <span class="dt">flagc.0 =</span> <span class="st">&quot;Dosing&quot;</span>)</a></code></pre></div>
+<p><code>fread</code> is used to create a data.table (like <code>read.csv</code> to create a data.frame) for readability, one line for each row in the data.table created. <code>flagsAssign</code> applies the conditions sequentially and by decreasing value of <code>FLAG</code>. <code>FLAG=0</code> means that the observation is included in the analysis. You can use any expression that can be evaluated within the data.frame. In this case, <code>BLQ</code> has to exist in <code>pk</code>.</p>
+<p>Finally, flags are assigned to <code>EVID==1</code> rows. Here, no flag table is used. This means that all <code>EVID==1</code> rows will get <code>FLAG=0</code>.</p>
+<p>In <code>Nonmem</code>, you can include <code>IGNORE=(FLAG.NE.0)</code> in <code>$DATA</code> or <code>$INFILE</code>.</p>
+<p>Again, the omission will be attributed to the first condition matched. Default is to apply the conditions by the order of decreasing numerical flag value. Use <code>flags.increasing=TRUE</code> if you prefer the opposite. However, what cannot be modified is that 0 is the numerical value for rows that are not matched by any conditions.</p>
+<p>What rows to omit from a dataset can vary from one analysis to another. Hence, the aim with the chosen design is that the inclusion criteria can be changed and applied to overwrite an existing inclusion/exclusion selection. For another analysis we want to include the observations below LLOQ. We have two options. Either we simply change the <code>IGNORE</code> statement given above to <code>IGNORE=(FLAG.LT.10)</code>, or you create a different exclusion flag for that one. If you prefer to create a new set of exclusion flags, just use new names for the numerical and the character flag columns so you don’t overwrite the old ones. See help of <code>flagsAssign</code> and <code>flagsCount</code> for how.</p>
+</div>
+<div id="summarize-data-exclusions" class="section level3">
+<h3>Summarize data exclusions</h3>
+<p>An overview of the number of observations disregarded due to the different conditions is then obtained using <code>flagsCount</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">tab.count &lt;-<span class="st"> </span><span class="kw">flagsCount</span>(<span class="dt">data =</span> pk[EVID <span class="op">==</span><span class="st"> </span><span class="dv">0</span>], <span class="dt">tab.flags =</span> dt.flags)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw">print</span>(tab.count)</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt;                  flag N.left Nobs.left N.discard N.disc.cum Nobs.discard</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; 1: All available data    150      1352        NA          0           NA</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; 2:      Negative time    150      1350         0          0            2</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; 3:         Below LLOQ    131       755        19         19          595</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; 4:       Analysis set    131       755        NA         19           NA</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;    Nobs.disc.cum</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt; 1:             0</span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt; 2:             2</span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt; 3:           597</span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt; 4:           597</span></a></code></pre></div>
+<p><code>flagsCount</code> includes a <code>file</code> argument to save the the table right away.</p>
+</div>
+</div>
+<div id="finalize-data-format-and-write-to-file" class="section level2">
+<h2>Finalize data format and write to file</h2>
+<p>Once the dataset is in place, <code>NMdata</code> provides a few useful functions to ensure the formatting of the written data is compatible with Nonmem. These functions include checks that Nonmem will be able to interpret the data as intended, and more features are under development in this area.</p>
+<div id="automated-ordering-of-columns" class="section level3">
+<h3>Automated ordering of columns</h3>
+<p>The order of columns in Nonmem is important for two reasons. One is that a character in a variable read into Nonmem will make the run fail. The other is that there are restrictions on the number of variables you can read into Nonmem, depending on the version. <code>NMorderColumns</code> tries to put the used columns first, and other or maybe even unusable columns in the back of the dataset. It does so by a mix of recognition of column names and analysis of the column contents.</p>
+<p>Columns that cannot be converted to numeric are put in the back, while column bearing standard Nonmem variable names like <code>ID</code>, <code>TIME</code>, <code>EVID</code> etc. will be pulled up front. You can of course add column names to prioritize to front (<code>first</code>) or back (<code>last</code>). See <code>?NMorderColumns</code> for more options.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">pk &lt;-<span class="st"> </span><span class="kw">NMorderColumns</span>(pk)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; These standard nonmem columns were not found in data: MDV</span></a></code></pre></div>
+<p>We may want to add <code>MDV</code> and rerun <code>NMorderColumns</code>.</p>
+</div>
+<div id="writing-data-to-files" class="section level3">
+<h3>Writing data to files</h3>
+<p>For the final step of writing the dataset, <code>NMwriteData</code> is provided. Most importantly, it writes a csv file with appropriate options for Nonmem to read it as well as possible. It can also write an rds for R with equal contents (or RData if you prefer), but with the rds including all information (such as factor levels) which cannot be saved in csv. If you should use <code>NMscanData</code> to read Nonmem results, this information can be used automatically. It also provides a proposal for text to include in the <code>$INPUT</code> and <code>$DATA</code> sections of the Nonmem control streams.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">NMwriteData</span>(pk)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; Data _not_ witten to any files.</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; For NonMem:</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB eff0</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt; $DATA &lt;data file&gt;</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt; IGN=@</span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt; IGNORE=(FLAG.NE.0)</span></a></code></pre></div>
+<p>Notice, <code>NMwriteData</code> detected the exclusion flag and suggests to include it in <code>$DATA</code>.</p>
+<p>If a file name had been provided, the data would have been written, and the path to the data file would have been included in the message written back to the user. There are several arguments that will affect the proposed text for the Nonmem run, see <code>?NMwriteData</code>.</p>
+</div>
+<div id="updating-nonmem-control-streams-to-read-new-data-file" class="section level3">
+<h3>Updating Nonmem control streams to read new data file</h3>
+<p>I may be the only one, but sometimes during the modeling stage, I want to go back and change or add something to the data creation step. Then once I have written a new data file, my Nonmem <code>$INPUT</code> sections no longer match the data file. In <code>NMwriteData</code> you can use a <code>last</code> argument to get columns pushed towards the back so the Nonmem runs should still work, but maybe you need the column in your nonmem runs, and so you have no way around updating the control streams. And that can be quite a lot of control streams.</p>
+<p><code>NMdata</code> has a couple of functions to extract and write sections to Nonmem control streams called <code>NMreadSection</code> and <code>NMwriteSection</code>. We are not going into detail with what these functions can do, but let’s stick to the example above. We can do</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">NMwriteSection</span>(<span class="st">&quot;run001.mod&quot;</span>, <span class="st">&quot;INPUT&quot;</span>, <span class="st">&quot;$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE FLAG2 NOMTIME PART PROFDAY PROFTIME WEIGHTB eff0&quot;</span>)</a></code></pre></div>
+<p>But in fact, we can go a step further and take the information straight from NMwriteData</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">text.nm &lt;-<span class="st"> </span><span class="kw">NMwriteData</span>(pk)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; Data _not_ witten to any files.</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt; For NonMem:</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB eff0</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt; $DATA &lt;data file&gt;</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="co">#&gt; IGN=@</span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">#&gt; IGNORE=(FLAG.NE.0)</span></a></code></pre></div>
+<p>NMwriteData invisibly returns a list of sections (<code>$INPUT</code> and <code>$DATA</code>). <code>NMwriteSection</code> can use these directly. So to write only the <code>$INPUT</code> section to <code>run001.mod</code>, we do the following. Please notice the single brackets in <code>text.nm[&quot;INPUT&quot;]</code> which mean that we still send a list to <code>NMwriteSection</code>.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">NMwriteSection</span>(<span class="st">&quot;run001.mod&quot;</span>, <span class="dt">list.sections =</span> text.nm[<span class="st">&quot;INPUT&quot;</span>])</a></code></pre></div>
+<p>If you run this in a loop over the control streams that use the created data set, you are all set to rerun the models as needed.</p>
+</div>
+</div>
+<div id="stamp-objects-for-traceability" class="section level2">
+<h2>Stamp objects for traceability</h2>
+<p>The last couple of functions that will be introduced here are used for tracing datasets to data creation scripts, including time stamps and other information you want to include with the data set.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">pk &lt;-<span class="st"> </span><span class="kw">NMstamp</span>(pk, <span class="dt">script =</span> <span class="st">&quot;vignettes/DataCreate.Rmd&quot;</span>)</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="kw">NMinfo</span>(pk)</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#&gt; $dataCreate</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt; $dataCreate$DataCreateScript</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">#&gt; [1] &quot;vignettes/DataCreate.Rmd&quot;</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co">#&gt; $dataCreate$CreationTime</span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co">#&gt; [1] &quot;2021-11-29 12:40:30 EST&quot;</span></a></code></pre></div>
+<p>The <code>script</code> argument is recognized by <code>NMstamp</code>, but you can add anything to this. Say you want to keep descriptive note too:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">pk &lt;-<span class="st"> </span><span class="kw">NMstamp</span>(pk, <span class="dt">script =</span> <span class="st">&quot;vignettes/DataCreate.Rmd&quot;</span>, <span class="dt">Description =</span> <span class="st">&quot;A PK dataset used for examples.&quot;</span>)</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw">NMinfo</span>(pk)</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="co">#&gt; $dataCreate</span></a>
+<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="co">#&gt; $dataCreate$DataCreateScript</span></a>
+<a class="sourceLine" id="cb17-5" data-line-number="5"><span class="co">#&gt; [1] &quot;vignettes/DataCreate.Rmd&quot;</span></a>
+<a class="sourceLine" id="cb17-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb17-7" data-line-number="7"><span class="co">#&gt; $dataCreate$CreationTime</span></a>
+<a class="sourceLine" id="cb17-8" data-line-number="8"><span class="co">#&gt; [1] &quot;2021-11-29 12:40:30 EST&quot;</span></a>
+<a class="sourceLine" id="cb17-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb17-10" data-line-number="10"><span class="co">#&gt; $dataCreate$Description</span></a>
+<a class="sourceLine" id="cb17-11" data-line-number="11"><span class="co">#&gt; [1] &quot;A PK dataset used for examples.&quot;</span></a></code></pre></div>
+<p>These are very simple functions. But they are simple to use as well, and hopefully they will help you avoid sitting with a data set trying to guess which script generated it so you can do a modification or understand how something was done.</p>
+<p>When using <code>NMwriteData</code>, you don’t have to call <code>NMstamp</code> explicitly. Just pass the <code>script</code> argument to <code>NMwriteData</code> and <code>NMstamp</code> will be applied automatically.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

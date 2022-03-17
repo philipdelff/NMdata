@@ -16,7 +16,8 @@ NMwriteSection(
   blank.append = TRUE,
   data.file,
   write = TRUE,
-  quiet
+  quiet,
+  simplify = TRUE
 )
 }
 \arguments{
@@ -32,9 +33,10 @@ specific data file.}
 \item{dir}{If file.pattern is used, dir is the directory to search
 in.}
 
-\item{section}{The name of the section to update. Example:
-section="EST" to edit the sections starting by $EST. See
-NMreadSection}
+\item{section}{The name of the section to update without
+"$". Example: section="EST" to edit the sections starting by
+$EST. Section specification is not case-sensitive. See
+?NMreadSection too.}
 
 \item{newlines}{The new text (including "$SECTION"). Better be
 broken into lines in a character vector since this is simply
@@ -64,9 +66,15 @@ it.  to disk?  Default is FALSE.}
 on what data is found. But consider setting this to TRUE for
 non-interactive use. Default can be configured using
 NMdataConf.}
+
+\item{simplify}{If TRUE (default) and only one file is edited, the
+resulting rows are returned directly. If more than one file is
+edited, the result will always be a list with one element per
+file.}
 }
 \value{
-The new section text is returned. If write=TRUE, this is done invisibly.
+The new section text is returned. If write=TRUE, this is
+    done invisibly.
 }
 \description{
 Just give the section name, the new lines and the file path, and the
@@ -85,6 +93,7 @@ section="EST", newlines=newlines,newfile=NULL)
 Other Nonmem: 
 \code{\link{NMapplyFilters}()},
 \code{\link{NMextractText}()},
+\code{\link{NMgenText}()},
 \code{\link{NMreadSection}()},
 \code{\link{NMwriteData}()}
 }
