@@ -10,6 +10,6 @@
 ##' @export
 
 fnExtension <- function(fn,ext){
-        fn.new <- sub("\\.[^\\.]+$",ext,fn)
-        fn.new
+    fn.new <- sub("\\.[^\\.]+$",ext,fn)
+    fn.new
 }
