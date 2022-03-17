@@ -1,4 +1,5 @@
 # NMdata 0.0.10
+## New functions
 * NMcheckData is a new function that checks data for Nonmem
   compatibility in numerous ways. It returns a list of all findings
   making it easy to identify the location of each issue in the
@@ -7,6 +8,20 @@
   and it is a very simple and easy step to avoid many problems in
   Nonmem.
 
+* NMextractDataFile is a function that identifies the input datafile
+  used by a Nonmem model. It reports the string as in the Nonmem
+  control stream, file path and whether the file exists. It also looks
+  for the corresponding rds files. The function is not new in NMdata
+  but was not exported until 0.0.10.
+
+* cc is a function that creates character vectors from argmuments
+  without quotes. This is just to be able to skip typing quotes when
+  listing say column names. So do cc(a,b,c) to get the exact same as
+  c("a","b","c"). You cannot do this with strings that contain special
+  characters. In that case do cc(a,"b+c") to get the same as
+  c("a","b+c").
+
+## Function improvements
 * NMwriteSection has been updated with a few very useful
   features. Namely these are related to updating multiple nonmem files
   at once. The user can now supply multiple paths, regular expressions
@@ -25,12 +40,6 @@
   subset of data to run flagsAssign on, and it will by default check
   for whether values of EVID are unique. This is similar to what
   flagsCount does.
-
-* NMextractDataFile is a function that identifies the input datafile
-  used by a Nonmem model. It reports the string as in the Nonmem
-  control stream, file path and whether the file exists. It also looks
-  for the corresponding rds files. The function is not new in NMdata
-  but was not exported until 0.0.10.
 
 * egdt now reports dimensions of the two data sets to combine and the
   resulting data. Can be disabled with quiet argument.
