@@ -128,6 +128,11 @@ because by and by.x+by.y are handled differently the second time? Clen this.
      the merge is done.
 **** DONE Test the check for row duplications
 *** NMcheckData
+**** TODO [#A] Bug if no numeric cols found?
+     Warning message:
+In `[.data.table`(data, , `:=`((cols.req.found), lapply(.SD, NMasNumeric)),  :
+  length(LHS)==0; no columns to delete or assign RHS to.
+  
 **** TODO Support for col.dv.
      Preferably of length>1
 **** TODO The summary should take a by argument
