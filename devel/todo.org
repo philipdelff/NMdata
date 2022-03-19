@@ -107,6 +107,7 @@ Error if not convertible and not NA or ""? "b" should be an error right?
 *** TODO [#B] Function for complex dosing regimens              :newFunction:
 *** TODO [#B] Function to unfold ADDL/II doses to multiple rows :newFunction:
 *** mergeCheck
+**** TODO accept common columns not being merged by if suffixes are provided
 **** TODO If results are not accepted. Check for whether y is unique in by
 **** TODO [#B] Add at least number of NA's to message about what was added
 Probably add class too.
