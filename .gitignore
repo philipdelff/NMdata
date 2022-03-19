@@ -18,3 +18,4 @@ inst/examples/nonmem/backup_*
 inst/examples/nonmem/*\.ext
 inst/examples/nonmem/*\.phi
 inst/examples/nonmem/xgxr001dir/backup_*
+tests/testthat/testOutput/*
