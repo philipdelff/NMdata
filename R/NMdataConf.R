@@ -217,7 +217,6 @@ NMdataConfOptions <- function(name){
                   ## return(identity)
                   ## this is a trick to ensure data.tables are printed first time
                   return(function(DT)DT[])
-
               }
               x
           }

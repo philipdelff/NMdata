@@ -36,7 +36,7 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
-*** TODO function to add variables to $TABLE
+*** TODO function to add variables to $TABLE                    :newFunction:
 **** Which $TABLE to add to?
 *** TODO [#B] NMfreezeModels                                    :newFunction:
     Remember to add chmod and describe that only a flat dir structure is supported so far
@@ -45,7 +45,7 @@ With load_all():
 *** DONE Summary of the columns - NMinfo
     right now hidden in metadata
 *** DONE Summary of tables - NMinfo
-*** TODO [#B] A function that defines NULL variables
+*** TODO [#B] A function that defines NULL variables            :newFunction:
     Risk now is that arguments are set to NULL
     Export to parent. Not sure check allows though...
 ** Function improvements
@@ -54,7 +54,7 @@ With load_all():
 **** Bad name, what could we call it?
 *** cc - create character vector function
 *** NMgenText
-**** TODO Add a last/stop argument to specify the last column to use in nonmem
+**** TODO [#A] Add a last/stop argument to specify the last column to use in nonmem
 **** TODO [#B] checks: duplicate column names
 **** TODO [#B] test if a synonym was used. Give warning or msg if not
 **** TODO [#B] test if variables are used in more than one arg
@@ -91,7 +91,7 @@ This is quite powerfull:
       
 **** DONE listMissings test                                         :v0_0_11:
      CLOSED: [2022-02-04 Fri 16:16]
-**** TODO Complete documentation
+**** TODO [#A] Complete documentation
      It seems like a description is missing. So is value. Explain that
      a summary is printed, and a list i invisibly returned, if that is
      what is done.
@@ -102,7 +102,7 @@ Error if not convertible and not NA or ""? "b" should be an error right?
 **** Dist of DV
 **** Covariates
 **** Has to take a by arg
-*** TODO [#A] NMcreateDoses Generate dosing schedule with loading, ADDL etc :newFunction:
+*** TODO [#B] NMcreateDoses Generate dosing schedule with loading, ADDL etc :newFunction:
     This is available as a suitcase function
 *** TODO [#B] Function for complex dosing regimens              :newFunction:
 *** TODO [#B] Function to unfold ADDL/II doses to multiple rows :newFunction:
@@ -127,7 +127,7 @@ because by and by.x+by.y are handled differently the second time? Clen this.
      the merge is done.
 **** DONE Test the check for row duplications
 *** NMcheckData
-**** TODO Support for col.dv.
+**** TODO [#A] Support for col.dv.
      Preferably of length>1
 **** TODO The summary should take a by argument
 **** TODO Define a NMfindings class and create a summary function?
@@ -212,7 +212,7 @@ numeric should be using
 **** DONE Return data, summary and more                             :v0_0_11:
 **** TODO [#B] Check whether NA's are coded with .'s
 *** NMextractDataFile
-**** TODO Test with absolute path in $DATA
+**** TODO [#A] Test with absolute path in $DATA
 **** DONE Add support for windows absolute paths
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
@@ -286,6 +286,10 @@ A way to limit rows read into nonmem
 **** TODO [#B] include meta data as NMinfo
 **** DONE Lastonly does the same as firstonly
 *** NMscanData
+**** TODO [#B] Split out data finder
+There is a few different ways to get to the data file path. A separate
+function should handle this. That same function can then be used by
+NMcheckData.
 **** TODO [#B] Simplify timestamp warnings
      When .mod is newer than .lst and or tables, reduce to one warning
      summarizing both findings.
@@ -446,7 +450,7 @@ arguments. NMdata calls this "writtenTo".
 **** DONE renameByContents example
 *** Vignettes
 *** pkgdown
-**** TODO := prints in manual
+**** TODO [#A] := prints in manual
      https://philipdelff.github.io/NMdata/reference/renameByContents.html
 **** TODO Add bug list
 **** TODO Rename menu items
