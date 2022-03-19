@@ -51,6 +51,11 @@
 ##' newlines <- "$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"
 ##' NMwriteSection(files=system.file("examples/nonmem/xgxr001.mod", package = "NMdata"),
 ##' section="EST", newlines=newlines,newfile=NULL)
+##' \dontrun{
+##' NMwriteSection(dir="nonmem",
+##'               file.pattern="^run.*\\.mod",
+##'               list.sections=text.nm["INPUT"])
+##' }
 ##' @export
 
 
