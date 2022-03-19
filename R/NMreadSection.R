@@ -12,8 +12,9 @@
 ##'     character string, and indicate the line seperator with the
 ##'     linesep argument (handled by NMextractText). Use only one of
 ##'     file, lines, and text.
-##' @param section The name of section to extract. Examples: "INPUT",
-##'     "PK", "TABLE", etc.
+##' @param section The name of section to extract without
+##'     "$". Examples: "INPUT", "PK", "TABLE", etc. Not case
+##'     sensitive.
 ##' @param return If "text", plain text lines are returned. If "idx",
 ##'     matching line numbers are returned. "text" is default.
 ##' @param keepEmpty Keep empty lines in output? Default is FALSE.
@@ -53,6 +54,8 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
         keepName.arg <- keepName
         keepName=TRUE
         
+    } else {
+        section <- toupper(section)
     }
     
     res <- NMextractText(file=file, lines=lines, text=text, section=section,
@@ -95,7 +98,7 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
     
 }
 
-#' @describeIn NMreadSection Old function name for NMreadSection
+#' @describeIn NMreadSection Deprecated function name. Use NMreadSection.
 NMgetSection <- function(...){
     .Deprecated("NMreadSection")
     NMreadSection(...)

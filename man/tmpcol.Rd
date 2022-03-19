@@ -46,3 +46,4 @@ Other DataCreate:
 \code{\link{mergeCheck}()}
 }
 \concept{DataCreate}
+\keyword{internal}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/NMscanTables.R
 \name{NMscanTables}
 \alias{NMscanTables}
-\title{read all output data tables in nonmem run}
+\title{Find and read all output data tables in nonmem run}
 \usage{
 NMscanTables(
   file,
@@ -51,7 +51,10 @@ A list of all the tables as data.frames. If details=TRUE,
     returned.
 }
 \description{
-read all output data tables in nonmem run
+Find and read all output data tables in nonmem run
+}
+\examples{
+tabs1 <- NMscanTables(system.file("examples/nonmem/xgxr001.lst", package="NMdata"))
 }
 \seealso{
 Other DataRead: 

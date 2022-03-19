@@ -1,0 +1,17 @@
+.main-container {
+    max-width: unset;
+	margin: 50px;
+}
+
+.column-container{
+	/* background-color: hotpink */
+    display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  
+}
+.column-container__column{
+  background-color:green;
+  width:calc(33.3% - 10px)
+	/* margin: 12px;     */
+}

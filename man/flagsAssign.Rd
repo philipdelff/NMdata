@@ -11,6 +11,8 @@ flagsAssign(
   col.flagn,
   col.flagc,
   flags.increasing = FALSE,
+  grp.incomp = "EVID",
+  flagc.0 = "Analysis set",
   as.fun = NULL
 )
 }
@@ -37,11 +39,21 @@ flag values in tab.flags. This will be added to data. Default
 value is flag and can be configured using NMdataConf.}
 
 \item{flags.increasing}{The flags are applied by either decreasing
-(default) or increasing value of col.flagn. By using
-decreasing order, you can easily adjust the Nonmem IGNORE
-statement from IGNORE(FLAG.NE.0) to say IGNORE(FLAG.GT.10) if
-BLQ's have FLAG=10, and you decide to include these in the
-analysis.}
+(default) or increasing value of col.flagn. Decreasing order
+means that conditions associated with higher values of
+col.flagn will be evaluated first. By using decreasing order,
+you can easily adjust the Nonmem IGNORE statement from
+IGNORE(FLAG.NE.0) to say IGNORE(FLAG.GT.10) if BLQ's have
+FLAG=10, and you decide to include these in the analysis.}
+
+\item{grp.incomp}{Column(s) that distinct incompatible subsets of
+data. Default is "EVID" meaning that if different values of
+EVID are found in data, the function will return an
+error. This is a safeguard not to mix data unintentionally
+when counting flags.}
+
+\item{flagc.0}{The character flag to assign to rows that are not
+matched by exclusion conditions (numerical flag 0).}
 
 \item{as.fun}{The default is to return data.tables if input data
 is a data.table, and return a data.frame for all other input
@@ -71,8 +83,10 @@ dt.flags <- data.frame(
        flagc="Below LLOQ",
        condition=c("BLQ==1")
 )
-pk <- flagsAssign(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
-unique(pk[,c("flagn","flagc","BLQ")])
+pk <- flagsAssign(pk,dt.flags,subset.data="EVID==0",col.flagn="flagn",col.flagc="flagc")
+pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing",
+        col.flagn="flagn",col.flagc="flagc")
+unique(pk[,c("EVID","flagn","flagc","BLQ")])
 flagsCount(pk[EVID==0],dt.flags,col.flagn="flagn",col.flagc="flagc")
 }
 \seealso{

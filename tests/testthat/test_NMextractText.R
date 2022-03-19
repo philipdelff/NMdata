@@ -7,8 +7,17 @@ context("NMextractText")
 test_that("basic",{
 
     fileRef <- "testReference/NMextractText_1.rds"
-    file.lst <- system.file("examples/nonmem/xgxr004.lst",package="NMdata")
+    file.lst <- "testData/nonmem/xgxr004.lst"
     res1 <- NMextractText(file.lst,section="THETA",char.section="\\$")
+
+    expect_equal_to_reference(res1,fileRef,version=2)
+})
+
+test_that("basic - lst mode",{
+
+    fileRef <- "testReference/NMextractText_2.rds"
+    file.lst <- "testData/nonmem/xgxr004.lst"
+    res1 <- NMextractText(file.lst,section="THETA",char.section="\\$",type="lst")
 
     expect_equal_to_reference(res1,fileRef,version=2)
 })

@@ -1,21 +1,64 @@
+;; emacs backup
+\.\#*
+\#*\#
+;; psn
+modelfit_dir*
+;; nonmem
+nonmem
+FCON
+FDATA
+FMSG
+FREPORT
+FSIZES
+FSTREAM
+FSUBS
+FSUBS.f90
+FSUBS2
+INTER
+LINK.LNK
+LINKC.LNK
+PRSIZES.f90
+compile.lnk
+gfortran.txt
+*\.ext
+*\.phi
+input.cpu
+input.ext
+input.grd
+input.phi
+input.shk
+input.shm
+input.xml
+nmprd4p.mod
+temp_dir
+;; R
 \.Rproj.user
 \.Rhistory
 \.RData
 \.Ruserdata
+;; other
 Meta
 NMdata\.Rproj
+README.html
 devel/NMdata_Rpackage/figure
 devel/NMdata_Rpackage/derived
 devel/NMdata_Rpackage/NMdata_Rpackage\.pdf
 doc
+docs
 vignettes/*\.pdf
-vignettes/*\.html
+vignettes/NMdata-FAQ.html
+vignettes/DataPrepare.html
+vignettes/NMscanData.html
 vignettes/*\.md
 vignettes/*\.R
+vignettes/derived/*
 inst/examples/nonmem/modelfit_dir*
 inst/examples/nonmem/trashed_*
 inst/examples/nonmem/backup_*
 inst/examples/nonmem/*\.ext
 inst/examples/nonmem/*\.phi
 inst/examples/nonmem/xgxr001dir/backup_*
-tests/testthat/testOutput/*
+/tests/testthat/testOutput/*
+/doc/
+/Meta/
+

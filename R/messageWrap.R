@@ -10,6 +10,7 @@
 ##'     message/warning/error is mentioned. This is not default but
 ##'     useful when using function inside other functions.
 ##' @return Nothing.
+##' @keywords internal
 
 ### Internal function. Do not export.
 

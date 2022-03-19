@@ -17,9 +17,10 @@ test_that("basic",{
 
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 
-    res1 <- NMwriteData(pk,file=system.file("examples/data/xgxr1.csv",package="NMdata"),
-                        write.rds=F,write.csv=F,nmdir.data="/example")
-    res1 <- fix.input(res1)
+    NMwriteData(pk,file="testOutput/NMwriteData1.csv",
+                        write.rds=F,write.csv=T,nmdir.data="/example")
+    res1 <- readLines("testOutput/NMwriteData1.csv")
+
     ## lapply(res1,print)
     ## lapply(readRDS(fileRef),print)
 
@@ -164,10 +165,12 @@ test_that("with stamp on csv",{
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 
     res1 <- NMwriteData(pk,file=outfile
-                        ,script="A simple test",write.rds=FALSE)
+                       ,script="A simple test",write.rds=FALSE,
+                        args.stamp=list(time=as.POSIXct("2021-11-21 11:00:00")))
     res1 <- fix.input(res1)
 
     expect_equal_to_reference(
         res1
        ,fileRef,version=2)
-})
+}
+)

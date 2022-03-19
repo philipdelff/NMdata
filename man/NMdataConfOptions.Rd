@@ -17,3 +17,4 @@ If name is provided, a list representing one argument,
 \description{
 Get NMdataConf parameter properties
 }
+\keyword{internal}

@@ -16,7 +16,7 @@ test_that("basic",{
 })
 
 
-test_that("basic",{
+test_that("basic2",{
 
     fileRef <- "testReference/findVars2.rds"
     
@@ -31,4 +31,16 @@ test_that("basic",{
 
     expect_equal_to_reference(list(r1,r2),fileRef,version=2)
 
+})
+
+
+
+## 
+test_that("deprecated cols.id",{
+    expect_warning(
+        findVars(data.frame(x=rep(1:2,each=2),y=c(rep(c("a"),2),"v","w")),cols.id="x")
+    )
+    expect_error(
+        findVars(data.frame(x=rep(1:2,each=2),y=c(rep(c("a"),2),"v","w")),cols.id="x",by="x")
+    )
 })

@@ -69,11 +69,14 @@
 ##' @examples
 ##' pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 ##' dt.flags <- data.frame(
-##'   flagn=10,
-##'   flagc="Below LLOQ",
-##' condition=c("BLQ==1"))
-##' pk <- flagsAssign(pk,dt.flags,col.flagn="flagn",col.flagc="flagc")
-##' unique(pk[,c("flagn","flagc","flagn")])
+##'        flagn=10,
+##'        flagc="Below LLOQ",
+##'        condition=c("BLQ==1")
+##' )
+##' pk <- flagsAssign(pk,dt.flags,subset.data="EVID==0",col.flagn="flagn",col.flagc="flagc")
+##' pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing",
+##'         col.flagn="flagn",col.flagc="flagc")
+##' unique(pk[,c("EVID","flagn","flagc","BLQ")])
 ##' flagsCount(pk[EVID==0],dt.flags,col.flagn="flagn",col.flagc="flagc")
 ##' @export
 
@@ -208,7 +211,6 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     allres0 <- rbindlist(allres.l)
 
 ### All data
-
     FLAG.alldata <- Inf
     if(flags.increasing){
         FLAG.alldata <- -FLAG.alldata
@@ -246,7 +248,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     ##  tab.flags <- rbind(tab.flags,data.table(FLAG=-Inf,flag="All data"),fill=TRUE)
 ### this is how many N/obs are left after the flags/conditions are applied
     allres[is.na(alldata),alldata:=FALSE]
-    allres <- mergeCheck(allres,rbind(tab.flags.0,tab.flags)[,.(FLAG,flag)],by="FLAG",all.x=TRUE)
+    allres <- mergeCheck(allres,rbind(tab.flags.0,tab.flags)[,.(FLAG,flag)],by="FLAG",all.x=TRUE,quiet=TRUE)
     allres[alldata==TRUE,flag:=name.all.data]
     allres[,notAll:=alldata!=1]
     allres[,isFinal:=FLAG==0]
@@ -259,10 +261,10 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
 
     allres[,N.discard.0:=N.discard]
     allres[is.na(N.discard),N.discard.0:=0]
-    allres[,N.disc.cum:=cumsum(N.discard.0)]
+    allres[,N.disc.cum:=cumsum(N.discard.0),by=by]
     allres[,Nobs.discard.0:=Nobs.discard]
     allres[is.na(Nobs.discard),Nobs.discard.0:=0]
-    allres[,Nobs.disc.cum:=cumsum(Nobs.discard.0)]
+    allres[,Nobs.disc.cum:=cumsum(Nobs.discard.0),by=by]
 
 ### select columns to report, depending on argument
     allres[,`:=`(FLAG=NULL
