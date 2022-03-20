@@ -2,7 +2,8 @@
 % Please edit documentation in R/NMcheckData.R
 \name{NMcheckData}
 \alias{NMcheckData}
-\title{Check data for Nonmem compatibility}
+\title{Check data for Nonmem compatibility or check control stream for
+data compatibility}
 \usage{
 NMcheckData(
   data,
@@ -12,6 +13,8 @@ NMcheckData(
   cols.num,
   col.id = "ID",
   col.time = "TIME",
+  col.dv = "DV",
+  col.mdv = "MDV",
   col.cmt = "CMT",
   col.flagn,
   col.row,
@@ -57,6 +60,13 @@ subsetting strings. See examples.}
 identifier. Default is "ID".}
 
 \item{col.time}{The name of the column holding actual time.}
+
+\item{col.dv}{The name of the column holding the dependent
+variable. For now, only one column can be specified, and MDV
+is assumed to match this column. Default is DV.}
+
+\item{col.mdv}{The name of the column holding the binary indicator
+of the dependent variable missing. Default is MDV.}
 
 \item{col.cmt}{The name(s) of the compartment column(s). These
 will be checked to be positive integers for all rows. They are

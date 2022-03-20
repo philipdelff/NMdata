@@ -75,7 +75,7 @@ suitable for the results part too.
 }
 \section{Functions}{
 \itemize{
-\item \code{NMgetSection}: Old function name for NMreadSection
+\item \code{NMgetSection}: Deprecated function name. Use NMreadSection.
 }}
 
 \examples{
