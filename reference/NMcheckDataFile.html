@@ -89,6 +89,7 @@ use the file argument in NMcheckData instead.</p>
   use.rds <span class="op">=</span> <span class="cn">FALSE</span>,
   quiet <span class="op">=</span> <span class="cn">FALSE</span>,
   <span class="va">file.mod</span>,
+  <span class="va">dir.data</span>,
   <span class="va">as.fun</span>,
   <span class="va">...</span>
 <span class="op">)</span></code></pre></div>
@@ -108,6 +109,12 @@ use the file argument in NMcheckData instead.</p>
 <dd><p>Keep quiet? Default is FALSE.</p></dd>
 <dt>file.mod</dt>
 <dd><p>How to find the input control stream if you are using the output control stream.</p></dd>
+<dt>dir.data</dt>
+<dd><p>The data directory can only be read from the
+control stream (.mod) and not from the output file (.lst). So
+if you only have the output control stream, use dir.data to
+tell in which directory to find the data file. If dir.data is
+provided, the .mod file is not used at all.</p></dd>
 <dt>as.fun</dt>
 <dd><p>The function to run results through before returning them.</p></dd>
 <dt>...</dt>

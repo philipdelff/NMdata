@@ -176,6 +176,12 @@ file.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">newlines</span> <span class="op">&lt;-</span> <span class="st">"$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"</span></span>
 <span class="r-in"><span class="fu">NMwriteSection</span><span class="op">(</span>files<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.mod"</span>, package <span class="op">=</span> <span class="st">"NMdata"</span><span class="op">)</span>,</span>
 <span class="r-in">section<span class="op">=</span><span class="st">"EST"</span>, newlines<span class="op">=</span><span class="va">newlines</span>,newfile<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in"><span class="va">text.nm</span> <span class="op">&lt;-</span> <span class="fu"><a href="NMwriteData.html">NMwriteData</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">NMwriteSection</span><span class="op">(</span>dir<span class="op">=</span><span class="st">"nonmem"</span>,</span>
+<span class="r-in">              file.pattern<span class="op">=</span><span class="st">"^run.*\\.mod"</span>,</span>
+<span class="r-in">              list.sections<span class="op">=</span><span class="va">text.nm</span><span class="op">[</span><span class="st">"INPUT"</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>
   </div>
