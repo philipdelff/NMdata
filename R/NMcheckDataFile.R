@@ -16,7 +16,7 @@
 
 ### Don't export. NMcheckData will be the way in.
 
-NMcheckDataFile <- function(file,col.row,col.id="ID",use.rds=FALSE,quiet=FALSE,file.mod,as.fun,...){
+NMcheckDataFile <- function(file,col.row,col.id="ID",use.rds=FALSE,quiet=FALSE,file.mod,dir.data,as.fun,...){
     
     
     if(missing(as.fun)) as.fun <- NULL
@@ -24,7 +24,9 @@ NMcheckDataFile <- function(file,col.row,col.id="ID",use.rds=FALSE,quiet=FALSE,f
 
     if(missing(file.mod)) file.mod <- NULL
     file.mod <- NMdataDecideOption("file.mod",file.mod)
-        
+
+    if(missing(dir.data)) dir.data <- NULL
+    
     if(missing(col.row)) {
         col.row <- NULL
     }
@@ -32,6 +34,7 @@ NMcheckDataFile <- function(file,col.row,col.id="ID",use.rds=FALSE,quiet=FALSE,f
 
     inp <- NMscanInput(file,use.rds=use.rds,col.id=col.id,col.row=col.row,
                        translate=TRUE,recover.cols=FALSE,applyFilters=TRUE,
+                       file.mod=file.mod,dir.data=dir.data,
                        quiet=TRUE,as.fun=as.fun)
 
     dots <- list(...)

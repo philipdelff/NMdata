@@ -581,16 +581,12 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
         findings <- listEvents(col,name="Not numeric",fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
                                new.rows.only=T,events=findings)
     }
-    ## newfinds <- rbindlist( lapply(cols.req,listEvents,name="Not numeric",
-    ##                               fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
-    ##                               new.rows.only=T)
-    ##                       )
-    ## findings <- rbind(findings,
-    ##                   newfinds
-    ##                  ,fill=TRUE)
+    
     cols.req.found <- intersect(cols.req,colnames(data))
-    data[,(cols.req.found):=lapply(.SD,NMasNumeric),.SDcols=cols.req.found]
-
+    if(length(cols.req.found)){
+        data[,(cols.req.found):=lapply(.SD,NMasNumeric),.SDcols=cols.req.found]
+    }
+    
     for(cmt in col.cmt){
 ### CMT must be a positive integer. It can be missing for CMT=3
         findings <- listEvents(cmt,"Missing for EVID!=3",
