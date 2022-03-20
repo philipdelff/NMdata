@@ -237,6 +237,7 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMscanInput
+**** TODO Add data.file argument to skip interpreting the control stream altogether.
 **** DONE BUG tabs in column names?
     REC\t  ID\t     TIME    TAD\t DOSE\t AMT\t RATE CMT  DV\t MDV\t EVID
 
@@ -291,10 +292,11 @@ A way to limit rows read into nonmem
 **** TODO [#B] include meta data as NMinfo
 **** DONE Lastonly does the same as firstonly
 *** NMscanData
-**** TODO [#B] Split out data finder
-There is a few different ways to get to the data file path. A separate
-function should handle this. That same function can then be used by
-NMcheckData.
+**** TODO [#B] Split out data finder handling
+There is a few different ways to get to the data file path. Some
+checks are being done on the compatibility of the arguments in
+NMscanData. This should be done in NMscanInput or NMextractDataFile so
+that other functions such as NMcheckData gets the same behaviour.
 **** TODO [#B] Simplify timestamp warnings
      When .mod is newer than .lst and or tables, reduce to one warning
      summarizing both findings.

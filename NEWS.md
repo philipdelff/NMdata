@@ -1,4 +1,13 @@
 # Since NMdata 0.0.11
+
+* Support for non-event (say for $PRED) datasets in NMcheckData.
+
+* Support for custom column names for DV (col.dv) and MDV (col.mdv) in
+  NMcheckData.
+
+* Support for file.mod and dir.data arguments in NMcheckData when
+  running on a control stream.
+
 ## Bugfixes
 * NMextractDataFile was not cleaning all paths correctly. This mostly
   impacts NMcheckData's ability to find data files when using the file
