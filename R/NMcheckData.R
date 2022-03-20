@@ -37,6 +37,11 @@
 ##' @param col.id The name of the column that holds the subject
 ##'     identifier. Default is "ID".
 ##' @param col.time The name of the column holding actual time.
+##' @param col.dv The name of the column holding the dependent
+##'     variable. For now, only one column can be specified, and MDV
+##'     is assumed to match this column. Default is DV.
+##' @param col.mdv The name of the column holding the binary indicator
+##'     of the dependent variable missing. Default is MDV.
 ##' @param col.flagn Optionally, the name of the column holding
 ##'     numeric exclusion flags. Default value is FLAG and can be
 ##'     configured using NMdataConf. Disable by using col.flagn=FALSE.
@@ -144,7 +149,7 @@
 ##' @export
 
 
-NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="TIME",col.cmt="CMT",col.flagn,col.row,na.strings,return.summary=FALSE,quiet=FALSE,as.fun){
+NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="TIME",col.dv="DV",col.mdv="MDV",col.cmt="CMT",col.flagn,col.row,na.strings,return.summary=FALSE,quiet=FALSE,as.fun){
 
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -203,7 +208,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     if(!is.null(cols.num) && !is.list(cols.num) ){
         cols.num <- list("TRUE"=cols.num)
     }
-    
+
     names.cols.num <- names(cols.num)
     
     if(length(cols.num)>0){
@@ -230,6 +235,12 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     }
     
 
+    if(!(is.character(col.dv)&&length(col.dv)==1)){
+        stop("col.dv must be a character and vector of length 1.")
+    }
+    if(!(is.character(col.mdv)&&length(col.mdv)==1)){
+        stop("col.mdv must be a character and vector of length 1.")
+    }
     
     if(is.null(file)){
         if(missing(data)||is.null(data)) {
@@ -502,7 +513,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     
 ######## Default numeric columns. Will be checked for presence, NA, non-numeric (col-level)
 ### Others that: If column present, must be numeric, and values must be non-NA. Remember eg DV, CMT and AMT can be NA.
-    cols.num.all <- c( col.time,"EVID","ID","MDV",
+    cols.num.all <- c( col.time,"EVID","ID",col.mdv,
                       covs,names(covs.occ),as.character(unlist(covs.occ)))
     cols.num.all <- unique(cols.num.all)
 ### check for missing in cols.num.all
@@ -566,17 +577,17 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 
     
 ### MDV should perfectly reflect is.na(DV)
-    if("MDV"%in%colnames(data)){
+    if(col.mdv%in%colnames(data)){
         
-        data[,MDVDV:=!is.na(MDV)&MDV==as.numeric(is.na(DV))]
-        findings <- listEvents("MDVDV","MDV does not match DV",colname="MDV",fun=function(x)x==TRUE,events=findings)
+        data[,MDVDV:=!is.na(get(col.mdv))&get(col.mdv)==as.numeric(is.na(get(col.dv)))]
+        findings <- listEvents("MDVDV","MDV does not match DV",colname=col.mdv,fun=function(x)x==TRUE,events=findings)
     }
 
 ###  columns that are required for all rows done
 
 #### all other required columns (NA elements OK). Run NMisNumeric for each element, then translate using NMasNumeric
     
-    cols.req <- c(col.cmt,cc(DV,AMT))
+    cols.req <- c(col.cmt,col.dv,cc(AMT))
     for(col in cols.req){
         findings <- listEvents(col,name="Not numeric",fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
                                new.rows.only=T,events=findings)
@@ -613,10 +624,10 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 ###### DV
 ### DV must be present
 ### DV must be numeric for EVID==0
-    findings <- listEvents("DV","DV not numeric",fun=is.na,events=findings,invert=TRUE,dat=data[EVID%in%c(0)])
+    findings <- listEvents(col.dv,"DV not numeric",fun=is.na,events=findings,invert=TRUE,dat=data[EVID%in%c(0)])
 
 ### DV should be NA for dosing records
-    findings <- listEvents("DV","DV not NA in dosing recs",fun=is.na,events=findings,dat=data[EVID%in%c(1,4)])
+    findings <- listEvents(col.dv,"DV not NA in dosing recs",fun=is.na,events=findings,dat=data[EVID%in%c(1,4)])
 
 
 #### AMT
@@ -717,19 +728,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
                                colname="TIME",events=findings)
     }
     
-    
-    ## if(any(cols.cmt %in% colnames(data))){
-    ##     data.rep <- melt(data,measure.vars=cols.cmt,variable.name="col.cmt",value.name="CMT")        
-    ##     cols.cmt.rep <- "col.cmt"
-    ## } else {
-    ##     data.rep <- data
-    ##     cols.cmt.rep <- NULL
-    ## }
-    ## data.rep[,Nrep:=.N,by=intersect(c("newID",col.cmt.rep,"EVID",col.time),colnames(data))]
-
-    ## data[,Nrep:=.N,by=intersect(c("newID","CMT","EVID",col.time),colnames(data))]    
-    ## findings <- listEvents(col="Nrep",name="Duplicated event",function(x) x<2,colname=paste(col.id,"CMT, EVID", col.time,sep=", "),events=findings)
-
+### check for duplicate events
     col.cmt.found <- intersect(col.cmt,colnames(data))
     nruns <- length(col.cmt.found)
     if(length(col.cmt.found)==0){

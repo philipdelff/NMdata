@@ -52,6 +52,7 @@
 ##' NMwriteSection(files=system.file("examples/nonmem/xgxr001.mod", package = "NMdata"),
 ##' section="EST", newlines=newlines,newfile=NULL)
 ##' \dontrun{
+##' text.nm <- NMwriteData(data)
 ##' NMwriteSection(dir="nonmem",
 ##'               file.pattern="^run.*\\.mod",
 ##'               list.sections=text.nm["INPUT"])
