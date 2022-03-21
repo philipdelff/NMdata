@@ -10,6 +10,11 @@
 ##' @param use.rds use rds file instead of csv. This is typically not wanted because we want to test the input data as read by NONMEM.
 ##' @param quiet Keep quiet? Default is FALSE.
 ##' @param file.mod How to find the input control stream if you are using the output control stream.
+##' @param dir.data The data directory can only be read from the
+##'     control stream (.mod) and not from the output file (.lst). So
+##'     if you only have the output control stream, use dir.data to
+##'     tell in which directory to find the data file. If dir.data is
+##'     provided, the .mod file is not used at all.
 ##' @param as.fun The function to run results through before returning them.
 ##' @param ... passed to NMcheckData
 ##' @keywords internal

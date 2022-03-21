@@ -7,7 +7,7 @@
 \alias{dimnames.NMdata}
 \alias{rbind.NMdata}
 \alias{cbind.NMdata}
-\title{Basic arithmetic}
+\title{Basic arithmetic on NMdata objects}
 \usage{
 \method{merge}{NMdata}(x, ...)
 
@@ -28,7 +28,7 @@
 An object that is not of class 'NMdata'.
 }
 \description{
-Basic arithmetic
+Basic arithmetic on NMdata objects
 }
 \details{
 When 'dimnames', 'merge', 'cbind', 'rbind', or 't' is
