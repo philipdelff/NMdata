@@ -334,7 +334,11 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
             if(new.rows.only&&!is.null(events)){
                 rows <- setdiff(rows,events[column==colname,row])
             }
-            res <- data.table(check=name,column=colname,row=rows,level="row")
+            if(length(rows)>0){
+                res <- data.table(check=name,column=colname,row=rows,level="row")
+            } else {
+                res <- NULL
+            }
         }
         rbind(events,res,fill=TRUE)
     }
@@ -701,12 +705,12 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     
 
 ######## End Default columns
-
+    
 
     ## ID-level checks
 ### Warning if the same ID is in non-consequtive rows
     data[,ID.jump:=c(0,diff(get(rowint))),by=col.id]
-    findings <- listEvents("ID.jump",colname="ID",name="ID disjoint",fun=function(x) x<=1,events=findings)
+    findings <- listEvents("ID.jump",colname="ID",name="ID disjoint",fun=function(x) x<=1,events=findings,debug=FALSE)
 
     
     
