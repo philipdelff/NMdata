@@ -312,7 +312,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 
         if(!col%in%colnames(dat)){
             if(col.required){
-                if(events[check=="Column not found"&column==colname&level=="column",.N]==0){
+                if(is.null(events)||events[check=="Column not found"&column==colname&level=="column",.N]==0){
                     events <- rbind(events,
                                     data.table(check="Column not found",column=colname,level="column")
                                    ,fill=TRUE) }
@@ -453,6 +453,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
         findings <- listEvents(col.row,"Row identifier decreasing",
                                fun=function(x)!is.na(c(1,diff(x))) & c(1,diff(x))>0,
                                events=findings,debug=FALSE)
+        
         findings <- listEvents(col.row,"Duplicated",
                                fun=function(x)!is.na(x)&!duplicated(x),events=findings,
                                new.rows.only=T,debug=FALSE)
@@ -734,12 +735,16 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     if(length(col.cmt.found)==0){
         col.cmt.found <- NULL
         nruns <- 1
-    } 
+    }
+    nfindings <- findings[,.N]
     for(count.cmt in 1:nruns){
         
         data[,Nrep:=.N,by=intersect(c("newID",col.cmt.found[count.cmt],"EVID",col.time),colnames(data))]
-        
         findings <- listEvents(col="Nrep",name="Duplicated event",function(x) x<2,colname=paste(c(col.id,col.cmt.found[count.cmt], "EVID", col.time),collapse=", "),events=findings)
+    }
+    nfindings.new <- findings[,.N]
+    if(count.cmt>1 && nfindings.new>nfindings){
+        messageWrap("Due to multiple CMT columns, duplicate events may be reported with respect to each of these columns.",fun.msg=message)
     }
     
     if("EVID"%in%colnames(data)){

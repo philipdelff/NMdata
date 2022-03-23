@@ -128,12 +128,15 @@ because by and by.x+by.y are handled differently the second time? Clen this.
      the merge is done.
 **** DONE Test the check for row duplications
 *** NMcheckData
-**** TODO [#A] Bug if no numeric cols found?
+**** DONE Bug if no numeric cols found?
      Warning message:
 In `[.data.table`(data, , `:=`((cols.req.found), lapply(.SD, NMasNumeric)),  :
   length(LHS)==0; no columns to delete or assign RHS to.
-**** TODO [#A] Support for col.dv.
-     Preferably of length>1
+**** DONE Support for col.dv.
+**** TODO usubjid argument
+***** usubjid must be present and non-empty
+***** ID must be unique against usubjid
+**** TODO Support for col.dv of length>1
 **** TODO The summary should take a by argument
 **** TODO Define a NMfindings class and create a summary function?
 **** DONE Note when installing                                      :v0_0_11:
