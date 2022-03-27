@@ -684,7 +684,9 @@ test_that("redundant output",{
     file.lst <- "testData/nonmem/estim_debug.ctl"
 
     ## notice no cols are taken from the redundant table - correct
-    res1 <- expect_warning(NMscanData(file=file.lst))
+    res1 <- expect_message(
+        NMscanData(file=file.lst)
+                           )
     ##     tabs1 <- NMscanTables(file=file.lst,as.fun="data.table",details=T,tab.count=F)
     ##     tabs1$meta
     ## tabs1$data[[4]]
