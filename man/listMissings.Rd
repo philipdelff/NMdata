@@ -27,6 +27,9 @@ default is to return a data.table, if not the default is to
 return a data.frame. Use whatever to get what fits in with
 your workflow. Default can be configured with NMdataConf.}
 }
+\value{
+Invisibly, a data.frame including all findings
+}
 \description{
 Missing can be NA and for character variables it can be certain
 strings too. This function is experimental and design may change

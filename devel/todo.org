@@ -291,7 +291,8 @@ A way to limit rows read into nonmem
 ***** diff
 ***** off
 *** NMscanTables
-**** TODO [#B] include meta data as NMinfo
+**** TODO [#A] include meta data as NMinfo
+**** TODO Integrate the reduction into one table from NMscanData
 **** DONE Lastonly does the same as firstonly
 *** NMscanData
 **** TODO [#B] Split out data finder handling
