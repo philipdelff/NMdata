@@ -54,7 +54,7 @@ With load_all():
 **** Bad name, what could we call it?
 *** cc - create character vector function
 *** NMgenText
-**** TODO [#A] Add a last/stop argument to specify the last column to use in nonmem
+**** DONE Add a until argument to specify the last column to use in nonmem
 **** TODO [#B] checks: duplicate column names
 **** TODO [#B] test if a synonym was used. Give warning or msg if not
 **** TODO [#B] test if variables are used in more than one arg
@@ -90,8 +90,7 @@ This is quite powerfull:
 ***** Include "number of rows" in table.
       
 **** DONE listMissings test                                         :v0_0_11:
-     CLOSED: [2022-02-04 Fri 16:16]
-**** TODO [#A] Complete documentation
+**** DONE Complete documentation
      It seems like a description is missing. So is value. Explain that
      a summary is printed, and a list i invisibly returned, if that is
      what is done.
@@ -285,7 +284,7 @@ NULL=NAN which would mean that NA should be interpreted as NA in R.
 A way to limit rows read into nonmem
 *** NMtransInput
     Translate column names according to Nonmem.
-**** DONE [#B] Add comparison column input-nonmem
+**** DONE Add comparison column input-nonmem
 ***** if input!=nonmem,
 ***** nonmem %in% all(input)
 ***** tolower(nonmem)==tolower(input) OK
@@ -437,6 +436,7 @@ This is two steps.
 This belong in write functions. stampObj does support extra
 arguments. NMdata calls this "writtenTo".
 *** summary.NMdata
+**** TODO [#A] Break down number of rows by CMT and EVID.
 **** Rethink and tidy up message
 ***** DONE Combine first two tables
 ***** DONE Add number of rows

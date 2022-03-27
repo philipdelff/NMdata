@@ -75,7 +75,7 @@ NMreadTab <- function(file,tab.count=TRUE,quiet,as.fun,...) {
 
     cols.dup <- duplicated(colnames(dt1))
     if(any(cols.dup)){
-        warning(paste0("Duplicated column names found: ",paste(colnames(dt1)[cols.dup],collapse=","),". Cleaning."),immediate.=TRUE)
+        messageWrap(paste0("Duplicated column names found: ",paste(colnames(dt1)[cols.dup],collapse=","),". Cleaning."),fun.msg=message)
         dt1 <- dt1[,unique(cnames),with=FALSE]
     }
 

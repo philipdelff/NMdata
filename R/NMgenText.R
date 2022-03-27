@@ -26,10 +26,10 @@
 ##'     suggested $DATA text. If you plan to use BBW instead of BWBASE
 ##'     in Nonmem, consider nm.rename=c(BBW="BWBASE"). The result will
 ##'     include BBW and not BWBASE.
-##' @param copy For the $INPUT text proposal only. If you plan to
-##'     use additional names for columns in Nonmem $INPUT, NMwriteData
-##'     can adjust the suggested $INPUT text. Say you plan to use CONC
-##'     as DV in Nonmem, use rename=c(DV="CONC"),
+##' @param copy For the $INPUT text proposal only. If you plan to use
+##'     additional names for columns in Nonmem $INPUT, NMwriteData can
+##'     adjust the suggested $INPUT text. Say you plan to use CONC as
+##'     DV in Nonmem, use rename=c(DV="CONC"),
 ##'     i.e. rename=c(newname="existing"). INPUT suggestion will in
 ##'     this case contain DV=CONC.
 ##' @param file The file name NONMEM will read the data from (for the
@@ -42,6 +42,14 @@
 ##' @param capitalize For the $INPUT text proposal only. If TRUE, all
 ##'     column names in $INPUT text will be converted to capital
 ##'     letters.
+##' @param until Use this to truncate the columns in $INPUT. until can
+##'     either be a character (column name) or a numeric (column
+##'     number). If a character is given, it is matched against the
+##'     resulting column name representation in $INPUT, i.e. this
+##'     could be "DV=CONC" if you are using in this case the copy
+##'     argument. In case until is of length>1, the maximum will be
+##'     used (probably only interesting if character values are
+##'     supplied).
 ##' @param allow.char.TIME For the $INPUT text proposal only. Assume
 ##'     Nonmem can read TIME even if it can't be translated to
 ##'     numeric. This is necessary if using the 00:00 format. Default
@@ -59,9 +67,10 @@ NMgenText <- function(data,
                       file,
                       dir.data,
                       capitalize=FALSE,
+                      until,
                       allow.char.TIME=TRUE,
                       quiet){
-
+    
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####    
     occ.cum <- NULL
     TIME <- NULL
@@ -143,7 +152,18 @@ NMgenText <- function(data,
     ## drop .'s from names since they are not allowed in nonmem
     ##    dt.num.ok[,name.nm:=gsub("\\.","",name.nm)]
     
-    
+    ## apply "until"
+    if(!missing(until) && !is.null(until)){
+        if(!is.numeric(until)&&!is.character(until)){
+            messageWrap("until must be either numeric or character.")
+        }
+        if(is.character(until)){
+            ## convert to numeric
+            until <- match(until,dt.num.ok[,name.nm])
+        }
+        until <- max(until)
+        dt.num.ok <- dt.num.ok[1:until]
+    }
 
     ## apply DROP
     dt.num.ok[,drop.nm:=FALSE]
@@ -174,9 +194,14 @@ NMgenText <- function(data,
     }
     
     
+
     
     dt.num.ok[,include:=cumsum(!numeric.ok&!drop.nm)<1]
-
+    if(dt.num.ok[,sum(include)]==0) {
+        warning("No columns to use in Nonmem. Did you forget to order or drop columns")
+        return(NULL)
+    }
+    
     dt.num.ok[include==TRUE,occ.cum:=1:.N,by=name.nm]
     if(dt.num.ok[occ.cum>1,.N]>0) {
         warning(paste("Duplicated column name(s) in data for Nonmem:\n",

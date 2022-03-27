@@ -19,6 +19,8 @@
 ##'     return a data.frame. Use whatever to get what fits in with
 ##'     your workflow. Default can be configured with NMdataConf.
 ##' @family DataWrangling
+##' @return Invisibly, a data.frame including all findings
+##' @import data.table
 
 listMissings <- function(data,cols,by,na.strings=c("","."),quiet=FALSE,as.fun){
 

@@ -74,11 +74,11 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
                         write.RData=FALSE,script,args.stamp,
                         args.fwrite, args.rds,args.RData,
                         quiet,args.NMgenText,
-### seprecated NMgenText arguments
+### deprecated NMgenText arguments
                         nm.drop,
                         nmdir.data,col.flagn, nm.rename,nm.copy,
                         nm.capitalize,allow.char.TIME){
-
+    
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####    
     TIME <- NULL 
     comma.ok <- NULL
@@ -274,12 +274,11 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
     }
     
     ## NONMEM text
-    
-    NMtext <- do.call(NMgenText,
+    NMtext <- try(do.call(NMgenText,
                       append(
                           list(data=data.dt,file=file)
                          ,args.NMgenText)
-                      )
+                      ))
 
     
     invisible(list(INPUT=NMtext$INPUT,DATA=NMtext$DATA))

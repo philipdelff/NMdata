@@ -8,12 +8,24 @@
 * Support for file.mod and dir.data arguments in NMcheckData when
   running on a control stream.
 
+* NMgenText now has an argument called until that specifies the last
+  column(s) to include in $INPUT.
+
+* If NMgenText does not find any Nonmem-compatible columns to report,
+  it now throws a warning and returns NULL.
+
 ## Bugfixes
 * NMextractDataFile was not cleaning all paths correctly. This mostly
   impacts NMcheckData's ability to find data files when using the file
   argument in NMcheckData. Only affects certain models.
 * NMextractDataFile was not working with dir.data. Fixed.
 * NMextractDataFile Now handles absolute paths correctly.
+
+## Minor changes 
+* NMreadTab throws a message instead of a warning in case duplicate
+  column names are found and removed.
+	  
+* NMwriteData now runs NMgenText in try, just in case.
 
 # NMdata 0.0.11
 
