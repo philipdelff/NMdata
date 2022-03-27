@@ -102,6 +102,7 @@ tested for whether character or not.</p>
   <span class="va">file</span>,
   <span class="va">dir.data</span>,
   capitalize <span class="op">=</span> <span class="cn">FALSE</span>,
+  <span class="va">until</span>,
   allow.char.TIME <span class="op">=</span> <span class="cn">TRUE</span>,
   <span class="va">quiet</span>
 <span class="op">)</span></code></pre></div>
@@ -131,10 +132,10 @@ suggested $DATA text. If you plan to use BBW instead of BWBASE
 in Nonmem, consider nm.rename=c(BBW="BWBASE"). The result will
 include BBW and not BWBASE.</p></dd>
 <dt>copy</dt>
-<dd><p>For the $INPUT text proposal only. If you plan to
-use additional names for columns in Nonmem $INPUT, NMwriteData
-can adjust the suggested $INPUT text. Say you plan to use CONC
-as DV in Nonmem, use rename=c(DV="CONC"),
+<dd><p>For the $INPUT text proposal only. If you plan to use
+additional names for columns in Nonmem $INPUT, NMwriteData can
+adjust the suggested $INPUT text. Say you plan to use CONC as
+DV in Nonmem, use rename=c(DV="CONC"),
 i.e. rename=c(newname="existing"). INPUT suggestion will in
 this case contain DV=CONC.</p></dd>
 <dt>file</dt>
@@ -150,6 +151,15 @@ file argument is used.</p></dd>
 <dd><p>For the $INPUT text proposal only. If TRUE, all
 column names in $INPUT text will be converted to capital
 letters.</p></dd>
+<dt>until</dt>
+<dd><p>Use this to truncate the columns in $INPUT. until can
+either be a character (column name) or a numeric (column
+number). If a character is given, it is matched against the
+resulting column name representation in $INPUT, i.e. this
+could be "DV=CONC" if you are using in this case the copy
+argument. In case until is of length&gt;1, the maximum will be
+used (probably only interesting if character values are
+supplied).</p></dd>
 <dt>allow.char.TIME</dt>
 <dd><p>For the $INPUT text proposal only. Assume
 Nonmem can read TIME even if it can't be translated to
