@@ -27,6 +27,9 @@
 	  
 * NMwriteData now runs NMgenText in try, just in case.
 
+* fnExtension now supports adding extensions to strings without
+  extensions, ie. fnExtension("file",".txt").
+
 # NMdata 0.0.11
 
 * The cols.num argument in NMcheckData has been improved to support a
