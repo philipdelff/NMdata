@@ -49,6 +49,9 @@ With load_all():
     Risk now is that arguments are set to NULL
     Export to parent. Not sure check allows though...
 ** Function improvements
+*** TODO [#A] cl
+*** TODO [#A] fnAppend
+Make internal in tracee
 *** NMcheckColNames
 **** return input column names and Nonmem interpretation for user to spot errors
 **** Bad name, what could we call it?
@@ -82,8 +85,8 @@ helpful. Only list other columns than the scope.
 List missing elements
 For specific columns, look for missing elements (NA, "", length(x)==0
 in case of lists?). Tabulate and list. 
-**** TODO Align reporting with NMcheckData?
-**** TODO dcast summary when using by
+**** TODO [#B] Align reporting with NMcheckData?
+**** TODO [#B] dcast summary when using by
 This is quite powerfull:
  dcast(missings[,.N,by=.(STUDYID,variable)],variable~STUDYID)
 ***** Would be even better to have zeros where columns are found and there are no NA's. 
@@ -106,8 +109,8 @@ Error if not convertible and not NA or ""? "b" should be an error right?
 *** TODO [#B] Function for complex dosing regimens              :newFunction:
 *** TODO [#B] Function to unfold ADDL/II doses to multiple rows :newFunction:
 *** mergeCheck
-**** TODO accept common columns not being merged by if suffixes are provided
-**** TODO If results are not accepted. Check for whether y is unique in by
+**** TODO [#B] accept common columns not being merged by if suffixes are provided
+**** TODO [#B] If results are not accepted. Check for whether y is unique in by
 **** TODO [#B] Add at least number of NA's to message about what was added
 Probably add class too.
 Number of unique combinations of by? This seems too advanced
@@ -132,12 +135,12 @@ because by and by.x+by.y are handled differently the second time? Clen this.
 In `[.data.table`(data, , `:=`((cols.req.found), lapply(.SD, NMasNumeric)),  :
   length(LHS)==0; no columns to delete or assign RHS to.
 **** DONE Support for col.dv.
-**** TODO usubjid argument
+**** TODO [#B] usubjid argument
 ***** usubjid must be present and non-empty
 ***** ID must be unique against usubjid
-**** TODO Support for col.dv of length>1
-**** TODO The summary should take a by argument
-**** TODO Define a NMfindings class and create a summary function?
+**** TODO [#B] Support for col.dv of length>1
+**** TODO [#B] The summary should take a by argument
+**** TODO [#B] Define a NMfindings class and create a summary function?
 **** DONE Note when installing                                      :v0_0_11:
      Note: ... may be used in an incorrect context at NMcheckData.R:290 
      Solution: listEvents must have a args.fun rather than ...
@@ -239,7 +242,8 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMscanInput
-**** TODO Add data.file argument to skip interpreting the control stream altogether.
+**** TODO [#B] Add NMinfo data on whether column names were translated according to $INPUT
+**** TODO [#A] Add data.file argument to skip interpreting the control stream altogether.
 **** DONE BUG tabs in column names?
     REC\t  ID\t     TIME    TAD\t DOSE\t AMT\t RATE CMT  DV\t MDV\t EVID
 
@@ -291,7 +295,7 @@ A way to limit rows read into nonmem
 ***** diff
 ***** off
 *** NMscanTables
-**** TODO [#A] include meta data as NMinfo
+**** TODO [#B] include meta data as NMinfo
 **** TODO Integrate the reduction into one table from NMscanData
 **** DONE Lastonly does the same as firstonly
 *** NMscanData
@@ -437,7 +441,7 @@ This is two steps.
 This belong in write functions. stampObj does support extra
 arguments. NMdata calls this "writtenTo".
 *** summary.NMdata
-**** TODO [#A] Break down number of rows by CMT and EVID.
+**** DONE Break down number of rows by CMT and EVID.
 **** Rethink and tidy up message
 ***** DONE Combine first two tables
 ***** DONE Add number of rows

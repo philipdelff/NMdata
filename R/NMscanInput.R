@@ -1,4 +1,13 @@
-##' Find and read input data and optionally translate column names according to the $INPUT section
+##' Find and read input data and optionally translate column names
+##' according to the $INPUT section
+##'
+##' This function finds and reads the input data based on a control
+##' stream file path. It can align the column names to the definitions
+##' in $INPUT in the control stream, and it can subset the data based
+##' on ACCEPT/IGNORE statements in $DATA. I supports a few other ways
+##' to identify the input data file than reading the control stream,
+##' and it can also read an rds file instead of the delimited text
+##' file used by Nonmem.
 ##' 
 ##' @description Based on a nonmem run (lst and/or mod file), this
 ##'     function finds the input data and reads it. It reads the data
@@ -76,11 +85,11 @@
 ##' @family DataRead
 ##' @export
 
-NMscanInput <- function(file, use.rds, file.mod,
-                        dir.data=NULL, applyFilters=FALSE, translate=TRUE,recover.cols=TRUE,
-                        details=TRUE, col.id="ID", col.row, quiet, args.fread,
-                        invert=FALSE,
-                        as.fun) {
+NMscanInput <- function(file, use.rds, file.mod, dir.data=NULL,
+                        file.data=NULL, applyFilters=FALSE,
+                        translate=TRUE,recover.cols=TRUE,
+                        details=TRUE, col.id="ID", col.row, quiet,
+                        args.fread, invert=FALSE, as.fun) {
     
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -122,7 +131,11 @@ NMscanInput <- function(file, use.rds, file.mod,
         messageWrap("Both file.mod and dir.data are non-NULL. Not allowed.",
                     fun.msg=stop)
     }
-    if(is.null(dir.data)) {
+    if(!is.null(file.data) && !is.null(dir.data)) {
+        messageWrap("Both file.data and dir.data are non-NULL. Not allowed.",
+                    fun.msg=stop)
+    }
+    if(is.null(dir.data)&&is.null(file.data)) {
         
         file.mod <- NMdataDecideOption("file.mod",file.mod)
         file.find.data <- file.mod(file)
@@ -134,9 +147,10 @@ NMscanInput <- function(file, use.rds, file.mod,
 
     }
     
-
+####### apply file.data if used
+    
     ## identify the data file name and additional info
-    info.datafile <- NMextractDataFile(file=file.find.data,dir.data,file.mod=file.mod)
+    info.datafile <- NMextractDataFile(file=file.find.data,dir.data,file.mod=file.mod,file.data=file.data)
     
     type.file <- NA_character_
     if(use.rds && info.datafile$exists.file.rds){

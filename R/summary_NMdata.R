@@ -40,7 +40,7 @@ summary.NMdata <- function(object,...){
         NMi <- NMinfoDT(data)
         data <- as.data.table(data)
         writeNMinfo(data,NMi)
-        }
+    }
     ## derive how many subjects. Need to 
 
     
@@ -71,7 +71,11 @@ summary.NMdata <- function(object,...){
     s1$N.rows <- data[,list(N.rows=.N),by="nmout"]
     s1$N.evids <- NA
     if("EVID"%in%colnames(data)){
-        s1$N.evids <- data[,.N,by=list(nmout,EVID)]
+        if("CMT"%in%colnames(data)){
+            s1$N.evids <- data[,.N,by=list(nmout,EVID,CMT)]
+        } else {
+            s1$N.evids <- data[,.N,by=list(nmout,EVID)]
+        }
     }
     
     setattr(s1,"class",c("summary_NMdata",class(s1)))
@@ -223,13 +227,18 @@ Nonmem data filters (not recommended).")
         ## how many rows in output (broken down on EVID)
 
         ## if rows recovered, how many (broken down on EVID)
-        evids1 <- mergeCheck(x$N.evids,dt.nmout,by="nmout",all.x=TRUE,quiet=TRUE)
-        
-        evids2 <- dcast(evids1,EVID~NMOUT,value.var="N")
-        evids2[is.na(evids2)] <- 0
-        
-        cat("Distribution of rows on event types in returned data:\n")
-        print(evids2,row.names=FALSE)
+        try({
+            evids1 <- mergeCheck(x$N.evids,dt.nmout,by="nmout",all.x=TRUE,quiet=TRUE)
+
+            if("CMT" %in% colnames(evids1)) {
+                evids2 <- dcast(evids1,EVID+CMT~NMOUT,value.var="N",fill=0)
+            } else {
+                evids2 <- dcast(evids1,EVID~NMOUT,value.var="N",fill=0)
+            }
+
+            cat("Distribution of rows on event types in returned data:\n")
+            print(evids2,row.names=FALSE)
+        })
     }        
 
     return(invisible(NULL))

@@ -140,7 +140,7 @@
 
 
 NMscanData <- function(file, col.row, use.input, merge.by.row,
-                       recover.rows,file.mod,dir.data,
+                       recover.rows,file.mod,dir.data,file.data,
                        translate.input=TRUE, quiet, use.rds,
                        args.fread, as.fun, col.id="ID",
                        modelname, col.model, col.nmout,tab.count=FALSE,
@@ -290,6 +290,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         data.input <- NMscanInput(file
                                  ,file.mod=file.mod
                                  ,dir.data=dir.data
+                                 ,file.data=file.data
                                  ,quiet=TRUE
                                  ,translate=translate.input
                                  ,use.rds=use.rds
@@ -482,7 +483,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         ## setattr(tab.row,"file",NULL)
         ## setattr(tab.row,"type.file",NULL)
         ## setattr(tab.row,"mtime.file",NULL)
-## <- unNMdata instead of unsetting those attributes?
+        ## <- unNMdata instead of unsetting those attributes?
         ## unNMdata(data.input)
 
         dt.vars <- rbind(dt.vars,
@@ -512,6 +513,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             
             dia <- suppressWarnings(NMscanInput(file,file.mod=file.mod
                                                ,dir.data=dir.data
+                                               ,file.data=file.data
                                                ,quiet=TRUE
                                                ,translate=translate.input
                                                ,use.rds=use.rds
@@ -737,6 +739,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         if(cbind.by.filters) {
             data.recover <- NMscanInput(file,quiet=TRUE
                                        ,use.rds=use.rds
+                                       ,dir.data=dir.data
+                                       ,file.data=file.data
                                        ,applyFilters=cbind.by.filters
                                        ,translate=translate.input
                                        ,args.fread=args.fread
@@ -768,16 +772,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                    ,level="model"
                                     ))
     }
-    ## add column with model name
-    ## if(use.nmout) {
-    ##     dt.vars <- rbind(dt.vars,
-    ##                      data.table(variable=col.nmout
-    ##                                ,file=NA_character_
-    ##                                ,included=TRUE 
-    ##                                ,source="NMscanData"
-    ##                                ,level="model"
-    ##                                 ))
-    ## }
 
 
 ### order columns in returned data
