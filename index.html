@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.907</span>
       </span>
     </div>
 
@@ -162,9 +162,10 @@
 <span class="co">#&gt;           (result)      1502    34+2     150</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Distribution of rows on event types in returned data:</span>
-<span class="co">#&gt;  EVID Input only Output</span>
-<span class="co">#&gt;     0        597    755</span>
-<span class="co">#&gt;     1          0    150</span></code></pre></div>
+<span class="co">#&gt;  EVID CMT Input only Output</span>
+<span class="co">#&gt;     0   1          2      0</span>
+<span class="co">#&gt;     0   2        595    755</span>
+<span class="co">#&gt;     1   1          0    150</span></code></pre></div>
 <p>And we are ready to plot (a subset of) the result:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res.plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">res</span>,<span class="va">ID</span><span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">113</span>,<span class="fl">135</span><span class="op">)</span><span class="op">&amp;</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">)</span>

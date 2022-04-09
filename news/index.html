@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.907</span>
       </span>
     </div>
 
@@ -74,7 +74,10 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.11" id="since-nmdata-0011">Since NMdata 0.0.11<small>2022-02-05</small><a class="anchor" aria-label="anchor" href="#since-nmdata-0011"></a></h2>
-<ul><li><p>Support for non-event (say for $PRED) datasets in NMcheckData.</p></li>
+<ul><li><p>New function: cl - creates factors, ordered by the appearence of the elements when created. cl(“b”,“a”) results in a factor with levels “b” and “a”. This can save quite some typing in data set preparation.</p></li>
+<li><p>New function: fnAppend - append a string to a file name before the file name extension. fnAppend(“data.csv”,“subset”) results in “data_subset.csv”.</p></li>
+<li><p>General support for a file.data argument when a specific input data file is to be used instead of finding this information in the control streams. This is very useful if you archive input data together with a nonmem run in a way that the path in the control stream has to be overruled. Like many other of this type of arguments in NMdata, it can be a function that systematically converts the path to the control stream to the input data archive. Running Nonmem this way breaks the link between an input dataset that may change over time and the model runs that become self-contained packages of input and output data.</p></li>
+<li><p>Support for non-event (say for $PRED) datasets in NMcheckData.</p></li>
 <li><p>Support for custom column names for DV (col.dv) and MDV (col.mdv) in NMcheckData.</p></li>
 <li><p>Support for file.mod and dir.data arguments in NMcheckData when running on a control stream.</p></li>
 <li><p>NMgenText now has an argument called until that specifies the last column(s) to include in $INPUT.</p></li>

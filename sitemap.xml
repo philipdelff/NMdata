@@ -118,6 +118,9 @@
     <loc>https://philipdelff.github.io/NMdata/reference/checkColRow.html</loc>
   </url>
   <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/cl.html</loc>
+  </url>
+  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/compareCols.html</loc>
   </url>
   <url>
@@ -140,6 +143,9 @@
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/flagsCount.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/fnAppend.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/fnExtension.html</loc>

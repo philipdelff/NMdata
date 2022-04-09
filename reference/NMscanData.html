@@ -24,7 +24,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.907</span>
       </span>
     </div>
 
@@ -97,6 +97,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
   <span class="va">recover.rows</span>,
   <span class="va">file.mod</span>,
   <span class="va">dir.data</span>,
+  <span class="va">file.data</span>,
   translate.input <span class="op">=</span> <span class="cn">TRUE</span>,
   <span class="va">quiet</span>,
   <span class="va">use.rds</span>,
@@ -157,6 +158,9 @@ control stream (.mod) and not from the output file (.lst). So
 if you only have the output control stream, use dir.data to
 tell in which directory to find the data file. If dir.data is
 provided, the .mod file is not used at all.</p></dd>
+<dt>file.data</dt>
+<dd><p>Specification of the data file path. When this is
+used, the control streams are not used at all.</p></dd>
 <dt>translate.input</dt>
 <dd><p>Default is TRUE, meaning that input data
 column names are translated according to $INPUT section in
@@ -285,9 +289,9 @@ list of known limitations:</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           (result)      905    38+2     150</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Distribution of rows on event types in returned data:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  EVID Output</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     0    755</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1    150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  EVID CMT Output</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0   2    755</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1   1    150</span>
 </code></pre></div>
     </div>
   </div>
