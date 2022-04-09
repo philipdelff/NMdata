@@ -74,7 +74,7 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.11" id="since-nmdata-0011">Since NMdata 0.0.11<small>2022-02-05</small><a class="anchor" aria-label="anchor" href="#since-nmdata-0011"></a></h2>
-<ul><li><p>New function: cl - creates factors, ordered by the appearence of the elements when created. cl(“b”,“a”) results in a factor with levels “b” and “a”. This can save quite some typing in data set preparation.</p></li>
+<ul><li><p>New function: cl - creates factors, ordered by the appearance of the elements when created. cl(“b”,“a”) results in a factor with levels “b” and “a”. This can save quite some typing in data set preparation.</p></li>
 <li><p>New function: fnAppend - append a string to a file name before the file name extension. fnAppend(“data.csv”,“subset”) results in “data_subset.csv”.</p></li>
 <li><p>General support for a file.data argument when a specific input data file is to be used instead of finding this information in the control streams. This is very useful if you archive input data together with a nonmem run in a way that the path in the control stream has to be overruled. Like many other of this type of arguments in NMdata, it can be a function that systematically converts the path to the control stream to the input data archive. Running Nonmem this way breaks the link between an input dataset that may change over time and the model runs that become self-contained packages of input and output data.</p></li>
 <li><p>Support for non-event (say for $PRED) datasets in NMcheckData.</p></li>
@@ -117,7 +117,7 @@
 <h3 id="new-functions-0-0-10">New functions<a class="anchor" aria-label="anchor" href="#new-functions-0-0-10"></a></h3>
 <ul><li><p>NMcheckData is a new function that checks data for Nonmem compatibility in numerous ways. It returns a list of all findings making it easy to identify the location of each issue in the data. See the man page of NMcheckData for a complete list of the checks that are done. The function does not modify data in any way, and it is a very simple and easy step to avoid many problems in Nonmem. NMcheckData can check a data object in R, and it can also check how a control stream reads data and then do all the checks. The latter provides an extensive check of potential issues related to data and getting it into NONMEM. Great for both debugging and QC.</p></li>
 <li><p>NMextractDataFile is a function that identifies the input datafile used by a Nonmem model. It reports the string as in the Nonmem control stream, file path and whether the file exists. It also looks for the corresponding rds files. The function is not new in NMdata but was not exported until 0.0.10.</p></li>
-<li><p>cc is a function that creates character vectors from argmuments without quotes. This is just to be able to skip typing quotes when listing say column names. So do cc(a,b,c) to get the exact same as c(“a”,“b”,“c”). You cannot do this with strings that contain special characters. In that case do cc(a,“b+c”) to get the same as c(“a”,“b+c”).</p></li>
+<li><p>cc is a function that creates character vectors from arguments without quotes. This is just to be able to skip typing quotes when listing say column names. So do cc(a,b,c) to get the exact same as c(“a”,“b”,“c”). You cannot do this with strings that contain special characters. In that case do cc(a,“b+c”) to get the same as c(“a”,“b+c”).</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="function-improvements-0-0-10">Function improvements<a class="anchor" aria-label="anchor" href="#function-improvements-0-0-10"></a></h3>
@@ -232,7 +232,7 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.6" id="nmdata-006">NMdata 0.0.6<a class="anchor" aria-label="anchor" href="#nmdata-006"></a></h2>
 <p>General support for conversion of output to user-specified class. Setting the option “NMdata.as.fun” to a conversion function such as as.data.frame or tibble::as_tibble it is possible for the user to work with their preferred data class. An argument, as.fun, can be used for the individual functions too.</p>
-<p>The translation from the output control stream file path (.lst in PSN) and the input control stream (.mod in PSN) can now be configured through the option “NM.file.mod”. Typically, all the models to be considered in an anlysis have been run on the same system, so it makes most sense to define this behavior once and for all for most users.</p>
+<p>The translation from the output control stream file path (.lst in PSN) and the input control stream (.mod in PSN) can now be configured through the option “NM.file.mod”. Typically, all the models to be considered in an analysis have been run on the same system, so it makes most sense to define this behavior once and for all for most users.</p>
 <p>NMwriteData improved with checks of column names and automated generation of $INPUT and $DATA Nonmem sections.</p>
 <p>NMorderColumns simplified, and documentation improved.</p>
 <p>Documentation has been upgraded with a pkgdown site.</p>
