@@ -69,6 +69,8 @@
 ##'     if you only have the output control stream, use dir.data to
 ##'     tell in which directory to find the data file. If dir.data is
 ##'     provided, the .mod file is not used at all.
+##' @param file.data Specification of the data file path. When this is
+##'     used, the control streams are not used at all.
 ##' @param translate.input Default is TRUE, meaning that input data
 ##'     column names are translated according to $INPUT section in
 ##'     nonmem listing file.
@@ -219,7 +221,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     col.row <- NMdataDecideOption("col.row",col.row)
 
     if(missing(merge.by.row)) merge.by.row <- NULL
-    
+    if(missing(file.data)) file.data <- NMdataDecideOption("file.data",file.data)
 
     if(!is.null(merge.by.row)&&isTRUE(merge.by.row)&&!use.input){
         stop("merge.by.row cannot be TRUE when use.input is FALSE.")

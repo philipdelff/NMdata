@@ -2,13 +2,15 @@
 % Please edit documentation in R/NMscanInput.R
 \name{NMscanInput}
 \alias{NMscanInput}
-\title{Find and read input data and optionally translate column names according to the $INPUT section}
+\title{Find and read input data and optionally translate column names
+according to the $INPUT section}
 \usage{
 NMscanInput(
   file,
   use.rds,
   file.mod,
   dir.data = NULL,
+  file.data = NULL,
   applyFilters = FALSE,
   translate = TRUE,
   recover.cols = TRUE,
@@ -50,6 +52,9 @@ control stream (.mod) and not from the output file (.lst). So
 if you only have the output file, use dir.data to tell in
 which directory to find the data file. If dir.data is
 provided, the .mod file is not used at all.}
+
+\item{file.data}{Specification of the data file path. When this is
+used, the control streams are not used at all.}
 
 \item{applyFilters}{If TRUE (default), IGNORE and ACCEPT
 statements in the nonmem control streams are applied before
@@ -104,6 +109,14 @@ Based on a nonmem run (lst and/or mod file), this
     alternative naming of columns in the nonmem run.
 }
 \details{
+This function finds and reads the input data based on a control
+stream file path. It can align the column names to the definitions
+in $INPUT in the control stream, and it can subset the data based
+on ACCEPT/IGNORE statements in $DATA. I supports a few other ways
+to identify the input data file than reading the control stream,
+and it can also read an rds file instead of the delimited text
+file used by Nonmem.
+
 Columns that are dropped (using DROP or SKIP in $INPUT)
     in the model will be included in the output.
 

@@ -4,7 +4,7 @@
 \alias{NMextractDataFile}
 \title{Extract the data file used in a control stream}
 \usage{
-NMextractDataFile(file, dir.data = NULL, file.mod)
+NMextractDataFile(file, dir.data = NULL, file.mod, file.data = NULL)
 }
 \arguments{
 \item{file}{The input control stream or the list file.}
@@ -20,10 +20,17 @@ also supply the path to the file, or you can provide a
 function that translates the output file path to the input
 file path. The default behavior can be configured using
 NMdataConf. See dir.data too.}
+
+\item{file.data}{Specification of the data file path. When this is
+used, the control streams are not used at all.}
 }
 \value{
 The path to the input data file.
 }
 \description{
-Extract the data file used in a control stream
+A function that identifies the input data file based on a control
+stream. The default is to look at the $DATA section of of the
+output control stream (or input control stream if file.mod
+argument is used). This can be partly or fully overruled by using
+the dir.data or file.data arguments.
 }

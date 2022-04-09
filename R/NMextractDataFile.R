@@ -17,6 +17,8 @@
 ##'     function that translates the output file path to the input
 ##'     file path. The default behavior can be configured using
 ##'     NMdataConf. See dir.data too.
+##' @param file.data Specification of the data file path. When this is
+##'     used, the control streams are not used at all.
 ##' @return The path to the input data file.
 ##' @export
 

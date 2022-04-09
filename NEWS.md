@@ -1,5 +1,25 @@
 # Since NMdata 0.0.11
 
+* New function: cl - creates factors, ordered by the appearence of the
+  elements when created. cl("b","a") results in a factor with levels
+  "b" and "a". This can save quite some typing in data set
+  preparation.
+
+* New function: fnAppend - append a string to a file name before the
+  file name extension. fnAppend("data.csv","subset") results in
+  "data_subset.csv".
+
+* General support for a file.data argument when a specific input data
+  file is to be used instead of finding this information in the
+  control streams. This is very useful if you archive input data
+  together with a nonmem run in a way that the path in the control
+  stream has to be overruled. Like many other of this type of
+  arguments in NMdata, it can be a function that systematically
+  converts the path to the control stream to the input data
+  archive. Running Nonmem this way breaks the link between an input
+  dataset that may change over time and the model runs that become
+  self-contained packages of input and output data.
+
 * Support for non-event (say for $PRED) datasets in NMcheckData.
 
 * Support for custom column names for DV (col.dv) and MDV (col.mdv) in

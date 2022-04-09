@@ -14,6 +14,7 @@ summary.NMdata <- function(object,...){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
+    CMT <- NULL
     EVID <- NULL
     ID <- NULL
     N.ids <- NULL

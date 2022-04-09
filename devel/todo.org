@@ -222,7 +222,7 @@ numeric should be using
 **** DONE Return data, summary and more                             :v0_0_11:
 **** TODO [#B] Check whether NA's are coded with .'s
 *** NMextractDataFile
-**** TODO [#A] Test with absolute path in $DATA
+**** WAIT [#A] Test with absolute path in $DATA
 **** DONE Add support for windows absolute paths
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
@@ -243,7 +243,7 @@ arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMscanInput
 **** TODO [#B] Add NMinfo data on whether column names were translated according to $INPUT
-**** TODO [#A] Add data.file argument to skip interpreting the control stream altogether.
+**** DONE [#A] Add data.file argument to skip interpreting the control stream altogether.
 **** DONE BUG tabs in column names?
     REC\t  ID\t     TIME    TAD\t DOSE\t AMT\t RATE CMT  DV\t MDV\t EVID
 

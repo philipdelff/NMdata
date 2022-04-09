@@ -71,6 +71,8 @@
 ##' @param invert If TRUE, the data rows that are dismissed by the
 ##'     Nonmem data filters (ACCEPT and IGNORE) and only this will be
 ##'     returned. Only used if applyFilters is TRUE.
+##' @param file.data Specification of the data file path. When this is
+##'     used, the control streams are not used at all.
 ##' @details Columns that are dropped (using DROP or SKIP in $INPUT)
 ##'     in the model will be included in the output.
 ##'
