@@ -173,7 +173,7 @@ by NONMEM are prioritized. Row identifier and standard column names have special
 pk <- NMorderColumns(pk)
 ```
 
-`NMcheckData` - Extensive data checks for NONMEM compatibility and common issues. Should be run before saving data but see the "Debuging..." section for example on output.
+`NMcheckData` - Extensive data checks for NONMEM compatibility and common issues. Should be run before saving data but see the "Debugging..." section for example on output.
 
 :::
 

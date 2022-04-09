@@ -1,6 +1,6 @@
 # Since NMdata 0.0.11
 
-* New function: cl - creates factors, ordered by the appearence of the
+* New function: cl - creates factors, ordered by the appearance of the
   elements when created. cl("b","a") results in a factor with levels
   "b" and "a". This can save quite some typing in data set
   preparation.
@@ -100,7 +100,7 @@
   for the corresponding rds files. The function is not new in NMdata
   but was not exported until 0.0.10.
 
-* cc is a function that creates character vectors from argmuments
+* cc is a function that creates character vectors from arguments
   without quotes. This is just to be able to skip typing quotes when
   listing say column names. So do cc(a,b,c) to get the exact same as
   c("a","b","c"). You cannot do this with strings that contain special
@@ -364,7 +364,7 @@ used for the individual functions too.
 The translation from the output control stream file path (.lst in PSN)
 and the input control stream (.mod in PSN) can now be configured
 through the option "NM.file.mod". Typically, all the models to be
-considered in an anlysis have been run on the same system, so it makes
+considered in an analysis have been run on the same system, so it makes
 most sense to define this behavior once and for all for most users.
 
 NMwriteData improved with checks of column names and automated

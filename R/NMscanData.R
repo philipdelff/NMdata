@@ -97,7 +97,7 @@
 ##' @param order.columns If TRUE (default), NMorderColumns is used to
 ##'     reorder the columns before returning the data. NMorderColumns
 ##'     will be called with alpha=FALSE, so columns are not sorted
-##'     alphebetically. But standard Nonmem columns like ID, TIME, and
+##'     alphabetically. But standard Nonmem columns like ID, TIME, and
 ##'     other will be first. If col.row is used, this will be passed
 ##'     to NMorderColumns too.
 ##' @param check.time If TRUE (default) and if input data is used,

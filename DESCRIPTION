@@ -20,8 +20,10 @@ Suggests:
     ggplot2,
     tibble,
     covr,
-    htmltools
+    htmltools,
+    spelling
 VignetteBuilder: knitr
 Encoding: UTF-8
 URL: https://philipdelff.github.io/NMdata/
 BugReports: https://github.com/philipdelff/NMdata/issues
+Language: en-US
