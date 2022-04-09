@@ -29,6 +29,9 @@ NMextractDataFile <- function(file,dir.data=NULL,file.mod,file.data=NULL){
     }
     file.mod <- NMdataDecideOption("file.mod",file.mod)
 
+    file.data <- NMdataDecideOption("file.data",file.data)
+    if(!is.null(file.data)) file.data <- file.data(file)
+    
     if(!is.null(file.data) && !is.null(dir.data)) {
         messageWrap("Both file.data and dir.data are non-NULL. Not allowed.",
                     fun.msg=stop)

@@ -72,6 +72,12 @@
 ##' be a string too, but when using NMdataConf, this would make little sense
 ##' because it would direct all output control streams to the same input control
 ##' streams.
+##'
+##' \item{file.data} A function that will derive the path to the input
+##' data based on the path to the output control stream. Technically,
+##' it can be a string too, but when using NMdataConf, this would make
+##' little sense because it would direct all output control streams to
+##' the same input control streams.
 ##' 
 ##' \item{merge.by.row} Adjust the default combine method in
 ##' NMscanData.
@@ -284,6 +290,17 @@ NMdataConfOptions <- function(name){
            ,msg.not.allowed="file.mod must be a function or a character of length 1"
            ,process=function(x) {
                if(is.character(x)) return(function(file) x)
+               x
+           }
+        )
+       ,
+        file.data=list(
+            default=NULL
+            ## has to be length 1 character or function
+           ,is.allowed=function(x) is.null(x) || is.function(x) || (length(x)==1 && is.character(x))
+           ,msg.not.allowed="file.data must be NULL, a function or a character of length 1"
+           ,process=function(x) {
+               if(!is.null(x) && is.character(x)) return(function(file) x)
                x
            }
         )

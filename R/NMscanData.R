@@ -426,7 +426,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                 time.ok <- c(time.ok,"mod > output")
             }
         }
-
+        
         if(use.input) {
             mtime.inp <- max(nminfo.input$tables$file.mtime)
             if(mtime.inp > file.mtime(file)){
