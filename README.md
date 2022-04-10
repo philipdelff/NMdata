@@ -46,7 +46,6 @@ the
 [Cheatsheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html).
 
 <!-- ![Cheatsheet](man/figures/cheatsheet_icon_0010.png){width="15%"} -->
-
 <!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html) -->
 
 <a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html"><img src="man/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"/></a>
@@ -100,9 +99,10 @@ res <- NMscanData("xgxr014.lst",recover.rows=TRUE)
 #>           (result)      1502    34+2     150
 #> 
 #> Distribution of rows on event types in returned data:
-#>  EVID Input only Output
-#>     0        597    755
-#>     1          0    150
+#>  EVID CMT Input only Output
+#>     0   1          2      0
+#>     0   2        595    755
+#>     1   1          0    150
 ```
 
 And we are ready to plot (a subset of) the result:
@@ -114,8 +114,8 @@ ggplot(res.plot,aes(TIME))+
     geom_point(aes(y=DV,colour=flag))+
     geom_line(aes(y=PRED))+
     facet_wrap(~trtact)+
-    labs(y="Concentration (unit)",subtitle=unique(res.plot$model),colour="Observations",
-         caption="NOTICE:\nObservations are coloured by a character column fetched from input data.\nSamples below LLOQ are rows added from input data.\nPlots are correctly sorted because factor levels of dose are preserved from input data.")+
+    labs(y="Concentration (unit)",colour="Observations",
+         subtitle="NOTICE:\nObservations are coloured by a character column fetched from input data.\nSamples below LLOQ are rows added from input data.\nPlots are correctly sorted because factor levels of dose are preserved from input data.")+
     theme_bw()+theme(legend.position="bottom")
 #> Warning: Removed 2 row(s) containing missing values (geom_path).
 ```
@@ -155,7 +155,7 @@ reached CRAN, installing from Github is easy too.
     ## Option 2: Install explicitly from CRAN
     install.packages("NMdata",repos="https://cloud.r-project.org")
     library(NMdata)
-    
+
     ## Option 3: Install from github
     library(remotes)
     install_github("philipdelff/NMdata")

@@ -35,12 +35,12 @@
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using
 ##'     NMdataConf.
-##' @param as.fun A function that will be run un the result before
+##' @param as.fun A function that will be run on the result before
 ##'     returning. If first input data set is a data.table, the
 ##'     default is to return a data.table, if not the default is to
 ##'     return a data.frame. Use whatever to get what fits in with
 ##'     your workflow. Default can be configured with NMdataConf.
-##' @details tecnically, this function compares classes of elements in
+##' @details technically, this function compares classes of elements in
 ##'     lists. However, in relation to NMdata, this will most of the
 ##'     time be columns in data.frames.
 ##' @return A data.frame with an overview of elementes and their

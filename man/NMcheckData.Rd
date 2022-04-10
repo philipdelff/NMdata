@@ -163,7 +163,7 @@ records. ADDL must be present.
 
 \item all ID's must have observations (EVID==0)
 
-\item If a unqique row identifier is used, this must be
+\item If a unique row identifier is used, this must be
     non-missing, increasing, integer
 
 \item Character values must not contain commas (they will mess up

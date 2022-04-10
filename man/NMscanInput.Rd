@@ -66,7 +66,7 @@ columns than mentioned in $INPUT, these will be named as in
 data file (if data file contains named variables).}
 
 \item{recover.cols}{recover columns that were not used in the
-NONMEM control stream? Default is TRUE. Can only be negtive
+NONMEM control stream? Default is TRUE. Can only be negative
 when translate=FALSE.}
 
 \item{details}{If TRUE, metadata is added to output. In this case,

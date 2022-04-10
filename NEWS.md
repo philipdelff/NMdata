@@ -1,6 +1,6 @@
 # Since NMdata 0.0.11
 
-* New function: cl - creates factors, ordered by the appearence of the
+* New function: cl - creates factors, ordered by the appearance of the
   elements when created. cl("b","a") results in a factor with levels
   "b" and "a". This can save quite some typing in data set
   preparation.
@@ -100,7 +100,7 @@
   for the corresponding rds files. The function is not new in NMdata
   but was not exported until 0.0.10.
 
-* cc is a function that creates character vectors from argmuments
+* cc is a function that creates character vectors from arguments
   without quotes. This is just to be able to skip typing quotes when
   listing say column names. So do cc(a,b,c) to get the exact same as
   c("a","b","c"). You cannot do this with strings that contain special
@@ -122,7 +122,7 @@
 
 * flagsAssign has got a few updates related to separate handling of
   different types of events. Often, this will be used to assign flags
-  to observations, doses etc. separately. You can easily speficy a
+  to observations, doses etc. separately. You can easily specify a
   subset of data to run flagsAssign on, and it will by default check
   for whether values of EVID are unique. This is similar to what
   flagsCount does.
@@ -167,7 +167,7 @@ that tests pass after the release of data.table v1.14.2.
   write meta data. Meta data is stored as an attribute to the data
   object (attributes(data)$NMdata).
 
-* Translation table includes a column ranking the match betwen input
+* Translation table includes a column ranking the match between input
   data file contents and $INPUT. OK: names match, diff: names do not
   match, off: diff and name is found elsewhere.
 
@@ -301,7 +301,7 @@ number of columns added to df1 against expectation.
 
 egdt is a new function for expanding grids of data.tables. This is
 quite technical, and it fills a whole when constructing data with
-data.tables. It mimicks the behavior of merge.data.frame on objects
+data.tables. It mimics the behavior of merge.data.frame on objects
 with no common columns.
 
 ## Bugfixes related to 
@@ -320,7 +320,7 @@ names.
 
 The exclusion flag functions flagsAssign and flagsCount have been
 generalized to use customizable column names for the numerical and
-caracter flags. The default can be configured using NMdataConf.
+character flags. The default can be configured using NMdataConf.
 
 # NMdata 0.0.6.4
 If all common column names two data objects to merge are not used for
@@ -337,7 +337,7 @@ Meta information added about the input data.
 
 # NMdata 0.0.6.2
 A summary function is provided for NMdata objects. There is a print
-function for the summary too. This is printet automatically by NMdata
+function for the summary too. This is printed automatically by NMdata
 unless quiet=TRUE.
 
 A lot of meta information has been added in an attribute to NMdata
@@ -364,7 +364,7 @@ used for the individual functions too.
 The translation from the output control stream file path (.lst in PSN)
 and the input control stream (.mod in PSN) can now be configured
 through the option "NM.file.mod". Typically, all the models to be
-considered in an anlysis have been run on the same system, so it makes
+considered in an analysis have been run on the same system, so it makes
 most sense to define this behavior once and for all for most users.
 
 NMwriteData improved with checks of column names and automated
@@ -399,7 +399,7 @@ now treated like FIRSTONLY while FIRSTLASTONLY tables are disregarded
 The most obvious change since 0.0.3 is that only one data.table is
 being returned from NMscanData. This is what used to be the `row`
 element in the returned objects previously. The main reason for this
-change is that it makes it easier for users to postprocess only one
+change is that it makes it easier for users to post-process only one
 dataset before splitting into different levels of variability. The
 small cost is that the user will have to run findCovs, or findVars to
 get the desired level of variability. These functions are however very

@@ -97,14 +97,14 @@
 ##' @param order.columns If TRUE (default), NMorderColumns is used to
 ##'     reorder the columns before returning the data. NMorderColumns
 ##'     will be called with alpha=FALSE, so columns are not sorted
-##'     alphebetically. But standard Nonmem columns like ID, TIME, and
+##'     alphabetically. But standard Nonmem columns like ID, TIME, and
 ##'     other will be first. If col.row is used, this will be passed
 ##'     to NMorderColumns too.
 ##' @param check.time If TRUE (default) and if input data is used,
 ##'     input control stream and input data are checked to be newer
 ##'     than output control stream and output tables. These are
 ##'     important assumptions for the way information is merged by
-##'     NMscanData. However, if data has been transfered from another
+##'     NMscanData. However, if data has been transferred from another
 ##'     system where Nonmem was run, these checks may not make sense,
 ##'     and you may not want to see these warnings. The default can be
 ##'     configured using NMdataConf.

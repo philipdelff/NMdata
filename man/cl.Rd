@@ -11,7 +11,7 @@ cl(...)
 }
 \description{
 This is a shortcut for creating factors with levels as the order
-of appearance of the speficied levels.
+of appearance of the specified levels.
 }
 \examples{
 factor("b","a")

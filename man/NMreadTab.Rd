@@ -18,7 +18,7 @@ reported in the file. TABLENO is not true to the actual table
 number as given by Nonmem.}
 
 \item{quiet}{logical stating whether or not information is
-prignted about what is being done. Default can be configured
+printed about what is being done. Default can be configured
 using NMdataConf.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass
