@@ -96,8 +96,8 @@ ggplot(res.plot,aes(TIME))+
     geom_point(aes(y=DV,colour=flag))+
     geom_line(aes(y=PRED))+
     facet_wrap(~trtact)+
-    labs(y="Concentration (unit)",subtitle=unique(res.plot$model),colour="Observations",
-         caption="NOTICE:\nObservations are coloured by a character column fetched from input data.\nSamples below LLOQ are rows added from input data.\nPlots are correctly sorted because factor levels of dose are preserved from input data.")+
+    labs(y="Concentration (unit)",colour="Observations",
+         subtitle="NOTICE:\nObservations are coloured by a character column fetched from input data.\nSamples below LLOQ are rows added from input data.\nPlots are correctly sorted because factor levels of dose are preserved from input data.")+
     theme_bw()+theme(legend.position="bottom")
 ```
 

@@ -16,7 +16,7 @@ sets in a list here.}
 reported table. If not, generic x1, x2,... are used. The
 latter may be preferred for readability in some cases.}
 
-\item{as.fun}{A function that will be run un the result before
+\item{as.fun}{A function that will be run on the result before
 returning. If first input data set is a data.table, the
 default is to return a data.table, if not the default is to
 return a data.frame. Use whatever to get what fits in with

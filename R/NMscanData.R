@@ -104,7 +104,7 @@
 ##'     input control stream and input data are checked to be newer
 ##'     than output control stream and output tables. These are
 ##'     important assumptions for the way information is merged by
-##'     NMscanData. However, if data has been transfered from another
+##'     NMscanData. However, if data has been transferred from another
 ##'     system where Nonmem was run, these checks may not make sense,
 ##'     and you may not want to see these warnings. The default can be
 ##'     configured using NMdataConf.

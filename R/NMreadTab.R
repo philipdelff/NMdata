@@ -9,7 +9,7 @@
 ##'
 ##' @param file path to NONMEM table file
 ##' @param quiet logical stating whether or not information is
-##'     prignted about what is being done. Default can be configured
+##'     printed about what is being done. Default can be configured
 ##'     using NMdataConf.
 ##' @param tab.count Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. However, if

@@ -14,7 +14,7 @@ NMstamp(data, script, time = Sys.time(), ...)
 \item{time}{the time stamp to attach. Default is to use cpu clock.}
 
 \item{...}{other named metadata elements to add to the dataset. Example:
-Description="PK data for ph1 trials in project".}
+Description="PK data for phase 1 trials in project".}
 }
 \value{
 data with meta data attached. Class unchanged.

@@ -5,7 +5,7 @@
 ##' @param keepNames If TRUE, the original dataset names are used in
 ##'     reported table. If not, generic x1, x2,... are used. The
 ##'     latter may be preferred for readability in some cases.
-##' @param as.fun A function that will be run un the result before
+##' @param as.fun A function that will be run on the result before
 ##'     returning. If first input data set is a data.table, the
 ##'     default is to return a data.table, if not the default is to
 ##'     return a data.frame. Use whatever to get what fits in with
