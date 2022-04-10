@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.907</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.908</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@
 <div class="section level3">
 <h3 id="function-improvements-0-0-10">Function improvements<a class="anchor" aria-label="anchor" href="#function-improvements-0-0-10"></a></h3>
 <ul><li><p>NMwriteSection has been updated with a few very useful features. Namely these are related to updating multiple nonmem files at once. The user can now supply multiple paths, regular expressions for finding files (like pattern in list.files) and even input data files for nonmem models to match. This is very useful when updating many models after modifying input data. You can specify say all models in a directory names like pd<em>.mod where </em> is anything (in regular expressions this would be “pd.+\.mod”) and only the using the data file that was just written. Since NMwriteData generates the $INPUT for you, you just need to add one line to get the update of all your models automatically.</p></li>
-<li><p>flagsAssign has got a few updates related to separate handling of different types of events. Often, this will be used to assign flags to observations, doses etc. separately. You can easily speficy a subset of data to run flagsAssign on, and it will by default check for whether values of EVID are unique. This is similar to what flagsCount does.</p></li>
+<li><p>flagsAssign has got a few updates related to separate handling of different types of events. Often, this will be used to assign flags to observations, doses etc. separately. You can easily specify a subset of data to run flagsAssign on, and it will by default check for whether values of EVID are unique. This is similar to what flagsCount does.</p></li>
 <li><p>NMgenText is a new function that provides the generation of $INPUT and $DATA. This used to be part of NMwriteData. NMwriteData still calls NMgenText but the separation of the two functionalities allows for more inituitive separate uses of one dataset for different models.</p></li>
 <li><p>NMcompareCols now takes the argument “cols.wanted” which is a character vector of column names of special interest. Helpful when building a data set with specific column names in mind.</p></li>
 <li><p>egdt now reports dimensions of the two data sets to combine and the resulting data. Can be disabled with quiet argument.</p></li>
@@ -144,7 +144,7 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.8" id="nmdata-008">NMdata 0.0.8<small>2021-07-09</small><a class="anchor" aria-label="anchor" href="#nmdata-008"></a></h2>
 <ul><li><p>Meta data system rewritten. NMinfo and NMstamp are used to read and write meta data. Meta data is stored as an attribute to the data object (attributes(data)$NMdata).</p></li>
-<li><p>Translation table includes a column ranking the match betwen input data file contents and $INPUT. OK: names match, diff: names do not match, off: diff and name is found elsewhere.</p></li>
+<li><p>Translation table includes a column ranking the match between input data file contents and $INPUT. OK: names match, diff: names do not match, off: diff and name is found elsewhere.</p></li>
 <li><p>NMscanInput, NMaplyFilters, NMtransInp all return meta data compatibly with NMinfo.</p></li>
 <li><p>merge.by.row=“ifAvailable”</p></li>
 <li><p>Check for new values of row identifier</p></li>
@@ -196,7 +196,7 @@
 <p>compareCols is a very useful new data creation tool. See the difference between presence and classes of columns in data sets. This is useful before rbind’ing or merging - or maybe when those throw an error, and you want to figure out why.</p>
 <p>renameByContents is a function that can rename columns which contents match a given criterion. In combination with the provided NMisNumeric, this can be used to rename (say to lowercase) columns that Nonmem cannot interpret (as numeric).</p>
 <p>mergeCheck now informs about common column names that are not used to merge by. These will create new column names, and it’s often not intended. An argument has been added (ncols.expected) to check the number of columns added to df1 against expectation.</p>
-<p>egdt is a new function for expanding grids of data.tables. This is quite technical, and it fills a whole when constructing data with data.tables. It mimicks the behavior of merge.data.frame on objects with no common columns.</p>
+<p>egdt is a new function for expanding grids of data.tables. This is quite technical, and it fills a whole when constructing data with data.tables. It mimics the behavior of merge.data.frame on objects with no common columns.</p>
 <div class="section level3">
 <h3 id="bugfixes-related-to-0-0-7">Bugfixes related to<a class="anchor" aria-label="anchor" href="#bugfixes-related-to-0-0-7"></a></h3>
 <ul><li>Class of return from NMorderData.</li>
@@ -208,7 +208,7 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.6.6" id="nmdata-0066">NMdata 0.0.6.6<a class="anchor" aria-label="anchor" href="#nmdata-0066"></a></h2>
 <p>Central configuration mechanism implemented. The configuration function to use is NMdataConf. You can configure several options, corresponding to default values of arguments to different functions in the package. This is very useful if you want to change the directory and file naming structure, or if you want to change default column names.</p>
-<p>The exclusion flag functions flagsAssign and flagsCount have been generalized to use customizable column names for the numerical and caracter flags. The default can be configured using NMdataConf.</p>
+<p>The exclusion flag functions flagsAssign and flagsCount have been generalized to use customizable column names for the numerical and character flags. The default can be configured using NMdataConf.</p>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.6.4" id="nmdata-0064">NMdata 0.0.6.4<a class="anchor" aria-label="anchor" href="#nmdata-0064"></a></h2>
@@ -221,7 +221,7 @@
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.6.2" id="nmdata-0062">NMdata 0.0.6.2<a class="anchor" aria-label="anchor" href="#nmdata-0062"></a></h2>
-<p>A summary function is provided for NMdata objects. There is a print function for the summary too. This is printet automatically by NMdata unless quiet=TRUE.</p>
+<p>A summary function is provided for NMdata objects. There is a print function for the summary too. This is printed automatically by NMdata unless quiet=TRUE.</p>
 <p>A lot of meta information has been added in an attribute to NMdata objects. This will help the user to understand and automatically document what has been read.</p>
 <p>The argument to NMscanData previously called name has been renamed to modelname and generalized to take a function that derives the name from the file path. Also an general option “NMdata.modelname” has been added, so the default behavior can be configured.</p>
 </div>
@@ -251,7 +251,7 @@
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.4" id="nmdata-004">NMdata 0.0.4<a class="anchor" aria-label="anchor" href="#nmdata-004"></a></h2>
-<p>The most obvious change since 0.0.3 is that only one data.table is being returned from NMscanData. This is what used to be the <code>row</code> element in the returned objects previously. The main reason for this change is that it makes it easier for users to postprocess only one dataset before splitting into different levels of variability. The small cost is that the user will have to run findCovs, or findVars to get the desired level of variability. These functions are however very simple to use and very fast to run.</p>
+<p>The most obvious change since 0.0.3 is that only one data.table is being returned from NMscanData. This is what used to be the <code>row</code> element in the returned objects previously. The main reason for this change is that it makes it easier for users to post-process only one dataset before splitting into different levels of variability. The small cost is that the user will have to run findCovs, or findVars to get the desired level of variability. These functions are however very simple to use and very fast to run.</p>
 <p>This release features numerous improvements to especially the NMscanData function. The work is mainly focused around use without a row identifier. Even without a row identifier, NMscanData should now work for the vast majority of models, including merging with input and recovering rows.</p>
 <p>An attribute called <code>vars</code> has been added to the NMdata objects coming out of NMscanData. It features a table of the columns in the returned object and information about where they originate from. More work is still to be done on this, but hopefully it is useful already.</p>
 <p>NMwriteData: Added support for passing arguments to saveRDS.</p>

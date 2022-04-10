@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.907</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.908</span>
       </span>
     </div>
 
@@ -110,7 +110,7 @@
 
     
     
-<p>Built 2022-04-09 using NMdata 0.0.11.907.</p>
+<p>Built 2022-04-10 using NMdata 0.0.11.908.</p>
 <p>This vignette is still under development. Please make sure to see latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
 <h2 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
@@ -146,7 +146,7 @@
 <h3 id="compare-presence-and-class-of-columns-across-data-sets">Compare presence and class of columns across data sets<a class="anchor" aria-label="anchor" href="#compare-presence-and-class-of-columns-across-data-sets"></a>
 </h3>
 <p>When stacking (<code>rbind</code>) and merging, it is most often necessary to check if two or more data sets are compatible for the operation. <code>compareCols</code> compares columns across two or more data sets.</p>
-<p>To illustrate the output of <code>compareCols</code>, a slightly modified version of the <code>pk</code> dataset has been created. One column (<code>CYCLE</code>) has been removed, and <code>AMT</code> has been recoded to character. <code>compareCols</code> tells us about exactly these two differences:</p>
+<p>To illustrate the output of <code>compareCols</code>, a slightly modified version of the <code>pk</code> dataset has been created. One column (<code>CYCLE</code>) has been removed, and <code>AMT</code> has been re-coded to character. <code>compareCols</code> tells us about exactly these two differences:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/compareCols.html">compareCols</a></span><span class="op">(</span><span class="va">pk</span>, <span class="va">pk.reduced</span><span class="op">)</span>
 <span class="co">#&gt; Dimensions:</span>
@@ -158,8 +158,8 @@
 <span class="co">#&gt;    column      pk pk.reduced</span>
 <span class="co">#&gt; 1:  CYCLE integer       &lt;NA&gt;</span>
 <span class="co">#&gt; 2:    AMT integer  character</span></code></pre></div>
-<p>Before merging or stacking, we may want to recode <code>AMT</code> in one of the datasets to get the class we need, and decide what to do about the <code>CYCLE</code> column which is missing in one of the datasets (add information or fill with <code>NA</code>?).</p>
-<p>When stacking data sets we often know what columns we are looking to obtain in the final data. We may already have defined that early in our data preparation script, and <code>compareCols</code> can use this to highlight these columns. <code>cc</code> is a shorthand function to create character vectors withour quoting the elements.</p>
+<p>Before merging or stacking, we may want to re-code <code>AMT</code> in one of the datasets to get the class we need, and decide what to do about the <code>CYCLE</code> column which is missing in one of the datasets (add information or fill with <code>NA</code>?).</p>
+<p>When stacking data sets we often know what columns we are looking to obtain in the final data. We may already have defined that early in our data preparation script, and <code>compareCols</code> can use this to highlight these columns. <code>cc</code> is a shorthand function to create character vectors without quoting the elements.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">special.columns</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cc.html">cc</a></span><span class="op">(</span><span class="va">ID</span>, <span class="va">TIME</span>, <span class="va">CYCLE</span>, <span class="va">STUDY</span>, <span class="va">BW</span><span class="op">)</span>
 <span class="fu"><a href="../reference/compareCols.html">compareCols</a></span><span class="op">(</span><span class="va">pk</span>, <span class="va">pk.reduced</span>, cols.wanted <span class="op">=</span> <span class="va">special.columns</span><span class="op">)</span>
@@ -207,7 +207,7 @@
 <div class="section level3">
 <h3 id="automated-checks-of-merge-results">Automated checks of merge results<a class="anchor" aria-label="anchor" href="#automated-checks-of-merge-results"></a>
 </h3>
-<p>Merge or join operations are a very powerful data preparion tool. But they are also a very common source of bugs. Most of us know too well how merges can leave us with unexpected rows or make rows disappear. However, most often we can impose restrictions on the merge operation that allows for automated validation of the results.</p>
+<p>Merge or join operations are a very powerful data preparation tool. But they are also a very common source of bugs. Most of us know too well how merges can leave us with unexpected rows or make rows disappear. However, most often we can impose restrictions on the merge operation that allows for automated validation of the results.</p>
 <p>Imagine the very common example that we have a longitudinal PK data set (called <code>pk</code>), and we want to add subject-level covariates from a secondary data set (<code>dt.cov</code>). We want to merge by <code>ID</code>, and all we can allow to happen is columns to be added to <code>pk</code> from <code>dt.cov</code>. If rows disappear or get repeated, or if columns get renamed, it’s unintended and should return an error. That is what <code>mergeCheck</code> is for.</p>
 <p>Often people check the dimensions of the result to make sure nothing unintended happened. The following example shows that this is not enough, and that <code>mergeCheck</code> works differently. After merging the two data sets the check of the dimensions raises no alarm - the number of rows is unchanged from <code>pk</code> to <code>pk2</code>, and one of two columns in <code>dt.cov</code> was added. <code>dims</code> is just a <code>dim</code>-like function that can compare multiple data sets - handy for interactive analysis.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -353,7 +353,7 @@
 <span class="co">#&gt; 21   NA 180 WEIGHTB  Cov not unique within ID     ID   NA</span>
 <span class="co">#&gt; 22 1403 171     AMT Non-positive dose amounts    row 1403</span>
 <span class="co">#&gt; 23 1480 178    EVID           EVID not in 0:4    row 1480</span></code></pre></div>
-<p>Depending on <code>level</code> we can now take a look at single rows, data from a subject or fix a column to address these. The fact that some subjects are missing observations in this case is not necessarily an error (they are in this case all BLQ), but <code>WEIGHTB</code> has to be constant within subjects, and for NONMEM to even run, <code>EVID</code> must be in <code>0:4</code>. So those have to be fixed. For the rest of the vighnette, assume we fixed those issues.</p>
+<p>Depending on <code>level</code> we can now take a look at single rows, data from a subject or fix a column to address these. The fact that some subjects are missing observations in this case is not necessarily an error (they are in this case all BLQ), but <code>WEIGHTB</code> has to be constant within subjects, and for NONMEM to even run, <code>EVID</code> must be in <code>0:4</code>. So those have to be fixed. For the rest of the vignette, assume we fixed those issues.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/copy.html" class="external-link">copy</a></span><span class="op">(</span><span class="va">pk.copy</span><span class="op">)</span></code></pre></div>
 <div class="section level3">
@@ -387,7 +387,7 @@
 <span class="co">#&gt; [1] "DataPrepare.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-04-09 22:31:07"</span>
+<span class="co">#&gt; [1] "2022-04-10 00:17:35"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$writtenTo</span>
 <span class="co">#&gt; [1] "derived/pkdata.csv"</span>
@@ -403,7 +403,7 @@
 <span class="co">#&gt; [1] "DataPrepare.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-04-09 22:31:07 UTC"</span>
+<span class="co">#&gt; [1] "2022-04-10 00:17:35 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$writtenTo</span>
 <span class="co">#&gt; [1] "derived/pkdata.rds"</span>
@@ -415,11 +415,11 @@
 <h3 id="updating-nonmem-control-streams-to-read-new-data-file">Updating NONMEM control streams to read new data file<a class="anchor" aria-label="anchor" href="#updating-nonmem-control-streams-to-read-new-data-file"></a>
 </h3>
 <p>If we have to update the input data file, the NONMEM <code>$INPUT</code> sections no longer match the input data. We saw in <code>NMorderColumns</code> how we can use the <code>last</code> argument to get columns pushed towards the back so the NONMEM runs should still work. But maybe you need the column in your nonmem runs, and so you have no way around updating the control streams. And that can be quite a lot of control streams. With <code>NMdata</code> that is really easy.</p>
-<p><code>NMdata</code> has a couple of functions to extract and write sections to NONMEM control streams called <code>NMreadSection</code> and <code>NMwriteSection</code>. Those functions are very flexible for updating NONMEM control streams, and we will not tgo into detail with them, but let’s stick to the example above. We can do</p>
+<p><code>NMdata</code> has a couple of functions to extract and write sections to NONMEM control streams called <code>NMreadSection</code> and <code>NMwriteSection</code>. Those functions are very flexible for updating NONMEM control streams, and we will not go into detail with them, but let’s stick to the example above. We can do</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/NMwriteSection.html">NMwriteSection</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="st">"nonmem"</span>, file.pattern <span class="op">=</span> <span class="st">"run1.*\\.mod"</span>,
     list.sections <span class="op">=</span> <span class="va">text.nm</span><span class="op">[</span><span class="st">"INPUT"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
-<p>This updates the INPUT section (and not DATA) for all control streams in directory “nonmem” which file names start with “run1” and end in “.mod” (say “run101.mod” to “run199.mod”). If we had done simply <code>list.sections=text.nm</code> instead of <code>list.sections=text.nm["INPUT"]</code>, it would have replaced the <code>$DATA</code> section too. However, the <code>DATA</code> section rarely needs update following an pdate of the input data file, and oftentimes <code>$DATA</code> can vary among control streams that use the same input data (some models may be estimated on a smaller subset of data), so be careful with that.</p>
+<p>This updates the INPUT section (and not DATA) for all control streams in directory “nonmem” which file names start with “run1” and end in “.mod” (say “run101.mod” to “run199.mod”). If we had done simply <code>list.sections=text.nm</code> instead of <code>list.sections=text.nm["INPUT"]</code>, it would have replaced the <code>$DATA</code> section too. However, the <code>DATA</code> section rarely needs update following an update of the input data file, and oftentimes <code>$DATA</code> can vary among control streams that use the same input data (some models may be estimated on a smaller subset of data), so be careful with that.</p>
 <p><code>NMwriteSection</code> has the argument <code>data.file</code> to further limit the scope of files to update based on what data file the control streams use. It only makes sense to use the auto-generated text for control streams that use this data set.</p>
 <p>The text for NONMEM can be generated without saving data using <code>NMgenText</code>. You can tailor the generation of the text to copy <code>(DV=CONC)</code>, drop <code>(COL=DROP)</code>, rename (<code>DV</code> instead of <code>CONC</code>) and more.</p>
 </div>
@@ -436,7 +436,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-04-09 22:31:07 UTC"</span></code></pre></div>
+<span class="co">#&gt; [1] "2022-04-10 00:17:35 UTC"</span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>NMstamp</code>, but you can add anything to this. We want to keep descriptive note too. Another often useful piece of information is what source data files were read in order to generate the saved data. <code>Description</code> and <code>Source.Files</code> are only examples - any name can be used.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMstamp.html">NMstamp</a></span><span class="op">(</span><span class="va">pk</span>, script <span class="op">=</span> <span class="st">"vignettes/DataCreate.Rmd"</span>, Description <span class="op">=</span> <span class="st">"A PK dataset used for examples."</span>,
@@ -447,7 +447,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-04-09 22:31:07 UTC"</span>
+<span class="co">#&gt; [1] "2022-04-10 00:17:35 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span>
