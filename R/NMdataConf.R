@@ -295,12 +295,12 @@ NMdataConfOptions <- function(name){
         )
        ,
         file.data=list(
-            default=NULL
+            default="extract"
             ## has to be length 1 character or function
-           ,is.allowed=function(x) is.null(x) || is.function(x) || (length(x)==1 && is.character(x))
-           ,msg.not.allowed="file.data must be NULL, a function or a character of length 1"
+           ,is.allowed=function(x) is.function(x) || (length(x)==1 && is.character(x))
+           ,msg.not.allowed="file.data must be NULL, a function or a character of length 1. To force extracting data file from control stream, use file.data=\"extract\"."
            ,process=function(x) {
-               if(!is.null(x) && is.character(x)) return(function(file) x)
+               if(is.character(x)&&x!="extract") return(function(file) x)
                x
            }
         )

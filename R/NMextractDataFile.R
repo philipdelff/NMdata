@@ -25,31 +25,25 @@
 NMextractDataFile <- function(file,dir.data=NULL,file.mod,file.data=NULL){
     
     if(missing(file.mod)) file.mod <- NULL
-    if(!is.null(file.mod) && !is.null(dir.data)) {
-        messageWrap("Both file.mod and dir.data are non-NULL. Not allowed.",
-                    fun.msg=stop)
-    }
     file.mod <- NMdataDecideOption("file.mod",file.mod)
 
     file.data <- NMdataDecideOption("file.data",file.data)
-    if(!is.null(file.data)) file.data <- file.data(file)
-    
-    if(!is.null(file.data) && !is.null(dir.data)) {
-        messageWrap("Both file.data and dir.data are non-NULL. Not allowed.",
-                    fun.msg=stop)
+    if(is.character(file.data)&&file.data=="extract") {
+        file.data <- NULL
+    } else {
+        file.data <- file.data(file)
     }
     
-    
-    if(is.null(dir.data) && is.null(file.data)) {
+    lines.data <- NULL
+    string.file.data <- NULL
+
+    if(is.null(file.data)) {
         file <- file.mod(file)
 
         if(!file.exists(file)) {
             messageWrap("Input control stream (typically .mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument. Input data not used.",fun.msg=warning)
         }
-    }
 
-    
-    if(is.null(file.data)){
         ## get input data file name. Nonmem manual says:
 ###  The first character string appearing after $DATA is the name of the file
 ### containing the data. Since it is to be used in a FORTRAN OPEN statement,
@@ -80,11 +74,13 @@ NMextractDataFile <- function(file,dir.data=NULL,file.mod,file.data=NULL){
             file.data <- filePathSimple(dir.data,basename(string.file.data))
         }
 
-    } else {
-        lines.data <- NULL
-        string.file.data <- NULL
+    } 
+
+#### apply dir.data if supplied
+    if(!is.null(dir.data)){
+        file.data <- file.path(dir.data,basename(file.data))
     }
-    
+
     ## file.data.input.rds <- sub("^(.+)\\..+$","\\1.rds",file.data.input)
     file.data.rds <- fnExtension(file.data,".rds")
 

@@ -129,28 +129,8 @@ NMscanInput <- function(file, use.rds, file.mod, dir.data=NULL,
     if(missing(args.fread)) args.fread <- NULL
     args.fread <- NMdataDecideOption("args.fread",args.fread)
     
-    if(!is.null(file.mod) && !is.null(dir.data)) {
-        messageWrap("Both file.mod and dir.data are non-NULL. Not allowed.",
-                    fun.msg=stop)
-    }
-    if(!is.null(file.data) && !is.null(dir.data)) {
-        messageWrap("Both file.data and dir.data are non-NULL. Not allowed.",
-                    fun.msg=stop)
-    }
-    if(is.null(dir.data)&&is.null(file.data)) {
+
         
-        file.mod <- NMdataDecideOption("file.mod",file.mod)
-        file.find.data <- file.mod(file)
-
-        if(!file.exists(file.find.data)) {
-            
-            messageWrap("control stream (.mod) not found. Default is to look next to .lst file. See argument file.mod if you want to look elsewhere. If you don't have a .mod file, see the dir.data argument.  Input data not used.",fun.msg=warning)
-        }
-
-    }
-    
-####### apply file.data if used
-    
     ## identify the data file name and additional info
     info.datafile <- NMextractDataFile(file=file.find.data,dir.data,file.mod=file.mod,file.data=file.data)
     
