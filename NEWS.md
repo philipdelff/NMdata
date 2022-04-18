@@ -1,4 +1,5 @@
 # Since NMdata 0.0.11
+Thanks to Bill Denney for discussions and inputs to this release!
 
 * New function: cl - creates factors, ordered by the appearance of the
   elements when created. cl("b","a") results in a factor with levels
@@ -51,6 +52,9 @@
 * NMextractDataFile Now handles absolute paths correctly.
 
 ## Minor changes 
+* compareCols now by default lists the columns where no differences
+  were found. 
+
 * NMreadTab throws a message instead of a warning in case duplicate
   column names are found and removed.
 	  

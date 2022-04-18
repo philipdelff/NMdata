@@ -107,7 +107,8 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,cols.w
 
     ## merge back on
     dt.cols <- mergeCheck(dt.cols,nu.classes,by="column",quiet=TRUE)
-
+    
+    
     if(testEqual) return(dt.cols[n<ndots|nu>1,.N]==0)
 
     if(is.null(cols.wanted)){
@@ -116,6 +117,9 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,cols.w
         dt.cols <- merge(dt.cols,dt.wanted,all=T)
         dt.cols[!is.na(get(col.wanted)),column:=paste0("*",column)]
     }
+
+    dt.cols.full <- copy(dt.cols)
+    
     ## criteria whether to show if nu=1 (all equal class)
     if(diff.only) dt.cols <- dt.cols[n<ndots|nu>1|get(col.wanted)>0]
 ### this one orders by number of occurance, unique classses, column name
@@ -142,10 +146,13 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,cols.w
         } else {
             if(diff.only){
                 message("\nColumns that differ:")
+                print(dt.cols)
+                message()
+                messageWrap(paste0("\nColumns where no differences were found: ",paste(dt.cols.full[nu==1&n==ndots,column],collapse=", "),"."),fun.msg=message)
             } else {
                 message("\nOverview of all columns:")
+                print(dt.cols)
             }
-            print(dt.cols)
         }
         return(invisible(as.fun(dt.cols)))
     } else {
