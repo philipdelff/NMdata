@@ -33,7 +33,7 @@
 ##' @export
 
 
-NMreadTab <- function(file,tab.count=TRUE,quiet,as.fun,...) {
+NMreadTab <- function(file,tab.count=TRUE,header=TRUE,skip,quiet,as.fun,...) {
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -56,7 +56,11 @@ NMreadTab <- function(file,tab.count=TRUE,quiet,as.fun,...) {
     if(!quiet){
         message("Reading data using fread")
     }
-    dt1 <- fread(file,fill=TRUE,header=TRUE,skip=1,...)
+    if(missing(skip)){
+        skip <- 1
+        if(!header) skip <- 0
+    }
+    dt1 <- fread(file,fill=TRUE,header=header,skip=skip,...)
 
     cnames <- colnames(dt1)
     if(!quiet){
@@ -65,7 +69,9 @@ NMreadTab <- function(file,tab.count=TRUE,quiet,as.fun,...) {
     if(tab.count){
         ## find table numbers
         dt1[grep("^TABLE +NO\\. +[0-9]+ *$",as.character(get(cnames[1])),invert=FALSE,perl=TRUE),TABLE:=get(cnames[1])]
-        dt1[,TABLENO:=cumsum(!is.na(TABLE))+1]
+        if(header){
+            dt1[,TABLENO:=cumsum(!is.na(TABLE))+1]
+        }
         dt1[,TABLE:=NULL]
     }
     if(!quiet){
@@ -75,16 +81,12 @@ NMreadTab <- function(file,tab.count=TRUE,quiet,as.fun,...) {
 
     cols.dup <- duplicated(colnames(dt1))
     if(any(cols.dup)){
-        messageWrap(paste0("Duplicated column names found: ",paste(colnames(dt1)[cols.dup],collapse=","),". Cleaning."),fun.msg=message)
+        messageWrap(paste0("Cleaned duplicated column names: ",paste(colnames(dt1)[cols.dup],collapse=",")),fun.msg=message)
         dt1 <- dt1[,unique(cnames),with=FALSE]
+        
     }
 
-    ## if(!quiet){
-    ##     message("Making sure everything is numeric")
-    ## }
-
-    ## redoing this because columns have been cleaned since colnames
-    ## were extracted.
+    ## columns added and clened since cnames was created. 
     cnames <- colnames(dt1)
     dt1[,(cnames):=lapply(.SD,as.numeric)]
 

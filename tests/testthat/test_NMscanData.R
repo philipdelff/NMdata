@@ -101,6 +101,7 @@ test_that("Multiple output table formats",{
     fix.time(res)
     
     expect_equal_to_reference(res,fileRef,version=2)
+
     ## without meta
     ## expect_equal(unNMdata(res),unNMdata(readRDS(fileRef)))
 })
@@ -120,6 +121,7 @@ test_that("Interpret IGNORE statement",{
     ## names(res$row)
     
     expect_equal_to_reference(res,fileRef,version=2)
+
     ## without meta
     ## expect_equal(unNMdata(res),unNMdata(readRDS(fileRef)))
 })
@@ -598,7 +600,7 @@ test_that("merge.by.row=ifAvailable when not available",{
     
 })
 
-test_that(" col.row does not exist, but merge.by.row==TRUE",{
+test_that("col.row does not exist, but merge.by.row==TRUE",{
 ### col.row does not exist, but merge.by.row==TRUE
     fileRef <- "testReference/NMscanData22b.rds"
     NMdataConf(reset=T)
@@ -686,7 +688,7 @@ test_that("redundant output",{
     ## notice no cols are taken from the redundant table - correct
     res1 <- expect_message(
         NMscanData(file=file.lst)
-                           )
+    )
     ##     tabs1 <- NMscanTables(file=file.lst,as.fun="data.table",details=T,tab.count=F)
     ##     tabs1$meta
     ## tabs1$data[[4]]
@@ -781,3 +783,15 @@ test_that("only firstonly. Has col.id, no col.row.",{
 })
 
 
+test_that("Two firstonly, one full-length",{
+
+    fileRef <- "testReference/NMscanData28.rds"
+    file.lst <- "testData/nonmem/xgxr025.lst"
+
+    res <- NMscanData(file=file.lst,check.time=F)
+    res <- fix.time(res)
+    ## ref <- readRDS(fileRef)
+    
+    expect_equal_to_reference(res,fileRef,version=2)
+    
+})

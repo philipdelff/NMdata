@@ -49,8 +49,8 @@ With load_all():
     Risk now is that arguments are set to NULL
     Export to parent. Not sure check allows though...
 ** Function improvements
-*** TODO [#A] cl
-*** TODO [#A] fnAppend
+*** DONE cl
+*** DONE fnAppend
 Make internal in tracee
 *** NMcheckColNames
 **** return input column names and Nonmem interpretation for user to spot errors
@@ -227,6 +227,7 @@ numeric should be using
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
 *** NMwriteSection
+**** TODO [#A] Put backup files in NMdata_backup
 **** DONE Check if any files matched before running lapply
 **** TODO [#B] When using list.files, give overview of matches by expression and by data.file
 **** DONE Bug in data.file argument
@@ -365,6 +366,7 @@ See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
 is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMwriteData
+**** TODO [#A] deprecate rdata
 **** DONE BUG NA's are not .
 does fwrite use args.fwrite at all?
 **** DONE Separate generation of INPUT text into new function

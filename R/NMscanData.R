@@ -174,7 +174,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
-
+    
 #### Section start: Process arguments  ####
 
     file <- filePathSimple(file)
@@ -393,6 +393,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         list.vars.id <- lapply(seq_along(list.vars.id),function(n)list.vars.id[[n]][,file:=names(list.vars.id)[n]])
         dt.vars.id1 <- rbindlist(list.vars.id)
         setnames(dt.vars.id1,c("V1"),"variable")
+        dt.vars.id1[,included:=!duplicated(variable)]
         ## notice the selection of names in dt.vars.id and tab.row must be identical
         ## dt.vars.id1[,included:=!duplicated(variable)]
         dt.vars.id1[,`:=`(source="output",level="id")]
@@ -675,7 +676,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     ## it even if in input data. But give a warning if it varies
     ## in input.
     if(!skip.idlevel) {
-
+        
         if(!use.input && !use.rows) {
             ## The very special case where we don't use input and
             ## there is no row-level data.
@@ -683,7 +684,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             ## there's nothing else - so just return idlevel data
             tab.row <- tab.idlevel
 
-            dt.vars.id1[,included:=TRUE]
             dt.vars <- rbind(dt.vars,dt.vars.id1)
             tab.row[,(col.nmout):=TRUE]
             
@@ -720,7 +720,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                 
                 dt.vars.id1[,included:=FALSE]
                 dt.vars.id1[variable%in%setdiff(cols.to.use,id.cols.not.new),included:=TRUE]
-
+                dt.vars.id1[included==TRUE,included:=!duplicated(variable)]
+                
                 dt.vars <- rbind(dt.vars,dt.vars.id1)
             }
         }

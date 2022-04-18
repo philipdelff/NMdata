@@ -79,14 +79,6 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
                         nmdir.data,col.flagn, nm.rename,nm.copy,
                         nm.capitalize,allow.char.TIME){
     
-#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####    
-    TIME <- NULL 
-    comma.ok <- NULL
-    include <- NULL
-    numeric.ok <- NULL
-
-### Section end: Dummy variables, only not to get NOTE's in pacakge checks
-
     
 #### Section start: Process arguments ####
 

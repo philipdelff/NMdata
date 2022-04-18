@@ -20,6 +20,15 @@
   dataset that may change over time and the model runs that become
   self-contained packages of input and output data.
 
+* Support for NOHEADER option in Nonmem $TABLE blocks. If NMdata is
+  used to read the results, there is no need to use NOHEADER (which
+  opens the door to mistakes if manually renaming the columns in
+  results), but NMdata should now also be able to handle this. 
+
+* If found in data, CMT is added to the breakdown of rows when
+  summarizing results from NMscanData. Before, it was broken down on
+  EVID only.
+
 * Support for non-event (say for $PRED) datasets in NMcheckData.
 
 * Support for custom column names for DV (col.dv) and MDV (col.mdv) in

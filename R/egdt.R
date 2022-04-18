@@ -38,7 +38,7 @@ egdt <- function(dt1,dt2,quiet){
     dt2 <- copy(as.data.table(dt2))
     ## check for common columns
     cols.common <- intersect(colnames(dt1),colnames(dt2))
-    if(length(cols.common)>0) messageWrap("common columns in dt1 and dt2. If this is intended, it is beyond the scope of egdt. If you still want to use egdt, you can rename the common column names first.",fun.msg=stop)
+    if(length(cols.common)>0) messageWrap(sprintf("Common column names in dt1 and dt2. If a merge is intended, it is beyond the scope of egdt. If you still want to use egdt, you can rename the common column names first. Common column names: %s.",paste(cols.common,collapse=", ")),fun.msg=stop)
     tc <- tmpcol(names=c(colnames(dt1),colnames(dt2)))
 
     dt1[,(tc):=1]
