@@ -8,9 +8,6 @@
 ##' table file alone.
 ##'
 ##' @param file path to NONMEM table file
-##' @param quiet logical stating whether or not information is
-##'     printed about what is being done. Default can be configured
-##'     using NMdataConf.
 ##' @param tab.count Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. However, if
 ##'     tab.count is TRUE (default), a counter of tables is included
@@ -18,6 +15,13 @@
 ##'     TABLENO are just cumulatively counting the number of tables
 ##'     reported in the file. TABLENO is not true to the actual table
 ##'     number as given by Nonmem.
+##' @param header Use header=FALSE if table was created with NOHEADER
+##'     option in $TABLE.
+##' @param skip The number of rows to skip. The default is skip=1 if
+##'     header==TRUE and skip=0 if header==FALSE.
+##' @param quiet logical stating whether or not information is printed
+##'     about what is being done. Default can be configured using
+##'     NMdataConf.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use

@@ -483,11 +483,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(use.input&&!any(tables$meta$full.length)) {
         ## copying so we can modify tab.row        
         tab.row <- copy(data.input)
-        ## setattr(tab.row,"file",NULL)
-        ## setattr(tab.row,"type.file",NULL)
-        ## setattr(tab.row,"mtime.file",NULL)
-        ## <- unNMdata instead of unsetting those attributes?
-        ## unNMdata(data.input)
+        
 
         dt.vars <- rbind(dt.vars,
                          data.table(

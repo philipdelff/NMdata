@@ -35,6 +35,10 @@ NMscanTables <- function(file,details=FALSE,as.fun,quiet,tab.count=FALSE,col.id=
     
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
+    DV <- NULL
+    PRED <- NULL
+    RES <- NULL
+    WRES <- NULL
     has.col.id <- NULL
     has.col.row <- NULL
     filetype <- NULL
@@ -46,6 +50,7 @@ NMscanTables <- function(file,details=FALSE,as.fun,quiet,tab.count=FALSE,col.id=
     level <- NULL
     name <- NULL
     nid <- NULL
+    noheader <- NULL
     pastes <- NULL
     scope <- NULL
 
@@ -142,7 +147,7 @@ file?"))
         } else {
             meta[I,nid:=NA_real_]
         }
-     
+        
         if(!is.null(col.row)){
             meta[I,has.col.row:=col.row%in%cnames.tab.I]
         }
@@ -176,9 +181,9 @@ file?"))
 
 
     meta[,filetype:="output"]
-##
-##    meta[,full.length:=nrow==max(nrow)]
-## test if all  have same length within level. 
+    ##
+    ##    meta[,full.length:=nrow==max(nrow)]
+    ## test if all  have same length within level. 
     
     meta[,file.mtime:=file.mtime(file)]
     ## sep not used so omitted 

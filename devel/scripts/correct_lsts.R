@@ -1,7 +1,7 @@
 ## library(devtools)
 load_all()
 
-setwd("../tests/testthat/")
+setwd("../../tests/testthat/")
 lsts1 <- list.files(system.file("examples/nonmem",package="NMdata"),pattern="xgxr.*\\.lst$",full.names=TRUE)
 lsts2 <- list.files(system.file("examples/nonmem/xgxr001dir",package="NMdata"),pattern="output*\\.txt$",full.names=TRUE)
 lsts3 <- list.files("testData/nonmem",pattern=".*\\.lst$",full.names=TRUE)
