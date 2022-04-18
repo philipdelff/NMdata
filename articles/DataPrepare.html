@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.909</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.913</span>
       </span>
     </div>
 
@@ -110,7 +110,7 @@
 
     
     
-<p>Built 2022-04-11 using NMdata 0.0.11.909.</p>
+<p>Built 2022-04-18 using NMdata 0.0.11.913.</p>
 <p>This vignette is still under development. Please make sure to see latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
 <h2 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
@@ -157,7 +157,11 @@
 <span class="co">#&gt; Columns that differ:</span>
 <span class="co">#&gt;    column      pk pk.reduced</span>
 <span class="co">#&gt; 1:  CYCLE integer       &lt;NA&gt;</span>
-<span class="co">#&gt; 2:    AMT integer  character</span></code></pre></div>
+<span class="co">#&gt; 2:    AMT integer  character</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Columns where no differences were found: BLQ, CMT, DOSE, DV, EVENTU, EVID,</span>
+<span class="co">#&gt; FLAG, ID, NAME, NOMTIME, PART, PROFDAY, PROFTIME, ROW, STUDY, TIME, TIMEUNIT,</span>
+<span class="co">#&gt; TRTACT, WEIGHTB, eff0, flag, trtact.</span></code></pre></div>
 <p>Before merging or stacking, we may want to re-code <code>AMT</code> in one of the datasets to get the class we need, and decide what to do about the <code>CYCLE</code> column which is missing in one of the datasets (add information or fill with <code>NA</code>?).</p>
 <p>When stacking data sets we often know what columns we are looking to obtain in the final data. We may already have defined that early in our data preparation script, and <code>compareCols</code> can use this to highlight these columns. <code>cc</code> is a shorthand function to create character vectors without quoting the elements.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -175,7 +179,11 @@
 <span class="co">#&gt; 3: *CYCLE integer       &lt;NA&gt;</span>
 <span class="co">#&gt; 4: *STUDY integer    integer</span>
 <span class="co">#&gt; 5:    *BW    &lt;NA&gt;       &lt;NA&gt;</span>
-<span class="co">#&gt; 6:    AMT integer  character</span></code></pre></div>
+<span class="co">#&gt; 6:    AMT integer  character</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Columns where no differences were found: BLQ, CMT, DOSE, DV, EVENTU, EVID,</span>
+<span class="co">#&gt; FLAG, *ID, NAME, NOMTIME, PART, PROFDAY, PROFTIME, ROW, *STUDY, *TIME,</span>
+<span class="co">#&gt; TIMEUNIT, TRTACT, WEIGHTB, eff0, flag, trtact.</span></code></pre></div>
 <p>In this case, we may want to add <code>diff.only=FALSE</code> to see if other columns could hold the information we are missing for <code>BW</code> and <code>CYCLE</code>.</p>
 </div>
 <div class="section level3">
@@ -201,7 +209,11 @@
 <span class="co">#&gt; 3: TIMEUNIT character       &lt;NA&gt;</span>
 <span class="co">#&gt; 4:   eventu      &lt;NA&gt;  character</span>
 <span class="co">#&gt; 5:     name      &lt;NA&gt;  character</span>
-<span class="co">#&gt; 6: timeunit      &lt;NA&gt;  character</span></code></pre></div>
+<span class="co">#&gt; 6: timeunit      &lt;NA&gt;  character</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Columns where no differences were found: AMT, BLQ, CMT, CYCLE, DOSE, DV, EVID,</span>
+<span class="co">#&gt; FLAG, ID, NOMTIME, PART, PROFDAY, PROFTIME, ROW, STUDY, TIME, WEIGHTB, eff0,</span>
+<span class="co">#&gt; flag, trtact.</span></code></pre></div>
 <p>We can now easily see that if we wish to include the information contained in <code>eventu</code>, <code>pktmp</code>, and <code>pk.renamed</code>, we have to modify or translate their contents first.</p>
 </div>
 <div class="section level3">
@@ -387,7 +399,7 @@
 <span class="co">#&gt; [1] "DataPrepare.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-04-11 02:50:03"</span>
+<span class="co">#&gt; [1] "2022-04-18 19:34:55"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$writtenTo</span>
 <span class="co">#&gt; [1] "derived/pkdata.csv"</span>
@@ -403,7 +415,7 @@
 <span class="co">#&gt; [1] "DataPrepare.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-04-11 02:50:03 UTC"</span>
+<span class="co">#&gt; [1] "2022-04-18 19:34:55 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$writtenTo</span>
 <span class="co">#&gt; [1] "derived/pkdata.rds"</span>
@@ -436,7 +448,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-04-11 02:50:03 UTC"</span></code></pre></div>
+<span class="co">#&gt; [1] "2022-04-18 19:34:55 UTC"</span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>NMstamp</code>, but you can add anything to this. We want to keep descriptive note too. Another often useful piece of information is what source data files were read in order to generate the saved data. <code>Description</code> and <code>Source.Files</code> are only examples - any name can be used.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMstamp.html">NMstamp</a></span><span class="op">(</span><span class="va">pk</span>, script <span class="op">=</span> <span class="st">"vignettes/DataCreate.Rmd"</span>, Description <span class="op">=</span> <span class="st">"A PK dataset used for examples."</span>,
@@ -447,7 +459,7 @@
 <span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$CreationTime</span>
-<span class="co">#&gt; [1] "2022-04-11 02:50:03 UTC"</span>
+<span class="co">#&gt; [1] "2022-04-18 19:34:55 UTC"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $dataCreate$Description</span>
 <span class="co">#&gt; [1] "A PK dataset used for examples."</span>
