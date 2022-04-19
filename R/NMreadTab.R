@@ -8,9 +8,6 @@
 ##' table file alone.
 ##'
 ##' @param file path to NONMEM table file
-##' @param quiet logical stating whether or not information is
-##'     prignted about what is being done. Default can be configured
-##'     using NMdataConf.
 ##' @param tab.count Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. However, if
 ##'     tab.count is TRUE (default), a counter of tables is included
@@ -18,6 +15,13 @@
 ##'     TABLENO are just cumulatively counting the number of tables
 ##'     reported in the file. TABLENO is not true to the actual table
 ##'     number as given by Nonmem.
+##' @param header Use header=FALSE if table was created with NOHEADER
+##'     option in $TABLE.
+##' @param skip The number of rows to skip. The default is skip=1 if
+##'     header==TRUE and skip=0 if header==FALSE.
+##' @param quiet logical stating whether or not information is printed
+##'     about what is being done. Default can be configured using
+##'     NMdataConf.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
@@ -33,7 +37,7 @@
 ##' @export
 
 
-NMreadTab <- function(file,tab.count=TRUE,quiet,as.fun,...) {
+NMreadTab <- function(file,tab.count=TRUE,header=TRUE,skip,quiet,as.fun,...) {
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -56,7 +60,11 @@ NMreadTab <- function(file,tab.count=TRUE,quiet,as.fun,...) {
     if(!quiet){
         message("Reading data using fread")
     }
-    dt1 <- fread(file,fill=TRUE,header=TRUE,skip=1,...)
+    if(missing(skip)){
+        skip <- 1
+        if(!header) skip <- 0
+    }
+    dt1 <- fread(file,fill=TRUE,header=header,skip=skip,...)
 
     cnames <- colnames(dt1)
     if(!quiet){
@@ -65,7 +73,9 @@ NMreadTab <- function(file,tab.count=TRUE,quiet,as.fun,...) {
     if(tab.count){
         ## find table numbers
         dt1[grep("^TABLE +NO\\. +[0-9]+ *$",as.character(get(cnames[1])),invert=FALSE,perl=TRUE),TABLE:=get(cnames[1])]
-        dt1[,TABLENO:=cumsum(!is.na(TABLE))+1]
+        if(header){
+            dt1[,TABLENO:=cumsum(!is.na(TABLE))+1]
+        }
         dt1[,TABLE:=NULL]
     }
     if(!quiet){
@@ -75,16 +85,12 @@ NMreadTab <- function(file,tab.count=TRUE,quiet,as.fun,...) {
 
     cols.dup <- duplicated(colnames(dt1))
     if(any(cols.dup)){
-        warning(paste0("Duplicated column names found: ",paste(colnames(dt1)[cols.dup],collapse=","),". Cleaning."),immediate.=TRUE)
+        messageWrap(paste0("Cleaned duplicated column names: ",paste(colnames(dt1)[cols.dup],collapse=",")),fun.msg=message)
         dt1 <- dt1[,unique(cnames),with=FALSE]
+        
     }
 
-    ## if(!quiet){
-    ##     message("Making sure everything is numeric")
-    ## }
-
-    ## redoing this because columns have been cleaned since colnames
-    ## were extracted.
+    ## columns added and clened since cnames was created. 
     cnames <- colnames(dt1)
     dt1[,(cnames):=lapply(.SD,as.numeric)]
 

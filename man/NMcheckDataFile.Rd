@@ -11,6 +11,7 @@ NMcheckDataFile(
   use.rds = FALSE,
   quiet = FALSE,
   file.mod,
+  dir.data,
   as.fun,
   ...
 )
@@ -27,6 +28,12 @@ NMcheckDataFile(
 \item{quiet}{Keep quiet? Default is FALSE.}
 
 \item{file.mod}{How to find the input control stream if you are using the output control stream.}
+
+\item{dir.data}{The data directory can only be read from the
+control stream (.mod) and not from the output file (.lst). So
+if you only have the output control stream, use dir.data to
+tell in which directory to find the data file. If dir.data is
+provided, the .mod file is not used at all.}
 
 \item{as.fun}{The function to run results through before returning them.}
 

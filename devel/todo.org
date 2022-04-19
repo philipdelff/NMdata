@@ -49,12 +49,15 @@ With load_all():
     Risk now is that arguments are set to NULL
     Export to parent. Not sure check allows though...
 ** Function improvements
+*** DONE cl
+*** DONE fnAppend
+Make internal in tracee
 *** NMcheckColNames
 **** return input column names and Nonmem interpretation for user to spot errors
 **** Bad name, what could we call it?
 *** cc - create character vector function
 *** NMgenText
-**** TODO [#A] Add a last/stop argument to specify the last column to use in nonmem
+**** DONE Add a until argument to specify the last column to use in nonmem
 **** TODO [#B] checks: duplicate column names
 **** TODO [#B] test if a synonym was used. Give warning or msg if not
 **** TODO [#B] test if variables are used in more than one arg
@@ -82,16 +85,15 @@ helpful. Only list other columns than the scope.
 List missing elements
 For specific columns, look for missing elements (NA, "", length(x)==0
 in case of lists?). Tabulate and list. 
-**** TODO Align reporting with NMcheckData?
-**** TODO dcast summary when using by
+**** TODO [#B] Align reporting with NMcheckData?
+**** TODO [#B] dcast summary when using by
 This is quite powerfull:
  dcast(missings[,.N,by=.(STUDYID,variable)],variable~STUDYID)
 ***** Would be even better to have zeros where columns are found and there are no NA's. 
 ***** Include "number of rows" in table.
       
 **** DONE listMissings test                                         :v0_0_11:
-     CLOSED: [2022-02-04 Fri 16:16]
-**** TODO [#A] Complete documentation
+**** DONE Complete documentation
      It seems like a description is missing. So is value. Explain that
      a summary is printed, and a list i invisibly returned, if that is
      what is done.
@@ -107,8 +109,8 @@ Error if not convertible and not NA or ""? "b" should be an error right?
 *** TODO [#B] Function for complex dosing regimens              :newFunction:
 *** TODO [#B] Function to unfold ADDL/II doses to multiple rows :newFunction:
 *** mergeCheck
-**** TODO accept common columns not being merged by if suffixes are provided
-**** TODO If results are not accepted. Check for whether y is unique in by
+**** TODO [#B] accept common columns not being merged by if suffixes are provided
+**** TODO [#B] If results are not accepted. Check for whether y is unique in by
 **** TODO [#B] Add at least number of NA's to message about what was added
 Probably add class too.
 Number of unique combinations of by? This seems too advanced
@@ -128,14 +130,17 @@ because by and by.x+by.y are handled differently the second time? Clen this.
      the merge is done.
 **** DONE Test the check for row duplications
 *** NMcheckData
-**** TODO [#A] Bug if no numeric cols found?
+**** DONE Bug if no numeric cols found?
      Warning message:
 In `[.data.table`(data, , `:=`((cols.req.found), lapply(.SD, NMasNumeric)),  :
   length(LHS)==0; no columns to delete or assign RHS to.
-**** TODO [#A] Support for col.dv.
-     Preferably of length>1
-**** TODO The summary should take a by argument
-**** TODO Define a NMfindings class and create a summary function?
+**** DONE Support for col.dv.
+**** TODO [#B] usubjid argument
+***** usubjid must be present and non-empty
+***** ID must be unique against usubjid
+**** TODO [#B] Support for col.dv of length>1
+**** TODO [#B] The summary should take a by argument
+**** TODO [#B] Define a NMfindings class and create a summary function?
 **** DONE Note when installing                                      :v0_0_11:
      Note: ... may be used in an incorrect context at NMcheckData.R:290 
      Solution: listEvents must have a args.fun rather than ...
@@ -217,11 +222,12 @@ numeric should be using
 **** DONE Return data, summary and more                             :v0_0_11:
 **** TODO [#B] Check whether NA's are coded with .'s
 *** NMextractDataFile
-**** TODO [#A] Test with absolute path in $DATA
+**** WAIT [#A] Test with absolute path in $DATA
 **** DONE Add support for windows absolute paths
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
 *** NMwriteSection
+**** DONE [#A] Put backup files in NMdata_backup
 **** DONE Check if any files matched before running lapply
 **** TODO [#B] When using list.files, give overview of matches by expression and by data.file
 **** DONE Bug in data.file argument
@@ -237,6 +243,8 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMscanInput
+**** TODO [#B] Add NMinfo data on whether column names were translated according to $INPUT
+**** DONE Add data.file argument to skip interpreting the control stream altogether.
 **** DONE BUG tabs in column names?
     REC\t  ID\t     TIME    TAD\t DOSE\t AMT\t RATE CMT  DV\t MDV\t EVID
 
@@ -281,7 +289,7 @@ NULL=NAN which would mean that NA should be interpreted as NA in R.
 A way to limit rows read into nonmem
 *** NMtransInput
     Translate column names according to Nonmem.
-**** DONE [#B] Add comparison column input-nonmem
+**** DONE Add comparison column input-nonmem
 ***** if input!=nonmem,
 ***** nonmem %in% all(input)
 ***** tolower(nonmem)==tolower(input) OK
@@ -289,12 +297,14 @@ A way to limit rows read into nonmem
 ***** off
 *** NMscanTables
 **** TODO [#B] include meta data as NMinfo
+**** TODO Integrate the reduction into one table from NMscanData
 **** DONE Lastonly does the same as firstonly
 *** NMscanData
-**** TODO [#B] Split out data finder
-There is a few different ways to get to the data file path. A separate
-function should handle this. That same function can then be used by
-NMcheckData.
+**** TODO [#B] Split out data finder handling
+There is a few different ways to get to the data file path. Some
+checks are being done on the compatibility of the arguments in
+NMscanData. This should be done in NMscanInput or NMextractDataFile so
+that other functions such as NMcheckData gets the same behaviour.
 **** TODO [#B] Simplify timestamp warnings
      When .mod is newer than .lst and or tables, reduce to one warning
      summarizing both findings.
@@ -356,6 +366,7 @@ See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
 is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMwriteData
+**** DONE [#A] deprecate RData
 **** DONE BUG NA's are not .
 does fwrite use args.fwrite at all?
 **** DONE Separate generation of INPUT text into new function
@@ -432,6 +443,7 @@ This is two steps.
 This belong in write functions. stampObj does support extra
 arguments. NMdata calls this "writtenTo".
 *** summary.NMdata
+**** DONE Break down number of rows by CMT and EVID.
 **** Rethink and tidy up message
 ***** DONE Combine first two tables
 ***** DONE Add number of rows

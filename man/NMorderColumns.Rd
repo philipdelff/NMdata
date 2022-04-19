@@ -31,7 +31,7 @@ runs, you can use this argument.}
 \item{lower.last}{Should columns which names contain lowercase
 characters be moved towards the back? Some people use a
 standard of lowercase variables (say "race") being character
-representations ("asian", "caucasian", etc.) variables and the
+representations ("Asian", "Caucasian", etc.) variables and the
 uppercase (1,2,...) being the numeric representation for
 Nonmem.}
 

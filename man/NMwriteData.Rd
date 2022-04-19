@@ -37,11 +37,11 @@ standard file name extensions are added.}
 
 \item{write.rds}{write an rds file?}
 
-\item{write.RData}{In case you want to save to .RData object. Not
-recommended. Use write.rds instead.}
+\item{write.RData}{In case you want to save to .RData
+object. Deprecated and not recommended. Use write.rds instead.}
 
 \item{script}{If provided, the object will be stamped with this
-script name before saved to rds or Rdata. See ?NMstamp.}
+script name before saved to rds or RData. See ?NMstamp.}
 
 \item{args.stamp}{A list of arguments to be passed to NMstamp.}
 
@@ -52,7 +52,8 @@ configured using NMdataConf.}
 
 \item{args.rds}{A list of arguments to be passed to saveRDS.}
 
-\item{args.RData}{A list of arguments to be passed to save.}
+\item{args.RData}{A list of arguments to be passed to save. Please
+note that writing RData is deprecated.}
 
 \item{quiet}{The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
@@ -76,8 +77,8 @@ args.NMgenText=list(dir.data="your/path") instead.}
 
 \item{col.flagn}{Name of a numeric column with zero value for rows
 to include in Nonmem run, non-zero for rows to skip. The
-argument is only used for generating the proposed $DATA text to
-paste into the Nonmem control stream. To skip this feature,
+argument is only used for generating the proposed $DATA text
+to paste into the Nonmem control stream. To skip this feature,
 use col.flagn=NULL.}
 
 \item{nm.rename}{Deprecated, use
@@ -98,7 +99,7 @@ Text for inclusion in Nonmem control stream, invisibly.
 \description{
 Instead of trying to remember the arguments to pass to write.csv,
 use this wrapper. It tells you what to write in $DATA and $INPUT
-in nonmem, and it (additionally) exports an rds or Rdata file as
+in nonmem, and it (additionally) exports an rds file as
 well which is highly preferable for use in R. It never edits the
 data before writing the datafile. The filenames for csv, rds
 etc. are derived by replacing the extension to the filename given

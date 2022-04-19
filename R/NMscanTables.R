@@ -32,9 +32,13 @@
 ##' @export
 
 NMscanTables <- function(file,details=FALSE,as.fun,quiet,tab.count=FALSE,col.id="ID",col.row){
-
+    
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
+    DV <- NULL
+    PRED <- NULL
+    RES <- NULL
+    WRES <- NULL
     has.col.id <- NULL
     has.col.row <- NULL
     filetype <- NULL
@@ -46,6 +50,7 @@ NMscanTables <- function(file,details=FALSE,as.fun,quiet,tab.count=FALSE,col.id=
     level <- NULL
     name <- NULL
     nid <- NULL
+    noheader <- NULL
     pastes <- NULL
     scope <- NULL
 
@@ -88,7 +93,7 @@ NMscanTables <- function(file,details=FALSE,as.fun,quiet,tab.count=FALSE,col.id=
                          ,lastonly=any(grepl("LASTONLY",x))
                          ,firstlastonly=any(grepl("FIRSTLASTONLY",x))
                          ,format=extract.info(x,"FORMAT",default=" ")
-                         ,stringsAsFactors=FALSE)
+                         ,noheader=any(grepl("NOHEADER",x)))
         tab
     })
 
@@ -103,17 +108,38 @@ NMscanTables <- function(file,details=FALSE,as.fun,quiet,tab.count=FALSE,col.id=
     if(nrow(meta.tabs.strange)){
         warning("Table(s) seems to have more than one of the firstonly, lastonly and firstlastonly options. Does this make sense? Look at table(s): ",pastes(meta.tabs.strange[,name],collapse=", "))
     }
-
     tables <- list()
 
     for(I in 1:nrow(meta)){
         if(!file.exists(meta[I,file])) stop(paste0("NMscanTables: File not found: ",meta[I,file],". Did you copy the lst file but forgot table
 file?"))
-        tables[[I]] <- NMreadTab(meta[I,file],quiet=TRUE,tab.count=tab.count,showProgress=FALSE,as.fun=identity)
+        tables[[I]] <- NMreadTab(meta[I,file],quiet=TRUE,tab.count=tab.count,showProgress=FALSE,as.fun=identity,header=meta[I,!noheader])
         dim.tmp <- dim(tables[[I]])
         meta[I,nrow:=dim.tmp[1]]
         meta[I,ncol:=dim.tmp[2]]
 
+        if(meta[I,noheader]) {
+            messageWrap("Using NOHEADER option in $TABLE is only experimentally supported in NMdata. Please double check the resuling column names. NMdata functions can handle the recurring headers in Nonmem tables so the NOHEADER option should not be needed.",fun.msg=message)
+            cnames.text <- lines.table[[I]]
+            cnames.text <- gsub(","," ",cnames.text)
+            cnames.text <- sub("^ *","",cnames.text)
+            cnames.text <- sub(" +"," ",cnames.text)
+            cnames.all <- strsplit(cnames.text," ")[[1]]
+
+            cnames.extra <- cc(DV,PRED,RES,WRES)
+            cnames.extra <- setdiff(cnames.extra,cnames.all)
+            ncol.I <- ncol(tables[[I]])
+            nce <- length(cnames.extra)
+            
+            if(nce){
+                ## subtracting 1 from indeces because NMreadTab adds TABLENO
+                cnames.all[(ncol.I-nce+1):(ncol.I)] <- cnames.extra
+            }
+            cnames <- cnames.all[1:ncol.I]
+            
+            setnames(tables[[I]],1:length(cnames),cnames)
+        }
+        
         cnames.tab.I <- colnames(tables[[I]])
 
         if(col.id%in%cnames.tab.I){
@@ -121,7 +147,7 @@ file?"))
         } else {
             meta[I,nid:=NA_real_]
         }
-     
+        
         if(!is.null(col.row)){
             meta[I,has.col.row:=col.row%in%cnames.tab.I]
         }
@@ -155,9 +181,9 @@ file?"))
 
 
     meta[,filetype:="output"]
-##
-##    meta[,full.length:=nrow==max(nrow)]
-## test if all  have same length within level. 
+    ##
+    ##    meta[,full.length:=nrow==max(nrow)]
+    ## test if all  have same length within level. 
     
     meta[,file.mtime:=file.mtime(file)]
     ## sep not used so omitted 

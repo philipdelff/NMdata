@@ -73,6 +73,12 @@ be a string too, but when using NMdataConf, this would make little sense
 because it would direct all output control streams to the same input control
 streams.
 
+\item{file.data} A function that will derive the path to the input
+data based on the path to the output control stream. Technically,
+it can be a string too, but when using NMdataConf, this would make
+little sense because it would direct all output control streams to
+the same input control streams.
+
 \item{merge.by.row} Adjust the default combine method in
 NMscanData.
 

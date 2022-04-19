@@ -69,6 +69,8 @@
 ##'     if you only have the output control stream, use dir.data to
 ##'     tell in which directory to find the data file. If dir.data is
 ##'     provided, the .mod file is not used at all.
+##' @param file.data Specification of the data file path. When this is
+##'     used, the control streams are not used at all.
 ##' @param translate.input Default is TRUE, meaning that input data
 ##'     column names are translated according to $INPUT section in
 ##'     nonmem listing file.
@@ -95,14 +97,14 @@
 ##' @param order.columns If TRUE (default), NMorderColumns is used to
 ##'     reorder the columns before returning the data. NMorderColumns
 ##'     will be called with alpha=FALSE, so columns are not sorted
-##'     alphebetically. But standard Nonmem columns like ID, TIME, and
+##'     alphabetically. But standard Nonmem columns like ID, TIME, and
 ##'     other will be first. If col.row is used, this will be passed
 ##'     to NMorderColumns too.
 ##' @param check.time If TRUE (default) and if input data is used,
 ##'     input control stream and input data are checked to be newer
 ##'     than output control stream and output tables. These are
 ##'     important assumptions for the way information is merged by
-##'     NMscanData. However, if data has been transfered from another
+##'     NMscanData. However, if data has been transferred from another
 ##'     system where Nonmem was run, these checks may not make sense,
 ##'     and you may not want to see these warnings. The default can be
 ##'     configured using NMdataConf.
@@ -140,7 +142,7 @@
 
 
 NMscanData <- function(file, col.row, use.input, merge.by.row,
-                       recover.rows,file.mod,dir.data,
+                       recover.rows,file.mod,dir.data,file.data,
                        translate.input=TRUE, quiet, use.rds,
                        args.fread, as.fun, col.id="ID",
                        modelname, col.model, col.nmout,tab.count=FALSE,
@@ -172,7 +174,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
-
+    
 #### Section start: Process arguments  ####
 
     file <- filePathSimple(file)
@@ -219,7 +221,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     col.row <- NMdataDecideOption("col.row",col.row)
 
     if(missing(merge.by.row)) merge.by.row <- NULL
-    
+    if(missing(file.data)) file.data <- NMdataDecideOption("file.data",file.data)
 
     if(!is.null(merge.by.row)&&isTRUE(merge.by.row)&&!use.input){
         stop("merge.by.row cannot be TRUE when use.input is FALSE.")
@@ -290,6 +292,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         data.input <- NMscanInput(file
                                  ,file.mod=file.mod
                                  ,dir.data=dir.data
+                                 ,file.data=file.data
                                  ,quiet=TRUE
                                  ,translate=translate.input
                                  ,use.rds=use.rds
@@ -390,6 +393,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         list.vars.id <- lapply(seq_along(list.vars.id),function(n)list.vars.id[[n]][,file:=names(list.vars.id)[n]])
         dt.vars.id1 <- rbindlist(list.vars.id)
         setnames(dt.vars.id1,c("V1"),"variable")
+        dt.vars.id1[,included:=!duplicated(variable)]
         ## notice the selection of names in dt.vars.id and tab.row must be identical
         ## dt.vars.id1[,included:=!duplicated(variable)]
         dt.vars.id1[,`:=`(source="output",level="id")]
@@ -425,7 +429,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                 time.ok <- c(time.ok,"mod > output")
             }
         }
-
+        
         if(use.input) {
             mtime.inp <- max(nminfo.input$tables$file.mtime)
             if(mtime.inp > file.mtime(file)){
@@ -479,11 +483,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(use.input&&!any(tables$meta$full.length)) {
         ## copying so we can modify tab.row        
         tab.row <- copy(data.input)
-        ## setattr(tab.row,"file",NULL)
-        ## setattr(tab.row,"type.file",NULL)
-        ## setattr(tab.row,"mtime.file",NULL)
-## <- unNMdata instead of unsetting those attributes?
-        ## unNMdata(data.input)
+        
 
         dt.vars <- rbind(dt.vars,
                          data.table(
@@ -512,6 +512,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             
             dia <- suppressWarnings(NMscanInput(file,file.mod=file.mod
                                                ,dir.data=dir.data
+                                               ,file.data=file.data
                                                ,quiet=TRUE
                                                ,translate=translate.input
                                                ,use.rds=use.rds
@@ -671,7 +672,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     ## it even if in input data. But give a warning if it varies
     ## in input.
     if(!skip.idlevel) {
-
+        
         if(!use.input && !use.rows) {
             ## The very special case where we don't use input and
             ## there is no row-level data.
@@ -679,7 +680,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             ## there's nothing else - so just return idlevel data
             tab.row <- tab.idlevel
 
-            dt.vars.id1[,included:=TRUE]
             dt.vars <- rbind(dt.vars,dt.vars.id1)
             tab.row[,(col.nmout):=TRUE]
             
@@ -716,7 +716,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                 
                 dt.vars.id1[,included:=FALSE]
                 dt.vars.id1[variable%in%setdiff(cols.to.use,id.cols.not.new),included:=TRUE]
-
+                dt.vars.id1[included==TRUE,included:=!duplicated(variable)]
+                
                 dt.vars <- rbind(dt.vars,dt.vars.id1)
             }
         }
@@ -737,6 +738,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         if(cbind.by.filters) {
             data.recover <- NMscanInput(file,quiet=TRUE
                                        ,use.rds=use.rds
+                                       ,dir.data=dir.data
+                                       ,file.data=file.data
                                        ,applyFilters=cbind.by.filters
                                        ,translate=translate.input
                                        ,args.fread=args.fread
@@ -768,16 +771,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                    ,level="model"
                                     ))
     }
-    ## add column with model name
-    ## if(use.nmout) {
-    ##     dt.vars <- rbind(dt.vars,
-    ##                      data.table(variable=col.nmout
-    ##                                ,file=NA_character_
-    ##                                ,included=TRUE 
-    ##                                ,source="NMscanData"
-    ##                                ,level="model"
-    ##                                 ))
-    ## }
 
 
 ### order columns in returned data

@@ -12,6 +12,7 @@ NMscanData(
   recover.rows,
   file.mod,
   dir.data,
+  file.data,
   translate.input = TRUE,
   quiet,
   use.rds,
@@ -69,6 +70,9 @@ control stream (.mod) and not from the output file (.lst). So
 if you only have the output control stream, use dir.data to
 tell in which directory to find the data file. If dir.data is
 provided, the .mod file is not used at all.}
+
+\item{file.data}{Specification of the data file path. When this is
+used, the control streams are not used at all.}
 
 \item{translate.input}{Default is TRUE, meaning that input data
 column names are translated according to $INPUT section in
@@ -130,7 +134,7 @@ called TABLENO. The argument is passed to NMscanTables.}
 \item{order.columns}{If TRUE (default), NMorderColumns is used to
 reorder the columns before returning the data. NMorderColumns
 will be called with alpha=FALSE, so columns are not sorted
-alphebetically. But standard Nonmem columns like ID, TIME, and
+alphabetically. But standard Nonmem columns like ID, TIME, and
 other will be first. If col.row is used, this will be passed
 to NMorderColumns too.}
 
@@ -138,7 +142,7 @@ to NMorderColumns too.}
 input control stream and input data are checked to be newer
 than output control stream and output tables. These are
 important assumptions for the way information is merged by
-NMscanData. However, if data has been transfered from another
+NMscanData. However, if data has been transferred from another
 system where Nonmem was run, these checks may not make sense,
 and you may not want to see these warnings. The default can be
 configured using NMdataConf.}

@@ -35,12 +35,12 @@
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using
 ##'     NMdataConf.
-##' @param as.fun A function that will be run un the result before
+##' @param as.fun A function that will be run on the result before
 ##'     returning. If first input data set is a data.table, the
 ##'     default is to return a data.table, if not the default is to
 ##'     return a data.frame. Use whatever to get what fits in with
 ##'     your workflow. Default can be configured with NMdataConf.
-##' @details tecnically, this function compares classes of elements in
+##' @details technically, this function compares classes of elements in
 ##'     lists. However, in relation to NMdata, this will most of the
 ##'     time be columns in data.frames.
 ##' @return A data.frame with an overview of elementes and their
@@ -107,7 +107,8 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,cols.w
 
     ## merge back on
     dt.cols <- mergeCheck(dt.cols,nu.classes,by="column",quiet=TRUE)
-
+    
+    
     if(testEqual) return(dt.cols[n<ndots|nu>1,.N]==0)
 
     if(is.null(cols.wanted)){
@@ -116,6 +117,9 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,cols.w
         dt.cols <- merge(dt.cols,dt.wanted,all=T)
         dt.cols[!is.na(get(col.wanted)),column:=paste0("*",column)]
     }
+
+    dt.cols.full <- copy(dt.cols)
+    
     ## criteria whether to show if nu=1 (all equal class)
     if(diff.only) dt.cols <- dt.cols[n<ndots|nu>1|get(col.wanted)>0]
 ### this one orders by number of occurance, unique classses, column name
@@ -142,10 +146,13 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,cols.w
         } else {
             if(diff.only){
                 message("\nColumns that differ:")
+                print(dt.cols)
+                message()
+                messageWrap(paste0("\nColumns where no differences were found: ",paste(dt.cols.full[nu==1&n==ndots,column],collapse=", "),"."),fun.msg=message)
             } else {
                 message("\nOverview of all columns:")
+                print(dt.cols)
             }
-            print(dt.cols)
         }
         return(invisible(as.fun(dt.cols)))
     } else {

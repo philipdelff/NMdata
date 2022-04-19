@@ -39,7 +39,7 @@ temp_dir
 ;; other
 Meta
 NMdata\.Rproj
-README.html
+README\.html
 devel/NMdata_Rpackage/figure
 devel/NMdata_Rpackage/derived
 devel/NMdata_Rpackage/NMdata_Rpackage\.pdf
@@ -51,7 +51,7 @@ vignettes/DataPrepare.html
 vignettes/NMscanData.html
 vignettes/*\.md
 vignettes/*\.R
-vignettes/derived/*
+/vignettes/derived/*.rds
 inst/examples/nonmem/modelfit_dir*
 inst/examples/nonmem/trashed_*
 inst/examples/nonmem/backup_*

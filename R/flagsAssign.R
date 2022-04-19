@@ -238,9 +238,9 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
             backed.up.old.flags <- TRUE
             flags.orig.data <- data.flags[,cols.pick,with=FALSE]
         }
-        
-        data.flags[,(setdiff(cols.pick,col.row)):=NULL]
-        
+        if(length(setdiff(cols.pick,col.row))){
+            data.flags[,(setdiff(cols.pick,col.row)):=NULL]
+        }
     }
     
     

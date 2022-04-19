@@ -14,6 +14,7 @@ NMgenText(
   file,
   dir.data,
   capitalize = FALSE,
+  until,
   allow.char.TIME = TRUE,
   quiet
 )
@@ -40,10 +41,10 @@ suggested $DATA text. If you plan to use BBW instead of BWBASE
 in Nonmem, consider nm.rename=c(BBW="BWBASE"). The result will
 include BBW and not BWBASE.}
 
-\item{copy}{For the $INPUT text proposal only. If you plan to
-use additional names for columns in Nonmem $INPUT, NMwriteData
-can adjust the suggested $INPUT text. Say you plan to use CONC
-as DV in Nonmem, use rename=c(DV="CONC"),
+\item{copy}{For the $INPUT text proposal only. If you plan to use
+additional names for columns in Nonmem $INPUT, NMwriteData can
+adjust the suggested $INPUT text. Say you plan to use CONC as
+DV in Nonmem, use rename=c(DV="CONC"),
 i.e. rename=c(newname="existing"). INPUT suggestion will in
 this case contain DV=CONC.}
 
@@ -59,6 +60,15 @@ file argument is used.}
 \item{capitalize}{For the $INPUT text proposal only. If TRUE, all
 column names in $INPUT text will be converted to capital
 letters.}
+
+\item{until}{Use this to truncate the columns in $INPUT. until can
+either be a character (column name) or a numeric (column
+number). If a character is given, it is matched against the
+resulting column name representation in $INPUT, i.e. this
+could be "DV=CONC" if you are using in this case the copy
+argument. In case until is of length>1, the maximum will be
+used (probably only interesting if character values are
+supplied).}
 
 \item{allow.char.TIME}{For the $INPUT text proposal only. Assume
 Nonmem can read TIME even if it can't be translated to

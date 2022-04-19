@@ -38,3 +38,31 @@ test_that("Details table",{
     ## res$meta$file <- basename(res$meta$file)
     expect_equal_to_reference(res,fileRef,version=2)
 })
+
+test_that("$TABLE header options",{
+
+    fileRef <- "testReference/NMscanTables3.rds"
+    file.lst <- "testData/nonmem/xgxr024.lst"
+
+    res <- NMscanTables(file=file.lst,details=T,as.fun="data.table",tab.count=TRUE)
+
+    res$meta[,file:=basename(file)]
+    res$meta$file.mtime <- NULL
+
+    expect_equal_to_reference(res,fileRef,version=2)
+    
+})
+
+test_that("Two firstonly, one full-length",{
+
+    fileRef <- "testReference/NMscanTables4.rds"
+    file.lst <- "testData/nonmem/xgxr025.lst"
+
+    res <- NMscanTables(file=file.lst,details=T,as.fun="data.table",tab.count=TRUE)
+
+    res$meta[,file:=basename(file)]
+    res$meta$file.mtime <- NULL
+
+    expect_equal_to_reference(res,fileRef,version=2)
+    
+})

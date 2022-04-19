@@ -10,13 +10,18 @@
 ##' @param use.rds use rds file instead of csv. This is typically not wanted because we want to test the input data as read by NONMEM.
 ##' @param quiet Keep quiet? Default is FALSE.
 ##' @param file.mod How to find the input control stream if you are using the output control stream.
+##' @param dir.data The data directory can only be read from the
+##'     control stream (.mod) and not from the output file (.lst). So
+##'     if you only have the output control stream, use dir.data to
+##'     tell in which directory to find the data file. If dir.data is
+##'     provided, the .mod file is not used at all.
 ##' @param as.fun The function to run results through before returning them.
 ##' @param ... passed to NMcheckData
 ##' @keywords internal
 
 ### Don't export. NMcheckData will be the way in.
 
-NMcheckDataFile <- function(file,col.row,col.id="ID",use.rds=FALSE,quiet=FALSE,file.mod,as.fun,...){
+NMcheckDataFile <- function(file,col.row,col.id="ID",use.rds=FALSE,quiet=FALSE,file.mod,dir.data,as.fun,...){
     
     
     if(missing(as.fun)) as.fun <- NULL
@@ -24,7 +29,9 @@ NMcheckDataFile <- function(file,col.row,col.id="ID",use.rds=FALSE,quiet=FALSE,f
 
     if(missing(file.mod)) file.mod <- NULL
     file.mod <- NMdataDecideOption("file.mod",file.mod)
-        
+
+    if(missing(dir.data)) dir.data <- NULL
+    
     if(missing(col.row)) {
         col.row <- NULL
     }
@@ -32,6 +39,7 @@ NMcheckDataFile <- function(file,col.row,col.id="ID",use.rds=FALSE,quiet=FALSE,f
 
     inp <- NMscanInput(file,use.rds=use.rds,col.id=col.id,col.row=col.row,
                        translate=TRUE,recover.cols=FALSE,applyFilters=TRUE,
+                       file.mod=file.mod,dir.data=dir.data,
                        quiet=TRUE,as.fun=as.fun)
 
     dots <- list(...)
