@@ -721,7 +721,10 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
         
         data[,isnewID:=get(col.id)!=shift(get(col.id),n=1)]
         data[1,isnewID:=TRUE]
-        data[,reset:=EVID%in%c(3,4)]
+        data[,reset:=FALSE]
+        if("EVID"%in%colnames(data)){
+            data[,reset:=EVID%in%c(3,4)]
+        }
         data[,newID:=cumsum(as.numeric(isnewID)+as.numeric(reset))]
         data[,checkTimeInc:=c(TRUE,diff(get(col.time))>=0),by=.(newID)]
         
