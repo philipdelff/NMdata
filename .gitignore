@@ -4,7 +4,7 @@
 ;; psn
 modelfit_dir*
 ;; nonmem
-nonmem
+nonmem$
 FCON
 FDATA
 FMSG
