@@ -30,7 +30,7 @@ lines and text as well.}
 using the file and text arguments.}
 
 \item{text}{Use this argument if the text to process is one long
-character string, and indicate the line seperator with the
+character string, and indicate the line separator with the
 linesep argument. Use only one of file, lines, and text.}
 
 \item{section}{The name of section to extract. Examples: "INPUT",

@@ -2,7 +2,7 @@
 ##'
 ##' Instead of trying to remember the arguments to pass to write.csv,
 ##' use this wrapper. It tells you what to write in $DATA and $INPUT
-##' in nonmem, and it (additionally) exports an rds or Rdata file as
+##' in nonmem, and it (additionally) exports an rds file as
 ##' well which is highly preferable for use in R. It never edits the
 ##' data before writing the datafile. The filenames for csv, rds
 ##' etc. are derived by replacing the extension to the filename given
@@ -14,21 +14,22 @@
 ##'     standard file name extensions are added.
 ##' @param write.csv Write to csv file?
 ##' @param write.rds write an rds file?
-##' @param write.RData In case you want to save to .RData object. Not
-##'     recommended. Use write.rds instead.
+##' @param write.RData In case you want to save to .RData
+##'     object. Deprecated and not recommended. Use write.rds instead.
 ##' @param script If provided, the object will be stamped with this
-##'     script name before saved to rds or Rdata. See ?NMstamp.
+##'     script name before saved to rds or RData. See ?NMstamp.
 ##' @param args.stamp A list of arguments to be passed to NMstamp.
 ##' @param args.fwrite List of arguments passed to fwrite. Notice that
 ##'     except for "x" and "file", you need to supply all arguments to
 ##'     fwrite if you use this argument. Default values can be
 ##'     configured using NMdataConf.
 ##' @param args.rds A list of arguments to be passed to saveRDS.
-##' @param args.RData A list of arguments to be passed to save.
+##' @param args.RData A list of arguments to be passed to save. Please
+##'     note that writing RData is deprecated.
 ##' @param col.flagn Name of a numeric column with zero value for rows
 ##'     to include in Nonmem run, non-zero for rows to skip. The
-##'     argument is only used for generating the proposed $DATA text to
-##'     paste into the Nonmem control stream. To skip this feature,
+##'     argument is only used for generating the proposed $DATA text
+##'     to paste into the Nonmem control stream. To skip this feature,
 ##'     use col.flagn=NULL.
 ##' @param quiet The default is to give some information along the way
 ##'     on what data is found. But consider setting this to TRUE for
@@ -79,14 +80,6 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
                         nmdir.data,col.flagn, nm.rename,nm.copy,
                         nm.capitalize,allow.char.TIME){
     
-#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####    
-    TIME <- NULL 
-    comma.ok <- NULL
-    include <- NULL
-    numeric.ok <- NULL
-
-### Section end: Dummy variables, only not to get NOTE's in pacakge checks
-
     
 #### Section start: Process arguments ####
 
@@ -244,6 +237,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
     }
     
     if(write.RData){
+        messageWrap("Writing to RData files is deprecated and this option will be removed from NMwriteData. Please use write.rds instead.")
         name.data <- deparse(substitute(data))
         file.RData <- fnExtension(file,".RData")
         if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.RData),args.stamp))

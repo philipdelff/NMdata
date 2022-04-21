@@ -46,7 +46,7 @@ NMdata comes with a configuration tool that can be used to tailor default behavi
 
 
 ### How do I install NMdata?
-For most users, taking `NMdata` from the package archive you are already using is the prefered way:
+For most users, taking `NMdata` from the package archive you are already using is the preferred way:
 ```
 install.packages("NMdata")
 library(NMdata)

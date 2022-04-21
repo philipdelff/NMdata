@@ -116,14 +116,14 @@ pk.reduced[,AMT:=as.character(AMT)]
 
 To illustrate the output of `compareCols`, a slightly modified
 version of the `pk` dataset has been created. One column (`CYCLE`) has
-been removed, and `AMT` has been recoded to character. `compareCols`
+been removed, and `AMT` has been re-coded to character. `compareCols`
 tells us about exactly these two differences: 
 
 ```{r,eval=TRUE}
 compareCols(pk,pk.reduced)
 ```
 
-Before merging or stacking, we may want to recode `AMT` in one of the
+Before merging or stacking, we may want to re-code `AMT` in one of the
 datasets to get the class we need, and decide what to do about the
 `CYCLE` column which is missing in one of the datasets (add information or fill with
 `NA`?).
@@ -132,7 +132,7 @@ When stacking data sets we often know what columns we are looking to
 obtain in the final data. We may already have defined that early in
 our data preparation script, and `compareCols` can use this to
 highlight these columns. `cc` is a shorthand function to create
-character vectors withour quoting the elements.
+character vectors without quoting the elements.
 
 ```{r}
 special.columns <- cc(ID,TIME,CYCLE,STUDY,BW)
@@ -179,7 +179,7 @@ contained in `eventu`, `pktmp`, and `pk.renamed`, we have to modify or
 translate their contents first.
 
 ### Automated checks of merge results 
-Merge or join operations are a very powerful data preparion tool. But they are also a very common source of bugs. Most of us know too well how merges can leave us with unexpected rows or make rows disappear. However, most often we can impose restrictions
+Merge or join operations are a very powerful data preparation tool. But they are also a very common source of bugs. Most of us know too well how merges can leave us with unexpected rows or make rows disappear. However, most often we can impose restrictions
 on the merge operation that allows for automated validation of the
 results. 
 
@@ -414,7 +414,7 @@ Let's look at these findings:
 findings
 ```
 
-Depending on `level` we can now take a look at single rows, data from a subject or fix a column to address these. The fact that some subjects are missing observations in this case is not necessarily an error (they are in this case all BLQ), but `WEIGHTB` has to be constant within subjects, and for NONMEM to even run, `EVID` must be in `0:4`. So those have to be fixed. For the rest of the vighnette, assume we fixed those issues.
+Depending on `level` we can now take a look at single rows, data from a subject or fix a column to address these. The fact that some subjects are missing observations in this case is not necessarily an error (they are in this case all BLQ), but `WEIGHTB` has to be constant within subjects, and for NONMEM to even run, `EVID` must be in `0:4`. So those have to be fixed. For the rest of the vignette, assume we fixed those issues.
 
 ```{r}
 pk <- copy(pk.copy)
@@ -467,7 +467,7 @@ and so you have no way around updating the control streams. And that
 can be quite a lot of control streams. With `NMdata` that is really easy.
 
 `NMdata` has a couple of functions to extract and write sections to
-NONMEM control streams called `NMreadSection` and `NMwriteSection`. Those functions are very flexible for updating NONMEM control streams, and we will not tgo into detail with them, but let's
+NONMEM control streams called `NMreadSection` and `NMwriteSection`. Those functions are very flexible for updating NONMEM control streams, and we will not go into detail with them, but let's
 stick to the example above. We can do
 
 ```{r,eval=FALSE}
@@ -476,7 +476,7 @@ NMwriteSection(dir="nonmem",
                list.sections=text.nm["INPUT"])
 ```
 
-This updates the INPUT section (and not DATA) for all control streams in directory "nonmem" which file names start with "run1" and end in ".mod" (say "run101.mod" to "run199.mod"). If we had done simply `list.sections=text.nm` instead of `list.sections=text.nm["INPUT"]`, it would have replaced the `$DATA` section too. However, the `DATA` section rarely needs update following an pdate of the input data file, and oftentimes `$DATA` can vary among control streams that use the same input data (some models may be estimated on a smaller subset of data), so be careful with that.
+This updates the INPUT section (and not DATA) for all control streams in directory "nonmem" which file names start with "run1" and end in ".mod" (say "run101.mod" to "run199.mod"). If we had done simply `list.sections=text.nm` instead of `list.sections=text.nm["INPUT"]`, it would have replaced the `$DATA` section too. However, the `DATA` section rarely needs update following an update of the input data file, and oftentimes `$DATA` can vary among control streams that use the same input data (some models may be estimated on a smaller subset of data), so be careful with that.
 
 
 `NMwriteSection` has the argument `data.file` to further limit the scope of files to update based on what data file the control streams use. It only makes sense to use the auto-generated text for control streams that use this data set.

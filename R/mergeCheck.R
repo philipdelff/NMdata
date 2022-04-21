@@ -305,7 +305,7 @@ mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expec
     df3 <- as.fun(df3)
 
     if(!quiet){
-        msg <- paste0("The following columns were added: ",paste(newcols,collapse=", "))
+        msg <- paste0("Column(s) added: ",paste(newcols,collapse=", "))
         message(msg)
     }
     

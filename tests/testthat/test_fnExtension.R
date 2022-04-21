@@ -11,7 +11,7 @@ test_that("basic",{
     res1 <- list(
         fnExtension("feww.csv",".rds")
        ,
-        ## Adding extension where not existing is not supported
+        ## Adding extension where not existing is also supported
         fnExtension("feww",".rds")
        ,
         ## we can remove extension

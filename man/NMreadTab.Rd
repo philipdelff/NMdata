@@ -4,7 +4,7 @@
 \alias{NMreadTab}
 \title{Read an output table file from NONMEM}
 \usage{
-NMreadTab(file, tab.count = TRUE, quiet, as.fun, ...)
+NMreadTab(file, tab.count = TRUE, header = TRUE, skip, quiet, as.fun, ...)
 }
 \arguments{
 \item{file}{path to NONMEM table file}
@@ -17,9 +17,15 @@ TABLENO are just cumulatively counting the number of tables
 reported in the file. TABLENO is not true to the actual table
 number as given by Nonmem.}
 
-\item{quiet}{logical stating whether or not information is
-prignted about what is being done. Default can be configured
-using NMdataConf.}
+\item{header}{Use header=FALSE if table was created with NOHEADER
+option in $TABLE.}
+
+\item{skip}{The number of rows to skip. The default is skip=1 if
+header==TRUE and skip=0 if header==FALSE.}
+
+\item{quiet}{logical stating whether or not information is printed
+about what is being done. Default can be configured using
+NMdataConf.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to

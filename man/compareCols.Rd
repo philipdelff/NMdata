@@ -53,7 +53,7 @@ on what data is found. But consider setting this to TRUE for
 non-interactive use. Default can be configured using
 NMdataConf.}
 
-\item{as.fun}{A function that will be run un the result before
+\item{as.fun}{A function that will be run on the result before
 returning. If first input data set is a data.table, the
 default is to return a data.table, if not the default is to
 return a data.frame. Use whatever to get what fits in with
@@ -70,7 +70,7 @@ or class across multiple datasets. Before running rbind, you may want
 to check the compatibility of the data.
 }
 \details{
-tecnically, this function compares classes of elements in
+technically, this function compares classes of elements in
     lists. However, in relation to NMdata, this will most of the
     time be columns in data.frames.
 }

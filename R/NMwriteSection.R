@@ -190,9 +190,16 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections
         
         if(is.null(newfile)) return(newlines)
         
-        if(file0==newfile && backup ) file.copy (file0,
-                                                sub("(.+/)([^/].+$)","\\1backup_\\2",x=file0)
-                                                )
+        if(file0==newfile && backup ) {
+            dir.backup <- file.path(dirname(file0),"NMdata_backup")
+            ## make sure backup dir exists
+            if(file.exists(dir.backup)&&!dir.exists(dir.backup)) messageWrap("Something called NMdata_backup is found and it is not a directory. Please remove or use backup=FALSE.",fun.msg=stop)
+            if(!dir.exists(dir.backup)) dir.create(dir.backup)
+            ## file.copy (file0,
+            ##            sub("(.+/)([^/].+$)","\\1backup_\\2",x=file0)
+            ##            )
+            file.copy(file0,dir.backup,overwrite=T)
+        }
 
         if(!write||is.null(file)){
             return(newlines)
@@ -207,8 +214,8 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections
 
     
     res <- lapply(all.files,NMwriteSectionOne,section=section,newlines=newlines,
-           list.sections=list.sections,newfile=newfile,
-           backup=backup,blank.append=blank.append,write=write)
+                  list.sections=list.sections,newfile=newfile,
+                  backup=backup,blank.append=blank.append,write=write)
 
     if(simplify&&length(res)==1) res <- res[[1]]
     

@@ -94,7 +94,7 @@ Please make sure to see latest version available
 
 This cheat sheet is
 intented to provide an overview and remind of command names. Please
-refer to other vignettes for more details on specefic topics and
+refer to other vignettes for more details on specific topics and
 individual manual pages for details on the functions.
 
 The order of the contents loosely follows a workflow example (except for
@@ -173,7 +173,7 @@ by NONMEM are prioritized. Row identifier and standard column names have special
 pk <- NMorderColumns(pk)
 ```
 
-`NMcheckData` - Extensive data checks for NONMEM compatibility and common issues. Should be run before saving data but see the "Debuging..." section for example on output.
+`NMcheckData` - Extensive data checks for NONMEM compatibility and common issues. Should be run before saving data but see the "Debugging..." section for example on output.
 
 :::
 

@@ -13,7 +13,7 @@
 ##'     na.strings. The default is c("",".") so say " .  " is a
 ##'     missing by default.
 ##' @param quiet Keep quiet? Default is not to.
-##' @param as.fun A function that will be run un the result before
+##' @param as.fun A function that will be run on the result before
 ##'     returning. If first input data set is a data.table, the
 ##'     default is to return a data.table, if not the default is to
 ##'     return a data.frame. Use whatever to get what fits in with

@@ -71,11 +71,13 @@ reference:
         desc: "Additional functions for programming"
         contents:
           - cc
+          - cl
           - NMisNumeric
           - egdt
           - dims
           - findCovs
           - findVars
+          - fnAppend
           - fnExtension
           - is.NMdata
           - unNMdata
