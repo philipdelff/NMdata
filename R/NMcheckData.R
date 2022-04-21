@@ -726,7 +726,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
         data[,checkTimeInc:=c(TRUE,diff(get(col.time))>=0),by=.(newID)]
         
         findings <- listEvents(col="checkTimeInc",name="Time decreasing",fun=function(x) x==TRUE,
-                               colname="TIME",events=findings)
+                               colname=col.time,events=findings)
     }
     
 ### check for duplicate events
