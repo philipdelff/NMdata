@@ -2,8 +2,10 @@
 load_all()
 
 setwd("../../tests/testthat/")
-lsts1 <- list.files(system.file("examples/nonmem",package="NMdata"),pattern="xgxr.*\\.lst$",full.names=TRUE)
-lsts2 <- list.files(system.file("examples/nonmem/xgxr001dir",package="NMdata"),pattern="output*\\.txt$",full.names=TRUE)
+## lsts1 <- list.files(system.file("examples/nonmem",package="NMdata"),pattern="xgxr.*\\.lst$",full.names=TRUE)
+## lsts2 <- list.files(system.file("examples/nonmem/xgxr001dir",package="NMdata"),pattern="output*\\.txt$",full.names=TRUE)
+lsts1 <- list.files("../../inst/examples/nonmem",pattern="xgxr.*\\.lst$",full.names=TRUE)
+lsts2 <- list.files("../../inst/examples/nonmem/xgxr001dir",pattern="output*\\.txt$",full.names=TRUE)
 lsts3 <- list.files("testData/nonmem",pattern=".*\\.lst$",full.names=TRUE)
 lsts4 <- list.files("testData/nonmem/xgxr001dir",pattern="output*\\.txt$",full.names=TRUE)
 
@@ -23,8 +25,8 @@ lsts  <- c(lsts1,lsts2,lsts3,lsts4)
 for (lst in lsts){
 
     lines <- readLines(lst)
-    ## until "$PROBLEM"
-    lines <- lines[-max(1,grep(" *\\$PROBLEM.*",x=lines)[1]-1)]
+    ## discard lines until "$PROBLEM" - time stamp
+    ## lines <- lines[-max(1,grep(" *\\$PROBLEM.*",x=lines)[1]-1)]
 
     ## keep only control stream part
     block.start <- grep("^ *NM-TRAN MESSAGES",lines)
@@ -46,8 +48,8 @@ if(F){
     for (lst in lsts){
 
         lines <- readLines(lst)
-        ## until "$PROBLEM"
-        lines <- lines[-max(1,grep(" *\\$PROBLEM.*",x=lines)[1]-1)]
+        ## until "$PROBLEM" - timestamp
+        ## lines <- lines[-max(1,grep(" *\\$PROBLEM.*",x=lines)[1]-1)]
 
         ## remove block
         block.start <- grep("^License Registered to.*",lines)
