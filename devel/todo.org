@@ -130,6 +130,7 @@ because by and by.x+by.y are handled differently the second time? Clen this.
      the merge is done.
 **** DONE Test the check for row duplications
 *** NMcheckData
+**** TODO [#A] Look for NA's coded as "."
 **** DONE Bug if no numeric cols found?
      Warning message:
 In `[.data.table`(data, , `:=`((cols.req.found), lapply(.SD, NMasNumeric)),  :
