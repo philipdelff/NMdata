@@ -226,11 +226,10 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
         files.written <- c(files.written,file.csv)
         if(doStamp){
             
-            ## data <- do.call(NMstamp,append(list(data=data,writtenTo=file.csv),args.stamp))
             do.call(NMstamp,append(list(data=data,writtenTo=file.csv),args.stamp))
             data.meta.csv <- NMinfo(data,"dataCreate")
             data.meta.csv <- data.table(parameter=names(data.meta.csv)
-                                       ,value=unlist(lapply(data.meta.csv,as.character)))
+                                       ,value=unlist(lapply(data.meta.csv,as.character,usetz=T)))
             file.csv.meta <- paste0(fnExtension(file.csv,ext=""),"_meta.txt")
             fwrite(data.meta.csv,file=file.csv.meta,quote=TRUE,row.names=FALSE,sep=",")
         }

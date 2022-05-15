@@ -9,7 +9,7 @@ library(ggplot2)
 ## we need to ensure a specific version of pmxtricks is used. 0.0.7 is a candidate
 library(remotes)
 ## install_github("philipdelff/pmxtricks")
-library(pmxtricks)
+## library(pmxtricks)
 
 ## library(remotes)
 ## install_github("philipdelff/NMdata")
@@ -17,12 +17,18 @@ library(pmxtricks)
 
 library(devtools)
 ## load_all("c:/Users/delff/working_copies/NMdata")
-load_all("c:/Users/Philip Delff/wdirs/NMdata")
+## load_all("c:/Users/Philip Delff/wdirs/NMdata")
+load_all("~/wdirs/NMdata")
+
+##### Please change working dir to the location of this script
 
 NMdata_filepath <- function(...) {
     system.file(..., package = "NMdata")
 }
-file.data <- function(...)file.path(NMdata_filepath(),"examples/data",...)
+
+### saving data to testDir first. Then copying to inst
+file.data.test <- function(...)file.path("../../tests/testthat/testData/data",...)
+file.data.inst <- function(...)file.path(NMdata_filepath(),"examples/data",...)
 file.nm <- function(...)file.path(NMdata_filepath(),"examples/nonmem",...)
 
 
@@ -76,8 +82,10 @@ samples.predose <- pk[ID%in%c(100,127)&NOMTIME==0]
 samples.predose[,`:=`(TIME=-1,DV=0.05,BLQ=1,EVID=0)]
 pk <- rbind(pk,samples.predose)
 
-indprofs <- ggIndProfs(pk,amt="AMT")
-## ggwrite(indprofs,file="indprofs.pdf",onefile=T)
+if(F){
+    indprofs <- ggIndProfs(pk,amt="AMT")
+    ## ggwrite(indprofs,file="indprofs.pdf",onefile=T)
+}
 
 ### handle LLOQ and set FLAGS
 
@@ -119,8 +127,6 @@ pk <- NMorderColumns(pk)
 
 dim(pk)
 
-load_all("c:/Users/Philip Delff/wdirs/NMdata")
-
 finds <- NMcheckData(pk)
 finds <- NMcheckData(pk,col.flagn="FLAG")
 
@@ -133,41 +139,98 @@ xgxr2.csv,1 +rds +meta
 xgxr2_flag0.csv,2 FLAG==0
 xgxr3.csv,duplic column names
 xgxr4.csv,1 without ROW
+xgxr5.csv,2 char and .
 ")
 
-
-dt.data[file.data=="xgxr1.csv",
+## dir.testdata <- file.data.test()##"testData/data/"
+fn.data <- "xgxr1.csv"
+dt.data[file.data==fn.data,
         nmCode:=list(list(
-            NMwriteData(pk,file=file.data(file.data),write.csv=writeOutput,write.rds=F)
-        ))]
-dt.data[file.data=="xgxr1_flag0.csv",
-        nmCode:=list(list(
-            NMwriteData(pk[FLAG==0],file=file.data(file.data),write.csv=writeOutput,write.rds=F)
+            NMwriteData(pk,file=file.data.test(fn.data),write.csv=writeOutput,write.rds=F)
         ))]
 
+files <- list.files(path=file.data(),pattern="xgxr1.+")
+for(fn in files){
+    file.copy(file.data.test(fn),file.data.inst(),overwrite=T)
+}
 
-dt.data[file.data=="xgxr2.csv",
+fn.data <- "xgxr1_flag0.csv"
+dt.data[file.data==fn.data,
         nmCode:=list(list(
-            NMwriteData(pk,file=file.data(file.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2),script=script.1)
+            NMwriteData(pk[FLAG==0],file=file.data.test(fn.data),write.csv=writeOutput,write.rds=F)
         ))]
-dt.data[file.data=="xgxr2_flag0.csv",
-        nmCode:=list(list(
-            NMwriteData(pk[FLAG==0],file=file.data(file.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2),script=script.1)
-        ))]
+files <- list.files(path=file.data(),pattern=paste0(fnExtension(fn.data,ext=""),".+"))
+for(fn in files){
+    cat(fn,"\n")
+    file.copy(file.data.test(fn),file.data.inst(),overwrite=T)
+}
 
+fn.data <- "xgxr2.csv"
+dt.data[file.data==fn.data,
+        nmCode:=list(list(
+            NMwriteData(pk,file=file.data.test(fn.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2),script=script.1)
+        ))]
+files <- list.files(path=file.data(),pattern=paste0(fnExtension(fn.data,ext=""),".+"))
+for(fn in files){
+    file.copy(file.data.test(fn),file.data.inst(),overwrite=T)
+}
+
+fn.data <- "xgxr2_flag0.csv"
+dt.data[file.data==fn.data,
+        nmCode:=list(list(
+            NMwriteData(pk[FLAG==0],file=file.data.test(fn.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2),script=script.1)
+        ))]
+files <- list.files(path=file.data(),pattern=paste0(fnExtension(fn.data,ext=""),".+"))
+for(fn in files){
+    file.copy(file.data.test(fn),file.data.inst(),overwrite=T)
+}
 
 ## a version with duplicated column names for testing
 pk2 <- cbind(pk,pk[,.(DOSE)])
-dt.data[file.data=="xgxr3.csv",
+fn.data <- "xgxr3.csv"
+dt.data[file.data==fn.data,
         nmCode:=list(list(
-            NMwriteData(pk2,file=file.data(file.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2))
+            NMwriteData(pk2,file=file.data.test(fn.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2))
         ))]
+###### not used in inst examples - only for testing
+## files <- list.files(path=file.data(),pattern=paste0(fnExtension(fn.data,ext=""),".+"))
+## for(fn in files){
+##     file.copy(file.data.test(fn),file.data.inst(),overwrite=T)
+## }
+
 
 ## without ROW
-dt.data[file.data=="xgxr4.csv",
+fn.data <- "xgxr4.csv"
+dt.data[file.data==fn.data,
         nmCode:=list(list(
-            NMwriteData(pk[,!("ROW")],file=file.data(file.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2))
+            NMwriteData(pk[,!("ROW")],file=file.data.test(fn.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2))
         ))]
+
+files <- list.files(path=file.data.test(),pattern=paste0(fnExtension(fn.data,ext=""),".+"))
+for(fn in files){
+    file.copy(file.data.test(fn),file.data.inst(),overwrite=T)
+}
+
+##### everything encoded as characters. NA's as .
+fn.data <- "xgxr5.csv"
+pk5 <- copy(pk)
+sapply(pk5,class)
+cols.not.char <- colnames(pk5)[!sapply(pk5,is.character)]
+pk5[,(cols.not.char):=lapply(.SD,as.character),.SDcols=cols.not.char]
+all.cols <- colnames(pk5)
+pk5[,(all.cols):=lapply(.SD,function(x){x[is.na(x)] <- ".";x})]
+dt.data[file.data==fn.data,
+        nmCode:=list(list(
+            NMwriteData(pk5,file=file.data.test(fn.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2))
+        ))]
+
+##### only for tests
+## files <- list.files(path=file.data.test(),pattern=paste0(fnExtension(fn.data,ext=""),".+"))
+## for(fn in files){
+##     cat(fn,"\n")
+##     file.copy(file.data.test(fn),file.data.inst(),overwrite=T)
+## }
+
 
 
 ###  Section end: Write data to files
@@ -175,7 +238,7 @@ dt.data[file.data=="xgxr4.csv",
 #### Section start: Update $INPUT sections ####
 
 
-
+######## this part should be updated to use the recent functionality in NMwriteSection #######
 #### Update $INPUT sections, depending on data set
 ## dt.runs <- data.table(path=list.files(file.nm(),pattern="\\.mod$",full.names=T))
 dt.runs <- data.table(path=list.files(file.nm(),pattern="\\.mod$|^input.txt$",full.names=T,recursive = T))
@@ -239,5 +302,4 @@ NMwriteSection(file.nm("xgxr001dir/input.txt"),section="DATA",newlines=sec.data.
 
 
 ###  Section end: Create xgxr001dir
-
 
