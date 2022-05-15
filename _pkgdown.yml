@@ -12,7 +12,6 @@ template:
 navbar:
   structure:
     left:  [home, articles, cheatsheet, reference, news, github]
-    right: []
   components:
     home:
       title: Efficient data preparation, consistency-checking and post-processing in PK/PD modeling
