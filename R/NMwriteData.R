@@ -202,7 +202,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
     comma.ok=as.logical(has.no.comma[1])
 
     if(any(!comma.ok)){
-        messageWrap(paste("You must avoid commas in data values. They will curropt the csv file, so get rid of them before saving data. Comma found in column(s):",paste(colnames(data.dt)[comma.ok==FALSE],sep=", ")),
+        messageWrap(paste("You must avoid commas in data values. They will corrupt the csv file, so get rid of them before saving data. Comma found in column(s):",paste(colnames(data.dt)[comma.ok==FALSE],sep=", ")),
                     fun.msg=stop)
     }
 
