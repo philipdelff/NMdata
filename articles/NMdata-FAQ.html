@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.913</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.914</span>
       </span>
     </div>
 
@@ -117,7 +117,7 @@
 
     
     
-<p>Built 2022-05-15 using NMdata 0.0.11.913.</p>
+<p>Built 2022-05-17 using NMdata 0.0.11.914.</p>
 <p>This vignette is still under development. Please make sure to see latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
 <h2 id="general-nmdata-questions">General NMdata questions<a class="anchor" aria-label="anchor" href="#general-nmdata-questions"></a>
@@ -190,7 +190,7 @@
 <h3 id="i-use-another-tool-that-automatically-reads-my-data--should-i-be-interested-in-nmdata">I use another tool that automatically reads my data. Should I be interested in NMdata?<a class="anchor" aria-label="anchor" href="#i-use-another-tool-that-automatically-reads-my-data--should-i-be-interested-in-nmdata"></a>
 </h3>
 <p>The data creation tools in NMdata may still be interesting. If another tool is working well for a project, you may not have any reason to use <code>NMscanData</code> (the Nonmem data reader in NMdata) for it. However, a lot of the time those tools have certain requirements to how datasets are constructed and especially how data is exported from Nonmem (<code>$TABLE</code>). If a Nonmem run does not live up to those requirements, and you want to look at the run results, <code>NMscanData</code> will let you do that without you having to “correct” your <code>$TABLE</code> statements and wait for Nonmem to run again.</p>
-<p>Also, in other cases <code>NMscanData</code> can save you a lot of time and frustration even if you have your own routines for these tasks. It will allow you to easily read your old Nonmem runs that were done a little differently, or if you need to read someone else’s work. A meta analysis of a large number of models implemented by different people over the years? That’s a candy store for <code>NMscanData</code>. Here, NMdata can save you many hours of frustration.</p>
+<p>Also, in other cases <code>NMscanData</code> can save you a lot of time and frustration even if you have your own routines for these tasks. It will allow you to easily read your old Nonmem runs that were done a little differently, or if you need to read someone elses work. A meta analysis of a large number of models implemented by different people over the years? That’s a candy store for <code>NMscanData</code>. Here, NMdata can save you many hours of frustration.</p>
 </div>
 <div class="section level3">
 <h3 id="how-can-nmscandata-do-all-that-only-based-on-the-nonmem-output-list-file">How can <code>NMscanData</code> do all that only based on the Nonmem output list file<a class="anchor" aria-label="anchor" href="#how-can-nmscandata-do-all-that-only-based-on-the-nonmem-output-list-file"></a>
@@ -229,7 +229,7 @@
 <div class="section level3">
 <h3 id="the-help-of-an-nmdata-function-says-i-have-to-pass-a-data-frame--can-i-use-a-tibble-or-data-table">The help of an NMdata function says I have to pass a data.frame. Can I use a tibble or data.table?<a class="anchor" aria-label="anchor" href="#the-help-of-an-nmdata-function-says-i-have-to-pass-a-data-frame--can-i-use-a-tibble-or-data-table"></a>
 </h3>
-<p>Absolutely. data.table’s and tibble’s are data.frame’s, and data.frame in the documentation refers to any of these structures (that technically inherit from the data.frame class).</p>
+<p>Absolutely. data.tables and tibbles are data.frames, and data.frame in the documentation refers to any of these structures (that technically inherit from the data.frame class).</p>
 </div>
 <div class="section level3">
 <h3 id="can-i-request-a-feature">Can I request a feature?<a class="anchor" aria-label="anchor" href="#can-i-request-a-feature"></a>
@@ -239,7 +239,7 @@
 <div class="section level3">
 <h3 id="any-plans-on-including-some-plotting-functions">Any plans on including some plotting functions?<a class="anchor" aria-label="anchor" href="#any-plans-on-including-some-plotting-functions"></a>
 </h3>
-<p>No. See the question above about dependencies. If NMdata were extended with plotting features, it would become dependent on a number of packages, and backward compatibility would be very dificult to ensure.</p>
+<p>No. See the question above about dependencies. If NMdata were extended with plotting features, it would become dependent on a number of packages, and backward compatibility would be very difficult to ensure.</p>
 <p>The only way to provide plotting features for output from NMdata functions, would be to launch a separate package. I rarely need much code to get the plots I want based on the format returned by <code>NMscanData</code> and maybe a call to <code>findCovs</code> or <code>findVars</code>.</p>
 </div>
 </div>
