@@ -24,7 +24,7 @@
 ##' @param rename For the $INPUT text proposal only. If you want to
 ##'     rename columns in NONMEM $DATA, NMwriteData can adjust the
 ##'     suggested $DATA text. If you plan to use BBW instead of BWBASE
-##'     in Nonmem, consider nm.rename=c(BBW="BWBASE"). The result will
+##'     in Nonmem, consider rename=c(BBW="BWBASE"). The result will
 ##'     include BBW and not BWBASE.
 ##' @param copy For the $INPUT text proposal only. If you plan to use
 ##'     additional names for columns in Nonmem $INPUT, NMwriteData can

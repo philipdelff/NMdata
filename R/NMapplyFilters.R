@@ -50,17 +50,8 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     file <- NULL
     text <- NULL
 
-### if data is a list of data and meta, we need to split it out and
-### remember to update meta. This is needed for NMscanData, not
-### NMscanInput. We leave meta data untouched. This part is due to a previous design of NMscanInput. 
-    ## details <- FALSE
-    ## data.meta <- list()
-    ## if(is.list(data) && !is.data.frame(data)){
-    ##     data.meta <- data$meta
-    ##     data <- data$data
-    ##     details <- TRUE
-    ## }
-    
+### We leave meta data untouched. This part is due to a previous design of NMscanInput. 
+  
     data.meta <- NMinfoDT(data)
 
     text2 <- NMreadSection(lines=lines,section="DATA",keepComments=FALSE)
@@ -121,7 +112,7 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
         scs2 <- regmatches(scs,regexpr(regstring,scs))
         ## expressions.sc <- c(expressions.sc,paste0("!grepl('^",scs2,"\",",name.c1,")"))
         ## expressions.sc <- c(expressions.sc,paste0("!grepl('^",scs2,"','",name.c1,"')"))
-        expressions.sc <- c(expressions.sc,paste0("!grepl('[",scs2,"]',`",name.c1,"`)"))
+        expressions.sc <- c(expressions.sc,paste0("!grepl('^[",scs2,"]',`",name.c1,"`)"))
         scs <- scs[!grepl(regstring,scs)]
     }
 

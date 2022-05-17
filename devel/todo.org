@@ -64,6 +64,8 @@ Make internal in tracee
 like copy, synonym etc. Doesn't make sense to use in more than one.
 *** findCovs
 *** compareCols
+**** TODO [#A] Support for list.data 
+Same way as dims
 **** DONE Bug - overview of columns is given twice
  compareCols(ex.001,ex.002,ex.005,diff.only=T) %>% print(topn=100)
 
@@ -81,7 +83,7 @@ helpful. Only list other columns than the scope.
 *** egdt
 **** DONE BUG the tmp by col has to be removed before reporting dims
 **** DONE Report dims(df1,df2,result) unless quiet
-*** listMissings                                        :v0_0_11:newFunction:
+*** listMissings
 List missing elements
 For specific columns, look for missing elements (NA, "", length(x)==0
 in case of lists?). Tabulate and list. 
@@ -129,6 +131,11 @@ because by and by.x+by.y are handled differently the second time? Clen this.
      That will make the code clearer because we will know exactly how
      the merge is done.
 **** DONE Test the check for row duplications
+*** NMapplyFilters
+**** TODO [#B] Support for no filters
+I don't think I ever tried this. What will NMscanData do if input data
+has no headers, and there are no filters? I think NMapplyFilters may
+fail.
 *** NMcheckData
 **** TODO [#A] Look for NA's coded as "."
 **** DONE Bug if no numeric cols found?

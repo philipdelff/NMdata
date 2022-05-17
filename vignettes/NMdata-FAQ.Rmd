@@ -118,7 +118,7 @@ statements and wait for Nonmem to run again.
 
 Also, in other cases `NMscanData` can save you a lot of time and
 frustration even if you have your own routines for these tasks. It will allow you to easily read your old Nonmem runs that were done a
-little differently, or if you need to read someone else's work. A meta analysis
+little differently, or if you need to read someone elses work. A meta analysis
 of a large number of models implemented by different people over the
 years? That's a candy store for `NMscanData`. Here, NMdata can save
 you many hours of frustration.
@@ -182,7 +182,7 @@ data.tables. If you use `NMdataConfig` to control this, for reproducibility
 please do so explicitly in your script and not in your `.Rprofile` or similar.
 
 ### The help of an NMdata function says I have to pass a data.frame. Can I use a tibble or data.table?
-Absolutely. data.table's and tibble's are data.frame's, and data.frame
+Absolutely. data.tables and tibbles are data.frames, and data.frame
 in the documentation refers to any of these structures (that
 technically inherit from the data.frame class).
 
@@ -193,7 +193,7 @@ Please open an issue on [github](https://github.com/philipdelff/NMdata/issues).
 ### Any plans on including some plotting functions?
 No. See the question above about dependencies. If NMdata were extended
 with plotting features, it would become dependent on a number of
-packages, and backward compatibility would be very dificult to
+packages, and backward compatibility would be very difficult to
 ensure. 
 
 The only way to provide plotting features for output from NMdata

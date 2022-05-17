@@ -1,3 +1,5 @@
+Tue May 17 14:36:17 EDT 2022
+$PROBLEM    OS model
 ;@ Variables 35/20 @;
 $INPUT      ID ; unique patient identifier
             TIME ; time in days
@@ -70,6 +72,7 @@ $ESTIMATION MAXEVAL=9999 METHOD=1 LAPLACIAN LIKE NUMERICAL SLOW
 $COVARIANCE MATRIX=R
 ;@ Pred Variables 10/20 @;
 $TABLE      ID TIME VEGFR TUM DV BSLD IBAS3 IEC53 IBASS IKG ILAM CHZ
-            ONEHEADER NOPRINT FORMAT=s1PE13.6 FILE=simvpcdata_debug.csv
+            ONEHEADER NOPRINT FORMAT=s1PE13.6
+            FILE=simvpcdata_debug.csv
 
 

@@ -2,7 +2,7 @@
 ##'
 ##' Misspecification of column names in $DATA are a common source of
 ##' problems with Nonmem models, and one of the first things to check
-##' when seemingly inexplainable things happen. This function lines up
+##' when seemingly inexplicable things happen. This function lines up
 ##' input data column names with $DATA and how NMscanData will
 ##' interpret $DATA so you can easily spot if something is off.
 ##'

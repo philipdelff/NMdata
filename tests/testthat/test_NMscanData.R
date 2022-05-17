@@ -689,6 +689,8 @@ test_that("redundant output",{
     res1 <- expect_message(
         NMscanData(file=file.lst)
     )
+
+
     ##     tabs1 <- NMscanTables(file=file.lst,as.fun="data.table",details=T,tab.count=F)
     ##     tabs1$meta
     ## tabs1$data[[4]]
@@ -703,7 +705,6 @@ test_that("redundant output",{
     
 }
 )
-
 
 
 ## check.time (warning)
@@ -793,5 +794,25 @@ test_that("Two firstonly, one full-length",{
     ## ref <- readRDS(fileRef)
     
     expect_equal_to_reference(res,fileRef,version=2)
+    
+})
+
+
+test_that("Input data as character",{
+
+    fileRef <- "testReference/NMscanData29.rds"
+    file.lst <- "testData/nonmem/xgxr026.lst"
+
+    expect_error(NMscanData(file=file.lst,check.time=F))
+    
+    res <- NMscanData(file=file.lst,check.time=F,use.rds=F)
+    sapply(res,class)
+    res <- NMscanData(file=file.lst,check.time=F,use.rds=T,merge.by.row = F)
+    sapply(res,class)
+    
+    ## res <- fix.time(res)
+    ## ## ref <- readRDS(fileRef)
+    
+    ## expect_equal_to_reference(res,fileRef,version=2)
     
 })

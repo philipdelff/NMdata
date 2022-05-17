@@ -15,7 +15,7 @@
 ##' @param as.fun The default is to return a data.table if data is a data.table
 ##'     and return a data.frame in all other cases. Pass a function in as.fun to
 ##'     convert to something else. If data is not a data.table, the default can
-##'     be configued using NMdataConf.
+##'     be configured using NMdataConf.
 ##' @return a data set with one observation per combination of values of
 ##'     variables listed in by.
 ##' @family DataCreate

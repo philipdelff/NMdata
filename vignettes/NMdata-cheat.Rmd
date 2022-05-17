@@ -221,7 +221,7 @@ We have some findings on the data set too. But since `res.debug$input.colnames` 
 ```{r}
 res.debug$NMcheckData$summary
 ```
-If you are preparing a data set, run `NMcheckData` directly on the data (using the `data` argument) insted of on a control stream.
+If you are preparing a data set, run `NMcheckData` directly on the data (using the `data` argument) instead of on a control stream.
 
 :::
 ::: {class="column-container__column"}
@@ -283,11 +283,11 @@ NMdataConf(file.mod=identity)
 Loosely speaking, `NMdataConf` changes default values of NMdata
 function arguments. Many options can be configured this way so you
 don't have to remember to type in those arguments every time you call
-an NMdata funtion.
+an NMdata function.
 
 
 ### Traceability 
-`NMinfo` - Get metadata from an NMdata object. This will show where and when input data was created, when model was run, results of concistency checks, what tables were read, how they were combined and a complete list of data columns and their origin.
+`NMinfo` - Get metadata from an NMdata object. This will show where and when input data was created, when model was run, results of consistency checks, what tables were read, how they were combined and a complete list of data columns and their origin.
 
 
 A list of the available elements:

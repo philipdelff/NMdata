@@ -1,4 +1,4 @@
-##' Define a vector with factor levels in the same order as occuring in the vector.
+##' Define a vector with factor levels in the same order as occurring in the vector.
 ##'
 ##' This is a shortcut for creating factors with levels as the order
 ##' of appearance of the specified levels.

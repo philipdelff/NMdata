@@ -61,7 +61,7 @@ Thanks to Bill Denney for discussions and inputs to this release!
 * NMwriteData now runs NMgenText in try, just in case.
 
 * fnExtension now supports adding extensions to strings without
-  extensions, ie. fnExtension("file",".txt").
+  extensions, i.e. fnExtension("file",".txt").
 
 # NMdata 0.0.11
 
@@ -143,7 +143,7 @@ Thanks to Bill Denney for discussions and inputs to this release!
 * NMgenText is a new function that provides the generation of $INPUT
   and $DATA. This used to be part of NMwriteData. NMwriteData still
   calls NMgenText but the separation of the two functionalities allows
-  for more inituitive separate uses of one dataset for different
+  for more intuitive separate uses of one dataset for different
   models. 
   
 * NMcompareCols now takes the argument "cols.wanted" which is a
@@ -249,7 +249,7 @@ to be resolved for the merge to work as expected.
 
 Support for pseudonyms when translating input data column names based
 on nonmem control stream. Now by default, the column will be returned
-(doubled) with both peudonyms as column names.
+(doubled) with both pseudonyms as column names.
 
 new function - fnExtension is a simple function to replace the
 extension of a file name (say from file.mod to file.lst)
@@ -285,7 +285,7 @@ NMdataConf are: merge.by.row, col.flagn, col.flagc, use.input,
 recover.rows, col.model, modelname, file.mod, and check.time, quiet,
 use.rds.
 
-The tools to assign and cound exclusion flags, flagsAssign and
+The tools to assign and count exclusion flags, flagsAssign and
 flagsCount, have been improved. They now support working on a subset
 of data (say samples only), and the order (increasing/decreasing) of
 the exclusion flags is optional. The printing of the count of

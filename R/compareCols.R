@@ -13,7 +13,7 @@
 ##'     names of the two objects are the same? Default is FALSE which
 ##'     means to return an overview for interactive use. You might
 ##'     want to use TRUE in programming. However, notice that this
-##'     check may be overly rigorous. Many classes are compitable
+##'     check may be overly rigorous. Many classes are compatible
 ##'     enough (say numeric and integer), and compareCols doesn't take
 ##'     this into account.
 ##' @param diff.only If TRUE, don't report columns where no difference
@@ -43,7 +43,7 @@
 ##' @details technically, this function compares classes of elements in
 ##'     lists. However, in relation to NMdata, this will most of the
 ##'     time be columns in data.frames.
-##' @return A data.frame with an overview of elementes and their
+##' @return A data.frame with an overview of elements and their
 ##'     classes of objects in ... Class as defined by as.fun.
 ##' @family DataWrangling
 ##' @export

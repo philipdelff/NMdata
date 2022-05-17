@@ -342,7 +342,7 @@ different conditions is then obtained using `flagsCount`. As we see
 from the `names` call below, both discarded, cumulative discarded, and
 observations left after application of the respective criterion are
 available. Choose the ones you prefer - here we show how many
-observations and subjects were matched by eached criterion and how
+observations and subjects were matched by each criterion and how
 many were left after application of each criterion.
 
 ```{r}

@@ -289,7 +289,7 @@ An `NMdata` object returned by `NMscanData` comes with meta information about wh
   `NMscanData` (see example below).
 
 
-The follwing show the "columns" information as example. Remember, we are still getting a data.table because we used `NMdataConf` to change the configuration. We use the `data.table` print function to only look at first and last ten rows. 
+The following shows the "columns" information as example. Remember, we are still getting a data.table because we used `NMdataConf` to change the configuration. We use the `data.table` print function to only look at first and last ten rows. 
 
 ```{r}
 print(NMinfo(res1,info="columns"),nrows=20,topn=10)

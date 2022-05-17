@@ -16,7 +16,7 @@ or not? If not, an overview of column names in data and in
 Nonmem code is still returned with the data.}
 
 \item{recover.cols}{recover columns that were not used in the
-NONMEM control stream? Default is TRUE. Can only be negtive
+NONMEM control stream? Default is TRUE. Can only be negative
 when translate=FALSE.}
 }
 \value{

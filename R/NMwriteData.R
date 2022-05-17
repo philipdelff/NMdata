@@ -39,7 +39,7 @@
 ##'     function that generates text suggestion for INPUT and DATA
 ##'     sections in the NONMEM control stream. You can use these
 ##'     arguments to get a text suggestion you an use directly in
-##'     NONMEM - and NwriteSection can even update multiple NONMEM
+##'     NONMEM - and NMwriteSection can even update multiple NONMEM
 ##'     control streams based on the result. This will update your
 ##'     control streams to match your new data file with just one
 ##'     command.

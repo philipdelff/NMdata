@@ -14,7 +14,7 @@
 ##' @param section The name of section to extract. Examples: "INPUT",
 ##'     "PK", "TABLE", etc. It can also be result sections like
 ##'     "MINIMIZATION".
-##' @param char.section The section denoter as a string compatible
+##' @param char.section The section denoted as a string compatible
 ##'     with regular expressions. "\\$" for sections in .mod files,
 ##'     "0" for results in .lst files.
 ##' @param char.end A regular expression to capture the end of the

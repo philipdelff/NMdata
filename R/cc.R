@@ -7,7 +7,7 @@
 ##'     the returned vector.
 ##' @details Don't use cc with any special characters - only
 ##'     alphanumerics and no spaces supported. Also, remember that
-##'     numerics are converted using as.characer. Eg, this means that
+##'     numerics are converted using as.character. Eg, this means that
 ##'     leading zeros are dropped.
 ##' @export
 ##' @seealso cl
