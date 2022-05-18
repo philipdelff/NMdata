@@ -183,7 +183,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
-
+    
 #### Section start: Checks of arguments ####
     
     if(missing(covs)) covs <- NULL
@@ -415,6 +415,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
         findings <- rbind(findings,
                           data.table(check="Special character in column name",column=cnames.spchars,row=NA_integer_,level="column"))
     }
+### check for na.strings in numeric columns encoded as character. 
 
 ####### End checking column names
 
@@ -475,7 +476,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
                                events=findings,
                                new.rows.only=T)
         findings <- listEvents(col.flagn,"col.flagn not an integer",
-                               fun=function(x)x%%1==0,events=findings,
+                               fun=function(x)as.numeric(x)%%1==0,events=findings,
                                new.rows.only=T)
         if(col.flagn%in%colnames(data)){
 
@@ -518,7 +519,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     
 ######## Default numeric columns. Will be checked for presence, NA, non-numeric (col-level)
 ### Others that: If column present, must be numeric, and values must be non-NA. Remember eg DV, CMT and AMT can be NA.
-    cols.num.all <- c( col.time,"EVID","ID",col.mdv,
+    cols.num.all <- c( col.time,"EVID",col.id,col.mdv,col.flagn,
                       covs,names(covs.occ),as.character(unlist(covs.occ)))
     cols.num.all <- unique(cols.num.all)
 ### check for missing in cols.num.all
@@ -576,7 +577,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     findings <- listEvents("EVID","EVID not in 0:4",function(x) x%in%c(0:4),events=findings)
     
 ### ID must be a positive integer
-    findings <- listEvents("ID","ID not a positive integer",
+    findings <- listEvents(col.id,paste(col.id,"not a positive integer"),
                            fun=function(x)x>0&x%%1==0,events=findings,
                            new.rows.only=T)
 
@@ -711,7 +712,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     ## ID-level checks
 ### Warning if the same ID is in non-consequtive rows
     data[,ID.jump:=c(0,diff(get(rowint))),by=col.id]
-    findings <- listEvents("ID.jump",colname="ID",name="ID disjoint",fun=function(x) x<=1,events=findings,debug=FALSE)
+    findings <- listEvents("ID.jump",colname=col.id,name="ID disjoint",fun=function(x) x<=1,events=findings,debug=FALSE)
 
     
     

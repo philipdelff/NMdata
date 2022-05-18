@@ -246,4 +246,16 @@ test_that("covariates within subsets",{
 })
 
 
-##
+test_that("numerical coded as char and NA as .",{
+    NMdataConf(reset=T)
+    ##    NMdataConf(as.fun=data.table)
+    
+    fileRef <- "testReference/NMcheckData_15.rds"
+    pk <- readRDS(file="testData/data/xgxr5.rds")
+    
+    ## it finds way too many for ASSAY. Should only find 1.
+    res <- NMcheckData(pk,na.strings=NULL)
+    expect_equal_to_reference(res,fileRef,version=2)
+
+})
+
