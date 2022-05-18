@@ -37,7 +37,7 @@ linesep argument. Use only one of file, lines, and text.}
 "PK", "TABLE", etc. It can also be result sections like
 "MINIMIZATION".}
 
-\item{char.section}{The section denoter as a string compatible
+\item{char.section}{The section denoted as a string compatible
 with regular expressions. "\\$" for sections in .mod files,
 "0" for results in .lst files.}
 

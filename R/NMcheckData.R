@@ -34,6 +34,7 @@
 ##' @param col.cmt The name(s) of the compartment column(s). These
 ##'     will be checked to be positive integers for all rows. They are
 ##'     also used in checks for row duplicates.
+##' @param col.amt The name of the dose amount column. 
 ##' @param col.id The name of the column that holds the subject
 ##'     identifier. Default is "ID".
 ##' @param col.time The name of the column holding actual time.

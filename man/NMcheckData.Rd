@@ -16,6 +16,7 @@ NMcheckData(
   col.dv = "DV",
   col.mdv = "MDV",
   col.cmt = "CMT",
+  col.amt = "AMT",
   col.flagn,
   col.row,
   na.strings,
@@ -71,6 +72,8 @@ of the dependent variable missing. Default is MDV.}
 \item{col.cmt}{The name(s) of the compartment column(s). These
 will be checked to be positive integers for all rows. They are
 also used in checks for row duplicates.}
+
+\item{col.amt}{The name of the dose amount column.}
 
 \item{col.flagn}{Optionally, the name of the column holding
 numeric exclusion flags. Default value is FLAG and can be

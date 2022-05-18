@@ -44,7 +44,7 @@ modified using NMdataConf. See merge.by.row too.}
 \item{merge.by.row}{If use.input=TRUE, this argument determines
 the method by which the input data is added to output
 data. The default method (merge.by.row=FALSE) is to interpret
-the Nonmem code to immitate the data filtering (IGNORE and
+the Nonmem code to imitate the data filtering (IGNORE and
 ACCEPT statements), but the recommended method is
 merge.by.row=TRUE which means that data will be merged by a
 unique row identifier. The row identifier must be present in

@@ -26,7 +26,7 @@ latter may be preferred for readability.}
 names of the two objects are the same? Default is FALSE which
 means to return an overview for interactive use. You might
 want to use TRUE in programming. However, notice that this
-check may be overly rigorous. Many classes are compitable
+check may be overly rigorous. Many classes are compatible
 enough (say numeric and integer), and compareCols doesn't take
 this into account.}
 
@@ -60,7 +60,7 @@ return a data.frame. Use whatever to get what fits in with
 your workflow. Default can be configured with NMdataConf.}
 }
 \value{
-A data.frame with an overview of elementes and their
+A data.frame with an overview of elements and their
     classes of objects in ... Class as defined by as.fun.
 }
 \description{

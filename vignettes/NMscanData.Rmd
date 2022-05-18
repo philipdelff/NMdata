@@ -488,7 +488,7 @@ advantages of using `rds` files:
 which is extremely fast for delimited files so in many cases this
 difference can be small).
 - File sizes are greatly reduced from text to `rds`. This can be a big
-advantage if you are transfering files or reading over a network
+advantage if you are transferring files or reading over a network
 connection. `NMdata` is generally very fast (thanks to `data.table`)
 so file/network access (I/O) is likely to be the main bottleneck.
 

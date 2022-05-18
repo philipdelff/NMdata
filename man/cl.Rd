@@ -2,7 +2,7 @@
 % Please edit documentation in R/cl.R
 \name{cl}
 \alias{cl}
-\title{Define a vector with factor levels in the same order as occuring in the vector.}
+\title{Define a vector with factor levels in the same order as occurring in the vector.}
 \usage{
 cl(...)
 }

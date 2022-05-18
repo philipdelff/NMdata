@@ -411,7 +411,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 
 #### Section start: Check file modification times ####
-    
+
     time.ok <- "Not checked"
     if(check.time){
         time.ok <- c()
