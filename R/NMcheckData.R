@@ -149,7 +149,7 @@
 ##' @export
 
 
-NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="TIME",col.dv="DV",col.mdv="MDV",col.cmt="CMT",col.flagn,col.row,na.strings,return.summary=FALSE,quiet=FALSE,as.fun){
+NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="TIME",col.dv="DV",col.mdv="MDV",col.cmt="CMT",col.amt="AMT",col.flagn,col.row,na.strings,return.summary=FALSE,quiet=FALSE,as.fun){
 
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -593,7 +593,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 
 #### all other required columns (NA elements OK). Run NMisNumeric for each element, then translate using NMasNumeric
     
-    cols.req <- c(col.cmt,col.dv,cc(AMT))
+    cols.req <- c(col.cmt,col.dv,col.amt)
     for(col in cols.req){
         findings <- listEvents(col,name="Not numeric",fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
                                new.rows.only=T,events=findings)
@@ -634,16 +634,16 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 
 #### AMT
     ## must be numeric
-    findings <- listEvents("AMT",name="Not numeric",
+    findings <- listEvents(col.amt,name="Not numeric",
                            fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
                            events=findings,                           
                            dat=data) 
     ## positive for EVID 1 and 4
-    findings <- listEvents("AMT","Non-positive dose amounts",
+    findings <- listEvents(col.amt,"Non-positive dose amounts",
                            fun=function(x)x>0,events=findings,
                            dat=data[EVID%in%c(1,4)])
     ## must be 0 or NA for EVID 0 and 2
-    findings <- listEvents("AMT","Non-zero dose for obs or sim record",
+    findings <- listEvents(col.amt,"Non-zero dose for obs or sim record",
                            fun=function(x)is.na(x)|x==0,
                            events=findings,
                            dat=data[EVID%in%c(0,2)])
