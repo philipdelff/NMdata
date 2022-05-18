@@ -22,7 +22,7 @@ takes a lot of work to get there, and there are many pitfalls along the
 way. NMdata helps simplifying this work and steering around the pitfalls
 or at least making sure we didn’t fall into them.
 
-### Automate the book keeping and allow more time for actual modeling
+### Automate book keeping and focus on modeling
 
 Preparing data sets - and if you use NONMEM, reading the results data -
 can be tedious, and mistakes can lead to hours of frustration. NMdata
@@ -46,6 +46,7 @@ the
 [Cheatsheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html).
 
 <!-- ![Cheatsheet](man/figures/cheatsheet_icon_0010.png){width="15%"} -->
+
 <!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html) -->
 
 <a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html"><img src="man/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"/></a>
@@ -155,7 +156,7 @@ reached CRAN, installing from Github is easy too.
     ## Option 2: Install explicitly from CRAN
     install.packages("NMdata",repos="https://cloud.r-project.org")
     library(NMdata)
-
+    
     ## Option 3: Install from github
     library(remotes)
     install_github("philipdelff/NMdata")
