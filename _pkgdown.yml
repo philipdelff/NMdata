@@ -81,6 +81,7 @@ reference:
           - fnExtension
           - is.NMdata
           - unNMdata
+	  - lstExtractTime
           - NMreadSection
           - NMextractDataFile
           - NMextractText
