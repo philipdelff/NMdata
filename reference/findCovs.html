@@ -111,7 +111,7 @@ be both say c("ID","DRUG") or c("ID","TRT").</p></dd>
 <dd><p>The default is to return a data.table if data is a data.table
 and return a data.frame in all other cases. Pass a function in as.fun to
 convert to something else. If data is not a data.table, the default can
-be configued using NMdataConf.</p></dd>
+be configured using NMdataConf.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -164,6 +164,8 @@ be configued using NMdataConf.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4  2   2    5</span>
 <span class="r-in"><span class="co">## Based on a "real data example"</span></span>
 <span class="r-in"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.lst"</span>, package <span class="op">=</span> <span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>unknown timezone 'EDT'</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>unknown timezone 'EDT'</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>input control stream</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> (/Users/runner/work/_temp/Library/NMdata/examples/nonmem/xgxr001.mod) is newer</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> than output control stream</span>
