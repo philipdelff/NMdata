@@ -13,6 +13,7 @@
 ##'   system.file("examples/nonmem",package="NMdata"),
 ##'   pattern="\\.lst",full.names=TRUE)
 ##' lapply(all.lsts,NMdata:::lstExtractTime)
+##' @keyword internal
 
 lstExtractTime <- function(file){
 
