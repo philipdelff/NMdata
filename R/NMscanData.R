@@ -411,14 +411,17 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 
 #### Section start: Check file modification times ####
+    logtime.lst <- lstExtractTime(file)
+    mtime.lst <- file.mtime(file)
 
     time.ok <- "Not checked"
     if(check.time){
+        
         time.ok <- c()
         if(!is.null(file.mod)&&file.exists(file.mod)) {
             mtime.mod <- file.info.mod$mtime
             
-            if(mtime.mod>file.mtime(file)){
+            if(mtime.mod>mtime.lst){
                 messageWrap(paste0("input control stream (",file.mod,") is newer than output control stream (",file,") Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
                             fun.msg=warning)
                 time.ok <- c(time.ok,"mod > lst")
@@ -432,7 +435,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         
         if(use.input) {
             mtime.inp <- max(nminfo.input$tables$file.mtime)
-            if(mtime.inp > file.mtime(file)){
+            if(mtime.inp > mtime.lst){
                 messageWrap(paste0("input data (",nminfo.input$tables$file,") is newer than output control stream (",file,") Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
                             fun.msg=warning)
                 time.ok <- c(time.ok,"input > lst")
@@ -824,7 +827,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         ## if available: path to input data
         file.input=NA_character_,
         ## file info on lst
-        mtime.lst=file.info(file)$mtime,
+        logtime.lst=logtime.lst,
+        mtime.lst=mtime.lst,
         ## file info on mod
         mtime.mod=file.info.mod$mtime,
         ## if available: mtime of input data

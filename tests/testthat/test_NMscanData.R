@@ -492,8 +492,15 @@ test_that("input.txt/output.txt - unset modelname",{
     attributes(res1dir)$NMdata$datafile$string <- NULL
 
     fix.time(res1)
-    fix.time(res1dir)
+    meta.res1 <- NMinfo(res1)
+    meta.res1$details$logtime.lst <- NULL
+    setattr(res1,"NMdata",meta.res1)
 
+    fix.time(res1dir)
+    meta.res1dir <- NMinfo(res1dir)
+    meta.res1dir$details$logtime.lst <- NULL
+    setattr(res1dir,"NMdata",meta.res1dir)
+    
     ## these differ a little in the two estimates
     cols.differ <- c("TVKA","TVCL","TVV3","TVQ","KA","CL","V3","Q","V2","IPRED","PRED","RES","WRES")
     res1[,(cols.differ):=NULL]

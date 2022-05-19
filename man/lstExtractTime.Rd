@@ -26,3 +26,4 @@ all.lsts <- list.files(
   pattern="\\\\.lst",full.names=TRUE)
 lapply(all.lsts,NMdata:::lstExtractTime)
 }
+\keyword{internal}
