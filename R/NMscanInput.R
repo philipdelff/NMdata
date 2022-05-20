@@ -155,6 +155,7 @@ NMscanInput <- function(file, use.rds, file.mod, dir.data=NULL,
     ## rows. This is used for very litle which should be done here
     ## instead of making a deep copy.
     data.input.0 <- copy(data.input)
+    
     nminfo.input.0 <- NMinfoDT(data.input)
 
     
@@ -180,11 +181,14 @@ NMscanInput <- function(file, use.rds, file.mod, dir.data=NULL,
         
         meta <- list()
         meta$datafile <- info.datafile
-        
+        input.create.time <- NMinfo(data.input)$dataCreate$CreationTime
+        if(is.null(input.create.time)) input.create.time <- NA
+
         meta$tables <- data.table(
             source="input",
             file=path.data.input,
             file.mtime=file.mtime(path.data.input),
+            file.logtime=input.create.time,
             filetype=type.file,
             name=basename(path.data.input),
             nrow=nrow(data.input.0),
@@ -203,7 +207,7 @@ NMscanInput <- function(file, use.rds, file.mod, dir.data=NULL,
             meta$tables$has.col.id <- col.id%in%meta$input.colnames[,result]
         }
 
-        setcolorder(meta$tables,intersect(c("source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype","file.mtime","file"),colnames(meta$tables)))
+        setcolorder(meta$tables,intersect(c("source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype","file.mtime","file.logtime","file"),colnames(meta$tables)))
 
         
         if(col.id%in%NMinfoDT(data.input,"input.colnames")[,result]) {

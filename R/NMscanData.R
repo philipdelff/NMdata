@@ -301,7 +301,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                  ,as.fun="data.table"
                                  ,col.id=col.id
                                  ,details=TRUE)
-
+        
         nminfo.input <- NMinfoDT(data.input)
         
     }

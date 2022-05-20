@@ -251,6 +251,7 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMscanInput
+**** TODO Time check of lst vs input belongs here rather than in NMscanData
 **** TODO [#B] Add NMinfo data on whether column names were translated according to $INPUT
 **** DONE Add data.file argument to skip interpreting the control stream altogether.
 **** DONE BUG tabs in column names?
@@ -451,6 +452,9 @@ This is two steps.
 This belong in write functions. stampObj does support extra
 arguments. NMdata calls this "writtenTo".
 *** summary.NMdata
+**** TODO Put message about how stuff was merged after table overview
+**** TODO EVID/CMT table: Switch order of output and input only and add "result"
+**** TODO EVID/CMT table: add a total line (use rollup?)
 **** DONE Break down number of rows by CMT and EVID.
 **** Rethink and tidy up message
 ***** DONE Combine first two tables
