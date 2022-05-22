@@ -25,6 +25,7 @@ fix.time <- function(x){
     meta.x$tables$file <- NULL
     meta.x$tables$file.mtime <- NULL
     setattr(x,"NMdata",meta.x)
+    invisible(x)
 }
 
 NMdataConf(reset=TRUE)

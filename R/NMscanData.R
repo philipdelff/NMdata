@@ -413,16 +413,31 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 #### Section start: Check file modification times ####
     logtime.lst <- lstExtractTime(file)
     mtime.lst <- file.mtime(file)
-
+    time.method.lst <- NA
+    time.method.inp <- NA
     time.ok <- "Not checked"
+    if(use.input){
+        logtime.inp <- max(nminfo.input$tables$file.logtime)
+        mtime.inp <- max(nminfo.input$tables$file.mtime)
+    }
+
     if(check.time){
+
+        time.method.lst <- "log"
+        testtime.lst <- logtime.lst
+        if(is.na(logtime.lst)){
+            testtime.lst <- mtime.lst
+            time.method.lst <- "mtime"
+        }
         
         time.ok <- c()
-        if(!is.null(file.mod)&&file.exists(file.mod)) {
+        if(!is.null(file.mod) &&
+           file.exists(file.mod) &&
+           filePathSimple(file.mod)!=filePathSimple(file.lst)) {
             mtime.mod <- file.info.mod$mtime
             
-            if(mtime.mod>mtime.lst){
-                messageWrap(paste0("input control stream (",file.mod,") is newer than output control stream (",file,") Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
+            if(mtime.mod>testtime.lst){
+                messageWrap(paste0("input control stream (",file.mod,") is newer than output control stream (",file,"). Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
                             fun.msg=warning)
                 time.ok <- c(time.ok,"mod > lst")
             }
@@ -434,13 +449,21 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         }
         
         if(use.input) {
-            mtime.inp <- max(nminfo.input$tables$file.mtime)
-            if(mtime.inp > mtime.lst){
+            
+            time.method.inp <- "log"
+            testtime.inp <- logtime.inp
+            if(is.na(logtime.inp)){
+                testtime.inp <- mtime.inp
+                time.method.inp <- "mtime"
+            }
+
+            
+            if(testtime.inp > testtime.lst){
                 messageWrap(paste0("input data (",nminfo.input$tables$file,") is newer than output control stream (",file,") Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
                             fun.msg=warning)
                 time.ok <- c(time.ok,"input > lst")
             }
-            if(mtime.inp > min(tables$meta[,file.mtime])){
+            if(testtime.inp > min(tables$meta[,file.mtime])){
                 messageWrap(paste0("input data file (",nminfo.input$tables$file,") is newer than output tables. Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
                             fun.msg=warning)
                 time.ok <- c(time.ok,"input > output")
@@ -805,12 +828,12 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 
     details <- list(
+        ## name of model
+        model=runname,
         ## call
         call=deparse(sys.call()),
         ## time of NMscanData call
         time.NMscanData=Sys.time(),
-        ## name of model
-        model=runname,
         ## path to lst
         file.lst=file,
         ## path to mod
@@ -829,16 +852,20 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         ## file info on lst
         logtime.lst=logtime.lst,
         mtime.lst=mtime.lst,
+        method.time.lst=time.method.lst,
         ## file info on mod
         mtime.mod=file.info.mod$mtime,
         ## if available: mtime of input data
-        mtime.input=NA_character_
+        mtime.input=NA_character_,
+        logtime.input=NA_character_,
+        method.time.inp=time.method.inp
     )
 
     ## if available: file info for input data
     if(use.input){
         details$file.input <- nminfo.input$tables[,file]
-        details$mtime.input <- nminfo.input$tables[,file.mtime]
+        details$mtime.input <- mtime.inp
+        details$logtime.input <- logtime.inp
     }
 
 
