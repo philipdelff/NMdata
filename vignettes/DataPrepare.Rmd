@@ -32,7 +32,6 @@ NMdataConf(check.time=FALSE)
 library(data.table)
 library(ggplot2)
 theme_set(theme_bw()+theme(legend.position="bottom"))
-
 ```
 Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 

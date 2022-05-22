@@ -20,6 +20,7 @@
 modelfit_dir.*
 temp_dir
 xgxr001dir/nonmem
+^vignettes$
 
 compile.lnk
 FDATA

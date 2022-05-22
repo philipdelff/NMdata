@@ -73,7 +73,6 @@ covs <- unique(pk[,.(ID,WEIGHTB)])
 pk[,WEIGHTB:=NULL]
 set.seed(1)
 covs2 <- covs[,.(ID,race=sample(c("caucasian","black"),size=.N,replace=T))]
-
 ```
 
 <!-- The NMdata logo -->
