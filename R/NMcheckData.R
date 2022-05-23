@@ -34,7 +34,7 @@
 ##' @param col.cmt The name(s) of the compartment column(s). These
 ##'     will be checked to be positive integers for all rows. They are
 ##'     also used in checks for row duplicates.
-##' @param col.amt The name of the dose amount column. 
+##' @param col.amt The name of the dose amount column.
 ##' @param col.id The name of the column that holds the subject
 ##'     identifier. Default is "ID".
 ##' @param col.time The name of the column holding actual time.
@@ -51,9 +51,9 @@
 ##'     be modified using NMdataConf.
 ##' @param na.strings Strings to be accepted when trying to convert
 ##'     characters to numerics. This will typically be a string that
-##'     represents missing values. Default is "." even though most
-##'     users will use actual NA (NA_character), i.e. not a
-##'     string. See ?NMisNumeric.
+##'     represents missing values. Default is ".". Notice, actual NA,
+##'     i.e. not a string, is allowed independently of na.strings. See
+##'     ?NMisNumeric.
 ##' @param return.summary If TRUE (not default), the table summary
 ##'     that is printed if quiet=FALSE is returned as well. In that
 ##'     case, a list is returned, and the findings are in an element

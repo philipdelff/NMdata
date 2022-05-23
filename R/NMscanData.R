@@ -107,7 +107,11 @@
 ##'     NMscanData. However, if data has been transferred from another
 ##'     system where Nonmem was run, these checks may not make sense,
 ##'     and you may not want to see these warnings. The default can be
-##'     configured using NMdataConf.
+##'     configured using NMdataConf. For the output control stream,
+##'     the time stamp recorded by Nonmem is used if possible, and if
+##'     the input data is created with NMwriteData, the recorded
+##'     creation time is used if possible. If not, and for all other
+##'     files, the file modification times are used.
 ##'
 ##' @details This function makes it very easy to collect the data from
 ##'     a Nonmem run.
@@ -433,7 +437,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         time.ok <- c()
         if(!is.null(file.mod) &&
            file.exists(file.mod) &&
-           filePathSimple(file.mod)!=filePathSimple(file.lst)) {
+           filePathSimple(file.mod)!=filePathSimple(file)) {
             mtime.mod <- file.info.mod$mtime
             
             if(mtime.mod>testtime.lst){

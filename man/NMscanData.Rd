@@ -145,7 +145,11 @@ important assumptions for the way information is merged by
 NMscanData. However, if data has been transferred from another
 system where Nonmem was run, these checks may not make sense,
 and you may not want to see these warnings. The default can be
-configured using NMdataConf.}
+configured using NMdataConf. For the output control stream,
+the time stamp recorded by Nonmem is used if possible, and if
+the input data is created with NMwriteData, the recorded
+creation time is used if possible. If not, and for all other
+files, the file modification times are used.}
 }
 \value{
 A data set of class 'NMdata'.
