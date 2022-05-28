@@ -259,3 +259,52 @@ test_that("numerical coded as char and NA as .",{
 
 })
 
+test_that("usubjid OK",{
+    NMdataConf(reset=T)
+    ##    NMdataConf(as.fun=data.table)
+    
+    fileRef <- "testReference/NMcheckData_16.rds"
+    pk <- readRDS(file="testData/data/xgxr2.rds")
+    pk[,usubjid:=paste0("100-",ID)]
+    
+    ## it finds way too many for ASSAY. Should only find 1.
+    res <- NMcheckData(pk,col.usubjid="usubjid")
+    expect_equal_to_reference(res,fileRef,version=2)
+
+
+})
+
+test_that("ID not unique",{
+    NMdataConf(reset=T)
+    ##    NMdataConf(as.fun=data.table)
+    
+    fileRef <- "testReference/NMcheckData_17.rds"
+    pk <- readRDS(file="testData/data/xgxr2.rds")
+    pk[,usubjid:=paste0("100-",ID)]
+    ## pk[,.N,by=.(ID)]
+    pk[ID==34,ID:=32]
+
+    
+    ## it finds way too many for ASSAY. Should only find 1.
+    res <- NMcheckData(pk,col.usubjid="usubjid")
+    expect_equal_to_reference(res,fileRef,version=2)
+
+
+})
+
+
+test_that("usubjid not unique",{
+    NMdataConf(reset=T)
+    ##    NMdataConf(as.fun=data.table)
+    
+    fileRef <- "testReference/NMcheckData_18.rds"
+    pk <- readRDS(file="testData/data/xgxr2.rds")
+    pk[,usubjid:=paste0("100-",ID)]
+    ## pk[,.N,by=.(ID)]
+    pk[usubjid=="100-34",usubjid:="100-32"]
+
+    
+    ## it finds way too many for ASSAY. Should only find 1.
+    res <- NMcheckData(pk,col.usubjid="usubjid")
+    expect_equal_to_reference(res,fileRef,version=2)
+})

@@ -150,7 +150,7 @@
 ##' @export
 
 
-NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="TIME",col.dv="DV",col.mdv="MDV",col.cmt="CMT",col.amt="AMT",col.flagn,col.row,na.strings,return.summary=FALSE,quiet=FALSE,as.fun){
+NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="TIME",col.dv="DV",col.mdv="MDV",col.cmt="CMT",col.amt="AMT",col.flagn,col.row,col.usubjid,na.strings,return.summary=FALSE,quiet=FALSE,as.fun){
 
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -300,7 +300,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 
     ## listEvents is for row-level findings
     ## @param col is the actual column to be used for the condition
-    ## @param name 
+    ## @param name The name of the check. Will end up in the check column in the resulting table.
     ## @param fun if fun does not return TRUE, we have a finding.
     ## @param colname is the column name reported to user.
 
@@ -803,7 +803,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
             ncomb.cov
         },by=.(ROW)]
         
-                                        # findings.occ <- rbindlist(list.findings.occ)
+        ## findings.occ <- rbindlist(list.findings.occ)
         findings.occ[,ROW:=NULL]
         if(length(findings.occ)>0){
             findings <- rbind(findings,findings.occ,fill=TRUE)
@@ -811,6 +811,43 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     }
     
 ### Section end: Covariates
+
+
+#### Section start: usubjid ####
+
+    if(!missing(col.usubjid)&&!is.null(col.usubjid)){
+        findings <- listEvents(col=col.usubjid,name="Missing value",
+                               fun=function(x){
+                                   !is.na(x) &
+                                       !(as.character(x)%in%unique(c("",na.strings)))
+                               },
+                               events=findings)
+
+        ## check . All ID values must be represented exactly once. If not, report an ID=level finding.
+        ## how many usubjids for each ID?
+        data[,NUID:=uniqueN(col.usubjid),by=c(col.id)]
+        ## how many IDs for each usubjid?
+        data[,NidByUID:=uniqueN(get(col.id)),by=c(col.usubjid)]
+        data[,usubjNotUnique:=max(NidByUID)>1,by=c(col.id)]
+        
+        if(data[,sum(NUID>1)]){
+            findings <- rbind(findings ,
+                              data.table(check="Unique subject ID not unique within ID",column=col.usubjid,ID=data[NUID>1,get(col.id)],level="ID") ,
+                              fill=TRUE)
+        }
+
+        if(data[,any(usubjNotUnique)]){
+            findings <- rbind(findings,
+                              data.table(check="Subject ID not unique within unique subject IDs",column=col.id,ID=data[usubjNotUnique==TRUE,get(col.id)],level="ID"),
+                              fill=TRUE)
+        }
+        
+    }
+    
+### Section end: usubjid
+
+
+    
 
     return(reportFindings(findings=findings,data=data,col.id=col.id,c.row=c.row,col.row=col.row,col.row.orig=col.row.orig,col.id.orig=col.id.orig,return.summary=return.summary,as.fun=as.fun,quiet=quiet))
 
