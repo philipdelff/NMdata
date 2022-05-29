@@ -1,5 +1,25 @@
-# Since NMdata 0.0.11
-Thanks to Bill Denney for discussions and inputs to this release!
+# NMdata 0.0.12
+
+* Vignettes are no longer inluded in R package and can only be read
+  online at https://philipdelff.github.io/NMdata/ They are still being
+  maintained, and the exclusion from the package releases is only due
+  to CRAN's restrictive requirements to the package size.
+
+* Improved tests of order of age of output control streams and input
+  data in NMscanData. So far, all data were tested on file
+  modification times which is not useful in the common case that data
+  files and/or nonmem control streams are moved around between
+  systems. Now NMscanData will look for a time stamp in the output
+  control stream and if NMwriteData was use to write the input data to
+  file, the creation time is taken from meta data. This will make the
+  warnings about the order of age of files more reliable.
+  
+* Checks of unique subject identifier (usubjid) included in
+  NMcheckData. This is mostly to detect the potential issue that the
+  subject IDs generated for analysis are not unique across actual
+  subjects. If a usubjid (e.g. from clinical data sets) is included in
+  data, NMcheckData can check this for basic properties and check the
+  analysis subject ID and the usubjid against each other.
 
 * New function: cl - creates factors, ordered by the appearance of the
   elements when created. cl("b","a") results in a factor with levels
@@ -32,8 +52,8 @@ Thanks to Bill Denney for discussions and inputs to this release!
 
 * Support for non-event (say for $PRED) datasets in NMcheckData.
 
-* Support for custom column names for DV (col.dv) and MDV (col.mdv) in
-  NMcheckData.
+* Support for custom column names for DV (col.dv) and MDV (col.mdv),
+  ID (col.ID), AMT (col.amt) in NMcheckData.
 
 * Support for file.mod and dir.data arguments in NMcheckData when
   running on a control stream.

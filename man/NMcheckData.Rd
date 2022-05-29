@@ -19,6 +19,7 @@ NMcheckData(
   col.amt = "AMT",
   col.flagn,
   col.row,
+  col.usubjid,
   na.strings,
   return.summary = FALSE,
   quiet = FALSE,
@@ -83,11 +84,22 @@ configured using NMdataConf. Disable by using col.flagn=FALSE.}
 column is recommended to use if possible. Default ("ROW") can
 be modified using NMdataConf.}
 
+\item{col.usubjid}{Optional unique subject identifier. It is
+recommended to keep a unique subject identifier (typically a
+character string including an abbrviated study name and the
+subject id) from the clinical datasets in the analysis set. If
+you supply the name of the column holding this identifier,
+NMcheckData will check that it is non-missing, that it is
+unique within values of col.id (i.e. that the analysis subject
+ID's are unique across actual subjects), and that col.id is
+unique within the unique subject ID (a violation of the latter
+is less likely).}
+
 \item{na.strings}{Strings to be accepted when trying to convert
 characters to numerics. This will typically be a string that
-represents missing values. Default is "." even though most
-users will use actual NA (NA_character), i.e. not a
-string. See ?NMisNumeric.}
+represents missing values. Default is ".". Notice, actual NA,
+i.e. not a string, is allowed independently of na.strings. See
+?NMisNumeric.}
 
 \item{return.summary}{If TRUE (not default), the table summary
 that is printed if quiet=FALSE is returned as well. In that
