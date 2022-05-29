@@ -65,7 +65,6 @@ like copy, synonym etc. Doesn't make sense to use in more than one.
 *** findCovs
 *** compareCols
 **** DONE Support for list.data                                     :v0_0_12:
-     CLOSED: [2022-05-29 Sun 11:23]
      Same way as dims
 **** DONE Bug - overview of columns is given twice
  compareCols(ex.001,ex.002,ex.005,diff.only=T) %>% print(topn=100)
@@ -145,7 +144,6 @@ In `[.data.table`(data, , `:=`((cols.req.found), lapply(.SD, NMasNumeric)),  :
   length(LHS)==0; no columns to delete or assign RHS to.
 **** DONE Support for col.dv.
 **** DONE [#B] col.usubjid argument
-     CLOSED: [2022-05-29 Sun 10:42]
 ***** usubjid must be present and non-empty
 ***** ID must be unique against usubjid
 **** TODO [#B] Support for col.dv of length>1
@@ -455,9 +453,9 @@ This is two steps.
 This belong in write functions. stampObj does support extra
 arguments. NMdata calls this "writtenTo".
 *** summary.NMdata
-**** TODO Put message about how stuff was merged after table overview :v0_0_12:
-**** TODO EVID/CMT table: Switch order of output and input only and add "result" :v0_0_12:
-**** TODO EVID/CMT table: add a total line (use rollup?)            :v0_0_12:
+**** DONE Put message about how stuff was merged after table overview :v0_0_12:
+**** DONE EVID/CMT table: Switch order of output and input only and add "result" :v0_0_12:
+**** DONE EVID/CMT table: add a total line (use rollup?)            :v0_0_12:
 **** DONE Break down number of rows by CMT and EVID.
 **** Rethink and tidy up message
 ***** DONE Combine first two tables

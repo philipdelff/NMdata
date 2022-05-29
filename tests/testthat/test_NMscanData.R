@@ -362,7 +362,6 @@ test_that("recoverRows without a row identifier",{
 ### notice that DV PRED RES WRES are returned in firstonly. This is horrible.
     ## tabs <- NMscanTables(file.lst)
     ## tabs
-
     res1 <- NMscanData(file=file.lst,merge.by.row=FALSE,recover.rows = T,as.fun="data.table",check.time = FALSE)
     dim(res1)
     res1[,table(nmout,DOSE)]

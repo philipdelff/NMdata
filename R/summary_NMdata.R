@@ -188,7 +188,7 @@ print.summary_NMdata <- function(x,...){
     vars.sum2 <- rbind(vars.sum2,row.res)
     
 #### other info to include. 
-    dt.nmout <- data.table(nmout=c(TRUE,FALSE),NMOUT=c("Output","Input only"))
+    dt.nmout <- data.table(nmout=c(TRUE,FALSE),NMOUT=c("output","input-only"))
 
     ## how many ids (broken down on output vs. input-only)
     
@@ -206,9 +206,13 @@ print.summary_NMdata <- function(x,...){
     ## model name
     cat("Model: ",x$details$model,"\n")
 
+    ## overview of processed tables
+    cat("\nUsed tables, contents shown as used/total:\n")
+    print(vars.sum2,row.names=FALSE)
+
     if(x$details$input.used){
         if(x$details$merge.by.row){
-            cat("Input and output data merged by:",x$details$col.row,"\n")
+            cat("\nInput and output data merged by:",x$details$col.row,"\n")
         } else {
             message("Input and output data combined by translation of
 Nonmem data filters (not recommended).")
@@ -216,10 +220,7 @@ Nonmem data filters (not recommended).")
     } else {
         cat("Input data not used.\n")
     }
-
-    cat("\nUsed tables, contents shown as used/total:\n")
-    print(vars.sum2,row.names=FALSE)
-
+    
     ## cat("\nNumbers of rows and subjects\n")
     ## print(n5,row.names=FALSE,...)
     cat("\n")
@@ -229,13 +230,21 @@ Nonmem data filters (not recommended).")
 
         ## if rows recovered, how many (broken down on EVID)
         try({
-            evids1 <- mergeCheck(x$N.evids,dt.nmout,by="nmout",all.x=TRUE,quiet=TRUE)
 
-            if("CMT" %in% colnames(evids1)) {
-                evids2 <- dcast(evids1,EVID+CMT~NMOUT,value.var="N",fill=0)
+            evids1 <- mergeCheck(x$N.evids,dt.nmout,by="nmout",all.x=TRUE,quiet=TRUE)
+            cols.bd <- intersect(cc(EVID,CMT),colnames(evids1))
+            evids1.rep <- rbind(evids1,evids1[,.(NMOUT="result",N=sum(N)),by=c("EVID","CMT")],fill=T)
+            evids1.sum <- evids1.rep[,.(EVID="All",CMT="All",N=sum(N)),by="NMOUT"]
+
+            evids1.sum[,(cols.bd):="All"]
+            evids1.rep2 <- rbind(evids1.rep,evids1.sum,fill=T)
+            if("CMT" %in% colnames(evids1.rep2)) {
+                evids2 <- dcast(evids1.rep2,EVID+CMT~NMOUT,value.var="N",fill=0)
             } else {
-                evids2 <- dcast(evids1,EVID~NMOUT,value.var="N",fill=0)
+                evids2 <- dcast(evids1.rep2,EVID~NMOUT,value.var="N",fill=0)
             }
+            setcolorder(evids2,
+                        neworder=intersect(cc(EVID,CMT,"input-only","output","result"),colnames(evids2)))
 
             cat("Distribution of rows on event types in returned data:\n")
             print(evids2,row.names=FALSE)

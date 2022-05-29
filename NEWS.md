@@ -48,7 +48,8 @@
 
 * If found in data, CMT is added to the breakdown of rows when
   summarizing results from NMscanData. Before, it was broken down on
-  EVID only.
+  EVID only. Also, a total line is included with total number of rows
+  in each of input-only, output, and result.
 
 * Support for non-event (say for $PRED) datasets in NMcheckData.
 
@@ -60,6 +61,9 @@
 
 * NMgenText now has an argument called until that specifies the last
   column(s) to include in $INPUT.
+
+* compareCols takes the list.data argument same way as dims()
+  does. This is often easier to use in programming.
 
 * If NMgenText does not find any Nonmem-compatible columns to report,
   it now throws a warning and returns NULL.
