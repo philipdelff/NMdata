@@ -21,7 +21,7 @@ but because they are typical dataset issues."><meta property="og:image" content=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.916</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.917</span>
       </span>
     </div>
 
@@ -105,6 +105,7 @@ but because they are typical dataset issues.</p>
   col.amt <span class="op">=</span> <span class="st">"AMT"</span>,
   <span class="va">col.flagn</span>,
   <span class="va">col.row</span>,
+  <span class="va">col.usubjid</span>,
   <span class="va">na.strings</span>,
   return.summary <span class="op">=</span> <span class="cn">FALSE</span>,
   quiet <span class="op">=</span> <span class="cn">FALSE</span>,
@@ -171,12 +172,23 @@ configured using NMdataConf. Disable by using col.flagn=FALSE.</p></dd>
 <dd><p>A column with a unique value for each row. Such a
 column is recommended to use if possible. Default ("ROW") can
 be modified using NMdataConf.</p></dd>
+<dt>col.usubjid</dt>
+<dd><p>Optional unique subject identifier. It is
+recommended to keep a unique subject identifier (typically a
+character string including an abbrviated study name and the
+subject id) from the clinical datasets in the analysis set. If
+you supply the name of the column holding this identifier,
+NMcheckData will check that it is non-missing, that it is
+unique within values of col.id (i.e. that the analysis subject
+ID's are unique across actual subjects), and that col.id is
+unique within the unique subject ID (a violation of the latter
+is less likely).</p></dd>
 <dt>na.strings</dt>
 <dd><p>Strings to be accepted when trying to convert
 characters to numerics. This will typically be a string that
-represents missing values. Default is "." even though most
-users will use actual NA (NA_character), i.e. not a
-string. See ?NMisNumeric.</p></dd>
+represents missing values. Default is ".". Notice, actual NA,
+i.e. not a string, is allowed independently of na.strings. See
+?NMisNumeric.</p></dd>
 <dt>return.summary</dt>
 <dd><p>If TRUE (not default), the table summary
 that is printed if quiet=FALSE is returned as well. In that
