@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.917</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.918</span>
       </span>
     </div>
 
@@ -87,11 +87,12 @@
 <li><p>New function: fnAppend - append a string to a file name before the file name extension. fnAppend(“data.csv”,“subset”) results in “data_subset.csv”.</p></li>
 <li><p>General support for a file.data argument when a specific input data file is to be used instead of finding this information in the control streams. This is very useful if you archive input data together with a nonmem run in a way that the path in the control stream has to be overruled. Like many other of this type of arguments in NMdata, it can be a function that systematically converts the path to the control stream to the input data archive. Running Nonmem this way breaks the link between an input dataset that may change over time and the model runs that become self-contained packages of input and output data.</p></li>
 <li><p>Support for NOHEADER option in Nonmem $TABLE blocks. If NMdata is used to read the results, there is no need to use NOHEADER (which opens the door to mistakes if manually renaming the columns in results), but NMdata should now also be able to handle this.</p></li>
-<li><p>If found in data, CMT is added to the breakdown of rows when summarizing results from NMscanData. Before, it was broken down on EVID only.</p></li>
+<li><p>If found in data, CMT is added to the breakdown of rows when summarizing results from NMscanData. Before, it was broken down on EVID only. Also, a total line is included with total number of rows in each of input-only, output, and result.</p></li>
 <li><p>Support for non-event (say for $PRED) datasets in NMcheckData.</p></li>
 <li><p>Support for custom column names for DV (col.dv) and MDV (col.mdv), ID (col.ID), AMT (col.amt) in NMcheckData.</p></li>
 <li><p>Support for file.mod and dir.data arguments in NMcheckData when running on a control stream.</p></li>
 <li><p>NMgenText now has an argument called until that specifies the last column(s) to include in $INPUT.</p></li>
+<li><p>compareCols takes the list.data argument same way as dims() does. This is often easier to use in programming.</p></li>
 <li><p>If NMgenText does not find any Nonmem-compatible columns to report, it now throws a warning and returns NULL.</p></li>
 </ul><div class="section level3">
 <h3 id="bugfixes-0-0-12">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-0-12"></a></h3>

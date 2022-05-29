@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.917</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.918</span>
       </span>
     </div>
 
@@ -117,7 +117,7 @@
 
     
     
-<p>Built 2022-05-29 using NMdata 0.0.11.917.</p>
+<p>Built 2022-05-29 using NMdata 0.0.11.918.</p>
 <p>This vignette is still under development. Please make sure to see latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
 <h2 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
@@ -182,9 +182,7 @@
 <span class="co">#&gt; Warning in strptime(x, format, tz = tz): unknown timezone 'EDT'</span>
 <span class="co">#&gt; Warning in as.POSIXct.POSIXlt(as.POSIXlt(x, tz, ...), tz, ...): unknown timezone</span>
 <span class="co">#&gt; 'EDT'</span>
-<span class="co">#&gt; Model:  xgxr018</span>
-<span class="co">#&gt; Input and output data combined by translation of</span>
-<span class="co">#&gt; Nonmem data filters (not recommended).</span>
+<span class="co">#&gt; Model:  xgxr018 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Used tables, contents shown as used/total:</span>
 <span class="co">#&gt;                  file     rows columns     IDs</span>
@@ -193,11 +191,14 @@
 <span class="co">#&gt;    xgxr018_res_fo.txt  150/150     1/2 150/150</span>
 <span class="co">#&gt;     xgxr4.rds (input) 905/1502   21/23 150/150</span>
 <span class="co">#&gt;              (result)      905    31+2     150</span>
+<span class="co">#&gt; Input and output data combined by translation of</span>
+<span class="co">#&gt; Nonmem data filters (not recommended).</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Distribution of rows on event types in returned data:</span>
-<span class="co">#&gt;  EVID CMT Output</span>
-<span class="co">#&gt;     0   2    755</span>
-<span class="co">#&gt;     1   1    150</span></code></pre></div>
+<span class="co">#&gt;  EVID CMT output result</span>
+<span class="co">#&gt;     0   2    755    755</span>
+<span class="co">#&gt;     1   1    150    150</span>
+<span class="co">#&gt;   All All    905    905</span></code></pre></div>
 <p><code>NMscanData</code> tells that it has read a model called <code>xgxr018</code> and how output and input data were combined. We shall see how these properties can be modified in a bit. Then follows an overview of how much data is used from the data files that were read. It used</p>
 <ul>
 <li>one output data file (based on the <code>$TABLE</code> section(s) in the <code>.lst</code> file) from which it used all 905 rows and all 15 column, totaling 150 different values of <code>ID</code>.</li>
@@ -261,7 +262,6 @@
 <span class="co">#&gt; Warning in as.POSIXct.POSIXlt(as.POSIXlt(x, tz, ...), tz, ...): unknown timezone</span>
 <span class="co">#&gt; 'EDT'</span>
 <span class="co">#&gt; Model:  xgxr003 </span>
-<span class="co">#&gt; Input and output data merged by: ROW </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Used tables, contents shown as used/total:</span>
 <span class="co">#&gt;                  file     rows columns     IDs</span>
@@ -271,10 +271,13 @@
 <span class="co">#&gt;     xgxr1.csv (input) 905/1502   21/24 150/150</span>
 <span class="co">#&gt;              (result)      905    32+2     150</span>
 <span class="co">#&gt; </span>
+<span class="co">#&gt; Input and output data merged by: ROW </span>
+<span class="co">#&gt; </span>
 <span class="co">#&gt; Distribution of rows on event types in returned data:</span>
-<span class="co">#&gt;  EVID CMT Output</span>
-<span class="co">#&gt;     0   2    755</span>
-<span class="co">#&gt;     1   1    150</span></code></pre></div>
+<span class="co">#&gt;  EVID CMT output result</span>
+<span class="co">#&gt;     0   2    755    755</span>
+<span class="co">#&gt;     1   1    150    150</span>
+<span class="co">#&gt;   All All    905    905</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="get-your-preferred-data-class-back-from-nmscandata">Get your preferred data class back from <code>NMscanData</code><a class="anchor" aria-label="anchor" href="#get-your-preferred-data-class-back-from-nmscandata"></a>
@@ -361,7 +364,6 @@
 <span class="co">#&gt; Warning in as.POSIXct.POSIXlt(as.POSIXlt(x, tz, ...), tz, ...): unknown timezone</span>
 <span class="co">#&gt; 'EDT'</span>
 <span class="co">#&gt; Model:  xgxr014 </span>
-<span class="co">#&gt; Input and output data merged by: ROW </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Used tables, contents shown as used/total:</span>
 <span class="co">#&gt;               file      rows columns     IDs</span>
@@ -369,11 +371,14 @@
 <span class="co">#&gt;  xgxr2.rds (input) 1502/1502   22/24 150/150</span>
 <span class="co">#&gt;           (result)      1502    34+2     150</span>
 <span class="co">#&gt; </span>
+<span class="co">#&gt; Input and output data merged by: ROW </span>
+<span class="co">#&gt; </span>
 <span class="co">#&gt; Distribution of rows on event types in returned data:</span>
-<span class="co">#&gt;  EVID CMT Input only Output</span>
-<span class="co">#&gt;     0   1          2      0</span>
-<span class="co">#&gt;     0   2        595    755</span>
-<span class="co">#&gt;     1   1          0    150</span></code></pre></div>
+<span class="co">#&gt;  EVID CMT input-only output result</span>
+<span class="co">#&gt;     0   1          2      0      2</span>
+<span class="co">#&gt;     0   2        595    755   1350</span>
+<span class="co">#&gt;     1   1          0    150    150</span>
+<span class="co">#&gt;   All All        597    905   1502</span></code></pre></div>
 <p>Besides the <code>model</code> column holding the model name, <code>NMscanData</code> creates one other column by default. <code>nmout</code> is a boolean column created by <code>NMscanData</code> expressing whether each row was in the output data (<code>nmout==TRUE</code>) or they were recovered from the input data (<code>nmout==FALSE</code>).</p>
 <p>We recognize these numbers from the message from <code>NMscanData</code> - the number of rows in output (905) and number of rows from input only (597). Since we changed the default value of <code>as.fun</code> with <code>NMdataConf</code>, <code>res2</code> is a <code>data.table</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">

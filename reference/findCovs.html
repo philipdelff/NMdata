@@ -22,7 +22,7 @@ variables that do not vary within unique combinations of these."><meta property=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.917</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.918</span>
       </span>
     </div>
 
@@ -179,7 +179,6 @@ be configured using NMdataConf.</p></dd>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> like model has been edited since last run. This is likely to corrupt results.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Please consider either not using input data or re-running model.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model:  xgxr001 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Input and output data merged by: ROW </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Used tables, contents shown as used/total:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               file     rows columns     IDs</span>
@@ -187,10 +186,13 @@ be configured using NMdataConf.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  xgxr1.csv (input) 905/1502   22/24 150/150</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           (result)      905    38+2     150</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Input and output data merged by: ROW </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Distribution of rows on event types in returned data:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  EVID CMT Output</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     0   2    755</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1   1    150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  EVID CMT output result</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0   2    755    755</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1   1    150    150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   All All    905    905</span>
 <span class="r-in"><span class="fu">findCovs</span><span class="op">(</span><span class="va">dat</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      ID FLAG STUDY   TVKA  TVV2    TVCL    TVV3     TVQ       KA       V2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    31    0     1 0.1812 0.042 0.72457 0.17848 2307400 0.181200 0.042000</span>
