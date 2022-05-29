@@ -6,7 +6,7 @@
 ##' to check the compatibility of the data.
 ##' 
 ##' @param ... objects which element names to compare
-##' @param keepNames If TRUE, the original dataset names are used in
+##' @param keep.names If TRUE, the original dataset names are used in
 ##'     reported table. If not, generic x1, x2,... are used. The
 ##'     latter may be preferred for readability.
 ##' @param testEqual Do you just want a TRUE/FALSE to whether the
@@ -43,13 +43,14 @@
 ##' @details technically, this function compares classes of elements in
 ##'     lists. However, in relation to NMdata, this will most of the
 ##'     time be columns in data.frames.
+##' @param keepNames Deprecated. Use keep.names instead.
 ##' @return A data.frame with an overview of elements and their
 ##'     classes of objects in ... Class as defined by as.fun.
 ##' @family DataWrangling
 ##' @export
 
 
-compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,cols.wanted,fun.class=base::class,quiet,as.fun){
+compareCols <- function(...,list.data,keep.names=TRUE,testEqual=FALSE,diff.only=TRUE,cols.wanted,fun.class=base::class,quiet,as.fun,keepNames){
     
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -64,19 +65,33 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,cols.w
 
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
-    dots <- list(...)
+
+    if(!missing(keepNames)){
+        message("compareCols: keepNames argument is deprecated. Use keep.names instead. For now, keepNames is overruling keep.names.")
+        keep.names <- keepNames
+    }
+    
+    if(missing(list.data)){
+        dots <- list(...)
+        if(keep.names){
+            names.dots <- setdiff(as.character(match.call(expand.dots=TRUE)),as.character(match.call(expand.dots=FALSE)))
+        }
+    } else {
+        dots <- list.data
+        names.dots <- names(dots)
+    }
+
+    
     ndots <- length(dots)
     if(ndots==0) stop("No data supplied.")
     if(ndots==1&&missing(diff.only)) diff.only <- FALSE
     if(missing(cols.wanted)) cols.wanted <- NULL
-    
-    if(keepNames){
-        names.dots <- setdiff(as.character(match.call(expand.dots=TRUE)),as.character(match.call(expand.dots=FALSE)))
-    } else {
+
+
+    if(!keep.names){
         names.dots <- paste0("x",seq(ndots))
     }
     names(dots) <- names.dots
-
     
     
     df1.was.dt <- is.data.table(dots[[1]])

@@ -47,10 +47,12 @@ test_that("diff.only=FALSE, keepNames = F",{
     pk.reduced[,CYCLE:=NULL]
     pk.reduced[,AMT:=as.character(AMT)]
 
-    res1 <- compareCols(pk,pk.reduced,diff.only=FALSE,keepNames = F)
+    res1 <- compareCols(pk,pk.reduced,diff.only=FALSE,keep.names = F)
 
     expect_equal_to_reference(res1,fileRef)
 
+    res2 <- compareCols(pk,pk.reduced,diff.only=FALSE,keepNames = F)
+    expect_equal(res1,res2)
 })
 
 
@@ -95,5 +97,22 @@ test_that("cols.wanted",{
     res1 <- compareCols(pk,pk.reduced,cols.wanted=c("TIME","NAME","NOEXISTS"))
 
     expect_equal_to_reference(res1,fileRef)
+
+})
+
+test_that("list.data",{
+
+##    fileRef <- "testReference/compareCols_1.rds"
+
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk.reduced <- copy(pk)
+    pk.reduced <- pk.reduced[1:(.N%/%2)]
+    pk.reduced[,CYCLE:=NULL]
+    pk.reduced[,AMT:=as.character(AMT)]
+
+    res1 <- compareCols(pk,pk.reduced)
+    res2 <- compareCols(list.data=list(pk=pk,pk.reduced=pk.reduced))
+
+    expect_equal(res1,res2)
 
 })

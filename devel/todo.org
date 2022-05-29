@@ -36,7 +36,7 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
-*** TODO function to add variables to $TABLE                    :newFunction:
+*** TODO [#B] function to add variables to $TABLE               :newFunction:
 **** Which $TABLE to add to?
 *** TODO [#B] NMfreezeModels                                    :newFunction:
     Remember to add chmod and describe that only a flat dir structure is supported so far
@@ -64,8 +64,9 @@ Make internal in tracee
 like copy, synonym etc. Doesn't make sense to use in more than one.
 *** findCovs
 *** compareCols
-**** TODO [#A] Support for list.data 
-Same way as dims
+**** DONE Support for list.data                                     :v0_0_12:
+     CLOSED: [2022-05-29 Sun 11:23]
+     Same way as dims
 **** DONE Bug - overview of columns is given twice
  compareCols(ex.001,ex.002,ex.005,diff.only=T) %>% print(topn=100)
 
@@ -82,7 +83,7 @@ helpful. Only list other columns than the scope.
 **** DONE Bug for diff.only=FALSE
 *** egdt
 **** DONE BUG the tmp by col has to be removed before reporting dims
-**** DONE Report dims(df1,df2,result) unless quiet
+**** DONE Report dims(df1,df2,result) unless qu
 *** listMissings
 List missing elements
 For specific columns, look for missing elements (NA, "", length(x)==0
@@ -137,13 +138,14 @@ I don't think I ever tried this. What will NMscanData do if input data
 has no headers, and there are no filters? I think NMapplyFilters may
 fail.
 *** NMcheckData
-**** TODO [#A] Look for NA's coded as "."
+**** CANCELLED Look for NA's coded as "."
 **** DONE Bug if no numeric cols found?
      Warning message:
 In `[.data.table`(data, , `:=`((cols.req.found), lapply(.SD, NMasNumeric)),  :
   length(LHS)==0; no columns to delete or assign RHS to.
 **** DONE Support for col.dv.
-**** TODO [#B] usubjid argument
+**** DONE [#B] col.usubjid argument
+     CLOSED: [2022-05-29 Sun 10:42]
 ***** usubjid must be present and non-empty
 ***** ID must be unique against usubjid
 **** TODO [#B] Support for col.dv of length>1
@@ -251,7 +253,8 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMscanInput
-**** TODO Time check of lst vs input belongs here rather than in NMscanData
+**** TODO [#B] Time check of lst vs input belongs here rather than in NMscanData
+Not sure.
 **** TODO [#B] Add NMinfo data on whether column names were translated according to $INPUT
 **** DONE Add data.file argument to skip interpreting the control stream altogether.
 **** DONE BUG tabs in column names?
@@ -305,8 +308,8 @@ A way to limit rows read into nonmem
 ***** diff
 ***** off
 *** NMscanTables
-**** TODO [#B] include meta data as NMinfo
-**** TODO Integrate the reduction into one table from NMscanData
+**** TODO [#A] include meta data as NMinfo
+**** TODO [#A] Integrate the reduction into one table from NMscanData
 **** DONE Lastonly does the same as firstonly
 *** NMscanData
 **** TODO [#B] Split out data finder handling
@@ -364,7 +367,7 @@ whenever ID changes, but test this.
 check if variables are consistent within ROW: ID (others?) This is
 fatal and will happen when using long ID's and non-matching format
 when writing tables from Nonmem.
-**** TODO [#B] New argument to define columns to read from input data
+**** TODO [#A] New argument to define columns to read from input data
 ID should be default. Maybe TIME too?
 **** DONE Run NMorderColumns in the end
 Remember to use what we know about col.row. 
@@ -407,7 +410,7 @@ Not warning. Warning if standard variable?
 **** DONE Don't warn about missing SS, ADDL, II
 **** DONE Polish
 *** flagsAssign
-**** TODO [#A] We need to work in IDhasNoObs and IDhasNoDos 
+**** TODO [#A] We need to work in IDhasNoObs and IDhasNoDos
 This likely means a restructure so all tables have to be given
 together and these subject-level flags are set across EVID after 
 **** DONE check for whether there are any contents in data - just warning and return nothing
@@ -452,9 +455,9 @@ This is two steps.
 This belong in write functions. stampObj does support extra
 arguments. NMdata calls this "writtenTo".
 *** summary.NMdata
-**** TODO Put message about how stuff was merged after table overview
-**** TODO EVID/CMT table: Switch order of output and input only and add "result"
-**** TODO EVID/CMT table: add a total line (use rollup?)
+**** TODO Put message about how stuff was merged after table overview :v0_0_12:
+**** TODO EVID/CMT table: Switch order of output and input only and add "result" :v0_0_12:
+**** TODO EVID/CMT table: add a total line (use rollup?)            :v0_0_12:
 **** DONE Break down number of rows by CMT and EVID.
 **** Rethink and tidy up message
 ***** DONE Combine first two tables
