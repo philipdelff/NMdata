@@ -158,12 +158,12 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     COLNUM <- NULL
     DV <- NULL
     ID.jump <- NULL
-    firstlastonly <- NULL
-    firstonly <- NULL
+    ## firstlastonly <- NULL
+    ## firstonly <- NULL
+    ## lastonly <- NULL
     full.length <- NULL
     has.col.row <- NULL
     included <- NULL
-    lastonly <- NULL
     level <- NULL
     maxLength <- NULL
     name <- NULL
@@ -171,6 +171,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     nmout <- NULL
     nonmem <- NULL
     result <- NULL
+    scope <- NULL
     type <- NULL
     var <- NULL
     variable <- NULL
@@ -248,19 +249,19 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     
 
 #### Section start: read all output tables and add to meta data ####
-
-    tables <- NMscanTables(file,details=TRUE,tab.count=tab.count,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id)
-
     
-    rows.flo <- tables$meta[firstlastonly==TRUE]
+    tables <- NMscanTables(file,tab.count=tab.count,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id)
+    meta.output <- copy(NMinfoDT(tables)$tables)
+    
+    rows.flo <- meta.output[scope=="firstlastonly"]
     if(rows.flo[,.N]>0) {
         warning("One or more output tables with FIRSTLASTONLY option detected. This is not supported, and the table will be disregarded. Use a combination of NMscanTables, NMscanInput, and merge manually.")
-        k <- tables$meta[,which(firstlastonly==TRUE)]
-        tables$data <- tables$data[-k]
-        tables$meta <- tables$meta[-k]
+        k <- meta.output[,which(scope=="firstlastonly")]
+        tables <- tables[-k]
+        meta.output <- meta.output[-k]
     }
-    data <- tables$data
-    overview.tables <- tables$meta
+    data <- tables
+    overview.tables <- meta.output
     
 ### combine full tables into one
     col.row.in.output <- overview.tables[level=="row",any(has.col.row)]
@@ -314,7 +315,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 #### Section start: col.nmout and col.model ####
     cnames.input.result <- nminfo.input$colnames[,result]
-    outnames  <- unlist(lapply(tables$data,colnames))
+    outnames  <- unlist(lapply(tables,colnames))
     allnames <- c(outnames,cnames.input.result)
 
     if(missing(col.model)||!is.null(col.model)) {
@@ -445,7 +446,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                             fun.msg=warning)
                 time.ok <- c(time.ok,"mod > lst")
             }
-            if(mtime.mod>min(tables$meta[,file.mtime])){
+            if(mtime.mod>min(meta.output[,file.mtime])){
                 messageWrap(paste0("input control stream (",file.mod,") is newer than output tables. Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
                             fun.msg=warning)
                 time.ok <- c(time.ok,"mod > output")
@@ -467,7 +468,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                             fun.msg=warning)
                 time.ok <- c(time.ok,"input > lst")
             }
-            if(testtime.inp > min(tables$meta[,file.mtime])){
+            if(testtime.inp > min(meta.output[,file.mtime])){
                 messageWrap(paste0("input data file (",nminfo.input$tables$file,") is newer than output tables. Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
                             fun.msg=warning)
                 time.ok <- c(time.ok,"input > output")
@@ -510,7 +511,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         search.col.row <- FALSE
     }
     
-    if(use.input&&!any(tables$meta$full.length)) {
+    if(use.input&&!any(meta.output$full.length)) {
         ## copying so we can modify tab.row        
         tab.row <- copy(data.input)
         
@@ -534,7 +535,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                     ))
     }
 
-    if(use.input&&any(tables$meta$full.length)) {
+    if(use.input&&any(meta.output$full.length)) {
         ## if(!quiet) messageWrap("Searching for input data.")
 
         ## if no method is specified, search for possible col.row to help the user
@@ -821,12 +822,12 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     setorder(dt.vars,-included,COLNUM)
     dt.vars[,included:=NULL]    
 
-    tables$meta[,source:="output"]
+    meta.output[,source:="output"]
     if(use.input){
         ## data.input$meta$tables[,source:="input"]
-        tables.meta <- rbind(tables$meta,nminfo.input$tables,fill=TRUE)
+        tables.meta <- rbind(meta.output,nminfo.input$tables,fill=TRUE)
     } else {
-        tables.meta <- tables$meta
+        tables.meta <- meta.output
     }
     setcolorder(tables.meta,c("source","name","nrow","ncol"))
 

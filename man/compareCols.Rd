@@ -6,19 +6,24 @@
 \usage{
 compareCols(
   ...,
-  keepNames = TRUE,
+  list.data,
+  keep.names = TRUE,
   testEqual = FALSE,
   diff.only = TRUE,
   cols.wanted,
   fun.class = base::class,
   quiet,
-  as.fun
+  as.fun,
+  keepNames
 )
 }
 \arguments{
 \item{...}{objects which element names to compare}
 
-\item{keepNames}{If TRUE, the original dataset names are used in
+\item{list.data}{As alternative to ..., you can supply the data
+sets in a list here.}
+
+\item{keep.names}{If TRUE, the original dataset names are used in
 reported table. If not, generic x1, x2,... are used. The
 latter may be preferred for readability.}
 
@@ -58,6 +63,8 @@ returning. If first input data set is a data.table, the
 default is to return a data.table, if not the default is to
 return a data.frame. Use whatever to get what fits in with
 your workflow. Default can be configured with NMdataConf.}
+
+\item{keepNames}{Deprecated. Use keep.names instead.}
 }
 \value{
 A data.frame with an overview of elements and their

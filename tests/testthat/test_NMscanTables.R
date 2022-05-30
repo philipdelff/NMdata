@@ -12,6 +12,10 @@ test_that("Multiple output table formats",{
     file.lst <- system.file("examples/nonmem/xgxr003.lst",package="NMdata")
 
     res.dt <- NMscanTables(file=file.lst,as.fun="data.table",tab.count=TRUE)
+    meta <- NMinfoDT(res.dt)
+    meta$tables[,file.mtime:=NULL]
+    meta$tables[,file:=basename(file)]
+    writeNMinfo(res.dt,meta)
     expect_equal_to_reference(res.dt,fileRef,version=2)
 
     ## test that we have data.tables from using as.fun=none
@@ -20,6 +24,8 @@ test_that("Multiple output table formats",{
     ## and if we convert to df, we get exactly the same as when relying on default
     res.dt.df <- lapply(res.dt,as.data.frame)
     res.df <- NMscanTables(file=file.lst,tab.count=TRUE)
+    ## unNMdata(res.df)
+    setattr(res.df,"NMdata",NULL)
     expect_equal(res.df,res.dt.df)
 
 })
@@ -32,8 +38,10 @@ test_that("Details table",{
     res <- NMscanTables(file=file.lst,details=T,as.fun="data.table",tab.count=TRUE)
 ### this will make trouble because meta data table contains absolute
 ### paths which is machine dependent. So removing path.
-    res$meta[,file:=basename(file)]
-    res$meta$file.mtime <- NULL
+    meta <- attributes(res)$NMdata
+    meta$tables[,file:=basename(file)]
+    meta$tables$file.mtime <- NULL
+    writeNMinfo(res,meta)
     ## df approach
     ## res$meta$file <- basename(res$meta$file)
     expect_equal_to_reference(res,fileRef,version=2)
@@ -45,10 +53,11 @@ test_that("$TABLE header options",{
     file.lst <- "testData/nonmem/xgxr024.lst"
 
     res <- NMscanTables(file=file.lst,details=T,as.fun="data.table",tab.count=TRUE)
-
-    res$meta[,file:=basename(file)]
-    res$meta$file.mtime <- NULL
-
+    meta <- NMinfoDT(res)
+    meta$tables[,file:=basename(file)]
+    meta$tables$file.mtime <- NULL
+    writeNMinfo(res,meta)
+    
     expect_equal_to_reference(res,fileRef,version=2)
     
 })
@@ -60,8 +69,10 @@ test_that("Two firstonly, one full-length",{
 
     res <- NMscanTables(file=file.lst,details=T,as.fun="data.table",tab.count=TRUE)
 
-    res$meta[,file:=basename(file)]
-    res$meta$file.mtime <- NULL
+    meta <- NMinfoDT(res)
+    meta$tables[,file:=basename(file)]
+    meta$tables$file.mtime <- NULL
+    writeNMinfo(res,meta)
 
     expect_equal_to_reference(res,fileRef,version=2)
     

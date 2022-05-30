@@ -6,6 +6,8 @@
 ##' to check the compatibility of the data.
 ##' 
 ##' @param ... objects which element names to compare
+##' @param list.data As alternative to ..., you can supply the data
+##'     sets in a list here.
 ##' @param keep.names If TRUE, the original dataset names are used in
 ##'     reported table. If not, generic x1, x2,... are used. The
 ##'     latter may be preferred for readability.

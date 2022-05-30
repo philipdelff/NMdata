@@ -4,7 +4,7 @@
 \alias{dims}
 \title{Get dimensions of multiple objects}
 \usage{
-dims(..., list.data, keepNames = TRUE, as.fun = NULL)
+dims(..., list.data, keep.names = TRUE, as.fun = NULL, keepNames)
 }
 \arguments{
 \item{...}{data sets}
@@ -12,7 +12,7 @@ dims(..., list.data, keepNames = TRUE, as.fun = NULL)
 \item{list.data}{As alternative to ..., you can supply the data
 sets in a list here.}
 
-\item{keepNames}{If TRUE, the original dataset names are used in
+\item{keep.names}{If TRUE, the original dataset names are used in
 reported table. If not, generic x1, x2,... are used. The
 latter may be preferred for readability in some cases.}
 
@@ -21,6 +21,8 @@ returning. If first input data set is a data.table, the
 default is to return a data.table, if not the default is to
 return a data.frame. Use whatever to get what fits in with
 your workflow. Default can be configured with NMdataConf.}
+
+\item{keepNames}{Deprecated. Use keep.names instead.}
 }
 \value{
 A data.frame with dimensions of objects in ... Actual

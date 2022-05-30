@@ -31,7 +31,7 @@
 ##' @import data.table
 ##' @export
 
-NMscanTables <- function(file,details=FALSE,as.fun,quiet,tab.count=FALSE,col.id="ID",col.row){
+NMscanTables <- function(file,as.fun,quiet,tab.count=FALSE,col.id="ID",col.row,details){
     
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
@@ -66,6 +66,7 @@ NMscanTables <- function(file,details=FALSE,as.fun,quiet,tab.count=FALSE,col.id=
     }    
     col.row <- NMdataDecideOption("col.row",col.row)
 
+    if(!missing(details)) message("NMscanTables: argument details is deprecated.")
     
     dir <- dirname(file)
     extract.info <- function(x,NAME,default){
@@ -194,7 +195,7 @@ file?"))
     if(!quiet){
         msg <- paste0("Number of output tables read: ",meta[,.N])
         NIDL <- meta[level=="id",.N]
-        NFLO <- meta[firstlastonly==TRUE,.N]
+        NFLO <- meta[scope=="firstlastonly",.N]
         mNIDL <- NULL
         if(NIDL>0) mNIDL <- paste0(NIDL, " idlevel")
         mNFLO <- NULL
@@ -213,14 +214,9 @@ file?"))
 
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     tables <- lapply(tables,as.fun)
-    meta <- as.fun(meta)
-
-    if(details){
-        out <- list(data=tables,meta=meta)
-    } else {
-        out <- tables
-    }
     
-    return(out)
+    writeNMinfo(tables,list(tables=meta),byRef=TRUE)
+    
+    return(tables)
 
 }

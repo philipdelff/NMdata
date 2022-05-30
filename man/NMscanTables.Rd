@@ -6,21 +6,16 @@
 \usage{
 NMscanTables(
   file,
-  details = FALSE,
   as.fun,
   quiet,
   tab.count = FALSE,
   col.id = "ID",
-  col.row
+  col.row,
+  details
 )
 }
 \arguments{
 \item{file}{the nonmem file to read (normally .mod or .lst)}
-
-\item{details}{If TRUE, metadata is added to output. In this case,
-you get a list. Typically, this is mostly useful if
-programming up functions which behavior must depend on
-properties of the output.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
@@ -43,6 +38,11 @@ of the number of subjects in each table.}
 
 \item{col.row}{The name of the row counter column. Optional and only
 used to check whether the row counter is in the data.}
+
+\item{details}{If TRUE, metadata is added to output. In this case,
+you get a list. Typically, this is mostly useful if
+programming up functions which behavior must depend on
+properties of the output.}
 }
 \value{
 A list of all the tables as data.frames. If details=TRUE,

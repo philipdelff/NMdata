@@ -98,6 +98,9 @@ print.summary_NMdata <- function(x,...){
     
     . <- NULL
     COLNUM <- NULL
+    CMT <- NULL
+    EVID <- NULL
+    NMOUT <- NULL
     included <- NULL
     inc <- NULL
     not <- NULL
@@ -107,7 +110,6 @@ print.summary_NMdata <- function(x,...){
     level <- NULL
     N <- NULL
     nid <- NULL
-    NMOUT <- NULL
     nrow.used <- NULL
     nmout <- NULL
     N.rows <- NULL
@@ -233,7 +235,7 @@ Nonmem data filters (not recommended).")
 
             evids1 <- mergeCheck(x$N.evids,dt.nmout,by="nmout",all.x=TRUE,quiet=TRUE)
             cols.bd <- intersect(cc(EVID,CMT),colnames(evids1))
-            evids1.rep <- rbind(evids1,evids1[,.(NMOUT="result",N=sum(N)),by=c("EVID","CMT")],fill=T)
+            evids1.rep <- rbind(evids1,evids1[,.(NMOUT="result",N=sum(N)),by=cols.bd],fill=T)
             evids1.sum <- evids1.rep[,.(EVID="All",CMT="All",N=sum(N)),by="NMOUT"]
 
             evids1.sum[,(cols.bd):="All"]
