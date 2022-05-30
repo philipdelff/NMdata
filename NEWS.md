@@ -1,6 +1,6 @@
 # NMdata 0.0.12
 
-* Vignettes are no longer inluded in R package and can only be read
+* Vignettes are no longer included in R package and can only be read
   online at https://philipdelff.github.io/NMdata/ They are still being
   maintained, and the exclusion from the package releases is only due
   to CRAN's restrictive requirements to the package size.

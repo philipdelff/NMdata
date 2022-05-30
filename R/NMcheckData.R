@@ -51,7 +51,7 @@
 ##'     be modified using NMdataConf.
 ##' @param col.usubjid Optional unique subject identifier. It is
 ##'     recommended to keep a unique subject identifier (typically a
-##'     character string including an abbrviated study name and the
+##'     character string including an abbreviated study name and the
 ##'     subject id) from the clinical datasets in the analysis set. If
 ##'     you supply the name of the column holding this identifier,
 ##'     NMcheckData will check that it is non-missing, that it is

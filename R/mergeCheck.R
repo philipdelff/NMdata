@@ -89,7 +89,7 @@
 ##' and BW.y and is often unintended.
 ##'
 ##' \item Before merging a row counter is added to x. After the merge, the
-##' result is assured to have exactly one occurrance of each of the
+##' result is assured to have exactly one occurrence of each of the
 ##' values of the row counter in x.
 ##'
 ##' }
