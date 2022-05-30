@@ -86,12 +86,12 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMscanTables</span><span class="op">(</span>
   <span class="va">file</span>,
-  details <span class="op">=</span> <span class="cn">FALSE</span>,
   <span class="va">as.fun</span>,
   <span class="va">quiet</span>,
   tab.count <span class="op">=</span> <span class="cn">FALSE</span>,
   col.id <span class="op">=</span> <span class="st">"ID"</span>,
-  <span class="va">col.row</span>
+  <span class="va">col.row</span>,
+  <span class="va">details</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -99,11 +99,6 @@
     <h2>Arguments</h2>
     <dl><dt>file</dt>
 <dd><p>the nonmem file to read (normally .mod or .lst)</p></dd>
-<dt>details</dt>
-<dd><p>If TRUE, metadata is added to output. In this case,
-you get a list. Typically, this is mostly useful if
-programming up functions which behavior must depend on
-properties of the output.</p></dd>
 <dt>as.fun</dt>
 <dd><p>The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
@@ -126,6 +121,11 @@ of the number of subjects in each table.</p></dd>
 <dt>col.row</dt>
 <dd><p>The name of the row counter column. Optional and only
 used to check whether the row counter is in the data.</p></dd>
+<dt>details</dt>
+<dd><p>If TRUE, metadata is added to output. In this case,
+you get a list. Typically, this is mostly useful if
+programming up functions which behavior must depend on
+properties of the output.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
