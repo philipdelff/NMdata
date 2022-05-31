@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.918</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.920</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.12" id="nmdata-0012">NMdata 0.0.12<a class="anchor" aria-label="anchor" href="#nmdata-0012"></a></h2>
-<ul><li><p>Vignettes are no longer inluded in R package and can only be read online at <a href="https://philipdelff.github.io/NMdata/" class="uri">https://philipdelff.github.io/NMdata/</a> They are still being maintained, and the exclusion from the package releases is only due to CRAN’s restrictive requirements to the package size.</p></li>
+<ul><li><p>Vignettes are no longer included in R package and can only be read online at <a href="https://philipdelff.github.io/NMdata/" class="uri">https://philipdelff.github.io/NMdata/</a> They are still being maintained, and the exclusion from the package releases is only due to CRAN’s restrictive requirements to the package size.</p></li>
 <li><p>Improved tests of order of age of output control streams and input data in NMscanData. So far, all data were tested on file modification times which is not useful in the common case that data files and/or nonmem control streams are moved around between systems. Now NMscanData will look for a time stamp in the output control stream and if NMwriteData was use to write the input data to file, the creation time is taken from meta data. This will make the warnings about the order of age of files more reliable.</p></li>
 <li><p>Checks of unique subject identifier (usubjid) included in NMcheckData. This is mostly to detect the potential issue that the subject IDs generated for analysis are not unique across actual subjects. If a usubjid (e.g. from clinical data sets) is included in data, NMcheckData can check this for basic properties and check the analysis subject ID and the usubjid against each other.</p></li>
 <li><p>New function: cl - creates factors, ordered by the appearance of the elements when created. cl(“b”,“a”) results in a factor with levels “b” and “a”. This can save quite some typing in data set preparation.</p></li>
