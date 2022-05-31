@@ -18,7 +18,7 @@ it can also be both say c("ID","DRUG") or c("ID","TRT").}
 \item{as.fun}{The default is to return a data.table if data is a data.table
 and return a data.frame in all other cases. Pass a function in as.fun to
 convert to something else. If data is not a data.table, the default can
-be configued using NMdataConf.}
+be configured using NMdataConf.}
 }
 \value{
 a data set with as many rows as in data.

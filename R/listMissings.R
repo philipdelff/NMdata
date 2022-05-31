@@ -21,6 +21,8 @@
 ##' @family DataWrangling
 ##' @return Invisibly, a data.frame including all findings
 ##' @import data.table
+##' @export
+
 
 listMissings <- function(data,cols,by,na.strings=c("","."),quiet=FALSE,as.fun){
 
