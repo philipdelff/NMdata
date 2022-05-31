@@ -51,7 +51,7 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     text <- NULL
 
 ### We leave meta data untouched. This part is due to a previous design of NMscanInput. 
-  
+    
     data.meta <- NMinfoDT(data)
 
     text2 <- NMreadSection(lines=lines,section="DATA",keepComments=FALSE)
@@ -136,6 +136,15 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     ## (DOSE 10) means (DOSE==10) in NMTRAN. 
     expressions.list <- sub("([[:alpha:]]+) +([[:alnum:]]+)","\\1==\\2",expressions.list)
 
+    vars.cond <- sub("([[:alnum:]])[^[:alnum:]]+.*","\\1",expressions.list)
+
+    if(length(vars.cond)){
+        missings <- listMissings(data,cols=vars.cond)
+        if(!is.null(missings)&&nrow(missings)>0){
+            warning(paste("Missing values found in columns used for ACCEPT/IGNORE statements. This is not supported. If at all possible, please use a unique row identifier to merge by and/or make sure values are not missing in these colums.\n",paste(capture.output(print(missings[,.N,by=.(variable,value)])),collapse="\n")))
+            
+        }
+    }
     
     cond.combine <- "|"
     ## remember to negate everything if the type is ignore
@@ -189,5 +198,5 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     
     writeNMinfo(data,meta=data.meta,append=TRUE)
     data
- 
+    
 }

@@ -82,7 +82,7 @@ helpful. Only list other columns than the scope.
 **** DONE Bug for diff.only=FALSE
 *** egdt
 **** DONE BUG the tmp by col has to be removed before reporting dims
-**** DONE Report dims(df1,df2,result) unless qu
+**** DONE Report dims(df1,df2,result) unless quiet
 *** listMissings
 List missing elements
 For specific columns, look for missing elements (NA, "", length(x)==0
@@ -235,7 +235,7 @@ numeric should be using
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
 *** NMwriteSection
-**** DONE [#A] Put backup files in NMdata_backup
+**** DONE Put backup files in NMdata_backup
 **** DONE Check if any files matched before running lapply
 **** TODO [#B] When using list.files, give overview of matches by expression and by data.file
 **** DONE Bug in data.file argument
@@ -306,7 +306,7 @@ A way to limit rows read into nonmem
 ***** diff
 ***** off
 *** NMscanTables
-**** TODO [#A] include meta data as NMinfo
+**** DONE include meta data as NMinfo
 **** TODO [#A] Integrate the reduction into one table from NMscanData
 **** DONE Lastonly does the same as firstonly
 *** NMscanData
@@ -376,7 +376,7 @@ See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
 is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMwriteData
-**** DONE [#A] deprecate RData
+**** DONE deprecate RData
 **** DONE BUG NA's are not .
 does fwrite use args.fwrite at all?
 **** DONE Separate generation of INPUT text into new function

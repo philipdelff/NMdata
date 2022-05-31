@@ -34,6 +34,7 @@ dims <- function(...,list.data,keep.names=TRUE,as.fun=NULL,keepNames){
         names.dots <- names(dots)
         
     }
+    if(!all(sapply(dots,is.data.frame))) stop("All objects must be data.frames.")
     if(!keep.names) {
         names.dots <- paste0("x",seq(ndots))
     }

@@ -153,8 +153,10 @@ compareCols <- function(...,list.data,keep.names=TRUE,testEqual=FALSE,diff.only=
 ### what about a summary of dimensions of the supplied datasets? We do that in the separate "dims" function.
     
     if(!quiet) {
-        message("Dimensions:")
-        print(dims(list.data=dots))
+        if(all(sapply(dots,is.data.frame))){
+            message("Dimensions:")
+            print(dims(list.data=dots))
+        }
 
         if(nrow(dt.cols)==0&&ndots==1){
             message("Only one data set supplied.\n")
