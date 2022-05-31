@@ -267,7 +267,7 @@ argument.</p>
 <p>Limitations. A number of Nonmem features are not supported. Most
 of this can be overcome by using merge.by.row=TRUE. Incomplete
 list of known limitations:</p>
-<ul><li><p>character TIMEIf Nonmem is used to translate DAY and a charater TIME column, TIME has to be available in an output table. NMscanData does not do the translation to numeric.</p></li>
+<ul><li><p>character TIMEIf Nonmem is used to translate DAY and a character TIME column, TIME has to be available in an output table. NMscanData does not do the translation to numeric.</p></li>
 <li><p>RECORDSThe RECORDS option to limit the part of the input data being used is not searched for. Using merge.by.row=TRUE will work unaffectedly.</p></li>
 <li><p>NULLThe NULL argument to specify missing value string in input data is not respected. If delimited input data is read (as opposed to rds files), missing values are assumed to be represented by dots (.).</p></li>
 </ul></div>
@@ -291,12 +291,6 @@ list of known limitations:</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> (/Users/runner/work/_temp/Library/NMdata/examples/nonmem/xgxr001.lst). Seems</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> like model has been edited since last run. If data sections have been edited,</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> this can corrupt results.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>input data</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> (/Users/runner/work/_temp/Library/NMdata/examples/nonmem/../data/xgxr1.csv) is</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> newer than output control stream</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> (/Users/runner/work/_temp/Library/NMdata/examples/nonmem/xgxr001.lst) Seems</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> like model has been edited since last run. This is likely to corrupt results.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Please consider either not using input data or re-running model.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model:  xgxr001 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Used tables, contents shown as used/total:</span>
