@@ -115,7 +115,7 @@ If no arguments given, a list of active settings. If
 Configure default behavior across the functions in NMdata rather
 than typing the arguments in all function calls. Configure for
 your file organization, data set column names, and other NMdata
-behaviour. Also, you can control what data class NMdata functions
+behavior. Also, you can control what data class NMdata functions
 return (say data.tables or tibbles if you prefer one of those over
 data.frames).
 }

@@ -57,6 +57,7 @@ reference:
         desc: "Functions for retrieving NONMEM input and output data"
         contents:
           - NMscanData
+          - NMscanMultiple
           - NMscanTables
           - NMscanInput
           - NMreadCsv

@@ -49,7 +49,9 @@ With load_all():
     Risk now is that arguments are set to NULL
     Export to parent. Not sure check allows though...
 ** Function improvements
-*** DONE cl
+*** cl
+*** dims
+**** TODO [#A] Check if objects are data.frames
 *** DONE fnAppend
 Make internal in tracee
 *** NMcheckColNames
@@ -132,6 +134,8 @@ because by and by.x+by.y are handled differently the second time? Clen this.
      the merge is done.
 **** DONE Test the check for row duplications
 *** NMapplyFilters
+**** TODO [#A] Check if there are missings in columns used for filters
+If so, give a warning
 **** TODO [#B] Support for no filters
 I don't think I ever tried this. What will NMscanData do if input data
 has no headers, and there are no filters? I think NMapplyFilters may

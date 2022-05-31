@@ -416,6 +416,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 
 #### Section start: Check file modification times ####
+    
     logtime.lst <- lstExtractTime(file)
     mtime.lst <- file.mtime(file)
     time.method.lst <- NA
@@ -427,9 +428,11 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     }
 
     if(check.time){
-
-        time.method.lst <- "log"
-        testtime.lst <- logtime.lst
+### unfortunately, the log method does not work properly for lsts yet.
+        ## time.method.lst <- "log"
+        ## testtime.lst <- logtime.lst
+        time.method.lst <- "mtime"
+        testtime.lst <- mtime.lst
         if(is.na(logtime.lst)){
             testtime.lst <- mtime.lst
             time.method.lst <- "mtime"
@@ -581,7 +584,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             nrow.tab.row <- nrow(tab.row)
             if(!is.null(tab.row) && nrow.data.input!=nrow.tab.row) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.
-                messageWrap(sprintf("After applying filters to input data, the resulting number of rows (%d) differs from the number of rows in output data (%d). Please check that input data hasn't changed since Nonmem was run, and that $INPUT section matches columns in input data. Also, NMdata may not be able to interpret your IGNORE/ACCEPT statements correctly (see ?NMapplyFilters). Please consider including a unique row identifier in both input and output data if possible. Another reason for the error could be that the model is a simulation that returns a multiple of the input events in output data.",nrow.tab.row,nrow.data.input),fun.msg=stop)
+                messageWrap(sprintf("After applying filters to input data, the resulting number of rows (%d) differs from the number of rows in output data (%d). Please check that input data hasn't changed since Nonmem was run, and that $INPUT section matches columns in input data. Also, NMdata may not be able to interpret your IGNORE/ACCEPT statements correctly (see ?NMapplyFilters). Please consider including a unique row identifier in both input and output data if possible. Another reason for the error could be that the model is a simulation that returns a multiple of the input events in output data.",nrow.data.input,nrow.tab.row),fun.msg=stop)
             }
 
             
