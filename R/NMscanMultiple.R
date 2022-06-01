@@ -17,7 +17,11 @@
 ##'     NMdataConf.
 ##' @param ... Additional arguments passed to NMscanData.
 ##' @return All results stacked, class as defined by as.fun
-
+##' @examples
+##' res <- NMscanMultiple(dir=system.file("examples/nonmem", package="NMdata"),file.pattern="xgxr.*\\.lst",as.fun="data.table")
+##' res.mean <- res[,exp(mean(log(PRED))),by=.(model,NOMTIME)]
+##' library(ggplot2)
+##' ggplot(res.mean,aes(NMTIME,PRED,colour=model))+geom_line() 
 ##' @export
 
 
@@ -30,11 +34,37 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
-
-    
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
+#### Section start: Define ad-hoc functions ####
+
+    catchAnything <- function(fun)
+        function(...) {
+            warn <- err <- NULL
+            res <- withCallingHandlers(
+                tryCatch(fun(...), error=function(e) {
+                    err <<- conditionMessage(e)
+                    NULL
+                }), warning=function(w) {
+                    warn <<- append(warn, conditionMessage(w))
+                    invokeRestart("muffleWarning")
+                })
+            list(res, warn=warn, err=err)
+        }
+    .has <- function(x, what)
+        !sapply(lapply(x, "[[", what), is.null)
+    hasWarning <- function(x) .has(x, "warn")
+    hasError <- function(x) .has(x, "err")
+    isClean <- function(x) !(hasError(x) | hasWarning(x))
+    value <- function(x) sapply(x, "[[", 1)
+    cleanv <- function(x) sapply(x[isClean(x)], "[[", 1)
+
+
+### Section end: Define ad-hoc functions
+
+
+    
 #### Section start: Code taken from NMwriteSection ####
 
     ## supply either file or file.pattern. dir only allowed if file.pattern
@@ -76,30 +106,54 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
         cat("No files matched path/pattern criteria\n")
         return(NULL)
     }
+    
+
+    testfun <- function(x)NMscanData(x,as.fun="data.table",...)
     fun.apply <- function(x){
         cat(sprintf("\nReading %s:\n\n",x))
-        try(NMscanData(x,as.fun="data.table",...))
+        res <- catchAnything(testfun)
+        res
     }
-    res.all.list <- lapply(all.files,fun.apply)
+    
+    ## fun.apply <- function(x){
+    ##     cat(sprintf("\nReading %s:\n\n",x))
+    ##     res <- tryCatch(
+    ##         expr={
+    ##             NMscanData(x,as.fun="data.table",...)
+    ##         }
+    ##        ,error=function(e){"Failed"}
+    ##        ,warning=function(w){w}
+    ##     )
+    ##     res
+    ## }
+    res.all.list <- lapply(all.files,catchAnything(testfun))
 
     ## list and count succesfull and unsuccesfull
     
+    ## dt.lst <- data.table(lst=all.files,
+    ##                      success=sapply(res.all.list,function(x)!any(class(x)=="try-error"))
+    ##                      )
+
     dt.lst <- data.table(lst=all.files,
-                         success=sapply(res.all.list,function(x)!any(class(x)=="try-error"))
+                         success=!hasError(res.all.list)
+                         ,warning=hasWarning(res.all.list)
                          )
-    
+
     ## add dimensions of the read data.
     names(res.all.list) <- all.files
+    
+    res.all.list <- lapply(res.all.list,function(x)x[[1]])
     dims.res <- dims(list.data=res.all.list[dt.lst[,which(success)]])
     dt.lst <- mergeCheck(dt.lst,dims.res,by.x="lst",by.y="data",all.x=T,quiet=TRUE)
-    lapply(res.all.list[],NMinfo)
+    ##lapply(res.all.list[],NMinfo)
     
     info.list <- lapply(res.all.list,NMinfo)
     names(info.list) <- all.files
     
     res.all <- rbindlist(res.all.list[dt.lst[,which(success)]],fill=TRUE)
     writeNMinfo(res.all,info.list)
-
+    
+    setcolorder(dt.lst,cc(lst,nrows,ncols,success,warning))
     print(dt.lst)
     ## print(res.all[,.(.N),by=col.model])
     
