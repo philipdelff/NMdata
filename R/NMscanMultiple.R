@@ -99,9 +99,11 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
     res.all.list <- lapply(res.all.list,function(x)x[[1]])
     dims.res <- dims(list.data=res.all.list[dt.lst[,which(success)]])
     dt.lst <- mergeCheck(dt.lst,dims.res,by.x="lst",by.y="data",all.x=T,quiet=TRUE)
+
     
     info.list <- lapply(res.all.list,NMinfo)
     names(info.list) <- all.files
+    info.list <- append(info.list,list(all=dt.lst))
     
     res.all <- rbindlist(res.all.list[dt.lst[,which(success)]],fill=TRUE)
     writeNMinfo(res.all,info.list)

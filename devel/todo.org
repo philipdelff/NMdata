@@ -51,7 +51,7 @@ With load_all():
 ** Function improvements
 *** cl
 *** dims
-**** TODO [#A] Check if objects are data.frames
+**** DONE Check if objects are data.frames
 *** DONE fnAppend
 Make internal in tracee
 *** NMcheckColNames
@@ -113,6 +113,8 @@ Error if not convertible and not NA or ""? "b" should be an error right?
 *** TODO [#B] Function for complex dosing regimens              :newFunction:
 *** TODO [#B] Function to unfold ADDL/II doses to multiple rows :newFunction:
 *** mergeCheck
+**** TODO [#B] Implement a faster method?
+What if we just check for matches in by columns?
 **** TODO [#B] accept common columns not being merged by if suffixes are provided
 **** TODO [#B] If results are not accepted. Check for whether y is unique in by
 **** TODO [#B] Add at least number of NA's to message about what was added
@@ -134,7 +136,7 @@ because by and by.x+by.y are handled differently the second time? Clen this.
      the merge is done.
 **** DONE Test the check for row duplications
 *** NMapplyFilters
-**** TODO [#A] Check if there are missings in columns used for filters
+**** DONE Check if there are missings in columns used for filters
 If so, give a warning
 **** TODO [#B] Support for no filters
 I don't think I ever tried this. What will NMscanData do if input data
@@ -203,7 +205,7 @@ Many variables are only expected to exist for say samples. Example:
 LLOQ can very well be missing for doses. And the check may depend on
 study, compound etc too. So we need to split or subset data for the
 check. Maybe check in a subset and expect NA in the rest?
-**** TODO [#B] Checks for presense of II and ADDL don't report dependence
+**** TODO [#B] Checks for presense of II and ADDL should report dependence
      If one is present, presence of the other is tested. If not found,
      it says "II Column not found". Would be helpful to know that it
      is because ADDL is found.
@@ -270,6 +272,8 @@ Included a gsub("\t"," ",lines)
      should support the same arg to remove the char from the input
      column name. However, only relevant if column names are not
      translated.
+
+     Check status on this. Not sure if it's resolved already.
 **** DONE Get number of subjects as before filtering
 Challenge is that the filters are applied before the column names are
 changed. So we need access to the old data and know what column to
@@ -314,11 +318,13 @@ A way to limit rows read into nonmem
 **** TODO [#A] Integrate the reduction into one table from NMscanData
 **** DONE Lastonly does the same as firstonly
 *** NMscanData
-**** TODO [#B] Split out data finder handling
+**** DONE Split out data finder handling
 There is a few different ways to get to the data file path. Some
 checks are being done on the compatibility of the arguments in
 NMscanData. This should be done in NMscanInput or NMextractDataFile so
 that other functions such as NMcheckData gets the same behaviour.
+
+This is now handled by NMextractDataFile
 **** TODO [#B] Simplify timestamp warnings
      When .mod is newer than .lst and or tables, reduce to one warning
      summarizing both findings.
