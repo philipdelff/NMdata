@@ -19,9 +19,9 @@
 ##' @return All results stacked, class as defined by as.fun
 ##' @examples
 ##' res <- NMscanMultiple(dir=system.file("examples/nonmem", package="NMdata"),file.pattern="xgxr.*\\.lst",as.fun="data.table")
-##' res.mean <- res[,exp(mean(log(PRED))),by=.(model,NOMTIME)]
+##' res.mean <- res[,.(meanPRED=exp(mean(log(PRED)))),by=.(model,NOMTIME)]
 ##' library(ggplot2)
-##' ggplot(res.mean,aes(NMTIME,PRED,colour=model))+geom_line() 
+##' ggplot(res.mean,aes(NOMTIME,meanPRED,colour=model))+geom_line() 
 ##' @export
 
 
@@ -29,6 +29,9 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
+    lst <- NULL
+    ncols <- NULL
+    nrows <- NULL
     quiet <- NULL
     success <- NULL
 
@@ -63,44 +66,11 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
 
 ### Section end: Define ad-hoc functions
 
-
-    
-#### Section start: Code taken from NMwriteSection ####
-
-    ## supply either file or file.pattern. dir only allowed if file.pattern
-    if( missing(files) && missing(file.pattern) ){
-        stop("You have to supply either file or file.pattern")
-    }
-    if(!missing(files)&& (!missing(file.pattern) || !missing(dir))){
-        stop("If supplying files, file.pattern and dir cannot be used")
-    }
-    if(!missing(file.pattern)&&missing(dir)){
-        stop("If using file.pattern, you have to supply dir too.")
-    }
-    
-    if(!missing(files)&&length(files)>0){
-        
-        if(any(!file.exists(files))){
-            if(!quiet){
-                message("Files not found. Skipping:\n",paste(files[!file.exists(files)],collapse="\n"))
-            }
-        }
-        all.files <- files[file.exists(files)]
-    }
-    
-    
-    if(!missing(file.pattern)){
-        all.files <- list.files(path=dir,pattern=file.pattern,full.names=TRUE,recursive=FALSE)
-    }
-    
-    if(length(all.files)==0){
-        message("No existing files matched. Nothing to do.")
-        return(invisible(NULL))
-    }
-
-
-
-###  Section end: Code taken from NMwriteSection
+    if(missing(files)) files <- NULL
+    if(missing(dir)) dir <- NULL
+    if(missing(file.pattern)) file.pattern <- NULL
+   
+    all.files <- getFilePaths(files=files,file.pattern=file.pattern,dir=dir)
     
     if(length(all.files)==0) {
         cat("No files matched path/pattern criteria\n")
@@ -115,28 +85,12 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
         res
     }
     
-    ## fun.apply <- function(x){
-    ##     cat(sprintf("\nReading %s:\n\n",x))
-    ##     res <- tryCatch(
-    ##         expr={
-    ##             NMscanData(x,as.fun="data.table",...)
-    ##         }
-    ##        ,error=function(e){"Failed"}
-    ##        ,warning=function(w){w}
-    ##     )
-    ##     res
-    ## }
     res.all.list <- lapply(all.files,catchAnything(testfun))
 
     ## list and count succesfull and unsuccesfull
-    
-    ## dt.lst <- data.table(lst=all.files,
-    ##                      success=sapply(res.all.list,function(x)!any(class(x)=="try-error"))
-    ##                      )
-
     dt.lst <- data.table(lst=all.files,
                          success=!hasError(res.all.list)
-                         ,warning=hasWarning(res.all.list)
+                        ,warning=hasWarning(res.all.list)
                          )
 
     ## add dimensions of the read data.
@@ -145,7 +99,6 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
     res.all.list <- lapply(res.all.list,function(x)x[[1]])
     dims.res <- dims(list.data=res.all.list[dt.lst[,which(success)]])
     dt.lst <- mergeCheck(dt.lst,dims.res,by.x="lst",by.y="data",all.x=T,quiet=TRUE)
-    ##lapply(res.all.list[],NMinfo)
     
     info.list <- lapply(res.all.list,NMinfo)
     names(info.list) <- all.files
@@ -154,8 +107,8 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
     writeNMinfo(res.all,info.list)
     
     setcolorder(dt.lst,cc(lst,nrows,ncols,success,warning))
+    cat("\nOverview of model scanning results:\n")
     print(dt.lst)
-    ## print(res.all[,.(.N),by=col.model])
     
     ## run as.fun
     res.all <- as.fun(res.all)

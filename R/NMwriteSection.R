@@ -70,34 +70,13 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections
 #### Section start: handle arguments ####
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
-    
-    ## supply either file or file.pattern. dir only allowed if file.pattern
-    if( missing(files) && missing(file.pattern) ){
-        stop("You have to supply either file or file.pattern")
-    }
-    if(!missing(files)&& (!missing(file.pattern) || !missing(dir))){
-        stop("If supplying files, file.pattern and dir cannot be used")
-    }
-    if(!missing(file.pattern)&&missing(dir)){
-        stop("If using file.pattern, you have to supply dir too.")
-    }
-    
-    if(!missing(files)&&length(files)>0){
-        
-        if(any(!file.exists(files))){
-            if(!quiet){
-                message("Files not found. Skipping:\n",paste(files[!file.exists(files)],collapse="\n"))
-            }
-        }
-        all.files <- files[file.exists(files)]
-    }
-    
-    
-    if(!missing(file.pattern)){
-        all.files <- list.files(path=dir,pattern=file.pattern,full.names=TRUE,recursive=FALSE)
 
-    }
-    
+    if(missing(files)) files <- NULL
+    if(missing(dir)) dir <- NULL
+    if(missing(file.pattern)) file.pattern <- NULL
+   
+    all.files <- getFilePaths(files=files,file.pattern=file.pattern,dir=dir,quiet=quiet)
+
     if(length(all.files)==0){
         message("No existing files matched. Nothing to do.")
         return(invisible(NULL))

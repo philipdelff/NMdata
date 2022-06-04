@@ -24,7 +24,14 @@
 
 NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
 
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+
+    . <- NULL
+    variable <- NULL
+    value <- NULL
     
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+
     
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
