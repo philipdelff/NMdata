@@ -24,7 +24,8 @@ NMscanData(
   col.nmout,
   tab.count = FALSE,
   order.columns = TRUE,
-  check.time
+  check.time,
+  tz.lst
 )
 }
 \arguments{
@@ -150,6 +151,11 @@ the time stamp recorded by Nonmem is used if possible, and if
 the input data is created with NMwriteData, the recorded
 creation time is used if possible. If not, and for all other
 files, the file modification times are used.}
+
+\item{tz.lst}{If supplied, the timezone to be used when reading
+the time stamp in the output control stream. Please supply
+something listed in OlsonNames(). Can be configured using
+NMdataConf() too.}
 }
 \value{
 A data set of class 'NMdata'.

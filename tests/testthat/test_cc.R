@@ -1,3 +1,5 @@
+context("cc")
+
 test_that("All tests",{
     fileRef <- "testReference/cc_1.rds"
 

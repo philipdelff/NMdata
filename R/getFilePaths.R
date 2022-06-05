@@ -5,7 +5,7 @@
 ##' @param dir The directory i which to look for file.pattern. dir is
 ##'     passed to list.files as pattern. If supplied, file.pattern must also be supplied.
 ##' @return A character vector of full paths to files
-##' @internal
+##' @keywords internal
 
 getFilePaths <- function(files=NULL,file.pattern=NULL,dir=NULL,quiet=FALSE){
     

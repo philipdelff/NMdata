@@ -17,7 +17,7 @@
 
 fnAppend <- function(fn,x,pad0=0,sep="_"){
     
-    if(!is.numeric(x)&&!is.character(x)) stop("x must be numeric or character.")
+    if((!is.numeric(x)&&!is.character(x)) ||length(x)!=1) stop("x must be numeric or character vector of length 1.")
 
     fnroot <- sub("^(.+)\\..+$","\\1",fn)
     fnext <- sub(".*\\.([^\\.]+)$","\\1",fn)
@@ -27,7 +27,10 @@ fnAppend <- function(fn,x,pad0=0,sep="_"){
     } else {
         string <- x
     }
-
+if(nchar(string)>0){
     paste0(fnroot,sep,string,".",fnext)
-
+} else {
+    fn
+}
+    
 }

@@ -112,6 +112,10 @@
 ##'     the input data is created with NMwriteData, the recorded
 ##'     creation time is used if possible. If not, and for all other
 ##'     files, the file modification times are used.
+##' @param tz.lst If supplied, the timezone to be used when reading
+##'     the time stamp in the output control stream. Please supply
+##'     something listed in OlsonNames(). Can be configured using
+##'     NMdataConf() too.
 ##'
 ##' @details This function makes it very easy to collect the data from
 ##'     a Nonmem run.

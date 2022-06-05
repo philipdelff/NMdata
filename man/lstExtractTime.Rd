@@ -4,7 +4,7 @@
 \alias{lstExtractTime}
 \title{Extract run time from output control stream}
 \usage{
-lstExtractTime(file)
+lstExtractTime(file, tz.lst = "as.is")
 }
 \arguments{
 \item{file}{path to output control stream}

@@ -46,8 +46,10 @@ past to writeLines.}
 containing a section. Names must be section names, contents of
 each element are the new section lines for each section.}
 
-\item{newfile}{path to new run. If missing, path is used. If NULL,
-output is returned rather than written.}
+\item{newfile}{path and filename to new run. If missing, the original
+file (from \code{files} or \code{file.pattern}) is overwritten
+(see the \code{backup} option below). If NULL, output is returned
+as a character vector rather than written.}
 
 \item{backup}{In case you are overwriting the old file, do you
 want to backup the file (to say, backup_run001.mod)?}

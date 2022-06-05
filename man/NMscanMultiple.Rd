@@ -32,3 +32,10 @@ Useful function for meta analyses when multiple models are stored
 in one folder and can be read with NMscanData using the same
 arguments.
 }
+\examples{
+res <- NMscanMultiple(dir=system.file("examples/nonmem", package="NMdata"),
+file.pattern="xgxr.*\\\\.lst",as.fun="data.table")
+res.mean <- res[,.(meanPRED=exp(mean(log(PRED)))),by=.(model,NOMTIME)]
+library(ggplot2)
+ggplot(res.mean,aes(NOMTIME,meanPRED,colour=model))+geom_line() 
+}
