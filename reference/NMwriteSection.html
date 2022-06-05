@@ -131,8 +131,10 @@ past to writeLines.</p></dd>
 containing a section. Names must be section names, contents of
 each element are the new section lines for each section.</p></dd>
 <dt>newfile</dt>
-<dd><p>path to new run. If missing, path is used. If NULL,
-output is returned rather than written.</p></dd>
+<dd><p>path and filename to new run. If missing, the original
+file (from <code>files</code> or <code>file.pattern</code>) is overwritten
+(see the <code>backup</code> option below). If NULL, output is returned
+as a character vector rather than written.</p></dd>
 <dt>backup</dt>
 <dd><p>In case you are overwriting the old file, do you
 want to backup the file (to say, backup_run001.mod)?</p></dd>

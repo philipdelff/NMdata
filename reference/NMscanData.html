@@ -115,7 +115,8 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
   <span class="va">col.nmout</span>,
   tab.count <span class="op">=</span> <span class="cn">FALSE</span>,
   order.columns <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">check.time</span>
+  <span class="va">check.time</span>,
+  <span class="va">tz.lst</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -244,6 +245,11 @@ the time stamp recorded by Nonmem is used if possible, and if
 the input data is created with NMwriteData, the recorded
 creation time is used if possible. If not, and for all other
 files, the file modification times are used.</p></dd>
+<dt>tz.lst</dt>
+<dd><p>If supplied, the timezone to be used when reading
+the time stamp in the output control stream. Please supply
+something listed in OlsonNames(). Can be configured using
+NMdataConf() too.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
