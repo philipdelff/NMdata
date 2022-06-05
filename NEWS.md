@@ -5,14 +5,24 @@
   maintained, and the exclusion from the package releases is only due
   to CRAN's restrictive requirements to the package size.
 
+* New function, NMscanMultiple, to read multiple models and stack
+  results in one data set. This is very useful for meta
+  analysis. NMscanMultiple is a wrapper of NMscanData. It keeps track
+  of warnings and errors for reading of individual models rather than
+  getting stuck. You can either specify a vector of model paths or a
+  directory plus a regular expression (just like for NMwriteSection).
+
 * Improved tests of order of age of output control streams and input
   data in NMscanData. So far, all data were tested on file
   modification times which is not useful in the common case that data
   files and/or nonmem control streams are moved around between
-  systems. Now NMscanData will look for a time stamp in the output
+  systems. Now NMscanData can look for a time stamp in the output
   control stream and if NMwriteData was use to write the input data to
   file, the creation time is taken from meta data. This will make the
-  warnings about the order of age of files more reliable.
+  warnings about the order of age of files more reliable. Notice
+  however, that for the output control stream, the timezone has to be
+  set using the tz.lst argument or using NMdataConf - at least for
+  now.
   
 * Checks of unique subject identifier (usubjid) included in
   NMcheckData. This is mostly to detect the potential issue that the

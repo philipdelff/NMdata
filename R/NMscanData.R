@@ -150,7 +150,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                        translate.input=TRUE, quiet, use.rds,
                        args.fread, as.fun, col.id="ID",
                        modelname, col.model, col.nmout,tab.count=FALSE,
-                       order.columns=TRUE, check.time) {
+                       order.columns=TRUE, check.time, tz.lst) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -191,12 +191,14 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(missing(dir.data)) dir.data <- NULL
     if(missing(file.mod)) file.mod <- NULL
     if(missing(check.time)) check.time <- NULL
+    if(missing(tz.lst)) tz.lst <- NULL
     if(missing(as.fun)) as.fun <- NULL
     if(missing(quiet)) quiet <- NULL
     if(missing(use.rds)) use.rds <- NULL
     if(missing(args.fread)) args.fread <- NULL
 
     check.time <- NMdataDecideOption("check.time",check.time)
+    tz.lst <- NMdataDecideOption("tz.lst",tz.lst)
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     modelname <- NMdataDecideOption("modelname",modelname)
     if(missing(recover.rows)) recover.rows <- NULL
@@ -416,8 +418,11 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 
 #### Section start: Check file modification times ####
-    
-    logtime.lst <- lstExtractTime(file)
+    if(is.null(tz.lst)){
+        logtime.lst <- NA
+    } else {
+        logtime.lst <- lstExtractTime(file,tz.lst)
+    }
     mtime.lst <- file.mtime(file)
     time.method.lst <- NA
     time.method.inp <- NA
@@ -428,11 +433,10 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     }
 
     if(check.time){
-### unfortunately, the log method does not work properly for lsts yet.
-        ## time.method.lst <- "log"
-        ## testtime.lst <- logtime.lst
-        time.method.lst <- "mtime"
-        testtime.lst <- mtime.lst
+        time.method.lst <- "log"
+        testtime.lst <- logtime.lst
+        ## time.method.lst <- "mtime"
+        ## testtime.lst <- mtime.lst
         if(is.na(logtime.lst)){
             testtime.lst <- mtime.lst
             time.method.lst <- "mtime"

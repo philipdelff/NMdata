@@ -236,6 +236,14 @@ NMdataConfOptions <- function(name){
            ,process=identity
         )
        ,
+        tz.lst=list(
+            default=NULL
+            ## has to be length 1 character or function
+           ,is.allowed=function(x)is.null(x)||(is.character(x)&&length(x)==1)
+           ,msg.not.allowed="tz.lst must be a character vector of lenght 1."
+           ,process=identity
+        )
+       ,
         col.model=list(
             default="model"
            ,is.allowed=function(x) (is.character(x) && length(x)==1)
