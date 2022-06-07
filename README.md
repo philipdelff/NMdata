@@ -91,7 +91,6 @@ simple as
 ``` r
 res <- NMscanData("xgxr014.lst",recover.rows=TRUE)
 #> Model:  xgxr014 
-#> Input and output data merged by: ROW 
 #> 
 #> Used tables, contents shown as used/total:
 #>               file      rows columns     IDs
@@ -99,11 +98,14 @@ res <- NMscanData("xgxr014.lst",recover.rows=TRUE)
 #>  xgxr2.rds (input) 1502/1502   22/24 150/150
 #>           (result)      1502    34+2     150
 #> 
+#> Input and output data merged by: ROW 
+#> 
 #> Distribution of rows on event types in returned data:
-#>  EVID CMT Input only Output
-#>     0   1          2      0
-#>     0   2        595    755
-#>     1   1          0    150
+#>  EVID CMT input-only output result
+#>     0   1          2      0      2
+#>     0   2        595    755   1350
+#>     1   1          0    150    150
+#>   All All        597    905   1502
 ```
 
 And we are ready to plot (a subset of) the result:
@@ -137,13 +139,50 @@ NMdataConf(as.fun="data.table")
 res.dt <- NMscanData("xgxr001.lst",quiet=TRUE)
 ```
 
-NMscanData is very general, and should work with all kinds of models,
+`NMscanData` is very general, and should work with all kinds of models,
 and all kinds of other software and configurations. Take a look at [this
 vignette](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
 for more info on the NONMEM data reader. Then you will learn how to
 access the meta data that will allow you to trace every step that was
 taken combining the data and the many checks that were done along the
 way too.
+
+## Meta analysis made really easy
+
+Since `NMscanData` is so general and will figure out where to find input
+and output data on its own, let’s use the `NMscanMultiple` wrapper to
+read multiple models and compare their predictions.
+
+``` r
+res <- NMscanMultiple(dir=system.file("examples/nonmem", package="NMdata"),
+file.pattern="xgxr.*\\.lst",as.fun="data.table",quiet=TRUE)
+#> No missing values identified
+#> 
+#> Overview of model scanning results:
+#>                                                                             lst
+#> 1: /tmp/RtmpTd9QIu/temp_libpath102521020f9b7/NMdata/examples/nonmem/xgxr001.lst
+#> 2: /tmp/RtmpTd9QIu/temp_libpath102521020f9b7/NMdata/examples/nonmem/xgxr002.lst
+#> 3: /tmp/RtmpTd9QIu/temp_libpath102521020f9b7/NMdata/examples/nonmem/xgxr003.lst
+#> 4: /tmp/RtmpTd9QIu/temp_libpath102521020f9b7/NMdata/examples/nonmem/xgxr014.lst
+#> 5: /tmp/RtmpTd9QIu/temp_libpath102521020f9b7/NMdata/examples/nonmem/xgxr018.lst
+#>    nrows ncols success warning
+#> 1:   905    40    TRUE   FALSE
+#> 2:   905    34    TRUE   FALSE
+#> 3:   905    34    TRUE   FALSE
+#> 4:   905    36    TRUE   FALSE
+#> 5:   905    33    TRUE   FALSE
+gmean <- function(x)exp(mean(log(x)))
+res.mean <- res[,.(gmeanPRED=gmean(PRED)),by=.(model,NOMTIME)]
+obs.all <- unique(res[,.(ID,NOMTIME,TIME,DV)])
+ggplot(res.mean,aes(NOMTIME,gmeanPRED,colour=model))+geom_line()+
+    geom_point(aes(TIME,DV),data=obs.all,inherit.aes=FALSE)+
+    scale_y_log10()+
+    labs(x="Time",y="Concentration",subtitle="Comparison of population predictions")
+#> Warning: Transformation introduced infinite values in continuous y-axis
+#> Transformation introduced infinite values in continuous y-axis
+```
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 ## Get the most recent version
 

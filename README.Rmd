@@ -30,20 +30,25 @@ NMscanData <- function(x,...)NMdata::NMscanData(file.path(system.file(paste0("ex
 
 ##  A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
 Pharmacometrics and PK/PD modeling offers unique information for
-decision-making in several steps of drug development. However, it often takes a lot of work to get there, and there are many pitfalls along the way. NMdata helps simplifying this work and steering around the pitfalls or at least making sure we didn't fall into them.
+decision-making in several steps of drug development. However, it
+often takes a lot of work to get there, and there are many pitfalls
+along the way. NMdata helps simplifying this work and steering around
+the pitfalls or at least making sure we didn't fall into them.
 
 
 ### Automate book keeping and focus on modeling
-Preparing data sets - and if you use NONMEM, reading the results data - can be tedious, and mistakes can lead to hours of
-frustration. NMdata provides useful tools (including automated
-checks) for these trivial tasks. 
+Preparing data sets - and if you use NONMEM, reading the results
+data - can be tedious, and mistakes can lead to hours of
+frustration. NMdata provides useful tools (including automated checks)
+for these trivial tasks.
 
 ### NMdata is not a silo 
-Any functionality in
-the NMdata can be used independently of the rest of the package, and
-NMdata is not intended to force you to change any habits or
-preferences. Instead, NMdata tries to fit in with how you (or your
-colleague who worked on the project before you) do things. It likely provides helpful additions no matter what other tools you already use. 
+Any functionality in the NMdata can be used independently of the rest
+of the package, and NMdata is not intended to force you to change any
+habits or preferences. Instead, NMdata tries to fit in with how you
+(or your colleague who worked on the project before you) do things. It
+likely provides helpful additions no matter what other tools you
+already use.
 
 ### More information
 The best place to browse information about the package is
@@ -111,7 +116,7 @@ NMdataConf(as.fun="data.table")
 res.dt <- NMscanData("xgxr001.lst",quiet=TRUE)
 ```
 
-NMscanData is very general, and should work with all kinds of models,
+`NMscanData` is very general, and should work with all kinds of models,
 and all kinds of other software and configurations. Take a look at
 [this
 vignette](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
@@ -119,6 +124,23 @@ for more info on the NONMEM data reader. Then you will learn how to
 access the meta data that will allow you to trace every step that was
 taken combining the data and the many checks that were done along the
 way too.
+
+## Meta analysis made really easy
+Since `NMscanData` is so general and will figure out where to find
+input and output data on its own, let's use the `NMscanMultiple`
+wrapper to read multiple models and compare their predictions.
+
+```{r}
+res <- NMscanMultiple(dir=system.file("examples/nonmem", package="NMdata"),
+file.pattern="xgxr.*\\.lst",as.fun="data.table",quiet=TRUE)
+gmean <- function(x)exp(mean(log(x)))
+res.mean <- res[,.(gmeanPRED=gmean(PRED)),by=.(model,NOMTIME)]
+obs.all <- unique(res[,.(ID,NOMTIME,TIME,DV)])
+ggplot(res.mean,aes(NOMTIME,gmeanPRED,colour=model))+geom_line()+
+    geom_point(aes(TIME,DV),data=obs.all,inherit.aes=FALSE)+
+    scale_y_log10()+
+    labs(x="Time",y="Concentration",subtitle="Comparison of population predictions")
+```
 
 
 ## Get the most recent version
