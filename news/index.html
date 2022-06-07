@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11.924</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.12</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.12" id="nmdata-0012">NMdata 0.0.12<a class="anchor" aria-label="anchor" href="#nmdata-0012"></a></h2>
+<h2 class="page-header" data-toc-text="0.0.12" id="nmdata-0012">NMdata 0.0.12<small>2022-06-06</small><a class="anchor" aria-label="anchor" href="#nmdata-0012"></a></h2>
 <ul><li><p>Vignettes are no longer included in R package and can only be read online at <a href="https://philipdelff.github.io/NMdata/" class="uri">https://philipdelff.github.io/NMdata/</a> They are still being maintained, and the exclusion from the package releases is only due to CRAN’s restrictive requirements to the package size.</p></li>
 <li><p>New function, NMscanMultiple, to read multiple models and stack results in one data set. This is very useful for meta analysis. NMscanMultiple is a wrapper of NMscanData. It keeps track of warnings and errors for reading of individual models rather than getting stuck. You can either specify a vector of model paths or a directory plus a regular expression (just like for NMwriteSection).</p></li>
 <li><p>Improved tests of order of age of output control streams and input data in NMscanData. So far, all data were tested on file modification times which is not useful in the common case that data files and/or nonmem control streams are moved around between systems. Now NMscanData can look for a time stamp in the output control stream and if NMwriteData was use to write the input data to file, the creation time is taken from meta data. This will make the warnings about the order of age of files more reliable. Notice however, that for the output control stream, the timezone has to be set using the tz.lst argument or using NMdataConf - at least for now.</p></li>
