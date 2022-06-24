@@ -36,7 +36,6 @@ theme_set(theme_bw(base_size=14)+
           theme(strip.background =element_rect(fill="#ff9dff"))
           )
 library(data.table)
-unloadNamespace("pmxtricks")
 unloadNamespace("NMdata")
 
 ## some setup
@@ -106,7 +105,7 @@ Designed to fit in to the user's setup and coding preferences
 $$\vspace{.01in}$$
 
 * The data creation tools should be relevant independently of estimation/simulation tool.
-* Latest stable release is 0.0.7.2. Plan is to release 0.1.0 on CRAN.
+* Latest stable release is 0.0.12 and is available on CRAN and MPN (starting from 2022-06-15 snapshot).
 
 
 <!-- ## Who can find NMdata useful? -->
@@ -137,17 +136,16 @@ $$\vspace{.01in}$$
 
 <!-- `NMdata` is my humble experience collected in efficient functions that fill some holes and help with some of the most annoying design -->
 ## Motivation
-* As large a potential pharmacometrics has for illuminating the unknown in drug development, it is dangerously technical.
+* The workflow of a pharmacometrician is very technical, with many risks of errors.
 
-* The risk is to have too little time for modeling, reflection, and
-understanding key questions. `NMdata` can be a help in freeing time to
-more high-level tasks.
+* Technical workload takes time from modeling, reflection, and
+understanding key questions. 
 
-* During the first 2-3 years I spent in pharmacometrics, I must have spent half the time coding, desparately trying to get Nonmem to behave and to understand the properties of the estimates I obtained.
+* During the first 2-3 years I spent in pharmacometrics, I must have spent half the time coding, desparately trying to get Nonmem to behave, and to understand the properties of the estimates I obtained.
 
 * Most of us develop our own ways to avoid some of the many
 difficulties in this process. This takes a lot of time and is most
-often only because we don't have adequate tools at hand.
+often only because we don't have adequate tools at hand. Or don't know them.
 
 * I generalized some of my solutions and collected them in `NMdata`.
 
@@ -173,38 +171,15 @@ you find something interesting, feel free to take advantage.
 
 
 ## Getting started
-::: columns
-:::: column
-Use recent development version
-Notice: This should not be used for final scripts
-```{r,install-NMdata,eval=FALSE}
-library(remotes)
-install_github("philipdelff/NMdata",
-               upgrade="never")
-```
-
+Install from `CRAN` or from `MPN` using `pkgr`.
 ```{r,load-NMdata,echo=TRUE,message=TRUE}
 library(NMdata)
 ```
-::::
-:::: column
-Using a specific release. See list of releases at [https://github.com/philipdelff/NMdata/releases](https://github.com/philipdelff/NMdata/releases)
-```{r,install-NMdata-release,eval=FALSE}
-library(remotes)
-install_github("philipdelff/NMdata@v0.0.7.2",
-               upgrade="never")
-```
 
-```{r,load-NMdata-release,echo=TRUE,message=TRUE,eval=F}
-library(NMdata)
-```
-::::
-:::
-
-```{r,load-all-NMdata,include=FALSE}
-library(devtools)
-load_all()
-```
+<!-- ```{r,load-all-NMdata,include=FALSE} -->
+<!-- library(devtools) -->
+<!-- load_all() -->
+<!-- ``` -->
 
 ```{r,include=FALSE}
 NMdataConf(check.time=FALSE)
@@ -214,6 +189,7 @@ NMdataConf(as.fun="data.table")
 
 Three vignettes are available so far (see "Vignettes" tab when visiting URL above):
 
+* [Cheat sheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html)
 * [Data creation tools](https://philipdelff.github.io/NMdata/articles/DataCreate.html)
 * [Automated and general reader of Nonmem data](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
 * [FAQ](https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html)
@@ -227,7 +203,7 @@ For a quick overview (after installation), do:
 help(package="NMdata")
 ```
 
-All functions and their arguments are documented in their help files. 
+All functions and their arguments are documented in ?manual pages.
 
 <!-- prepare example data behind the scenes -->
 ```{r,prep-data,include=FALSE}
@@ -1277,9 +1253,6 @@ Other
 ### The plan is submission to CRAN this month!
 
 # `NMdata` functions under development 
-```{r,load-pmxtricks,include=FALSE}
-load_all("c:/Users/delff/working_copies/pmxtricks/")
-```
 
 ## `NMcheckData`: Check data syntax for Nonmem compatibility \includegraphics[width=0.5in]{figures/worksign.png}
 Aim: check data for all potential Nonmem compatibility issues and other obvious errors.
@@ -1376,27 +1349,10 @@ procedure.
 
 
 # Other tools
-## pmxtricks
-A more diverse package 
+## tracee
 
-- `ggIndProfs`: Individual plots, including indication of doses
 - `ggwrite`: Saves images in sizes made for powerpoint, including stamps (time, source, output filename). It can save multiple plots at once as one file (pdf) or multiple files. 
 
-```{r,install-pmxtricks,eval=FALSE}
-library(remotes)
-install_github("philipdelff/pmxtricks",upgrade="never")
-library(pmxtricks)
-```
-
-
-## Individual profiles including observations, doses, and model predictions
-\footnotesize
-```{r,ggIndProfs,message=FALSE,warning=FALSE,out.height="75%"}
-pls1 <- ggIndProfs(res1,amt="AMT",grp="trtact",NPerSheet=36,labels="top-right",
-                   ylab="Concentration",ylab2="Dose")
-ggwrite(pls1[[5]],canvas="wide")
-```
-\normalsize
 
 ## `ggwrite`: Flexible saving of tracable output
 ::: columns
@@ -1416,7 +1372,7 @@ ggwrite(pls1[[5]],canvas="wide")
 :::: column
 Save pls1, as one file and as multiple files, named by the dose levels.
 \footnotesize
-```{r,warning=FALSE,message=FALSE,results=FALSE,fig.show="hide"}
+```{r,warning=FALSE,message=FALSE,results=FALSE,fig.show="hide",eval=F}
 writeOutput <- TRUE
 script <- "path/to/script.R"
 ggwrite(pls1,file="results/individual_profiles.png",
