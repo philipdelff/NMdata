@@ -117,7 +117,7 @@
 
     
     
-<p>Built 2022-06-07 using NMdata 0.0.12.</p>
+<p>Built 2022-06-27 using NMdata 0.0.12.</p>
 <p>This vignette is still under development. Please make sure to see latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
 <h2 id="general-nmdata-questions">General NMdata questions<a class="anchor" aria-label="anchor" href="#general-nmdata-questions"></a>
@@ -158,18 +158,18 @@
 <h3 id="how-do-i-install-nmdata">How do I install NMdata?<a class="anchor" aria-label="anchor" href="#how-do-i-install-nmdata"></a>
 </h3>
 <p>For most users, taking <code>NMdata</code> from the package archive you are already using is the preferred way:</p>
-<pre><code><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"NMdata"</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span></code></pre>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"NMdata"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span></span></code></pre>
 <p>To get the development version of NMdata, do the following from within R:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span>
-<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"philipdelff/NMdata"</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"philipdelff/NMdata"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span></span></code></pre></div>
 <p>In a production environment, use a <a href="https://github.com/philipdelff/NMdata/releases" class="external-link">github release</a> To install <code>NMdata X.Y.Z</code> release, do (notice “<span class="citation">@v</span>”:)</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span>
-<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"philipdelff/NMdata@vX.Y.Z"</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"philipdelff/NMdata@vX.Y.Z"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span></span></code></pre></div>
 <p>This example is not automatically updated to latest available release. Please make sure to check for latest version on (<a href="https://github.com/philipdelff/NMdata/releases" class="external-link uri">https://github.com/philipdelff/NMdata/releases</a>)</p>
 <p>If you need to archive a script that is dependent on a feature or bug fix which is only in the master branch, you can request a release.</p>
 </div>
@@ -213,17 +213,17 @@
 <p>Every function in NMdata has an argument called <code>as.fun</code>. You can provide a function in this argument which will automatically be applied to results.</p>
 <p>You can get a tibble if you work with <code>dplyr</code>/<code>tidyverse</code> tools:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="va">...</span>, as.fun <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="va"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="va">...</span>, as.fun <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="va"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">)</span></span></code></pre></div>
 <p>Under the hood, NMdata is implemented in <code>data.table</code>, and in fact the default is to convert to <code>data.frame</code> before returning the output. So if you want to have <code>data.table</code>’s back, use <code>as.fun="data.table"</code> (notice as a character string, not a function) to avoid the conversion</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="va">...</span>, as.fun <span class="op">=</span> <span class="st">"data.table"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="va">...</span>, as.fun <span class="op">=</span> <span class="st">"data.table"</span><span class="op">)</span></span></code></pre></div>
 <p>Using <code>as.fun=as.data.table</code> (a function this time) wold work but is not recommended, because that would do an unnecessary copy of data.</p>
 <p>If you want to change the behaviour generally for the session and omit the <code>as.fun</code> argument, you can do this by this option:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## for tibbles</span>
-<span class="fu">NMdataConfig</span><span class="op">(</span>as.fun <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="va"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">)</span>
-<span class="co">## for data.table</span>
-<span class="fu">NMdataConfig</span><span class="op">(</span>as.fun <span class="op">=</span> <span class="st">"data.table"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## for tibbles</span></span>
+<span><span class="fu">NMdataConfig</span><span class="op">(</span>as.fun <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="va"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">)</span></span>
+<span><span class="co">## for data.table</span></span>
+<span><span class="fu">NMdataConfig</span><span class="op">(</span>as.fun <span class="op">=</span> <span class="st">"data.table"</span><span class="op">)</span></span></code></pre></div>
 <p>All NMdata functions (that return data) should now return tibbles or data.tables. If you use <code>NMdataConfig</code> to control this, for reproducibility please do so explicitly in your script and not in your <code>.Rprofile</code> or similar.</p>
 </div>
 <div class="section level3">
@@ -252,7 +252,7 @@
 <p><code>NMscanData</code> needs the path to the output control stream (technically, the input control stream will work too, but this is not recommended). It has no requirement to the naming of files.</p>
 <p><code>NMdata</code> by default assumes a <a href="https://uupharmacometrics.github.io/PsN/" class="external-link">PSN</a> setup. The reason this makes a difference is a little technical but briefly, the path to the input data is not available in the list file when using PSN. If you don’t use PSN, all information will probably be available in the output control stream. Enough talking, just do this:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>file.mod <span class="op">=</span> <span class="va">identity</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>file.mod <span class="op">=</span> <span class="va">identity</span><span class="op">)</span></span></code></pre></div>
 <!--
 ### How do I customize the naming of input and output control streams?
 By default, `NMscanData` expects a
@@ -287,7 +287,7 @@ NMdataConf(file.mod = out2in)
 </h3>
 <p><code>NMscanData</code> take the name of the model from the file name and adds it to a column in the returned data. If the name of the directory is the model name, you can do the following as well:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">NMdataConfig</span><span class="op">(</span>modelname <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">file</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">basename</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html" class="external-link">normalizePath</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">NMdataConfig</span><span class="op">(</span>modelname <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">file</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">basename</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html" class="external-link">normalizePath</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Feel free to modify the function to omit parts of the string or add to it.</p>
 </div>
 <div class="section level3">
@@ -324,7 +324,7 @@ NMdataConf(file.mod = out2in)
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer>

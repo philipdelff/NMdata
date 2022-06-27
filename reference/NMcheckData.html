@@ -91,26 +91,26 @@ but because they are typical dataset issues.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMcheckData</span><span class="op">(</span>
-  <span class="va">data</span>,
-  <span class="va">file</span>,
-  <span class="va">covs</span>,
-  <span class="va">covs.occ</span>,
-  <span class="va">cols.num</span>,
-  col.id <span class="op">=</span> <span class="st">"ID"</span>,
-  col.time <span class="op">=</span> <span class="st">"TIME"</span>,
-  col.dv <span class="op">=</span> <span class="st">"DV"</span>,
-  col.mdv <span class="op">=</span> <span class="st">"MDV"</span>,
-  col.cmt <span class="op">=</span> <span class="st">"CMT"</span>,
-  col.amt <span class="op">=</span> <span class="st">"AMT"</span>,
-  <span class="va">col.flagn</span>,
-  <span class="va">col.row</span>,
-  <span class="va">col.usubjid</span>,
-  <span class="va">na.strings</span>,
-  return.summary <span class="op">=</span> <span class="cn">FALSE</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">as.fun</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMcheckData</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">file</span>,</span>
+<span>  <span class="va">covs</span>,</span>
+<span>  <span class="va">covs.occ</span>,</span>
+<span>  <span class="va">cols.num</span>,</span>
+<span>  col.id <span class="op">=</span> <span class="st">"ID"</span>,</span>
+<span>  col.time <span class="op">=</span> <span class="st">"TIME"</span>,</span>
+<span>  col.dv <span class="op">=</span> <span class="st">"DV"</span>,</span>
+<span>  col.mdv <span class="op">=</span> <span class="st">"MDV"</span>,</span>
+<span>  col.cmt <span class="op">=</span> <span class="st">"CMT"</span>,</span>
+<span>  col.amt <span class="op">=</span> <span class="st">"AMT"</span>,</span>
+<span>  <span class="va">col.flagn</span>,</span>
+<span>  <span class="va">col.row</span>,</span>
+<span>  <span class="va">col.usubjid</span>,</span>
+<span>  <span class="va">na.strings</span>,</span>
+<span>  return.summary <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">as.fun</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -118,6 +118,8 @@ but because they are typical dataset issues.</p>
     <dl><dt>data</dt>
 <dd><p>The data to check. data.frame, data.table, tibble,
 anything that can be converted to data.table.</p></dd>
+
+
 <dt>file</dt>
 <dd><p>Alternatively to checking a data object, you can use
 file to specify a control stream to check. This can either be
@@ -129,10 +131,14 @@ data as NMdataCheck would do using the data
 argument. col.flagn is ignored in this case - instead,
 ACCEPT/IGNORE statements in control stream are applied. The
 file argument is useful for debugging a Nonmem model.</p></dd>
+
+
 <dt>covs</dt>
 <dd><p>columns that contain subject-level covariates. They
 are expected to be non-missing, numeric and not varying within
 subjects.</p></dd>
+
+
 <dt>covs.occ</dt>
 <dd><p>A list specifying columns that contain
 subject:occasion-level covariates. They are expected to be
@@ -140,38 +146,58 @@ non-missing, numeric and not varying within combinations of
 subject and occasion. covs.occ=list(PERIOD=c("FED")) means
 that FED is the covariate, while PERIOD indicates the
 occasion.</p></dd>
+
+
 <dt>cols.num</dt>
 <dd><p>Columns that are expected to be present, numeric
 and non-NA. If a character vector is given, the columns are
 expected to be used in all rows. If a column is only used for
 a subset of rows, use a list and name the elements by
 subsetting strings. See examples.</p></dd>
+
+
 <dt>col.id</dt>
 <dd><p>The name of the column that holds the subject
 identifier. Default is "ID".</p></dd>
+
+
 <dt>col.time</dt>
 <dd><p>The name of the column holding actual time.</p></dd>
+
+
 <dt>col.dv</dt>
 <dd><p>The name of the column holding the dependent
 variable. For now, only one column can be specified, and MDV
 is assumed to match this column. Default is DV.</p></dd>
+
+
 <dt>col.mdv</dt>
 <dd><p>The name of the column holding the binary indicator
 of the dependent variable missing. Default is MDV.</p></dd>
+
+
 <dt>col.cmt</dt>
 <dd><p>The name(s) of the compartment column(s). These
 will be checked to be positive integers for all rows. They are
 also used in checks for row duplicates.</p></dd>
+
+
 <dt>col.amt</dt>
 <dd><p>The name of the dose amount column.</p></dd>
+
+
 <dt>col.flagn</dt>
 <dd><p>Optionally, the name of the column holding
 numeric exclusion flags. Default value is FLAG and can be
 configured using NMdataConf. Disable by using col.flagn=FALSE.</p></dd>
+
+
 <dt>col.row</dt>
 <dd><p>A column with a unique value for each row. Such a
 column is recommended to use if possible. Default ("ROW") can
 be modified using NMdataConf.</p></dd>
+
+
 <dt>col.usubjid</dt>
 <dd><p>Optional unique subject identifier. It is
 recommended to keep a unique subject identifier (typically a
@@ -183,25 +209,34 @@ unique within values of col.id (i.e. that the analysis subject
 ID's are unique across actual subjects), and that col.id is
 unique within the unique subject ID (a violation of the latter
 is less likely).</p></dd>
+
+
 <dt>na.strings</dt>
 <dd><p>Strings to be accepted when trying to convert
 characters to numerics. This will typically be a string that
 represents missing values. Default is ".". Notice, actual NA,
 i.e. not a string, is allowed independently of na.strings. See
 ?NMisNumeric.</p></dd>
+
+
 <dt>return.summary</dt>
 <dd><p>If TRUE (not default), the table summary
 that is printed if quiet=FALSE is returned as well. In that
 case, a list is returned, and the findings are in an element
 called findings.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>Keep quiet? Default is not to.</p></dd>
+
+
 <dt>as.fun</dt>
 <dd><p>The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -256,12 +291,12 @@ records. ADDL must be present.</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">NMcheckData</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">NMcheckData</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  column              check  N Nid</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    EVID Subject has no obs 19  19</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     MDV   Column not found  1   0</span>
-<span class="r-in"><span class="va">dat</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span>,<span class="va">LLOQ</span><span class="op">:=</span><span class="fl">3.5</span><span class="op">]</span></span>
+<span class="r-in"><span><span class="va">dat</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span>,<span class="va">LLOQ</span><span class="op">:=</span><span class="fl">3.5</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        ROW  ID NOMTIME     TIME EVID CMT AMT       DV FLAG STUDY BLQ CYCLE DOSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    1:    1  31     0.0  0.00000    1   1   3       NA    0     1   0     1    3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    2:    2  31     0.1  0.13381    0   2   0 0.050000   10     1   1     1    3</span>
@@ -298,8 +333,8 @@ records. ADDL must be present.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1500: 300 mg Analysis set 300 mg  3.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1501: 300 mg Analysis set 300 mg  3.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1502: 300 mg Analysis set 300 mg  3.5</span>
-<span class="r-in"><span class="co">## expecting LLOQ only for samples</span></span>
-<span class="r-in"><span class="fu">NMcheckData</span><span class="op">(</span><span class="va">dat</span>,cols.num<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDY"</span><span class="op">)</span>,<span class="st">"EVID==0"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LLOQ"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## expecting LLOQ only for samples</span></span></span>
+<span class="r-in"><span><span class="fu">NMcheckData</span><span class="op">(</span><span class="va">dat</span>,cols.num<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDY"</span><span class="op">)</span>,<span class="st">"EVID==0"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LLOQ"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  column              check  N Nid</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    EVID Subject has no obs 19  19</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     MDV   Column not found  1   0</span>
@@ -317,7 +352,7 @@ records. ADDL must be present.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

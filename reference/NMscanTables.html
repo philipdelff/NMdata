@@ -84,52 +84,67 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMscanTables</span><span class="op">(</span>
-  <span class="va">file</span>,
-  <span class="va">as.fun</span>,
-  <span class="va">quiet</span>,
-  tab.count <span class="op">=</span> <span class="cn">FALSE</span>,
-  col.id <span class="op">=</span> <span class="st">"ID"</span>,
-  <span class="va">col.row</span>,
-  <span class="va">details</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMscanTables</span><span class="op">(</span></span>
+<span>  <span class="va">file</span>,</span>
+<span>  <span class="va">as.fun</span>,</span>
+<span>  <span class="va">quiet</span>,</span>
+<span>  tab.count <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  col.id <span class="op">=</span> <span class="st">"ID"</span>,</span>
+<span>  <span class="va">col.row</span>,</span>
+<span>  <span class="va">details</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>file</dt>
 <dd><p>the nonmem file to read (normally .mod or .lst)</p></dd>
+
+
 <dt>as.fun</dt>
 <dd><p>The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
 non-interactive use. Default can be configured using
 NMdataConf.</p></dd>
+
+
 <dt>tab.count</dt>
 <dd><p>Nonmem includes a counter of tables in the
 written data files. These are often not useful. However, if
 tab.count is TRUE (not default), this will be carried forward
 and added as a column called TABLENO.</p></dd>
+
+
 <dt>col.id</dt>
 <dd><p>name of the subject ID column. Used for calculation
 of the number of subjects in each table.</p></dd>
+
+
 <dt>col.row</dt>
 <dd><p>The name of the row counter column. Optional and only
 used to check whether the row counter is in the data.</p></dd>
+
+
 <dt>details</dt>
 <dd><p>If TRUE, metadata is added to output. In this case,
 you get a list. Typically, this is mostly useful if
 programming up functions which behavior must depend on
 properties of the output.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list of all the tables as data.frames. If details=TRUE,
+    
+
+<p>A list of all the tables as data.frames. If details=TRUE,
     this is in one element, called data, and meta is another
     element. If not, only the data is
     returned.</p>
@@ -145,7 +160,7 @@ properties of the output.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">tabs1</span> <span class="op">&lt;-</span> <span class="fu">NMscanTables</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.lst"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">tabs1</span> <span class="op">&lt;-</span> <span class="fu">NMscanTables</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.lst"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of output tables read: 1.</span>
 </code></pre></div>
     </div>
@@ -161,7 +176,7 @@ properties of the output.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -96,64 +96,86 @@ in the file argument.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMwriteData</span><span class="op">(</span>
-  <span class="va">data</span>,
-  <span class="va">file</span>,
-  write.csv <span class="op">=</span> <span class="cn">TRUE</span>,
-  write.rds <span class="op">=</span> <span class="va">write.csv</span>,
-  write.RData <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">script</span>,
-  <span class="va">args.stamp</span>,
-  <span class="va">args.fwrite</span>,
-  <span class="va">args.rds</span>,
-  <span class="va">args.RData</span>,
-  <span class="va">quiet</span>,
-  <span class="va">args.NMgenText</span>,
-  <span class="va">nm.drop</span>,
-  <span class="va">nmdir.data</span>,
-  <span class="va">col.flagn</span>,
-  <span class="va">nm.rename</span>,
-  <span class="va">nm.copy</span>,
-  <span class="va">nm.capitalize</span>,
-  <span class="va">allow.char.TIME</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMwriteData</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">file</span>,</span>
+<span>  write.csv <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  write.rds <span class="op">=</span> <span class="va">write.csv</span>,</span>
+<span>  write.RData <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">script</span>,</span>
+<span>  <span class="va">args.stamp</span>,</span>
+<span>  <span class="va">args.fwrite</span>,</span>
+<span>  <span class="va">args.rds</span>,</span>
+<span>  <span class="va">args.RData</span>,</span>
+<span>  <span class="va">quiet</span>,</span>
+<span>  <span class="va">args.NMgenText</span>,</span>
+<span>  <span class="va">nm.drop</span>,</span>
+<span>  <span class="va">nmdir.data</span>,</span>
+<span>  <span class="va">col.flagn</span>,</span>
+<span>  <span class="va">nm.rename</span>,</span>
+<span>  <span class="va">nm.copy</span>,</span>
+<span>  <span class="va">nm.capitalize</span>,</span>
+<span>  <span class="va">allow.char.TIME</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>The dataset to write to file for use in Nonmem.</p></dd>
+
+
 <dt>file</dt>
 <dd><p>The file to write to. The extension (everything after
 and including last ".") is dropped. csv, rds and other
 standard file name extensions are added.</p></dd>
+
+
 <dt>write.csv</dt>
 <dd><p>Write to csv file?</p></dd>
+
+
 <dt>write.rds</dt>
 <dd><p>write an rds file?</p></dd>
+
+
 <dt>write.RData</dt>
 <dd><p>In case you want to save to .RData
 object. Deprecated and not recommended. Use write.rds instead.</p></dd>
+
+
 <dt>script</dt>
 <dd><p>If provided, the object will be stamped with this
 script name before saved to rds or RData. See ?NMstamp.</p></dd>
+
+
 <dt>args.stamp</dt>
 <dd><p>A list of arguments to be passed to NMstamp.</p></dd>
+
+
 <dt>args.fwrite</dt>
 <dd><p>List of arguments passed to fwrite. Notice that
 except for "x" and "file", you need to supply all arguments to
 fwrite if you use this argument. Default values can be
 configured using NMdataConf.</p></dd>
+
+
 <dt>args.rds</dt>
 <dd><p>A list of arguments to be passed to saveRDS.</p></dd>
+
+
 <dt>args.RData</dt>
 <dd><p>A list of arguments to be passed to save. Please
 note that writing RData is deprecated.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
 non-interactive use. Default can be configured using
 NMdataConf.</p></dd>
+
+
 <dt>args.NMgenText</dt>
 <dd><p>List of arguments to pass to NMgenText - the
 function that generates text suggestion for INPUT and DATA
@@ -163,34 +185,51 @@ NONMEM - and NMwriteSection can even update multiple NONMEM
 control streams based on the result. This will update your
 control streams to match your new data file with just one
 command.</p></dd>
+
+
 <dt>nm.drop</dt>
 <dd><p>Deprecated, use
 args.NMgenText=list(drop=c("column")) instead.</p></dd>
+
+
 <dt>nmdir.data</dt>
 <dd><p>Deprecated, use
 args.NMgenText=list(dir.data="your/path") instead.</p></dd>
+
+
 <dt>col.flagn</dt>
 <dd><p>Name of a numeric column with zero value for rows
 to include in Nonmem run, non-zero for rows to skip. The
 argument is only used for generating the proposed $DATA text
 to paste into the Nonmem control stream. To skip this feature,
 use col.flagn=NULL.</p></dd>
+
+
 <dt>nm.rename</dt>
 <dd><p>Deprecated, use
 args.NMgenText=list(rename=c(newname="existing")) instead.</p></dd>
+
+
 <dt>nm.copy</dt>
 <dd><p>Deprecated, use
 args.NMgenText=list(copy=c(newname="existing")) instead.</p></dd>
+
+
 <dt>nm.capitalize</dt>
 <dd><p>Deprecated, use
 args.NMgenText=list(capitalize=TRUE) instead.</p></dd>
+
+
 <dt>allow.char.TIME</dt>
 <dd><p>Deprecated, use
 args.NMgenText=list(allow.char.TIME=TRUE) instead.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Text for inclusion in Nonmem control stream, invisibly.</p>
+    
+
+<p>Text for inclusion in Nonmem control stream, invisibly.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -226,7 +265,7 @@ character or not.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

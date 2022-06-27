@@ -86,39 +86,50 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">renameByContents</span><span class="op">(</span><span class="va">data</span>, <span class="va">fun.test</span>, <span class="va">fun.rename</span>, invert.test <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">as.fun</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">renameByContents</span><span class="op">(</span><span class="va">data</span>, <span class="va">fun.test</span>, <span class="va">fun.rename</span>, invert.test <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">as.fun</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>data.frame in which to rename columns</p></dd>
+
+
 <dt>fun.test</dt>
 <dd><p>Function that returns TRUE for columns to be
 renamed.</p></dd>
+
+
 <dt>fun.rename</dt>
 <dd><p>Function that takes the existing column name and
 returns the new one.</p></dd>
+
+
 <dt>invert.test</dt>
 <dd><p>Rename those where FALSE is returned from
 fun.test.</p></dd>
+
+
 <dt>as.fun</dt>
 <dd><p>The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>data with (some) new column names. Class as defined by
+    
+
+<p>data with (some) new column names. Class as defined by
     as.fun.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span>file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">pk</span><span class="op">[</span>,<span class="va">trtact</span><span class="op">:=</span><span class="cn">NULL</span><span class="op">]</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span>file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pk</span><span class="op">[</span>,<span class="va">trtact</span><span class="op">:=</span><span class="cn">NULL</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        ROW  ID NOMTIME     TIME EVID CMT AMT       DV FLAG STUDY BLQ CYCLE DOSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    1:    1  31     0.0  0.00000    1   1   3       NA    0     1   0     1    3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    2:    2  31     0.1  0.13381    0   2   0 0.050000   10     1   1     1    3</span>
@@ -155,13 +166,13 @@ NMdataConf.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1500: 300 mg Analysis set</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1501: 300 mg Analysis set</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1502: 300 mg Analysis set</span>
-<span class="r-in"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu">renameByContents</span><span class="op">(</span>data<span class="op">=</span><span class="va">pk</span>,</span>
-<span class="r-in">                       fun.test <span class="op">=</span> <span class="va">NMisNumeric</span>,</span>
-<span class="r-in">                       fun.rename <span class="op">=</span> <span class="va">tolower</span>,</span>
-<span class="r-in">                       invert.test <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="co">## Or append a "C" to the same column names</span></span>
-<span class="r-in"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span>file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">pk</span><span class="op">[</span>,<span class="va">trtact</span><span class="op">:=</span><span class="cn">NULL</span><span class="op">]</span></span>
+<span class="r-in"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu">renameByContents</span><span class="op">(</span>data<span class="op">=</span><span class="va">pk</span>,</span></span>
+<span class="r-in"><span>                       fun.test <span class="op">=</span> <span class="va">NMisNumeric</span>,</span></span>
+<span class="r-in"><span>                       fun.rename <span class="op">=</span> <span class="va">tolower</span>,</span></span>
+<span class="r-in"><span>                       invert.test <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Or append a "C" to the same column names</span></span></span>
+<span class="r-in"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span>file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pk</span><span class="op">[</span>,<span class="va">trtact</span><span class="op">:=</span><span class="cn">NULL</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        ROW  ID NOMTIME     TIME EVID CMT AMT       DV FLAG STUDY BLQ CYCLE DOSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    1:    1  31     0.0  0.00000    1   1   3       NA    0     1   0     1    3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    2:    2  31     0.1  0.13381    0   2   0 0.050000   10     1   1     1    3</span>
@@ -198,10 +209,10 @@ NMdataConf.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1500: 300 mg Analysis set</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1501: 300 mg Analysis set</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1502: 300 mg Analysis set</span>
-<span class="r-in"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu">renameByContents</span><span class="op">(</span>data<span class="op">=</span><span class="va">pk</span>,</span>
-<span class="r-in">                       fun.test <span class="op">=</span> <span class="va">NMisNumeric</span>,</span>
-<span class="r-in">                       fun.rename <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">x</span>,<span class="st">"C"</span><span class="op">)</span>,</span>
-<span class="r-in">                       invert.test <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu">renameByContents</span><span class="op">(</span>data<span class="op">=</span><span class="va">pk</span>,</span></span>
+<span class="r-in"><span>                       fun.test <span class="op">=</span> <span class="va">NMisNumeric</span>,</span></span>
+<span class="r-in"><span>                       fun.rename <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">x</span>,<span class="st">"C"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                       invert.test <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -216,7 +227,7 @@ NMdataConf.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

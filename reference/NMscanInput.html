@@ -93,23 +93,23 @@ according to the $INPUT section</h1>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMscanInput</span><span class="op">(</span>
-  <span class="va">file</span>,
-  <span class="va">use.rds</span>,
-  <span class="va">file.mod</span>,
-  dir.data <span class="op">=</span> <span class="cn">NULL</span>,
-  file.data <span class="op">=</span> <span class="cn">NULL</span>,
-  applyFilters <span class="op">=</span> <span class="cn">FALSE</span>,
-  translate <span class="op">=</span> <span class="cn">TRUE</span>,
-  recover.cols <span class="op">=</span> <span class="cn">TRUE</span>,
-  details <span class="op">=</span> <span class="cn">TRUE</span>,
-  col.id <span class="op">=</span> <span class="st">"ID"</span>,
-  <span class="va">col.row</span>,
-  <span class="va">quiet</span>,
-  <span class="va">args.fread</span>,
-  invert <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">as.fun</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMscanInput</span><span class="op">(</span></span>
+<span>  <span class="va">file</span>,</span>
+<span>  <span class="va">use.rds</span>,</span>
+<span>  <span class="va">file.mod</span>,</span>
+<span>  dir.data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  file.data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  applyFilters <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  translate <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  recover.cols <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  details <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  col.id <span class="op">=</span> <span class="st">"ID"</span>,</span>
+<span>  <span class="va">col.row</span>,</span>
+<span>  <span class="va">quiet</span>,</span>
+<span>  <span class="va">args.fread</span>,</span>
+<span>  invert <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">as.fun</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -120,12 +120,16 @@ file. The filename does not need to end in .lst. It is
 recommended to use the output control stream because it
 reflects the model as it was run rather than how it is planned
 for next run. However, see file.mod and dir.data.</p></dd>
+
+
 <dt>use.rds</dt>
 <dd><p>If an rds file is found with the exact same name
 (except for .rds instead of say .csv) as the text file
 mentioned in the Nonmem control stream, should this be used
 instead? The default is yes, and NMwriteData will create this
 by default too.</p></dd>
+
+
 <dt>file.mod</dt>
 <dd><p>The input control stream file path. Default is to
 look for \"file\" with extension changed to .mod (PSN
@@ -137,62 +141,89 @@ the path to the data file. The .mod file is only used for
 finding the data file. How to interpret the datafile is read
 from the .lst file. The default can be configured using
 NMdataConf. See dir.data too.</p></dd>
+
+
 <dt>dir.data</dt>
 <dd><p>The data directory can only be read from the
 control stream (.mod) and not from the output file (.lst). So
 if you only have the output file, use dir.data to tell in
 which directory to find the data file. If dir.data is
 provided, the .mod file is not used at all.</p></dd>
+
+
 <dt>file.data</dt>
 <dd><p>Specification of the data file path. When this is
 used, the control streams are not used at all.</p></dd>
+
+
 <dt>applyFilters</dt>
 <dd><p>If TRUE (default), IGNORE and ACCEPT
 statements in the nonmem control streams are applied before
 returning the data.</p></dd>
+
+
 <dt>translate</dt>
 <dd><p>If TRUE (default), data columns are named as
 interpreted by Nonmem (in $INPUT). If data file contains more
 columns than mentioned in $INPUT, these will be named as in
 data file (if data file contains named variables).</p></dd>
+
+
 <dt>recover.cols</dt>
 <dd><p>recover columns that were not used in the
 NONMEM control stream? Default is TRUE. Can only be negative
 when translate=FALSE.</p></dd>
+
+
 <dt>details</dt>
 <dd><p>If TRUE, metadata is added to output. In this case,
 you get a list. Typically, this is mostly useful if
 programming up functions which behavior must depend on
 properties of the output. See details.</p></dd>
+
+
 <dt>col.id</dt>
 <dd><p>The name of the subject ID column. Optional and only
 used to calculate number of subjects in data. Default is
 modified by NMdataConf.</p></dd>
+
+
 <dt>col.row</dt>
 <dd><p>The name of the row counter column. Optional and only
 used to check whether the row counter is in the data.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>Default is to inform a little, but TRUE is useful for
 non-interactive stuff.</p></dd>
+
+
 <dt>args.fread</dt>
 <dd><p>List of arguments passed to fread. Notice that
 except for "input" and "file", you need to supply all
 arguments to fread if you use this argument. Default values
 can be configured using NMdataConf.</p></dd>
+
+
 <dt>invert</dt>
 <dd><p>If TRUE, the data rows that are dismissed by the
 Nonmem data filters (ACCEPT and IGNORE) and only this will be
 returned. Only used if applyFilters is TRUE.</p></dd>
+
+
 <dt>as.fun</dt>
 <dd><p>The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data set, class defined by 'as.fun'</p>
+    
+
+<p>A data set, class defined by 'as.fun'</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -232,7 +263,7 @@ work in NMscanInput.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -94,13 +94,15 @@ table file alone.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMreadTab</span><span class="op">(</span><span class="va">file</span>, tab.count <span class="op">=</span> <span class="cn">TRUE</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">skip</span>, <span class="va">quiet</span>, <span class="va">as.fun</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMreadTab</span><span class="op">(</span><span class="va">file</span>, tab.count <span class="op">=</span> <span class="cn">TRUE</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">skip</span>, <span class="va">quiet</span>, <span class="va">as.fun</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>file</dt>
 <dd><p>path to NONMEM table file</p></dd>
+
+
 <dt>tab.count</dt>
 <dd><p>Nonmem includes a counter of tables in the
 written data files. These are often not useful. However, if
@@ -109,28 +111,41 @@ as a column called TABLENO. Just notice, the table numbers in
 TABLENO are just cumulatively counting the number of tables
 reported in the file. TABLENO is not true to the actual table
 number as given by Nonmem.</p></dd>
+
+
 <dt>header</dt>
 <dd><p>Use header=FALSE if table was created with NOHEADER
 option in $TABLE.</p></dd>
+
+
 <dt>skip</dt>
 <dd><p>The number of rows to skip. The default is skip=1 if
 header==TRUE and skip=0 if header==FALSE.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>logical stating whether or not information is printed
 about what is being done. Default can be configured using
 NMdataConf.</p></dd>
+
+
 <dt>as.fun</dt>
 <dd><p>The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Arguments passed to fread.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The Nonmem table data.</p>
+    
+
+<p>The Nonmem table data.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -159,7 +174,7 @@ NMdataConf.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

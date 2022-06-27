@@ -94,7 +94,7 @@ data.frames).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMdataConf</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMdataConf</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -176,10 +176,13 @@ Using this, you don't have to worry about remembering including
 all relevant variables in the output tables. Default is TRUE.</p></li>
 <li><p>use.rds Affects NMscanData and NMscanInput.</p></li>
 </ul></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>If no arguments given, a list of active settings. If
+    
+
+<p>If no arguments given, a list of active settings. If
     arguments given and no issues found, TRUE invisibly.</p>
     </div>
     <div id="details">
@@ -191,8 +194,8 @@ hidden from other users.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## get current defaults</span></span>
-<span class="r-in"><span class="fu">NMdataConf</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## get current defaults</span></span></span>
+<span class="r-in"><span><span class="fu">NMdataConf</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $args.fread</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $args.fread$na.strings</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "."</span>
@@ -222,7 +225,7 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(as.data.frame(list()))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     UseMethod("as.data.frame")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x7fd32537f688&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x7fe0a07d2eb8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:base&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $check.time</span>
@@ -249,8 +252,8 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file.mod</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fnExtension(file, ext = ".mod")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x7fd325394d20&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7fd32537ed58&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x7fe0a0794d50&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7fe0a07d2588&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file.data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "extract"</span>
@@ -261,8 +264,8 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $modelname</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fnExtension(basename(file), "")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x7fd3253946c8&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7fd32537ed58&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x7fe0a07946f8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7fe0a07d2588&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $quiet</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
@@ -276,12 +279,12 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $use.rds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="co">## change a parameter</span></span>
-<span class="r-in"><span class="fu">NMdataConf</span><span class="op">(</span>check.time<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="co">## reset one parameter to default value</span></span>
-<span class="r-in"><span class="fu">NMdataConf</span><span class="op">(</span>modelname<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span>
-<span class="r-in"><span class="co">## reset all parameters to defaults</span></span>
-<span class="r-in"><span class="fu">NMdataConf</span><span class="op">(</span>reset<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## change a parameter</span></span></span>
+<span class="r-in"><span><span class="fu">NMdataConf</span><span class="op">(</span>check.time<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## reset one parameter to default value</span></span></span>
+<span class="r-in"><span><span class="fu">NMdataConf</span><span class="op">(</span>modelname<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## reset all parameters to defaults</span></span></span>
+<span class="r-in"><span><span class="fu">NMdataConf</span><span class="op">(</span>reset<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -296,7 +299,7 @@ hidden from other users.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -90,13 +90,15 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMisNumeric</span><span class="op">(</span><span class="va">x</span>, na.strings <span class="op">=</span> <span class="st">"."</span>, each <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMisNumeric</span><span class="op">(</span><span class="va">x</span>, na.strings <span class="op">=</span> <span class="st">"."</span>, each <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>The vector to check Don't export</p></dd>
+
+
 <dt>na.strings</dt>
 <dd><p>Tolerated strings that do not translate to
 numerics. Default is to accept "." because it's common to
@@ -106,15 +108,20 @@ are accepted so you may want to use na.strings=NULL if you
 don't code missings as "." and just do this when writing the
 data set to a delimited file (like NMwriteData will do for
 you).</p></dd>
+
+
 <dt>each</dt>
 <dd><p>Use each=TRUE to evaluate each element in a vector
 individually. The default (each=FALSE) is to return a
 single-length logical for a vector x summarizing whether all
 the elements are numeric-compatible.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>TRUE or FALSE</p>
+    
+
+<p>TRUE or FALSE</p>
     </div>
 
   </div>
@@ -129,7 +136,7 @@ the elements are numeric-compatible.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

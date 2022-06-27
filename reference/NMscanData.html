@@ -95,29 +95,29 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
 </ul></div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMscanData</span><span class="op">(</span>
-  <span class="va">file</span>,
-  <span class="va">col.row</span>,
-  <span class="va">use.input</span>,
-  <span class="va">merge.by.row</span>,
-  <span class="va">recover.rows</span>,
-  <span class="va">file.mod</span>,
-  <span class="va">dir.data</span>,
-  <span class="va">file.data</span>,
-  translate.input <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">quiet</span>,
-  <span class="va">use.rds</span>,
-  <span class="va">args.fread</span>,
-  <span class="va">as.fun</span>,
-  col.id <span class="op">=</span> <span class="st">"ID"</span>,
-  <span class="va">modelname</span>,
-  <span class="va">col.model</span>,
-  <span class="va">col.nmout</span>,
-  tab.count <span class="op">=</span> <span class="cn">FALSE</span>,
-  order.columns <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">check.time</span>,
-  <span class="va">tz.lst</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMscanData</span><span class="op">(</span></span>
+<span>  <span class="va">file</span>,</span>
+<span>  <span class="va">col.row</span>,</span>
+<span>  <span class="va">use.input</span>,</span>
+<span>  <span class="va">merge.by.row</span>,</span>
+<span>  <span class="va">recover.rows</span>,</span>
+<span>  <span class="va">file.mod</span>,</span>
+<span>  <span class="va">dir.data</span>,</span>
+<span>  <span class="va">file.data</span>,</span>
+<span>  translate.input <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">quiet</span>,</span>
+<span>  <span class="va">use.rds</span>,</span>
+<span>  <span class="va">args.fread</span>,</span>
+<span>  <span class="va">as.fun</span>,</span>
+<span>  col.id <span class="op">=</span> <span class="st">"ID"</span>,</span>
+<span>  <span class="va">modelname</span>,</span>
+<span>  <span class="va">col.model</span>,</span>
+<span>  <span class="va">col.nmout</span>,</span>
+<span>  tab.count <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  order.columns <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">check.time</span>,</span>
+<span>  <span class="va">tz.lst</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -125,16 +125,22 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
     <dl><dt>file</dt>
 <dd><p>A nonmem control stream or output file from nonmem
 (.mod or .lst)</p></dd>
+
+
 <dt>col.row</dt>
 <dd><p>A column with a unique value for each row. Such a
 column is recommended to use if possible. See merge.by.row and
 details as well. Default ("ROW") can be modified using
 NMdataConf.</p></dd>
+
+
 <dt>use.input</dt>
 <dd><p>Should the input data be added to the output
 data. Only column names that are not found in output data will
 be retrieved from the input data. Default is TRUE which can be
 modified using NMdataConf. See merge.by.row too.</p></dd>
+
+
 <dt>merge.by.row</dt>
 <dd><p>If use.input=TRUE, this argument determines
 the method by which the input data is added to output
@@ -145,6 +151,8 @@ merge.by.row=TRUE which means that data will be merged by a
 unique row identifier. The row identifier must be present in
 input and at least one full length output data table. See
 argument col.row too.</p></dd>
+
+
 <dt>recover.rows</dt>
 <dd><p>Include rows from input data files that do not
 exist in output tables? This will be added to the $row dataset
@@ -152,6 +160,8 @@ only, and $run, $id, and $occ datasets are created before this
 is taken into account. A column called nmout will be TRUE when
 the row was found in output tables, and FALSE when
 not. Default is FALSE and can be configured using NMdataConf.</p></dd>
+
+
 <dt>file.mod</dt>
 <dd><p>The input control stream. Default is to look for
 \"file\" with extension changed to .mod (PSN style). You can
@@ -159,44 +169,62 @@ also supply the path to the file, or you can provide a
 function that translates the output file path to the input
 file path. The default behavior can be configured using
 NMdataConf. See dir.data too.</p></dd>
+
+
 <dt>dir.data</dt>
 <dd><p>The data directory can only be read from the
 control stream (.mod) and not from the output file (.lst). So
 if you only have the output control stream, use dir.data to
 tell in which directory to find the data file. If dir.data is
 provided, the .mod file is not used at all.</p></dd>
+
+
 <dt>file.data</dt>
 <dd><p>Specification of the data file path. When this is
 used, the control streams are not used at all.</p></dd>
+
+
 <dt>translate.input</dt>
 <dd><p>Default is TRUE, meaning that input data
 column names are translated according to $INPUT section in
 nonmem listing file.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
 non-interactive use. Default can be configured using
 NMdataConf.</p></dd>
+
+
 <dt>use.rds</dt>
 <dd><p>If an rds file is found with the exact same name
 (except for .rds instead of say .csv) as the input data file
 mentioned in the Nonmem control stream, should this be used
 instead? The default is yes, and NMwriteData will create this
 by default too. Default can be configured using NMdataConf.</p></dd>
+
+
 <dt>args.fread</dt>
 <dd><p>List of arguments passed to when reading _input_
 data. Notice that except for "input" and "file", you need to
 supply all arguments to fread if you use this
 argument. Default values can be configured using NMdataConf.</p></dd>
+
+
 <dt>as.fun</dt>
 <dd><p>The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.</p></dd>
+
+
 <dt>col.id</dt>
 <dd><p>The name of the subject ID variable, default is
 "ID".</p></dd>
+
+
 <dt>modelname</dt>
 <dd><p>The model name to be stored if col.model is not
 NULL. If not supplied, the name will be taken from the control
@@ -207,16 +235,22 @@ value of file (file is another argument to NMscanData). The
 function must take one character argument and return another
 character string. As example, see NMdataConf()$modelname. The
 default can be configured using NMdataConf.</p></dd>
+
+
 <dt>col.model</dt>
 <dd><p>A column of this name containing the model name
 will be included in the returned data. The default is to store
 this in a column called "model". See argument "modelname" as
 well. Set to NULL if not wanted. Default can be configured
 using NMdataConf.</p></dd>
+
+
 <dt>col.nmout</dt>
 <dd><p>A column of this name will be a logical
 representing whether row was in output table or not. Default
 can be modified using NMdataConf.</p></dd>
+
+
 <dt>tab.count</dt>
 <dd><p>Nonmem includes a counter of tables in the
 written data files. These are often not useful. Especially for
@@ -225,6 +259,8 @@ tables can be combined so this information is not unique
 across those source tables. However, if tab.count is TRUE (not
 default), this will be carried forward and added as a column
 called TABLENO. The argument is passed to NMscanTables.</p></dd>
+
+
 <dt>order.columns</dt>
 <dd><p>If TRUE (default), NMorderColumns is used to
 reorder the columns before returning the data. NMorderColumns
@@ -232,6 +268,8 @@ will be called with alpha=FALSE, so columns are not sorted
 alphabetically. But standard Nonmem columns like ID, TIME, and
 other will be first. If col.row is used, this will be passed
 to NMorderColumns too.</p></dd>
+
+
 <dt>check.time</dt>
 <dd><p>If TRUE (default) and if input data is used,
 input control stream and input data are checked to be newer
@@ -245,15 +283,20 @@ the time stamp recorded by Nonmem is used if possible, and if
 the input data is created with NMwriteData, the recorded
 creation time is used if possible. If not, and for all other
 files, the file modification times are used.</p></dd>
+
+
 <dt>tz.lst</dt>
 <dd><p>If supplied, the timezone to be used when reading
 the time stamp in the output control stream. Please supply
 something listed in OlsonNames(). Can be configured using
 NMdataConf() too.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data set of class 'NMdata'.</p>
+    
+
+<p>A data set of class 'NMdata'.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -288,7 +331,7 @@ list of known limitations:</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu">NMscanData</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.lst"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu">NMscanData</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.lst"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>input control stream</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> (/Users/runner/work/_temp/Library/NMdata/examples/nonmem/xgxr001.mod) is newer</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> than output control stream</span>
@@ -324,7 +367,7 @@ list of known limitations:</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

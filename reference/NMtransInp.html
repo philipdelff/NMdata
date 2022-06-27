@@ -84,27 +84,36 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMtransInp</span><span class="op">(</span><span class="va">data</span>, <span class="va">file</span>, translate <span class="op">=</span> <span class="cn">TRUE</span>, recover.cols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMtransInp</span><span class="op">(</span><span class="va">data</span>, <span class="va">file</span>, translate <span class="op">=</span> <span class="cn">TRUE</span>, recover.cols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>the data to translate</p></dd>
+
+
 <dt>file</dt>
 <dd><p>the list file or control stream</p></dd>
+
+
 <dt>translate</dt>
 <dd><p>logical. Do translation according to Nonmem code
 or not? If not, an overview of column names in data and in
 Nonmem code is still returned with the data.</p></dd>
+
+
 <dt>recover.cols</dt>
 <dd><p>recover columns that were not used in the
 NONMEM control stream? Default is TRUE. Can only be negative
 when translate=FALSE.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>data with column names translated as specified by nonmem
+    
+
+<p>data with column names translated as specified by nonmem
     control stream. Class same as for 'data' argument. Class
     data.table.</p>
     </div>
@@ -121,7 +130,7 @@ when translate=FALSE.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

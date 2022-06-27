@@ -88,23 +88,23 @@ extract eg result sections.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMextractText</span><span class="op">(</span>
-  <span class="va">file</span>,
-  <span class="va">lines</span>,
-  <span class="va">text</span>,
-  <span class="va">section</span>,
-  <span class="va">char.section</span>,
-  char.end <span class="op">=</span> <span class="va">char.section</span>,
-  return <span class="op">=</span> <span class="st">"text"</span>,
-  keepEmpty <span class="op">=</span> <span class="cn">FALSE</span>,
-  keepName <span class="op">=</span> <span class="cn">TRUE</span>,
-  keepComments <span class="op">=</span> <span class="cn">TRUE</span>,
-  asOne <span class="op">=</span> <span class="cn">TRUE</span>,
-  simplify <span class="op">=</span> <span class="cn">TRUE</span>,
-  cleanSpaces <span class="op">=</span> <span class="cn">FALSE</span>,
-  type <span class="op">=</span> <span class="st">"mod"</span>,
-  linesep <span class="op">=</span> <span class="st">"\n"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMextractText</span><span class="op">(</span></span>
+<span>  <span class="va">file</span>,</span>
+<span>  <span class="va">lines</span>,</span>
+<span>  <span class="va">text</span>,</span>
+<span>  <span class="va">section</span>,</span>
+<span>  <span class="va">char.section</span>,</span>
+<span>  char.end <span class="op">=</span> <span class="va">char.section</span>,</span>
+<span>  return <span class="op">=</span> <span class="st">"text"</span>,</span>
+<span>  keepEmpty <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  keepName <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  keepComments <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  asOne <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  simplify <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  cleanSpaces <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"mod"</span>,</span>
+<span>  linesep <span class="op">=</span> <span class="st">"\n"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -112,62 +112,93 @@ extract eg result sections.</p>
     <dl><dt>file</dt>
 <dd><p>A file path to read from. Normally a .mod or .lst. See
 lines and text as well.</p></dd>
+
+
 <dt>lines</dt>
 <dd><p>Text lines to process. This is an alternative to
 using the file and text arguments.</p></dd>
+
+
 <dt>text</dt>
 <dd><p>Use this argument if the text to process is one long
 character string, and indicate the line separator with the
 linesep argument. Use only one of file, lines, and text.</p></dd>
+
+
 <dt>section</dt>
 <dd><p>The name of section to extract. Examples: "INPUT",
 "PK", "TABLE", etc. It can also be result sections like
 "MINIMIZATION".</p></dd>
+
+
 <dt>char.section</dt>
 <dd><p>The section denoted as a string compatible
 with regular expressions. "\$" for sections in .mod files,
 "0" for results in .lst files.</p></dd>
+
+
 <dt>char.end</dt>
 <dd><p>A regular expression to capture the end of the
 section. The default is to look for the next occurrence of
 char.section.</p></dd>
+
+
 <dt>return</dt>
 <dd><p>If "text", plain text lines are returned. If "idx",
 matching line numbers are returned. "text" is default.</p></dd>
+
+
 <dt>keepEmpty</dt>
 <dd><p>Keep empty lines in output? Default is FALSE.</p></dd>
+
+
 <dt>keepName</dt>
 <dd><p>Keep the section name in output (say, "$PROBLEM")
 Default is TRUE. It can only be FALSE, if return"idx".</p></dd>
+
+
 <dt>keepComments</dt>
 <dd><p>Keep comment lines?</p></dd>
+
+
 <dt>asOne</dt>
 <dd><p>If multiple hits, concatenate into one. This will
 most often be relevant with name="TABLE". If FALSE, a list
 will be returned, each element representing a table. Default
 is TRUE. So if you want to process the tables separately, you
 probably want FALSE here.</p></dd>
+
+
 <dt>simplify</dt>
 <dd><p>If asOne=FALSE, do you want the result to be
 simplified if only one table is found? Default is TRUE which
 is desirable for interactive analysis. For programming, you
 probably want FALSE.</p></dd>
+
+
 <dt>cleanSpaces</dt>
 <dd><p>If TRUE, leading and trailing are removed, and
 multiplied succeeding white spaces are reduced to single white
 spaces.</p></dd>
+
+
 <dt>type</dt>
 <dd><p>Either mod, res or NULL. mod is for information that
 is given in .mod (.lst file can be used but results section is
 disregarded). If NULL, NA or empty string, everything is
 considered.</p></dd>
+
+
 <dt>linesep</dt>
 <dd><p>If using the text argument, use linesep to indicate
 how lines should be separated.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>character vector with extracted lines.</p>
+    
+
+<p>character vector with extracted lines.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -186,7 +217,7 @@ how lines should be separated.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="NMreadSection.html">NMreadSection</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.lst"</span>, package <span class="op">=</span> <span class="st">"NMdata"</span><span class="op">)</span>,section<span class="op">=</span><span class="st">"DATA"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="NMreadSection.html">NMreadSection</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.lst"</span>, package <span class="op">=</span> <span class="st">"NMdata"</span><span class="op">)</span>,section<span class="op">=</span><span class="st">"DATA"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "$DATA      xgxr1.csv IGNORE=@ IGNORE=(FLAG.NE.0)"</span>
 </code></pre></div>
     </div>
@@ -202,7 +233,7 @@ how lines should be separated.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

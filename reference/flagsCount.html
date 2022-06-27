@@ -88,51 +88,65 @@ flag.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">flagsCount</span><span class="op">(</span>
-  <span class="va">data</span>,
-  <span class="va">tab.flags</span>,
-  <span class="va">file</span>,
-  col.id <span class="op">=</span> <span class="st">"ID"</span>,
-  <span class="va">col.flagn</span>,
-  <span class="va">col.flagc</span>,
-  by <span class="op">=</span> <span class="cn">NULL</span>,
-  flags.increasing <span class="op">=</span> <span class="cn">FALSE</span>,
-  flagc.0 <span class="op">=</span> <span class="st">"Analysis set"</span>,
-  name.all.data <span class="op">=</span> <span class="st">"All available data"</span>,
-  grp.incomp <span class="op">=</span> <span class="st">"EVID"</span>,
-  save <span class="op">=</span> <span class="cn">TRUE</span>,
-  as.fun <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">flagsCount</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">tab.flags</span>,</span>
+<span>  <span class="va">file</span>,</span>
+<span>  col.id <span class="op">=</span> <span class="st">"ID"</span>,</span>
+<span>  <span class="va">col.flagn</span>,</span>
+<span>  <span class="va">col.flagc</span>,</span>
+<span>  by <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  flags.increasing <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  flagc.0 <span class="op">=</span> <span class="st">"Analysis set"</span>,</span>
+<span>  name.all.data <span class="op">=</span> <span class="st">"All available data"</span>,</span>
+<span>  grp.incomp <span class="op">=</span> <span class="st">"EVID"</span>,</span>
+<span>  save <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  as.fun <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>The dataset including both FLAG and flag columns.</p></dd>
+
+
 <dt>tab.flags</dt>
 <dd><p>A data.frame containing at least these named
 columns: FLAG, flag, condition. Condition is disregarded for
 FLAG==0.</p></dd>
+
+
 <dt>file</dt>
 <dd><p>A file to write the table of flag counts to. Will
 probably be removed and put in a separate function.</p></dd>
+
+
 <dt>col.id</dt>
 <dd><p>The name of the subject ID column. Default is "ID".</p></dd>
+
+
 <dt>col.flagn</dt>
 <dd><p>The name of the column containing the numerical
 flag values in tab.flags. This will be added to data. Use the
 same as when flagsAssign was called (if that was
 used). Default value is FLAG and can be configured using
 NMdataConf.</p></dd>
+
+
 <dt>col.flagc</dt>
 <dd><p>The name of the column containing the character
 flag values in data and tab.flags. Use the same as when
 flagsAssign was called (if that was used). Default value is
 flag and can be configured using NMdataConf.</p></dd>
+
+
 <dt>by</dt>
 <dd><p>An optional column to group the counting by. This could
 be "STUDY", "DRUG", "EVID", or a combination of multiple
 columns.</p></dd>
+
+
 <dt>flags.increasing</dt>
 <dd><p>The flags are applied by either decreasing
 (default) or increasing value of col.flagn. By using
@@ -140,31 +154,44 @@ decreasing order, you can easily adjust the Nonmem IGNORE
 statement from IGNORE(FLAG.NE.0) to say IGNORE(FLAG.GT.10) if
 BLQ's have FLAG=10, and you decide to include these in the
 analysis.</p></dd>
+
+
 <dt>flagc.0</dt>
 <dd><p>The character flag to assign to rows that are not
 matched by exclusion conditions (numerical flag 0).</p></dd>
+
+
 <dt>name.all.data</dt>
 <dd><p>What to call the total set of data before
 applying exclusion flags. Default is "All available data".</p></dd>
+
+
 <dt>grp.incomp</dt>
 <dd><p>Column(s) that distinct incompatible subsets of
 data. Default is "EVID" meaning that if different values of
 EVID are found in data, the function will return an
 error. This is a safeguard not to mix data unintentionally
 when counting flags.</p></dd>
+
+
 <dt>save</dt>
 <dd><p>Save file? Default is TRUE, meaning that a file will
 be written if file argument is supplied.</p></dd>
+
+
 <dt>as.fun</dt>
 <dd><p>The default is to return a data.table if input data
 is a data.table, and return a data.frame for all other input
 classes. Pass a function in as.fun to convert to something
 else. If data is not a data.table, default can be configured
 using NMdataConf.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A summary table with number of discarded and retained
+    
+
+<p>A summary table with number of discarded and retained
     subjects and observations when applying each condition in the
     flag table. "discarded" means that the reduction of number of
     observations and subjects resulting from the flag, "retained"
@@ -199,22 +226,22 @@ col.flagc (default is flag) is not used.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span>file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">       flagn<span class="op">=</span><span class="fl">10</span>,</span>
-<span class="r-in">       flagc<span class="op">=</span><span class="st">"Below LLOQ"</span>,</span>
-<span class="r-in">       condition<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BLQ==1"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="flagsAssign.html">flagsAssign</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.flags</span>,subset.data<span class="op">=</span><span class="st">"EVID==0"</span>,col.flagn<span class="op">=</span><span class="st">"flagn"</span>,col.flagc<span class="op">=</span><span class="st">"flagc"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span>file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>       flagn<span class="op">=</span><span class="fl">10</span>,</span></span>
+<span class="r-in"><span>       flagc<span class="op">=</span><span class="st">"Below LLOQ"</span>,</span></span>
+<span class="r-in"><span>       condition<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BLQ==1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="flagsAssign.html">flagsAssign</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.flags</span>,subset.data<span class="op">=</span><span class="st">"EVID==0"</span>,col.flagn<span class="op">=</span><span class="st">"flagn"</span>,col.flagc<span class="op">=</span><span class="st">"flagc"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Coding flagn = 10, flagc = Below LLOQ</span>
-<span class="r-in"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="flagsAssign.html">flagsAssign</a></span><span class="op">(</span><span class="va">pk</span>,subset.data<span class="op">=</span><span class="st">"EVID==1"</span>,flagc.0<span class="op">=</span><span class="st">"Dosing"</span>,</span>
-<span class="r-in">        col.flagn<span class="op">=</span><span class="st">"flagn"</span>,col.flagc<span class="op">=</span><span class="st">"flagc"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">pk</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"EVID"</span>,<span class="st">"flagn"</span>,<span class="st">"flagc"</span>,<span class="st">"BLQ"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="flagsAssign.html">flagsAssign</a></span><span class="op">(</span><span class="va">pk</span>,subset.data<span class="op">=</span><span class="st">"EVID==1"</span>,flagc.0<span class="op">=</span><span class="st">"Dosing"</span>,</span></span>
+<span class="r-in"><span>        col.flagn<span class="op">=</span><span class="st">"flagn"</span>,col.flagc<span class="op">=</span><span class="st">"flagc"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">pk</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"EVID"</span>,<span class="st">"flagn"</span>,<span class="st">"flagc"</span>,<span class="st">"BLQ"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    EVID flagn        flagc BLQ</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:    1     0       Dosing   0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:    0    10   Below LLOQ   1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3:    0     0 Analysis set   0</span>
-<span class="r-in"><span class="fu">flagsCount</span><span class="op">(</span><span class="va">pk</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">]</span>,<span class="va">dt.flags</span>,col.flagn<span class="op">=</span><span class="st">"flagn"</span>,col.flagc<span class="op">=</span><span class="st">"flagc"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">flagsCount</span><span class="op">(</span><span class="va">pk</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">]</span>,<span class="va">dt.flags</span>,col.flagn<span class="op">=</span><span class="st">"flagn"</span>,col.flagc<span class="op">=</span><span class="st">"flagc"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 flagc N.left Nobs.left N.discard N.disc.cum Nobs.discard</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: All available data    150      1352        NA          0           NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:         Below LLOQ    131       755        19         19          597</span>
@@ -237,7 +264,7 @@ col.flagc (default is flag) is not used.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

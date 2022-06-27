@@ -86,21 +86,21 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMwriteSection</span><span class="op">(</span>
-  <span class="va">files</span>,
-  <span class="va">file.pattern</span>,
-  <span class="va">dir</span>,
-  <span class="va">section</span>,
-  <span class="va">newlines</span>,
-  <span class="va">list.sections</span>,
-  <span class="va">newfile</span>,
-  backup <span class="op">=</span> <span class="cn">TRUE</span>,
-  blank.append <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">data.file</span>,
-  write <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">quiet</span>,
-  simplify <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMwriteSection</span><span class="op">(</span></span>
+<span>  <span class="va">files</span>,</span>
+<span>  <span class="va">file.pattern</span>,</span>
+<span>  <span class="va">dir</span>,</span>
+<span>  <span class="va">section</span>,</span>
+<span>  <span class="va">newlines</span>,</span>
+<span>  <span class="va">list.sections</span>,</span>
+<span>  <span class="va">newfile</span>,</span>
+<span>  backup <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  blank.append <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">data.file</span>,</span>
+<span>  write <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">quiet</span>,</span>
+<span>  simplify <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -108,60 +108,87 @@
     <dl><dt>files</dt>
 <dd><p>File paths to the models (control stream) to
 edit. See file.pattern too.</p></dd>
+
+
 <dt>file.pattern</dt>
 <dd><p>Alternatively to files, you can supply a
 regular expression which will be passed to list.files as the
 pattern argument. If this is used, use dir argument as
 well. Also see data.file to only process models that use a
 specific data file.</p></dd>
+
+
 <dt>dir</dt>
 <dd><p>If file.pattern is used, dir is the directory to search
 in.</p></dd>
+
+
 <dt>section</dt>
 <dd><p>The name of the section to update without
 "$". Example: section="EST" to edit the sections starting by
 $EST. Section specification is not case-sensitive. See
 ?NMreadSection too.</p></dd>
+
+
 <dt>newlines</dt>
 <dd><p>The new text (including "$SECTION"). Better be
 broken into lines in a character vector since this is simply
 past to writeLines.</p></dd>
+
+
 <dt>list.sections</dt>
 <dd><p>Named list of new sections, each element
 containing a section. Names must be section names, contents of
 each element are the new section lines for each section.</p></dd>
+
+
 <dt>newfile</dt>
 <dd><p>path and filename to new run. If missing, the original
 file (from <code>files</code> or <code>file.pattern</code>) is overwritten
 (see the <code>backup</code> option below). If NULL, output is returned
 as a character vector rather than written.</p></dd>
+
+
 <dt>backup</dt>
 <dd><p>In case you are overwriting the old file, do you
 want to backup the file (to say, backup_run001.mod)?</p></dd>
+
+
 <dt>blank.append</dt>
 <dd><p>Append a blank line to output?</p></dd>
+
+
 <dt>data.file</dt>
 <dd><p>Use this to limit the scope of models to those
 that use a specific input data data file. The string has to
 exactly match the one in $DATA or $INFILE in Nonmem.</p></dd>
+
+
 <dt>write</dt>
 <dd><p>Default is to write to file. If write=FALSE,
 NMwriteSection returns the resulting input.txt without writing
 it.  to disk?  Default is FALSE.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
 non-interactive use. Default can be configured using
 NMdataConf.</p></dd>
+
+
 <dt>simplify</dt>
 <dd><p>If TRUE (default) and only one file is edited, the
 resulting rows are returned directly. If more than one file is
 edited, the result will always be a list with one element per
 file.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The new section text is returned. If write=TRUE, this is
+    
+
+<p>The new section text is returned. If write=TRUE, this is
     done invisibly.</p>
     </div>
     <div id="details">
@@ -181,15 +208,15 @@ file.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">newlines</span> <span class="op">&lt;-</span> <span class="st">"$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"</span></span>
-<span class="r-in"><span class="fu">NMwriteSection</span><span class="op">(</span>files<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.mod"</span>, package <span class="op">=</span> <span class="st">"NMdata"</span><span class="op">)</span>,</span>
-<span class="r-in">section<span class="op">=</span><span class="st">"EST"</span>, newlines<span class="op">=</span><span class="va">newlines</span>,newfile<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">text.nm</span> <span class="op">&lt;-</span> <span class="fu"><a href="NMwriteData.html">NMwriteData</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">NMwriteSection</span><span class="op">(</span>dir<span class="op">=</span><span class="st">"nonmem"</span>,</span>
-<span class="r-in">              file.pattern<span class="op">=</span><span class="st">"^run.*\\.mod"</span>,</span>
-<span class="r-in">              list.sections<span class="op">=</span><span class="va">text.nm</span><span class="op">[</span><span class="st">"INPUT"</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">newlines</span> <span class="op">&lt;-</span> <span class="st">"$EST POSTHOC INTERACTION METHOD=1 NOABORT PRINT=5 MAXEVAL=9999 SIG=3"</span></span></span>
+<span class="r-in"><span><span class="fu">NMwriteSection</span><span class="op">(</span>files<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.mod"</span>, package <span class="op">=</span> <span class="st">"NMdata"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>section<span class="op">=</span><span class="st">"EST"</span>, newlines<span class="op">=</span><span class="va">newlines</span>,newfile<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">text.nm</span> <span class="op">&lt;-</span> <span class="fu"><a href="NMwriteData.html">NMwriteData</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">NMwriteSection</span><span class="op">(</span>dir<span class="op">=</span><span class="st">"nonmem"</span>,</span></span>
+<span class="r-in"><span>              file.pattern<span class="op">=</span><span class="st">"^run.*\\.mod"</span>,</span></span>
+<span class="r-in"><span>              list.sections<span class="op">=</span><span class="va">text.nm</span><span class="op">[</span><span class="st">"INPUT"</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -204,7 +231,7 @@ file.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

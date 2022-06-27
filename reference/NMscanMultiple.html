@@ -88,7 +88,7 @@ arguments.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMscanMultiple</span><span class="op">(</span><span class="va">files</span>, <span class="va">dir</span>, <span class="va">file.pattern</span>, <span class="va">as.fun</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMscanMultiple</span><span class="op">(</span><span class="va">files</span>, <span class="va">dir</span>, <span class="va">file.pattern</span>, <span class="va">as.fun</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -96,30 +96,41 @@ arguments.</p>
     <dl><dt>files</dt>
 <dd><p>File paths to the models (control stream) to
 edit. See file.pattern too.</p></dd>
+
+
 <dt>dir</dt>
 <dd><p>The directory in which to find the models. Passed to
 list.files(). See file.pattern argument too.</p></dd>
+
+
 <dt>file.pattern</dt>
 <dd><p>The pattern used to match the filenames to read
 with NMscanData. Passed to list.files(). See dir argument too.</p></dd>
+
+
 <dt>as.fun</dt>
 <dd><p>The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments passed to NMscanData.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>All results stacked, class as defined by as.fun</p>
+    
+
+<p>All results stacked, class as defined by as.fun</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">NMscanMultiple</span><span class="op">(</span>dir<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span>,</span>
-<span class="r-in">file.pattern<span class="op">=</span><span class="st">"xgxr.*\\.lst"</span>,as.fun<span class="op">=</span><span class="st">"data.table"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">NMscanMultiple</span><span class="op">(</span>dir<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>file.pattern<span class="op">=</span><span class="st">"xgxr.*\\.lst"</span>,as.fun<span class="op">=</span><span class="st">"data.table"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model:  xgxr001 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Used tables, contents shown as used/total:</span>
@@ -214,9 +225,9 @@ NMdataConf.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3:    34    TRUE    TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4:    36    TRUE    TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5:    33    TRUE    TRUE</span>
-<span class="r-in"><span class="va">res.mean</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span>meanPRED<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">PRED</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,by<span class="op">=</span><span class="fu">.</span><span class="op">(</span><span class="va">model</span>,<span class="va">NOMTIME</span><span class="op">)</span><span class="op">]</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">res.mean</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">NOMTIME</span>,<span class="va">meanPRED</span>,colour<span class="op">=</span><span class="va">model</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> </span>
+<span class="r-in"><span><span class="va">res.mean</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span>meanPRED<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">PRED</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,by<span class="op">=</span><span class="fu">.</span><span class="op">(</span><span class="va">model</span>,<span class="va">NOMTIME</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">res.mean</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">NOMTIME</span>,<span class="va">meanPRED</span>,colour<span class="op">=</span><span class="va">model</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> </span></span>
 <span class="r-plt img"><img src="NMscanMultiple-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
@@ -232,7 +243,7 @@ NMdataConf.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

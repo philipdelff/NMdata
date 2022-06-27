@@ -88,43 +88,60 @@ use the file argument in NMcheckData instead.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMcheckDataFile</span><span class="op">(</span>
-  <span class="va">file</span>,
-  <span class="va">col.row</span>,
-  col.id <span class="op">=</span> <span class="st">"ID"</span>,
-  use.rds <span class="op">=</span> <span class="cn">FALSE</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">file.mod</span>,
-  <span class="va">dir.data</span>,
-  <span class="va">as.fun</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMcheckDataFile</span><span class="op">(</span></span>
+<span>  <span class="va">file</span>,</span>
+<span>  <span class="va">col.row</span>,</span>
+<span>  col.id <span class="op">=</span> <span class="st">"ID"</span>,</span>
+<span>  use.rds <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">file.mod</span>,</span>
+<span>  <span class="va">dir.data</span>,</span>
+<span>  <span class="va">as.fun</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>file</dt>
 <dd><p>a model file (input or output control stream)</p></dd>
+
+
 <dt>col.row</dt>
 <dd><p>row identifier</p></dd>
+
+
 <dt>col.id</dt>
 <dd><p>subject identifier</p></dd>
+
+
 <dt>use.rds</dt>
 <dd><p>use rds file instead of csv. This is typically not wanted because we want to test the input data as read by NONMEM.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>Keep quiet? Default is FALSE.</p></dd>
+
+
 <dt>file.mod</dt>
 <dd><p>How to find the input control stream if you are using the output control stream.</p></dd>
+
+
 <dt>dir.data</dt>
 <dd><p>The data directory can only be read from the
 control stream (.mod) and not from the output file (.lst). So
 if you only have the output control stream, use dir.data to
 tell in which directory to find the data file. If dir.data is
 provided, the .mod file is not used at all.</p></dd>
+
+
 <dt>as.fun</dt>
 <dd><p>The function to run results through before returning them.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>passed to NMcheckData</p></dd>
+
 </dl></div>
 
   </div>
@@ -139,7 +156,7 @@ provided, the .mod file is not used at all.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

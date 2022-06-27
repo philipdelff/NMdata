@@ -84,32 +84,43 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dims</span><span class="op">(</span><span class="va">...</span>, <span class="va">list.data</span>, keep.names <span class="op">=</span> <span class="cn">TRUE</span>, as.fun <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">keepNames</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dims</span><span class="op">(</span><span class="va">...</span>, <span class="va">list.data</span>, keep.names <span class="op">=</span> <span class="cn">TRUE</span>, as.fun <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">keepNames</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>...</dt>
 <dd><p>data sets</p></dd>
+
+
 <dt>list.data</dt>
 <dd><p>As alternative to ..., you can supply the data
 sets in a list here.</p></dd>
+
+
 <dt>keep.names</dt>
 <dd><p>If TRUE, the original dataset names are used in
 reported table. If not, generic x1, x2,... are used. The
 latter may be preferred for readability in some cases.</p></dd>
+
+
 <dt>as.fun</dt>
 <dd><p>A function that will be run on the result before
 returning. If first input data set is a data.table, the
 default is to return a data.table, if not the default is to
 return a data.frame. Use whatever to get what fits in with
 your workflow. Default can be configured with NMdataConf.</p></dd>
+
+
 <dt>keepNames</dt>
 <dd><p>Deprecated. Use keep.names instead.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data.frame with dimensions of objects in ... Actual
+    
+
+<p>A data.frame with dimensions of objects in ... Actual
     class defined by as.fun.</p>
     </div>
     <div id="see-also">
@@ -131,7 +142,7 @@ your workflow. Default can be configured with NMdataConf.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

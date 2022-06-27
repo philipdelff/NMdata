@@ -94,28 +94,37 @@ variables that do not vary within unique combinations of these.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">findCovs</span><span class="op">(</span><span class="va">data</span>, by <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">cols.id</span>, as.fun <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">findCovs</span><span class="op">(</span><span class="va">data</span>, by <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">cols.id</span>, as.fun <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>data.frame in which to look for covariates</p></dd>
+
+
 <dt>by</dt>
 <dd><p>covariates will be searched for in combinations of values in
 these columns. Often by will be either empty or ID. But it can also
 be both say c("ID","DRUG") or c("ID","TRT").</p></dd>
+
+
 <dt>cols.id</dt>
 <dd><p>Deprecated. Use by instead.</p></dd>
+
+
 <dt>as.fun</dt>
 <dd><p>The default is to return a data.table if data is a data.table
 and return a data.frame in all other cases. Pass a function in as.fun to
 convert to something else. If data is not a data.table, the default can
 be configured using NMdataConf.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a data set with one observation per combination of values of
+    
+
+<p>a data set with one observation per combination of values of
     variables listed in by.</p>
     </div>
     <div id="see-also">
@@ -132,38 +141,38 @@ be configured using NMdataConf.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">dt1</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ID<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>,</span>
-<span class="r-in">               OCC<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,</span>
-<span class="r-in">               <span class="co">## ID level</span></span>
-<span class="r-in">               eta1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">3</span><span class="op">)</span>,</span>
-<span class="r-in">               <span class="co">## occasion level</span></span>
-<span class="r-in">               eta2<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">1</span>,<span class="fl">5</span><span class="op">)</span>,</span>
-<span class="r-in">               <span class="co">## not used</span></span>
-<span class="r-in">               eta3<span class="op">=</span><span class="fl">0</span></span>
-<span class="r-in">               <span class="op">)</span></span>
-<span class="r-in"><span class="co">## model level</span></span>
-<span class="r-in"><span class="fu">findCovs</span><span class="op">(</span><span class="va">dt1</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dt1</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ID<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>               OCC<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>               <span class="co">## ID level</span></span></span>
+<span class="r-in"><span>               eta1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>               <span class="co">## occasion level</span></span></span>
+<span class="r-in"><span>               eta2<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">1</span>,<span class="fl">5</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>               <span class="co">## not used</span></span></span>
+<span class="r-in"><span>               eta3<span class="op">=</span><span class="fl">0</span></span></span>
+<span class="r-in"><span>               <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## model level</span></span></span>
+<span class="r-in"><span><span class="fu">findCovs</span><span class="op">(</span><span class="va">dt1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   eta3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    0</span>
-<span class="r-in"><span class="co">## ID level</span></span>
-<span class="r-in"><span class="fu">findCovs</span><span class="op">(</span><span class="va">dt1</span>,<span class="st">"ID"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## ID level</span></span></span>
+<span class="r-in"><span><span class="fu">findCovs</span><span class="op">(</span><span class="va">dt1</span>,<span class="st">"ID"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ID eta1 eta3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  1    1    0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  2    3    0</span>
-<span class="r-in"><span class="co">## acual ID level</span></span>
-<span class="r-in"><span class="fu"><a href="findVars.html">findVars</a></span><span class="op">(</span><span class="fu">findCovs</span><span class="op">(</span><span class="va">dt1</span>,<span class="st">"ID"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## acual ID level</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="findVars.html">findVars</a></span><span class="op">(</span><span class="fu">findCovs</span><span class="op">(</span><span class="va">dt1</span>,<span class="st">"ID"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ID eta1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  1    1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  2    3</span>
-<span class="r-in"><span class="co">## occasion level</span></span>
-<span class="r-in"><span class="fu">findCovs</span><span class="op">(</span><span class="fu"><a href="findVars.html">findVars</a></span><span class="op">(</span><span class="va">dt1</span>,<span class="st">"ID"</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span>,<span class="st">"OCC"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## occasion level</span></span></span>
+<span class="r-in"><span><span class="fu">findCovs</span><span class="op">(</span><span class="fu"><a href="findVars.html">findVars</a></span><span class="op">(</span><span class="va">dt1</span>,<span class="st">"ID"</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span>,<span class="st">"OCC"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ID OCC eta2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  1   1    1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  1   2    3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3  2   1    1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4  2   2    5</span>
-<span class="r-in"><span class="co">## Based on a "real data example"</span></span>
-<span class="r-in"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.lst"</span>, package <span class="op">=</span> <span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## Based on a "real data example"</span></span></span>
+<span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.lst"</span>, package <span class="op">=</span> <span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>input control stream</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> (/Users/runner/work/_temp/Library/NMdata/examples/nonmem/xgxr001.mod) is newer</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> than output control stream</span>
@@ -185,7 +194,7 @@ be configured using NMdataConf.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     0   2    755    755</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     1   1    150    150</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   All All    905    905</span>
-<span class="r-in"><span class="fu">findCovs</span><span class="op">(</span><span class="va">dat</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">findCovs</span><span class="op">(</span><span class="va">dat</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      ID FLAG STUDY   TVKA  TVV2    TVCL    TVV3     TVQ       KA       V2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    31    0     1 0.1812 0.042 0.72457 0.17848 2307400 0.181200 0.042000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2    32    0     1 0.1812 0.042 0.72457 0.17848 2307400 0.181200 0.042000</span>
@@ -639,8 +648,8 @@ be configured using NMdataConf.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 148 300 mg 300 mg xgxr001  TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 149 300 mg 300 mg xgxr001  TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 150 300 mg 300 mg xgxr001  TRUE</span>
-<span class="r-in"><span class="co">### Without an ID column we get non-varying columns</span></span>
-<span class="r-in"><span class="fu">findCovs</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">### Without an ID column we get non-varying columns</span></span></span>
+<span class="r-in"><span><span class="fu">findCovs</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   FLAG STUDY   TVKA  TVV2    TVCL    TVV3     TVQ      V3       Q BLQ CYCLE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    0     1 0.1812 0.042 0.72457 0.17848 2307400 0.17848 2307400   0     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   PART PROFDAY TIMEUNIT   model nmout</span>
@@ -659,7 +668,7 @@ be configured using NMdataConf.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

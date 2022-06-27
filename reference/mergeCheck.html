@@ -96,22 +96,22 @@ the results are consistent with the simple merge described above.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">mergeCheck</span><span class="op">(</span>
-  <span class="va">x</span>,
-  <span class="va">y</span>,
-  <span class="va">by</span>,
-  <span class="va">by.x</span>,
-  <span class="va">by.y</span>,
-  fun.commoncols <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span>,
-  <span class="va">ncols.expect</span>,
-  track.msg <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">quiet</span>,
-  <span class="va">df1</span>,
-  <span class="va">df2</span>,
-  fun.na.by <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span>,
-  <span class="va">as.fun</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mergeCheck</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  <span class="va">by</span>,</span>
+<span>  <span class="va">by.x</span>,</span>
+<span>  <span class="va">by.y</span>,</span>
+<span>  fun.commoncols <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span>,</span>
+<span>  <span class="va">ncols.expect</span>,</span>
+<span>  track.msg <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">quiet</span>,</span>
+<span>  <span class="va">df1</span>,</span>
+<span>  <span class="va">df2</span>,</span>
+<span>  fun.na.by <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span>,</span>
+<span>  <span class="va">as.fun</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -120,17 +120,27 @@ the results are consistent with the simple merge described above.</p>
 <dd><p>A data.frame with the number of rows must should be
 obtained from the merge. The resulting data.frame will be
 ordered like x.</p></dd>
+
+
 <dt>y</dt>
 <dd><p>A data.frame that will be merged onto x.</p></dd>
+
+
 <dt>by</dt>
 <dd><p>The column(s) to merge by. Character string (vector). by
 or by.x and by.y must be supplied.</p></dd>
+
+
 <dt>by.x</dt>
 <dd><p>If the columns to merge by in x and y are named
 differently. by or by.x and by.y must be supplied.</p></dd>
+
+
 <dt>by.y</dt>
 <dd><p>If the columns to merge by in x and y are named
 differently. by or by.x and by.y must be supplied.</p></dd>
+
+
 <dt>fun.commoncols</dt>
 <dd><p>If common columns are found in x and y, and
 they are not used in by, this will create columns named like
@@ -140,39 +150,58 @@ happens. If using mergeCheck in a function, you may want to
 make sure this is not happening and use
 fun.commoncols=stop. If you want nothing to happen, you can do
 fun.commoncols=NULL.</p></dd>
+
+
 <dt>ncols.expect</dt>
 <dd><p>If you want to include a check of the number
 of columns being added to the dimensions of x. So if
 ncols.expect=1, the resulting data must have exactly one
 column more than x - if not, an error will be returned.</p></dd>
+
+
 <dt>track.msg</dt>
 <dd><p>If using mergeCheck inside other functions, it
 can be useful to use track.msg=TRUE. This will add information
 to messages/warnings/errors that they came from mergCheck.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>If FALSE, the names of the added columns are
 reported. Default value controlled by NMdataConf.</p></dd>
+
+
 <dt>df1</dt>
 <dd><p>Deprecated. Use x.</p></dd>
+
+
 <dt>df2</dt>
 <dd><p>Deprecated. Use y.</p></dd>
+
+
 <dt>fun.na.by</dt>
 <dd><p>If NA's are found in (matched) by columns in both
 x and why, what should we do? This could be OK, but in many
 cases, it's because something unexpected is happening. Use
 fun.na.by=NULL in cases where you really don't care about this
 and want to go ahead regardless.</p></dd>
+
+
 <dt>as.fun</dt>
 <dd><p>The default is to return a data.table if x is a
 data.table and return a data.frame in all other cases. Pass a
 function in as.fun to convert to something else.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>additional arguments passed to data.table::merge. If
 all is among them, an error will be returned.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a data.frame resulting from merging x and y. Class as
+    
+
+<p>a data.frame resulting from merging x and y. Class as
     defined by as.fun.</p>
     </div>
     <div id="details">
@@ -224,20 +253,20 @@ values of the row counter in x.</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"> <span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,</span>
-<span class="r-in">                   y<span class="op">=</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>,</span>
-<span class="r-in">                   stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"> <span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">11</span><span class="op">]</span>,</span>
-<span class="r-in">                   x2 <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">11</span>,</span>
-<span class="r-in">                   stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"> <span class="va">mc1</span> <span class="op">&lt;-</span> <span class="fu">mergeCheck</span><span class="op">(</span><span class="va">df1</span>,<span class="va">df2</span>,by<span class="op">=</span><span class="st">"y"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span> <span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,</span></span>
+<span class="r-in"><span>                   y<span class="op">=</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>                   stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">11</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>                   x2 <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">11</span>,</span></span>
+<span class="r-in"><span>                   stringsAsFactors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="va">mc1</span> <span class="op">&lt;-</span> <span class="fu">mergeCheck</span><span class="op">(</span><span class="va">df1</span>,<span class="va">df2</span>,by<span class="op">=</span><span class="st">"y"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column(s) added: x2</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Notice as opposed to most merge/join algorithms, mergeCheck by</span></span>
-<span class="r-in"><span class="co">#default retains both row and column order from x</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span>,<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Notice as opposed to most merge/join algorithms, mergeCheck by</span></span></span>
+<span class="r-in"><span><span class="co">#default retains both row and column order from x</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span>,<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     y  x x2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1: a  1  1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2: b  2  2</span>
@@ -249,19 +278,19 @@ values of the row counter in x.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  8: h  8  8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9: i  9  9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10: j 10 10</span>
-<span class="r-in"><span class="co">## Here we get a duplicate of a df1 row in the result. If we only</span></span>
-<span class="r-in"><span class="co">## check dimensions, we make a mistake. mergeCheck captures the</span></span>
-<span class="r-in"><span class="co">## error - and tell us where to find the problem (ID 31 and 180):</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span>file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dt.cov</span> <span class="op">&lt;-</span> <span class="va">pk</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span>ID<span class="op">=</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">ID</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span>
-<span class="r-in"><span class="va">dt.cov</span><span class="op">[</span>,<span class="va">COV</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,size<span class="op">=</span><span class="va">.N</span>,replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span></span>
-<span class="r-in"><span class="va">dt.cov</span> <span class="op">&lt;-</span> <span class="va">dt.cov</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">.N</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res.merge</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">res.merge</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">mergeCheck</span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"><span><span class="co">## Here we get a duplicate of a df1 row in the result. If we only</span></span></span>
+<span class="r-in"><span><span class="co">## check dimensions, we make a mistake. mergeCheck captures the</span></span></span>
+<span class="r-in"><span><span class="co">## error - and tell us where to find the problem (ID 31 and 180):</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span>file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dt.cov</span> <span class="op">&lt;-</span> <span class="va">pk</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span>ID<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">ID</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">dt.cov</span><span class="op">[</span>,<span class="va">COV</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,size<span class="op">=</span><span class="va">.N</span>,replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">dt.cov</span> <span class="op">&lt;-</span> <span class="va">dt.cov</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">.N</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res.merge</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">res.merge</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">mergeCheck</span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -276,7 +305,7 @@ values of the row counter in x.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -86,27 +86,34 @@ details in your favorite class</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMinfo</span><span class="op">(</span><span class="va">data</span>, <span class="va">info</span>, <span class="va">as.fun</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMinfo</span><span class="op">(</span><span class="va">data</span>, <span class="va">info</span>, <span class="va">as.fun</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>An object of class NMdata (a result of NMscanData)</p></dd>
+
+
 <dt>info</dt>
 <dd><p>If not passed, all the metadata is returned. You can
 use "details", "tables", or "columns" to get only these
 subsets. If info is "tables" or "columns"</p></dd>
+
+
 <dt>as.fun</dt>
 <dd><p>The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A table of class as defined by as.fun in case info is
+    
+
+<p>A table of class as defined by as.fun in case info is
     "columns" or "tables". A list if info missing or equal to
     "details".</p>
     </div>
@@ -123,7 +130,7 @@ NMdataConf.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>
