@@ -418,6 +418,8 @@ Not warning. Warning if standard variable?
 **** DONE Don't warn about missing SS, ADDL, II
 **** DONE Polish
 *** flagsAssign
+**** TODO [#A] subsets of zero rows should return a message, not an error
+say subset="EVID==2" will return an error if no rows found. 
 **** TODO [#A] We need to work in IDhasNoObs and IDhasNoDos
 This likely means a restructure so all tables have to be given
 together and these subject-level flags are set across EVID after 
