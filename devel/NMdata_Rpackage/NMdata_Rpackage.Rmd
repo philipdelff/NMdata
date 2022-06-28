@@ -117,6 +117,9 @@ $$\vspace{.01in}$$
 * The data creation tools should be relevant independently of estimation/simulation tool.
 * Latest stable release is 0.0.12 and is available on CRAN and MPN (starting from 2022-06-15 snapshot).
 
+## NMdata 0.0.12 on MPN
+\includegraphics[width=.5in]{figures/worksign.png}
+
 
 <!-- ## Who can find NMdata useful? -->
 
@@ -832,7 +835,7 @@ class(res0)
 ```
 \normalsize
 
-* Starting from `NMdata 0.0.8`, the default behavior will be to merge by `col.row` if found.
+* The default behavior will be to merge by `col.row` if found.
 - Default value of `col.row` is `ROW`. We shall see later how to modify this.
 
 ## NMscanData
@@ -1433,4 +1436,10 @@ list.files("results")
 
 ::::
 :::
+
+## `execSafe`: Save input data with each Nonmem run
+
+* Executes Nonem from within R
+* Archives input data together with Nonmem run (you can tell NMdata to read that archive when reading your model)
+* Automatically generates a PNM file if you want to parallellize
 

@@ -148,6 +148,10 @@
 ##' \item Columns specified in cols.num must be present, numeric
 ##'     and non-NA.
 ##'
+##' \item If a unique subject identifier column (col.usubjid) is
+##' provided, col.id must be unique within values of col.usubjid and
+##' vice versa.
+##'
 ##' }
 ##'
 ##' @examples
@@ -282,9 +286,6 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     
 
 ### Section end: Checks of arguments
-
-    
-    
 
 
 ### row counter
@@ -836,7 +837,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
                                },
                                events=findings)
 
-        ## check . All ID values must be represented exactly once. If not, report an ID=level finding.
+        ## check . All ID values must be represented exactly once. If not, report an ID-level finding.
         ## how many usubjids for each ID?
         data[,NUID:=uniqueN(col.usubjid),by=c(col.id)]
         ## how many IDs for each usubjid?
