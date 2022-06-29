@@ -93,7 +93,7 @@ NMscanInput <- function(file, use.rds, file.mod, dir.data=NULL,
                         details=TRUE, col.id="ID", col.row, quiet,
                         args.fread, invert=FALSE, as.fun) {
     
-
+    
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     datafile <- NULL

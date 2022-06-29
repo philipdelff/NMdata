@@ -25,7 +25,7 @@
 ##' @export
 
 NMreadCsv <- function(file,args.fread,as.fun=NULL){
-
+    
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     if(missing(args.fread)) args.fread <- NULL
     args.fread <- NMdataDecideOption("args.fread",args.fread)

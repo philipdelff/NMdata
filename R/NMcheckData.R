@@ -276,7 +276,11 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
         col.id <- "ID"
         use.rds <- FALSE
         file.mod <- NULL
-        res <- NMcheckDataFile(file=file,col.time=col.time,col.row=col.row,col.id=col.id,na.strings=na.strings,use.rds=use.rds,quiet=quiet,file.mod=file.mod,as.fun=as.fun)
+        res <- NMcheckDataFile(file=file,col.time=col.time,
+                               col.row=col.row,col.id=col.id,
+                               na.strings=na.strings,use.rds=use.rds,
+                               quiet=quiet,file.mod=file.mod,
+                               as.fun=as.fun)
         return(invisible(res))
     }
     

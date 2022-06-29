@@ -53,12 +53,15 @@ With load_all():
 *** dims
 **** DONE Check if objects are data.frames
 *** DONE fnAppend
-Make internal in tracee
+**** TODO Support strings without extensions
+Example: fnAppend("run",".lst")
+**** TODO Make internal in tracee
 *** NMcheckColNames
 **** return input column names and Nonmem interpretation for user to spot errors
 **** Bad name, what could we call it?
 *** cc - create character vector function
 *** NMgenText
+**** TODO Handle until values not matching column names
 **** DONE Add a until argument to specify the last column to use in nonmem
 **** TODO [#B] checks: duplicate column names
 **** TODO [#B] test if a synonym was used. Give warning or msg if not
@@ -232,6 +235,10 @@ numeric should be using
 **** DONE Document splits of cols.num                               :v0_0_11:
 **** DONE Document col.cmt                                          :v0_0_11:
 *** NMcheckDataFile
+**** TODO Bug in combination with file.data                             :Bug:
+If NMdataConf(file.data) has been used to redirect to a rds
+file. Maybe solution is to let NMscanInput use readRDS if file
+extension is .rds?
 **** DONE Check all columns as cols.num                             :v0_0_11:
 **** DONE Return data, summary and more                             :v0_0_11:
 **** TODO [#B] Check whether NA's are coded with .'s

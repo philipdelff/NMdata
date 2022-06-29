@@ -265,6 +265,8 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
         }
         
     }
+
+    
     
     ## NONMEM text
     NMtext <- try(do.call(NMgenText,
@@ -272,7 +274,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
                           list(data=data.dt,file=file)
                          ,args.NMgenText)
                       ))
-
+    
     
     invisible(list(INPUT=NMtext$INPUT,DATA=NMtext$DATA))
 
