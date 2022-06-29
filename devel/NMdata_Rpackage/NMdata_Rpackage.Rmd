@@ -1,9 +1,10 @@
 ---
 title: |
  ![](../../man/figures/NMdata_logo_v01.png){width=1in}
+ 
  NMdata: A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
 author: Philip Delff
-date: June, 2021
+date: June 2022
 fontsize: 8pt
 header-includes:
    - \usepackage{adjustbox}
@@ -25,6 +26,15 @@ classoption: "aspectratio=169"
 <!--  - NMreadSection -->
 <!--  - NMextractText -->
 
+<!-- listMissings -->
+<!-- cc, cl -->
+<!-- update flagsAssign and flagsCount -->
+<!-- NMcheckData -->
+<!-- NMwriteSection made easier -->
+<!-- NMscanMultiple -->
+<!-- tracee -->
+<!-- execSafe -->
+
 ```{r,include=FALSE}
 
 library(knitr)
@@ -36,7 +46,6 @@ theme_set(theme_bw(base_size=14)+
           theme(strip.background =element_rect(fill="#ff9dff"))
           )
 library(data.table)
-unloadNamespace("pmxtricks")
 unloadNamespace("NMdata")
 
 ## some setup
@@ -106,7 +115,10 @@ Designed to fit in to the user's setup and coding preferences
 $$\vspace{.01in}$$
 
 * The data creation tools should be relevant independently of estimation/simulation tool.
-* Latest stable release is 0.0.7.2. Plan is to release 0.1.0 on CRAN.
+* Latest stable release is 0.0.12 and is available on CRAN and MPN (starting from 2022-06-15 snapshot).
+
+## NMdata 0.0.12 on MPN
+\includegraphics[width=.5in]{figures/worksign.png}
 
 
 <!-- ## Who can find NMdata useful? -->
@@ -137,17 +149,16 @@ $$\vspace{.01in}$$
 
 <!-- `NMdata` is my humble experience collected in efficient functions that fill some holes and help with some of the most annoying design -->
 ## Motivation
-* As large a potential pharmacometrics has for illuminating the unknown in drug development, it is dangerously technical.
+* The workflow of a pharmacometrician is very technical, with many risks of errors.
 
-* The risk is to have too little time for modeling, reflection, and
-understanding key questions. `NMdata` can be a help in freeing time to
-more high-level tasks.
+* Technical workload takes time from modeling, reflection, and
+understanding key questions. 
 
-* During the first 2-3 years I spent in pharmacometrics, I must have spent half the time coding, desparately trying to get Nonmem to behave and to understand the properties of the estimates I obtained.
+* During the first 2-3 years I spent in pharmacometrics, I must have spent half the time coding, desparately trying to get Nonmem to behave, and to understand the properties of the estimates I obtained.
 
 * Most of us develop our own ways to avoid some of the many
 difficulties in this process. This takes a lot of time and is most
-often only because we don't have adequate tools at hand.
+often only because we don't have adequate tools at hand. Or don't know them.
 
 * I generalized some of my solutions and collected them in `NMdata`.
 
@@ -173,38 +184,16 @@ you find something interesting, feel free to take advantage.
 
 
 ## Getting started
-::: columns
-:::: column
-Use recent development version
-Notice: This should not be used for final scripts
-```{r,install-NMdata,eval=FALSE}
-library(remotes)
-install_github("philipdelff/NMdata",
-               upgrade="never")
-```
-
+Install from `CRAN` or from `MPN` using `pkgr`.
 ```{r,load-NMdata,echo=TRUE,message=TRUE}
 library(NMdata)
-```
-::::
-:::: column
-Using a specific release. See list of releases at [https://github.com/philipdelff/NMdata/releases](https://github.com/philipdelff/NMdata/releases)
-```{r,install-NMdata-release,eval=FALSE}
-library(remotes)
-install_github("philipdelff/NMdata@v0.0.7.2",
-               upgrade="never")
+packageVersion("NMdata")
 ```
 
-```{r,load-NMdata-release,echo=TRUE,message=TRUE,eval=F}
-library(NMdata)
-```
-::::
-:::
-
-```{r,load-all-NMdata,include=FALSE}
-library(devtools)
-load_all()
-```
+<!-- ```{r,load-all-NMdata,include=FALSE} -->
+<!-- library(devtools) -->
+<!-- load_all() -->
+<!-- ``` -->
 
 ```{r,include=FALSE}
 NMdataConf(check.time=FALSE)
@@ -214,6 +203,7 @@ NMdataConf(as.fun="data.table")
 
 Three vignettes are available so far (see "Vignettes" tab when visiting URL above):
 
+* [Cheat sheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html)
 * [Data creation tools](https://philipdelff.github.io/NMdata/articles/DataCreate.html)
 * [Automated and general reader of Nonmem data](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
 * [FAQ](https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html)
@@ -227,7 +217,7 @@ For a quick overview (after installation), do:
 help(package="NMdata")
 ```
 
-All functions and their arguments are documented in their help files. 
+All functions and their arguments are documented in ?manual pages.
 
 <!-- prepare example data behind the scenes -->
 ```{r,prep-data,include=FALSE}
@@ -244,7 +234,9 @@ pk.reduced[,AMT:=as.character(AMT)]
 
 # Data set creation
 
+
 ## Compare compatibility of data sets for rbind and merge: `compareCols`
+
 ::: columns
 :::: column
 
@@ -255,17 +247,25 @@ pk.reduced[,AMT:=as.character(AMT)]
 - By default, only discrepancies are returned. 
 - Using `diff.only=FALSE` will give the complete list of columns in the two datasets.
 
-:::: 
-:::: column
-
 A slightly modified version of the `pk` dataset has been created.
 
 * Rows have been omitted
 * `CYCLE` has been removed, and
 * `AMT` has been recoded to character
 
+```{r,include=FALSE}
+opt.old <- options(width=50)
+```
+
+:::: 
+:::: column
+
+
 ```{r,compareCols,class.source="smaller"}
 compareCols(pk,pk.reduced)
+```
+```{r,include=FALSE}
+options(opt.old)
 ```
 
 \vspace{12pt}
@@ -277,6 +277,25 @@ Before merging or stacking, we may want to
 
 ::::
 :::
+
+## Keep track of missing values
+```{r}
+missings <- listMissings(pk)
+head(missings)
+```
+
+You can specify 
+
+* What columns to search
+* A grouping variable for findings (i.e. study if combining datasets) 
+* The strings that are interpreted as missing. 
+
+From `?listMissings`:
+```
+Usage:
+
+     listMissings(data, cols, by, na.strings = c("", "."), quiet = FALSE, as.fun)
+```
 
 
 <!-- %%% renameByContents.R -->
@@ -442,8 +461,7 @@ dt.flags <- fread(text="FLAG,flag,condition
 100,Negative time,TIME<0")
 
 pk <- flagsAssign(pk,tab.flags=dt.flags,subset.data="EVID==0")
-pk[EVID==1,FLAG:=0]
-pk[EVID==1,flag:="Dosing"]
+pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing")
 ```
 ::::
 
@@ -567,6 +585,46 @@ data.table(old=colnames(pk.old),new=colnames(pk))
 \normalsize
 :::
 
+
+## `NMcheckData`: Check data syntax for Nonmem compatibility 
+* Aim: check data for all potential Nonmem compatibility issues and other obvious errors.
+
+* Findings must be returned in a structure so related subsets of the
+  data can easily be identified for further inspection. 
+
+::: columns
+:::: column
+* `NMcheckData` contains a very long list of checks of especially the standard Nonmem columns (`ID`, `TIME`, `EVID`, `AMT`, `DV`, `MDV`, `RATE`, `SS`, etc.). They are all checked for allowed values (e.g. `TIME` must be non-negative, `EVID` must be one of `0:4`, etc).
+
+* ID-level checks (e.g. did all ID's receive doses, is time increasing, are rows disjoint?)
+
+* All used columns are checked for Nonmem compatibility in terms of how Nonmem translates to numeric values.
+
+* Column names are checked for uniqueness and for non-allowed characters.
+
+* If you supply the col.usubjid column, the ID column is checked to align with col.usubjid.
+
+* `NMcheckData` is based on simple framework making it simple to define new checks.
+
+
+::::
+:::: column
+\scriptsize
+```{r,NMcheckData}
+pk <- pk[ID>59]
+res.check <- NMcheckData(pk)
+res.check
+pkmod <- copy(pk)
+pkmod[,MDV:=as.numeric(is.na(DV))]
+pkmod[ID==60&EVID==1,CMT:=NA]
+res.check <- NMcheckData(pkmod)
+res.check
+```
+
+:::: 
+:::
+
+
 ## NMwriteData
 ::: columns
 :::: column
@@ -662,7 +720,7 @@ nmCode <- NMwriteData(pk,file="derived/pk.csv",
                       nm.capitalize=TRUE)
 ```
 
-```{r,eval=FALSE}
+```{r,eval=FALSE,include=FALSE}
 ## example: pick run1*.mod
 models <- list.files("../models",pattern="run1.+\\.mod$",
                      full.names=T)
@@ -671,6 +729,11 @@ lapply(models,NMwriteSection,list.sections=nmCode)
 ## update $INPUT 
 lapply(models,
        NMwriteSection,section="INPUT",newlines=nmCode$INPUT)
+```
+
+```{r,eval=FALSE}
+## example: pick run1*.mod
+models <- NMwriteSection(dir="../models",file.pattern="run1.+\\.mod$")
 ```
 
 \normalsize
@@ -772,7 +835,7 @@ class(res0)
 ```
 \normalsize
 
-* Starting from `NMdata 0.0.8`, the default behavior will be to merge by `col.row` if found.
+* The default behavior will be to merge by `col.row` if found.
 - Default value of `col.row` is `ROW`. We shall see later how to modify this.
 
 ## NMscanData
@@ -871,8 +934,7 @@ ggplot(res2[EVID==0])+
 :::
 ::::::::::::::
 
-## Compare models
-\framesubtitle{Example: Renaming and combining models by `rbind`}
+## Compare models using `NMscanMultiple`
 
 :::::::::::::: {.columns}
 ::: {.column width="45%"}
@@ -883,7 +945,7 @@ NMdataConf(col.row="ROW")
 NMdataConf(merge.by.row=TRUE)
 ```
 
-```{r,compmodels}
+```{r,compmodels1,eval=F,include=F}
 ## notice fill is an option to rbind with data.table
 lst.1 <- system.file("examples/nonmem/xgxr001.lst",
                      package="NMdata")
@@ -901,6 +963,16 @@ res.mult[EVID==0&nmout==TRUE,
 class(res.mult)
 ```
 
+```{r,compmodels2}
+models <- file.nm(cc(xgxr001.lst,xgxr014.lst))
+
+res.mult <- NMscanMultiple(files=models,quiet=T)
+res.mult[EVID==0&nmout==TRUE,
+         gmPRED:=exp(mean(log(PRED))),
+         by=.(model,trtact,NOMTIME)]
+class(res.mult)
+```
+`NMscanMultiple` can search for models by matching file names to a regular expression, similarly to `NMwriteSection`. 
 
 :::
 ::: {.column width="55%"}
@@ -1211,10 +1283,6 @@ package, we will include the test in the package
 
 # Next steps for `NMdata`
 ## Next steps for `NMdata`
-* The next milestone is submitting the package to CRAN
-- Aiming for end of June
-- Most important task before is revision of vignettes
-* Abstract submitted to ACoP
 * The following would be great help in making `NMdata` more accessible and useful
 - Testing - please use the package and provide feedback
 - Review of documentation, vignettes, and descriptions/explanations on website
@@ -1222,16 +1290,12 @@ package, we will include the test in the package
 - A tidyverse workflow for a new vignette
 - If you have ideas you want to contribute, let's discuss!
 
-* Before or after first version on CRAN
-- `NMcheckData`: Check data syntax/format compatibility with Nonmem
-- `NMfreezeModels`: Save Nonmem models with input data and all results to ensure reproducibility of output
-
-* After first version on CRAN
+* Additional features
 - Functions to generate dosing regimens for simulations and
 nominal-time datasets
 - Functions for easy documentation of column contents (description,
 units, 1:1 relationships between character and numeric columns)
-
+- `NMfreezeModels`: Save Nonmem models with input data and all results to ensure reproducibility of output
 <!-- %%%% automatic saving of meta data with csv files -->
 <!-- %%%% check that row identifier is not modified by Nonmem -->
 <!-- %%%% documentation of columnns -->
@@ -1274,56 +1338,11 @@ Other
 :::: 
 :::
 
-### The plan is submission to CRAN this month!
+
 
 # `NMdata` functions under development 
-```{r,load-pmxtricks,include=FALSE}
-load_all("c:/Users/delff/working_copies/pmxtricks/")
-```
-
-## `NMcheckData`: Check data syntax for Nonmem compatibility \includegraphics[width=0.5in]{figures/worksign.png}
-Aim: check data for all potential Nonmem compatibility issues and other obvious errors.
 
 
-::: columns
-:::: column
-
-* Currently checks for:
-- Presence, no `NA`, and compatibility of `TIME`, `EVID`, `ID`, `CMT`
-- `DV` must be `NA` at dosing events
-- If available `MDV` and col.flagn must be numeric and non-missing
-- `EVID` one of 0,1,2,3,4
-- `ID`'s are disjoint 
-- `TIME` is positive and increasing within constant ID
-- `CMT` is a positive integer
-- `MDV` represents `is.na(DV)`
-
-* Todo
-- Many checks will be added and most of them are simple to implement
-- Has to accept many more alternative ways to code the data
-
-* It is experimental but safe
-- `NMcheckData is a "look but don't touch" function, so worst case is output is confusing. 
-- You could get a strange error due to "holes" in the function that
-haven't yet been implemented.
-
-* May or may not get ready for `NMdata 0.1.0`
-
-::::
-:::: column
-\scriptsize
-```{r,NMcheckData}
-res.check <- NMcheckData(pk)
-res.check
-pkmod <- copy(pk)
-pkmod[,MDV:=as.numeric(is.na(DV))]
-pkmod[ID==33&EVID==1,CMT:=NA]
-res.check <- NMcheckData(pkmod)
-res.check
-```
-
-:::: 
-:::
 
 
 ## NMfreezeModels
@@ -1376,27 +1395,10 @@ procedure.
 
 
 # Other tools
-## pmxtricks
-A more diverse package 
+## tracee
 
-- `ggIndProfs`: Individual plots, including indication of doses
 - `ggwrite`: Saves images in sizes made for powerpoint, including stamps (time, source, output filename). It can save multiple plots at once as one file (pdf) or multiple files. 
 
-```{r,install-pmxtricks,eval=FALSE}
-library(remotes)
-install_github("philipdelff/pmxtricks",upgrade="never")
-library(pmxtricks)
-```
-
-
-## Individual profiles including observations, doses, and model predictions
-\footnotesize
-```{r,ggIndProfs,message=FALSE,warning=FALSE,out.height="75%"}
-pls1 <- ggIndProfs(res1,amt="AMT",grp="trtact",NPerSheet=36,labels="top-right",
-                   ylab="Concentration",ylab2="Dose")
-ggwrite(pls1[[5]],canvas="wide")
-```
-\normalsize
 
 ## `ggwrite`: Flexible saving of tracable output
 ::: columns
@@ -1416,7 +1418,7 @@ ggwrite(pls1[[5]],canvas="wide")
 :::: column
 Save pls1, as one file and as multiple files, named by the dose levels.
 \footnotesize
-```{r,warning=FALSE,message=FALSE,results=FALSE,fig.show="hide"}
+```{r,warning=FALSE,message=FALSE,results=FALSE,fig.show="hide",eval=F}
 writeOutput <- TRUE
 script <- "path/to/script.R"
 ggwrite(pls1,file="results/individual_profiles.png",
@@ -1435,10 +1437,9 @@ list.files("results")
 ::::
 :::
 
+## `execSafe`: Save input data with each Nonmem run
 
-
-
-
-
-
+* Executes Nonem from within R
+* Archives input data together with Nonmem run (you can tell NMdata to read that archive when reading your model)
+* Automatically generates a PNM file if you want to parallellize
 
