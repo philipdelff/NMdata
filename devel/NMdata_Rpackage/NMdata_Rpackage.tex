@@ -1,36 +1,32 @@
-% Options for packages loaded elsewhere
-\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
 \PassOptionsToPackage{hyphens}{url}
 %
-\documentclass[
-  8pt,
-  ignorenonframetext,
-  aspectratio=169]{beamer}
+\documentclass[8pt,ignorenonframetext,aspectratio=169]{beamer}
 \usepackage{pgfpages}
 \setbeamertemplate{caption}[numbered]
 \setbeamertemplate{caption label separator}{: }
 \setbeamercolor{caption name}{fg=normal text.fg}
 \beamertemplatenavigationsymbolsempty
-% Prevent slide breaks in the middle of a paragraph
+% Prevent slide breaks in the middle of a paragraph:
 \widowpenalties 1 10000
 \raggedbottom
 \setbeamertemplate{part page}{
-  \centering
-  \begin{beamercolorbox}[sep=16pt,center]{part title}
-    \usebeamerfont{part title}\insertpart\par
-  \end{beamercolorbox}
+\centering
+\begin{beamercolorbox}[sep=16pt,center]{part title}
+  \usebeamerfont{part title}\insertpart\par
+\end{beamercolorbox}
 }
 \setbeamertemplate{section page}{
-  \centering
-  \begin{beamercolorbox}[sep=12pt,center]{part title}
-    \usebeamerfont{section title}\insertsection\par
-  \end{beamercolorbox}
+\centering
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+  \usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
 }
 \setbeamertemplate{subsection page}{
-  \centering
-  \begin{beamercolorbox}[sep=8pt,center]{part title}
-    \usebeamerfont{subsection title}\insertsubsection\par
-  \end{beamercolorbox}
+\centering
+\begin{beamercolorbox}[sep=8pt,center]{part title}
+  \usebeamerfont{subsection title}\insertsubsection\par
+\end{beamercolorbox}
 }
 \AtBeginPart{
   \frame{\partpage}
@@ -47,40 +43,34 @@
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
-  \usepackage{textcomp} % provide euro and other symbols
-\else % if luatex or xetex
+  \usepackage{textcomp} % provides euro and other symbols
+\else % if luatex or xelatex
   \usepackage{unicode-math}
-  \defaultfontfeatures{Scale=MatchLowercase}
-  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
 \fi
-% Use upquote if available, for straight quotes in verbatim environments
+% use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-\IfFileExists{microtype.sty}{% use microtype if available
-  \usepackage[]{microtype}
-  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\makeatletter
-\@ifundefined{KOMAClassName}{% if non-KOMA class
-  \IfFileExists{parskip.sty}{%
-    \usepackage{parskip}
-  }{% else
-    \setlength{\parindent}{0pt}
-    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
-}{% if KOMA class
-  \KOMAoptions{parskip=half}}
-\makeatother
-\usepackage{xcolor}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{hyperref}
 \hypersetup{
-  pdftitle={ NMdata: A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling},
-  pdfauthor={Philip Delff},
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
-\urlstyle{same} % disable monospaced font for URLs
+            pdfauthor={Philip Delff},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
 \newif\ifbibliography
 \usepackage{color}
 \usepackage{fancyvrb}
@@ -122,7 +112,7 @@
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\usepackage{graphicx}
+\usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
@@ -131,34 +121,37 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-% Set default figure placement to htbp
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+
+% set default figure placement to htbp
 \makeatletter
 \def\fps@figure{htbp}
 \makeatother
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
-\usepackage{adjustbox}
-\ifluatex
-  \usepackage{selnolig}  % disable illegal ligatures
-\fi
 
-\title{\includegraphics[width=1in,height=\textheight]{../../man/figures/NMdata_logo_v01.png}\\
+\usepackage{adjustbox}
+
+\title{\includegraphics[width=1in,height=\textheight]{../../man/figures/NMdata_logo_v01.png}
+
 NMdata: A fast R package for efficient data preparation,
 consistency-checking and post-processing in PK/PD modeling}
 \author{Philip Delff}
-\date{June, 2021}
+\date{June 2022}
 
 \begin{document}
 \frame{\titlepage}
 
 \begin{frame}
+
 \end{frame}
 
 \begin{frame}{Outline}
 \protect\hypertarget{outline}{}
+
 \tableofcontents[hideallsubsections]
+
 \end{frame}
 
 \hypertarget{introduction}{%
@@ -166,10 +159,11 @@ consistency-checking and post-processing in PK/PD modeling}
 
 \begin{frame}{What is NMdata?}
 \protect\hypertarget{what-is-nmdata}{}
+
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 \begin{block}{NMdata is}
-\protect\hypertarget{nmdata-is}{}
+
 An R package that can help
 
 \begin{itemize}
@@ -193,12 +187,13 @@ Designed to fit in to the user's setup and coding preferences
   NMdata comes with a configuration tool that can be used to tailor
   default behaviour to the user's system configuration and preferences.
 \end{itemize}
+
 \end{block}
 \end{column}
 
 \begin{column}{0.48\textwidth}
 \begin{block}{NMdata is not}
-\protect\hypertarget{nmdata-is-not}{}
+
 \begin{itemize}
 \item
   A plotting package
@@ -211,6 +206,7 @@ Designed to fit in to the user's setup and coding preferences
 \item
   No tools in NMdata requires other NMdata tools to be used
 \end{itemize}
+
 \end{block}
 \end{column}
 \end{columns}
@@ -223,28 +219,37 @@ Designed to fit in to the user's setup and coding preferences
   The data creation tools should be relevant independently of
   estimation/simulation tool.
 \item
-  Latest stable release is 0.0.7.2. Plan is to release 0.1.0 on CRAN.
+  Latest stable release is 0.0.12 and is available on CRAN and MPN
+  (starting from 2022-06-15 snapshot).
 \end{itemize}
+
+\end{frame}
+
+\begin{frame}{NMdata 0.0.12 on MPN}
+\protect\hypertarget{nmdata-0.0.12-on-mpn}{}
+
+\includegraphics[width=.5in]{figures/worksign.png}
+
 \end{frame}
 
 \begin{frame}[fragile]{Motivation}
 \protect\hypertarget{motivation}{}
+
 \begin{itemize}
 \item
-  As large a potential pharmacometrics has for illuminating the unknown
-  in drug development, it is dangerously technical.
+  The workflow of a pharmacometrician is very technical, with many risks
+  of errors.
 \item
-  The risk is to have too little time for modeling, reflection, and
-  understanding key questions. \texttt{NMdata} can be a help in freeing
-  time to more high-level tasks.
+  Technical workload takes time from modeling, reflection, and
+  understanding key questions.
 \item
   During the first 2-3 years I spent in pharmacometrics, I must have
-  spent half the time coding, desparately trying to get Nonmem to behave
-  and to understand the properties of the estimates I obtained.
+  spent half the time coding, desparately trying to get Nonmem to
+  behave, and to understand the properties of the estimates I obtained.
 \item
   Most of us develop our own ways to avoid some of the many difficulties
   in this process. This takes a lot of time and is most often only
-  because we don't have adequate tools at hand.
+  because we don't have adequate tools at hand. Or don't know them.
 \item
   I generalized some of my solutions and collected them in
   \texttt{NMdata}.
@@ -256,22 +261,13 @@ Designed to fit in to the user's setup and coding preferences
   I have no intention of missioning these approaches to others. But if
   you find something interesting, feel free to take advantage.
 \end{itemize}
+
 \end{frame}
 
 \begin{frame}[fragile]{Getting started}
 \protect\hypertarget{getting-started}{}
-\begin{columns}[T]
-\begin{column}{0.48\textwidth}
-Use recent development version Notice: This should not be used for final
-scripts
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(remotes)}
-\KeywordTok{install\_github}\NormalTok{(}\StringTok{"philipdelff/NMdata"}\NormalTok{,}
-               \DataTypeTok{upgrade=}\StringTok{"never"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+Install from \texttt{CRAN} or from \texttt{MPN} using \texttt{pkgr}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -281,35 +277,27 @@ scripts
 
 \begin{verbatim}
 ## Welcome to NMdata. Best place to browse NMdata documentation is
-## https://philipdelff.github.io/NMdata
+## https://philipdelff.github.io/NMdata/
 \end{verbatim}
-\end{column}
-
-\begin{column}{0.48\textwidth}
-Using a specific release. See list of releases at
-\url{https://github.com/philipdelff/NMdata/releases}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(remotes)}
-\KeywordTok{install\_github}\NormalTok{(}\StringTok{"philipdelff/NMdata@v0.0.7.2"}\NormalTok{,}
-               \DataTypeTok{upgrade=}\StringTok{"never"}\NormalTok{)}
+\KeywordTok{packageVersion}\NormalTok{(}\StringTok{"NMdata"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(NMdata)}
-\end{Highlighting}
-\end{Shaded}
-\end{column}
-\end{columns}
+\begin{verbatim}
+## [1] '0.0.12'
+\end{verbatim}
 
 Three vignettes are available so far (see ``Vignettes'' tab when
 visiting URL above):
 
 \begin{itemize}
 \tightlist
+\item
+  \href{https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html}{Cheat
+  sheet}
 \item
   \href{https://philipdelff.github.io/NMdata/articles/DataCreate.html}{Data
   creation tools}
@@ -328,7 +316,8 @@ For a quick overview (after installation), do:
 \end{Highlighting}
 \end{Shaded}
 
-All functions and their arguments are documented in their help files.
+All functions and their arguments are documented in ?manual pages.
+
 \end{frame}
 
 \hypertarget{data-set-creation}{%
@@ -337,6 +326,7 @@ All functions and their arguments are documented in their help files.
 \begin{frame}[fragile]{Compare compatibility of data sets for rbind and
 merge: \texttt{compareCols}}
 \protect\hypertarget{compare-compatibility-of-data-sets-for-rbind-and-merge-comparecols}{}
+
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 \begin{itemize}
@@ -356,9 +346,7 @@ merge: \texttt{compareCols}}
   Using \texttt{diff.only=FALSE} will give the complete list of columns
   in the two datasets.
 \end{itemize}
-\end{column}
 
-\begin{column}{0.48\textwidth}
 A slightly modified version of the \texttt{pk} dataset has been created.
 
 \begin{itemize}
@@ -370,7 +358,9 @@ A slightly modified version of the \texttt{pk} dataset has been created.
 \item
   \texttt{AMT} has been recoded to character
 \end{itemize}
+\end{column}
 
+\begin{column}{0.48\textwidth}
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{compareCols}\NormalTok{(pk,pk.reduced)}
@@ -389,13 +379,24 @@ A slightly modified version of the \texttt{pk} dataset has been created.
 
 \begin{verbatim}
 ## 
-## Overview of columns:
+## Columns that differ:
 \end{verbatim}
 
 \begin{verbatim}
 ##    column      pk pk.reduced
 ## 1:  CYCLE integer       <NA>
 ## 2:    AMT integer  character
+\end{verbatim}
+
+\begin{verbatim}
+## 
+\end{verbatim}
+
+\begin{verbatim}
+## Columns where no differences were found: BLQ,
+## CMT, DOSE, DV, EVENTU, EVID, FLAG, ID, NAME,
+## NOMTIME, PART, PROFDAY, PROFTIME, STUDY, TIME,
+## TIMEUNIT, TRTACT, WEIGHTB, eff0, flag.
 \end{verbatim}
 
 \vspace{12pt}
@@ -412,14 +413,68 @@ Before merging or stacking, we may want to
 \end{itemize}
 \end{column}
 \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]{Keep track of missing values}
+\protect\hypertarget{keep-track-of-missing-values}{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{missings <-}\StringTok{ }\KeywordTok{listMissings}\NormalTok{(pk)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    variable Nmissing
+## 1:       DV      150
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{head}\NormalTok{(missings)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    variable row value
+## 1:       DV   1  <NA>
+## 2:       DV  11  <NA>
+## 3:       DV  21  <NA>
+## 4:       DV  31  <NA>
+## 5:       DV  41  <NA>
+## 6:       DV  51  <NA>
+\end{verbatim}
+
+You can specify
+
+\begin{itemize}
+\tightlist
+\item
+  What columns to search
+\item
+  A grouping variable for findings (i.e.~study if combining datasets)
+\item
+  The strings that are interpreted as missing.
+\end{itemize}
+
+From \texttt{?listMissings}:
+
+\begin{verbatim}
+Usage:
+
+     listMissings(data, cols, by, na.strings = c("", "."), quiet = FALSE, as.fun)
+\end{verbatim}
+
 \end{frame}
 
 \begin{frame}[fragile]{Rename columns based on contents}
 \protect\hypertarget{rename-columns-based-on-contents}{}
+
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 \begin{block}{renameByContents}
-\protect\hypertarget{renamebycontents}{}
+
 \begin{itemize}
 \tightlist
 \item
@@ -435,10 +490,11 @@ Before merging or stacking, we may want to
   \texttt{renameByContents} renames columns if a function of their
   contents returns \texttt{TRUE}.
 \end{itemize}
+
 \end{block}
 
 \begin{block}{\texttt{NMisNumeric}}
-\protect\hypertarget{nmisnumeric}{}
+
 \begin{itemize}
 \tightlist
 \item
@@ -451,6 +507,7 @@ Before merging or stacking, we may want to
   We invert that, and those that Nonmem cannot interpret as numeric
   become lowercase.
 \end{itemize}
+
 \end{block}
 \end{column}
 
@@ -460,7 +517,7 @@ Nonmem will not be able to interpret as numeric. \footnotesize
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{pk \textless{}{-}}\StringTok{ }\KeywordTok{renameByContents}\NormalTok{(}\DataTypeTok{data=}\NormalTok{pk,}
+\NormalTok{pk <-}\StringTok{ }\KeywordTok{renameByContents}\NormalTok{(}\DataTypeTok{data=}\NormalTok{pk,}
                        \DataTypeTok{fun.test=}\NormalTok{NMisNumeric,}
                        \DataTypeTok{fun.rename =}\NormalTok{ tolower,}
                        \DataTypeTok{invert.test =} \OtherTok{TRUE}\NormalTok{)}
@@ -487,7 +544,7 @@ Nonmem will not be able to interpret as numeric. \footnotesize
 
 \begin{verbatim}
 ## 
-## Overview of columns:
+## Columns that differ:
 \end{verbatim}
 
 \begin{verbatim}
@@ -502,13 +559,25 @@ Nonmem will not be able to interpret as numeric. \footnotesize
 ## 8:   trtact      <NA> character
 \end{verbatim}
 
+\begin{verbatim}
+## 
+\end{verbatim}
+
+\begin{verbatim}
+## Columns where no differences were found: AMT, BLQ, CMT,
+## CYCLE, DOSE, DV, EVID, FLAG, ID, NOMTIME, PART, PROFDAY,
+## PROFTIME, STUDY, TIME, WEIGHTB, eff0, flag.
+\end{verbatim}
+
 \normalsize
 \end{column}
 \end{columns}
+
 \end{frame}
 
 \begin{frame}[fragile]{Automated checking of merges}
 \protect\hypertarget{automated-checking-of-merges}{}
+
 \begin{itemize}
 \tightlist
 \item
@@ -560,10 +629,12 @@ Is \texttt{mergeCheck} slower?
   problems. This may cost significant additional time but is likely to
   save you coding and (at least) the same calculation time anyway.
 \end{itemize}
+
 \end{frame}
 
 \begin{frame}[fragile]{mergeCheck}
 \protect\hypertarget{mergecheck}{}
+
 \framesubtitle{Example: Would your standard checks of merges capture this?}
 
 Say we want to add a covariate from a \texttt{dt.cov}. We expect the
@@ -573,13 +644,13 @@ more strictly requires that we get all and only the \emph{same} rows:
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 \begin{block}{Without \texttt{mergeCheck}}
-\protect\hypertarget{without-mergecheck}{}
+
 \footnotesize
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\#\# The resulting dimensions are correct}
-\NormalTok{pkmerge \textless{}{-}}\StringTok{ }\KeywordTok{merge}\NormalTok{(pk,dt.cov,}\DataTypeTok{by=}\StringTok{"ID"}\NormalTok{)}
+\CommentTok{## The resulting dimensions are correct}
+\NormalTok{pkmerge <-}\StringTok{ }\KeywordTok{merge}\NormalTok{(pk,dt.cov,}\DataTypeTok{by=}\StringTok{"ID"}\NormalTok{)}
 \KeywordTok{dims}\NormalTok{(pk,dt.cov,pkmerge)}
 \end{Highlighting}
 \end{Shaded}
@@ -593,7 +664,7 @@ more strictly requires that we get all and only the \emph{same} rows:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\#\# But we now have twice as many rows for this subject}
+\CommentTok{## But we now have twice as many rows for this subject}
 \KeywordTok{dims}\NormalTok{(pk[ID}\OperatorTok{==}\DecValTok{31}\NormalTok{],pkmerge[ID}\OperatorTok{==}\DecValTok{31}\NormalTok{])}
 \end{Highlighting}
 \end{Shaded}
@@ -603,13 +674,14 @@ more strictly requires that we get all and only the \emph{same} rows:
 ## 1:      pk[ID == 31]    10    22
 ## 2: pkmerge[ID == 31]    20    23
 \end{verbatim}
+
 \end{block}
 \end{column}
 
 \begin{column}{0.48\textwidth}
 \begin{block}{\texttt{mergeCheck} throws an error}
-\protect\hypertarget{mergecheck-throws-an-error}{}
-\ldots and suggests what is wrong \footnotesize
+
+\ldots{}and suggests what is wrong \footnotesize
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -622,24 +694,29 @@ more strictly requires that we get all and only the \emph{same} rows:
 \end{verbatim}
 
 \begin{verbatim}
-## Overview of dimensions of input and output data:
-##         data nrows ncols
-## 1:        pk  1502    23
-## 2:    dt.cov   150     2
-## 3: merged.df  1502    24
+## Rows duplicated during merge.
 \end{verbatim}
 
 \begin{verbatim}
-## Overview of values of by where number of rows in df1 changes:
-##     ID N.df1 N.result
-## 1:  31    10       20
-## 2: 180    10        0
+## Overview of dimensions of input and output data:
+##      data nrows ncols
+## 1:     pk  1502    23
+## 2: dt.cov   150     2
+## 3: result  1502    24
+\end{verbatim}
+
+\begin{verbatim}
+## Overview of values of by where number of rows in x changes:
+##     ID N.x N.result
+## 1:  31  10       20
+## 2: 180  10        0
 \end{verbatim}
 
 \begin{verbatim}
 ## Error in mergeCheck(pk, dt.cov, by = "ID") : 
 ##   Merge added and/or removed rows.
 \end{verbatim}
+
 \end{block}
 \end{column}
 
@@ -647,14 +724,17 @@ more strictly requires that we get all and only the \emph{same} rows:
 \end{columns}
 
 \begin{block}{Conclusion}
-\protect\hypertarget{conclusion}{}
+
 If you only want to add columns by a merge, \texttt{mergeCheck} does all
 the necessary checks for you.
+
 \end{block}
+
 \end{frame}
 
 \begin{frame}[fragile]{Exclusion flags}
 \protect\hypertarget{exclusion-flags}{}
+
 \framesubtitle{Keep track of data exclusions - don't discard!}
 
 \begin{itemize}
@@ -672,10 +752,12 @@ the necessary checks for you.
   one (value-to-value corresponding) character column for the rest of
   us.
 \end{itemize}
+
 \end{frame}
 
 \begin{frame}[fragile]{FlagsAssign}
 \protect\hypertarget{flagsassign}{}
+
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 \begin{itemize}
@@ -705,11 +787,11 @@ the necessary checks for you.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{dt.flags \textless{}{-}}\StringTok{ }\KeywordTok{fread}\NormalTok{(}\DataTypeTok{text=}\StringTok{"FLAG,flag,condition}
+\NormalTok{dt.flags <-}\StringTok{ }\KeywordTok{fread}\NormalTok{(}\DataTypeTok{text=}\StringTok{"FLAG,flag,condition}
 \StringTok{10,Below LLOQ,BLQ==1}
-\StringTok{100,Negative time,TIME\textless{}0"}\NormalTok{)}
+\StringTok{100,Negative time,TIME<0"}\NormalTok{)}
 
-\NormalTok{pk \textless{}{-}}\StringTok{ }\KeywordTok{flagsAssign}\NormalTok{(pk,}\DataTypeTok{tab.flags=}\NormalTok{dt.flags,}\DataTypeTok{subset.data=}\StringTok{"EVID==0"}\NormalTok{)}
+\NormalTok{pk <-}\StringTok{ }\KeywordTok{flagsAssign}\NormalTok{(pk,}\DataTypeTok{tab.flags=}\NormalTok{dt.flags,}\DataTypeTok{subset.data=}\StringTok{"EVID==0"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -723,16 +805,17 @@ the necessary checks for you.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{pk[EVID}\OperatorTok{==}\DecValTok{1}\NormalTok{,FLAG}\OperatorTok{:}\ErrorTok{=}\DecValTok{0}\NormalTok{]}
-\NormalTok{pk[EVID}\OperatorTok{==}\DecValTok{1}\NormalTok{,flag}\OperatorTok{:}\ErrorTok{=}\StringTok{"Dosing"}\NormalTok{]}
+\NormalTok{pk <-}\StringTok{ }\KeywordTok{flagsAssign}\NormalTok{(pk,}\DataTypeTok{subset.data=}\StringTok{"EVID==1"}\NormalTok{,}\DataTypeTok{flagc.0=}\StringTok{"Dosing"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 \end{column}
 \end{columns}
+
 \end{frame}
 
 \begin{frame}[fragile]{\texttt{flagsCount}}
 \protect\hypertarget{flagscount}{}
+
 \begin{itemize}
 \item
   An overview of the number of observations disregarded due to the
@@ -763,6 +846,7 @@ the necessary checks for you.
 \item
   Now pick the columns you want and format your table for the report.
 \end{itemize}
+
 \end{frame}
 
 \hypertarget{finalize-data-for-nonmem}{%
@@ -770,10 +854,11 @@ the necessary checks for you.
 
 \begin{frame}[fragile]{Advice: always include a unique row identifier}
 \protect\hypertarget{advice-always-include-a-unique-row-identifier}{}
+
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 \begin{block}{Why}
-\protect\hypertarget{why}{}
+
 A unique identifier is needed in order to
 
 \begin{itemize}
@@ -782,10 +867,11 @@ A unique identifier is needed in order to
 \item
   Reliably combine (by merge) output with input data
 \end{itemize}
+
 \end{block}
 
 \begin{block}{The identifier should be}
-\protect\hypertarget{the-identifier-should-be}{}
+
 \begin{itemize}
 \item
   Numeric
@@ -807,12 +893,13 @@ A unique identifier is needed in order to
 \item
   May be useful for post-processing to have a single column to order by
 \end{itemize}
+
 \end{block}
 \end{column}
 
 \begin{column}{0.48\textwidth}
 \begin{block}{Sort rows and add a row counter}
-\protect\hypertarget{sort-rows-and-add-a-row-counter}{}
+
 \begin{itemize}
 \tightlist
 \item
@@ -821,9 +908,9 @@ A unique identifier is needed in order to
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\#\# order}
+\CommentTok{## order}
 \KeywordTok{setorder}\NormalTok{(pk,ID,TIME,EVID)}
-\CommentTok{\#\# add counter}
+\CommentTok{## add counter}
 \NormalTok{pk[,ROW}\OperatorTok{:}\ErrorTok{=}\NormalTok{.I]}
 \end{Highlighting}
 \end{Shaded}
@@ -836,18 +923,21 @@ A unique identifier is needed in order to
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{pk \textless{}{-}}\StringTok{ }\NormalTok{pk }\OperatorTok{\%\textgreater{}\%}
-\StringTok{    }\KeywordTok{arrange}\NormalTok{(ID,TIME,EVID) }\OperatorTok{\%\textgreater{}\%}
+\NormalTok{pk <-}\StringTok{ }\NormalTok{pk }\OperatorTok{%>%}
+\StringTok{    }\KeywordTok{arrange}\NormalTok{(ID,TIME,EVID) }\OperatorTok{%>%}
 \StringTok{    }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{ROW=}\DecValTok{1}\OperatorTok{:}\KeywordTok{n}\NormalTok{())}
 \end{Highlighting}
 \end{Shaded}
+
 \end{block}
 \end{column}
 \end{columns}
+
 \end{frame}
 
 \begin{frame}[fragile]{NMorderColumns}
 \protect\hypertarget{nmordercolumns}{}
+
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 \vspace{12pt}
@@ -885,14 +975,10 @@ A unique identifier is needed in order to
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{pk.old \textless{}{-}}\StringTok{ }\KeywordTok{copy}\NormalTok{(pk)}
-\NormalTok{pk \textless{}{-}}\StringTok{ }\KeywordTok{NMorderColumns}\NormalTok{(pk,}\DataTypeTok{first=}\StringTok{"WEIGHTB"}\NormalTok{)}
+\NormalTok{pk.old <-}\StringTok{ }\KeywordTok{copy}\NormalTok{(pk)}
+\NormalTok{pk <-}\StringTok{ }\KeywordTok{NMorderColumns}\NormalTok{(pk,}\DataTypeTok{first=}\StringTok{"WEIGHTB"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## These standard nonmem columns were not found in data: MDV
-\end{verbatim}
 
 \normalsize
 
@@ -936,10 +1022,112 @@ We may want to add \texttt{MDV} and rerun \texttt{NMorderColumns}.
 
 \normalsize
 \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{NMcheckData}: Check data syntax for
+Nonmem compatibility}
+\protect\hypertarget{nmcheckdata-check-data-syntax-for-nonmem-compatibility}{}
+
+\begin{itemize}
+\item
+  Aim: check data for all potential Nonmem compatibility issues and
+  other obvious errors.
+\item
+  Findings must be returned in a structure so related subsets of the
+  data can easily be identified for further inspection.
+\end{itemize}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\begin{itemize}
+\item
+  \texttt{NMcheckData} contains a very long list of checks of especially
+  the standard Nonmem columns (\texttt{ID}, \texttt{TIME},
+  \texttt{EVID}, \texttt{AMT}, \texttt{DV}, \texttt{MDV}, \texttt{RATE},
+  \texttt{SS}, etc.). They are all checked for allowed values (e.g.
+  \texttt{TIME} must be non-negative, \texttt{EVID} must be one of
+  \texttt{0:4}, etc).
+\item
+  ID-level checks (e.g.~did all ID's receive doses, is time increasing,
+  are rows disjoint?)
+\item
+  All used columns are checked for Nonmem compatibility in terms of how
+  Nonmem translates to numeric values.
+\item
+  Column names are checked for uniqueness and for non-allowed
+  characters.
+\item
+  If you supply the col.usubjid column, the ID column is checked to
+  align with col.usubjid.
+\item
+  \texttt{NMcheckData} is based on simple framework making it simple to
+  define new checks.
+\end{itemize}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\scriptsize
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pk <-}\StringTok{ }\NormalTok{pk[ID}\OperatorTok{>}\DecValTok{59}\NormalTok{]}
+\NormalTok{res.check <-}\StringTok{ }\KeywordTok{NMcheckData}\NormalTok{(pk)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  column              check N Nid
+##    EVID Subject has no obs 1   1
+##     MDV   Column not found 1   0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{res.check}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    row ID column              check  level ROW
+## 1:  NA 60   EVID Subject has no obs     ID  NA
+## 2:  NA NA    MDV   Column not found column  NA
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pkmod <-}\StringTok{ }\KeywordTok{copy}\NormalTok{(pk)}
+\NormalTok{pkmod[,MDV}\OperatorTok{:}\ErrorTok{=}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{is.na}\NormalTok{(DV))]}
+\NormalTok{pkmod[ID}\OperatorTok{==}\DecValTok{60}\OperatorTok{&}\NormalTok{EVID}\OperatorTok{==}\DecValTok{1}\NormalTok{,CMT}\OperatorTok{:}\ErrorTok{=}\OtherTok{NA}\NormalTok{]}
+\NormalTok{res.check <-}\StringTok{ }\KeywordTok{NMcheckData}\NormalTok{(pkmod)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  column               check N Nid
+##    EVID  Subject has no obs 1   1
+##     CMT Missing for EVID!=3 1   1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{res.check}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    row ID column               check level ROW
+## 1:  NA 60   EVID  Subject has no obs    ID  NA
+## 2:   1 60    CMT Missing for EVID!=3   row 291
+\end{verbatim}
+\end{column}
+\end{columns}
+
 \end{frame}
 
 \begin{frame}[fragile]{NMwriteData}
 \protect\hypertarget{nmwritedata}{}
+
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 For the final step of writing the dataset, \texttt{NMwriteData} is
@@ -968,7 +1156,7 @@ provided.
 \end{itemize}
 
 \begin{block}{The csv writer is very simple}
-\protect\hypertarget{the-csv-writer-is-very-simple}{}
+
 These are the only steps involved between the supplied data set and the
 written csv.
 
@@ -982,7 +1170,7 @@ written csv.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{file.csv \textless{}{-}}\StringTok{ }\KeywordTok{fnExtension}\NormalTok{(file,}\StringTok{".csv"}\NormalTok{)}
+\NormalTok{file.csv <-}\StringTok{ }\KeywordTok{fnExtension}\NormalTok{(file,}\StringTok{".csv"}\NormalTok{)}
 \KeywordTok{fwrite}\NormalTok{(data,}\DataTypeTok{na=}\StringTok{"."}\NormalTok{,}\DataTypeTok{quote=}\OtherTok{FALSE}\NormalTok{,}\DataTypeTok{row.names=}\OtherTok{FALSE}\NormalTok{,}\DataTypeTok{scipen=}\DecValTok{0}\NormalTok{,}\DataTypeTok{file=}\NormalTok{file.csv)}
 \end{Highlighting}
 \end{Shaded}
@@ -991,6 +1179,7 @@ written csv.
 
 All arguments to \texttt{fwrite} can be modified using the
 \texttt{args.fwrite} argument.
+
 \end{block}
 \end{column}
 
@@ -1010,7 +1199,7 @@ All arguments to \texttt{fwrite} can be modified using the
 \end{verbatim}
 
 \begin{verbatim}
-## For NonMem:
+## For NONMEM:
 ## $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV WEIGHTB
 ## FLAG STUDY BLQ CYCLE DOSE PART PROFDAY PROFTIME eff0
 ## $DATA derived/pk.csv
@@ -1032,10 +1221,12 @@ All arguments to \texttt{fwrite} can be modified using the
 \end{itemize}
 \end{column}
 \end{columns}
+
 \end{frame}
 
 \begin{frame}[fragile]{Update Nonmem control streams}
 \protect\hypertarget{update-nonmem-control-streams}{}
+
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 \begin{itemize}
@@ -1051,7 +1242,7 @@ All arguments to \texttt{fwrite} can be modified using the
 \end{itemize}
 
 \begin{block}{Tips}
-\protect\hypertarget{tips}{}
+
 \begin{itemize}
 \item
   \texttt{NMwriteData} is very useful for many other sections, like
@@ -1068,6 +1259,7 @@ All arguments to \texttt{fwrite} can be modified using the
   extracts the input data file name/path. You can use this to identify
   the model runs in which to update \texttt{\$DATA}.
 \end{itemize}
+
 \end{block}
 \end{column}
 
@@ -1076,14 +1268,14 @@ All arguments to \texttt{fwrite} can be modified using the
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{nmCode \textless{}{-}}\StringTok{ }\KeywordTok{NMwriteData}\NormalTok{(pk,}\DataTypeTok{file=}\StringTok{"derived/pk.csv"}\NormalTok{,}
+\NormalTok{nmCode <-}\StringTok{ }\KeywordTok{NMwriteData}\NormalTok{(pk,}\DataTypeTok{file=}\StringTok{"derived/pk.csv"}\NormalTok{,}
                       \DataTypeTok{write.csv=}\OtherTok{FALSE}\NormalTok{,}
-\CommentTok{\#\#\# arguments that tailors text for Nonmem}
+\CommentTok{### arguments that tailors text for Nonmem}
                       \DataTypeTok{nmdir.data=}\StringTok{"../derived"}\NormalTok{,}
                       \DataTypeTok{nm.drop=}\StringTok{"PROFDAY"}\NormalTok{,}
                       \DataTypeTok{nm.copy=}\KeywordTok{c}\NormalTok{(}\DataTypeTok{CONC=}\StringTok{"DV"}\NormalTok{),}
-                      \DataTypeTok{nm.rename=}\KeywordTok{c}\NormalTok{(}\DataTypeTok{WEIGHTB=}\StringTok{"BBW"}\NormalTok{),}
-                      \CommentTok{\#\# PSN compatibility}
+                      \DataTypeTok{nm.rename=}\KeywordTok{c}\NormalTok{(}\DataTypeTok{BBW=}\StringTok{"WEIGHTB"}\NormalTok{),}
+                      \CommentTok{## PSN compatibility}
                       \DataTypeTok{nm.capitalize=}\OtherTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -1093,10 +1285,10 @@ All arguments to \texttt{fwrite} can be modified using the
 \end{verbatim}
 
 \begin{verbatim}
-## For NonMem:
-## $INPUT ROW ID NOMTIME TIME EVID CMT AMT CONC=DV
-## WEIGHTB FLAG STUDY BLQ CYCLE DOSE PART PROFDAY=DROP
-## PROFTIME EFF0
+## For NONMEM:
+## $INPUT ROW ID NOMTIME TIME EVID CMT AMT CONC=DV BBW
+## FLAG STUDY BLQ CYCLE DOSE PART PROFDAY=DROP PROFTIME
+## EFF0
 ## $DATA ../derived/pk.csv
 ## IGN=@
 ## IGNORE=(FLAG.NE.0)
@@ -1104,24 +1296,20 @@ All arguments to \texttt{fwrite} can be modified using the
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\#\# example: pick run1*.mod}
-\NormalTok{models \textless{}{-}}\StringTok{ }\KeywordTok{list.files}\NormalTok{(}\StringTok{"../models"}\NormalTok{,}\DataTypeTok{pattern=}\StringTok{"run1.+}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{.mod$"}\NormalTok{,}
-                     \DataTypeTok{full.names=}\NormalTok{T)}
-\CommentTok{\#\# update $INPUT and $DATA}
-\KeywordTok{lapply}\NormalTok{(models,NMwriteSection,}\DataTypeTok{list.sections=}\NormalTok{nmCode)}
-\CommentTok{\#\# update $INPUT }
-\KeywordTok{lapply}\NormalTok{(models,}
-\NormalTok{       NMwriteSection,}\DataTypeTok{section=}\StringTok{"INPUT"}\NormalTok{,}\DataTypeTok{newlines=}\NormalTok{nmCode}\OperatorTok{$}\NormalTok{INPUT)}
+\CommentTok{## example: pick run1*.mod}
+\NormalTok{models <-}\StringTok{ }\KeywordTok{NMwriteSection}\NormalTok{(}\DataTypeTok{dir=}\StringTok{"../models"}\NormalTok{,}\DataTypeTok{file.pattern=}\StringTok{"run1.+}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{.mod$"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \normalsize
 \end{column}
 \end{columns}
+
 \end{frame}
 
 \begin{frame}[fragile]{Automated documentation of data}
 \protect\hypertarget{automated-documentation-of-data}{}
+
 \framesubtitle{Ensure that the data can be traced back to the data generation script}
 
 \begin{columns}[T]
@@ -1155,19 +1343,19 @@ All arguments to \texttt{fwrite} can be modified using the
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{NMwriteData}\NormalTok{(pk,}\DataTypeTok{file=}\StringTok{"derived/pk.csv"}\NormalTok{,}
-            \DataTypeTok{script =} \StringTok{"NMdata\_Rpackage.Rmd"}\NormalTok{,}\DataTypeTok{quiet=}\NormalTok{T)}
+            \DataTypeTok{script =} \StringTok{"NMdata_Rpackage.Rmd"}\NormalTok{,}\DataTypeTok{quiet=}\NormalTok{T)}
 \KeywordTok{list.files}\NormalTok{(}\StringTok{"derived"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "pk.csv"      "pk.rds"      "pk_meta.txt"
+## [1] "pk_meta.txt" "pk.csv"      "pk.rds"
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\#\# NMreadCsv reads the metadata .txt file if found}
-\NormalTok{pknm \textless{}{-}}\StringTok{ }\KeywordTok{NMreadCsv}\NormalTok{(}\StringTok{"derived/pk.csv"}\NormalTok{)}
+\CommentTok{## NMreadCsv reads the metadata .txt file if found}
+\NormalTok{pknm <-}\StringTok{ }\KeywordTok{NMreadCsv}\NormalTok{(}\StringTok{"derived/pk.csv"}\NormalTok{)}
 \KeywordTok{NMinfo}\NormalTok{(pknm)}
 \end{Highlighting}
 \end{Shaded}
@@ -1178,7 +1366,7 @@ All arguments to \texttt{fwrite} can be modified using the
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $dataCreate$CreationTime
-## [1] "2021-06-23 15:25:28"
+## [1] "2022-06-29 21:11:38 EDT"
 ## 
 ## $dataCreate$writtenTo
 ## [1] "derived/pk.csv"
@@ -1186,8 +1374,8 @@ All arguments to \texttt{fwrite} can be modified using the
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\#\# The .rds file contains the metadata already}
-\NormalTok{pknm2 \textless{}{-}}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"derived/pk.rds"}\NormalTok{)}
+\CommentTok{## The .rds file contains the metadata already}
+\NormalTok{pknm2 <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"derived/pk.rds"}\NormalTok{)}
 \KeywordTok{NMinfo}\NormalTok{(pknm2)}
 \end{Highlighting}
 \end{Shaded}
@@ -1198,7 +1386,7 @@ All arguments to \texttt{fwrite} can be modified using the
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $dataCreate$CreationTime
-## [1] "2021-06-23 15:25:28 EDT"
+## [1] "2022-06-29 21:11:38 EDT"
 ## 
 ## $dataCreate$writtenTo
 ## [1] "derived/pk.rds"
@@ -1207,6 +1395,7 @@ All arguments to \texttt{fwrite} can be modified using the
 \end{columns}
 
 \normalsize
+
 \end{frame}
 
 \hypertarget{retrieving-data-from-nonmem-runs}{%
@@ -1215,6 +1404,7 @@ runs}\label{retrieving-data-from-nonmem-runs}}
 
 \begin{frame}[fragile]{NMscanData}
 \protect\hypertarget{nmscandata}{}
+
 \texttt{NMscanData} is an automated and general reader of Nonmem.
 
 \begin{itemize}
@@ -1248,14 +1438,26 @@ Based on the list file (\texttt{.lst}) it will:
 \begin{column}{0.48\textwidth}
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{file1.lst \textless{}{-}}\StringTok{ }\KeywordTok{system.file}\NormalTok{(}\StringTok{"examples/nonmem/xgxr003.lst"}\NormalTok{,}
+\NormalTok{file1.lst <-}\StringTok{ }\KeywordTok{system.file}\NormalTok{(}\StringTok{"examples/nonmem/xgxr003.lst"}\NormalTok{,}
                          \DataTypeTok{package=}\StringTok{"NMdata"}\NormalTok{)}
-\NormalTok{res0 \textless{}{-}}\StringTok{ }\KeywordTok{NMscanData}\NormalTok{(file1.lst,}\DataTypeTok{merge.by.row=}\OtherTok{FALSE}\NormalTok{)}
+\NormalTok{res0 <-}\StringTok{ }\KeywordTok{NMscanData}\NormalTok{(file1.lst,}\DataTypeTok{merge.by.row=}\OtherTok{FALSE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## Model:  xgxr003
+## No missing values identified
+\end{verbatim}
+
+\begin{verbatim}
+## Model:  xgxr003 
+## 
+## Used tables, contents shown as used/total:
+##                  file     rows columns     IDs
+##       xgxr003_res.txt  905/905     7/7 150/150
+##  xgxr003_res_vols.txt  905/905     3/7 150/150
+##    xgxr003_res_fo.txt  150/150     1/2 150/150
+##     xgxr1.csv (input) 905/1502   21/24 150/150
+##              (result)      905    32+2     150
 \end{verbatim}
 
 \begin{verbatim}
@@ -1265,18 +1467,11 @@ Based on the list file (\texttt{.lst}) it will:
 
 \begin{verbatim}
 ## 
-## Used tables, contents shown as used/total:
-##                  file     rows columns     IDs
-##       xgxr003_res.txt  905/905     7/7   NA/NA
-##  xgxr003_res_vols.txt  905/905     3/7 150/150
-##    xgxr003_res_fo.txt  150/150     1/2 150/150
-##     xgxr1.csv (input) 905/1502   21/24 150/150
-##              (result)      905    32+2     150
-## 
 ## Distribution of rows on event types in returned data:
-##  EVID Output
-##     0    755
-##     1    150
+##  EVID CMT output result
+##     0   2    755    755
+##     1   1    150    150
+##   All All    905    905
 \end{verbatim}
 \end{column}
 
@@ -1328,34 +1523,38 @@ Based on the list file (\texttt{.lst}) it will:
 \normalsize
 \end{column}
 \end{columns}
+
 \end{frame}
 
 \begin{frame}[fragile]{Remember the unique row identifier}
 \protect\hypertarget{remember-the-unique-row-identifier}{}
+
 Using a unique row identifier for merging data is highly recommended:
 
 \footnotesize
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{res1 \textless{}{-}}\StringTok{ }\KeywordTok{NMscanData}\NormalTok{(}\KeywordTok{file.nm}\NormalTok{(}\StringTok{"xgxr001.lst"}\NormalTok{),}\DataTypeTok{merge.by.row=}\OtherTok{TRUE}\NormalTok{)}
+\NormalTok{res1 <-}\StringTok{ }\KeywordTok{NMscanData}\NormalTok{(}\KeywordTok{file.nm}\NormalTok{(}\StringTok{"xgxr001.lst"}\NormalTok{),}\DataTypeTok{merge.by.row=}\OtherTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 ## Model:  xgxr001 
-## Input and output data merged by: ROW 
 ## 
 ## Used tables, contents shown as used/total:
 ##               file     rows columns     IDs
-##    xgxr001_res.txt  905/905   16/16   NA/NA
+##    xgxr001_res.txt  905/905   16/16 150/150
 ##  xgxr1.csv (input) 905/1502   22/24 150/150
 ##           (result)      905    38+2     150
 ## 
+## Input and output data merged by: ROW 
+## 
 ## Distribution of rows on event types in returned data:
-##  EVID Output
-##     0    755
-##     1    150
+##  EVID CMT output result
+##     0   2    755    755
+##     1   1    150    150
+##   All All    905    905
 \end{verbatim}
 
 \begin{Shaded}
@@ -1373,16 +1572,17 @@ Using a unique row identifier for merging data is highly recommended:
 \begin{itemize}
 \tightlist
 \item
-  Starting from \texttt{NMdata\ 0.0.8}, the default behavior will be to
-  merge by \texttt{col.row} if found.
+  The default behavior will be to merge by \texttt{col.row} if found.
 \item
   Default value of \texttt{col.row} is \texttt{ROW}. We shall see later
   how to modify this.
 \end{itemize}
+
 \end{frame}
 
 \begin{frame}[fragile]{NMscanData}
 \protect\hypertarget{nmscandata-1}{}
+
 \framesubtitle{Example: quickly get from a list file to looking at the model}
 
 \footnotesize
@@ -1391,12 +1591,12 @@ Using a unique row identifier for merging data is highly recommended:
 \begin{column}{0.45\textwidth}
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\#\# Using data.table for easy summarize}
-\NormalTok{res1 \textless{}{-}}\StringTok{ }\KeywordTok{NMscanData}\NormalTok{(file1.lst,}\DataTypeTok{merge.by.row=}\OtherTok{TRUE}\NormalTok{,}
+\CommentTok{## Using data.table for easy summarize}
+\NormalTok{res1 <-}\StringTok{ }\KeywordTok{NMscanData}\NormalTok{(file1.lst,}\DataTypeTok{merge.by.row=}\OtherTok{TRUE}\NormalTok{,}
                    \DataTypeTok{as.fun=}\StringTok{"data.table"}\NormalTok{,}\DataTypeTok{quiet=}\OtherTok{TRUE}\NormalTok{)}
-\CommentTok{\#\# Derive geometric mean pop predictions by}
-\CommentTok{\#\# treatment and nominal sample time. Only}
-\CommentTok{\#\# use sample records.}
+\CommentTok{## Derive geometric mean pop predictions by}
+\CommentTok{## treatment and nominal sample time. Only}
+\CommentTok{## use sample records.}
 \NormalTok{res1[EVID}\OperatorTok{==}\DecValTok{0}\NormalTok{,}
 \NormalTok{     gmPRED}\OperatorTok{:}\ErrorTok{=}\KeywordTok{exp}\NormalTok{(}\KeywordTok{mean}\NormalTok{(}\KeywordTok{log}\NormalTok{(PRED))),}
 \NormalTok{     by=.(trtact,NOMTIME)]}
@@ -1410,37 +1610,42 @@ Using a unique row identifier for merging data is highly recommended:
 \begin{center}\includegraphics[width=1.05\linewidth]{plots/aplot-plot-1} \end{center}
 \end{column}
 \end{columns}
+
 \end{frame}
 
 \begin{frame}[fragile]{Recover discarded rows}
 \protect\hypertarget{recover-discarded-rows}{}
+
 \begin{columns}[T]
 \begin{column}{0.45\textwidth}
 \footnotesize
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{res2 \textless{}{-}}\StringTok{ }\KeywordTok{NMscanData}\NormalTok{(file1.lst,}
+\NormalTok{res2 <-}\StringTok{ }\KeywordTok{NMscanData}\NormalTok{(file1.lst,}
                    \DataTypeTok{merge.by.row=}\OtherTok{TRUE}\NormalTok{,}\DataTypeTok{recover.rows=}\OtherTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 ## Model:  xgxr003 
-## Input and output data merged by: ROW 
 ## 
 ## Used tables, contents shown as used/total:
 ##                  file      rows columns     IDs
-##       xgxr003_res.txt   905/905     7/7   NA/NA
+##       xgxr003_res.txt   905/905     7/7 150/150
 ##  xgxr003_res_vols.txt   905/905     3/7 150/150
 ##    xgxr003_res_fo.txt   150/150     1/2 150/150
 ##     xgxr1.csv (input) 1502/1502   21/24 150/150
 ##              (result)      1502    32+2     150
 ## 
+## Input and output data merged by: ROW 
+## 
 ## Distribution of rows on event types in returned data:
-##  EVID Input only Output
-##     0        597    755
-##     1          0    150
+##  EVID CMT input-only output result
+##     0   1          2      0      2
+##     0   2        595    755   1350
+##     1   1          0    150    150
+##   All All        597    905   1502
 \end{verbatim}
 
 \begin{itemize}
@@ -1459,14 +1664,14 @@ Using a unique row identifier for merging data is highly recommended:
 ## (geom_path).
 \end{verbatim}
 
-\begin{center}\includegraphics[width=1.05\linewidth]{plots/unnamed-chunk-30-1} \end{center}
+\begin{center}\includegraphics[width=1.05\linewidth]{plots/unnamed-chunk-34-1} \end{center}
 \end{column}
 \end{columns}
+
 \end{frame}
 
-\begin{frame}[fragile]{Compare models}
-\protect\hypertarget{compare-models}{}
-\framesubtitle{Example: Renaming and combining models by `rbind`}
+\begin{frame}[fragile]{Compare models using \texttt{NMscanMultiple}}
+\protect\hypertarget{compare-models-using-nmscanmultiple}{}
 
 \begin{columns}[T]
 \begin{column}{0.45\textwidth}
@@ -1482,27 +1687,38 @@ Using a unique row identifier for merging data is highly recommended:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\#\# notice fill is an option to rbind with data.table}
-\NormalTok{lst}\FloatTok{.1}\NormalTok{ \textless{}{-}}\StringTok{ }\KeywordTok{system.file}\NormalTok{(}\StringTok{"examples/nonmem/xgxr001.lst"}\NormalTok{,}
-                     \DataTypeTok{package=}\StringTok{"NMdata"}\NormalTok{)}
-\NormalTok{lst}\FloatTok{.2}\NormalTok{ \textless{}{-}}\StringTok{ }\KeywordTok{system.file}\NormalTok{(}\StringTok{"examples/nonmem/xgxr014.lst"}\NormalTok{,}
-                     \DataTypeTok{package=}\StringTok{"NMdata"}\NormalTok{)}
-\NormalTok{res1.m \textless{}{-}}\StringTok{ }\KeywordTok{NMscanData}\NormalTok{(lst}\FloatTok{.1}\NormalTok{,}\DataTypeTok{quiet=}\OtherTok{TRUE}\NormalTok{)}
-\NormalTok{res2.m \textless{}{-}}\StringTok{ }\KeywordTok{NMscanData}\NormalTok{(lst}\FloatTok{.2}\NormalTok{,}\DataTypeTok{quiet=}\OtherTok{TRUE}\NormalTok{,}
-                     \DataTypeTok{modelname=}\StringTok{"single{-}compartment"}\NormalTok{)}
+\NormalTok{models <-}\StringTok{ }\KeywordTok{file.nm}\NormalTok{(}\KeywordTok{cc}\NormalTok{(xgxr001.lst,xgxr014.lst))}
 
-\NormalTok{res.mult \textless{}{-}}\StringTok{ }\KeywordTok{rbind}\NormalTok{(res1.m,res2.m,}\DataTypeTok{fill=}\NormalTok{T)}
-\NormalTok{res.mult[EVID}\OperatorTok{==}\DecValTok{0}\OperatorTok{\&}\NormalTok{nmout}\OperatorTok{==}\OtherTok{TRUE}\NormalTok{,}
+\NormalTok{res.mult <-}\StringTok{ }\KeywordTok{NMscanMultiple}\NormalTok{(}\DataTypeTok{files=}\NormalTok{models,}\DataTypeTok{quiet=}\NormalTok{T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Overview of model scanning results:
+##                                                                                         lst
+## 1: /data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/xgxr001.lst
+## 2: /data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/xgxr014.lst
+##    nrows ncols success warning
+## 1:   905    40    TRUE   FALSE
+## 2:   905    36    TRUE   FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{res.mult[EVID}\OperatorTok{==}\DecValTok{0}\OperatorTok{&}\NormalTok{nmout}\OperatorTok{==}\OtherTok{TRUE}\NormalTok{,}
 \NormalTok{         gmPRED}\OperatorTok{:}\ErrorTok{=}\KeywordTok{exp}\NormalTok{(}\KeywordTok{mean}\NormalTok{(}\KeywordTok{log}\NormalTok{(PRED))),}
 \NormalTok{         by=.(model,trtact,NOMTIME)]}
-\CommentTok{\#\# NMdata class gone because of rbind}
 \KeywordTok{class}\NormalTok{(res.mult)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "data.table" "data.frame"
+## [1] "NMdata"     "data.table" "data.frame"
 \end{verbatim}
+
+\texttt{NMscanMultiple} can search for models by matching file names to
+a regular expression, similarly to \texttt{NMwriteSection}.
 \end{column}
 
 \begin{column}{0.55\textwidth}
@@ -1511,10 +1727,12 @@ Using a unique row identifier for merging data is highly recommended:
 \begin{center}\includegraphics{plots/comparemodels-plot-1} \end{center}
 \end{column}
 \end{columns}
+
 \end{frame}
 
 \begin{frame}[fragile]{Preserve all input data properties}
 \protect\hypertarget{preserve-all-input-data-properties}{}
+
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 By default, \texttt{NMscanData} will look for an rds file next to the
@@ -1548,21 +1766,23 @@ factor levels as in \texttt{rds} input data.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{lst \textless{}{-}}\StringTok{ }\KeywordTok{system.file}\NormalTok{(}\StringTok{"examples/nonmem/xgxr014.lst"}\NormalTok{,}
+\NormalTok{lst <-}\StringTok{ }\KeywordTok{system.file}\NormalTok{(}\StringTok{"examples/nonmem/xgxr014.lst"}\NormalTok{,}
                    \DataTypeTok{package=}\StringTok{"NMdata"}\NormalTok{)}
-\NormalTok{res14 \textless{}{-}}\StringTok{ }\KeywordTok{NMscanData}\NormalTok{(lst,}\DataTypeTok{quiet=}\OtherTok{TRUE}\NormalTok{)}
+\NormalTok{res14 <-}\StringTok{ }\KeywordTok{NMscanData}\NormalTok{(lst,}\DataTypeTok{quiet=}\OtherTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=1.05\linewidth]{plots/unnamed-chunk-33-1} \end{center}
+\begin{center}\includegraphics[width=1.05\linewidth]{plots/unnamed-chunk-37-1} \end{center}
 \end{column}
 \end{columns}
 
 \normalsize
+
 \end{frame}
 
 \begin{frame}[fragile]{The NMdata class}
 \protect\hypertarget{the-nmdata-class}{}
+
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 Most important message: an \texttt{NMdata} object can be used as if it
@@ -1625,21 +1845,21 @@ dropping the \texttt{NMdata} class and then perform the operation.
 \end{Shaded}
 
 \begin{verbatim}
+## $model
+## [1] "xgxr003"
+## 
 ## $call
 ## [1] "NMscanData(file1.lst, merge.by.row = TRUE, as.fun = \"data.table\", "
 ## [2] "    quiet = TRUE)"                                                   
 ## 
 ## $time.NMscanData
-## [1] "2021-06-23 15:25:29 EDT"
-## 
-## $model
-## [1] "xgxr003"
+## [1] "2022-06-29 21:11:38 EDT"
 ## 
 ## $file.lst
-## [1] "C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003.lst"
+## [1] "/data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/xgxr003.lst"
 ## 
 ## $file.mod
-## [1] "C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003.mod"
+## [1] "/data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/xgxr003.mod"
 ## 
 ## $time.ok
 ## [1] "Not checked"
@@ -1660,29 +1880,43 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## [1] "ROW"
 ## 
 ## $file.input
-## [1] "C:/Users/delff/working_copies/NMdata/inst/examples/data/xgxr1.csv"
+## [1] "/data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/../data/xgxr1.csv"
+## 
+## $logtime.lst
+## [1] NA
 ## 
 ## $mtime.lst
-## [1] "2021-06-22 23:13:18 EDT"
+## [1] "2022-06-29 16:28:03 EDT"
+## 
+## $method.time.lst
+## [1] NA
 ## 
 ## $mtime.mod
-## [1] "2021-06-22 23:13:18 EDT"
+## [1] "2022-06-29 16:28:03 EDT"
 ## 
 ## $mtime.input
-## [1] "2021-06-23 08:47:03 EDT"
+## [1] "2022-06-29 16:28:03 EDT"
+## 
+## $logtime.input
+## [1] NA
+## 
+## $method.time.inp
+## [1] NA
 \end{verbatim}
 \end{column}
 \end{columns}
+
 \end{frame}
 
 \begin{frame}[fragile]{The NMdata class}
 \protect\hypertarget{the-nmdata-class-1}{}
+
 \framesubtitle{What data was read?}
 
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 \begin{block}{Table-specific information}
-\protect\hypertarget{table-specific-information}{}
+
 \scriptsize
 
 \begin{Shaded}
@@ -1702,23 +1936,29 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## 2:       all       FALSE       TRUE        TRUE   output
 ## 3: firstonly       FALSE       TRUE       FALSE   output
 ## 4:      <NA>        TRUE       TRUE          NA     text
-##      format  sep          file.mtime
-## 1:               2021-04-05 21:57:22
-## 2:   tF13.4      2021-04-05 21:57:22
-## 3: ,1PE15.8    , 2021-04-05 21:57:22
-## 4:     <NA> <NA> 2021-06-23 08:47:03
-##                                                                              file
-## 1:      C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003_res.txt
-## 2: C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003_res_vols.txt
-## 3:   C:/Users/delff/working_copies/NMdata/inst/examples/nonmem/xgxr003_res_fo.txt
-## 4:              C:/Users/delff/working_copies/NMdata/inst/examples/data/xgxr1.csv
+##      format          file.mtime
+## 1:          2022-06-29 16:28:03
+## 2:   tF13.4 2022-06-29 16:28:03
+## 3: ,1PE15.8 2022-06-29 16:28:03
+## 4:     <NA> 2022-06-29 16:28:03
+##                                                                                                 file
+## 1:      /data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/xgxr003_res.txt
+## 2: /data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/xgxr003_res_vols.txt
+## 3:   /data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/xgxr003_res_fo.txt
+## 4:    /data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/../data/xgxr1.csv
+##    noheader file.logtime
+## 1:    FALSE           NA
+## 2:    FALSE           NA
+## 3:    FALSE           NA
+## 4:       NA           NA
 \end{verbatim}
+
 \end{block}
 \end{column}
 
 \begin{column}{0.48\textwidth}
 \begin{block}{Column-specific information}
-\protect\hypertarget{column-specific-information}{}
+
 (The \texttt{nrows} and \texttt{topn} arguments are arguments to
 \texttt{print.data.table} to get a top and bottom snip of the table.)
 \scriptsize
@@ -1753,13 +1993,16 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## 41:       DV            xgxr1.csv      input   row     NA
 ## 42:       ID   xgxr003_res_fo.txt     output    id     NA
 \end{verbatim}
+
 \end{block}
 \end{column}
 \end{columns}
+
 \end{frame}
 
-\begin{frame}[fragile]{What to do when Nonmem results seem meaningless}
+\begin{frame}[fragile]{What to do when Nonmem results seem meaningless?}
 \protect\hypertarget{what-to-do-when-nonmem-results-seem-meaningless}{}
+
 \framesubtitle{Check of usual suspect: DATA}
 
 \begin{columns}[T]
@@ -1798,11 +2041,11 @@ In this case, input column names are aligned with \texttt{\$DATA}
 
 \begin{verbatim}
 ## Read rds input data file:
-## C:/Users/delff/working_copies/NMdata/inst/examples/data/xgxr2.rds.
+## /data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/../data/xgxr2.rds.
 \end{verbatim}
 
 \begin{verbatim}
-##     datafile     DATA   nonmem   result compare
+##     datafile    INPUT   nonmem   result compare
 ##  1:      ROW      ROW      ROW      ROW      OK
 ##  2:       ID       ID       ID       ID      OK
 ##  3:  NOMTIME  NOMTIME  NOMTIME  NOMTIME      OK
@@ -1827,17 +2070,19 @@ In this case, input column names are aligned with \texttt{\$DATA}
 ## 22:   TRTACT     <NA>     <NA>   TRTACT    <NA>
 ## 23:     flag     <NA>     <NA>     flag    <NA>
 ## 24:   trtact     <NA>     <NA>   trtact    <NA>
-##     datafile     DATA   nonmem   result compare
+##     datafile    INPUT   nonmem   result compare
 \end{verbatim}
 
 \normalsize
 \end{column}
 \end{columns}
+
 \end{frame}
 
 \begin{frame}[fragile]{What should I do for my models to be compatible
 with \texttt{NMscanData}?}
 \protect\hypertarget{what-should-i-do-for-my-models-to-be-compatible-with-nmscandata}{}
+
 \begin{itemize}
 \item
   The answer to this should be as close to ``nothing'' as possible -
@@ -1865,10 +2110,12 @@ with \texttt{NMscanData}?}
   In \texttt{firstonly} tables, include the subject ID or the row
   identifier.
 \end{itemize}
+
 \end{frame}
 
 \begin{frame}[fragile]{\texttt{NMscanData} limitations}
 \protect\hypertarget{nmscandata-limitations}{}
+
 The most important limitation to have in mind is not related to
 \texttt{NMscanData} iteself
 
@@ -1916,10 +2163,12 @@ rare. There is a very good chance you will never run into any of them.
   \texttt{FIRSTONLY}, i.e.~as ID-level information if not available
   elsewhere.
 \end{itemize}
+
 \end{frame}
 
 \begin{frame}[fragile]{Data read building blocks}
 \protect\hypertarget{data-read-building-blocks}{}
+
 \texttt{NMscanData} uses a few simpler functions to read all the data it
 can find. These functions may be useful when you don't want the full
 automatic package provided by \texttt{NMscanData}.
@@ -1969,6 +2218,7 @@ automatic package provided by \texttt{NMscanData}.
     Optionally translates column names according to names used in Nonmem
   \end{itemize}
 \end{itemize}
+
 \end{frame}
 
 \hypertarget{configuration-of-nmdata-defaults}{%
@@ -1977,6 +2227,7 @@ defaults}\label{configuration-of-nmdata-defaults}}
 
 \begin{frame}[fragile]{NMdataConf}
 \protect\hypertarget{nmdataconf}{}
+
 \framesubtitle{Tailor `NMdata` default behavior to your setup and preferences}
 
 \begin{columns}[T]
@@ -2000,11 +2251,11 @@ My initialization of scripts often contain this:
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(NMdata)}
 \KeywordTok{NMdataConf}\NormalTok{(}\DataTypeTok{as.fun=}\StringTok{"data.table"}
-\CommentTok{\#\#\# this is the default value}
+\CommentTok{### this is the default value}
 \NormalTok{          ,}\DataTypeTok{col.row=}\StringTok{"ROW"}
-\CommentTok{\#\#\# Recommended but \_right now\_ not default}
+\CommentTok{### Recommended but _right now_ not default}
 \NormalTok{          ,}\DataTypeTok{merge.by.row=}\OtherTok{TRUE}
-\CommentTok{\#\#\# You can switch this when script is final}
+\CommentTok{### You can switch this when script is final}
 \NormalTok{          ,}\DataTypeTok{quiet=}\OtherTok{FALSE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -2024,7 +2275,7 @@ Other commonly used settings in \texttt{NMdataConf} are
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(tibble)}
-\KeywordTok{NMdataConf}\NormalTok{(}\DataTypeTok{as.fun=}\NormalTok{tibble}\OperatorTok{::}\NormalTok{as\_tibble)}
+\KeywordTok{NMdataConf}\NormalTok{(}\DataTypeTok{as.fun=}\NormalTok{tibble}\OperatorTok{::}\NormalTok{as_tibble)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2045,11 +2296,13 @@ Other commonly used settings in \texttt{NMdataConf} are
   stream and input data). If say you copy files between systems, this
   check may not make sense.
 \end{itemize}
+
 \end{frame}
 
 \begin{frame}[fragile]{Why does \texttt{NMdata} not use
 \texttt{options()}?}
 \protect\hypertarget{why-does-nmdata-not-use-options}{}
+
 \texttt{R} has a system for handling settings. \texttt{NMdata} does not
 use that.
 
@@ -2062,7 +2315,7 @@ use that.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{try}\NormalTok{(}\KeywordTok{NMdataConf}\NormalTok{(}\DataTypeTok{asfun=}\NormalTok{tibble}\OperatorTok{::}\NormalTok{as\_tibble))}
+\KeywordTok{try}\NormalTok{(}\KeywordTok{NMdataConf}\NormalTok{(}\DataTypeTok{asfun=}\NormalTok{tibble}\OperatorTok{::}\NormalTok{as_tibble))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2092,10 +2345,12 @@ use that.
 \item
   Retrieve all current settings: \texttt{NMdataConf()}
 \end{itemize}
+
 \end{frame}
 
 \begin{frame}[fragile]{How is \texttt{NMdata} qualified?}
 \protect\hypertarget{how-is-nmdata-qualified}{}
+
 \includegraphics[width=.8\textwidth]{badges_snip_210623}
 
 \begin{itemize}
@@ -2106,7 +2361,7 @@ use that.
   Historic bugs have mostly resulted in uninformative errors due to
   e.g.~failure in processing text. Never a wrong data set.
 \item
-  \texttt{NMdata} includes 93 ``unit tests'' where results of function
+  \texttt{NMdata} includes 190 ``unit tests'' where results of function
   calls with different datasets and arguments are compared to expected
   results
 \item
@@ -2121,6 +2376,7 @@ use that.
   If you have a specific example you want to make sure is tested in the
   package, we will include the test in the package
 \end{itemize}
+
 \end{frame}
 
 \hypertarget{next-steps-for-nmdata}{%
@@ -2129,15 +2385,8 @@ use that.
 
 \begin{frame}[fragile]{Next steps for \texttt{NMdata}}
 \protect\hypertarget{next-steps-for-nmdata-1}{}
+
 \begin{itemize}
-\item
-  The next milestone is submitting the package to CRAN
-\item
-  Aiming for end of June
-\item
-  Most important task before is revision of vignettes
-\item
-  Abstract submitted to ACoP
 \item
   The following would be great help in making \texttt{NMdata} more
   accessible and useful
@@ -2153,28 +2402,23 @@ use that.
 \item
   If you have ideas you want to contribute, let's discuss!
 \item
-  Before or after first version on CRAN
-\item
-  \texttt{NMcheckData}: Check data syntax/format compatibility with
-  Nonmem
-\item
-  \texttt{NMfreezeModels}: Save Nonmem models with input data and all
-  results to ensure reproducibility of output
-\item
-  After first version on CRAN
+  Additional features
 \item
   Functions to generate dosing regimens for simulations and nominal-time
   datasets
 \item
   Functions for easy documentation of column contents (description,
   units, 1:1 relationships between character and numeric columns)
+\item
+  \texttt{NMfreezeModels}: Save Nonmem models with input data and all
+  results to ensure reproducibility of output 
 \end{itemize}
+
 \end{frame}
 
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
 
-\begin{frame}[fragile]{Summary}
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 Data creation
@@ -2196,7 +2440,7 @@ Data creation
 \item
   \texttt{NMwriteData}
 \item
-  \texttt{stampObj}/\texttt{objInfo}
+  \texttt{NMstamp}/\texttt{NMinfo}
 \end{itemize}
 
 Read/write Nonmem control streams
@@ -2243,134 +2487,13 @@ Other
 \end{column}
 \end{columns}
 
-\begin{block}{The plan is submission to CRAN this month!}
-\protect\hypertarget{the-plan-is-submission-to-cran-this-month}{}
-\end{block}
-\end{frame}
-
 \hypertarget{nmdata-functions-under-development}{%
 \section{\texorpdfstring{\texttt{NMdata} functions under
 development}{NMdata functions under development}}\label{nmdata-functions-under-development}}
 
-\begin{frame}[fragile]{\texttt{NMcheckData}: Check data syntax for
-Nonmem compatibility
-\includegraphics[width=0.5in]{figures/worksign.png}}
-\protect\hypertarget{nmcheckdata-check-data-syntax-for-nonmem-compatibility}{}
-Aim: check data for all potential Nonmem compatibility issues and other
-obvious errors.
-
-\begin{columns}[T]
-\begin{column}{0.48\textwidth}
-\begin{itemize}
-\item
-  Currently checks for:
-\item
-  Presence, no \texttt{NA}, and compatibility of \texttt{TIME},
-  \texttt{EVID}, \texttt{ID}, \texttt{CMT}
-\item
-  \texttt{DV} must be \texttt{NA} at dosing events
-\item
-  If available \texttt{MDV} and col.flagn must be numeric and
-  non-missing
-\item
-  \texttt{EVID} one of 0,1,2,3,4
-\item
-  \texttt{ID}'s are disjoint
-\item
-  \texttt{TIME} is positive and increasing within constant ID
-\item
-  \texttt{CMT} is a positive integer
-\item
-  \texttt{MDV} represents \texttt{is.na(DV)}
-\item
-  Todo
-\item
-  Many checks will be added and most of them are simple to implement
-\item
-  Has to accept many more alternative ways to code the data
-\item
-  It is experimental but safe
-\item
-  `NMcheckData is a ``look but don't touch'' function, so worst case is
-  output is confusing.
-\item
-  You could get a strange error due to ``holes'' in the function that
-  haven't yet been implemented.
-\item
-  May or may not get ready for \texttt{NMdata\ 0.1.0}
-\end{itemize}
-\end{column}
-
-\begin{column}{0.48\textwidth}
-\scriptsize
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{res.check \textless{}{-}}\StringTok{ }\KeywordTok{NMcheckData}\NormalTok{(pk)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##  column            check N
-##     MDV Column not found 1
-##    TIME    Negative time 2
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{res.check}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##               check column row
-## 1: Column not found    MDV  NA
-## 2:    Negative time   TIME 691
-## 3:    Negative time   TIME 962
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{pkmod \textless{}{-}}\StringTok{ }\KeywordTok{copy}\NormalTok{(pk)}
-\NormalTok{pkmod[,MDV}\OperatorTok{:}\ErrorTok{=}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{is.na}\NormalTok{(DV))]}
-\NormalTok{pkmod[ID}\OperatorTok{==}\DecValTok{33}\OperatorTok{\&}\NormalTok{EVID}\OperatorTok{==}\DecValTok{1}\NormalTok{,CMT}\OperatorTok{:}\ErrorTok{=}\OtherTok{NA}\NormalTok{]}
-\NormalTok{res.check \textless{}{-}}\StringTok{ }\KeywordTok{NMcheckData}\NormalTok{(pkmod)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##  column                 check    N
-##     CMT                 is NA    1
-##    TIME         Negative time    2
-##     MDV MDV does not match DV 1352
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{res.check}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##                       check column  row
-##    1:                 is NA    CMT   21
-##    2:         Negative time   TIME  691
-##    3:         Negative time   TIME  962
-##    4: MDV does not match DV    MDV    2
-##    5: MDV does not match DV    MDV    3
-##   ---                                  
-## 1351: MDV does not match DV    MDV 1498
-## 1352: MDV does not match DV    MDV 1499
-## 1353: MDV does not match DV    MDV 1500
-## 1354: MDV does not match DV    MDV 1501
-## 1355: MDV does not match DV    MDV 1502
-\end{verbatim}
-\end{column}
-\end{columns}
-\end{frame}
-
 \begin{frame}[fragile]{NMfreezeModels}
 \protect\hypertarget{nmfreezemodels}{}
+
 \begin{columns}[T]
 \begin{column}{0.85\textwidth}
 In order to ensure reproducibility, any output has to be produced based
@@ -2426,10 +2549,12 @@ Limitations
   that means that once the freeze it's done, you can no longer add code
   or descriptions. It all has to be handled in the freeze procedure.
 \end{itemize}
+
 \end{frame}
 
 \begin{frame}{Safe model reader}
 \protect\hypertarget{safe-model-reader}{}
+
 \begin{columns}[T]
 \begin{column}{0.85\textwidth}
 \begin{itemize}
@@ -2446,54 +2571,29 @@ Limitations
 \includegraphics[width=.5in]{figures/ideabulb.jpg}
 \end{column}
 \end{columns}
+
 \end{frame}
 
 \hypertarget{other-tools}{%
 \section{Other tools}\label{other-tools}}
 
-\begin{frame}[fragile]{pmxtricks}
-\protect\hypertarget{pmxtricks}{}
-A more diverse package
+\begin{frame}[fragile]{tracee}
+\protect\hypertarget{tracee}{}
 
 \begin{itemize}
 \tightlist
-\item
-  \texttt{ggIndProfs}: Individual plots, including indication of doses
 \item
   \texttt{ggwrite}: Saves images in sizes made for powerpoint, including
   stamps (time, source, output filename). It can save multiple plots at
   once as one file (pdf) or multiple files.
 \end{itemize}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(remotes)}
-\KeywordTok{install\_github}\NormalTok{(}\StringTok{"philipdelff/pmxtricks"}\NormalTok{,}\DataTypeTok{upgrade=}\StringTok{"never"}\NormalTok{)}
-\KeywordTok{library}\NormalTok{(pmxtricks)}
-\end{Highlighting}
-\end{Shaded}
-\end{frame}
-
-\begin{frame}[fragile]{Individual profiles including observations,
-doses, and model predictions}
-\protect\hypertarget{individual-profiles-including-observations-doses-and-model-predictions}{}
-\footnotesize
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{pls1 \textless{}{-}}\StringTok{ }\KeywordTok{ggIndProfs}\NormalTok{(res1,}\DataTypeTok{amt=}\StringTok{"AMT"}\NormalTok{,}\DataTypeTok{grp=}\StringTok{"trtact"}\NormalTok{,}\DataTypeTok{NPerSheet=}\DecValTok{36}\NormalTok{,}\DataTypeTok{labels=}\StringTok{"top{-}right"}\NormalTok{,}
-                   \DataTypeTok{ylab=}\StringTok{"Concentration"}\NormalTok{,}\DataTypeTok{ylab2=}\StringTok{"Dose"}\NormalTok{)}
-\KeywordTok{ggwrite}\NormalTok{(pls1[[}\DecValTok{5}\NormalTok{]],}\DataTypeTok{canvas=}\StringTok{"wide"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{center}\includegraphics[height=0.75\textheight]{plots/ggIndProfs-1} \end{center}
-\normalsize
 \end{frame}
 
 \begin{frame}[fragile]{\texttt{ggwrite}: Flexible saving of tracable
 output}
 \protect\hypertarget{ggwrite-flexible-saving-of-tracable-output}{}
+
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
 \texttt{ggwrite} is a wrapper of \texttt{png} and \texttt{pdf} (and
@@ -2531,13 +2631,13 @@ Save pls1, as one file and as multiple files, named by the dose levels.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{writeOutput \textless{}{-}}\StringTok{ }\OtherTok{TRUE}
-\NormalTok{script \textless{}{-}}\StringTok{ "path/to/script.R"}
-\KeywordTok{ggwrite}\NormalTok{(pls1,}\DataTypeTok{file=}\StringTok{"results/individual\_profiles.png"}\NormalTok{,}
-        \DataTypeTok{stamp=}\NormalTok{script,}\DataTypeTok{canvas=}\StringTok{"wide{-}screen"}\NormalTok{,}\DataTypeTok{useNames=}\OtherTok{TRUE}\NormalTok{,}
+\NormalTok{writeOutput <-}\StringTok{ }\OtherTok{TRUE}
+\NormalTok{script <-}\StringTok{ "path/to/script.R"}
+\KeywordTok{ggwrite}\NormalTok{(pls1,}\DataTypeTok{file=}\StringTok{"results/individual_profiles.png"}\NormalTok{,}
+        \DataTypeTok{stamp=}\NormalTok{script,}\DataTypeTok{canvas=}\StringTok{"wide-screen"}\NormalTok{,}\DataTypeTok{useNames=}\OtherTok{TRUE}\NormalTok{,}
         \DataTypeTok{save=}\NormalTok{writeOutput)}
-\KeywordTok{ggwrite}\NormalTok{(pls1,}\DataTypeTok{file=}\StringTok{"results/individual\_profiles.pdf"}\NormalTok{,}
-        \DataTypeTok{stamp=}\NormalTok{script,}\DataTypeTok{canvas=}\StringTok{"wide{-}screen"}\NormalTok{,}\DataTypeTok{useNames=}\OtherTok{TRUE}\NormalTok{,}
+\KeywordTok{ggwrite}\NormalTok{(pls1,}\DataTypeTok{file=}\StringTok{"results/individual_profiles.pdf"}\NormalTok{,}
+        \DataTypeTok{stamp=}\NormalTok{script,}\DataTypeTok{canvas=}\StringTok{"wide-screen"}\NormalTok{,}\DataTypeTok{useNames=}\OtherTok{TRUE}\NormalTok{,}
         \DataTypeTok{save=}\NormalTok{writeOutput,}\DataTypeTok{onefile=}\OtherTok{TRUE}\NormalTok{)}
 \KeywordTok{list.files}\NormalTok{(}\StringTok{"results"}\NormalTok{)}
 \end{Highlighting}
@@ -2555,6 +2655,23 @@ Save pls1, as one file and as multiple files, named by the dose levels.
 \end{itemize}
 \end{column}
 \end{columns}
+
+\end{frame}
+
+\begin{frame}{\texttt{execSafe}: Save input data with each Nonmem run}
+\protect\hypertarget{execsafe-save-input-data-with-each-nonmem-run}{}
+
+\begin{itemize}
+\tightlist
+\item
+  Executes Nonem from within R
+\item
+  Archives input data together with Nonmem run (you can tell NMdata to
+  read that archive when reading your model)
+\item
+  Automatically generates a PNM file if you want to parallellize
+\end{itemize}
+
 \end{frame}
 
 \end{document}

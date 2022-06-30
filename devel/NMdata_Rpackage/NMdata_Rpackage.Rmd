@@ -148,6 +148,23 @@ $$\vspace{.01in}$$
 <!-- PK/PD modeling is technically extremely heavy. We want to do provide clarity to decision making, but spend a lot of our time in deep mud. -->
 
 <!-- `NMdata` is my humble experience collected in efficient functions that fill some holes and help with some of the most annoying design -->
+
+## How to update to recent MPN snapshot
+```
+Version: 1
+Threads: 1
+Packages:
+  - NMdata
+
+
+# this will allow packages to be cached across projects for faster installs on new projects
+Cache: /data/prod_vx708_001_pkgcache-2022-06-15
+Repos:
+  - MPN: https://mpn.metworx.com/snapshots/stable/2022-06-15
+Lockfile:
+    Type: renv
+```
+
 ## Motivation
 * The workflow of a pharmacometrician is very technical, with many risks of errors.
 
