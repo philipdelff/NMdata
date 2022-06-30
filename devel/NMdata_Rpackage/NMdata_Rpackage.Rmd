@@ -38,7 +38,7 @@ classoption: "aspectratio=169"
 ```{r,include=FALSE}
 
 library(knitr)
-opts_chunk$set(fig.path='plots/',fig.align='center',fig.show='hold',size='footnotesize')
+opts_chunk$set(fig.path='plots/',fig.align='center',fig.show='hold',size='footnotesize',cache=F)
 
 library(ggplot2)
 theme_set(theme_bw(base_size=14)+
@@ -85,7 +85,7 @@ file.nm <- function(...) system.file("examples/nonmem",..., package="NMdata")
 
 An R package that can help
 
-*  Creating event-based data sets for PK/PD modeling
+*  Creating and checking event-based data sets for PK/PD modeling
 *  Keeping Nonmem code updated to match contents of datasets
 *  Read all output data and combine with input data from Nonmem runs
 - supply output list file (.lst), and the reader is very flexible and automated 
@@ -118,7 +118,7 @@ $$\vspace{.01in}$$
 * Latest stable release is 0.0.12 and is available on CRAN and MPN (starting from 2022-06-15 snapshot).
 
 ## NMdata 0.0.12 on MPN
-\includegraphics[width=.5in]{figures/worksign.png}
+\includegraphics[width=3.5in]{figures/nmdata_mpn_2022-06-27 22-03-35.png}
 
 
 <!-- ## Who can find NMdata useful? -->
@@ -204,6 +204,8 @@ you find something interesting, feel free to take advantage.
 Install from `CRAN` or from `MPN` using `pkgr`.
 ```{r,load-NMdata,echo=TRUE,message=TRUE}
 library(NMdata)
+library(devtools)
+load_all("~/wdirs/NMdata")
 packageVersion("NMdata")
 ```
 
@@ -415,7 +417,7 @@ Say we want to add a covariate from a
 ## The resulting dimensions are correct
 pkmerge <- merge(pk,dt.cov,by="ID")
 dims(pk,dt.cov,pkmerge)
-
+ 
 ## But we now have twice as many rows for this subject
 dims(pk[ID==31],pkmerge[ID==31])
 ```
@@ -426,7 +428,7 @@ dims(pk[ID==31],pkmerge[ID==31])
 \footnotesize
 
 ```{r}
-try(mergeCheck(pk,dt.cov,by="ID"))
+try(mergeCheck(pk,dt.cov,by="ID")) 
 ```
 ::::
 \normalsize
@@ -739,7 +741,8 @@ nmCode <- NMwriteData(pk,file="derived/pk.csv",
 
 ```{r,eval=FALSE,include=FALSE}
 ## example: pick run1*.mod
-models <- list.files("../models",pattern="run1.+\\.mod$",
+models <- list.files("../models",
+                     pattern="run1.+\\.mod$",
                      full.names=T)
 ## update $INPUT and $DATA
 lapply(models,NMwriteSection,list.sections=nmCode)
@@ -1322,7 +1325,7 @@ units, 1:1 relationships between character and numeric columns)
 :::: column
 Data creation
 
-* `renameByContents` - 
+* `renameByContents` 
 * `compareCols`
 * `mergeCheck`
 * `flagsAssign`/`flagsCount`
@@ -1339,6 +1342,7 @@ Read/write Nonmem control streams
 Retrieve data from Nonmem runs
 
 * `NMscanData`
+* `NMscanMultiple`
 * `summary`, `NMinfo`
 * `NMscanInput`, `NMreadCsv`
 * `NMscanTables`, `NMreadTab`
