@@ -34,48 +34,11 @@ classoption: "aspectratio=169"
 <!-- tracee -->
 <!-- execSafe -->
 
-```{r,include=FALSE}
 
-library(knitr)
-opts_chunk$set(fig.path='plots/',fig.align='center',fig.show='hold',size='footnotesize',cache=F)
-
-library(ggplot2)
-theme_set(theme_bw(base_size=14)+
-          theme(legend.position="bottom")+
-          ## purple facet strip label background and white text
-          theme(strip.background =element_rect(fill="#52247F")
-               ,strip.text=element_text(color = "#ffffff"))
-          )
-## theme_set(theme_bw(base_size=14)+
-##           theme(legend.position="bottom")+
-##           theme(strip.background =element_rect(fill="#ff9dff"))
-##           )
-library(data.table)
-unloadNamespace("NMdata")
-
-## some setup
-options(width=60)  # make the printing fit on the page
-set.seed(1121)   # make the results repeatable
-
-### shortcuts to examples in NMdata
-file.data <- function(...) system.file("examples/data",..., package="NMdata")
-file.nm <- function(...) system.file("examples/nonmem",..., package="NMdata")
-```
 
 <!-- Supposedly this chunk option should activate a profile but it doesn't work -->
 <!-- ,class.source="smaller" -->
-```{css, echo=FALSE}
-.watch-out {
-	background-color: lightpink;
-	border: 3px solid red;
-	font-weight: bold;
-}
-.smaller {
-	background-color: lightgreen;
-	font-size: 4pt;
-}
 
-```
 
 ## Outline
 \tableofcontents[hideallsubsections]
@@ -214,19 +177,19 @@ you find something interesting, feel free to take advantage.
 
 ## Getting started
 Install from `CRAN` or from `MPN` using `pkgr`.
-```{r,load-NMdata,echo=TRUE,message=TRUE}
+
+```r
 library(NMdata)
 ```
 
-```{r,load-all-NMdata,include=FALSE}
-library(devtools)
-load_all()
+```
+## Welcome to NMdata. Best place to browse NMdata documentation is
+## https://philipdelff.github.io/NMdata/
 ```
 
-```{r,include=FALSE}
-NMdataConf(check.time=FALSE)
-NMdataConf(as.fun="data.table")
-```
+
+
+
 
 
 Three vignettes are available so far (see "Vignettes" tab when visiting URL above):
@@ -241,24 +204,15 @@ Three vignettes are available so far (see "Vignettes" tab when visiting URL abov
 For a quick overview (after installation), do:
 
 <!-- Would be good to show a truncated output here -->
-```{r,eval=F}
+
+```r
 help(package="NMdata")
 ```
 
 All functions and their arguments are documented in ?manual pages.
 
 <!-- prepare example data behind the scenes -->
-```{r,prep-data,include=FALSE}
-pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
-pk[,trtact:=NULL]
-## will create this in the example
-pk[,ROW:=NULL]
 
-pk.reduced <- copy(pk)
-pk.reduced <- pk.reduced[1:(.N%/%2)]
-pk.reduced[,CYCLE:=NULL]
-pk.reduced[,AMT:=as.character(AMT)]
-```
 
 # Data set creation
 
@@ -281,20 +235,49 @@ A slightly modified version of the `pk` dataset has been created.
 * `CYCLE` has been removed, and
 * `AMT` has been recoded to character
 
-```{r,include=FALSE}
-opt.old <- options(width=50)
-```
+
 
 :::: 
 :::: column
 
 
-```{r,compareCols,class.source="smaller"}
+
+```{.r .smaller}
 compareCols(pk,pk.reduced)
 ```
-```{r,include=FALSE}
-options(opt.old)
+
 ```
+## Dimensions:
+```
+
+```
+##          data nrows ncols
+## 1:         pk  1502    22
+## 2: pk.reduced   751    21
+```
+
+```
+## 
+## Columns that differ:
+```
+
+```
+##    column      pk pk.reduced
+## 1:  CYCLE integer       <NA>
+## 2:    AMT integer  character
+```
+
+```
+## 
+```
+
+```
+## Columns where no differences were found: BLQ,
+## CMT, DOSE, DV, EVENTU, EVID, FLAG, ID, NAME,
+## NOMTIME, PART, PROFDAY, PROFTIME, STUDY, TIME,
+## TIMEUNIT, TRTACT, WEIGHTB, eff0, flag.
+```
+
 
 \vspace{12pt}
 
@@ -307,9 +290,28 @@ Before merging or stacking, we may want to
 :::
 
 ## Keep track of missing values
-```{r}
+
+```r
 missings <- listMissings(pk)
+```
+
+```
+##    variable Nmissing
+## 1:       DV      150
+```
+
+```r
 head(missings)
+```
+
+```
+##    variable row value
+## 1:       DV   1  <NA>
+## 2:       DV  11  <NA>
+## 3:       DV  21  <NA>
+## 4:       DV  31  <NA>
+## 5:       DV  41  <NA>
+## 6:       DV  51  <NA>
 ```
 
 You can specify 
@@ -349,11 +351,10 @@ data values. We want to use these and other non-numerics in post-processing.
 :::: column
 All column names are capital case. We rename to lowercase those that Nonmem will not be able to interpret as numeric.
 \footnotesize
-```{r,include=FALSE}
-pk.old <- copy(pk)
-```
 
-```{r}
+
+
+```r
 pk <- renameByContents(data=pk,
                        fun.test=NMisNumeric,
                        fun.rename = tolower,
@@ -362,8 +363,46 @@ pk <- renameByContents(data=pk,
 
 `compareCols` shows that four columns were renamed:
 
-```{r}
+
+```r
 compareCols(pk.old,pk)
+```
+
+```
+## Dimensions:
+```
+
+```
+##      data nrows ncols
+## 1: pk.old  1502    22
+## 2:     pk  1502    22
+```
+
+```
+## 
+## Columns that differ:
+```
+
+```
+##      column    pk.old        pk
+## 1:   EVENTU character      <NA>
+## 2:     NAME character      <NA>
+## 3: TIMEUNIT character      <NA>
+## 4:   TRTACT character      <NA>
+## 5:   eventu      <NA> character
+## 6:     name      <NA> character
+## 7: timeunit      <NA> character
+## 8:   trtact      <NA> character
+```
+
+```
+## 
+```
+
+```
+## Columns where no differences were found: AMT, BLQ, CMT,
+## CYCLE, DOSE, DV, EVID, FLAG, ID, NOMTIME, PART, PROFDAY,
+## PROFTIME, STUDY, TIME, WEIGHTB, eff0, flag.
 ```
 \normalsize
 ::::
@@ -409,11 +448,7 @@ Is `mergeCheck` slower?
 ## mergeCheck
 \framesubtitle{Example: Would your standard checks of merges capture this?}
 
-```{r,include=FALSE}
-dt.cov <- pk[,.(ID=unique(ID))]
-dt.cov[,COV:=sample(1:5,size=.N,replace=TRUE)]
-dt.cov <- dt.cov[c(1,1:(.N-1))]
-```
+
 
 Say we want to add a covariate from a
 `dt.cov`.  We expect the number of rows to be unchanged from `pk`. `mergeCheck` more strictly requires that we get all and only the _same_ rows:
@@ -422,13 +457,29 @@ Say we want to add a covariate from a
 :::: column
 ### Without `mergeCheck`
 \footnotesize
-```{r}
+
+```r
 ## The resulting dimensions are correct
 pkmerge <- merge(pk,dt.cov,by="ID")
 dims(pk,dt.cov,pkmerge)
- 
+```
+
+```
+##       data nrows ncols
+## 1:      pk  1502    22
+## 2:  dt.cov   150     2
+## 3: pkmerge  1502    23
+```
+
+```r
 ## But we now have twice as many rows for this subject
 dims(pk[ID==31],pkmerge[ID==31])
+```
+
+```
+##                 data nrows ncols
+## 1:      pk[ID == 31]    10    22
+## 2: pkmerge[ID == 31]    20    23
 ```
 :::
 :::: column
@@ -436,8 +487,37 @@ dims(pk[ID==31],pkmerge[ID==31])
 ...and suggests what is wrong
 \footnotesize
 
-```{r}
+
+```r
 try(mergeCheck(pk,dt.cov,by="ID")) 
+```
+
+```
+## Rows disappeared during merge.
+```
+
+```
+## Rows duplicated during merge.
+```
+
+```
+## Overview of dimensions of input and output data:
+##    nrows ncols
+## 1:  1502    22
+## 2:   150     2
+## 3:  1502    23
+```
+
+```
+## Overview of values of by where number of rows in x changes:
+##     ID N.x N.result
+## 1:  31  10       20
+## 2: 180  10        0
+```
+
+```
+## Error in mergeCheck(pk, dt.cov, by = "ID") : 
+##   Merge added and/or removed rows.
 ```
 ::::
 \normalsize
@@ -479,16 +559,26 @@ the data.frame. In this case, `BLQ` has to exist in `pk`.
 
 :::: column
 \footnotesize
-```{r,include=FALSE}
-pk[,`:=`(FLAG=NULL,flag=NULL)]
-```
 
-```{r}
+
+
+```r
 dt.flags <- fread(text="FLAG,flag,condition
 10,Below LLOQ,BLQ==1
 100,Negative time,TIME<0")
 
 pk <- flagsAssign(pk,tab.flags=dt.flags,subset.data="EVID==0")
+```
+
+```
+## Coding FLAG = 100, flag = Negative time
+```
+
+```
+## Coding FLAG = 10, flag = Below LLOQ
+```
+
+```r
 pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing")
 ```
 ::::
@@ -503,18 +593,23 @@ different conditions is then obtained using `flagsCount`:
 * `flagsCount` includes a `file` argument to save the the table right
 away.
 
-```{r,include=F}
-opts <- options(width=100)
-```
+
 
 \footnotesize
-```{r}
+
+```r
 flagsCount(data=pk[EVID==0],tab.flags=dt.flags)
 ```
 
-```{r,include=F}
-options(opts)
 ```
+##                  flag N.left Nobs.left N.discard N.disc.cum Nobs.discard Nobs.disc.cum
+## 1: All available data    150      1352        NA          0           NA             0
+## 2:      Negative time    150      1350         0          0            2             2
+## 3:         Below LLOQ    131       755        19         19          595           597
+## 4:       Analysis set    131       755        NA         19           NA           597
+```
+
+
 
 * Now pick the columns you want and format your table for the report.
 
@@ -550,7 +645,8 @@ A unique identifier is needed in order to
 ### Sort rows and add a row counter 
 
 * with `data.table`
-```{r}
+
+```r
 ## order
 setorder(pk,ID,TIME,EVID)
 ## add counter
@@ -558,7 +654,8 @@ pk[,ROW:=.I]
 ```
 
 * Or, with `dplyr` (I'm not very familiar with `dplyr`)
-```{r,eval=FALSE}
+
+```r
 pk <- pk %>%
     arrange(ID,TIME,EVID) %>%
     mutate(ROW=1:n())
@@ -599,15 +696,45 @@ column contents to sort the columns.
 :::: column
 <!-- Use print.data.table to get top and bottom with correct row numbers -->
 \footnotesize
-```{r}
+
+```r
 pk.old <- copy(pk)
 pk <- NMorderColumns(pk,first="WEIGHTB")
 ```
 \normalsize
 We may want to add `MDV` and rerun `NMorderColumns`.
 \footnotesize
-```{r}
+
+```r
 data.table(old=colnames(pk.old),new=colnames(pk))
+```
+
+```
+##          old      new
+##  1:       ID      ROW
+##  2:  NOMTIME       ID
+##  3:     TIME  NOMTIME
+##  4:     EVID     TIME
+##  5:      CMT     EVID
+##  6:      AMT      CMT
+##  7:       DV      AMT
+##  8:    STUDY       DV
+##  9:      BLQ  WEIGHTB
+## 10:    CYCLE     FLAG
+## 11:     DOSE    STUDY
+## 12:     PART      BLQ
+## 13:  PROFDAY    CYCLE
+## 14: PROFTIME     DOSE
+## 15:  WEIGHTB     PART
+## 16:     eff0  PROFDAY
+## 17:   eventu PROFTIME
+## 18:     name     eff0
+## 19: timeunit   eventu
+## 20:   trtact     flag
+## 21:     FLAG     name
+## 22:     flag timeunit
+## 23:      ROW   trtact
+##          old      new
 ```
 ::::
 \normalsize
@@ -638,15 +765,49 @@ data.table(old=colnames(pk.old),new=colnames(pk))
 ::::
 :::: column
 \scriptsize
-```{r,NMcheckData}
+
+```r
 pk <- pk[ID>59]
 res.check <- NMcheckData(pk)
+```
+
+```
+##  column              check N Nid
+##    EVID Subject has no obs 1   1
+##     MDV   Column not found 1   0
+```
+
+```r
 res.check
+```
+
+```
+##    row ID column              check  level ROW
+## 1:  NA 60   EVID Subject has no obs     ID  NA
+## 2:  NA NA    MDV   Column not found column  NA
+```
+
+```r
 pkmod <- copy(pk)
 pkmod[,MDV:=as.numeric(is.na(DV))]
 pkmod[ID==60&EVID==1,CMT:=NA]
 res.check <- NMcheckData(pkmod)
+```
+
+```
+##  column               check N Nid
+##    EVID  Subject has no obs 1   1
+##     CMT Missing for EVID!=3 1   1
+```
+
+```r
 res.check
+```
+
+```
+##    row ID column               check level ROW
+## 1:  NA 60   EVID  Subject has no obs    ID  NA
+## 2:   1 60    CMT Missing for EVID!=3   row 291
 ```
 
 :::: 
@@ -677,7 +838,8 @@ These are the only steps involved between the supplied data set and the written 
 * `scipen` is small to maximize precision.
 
 \footnotesize
-```{r,eval=FALSE}
+
+```r
 file.csv <- fnExtension(file,".csv")
 fwrite(data,na=".",quote=FALSE,row.names=FALSE,scipen=0,file=file.csv)
 ```
@@ -688,8 +850,24 @@ All arguments to `fwrite` can be modified using the `args.fwrite` argument.
 ::::
 :::: column
 \footnotesize
-```{r}
+
+```r
 NMwriteData(pk,file="derived/pk.csv")
+```
+
+```
+## Data written to file(s):
+## derived/pk.csv
+## derived/pk.rds
+```
+
+```
+## For NONMEM:
+## $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV WEIGHTB
+## FLAG STUDY BLQ CYCLE DOSE PART PROFDAY PROFTIME eff0
+## $DATA derived/pk.csv
+## IGN=@
+## IGNORE=(FLAG.NE.0)
 ```
 \normalsize 
 
@@ -736,7 +914,8 @@ model runs in which to update `$DATA`.
 :::: column
 
 \footnotesize
-```{r}
+
+```r
 nmCode <- NMwriteData(pk,file="derived/pk.csv",
                       write.csv=FALSE,
 ### arguments that tailors text for Nonmem
@@ -748,19 +927,24 @@ nmCode <- NMwriteData(pk,file="derived/pk.csv",
                       nm.capitalize=TRUE)
 ```
 
-```{r,eval=FALSE,include=FALSE}
-## example: pick run1*.mod
-models <- list.files("../models",
-                     pattern="run1.+\\.mod$",
-                     full.names=T)
-## update $INPUT and $DATA
-lapply(models,NMwriteSection,list.sections=nmCode)
-## update $INPUT 
-lapply(models,
-       NMwriteSection,section="INPUT",newlines=nmCode$INPUT)
+```
+## Data _not_ witten to any files.
 ```
 
-```{r,eval=FALSE}
+```
+## For NONMEM:
+## $INPUT ROW ID NOMTIME TIME EVID CMT AMT CONC=DV BBW
+## FLAG STUDY BLQ CYCLE DOSE PART PROFDAY=DROP PROFTIME
+## EFF0
+## $DATA ../derived/pk.csv
+## IGN=@
+## IGNORE=(FLAG.NE.0)
+```
+
+
+
+
+```r
 ## example: pick run1*.mod
 NMwriteSection(dir="../models",
                file.pattern="run1.+\\.mod$",
@@ -796,16 +980,51 @@ supplied to `NMwriteData`, a little meta information is saved together with the 
 
 \footnotesize
 
-```{r}
+
+```r
 NMwriteData(pk,file="derived/pk.csv",
             script = "NMdata_Rpackage.Rmd",quiet=T)
 list.files("derived")
+```
+
+```
+## [1] "pk_meta.txt" "pk.csv"      "pk.rds"
+```
+
+```r
 ## NMreadCsv reads the metadata .txt file if found
 pknm <- NMreadCsv("derived/pk.csv")
 NMinfo(pknm)
+```
+
+```
+## $dataCreate
+## $dataCreate$DataCreateScript
+## [1] "NMdata_Rpackage.Rmd"
+## 
+## $dataCreate$CreationTime
+## [1] "2022-06-30 13:31:16 EDT"
+## 
+## $dataCreate$writtenTo
+## [1] "derived/pk.csv"
+```
+
+```r
 ## The .rds file contains the metadata already
 pknm2 <- readRDS("derived/pk.rds")
 NMinfo(pknm2)
+```
+
+```
+## $dataCreate
+## $dataCreate$DataCreateScript
+## [1] "NMdata_Rpackage.Rmd"
+## 
+## $dataCreate$CreationTime
+## [1] "2022-06-30 13:31:16 EDT"
+## 
+## $dataCreate$writtenTo
+## [1] "derived/pk.rds"
 ```
 
 ::::
@@ -834,22 +1053,83 @@ analysis)
 
 \pause
 \footnotesize
-```{r}
-```
+
 ::: columns
 :::: column
-```{r}
+
+```r
 file1.lst <- system.file("examples/nonmem/xgxr003.lst",
                          package="NMdata")
 res0 <- NMscanData(file1.lst,merge.by.row=FALSE)
 ```
+
+```
+## No missing values identified
+```
+
+```
+## Model:  xgxr003 
+## 
+## Used tables, contents shown as used/total:
+##                  file     rows columns     IDs
+##       xgxr003_res.txt  905/905     7/7 150/150
+##  xgxr003_res_vols.txt  905/905     3/7 150/150
+##    xgxr003_res_fo.txt  150/150     1/2 150/150
+##     xgxr1.csv (input) 905/1502   21/24 150/150
+##              (result)      905    32+2     150
+```
+
+```
+## Input and output data combined by translation of
+## Nonmem data filters (not recommended).
+```
+
+```
+## 
+## Distribution of rows on event types in returned data:
+##  EVID CMT output result
+##     0   2    755    755
+##     1   1    150    150
+##   All All    905    905
+```
 ::::
 \pause
 :::: column
-```{r}
+
+```r
 class(res0)
+```
+
+```
+## [1] "NMdata"     "data.table" "data.frame"
+```
+
+```r
 dims(res0)
+```
+
+```
+##    data nrows ncols
+## 1: res0   905    34
+```
+
+```r
 head(res0,n=2)
+```
+
+```
+##    ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY     KA
+## 1:   1 31       0    0    1   1   3  0    0     1 0.1812
+## 2:  11 32       0    0    1   1   3  0    0     1 0.1812
+##          Q PRED RES WRES    V2     V3 BLQ CYCLE DOSE PART
+## 1: 2307400    0   0    0 0.042 0.1785   0     1    3    1
+## 2: 2307400    0   0    0 0.042 0.1785   0     1    3    1
+##    PROFDAY PROFTIME WEIGHTB   eff0        CL EVENTU   NAME
+## 1:       1        0  87.031 56.461 0.7245691     mg Dosing
+## 2:       1        0 100.620 45.096 0.7245691     mg Dosing
+##    TIMEUNIT TRTACT   flag trtact   model nmout
+## 1:    Hours   3 mg Dosing   3 mg xgxr003  TRUE
+## 2:    Hours   3 mg Dosing   3 mg xgxr003  TRUE
 ```
 \normalsize
 ::::
@@ -861,9 +1141,35 @@ Using a unique row identifier for merging data is highly recommended:
 
 \footnotesize
 <!-- file1.lst <- system.file("examples/nonmem/xgxr001.lst", package="NMdata") -->
-```{r}
+
+```r
 res1 <- NMscanData(file.nm("xgxr001.lst"),merge.by.row=TRUE)
+```
+
+```
+## Model:  xgxr001 
+## 
+## Used tables, contents shown as used/total:
+##               file     rows columns     IDs
+##    xgxr001_res.txt  905/905   16/16 150/150
+##  xgxr1.csv (input) 905/1502   22/24 150/150
+##           (result)      905    38+2     150
+## 
+## Input and output data merged by: ROW 
+## 
+## Distribution of rows on event types in returned data:
+##  EVID CMT output result
+##     0   2    755    755
+##     1   1    150    150
+##   All All    905    905
+```
+
+```r
 class(res0)
+```
+
+```
+## [1] "NMdata"     "data.table" "data.frame"
 ```
 \normalsize
 
@@ -884,7 +1190,8 @@ class(res0)
 ::: {.column width="45%"}
 <!-- ::: columns -->
 <!-- :::: column -->
-```{r,aplot,eval=TRUE,echo=TRUE}
+
+```r
 ## Using data.table for easy summarize
 res1 <- NMscanData(file1.lst,merge.by.row=TRUE,
                    as.fun="data.table",quiet=TRUE)
@@ -904,17 +1211,7 @@ res1[EVID==0,
 
 \normalsize
 
-```{r,aplot-plot,echo=FALSE,eval=TRUE,out.width="105%"}
-## plot individual observations and geometric
-## mean pop predictions. Split (facet) by treatment.
-ggplot(subset(res1,EVID==0))+
-    geom_point(aes(TIME,DV))+
-    geom_line(aes(NOMTIME,gmPRED),colour="red")+
-    scale_y_log10()+
-    facet_wrap(~trtact,scales="free_y",ncol=2)+
-    labs(x="Hours since administration",
-         y="Concentration (ng/mL)")
-```
+<img src="plots/aplot-plot-1.png" title="plot of chunk aplot-plot" alt="plot of chunk aplot-plot" width="105%" style="display: block; margin: auto;" />
 
 <!-- :::: -->
 <!-- ::: -->
@@ -927,15 +1224,34 @@ ggplot(subset(res1,EVID==0))+
 :::::::::::::: {.columns}
 ::: {.column width="45%"}
 
-```{r,include=FALSE}
-NMdataConf(as.fun="data.table")
-system.file("examples/nonmem/xgxr014.lst", package="NMdata")
-```
+
 
 \footnotesize
-```{r,meanbydose}
+
+```r
 res2 <- NMscanData(file1.lst,
                    merge.by.row=TRUE,recover.rows=TRUE)
+```
+
+```
+## Model:  xgxr003 
+## 
+## Used tables, contents shown as used/total:
+##                  file      rows columns     IDs
+##       xgxr003_res.txt   905/905     7/7 150/150
+##  xgxr003_res_vols.txt   905/905     3/7 150/150
+##    xgxr003_res_fo.txt   150/150     1/2 150/150
+##     xgxr1.csv (input) 1502/1502   21/24 150/150
+##              (result)      1502    32+2     150
+## 
+## Input and output data merged by: ROW 
+## 
+## Distribution of rows on event types in returned data:
+##  EVID CMT input-only output result
+##     0   1          2      0      2
+##     0   2        595    755   1350
+##     1   1          0    150    150
+##   All All        597    905   1502
 ```
 
 * No information is carried from output tables to recovered input data
@@ -948,21 +1264,13 @@ within subjects (like subject level parameter estimates). Such
 
 ::: {.column width="55%"}
 
-```{r,echo=FALSE,out.width="105%"}
-## Derive another data.table with geometric mean pop predictions by
-## treatment and nominal sample time. Only use sample records.
-res2[EVID==0&nmout==TRUE,
-                  gmPRED:=exp(mean(log(PRED))),
-                  by=.(trtact,NOMTIME)]
-## plot individual observations and geometric mean pop
-## predictions. Split by treatment.
-ggplot(res2[EVID==0])+
-    geom_point(aes(TIME,DV,colour=flag))+
-    geom_line(aes(NOMTIME,gmPRED))+
-    scale_y_log10()+
-    facet_wrap(~trtact,scales="free_y",ncol=2)+
-    labs(x="Hours since administration",y="Concentration (ng/mL)")
+
 ```
+## Warning: Removed 7 row(s) containing missing values
+## (geom_path).
+```
+
+<img src="plots/unnamed-chunk-34-1.png" title="plot of chunk unnamed-chunk-34" alt="plot of chunk unnamed-chunk-34" width="105%" style="display: block; margin: auto;" />
 :::
 ::::::::::::::
 
@@ -972,34 +1280,29 @@ A wrapper of `NMscanData` that reads and stacks multiple models.
 :::::::::::::: {.columns}
 ::: {.column width="45%"}
 \footnotesize
-```{r,include=FALSE}
-NMdataConf(as.fun="data.table")
-NMdataConf(col.row="ROW")
-NMdataConf(merge.by.row=TRUE)
-```
 
-```{r,compmodels1,eval=F,include=F}
-## notice fill is an option to rbind with data.table
-lst.1 <- system.file("examples/nonmem/xgxr001.lst",
-                     package="NMdata")
-lst.2 <- system.file("examples/nonmem/xgxr014.lst",
-                     package="NMdata")
-res1.m <- NMscanData(lst.1,quiet=TRUE)
-res2.m <- NMscanData(lst.2,quiet=TRUE,
-                     modelname="single-compartment")
 
-res.mult <- rbind(res1.m,res2.m,fill=T)
-res.mult[EVID==0&nmout==TRUE,
-         gmPRED:=exp(mean(log(PRED))),
-         by=.(model,trtact,NOMTIME)]
-## NMdata class gone because of rbind
-class(res.mult)
-```
+
 * A simple example comparing a single-compartment and a two-compartment model.
-```{r,compmodels2}
+
+```r
 models <- file.nm(c("xgxr001.lst","xgxr014.lst"))
 
 res.mult <- NMscanMultiple(files=models,quiet=T)
+```
+
+```
+## 
+## Overview of model scanning results:
+##                                                                  lst
+## 1: /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr001.lst
+## 2: /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr014.lst
+##    nrows ncols success warning
+## 1:   905    40    TRUE   FALSE
+## 2:   905    36    TRUE   FALSE
+```
+
+```r
 ## Deriving geometric mean PRED vs time for each
 ## model and treatment
 res.mult[EVID==0&nmout==TRUE,
@@ -1011,15 +1314,7 @@ res.mult[EVID==0&nmout==TRUE,
 :::
 ::: {.column width="55%"}
 \normalsize
-```{r,comparemodels-plot,echo=F,message=FALSE,warning=FALSE}
-ggplot(res.mult,aes(NOMTIME,gmPRED,colour=model))+
-    geom_point(aes(TIME,DV),
-               alpha=.5,colour="grey")+
-    geom_line(size=1.1)+
-    scale_y_log10()+
-    labs(x="Hours since administration",y="Concentration (ng/mL)")+
-    facet_wrap(~trtact,scales="free_y",ncol=2)
-```
+<img src="plots/comparemodels-plot-1.png" title="plot of chunk comparemodels-plot" alt="plot of chunk comparemodels-plot" style="display: block; margin: auto;" />
 
 :::
 ::::::::::::::
@@ -1046,28 +1341,14 @@ By default, `NMscanData` will look for an rds file next to the csv file (same fi
 The plots are correctly ordered by doses - because they are ordered by factor levels as in `rds` input data.
 
 \footnotesize
-```{r}
+
+```r
 lst <- system.file("examples/nonmem/xgxr014.lst",
                    package="NMdata")
 res14 <- NMscanData(lst,quiet=TRUE)
 ```
 
-```{r,echo=FALSE,out.width="105%"}
-## Derive another data.table with geometric mean pop predictions by
-## treatment and nominal sample time. Only use sample records.
-res14[EVID==0&nmout==TRUE,
-                  gmPRED:=exp(mean(log(PRED))),
-                  by=.(trtact,NOMTIME)]
-## plot individual observations and geometric mean pop
-## predictions. Split by treatment.
-ggplot(res14[EVID==0])+
-    geom_point(aes(TIME,DV,colour=flag))+
-    geom_line(aes(NOMTIME,gmPRED))+
-    scale_y_log10()+
-    facet_wrap(~trtact,scales="free_y",ncol=2)+
-    labs(x="Hours since administration",y="Concentration (ng/mL)")
-
-```
+<img src="plots/unnamed-chunk-37-1.png" title="plot of chunk unnamed-chunk-37" alt="plot of chunk unnamed-chunk-37" width="105%" style="display: block; margin: auto;" />
 ::::
 :::
 
@@ -1096,9 +1377,77 @@ Simple other methods like `rbind` and similar are defined by dropping the `NMdat
 
 :::: column
 \tiny
-```{r}
+
+```r
 class(res1)
+```
+
+```
+## [1] "NMdata"     "data.table" "data.frame"
+```
+
+```r
 NMinfo(res1,"details")
+```
+
+```
+## $model
+## [1] "xgxr003"
+## 
+## $call
+## [1] "NMscanData(file1.lst, merge.by.row = TRUE, as.fun = \"data.table\", "
+## [2] "    quiet = TRUE)"                                                   
+## 
+## $time.NMscanData
+## [1] "2022-06-30 13:31:17 EDT"
+## 
+## $file.lst
+## [1] "/data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr003.lst"
+## 
+## $file.mod
+## [1] "/data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr003.mod"
+## 
+## $time.ok
+## [1] "Not checked"
+## 
+## $dir.data
+## NULL
+## 
+## $input.used
+## [1] TRUE
+## 
+## $rows.recovered
+## [1] FALSE
+## 
+## $merge.by.row
+## [1] TRUE
+## 
+## $col.row
+## [1] "ROW"
+## 
+## $file.input
+## [1] "/data/home/philipde/wdirs/NMdata/inst/examples/nonmem/../data/xgxr1.csv"
+## 
+## $logtime.lst
+## [1] NA
+## 
+## $mtime.lst
+## [1] "2022-05-17 15:28:08 EDT"
+## 
+## $method.time.lst
+## [1] NA
+## 
+## $mtime.mod
+## [1] "2022-05-17 15:28:08 EDT"
+## 
+## $mtime.input
+## [1] "2022-05-14 23:22:02 EDT"
+## 
+## $logtime.input
+## [1] NA
+## 
+## $method.time.inp
+## [1] NA
 ```
 ::::
 
@@ -1111,8 +1460,37 @@ NMinfo(res1,"details")
 :::: column
 ### Table-specific information
 \scriptsize
-```{r}
+
+```r
 NMinfo(res1,"tables")
+```
+
+```
+##    source                 name nrow ncol nid level
+## 1: output      xgxr003_res.txt  905    7  NA   row
+## 2: output xgxr003_res_vols.txt  905    7 150   row
+## 3: output   xgxr003_res_fo.txt  150    2 150    id
+## 4:  input            xgxr1.csv 1502   24 150  <NA>
+##        scope has.col.row has.col.id full.length filetype
+## 1:       all        TRUE      FALSE        TRUE   output
+## 2:       all       FALSE       TRUE        TRUE   output
+## 3: firstonly       FALSE       TRUE       FALSE   output
+## 4:      <NA>        TRUE       TRUE          NA     text
+##      format          file.mtime
+## 1:          2022-05-17 15:28:08
+## 2:   tF13.4 2022-05-17 15:28:08
+## 3: ,1PE15.8 2022-05-17 15:28:08
+## 4:     <NA> 2022-05-14 23:22:02
+##                                                                          file
+## 1:      /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr003_res.txt
+## 2: /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr003_res_vols.txt
+## 3:   /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr003_res_fo.txt
+## 4:    /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/../data/xgxr1.csv
+##    noheader file.logtime
+## 1:    FALSE           NA
+## 2:    FALSE           NA
+## 3:    FALSE           NA
+## 4:       NA           NA
 ```
 
 
@@ -1122,8 +1500,34 @@ NMinfo(res1,"tables")
 ### Column-specific information
 (The `nrows` and `topn` arguments are arguments to `print.data.table` to get a top and bottom snip of the table.)
 \scriptsize
-```{r}
+
+```r
 print(NMinfo(res1,"columns"),nrows=20,topn=10)
+```
+
+```
+##     variable                 file     source level COLNUM
+##  1:      ROW      xgxr003_res.txt     output   row      1
+##  2:       ID xgxr003_res_vols.txt     output   row      2
+##  3:  NOMTIME            xgxr1.csv      input   row      3
+##  4:     TIME            xgxr1.csv      input   row      4
+##  5:     EVID            xgxr1.csv      input   row      5
+##  6:      CMT            xgxr1.csv      input   row      6
+##  7:      AMT            xgxr1.csv      input   row      7
+##  8:       DV      xgxr003_res.txt     output   row      8
+##  9:     FLAG            xgxr1.csv      input   row      9
+## 10:    STUDY            xgxr1.csv      input   row     10
+## ---                                                      
+## 33:    model                 <NA> NMscanData model     33
+## 34:    nmout                 <NA> NMscanData   row     34
+## 35:       DV xgxr003_res_vols.txt     output   row     NA
+## 36:     PRED xgxr003_res_vols.txt     output   row     NA
+## 37:      RES xgxr003_res_vols.txt     output   row     NA
+## 38:     WRES xgxr003_res_vols.txt     output   row     NA
+## 39:      ROW            xgxr1.csv      input   row     NA
+## 40:       ID            xgxr1.csv      input   row     NA
+## 41:       DV            xgxr1.csv      input   row     NA
+## 42:       ID   xgxr003_res_fo.txt     output    id     NA
 ```
 ::::
 :::
@@ -1145,8 +1549,43 @@ print(NMinfo(res1,"columns"),nrows=20,topn=10)
 :::: column
 In this case, input column names are aligned with `$DATA`
 \footnotesize
-```{r}
+
+```r
 NMcheckColnames(lst)
+```
+
+```
+## Read rds input data file:
+## /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/../data/xgxr2.rds.
+```
+
+```
+##     datafile    INPUT   nonmem   result compare
+##  1:      ROW      ROW      ROW      ROW      OK
+##  2:       ID       ID       ID       ID      OK
+##  3:  NOMTIME  NOMTIME  NOMTIME  NOMTIME      OK
+##  4:     TIME     TIME     TIME     TIME      OK
+##  5:     EVID     EVID     EVID     EVID      OK
+##  6:      CMT      CMT      CMT      CMT      OK
+##  7:      AMT      AMT      AMT      AMT      OK
+##  8:       DV       DV       DV       DV      OK
+##  9:     FLAG     FLAG     FLAG     FLAG      OK
+## 10:    STUDY    STUDY    STUDY    STUDY      OK
+## 11:      BLQ      BLQ      BLQ      BLQ      OK
+## 12:    CYCLE    CYCLE    CYCLE    CYCLE      OK
+## 13:     DOSE     DOSE     DOSE     DOSE      OK
+## 14:     PART     PART     PART     PART      OK
+## 15:  PROFDAY  PROFDAY  PROFDAY  PROFDAY      OK
+## 16: PROFTIME PROFTIME PROFTIME PROFTIME      OK
+## 17:  WEIGHTB  WEIGHTB  WEIGHTB  WEIGHTB      OK
+## 18:     eff0     eff0     eff0     eff0      OK
+## 19:   EVENTU     <NA>     <NA>   EVENTU    <NA>
+## 20:     NAME     <NA>     <NA>     NAME    <NA>
+## 21: TIMEUNIT     <NA>     <NA> TIMEUNIT    <NA>
+## 22:   TRTACT     <NA>     <NA>   TRTACT    <NA>
+## 23:     flag     <NA>     <NA>     flag    <NA>
+## 24:   trtact     <NA>     <NA>   trtact    <NA>
+##     datafile    INPUT   nonmem   result compare
 ```
 \normalsize
 ::::
@@ -1244,7 +1683,8 @@ available elsewhere.
 
 :::: column
 My initialization of scripts often contain this: 
-```{r,NMdataConf,eval=FALSE}
+
+```r
 library(NMdata)
 NMdataConf(as.fun="data.table"
 ### this is the default value
@@ -1260,7 +1700,8 @@ NMdataConf(as.fun="data.table"
 Other commonly used settings in `NMdataConf` are
 
 - `as.fun`: a function to apply to all objects before returning them from `NMdata` functions. If you use `dplyr/tidyverse`, do (notice, no quotes!):
-```{r,use-tibble,eval=FALSE}
+
+```r
 library(tibble)
 NMdataConf(as.fun=tibble::as_tibble)
 ```
@@ -1277,9 +1718,21 @@ NMdataConf(as.fun=tibble::as_tibble)
 `R` has a system for handling settings. `NMdata` does not use that.
 
 * Main reason: `NMdataConf` can check both setting/argument names and values for consistency. 
-```{r,NMdataConf-err,warning=F}
+
+```r
 try(NMdataConf(asfun=tibble::as_tibble))
+```
+
+```
+## Error : Option not found
+```
+
+```r
 try(NMdataConf(use.input="FALSE"))
+```
+
+```
+## Error : use.input must be logical
 ```
 
 * A few extra features are available with `NMdataConf`:
@@ -1289,11 +1742,7 @@ try(NMdataConf(use.input="FALSE"))
 
 
 ## How is `NMdata` qualified?
-```{r,include=F}
-library(devtools)
-res.test <- test()
-Ntests <- sum(sapply(res.test,function(x)length(x$results)))
-```
+
 \includegraphics[width=.8\textwidth]{badges_snip_210623}
 
 * `NMdata` contains very little calculations (only exception may be `flagsAssign`/`flagsCount`)
@@ -1301,7 +1750,7 @@ Ntests <- sum(sapply(res.test,function(x)length(x$results)))
 * Historic bugs have mostly resulted in uninformative errors due to
 e.g. failure in processing text. Never a wrong data set.
 
-* `NMdata` includes `r Ntests` "unit tests" where results of function calls
+* `NMdata` includes 190 "unit tests" where results of function calls
 with different datasets and arguments are compared to expected
 results
 
@@ -1438,8 +1887,7 @@ procedure.
 
 
 ## `ggwrite`: Flexible saving of tracable output
-Saves images in sizes made for powerpoint, including stamps (time, source, output filename). It can save multiple plots at once as one file (pdf) or multiple files. 
-
+`ggwrite`: Saves images in sizes made for powerpoint, including stamps (time, source, output filename). It can save multiple plots at once as one file (pdf) or multiple files. 
 ::: columns
 :::: column
 `ggwrite` is a wrapper of `png` and `pdf` (and `dev.off`) with convenience features such as
@@ -1455,11 +1903,7 @@ Saves images in sizes made for powerpoint, including stamps (time, source, outpu
 - `show` defaults to the inverse of `save`
 ::::
 :::: column
-```{r,include=FALSE}
-## install.packages("tracee",repos="https://cloud.r-project.org")
-library(tracee)
-```
-<!-- Save pls1, as one file and as multiple files, named by the dose levels. -->
+Save pls1, as one file and as multiple files, named by the dose levels.
 \footnotesize
 <!-- ```{r,warning=FALSE,message=FALSE,results=FALSE,fig.show="hide",eval=F} -->
 <!-- writeOutput <- TRUE -->
@@ -1477,20 +1921,21 @@ library(tracee)
 <!-- \includegraphics[trim={30cm 0 0 14cm},clip]{results/individual_profiles_trtact300mg.png} -->
 <!-- \end{center} -->
 
-```{r,warning=FALSE,message=FALSE,results=FALSE,fig.show="hide",eval=F}
+
+```r
 writeOutput <- TRUE
 script <- "path/to/script.R"
-p1 <- ggplot(res1,aes(PRED,DV,colour=TRTACT))+geom_point()+
-    geom_abline(slope=1)+
+p1 <- ggplot(res1,aes(PRED,DV,colour=TRTACT))+geom_point()+geom_abline(slope=1)+
     scale_x_log10()+scale_y_log10()
 ggwrite(p1,file="results/pred_dv.png",
-        script=script,
+        stamp=script,
         save=writeOutput)
 ```
 * Notice the caption with output and script file names.
 \begin{center}
 \includegraphics{results/pred_dv.png}
 \end{center}
+
 
 ::::
 :::

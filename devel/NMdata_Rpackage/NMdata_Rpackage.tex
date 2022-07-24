@@ -67,6 +67,7 @@
 }
 \usepackage{hyperref}
 \hypersetup{
+            pdftitle={ NMdata: A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling},
             pdfauthor={Philip Delff},
             pdfborder={0 0 0},
             breaklinks=true}
@@ -133,8 +134,7 @@
 
 \usepackage{adjustbox}
 
-\title{\includegraphics[width=1in,height=\textheight]{../../man/figures/NMdata_logo_v01.png}
-
+\title{\includegraphics[width=1in,height=\textheight]{../../man/figures/NMdata_logo_v01.png}\linebreak
 NMdata: A fast R package for efficient data preparation,
 consistency-checking and post-processing in PK/PD modeling}
 \author{Philip Delff}
@@ -169,7 +169,7 @@ An R package that can help
 \begin{itemize}
 \tightlist
 \item
-  Creating event-based data sets for PK/PD modeling
+  Creating and checking event-based data sets for PK/PD modeling
 \item
   Keeping Nonmem code updated to match contents of datasets
 \item
@@ -228,7 +228,38 @@ Designed to fit in to the user's setup and coding preferences
 \begin{frame}{NMdata 0.0.12 on MPN}
 \protect\hypertarget{nmdata-0.0.12-on-mpn}{}
 
-\includegraphics[width=.5in]{figures/worksign.png}
+\includegraphics[width=3.5in]{figures/nmdata_mpn_2022-06-27 22-03-35.png}
+
+\end{frame}
+
+\begin{frame}[fragile]{How to update to recent MPN snapshot}
+\protect\hypertarget{how-to-update-to-recent-mpn-snapshot}{}
+
+Update the \texttt{pkgr.yml} file: (example:
+\texttt{prod\_vx123\_001\_analysis/trunk/analysis/vx\_123\_001\_project/pkgr.yml})
+
+\begin{verbatim}
+Version: 1
+Threads: 1
+Packages:
+  - NMdata
+
+# this will allow packages to be cached across projects for faster installs on new projects
+Cache: /data/prod_vx708_001_pkgcache-2022-06-15
+Repos:
+  - MPN: https://mpn.metworx.com/snapshots/stable/2022-06-15
+Lockfile:
+    Type: renv
+\end{verbatim}
+
+Then go to
+\texttt{prod\_vx123\_001\_analysis/trunk/analysis/vx\_123\_001\_project}
+and install/update packages from the linux terminal (not R):
+
+\begin{verbatim}
+$ cd /data/prod_vx123_001_analysis/trunk/analysis/vx_123_001_project
+$ pkgr --update install
+\end{verbatim}
 
 \end{frame}
 
@@ -278,16 +309,6 @@ Install from \texttt{CRAN} or from \texttt{MPN} using \texttt{pkgr}.
 \begin{verbatim}
 ## Welcome to NMdata. Best place to browse NMdata documentation is
 ## https://philipdelff.github.io/NMdata/
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{packageVersion}\NormalTok{(}\StringTok{"NMdata"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] '0.0.12'
 \end{verbatim}
 
 Three vignettes are available so far (see ``Vignettes'' tab when
@@ -685,7 +706,7 @@ more strictly requires that we get all and only the \emph{same} rows:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{try}\NormalTok{(}\KeywordTok{mergeCheck}\NormalTok{(pk,dt.cov,}\DataTypeTok{by=}\StringTok{"ID"}\NormalTok{))}
+\KeywordTok{try}\NormalTok{(}\KeywordTok{mergeCheck}\NormalTok{(pk,dt.cov,}\DataTypeTok{by=}\StringTok{"ID"}\NormalTok{)) }
 \end{Highlighting}
 \end{Shaded}
 
@@ -699,10 +720,10 @@ more strictly requires that we get all and only the \emph{same} rows:
 
 \begin{verbatim}
 ## Overview of dimensions of input and output data:
-##      data nrows ncols
-## 1:     pk  1502    23
-## 2: dt.cov   150     2
-## 3: result  1502    24
+##    nrows ncols
+## 1:  1502    22
+## 2:   150     2
+## 3:  1502    23
 \end{verbatim}
 
 \begin{verbatim}
@@ -1297,7 +1318,10 @@ All arguments to \texttt{fwrite} can be modified using the
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{## example: pick run1*.mod}
-\NormalTok{models <-}\StringTok{ }\KeywordTok{NMwriteSection}\NormalTok{(}\DataTypeTok{dir=}\StringTok{"../models"}\NormalTok{,}\DataTypeTok{file.pattern=}\StringTok{"run1.+}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{.mod$"}\NormalTok{)}
+\KeywordTok{NMwriteSection}\NormalTok{(}\DataTypeTok{dir=}\StringTok{"../models"}\NormalTok{,}
+               \DataTypeTok{file.pattern=}\StringTok{"run1.+}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{.mod$"}\NormalTok{,}
+               \DataTypeTok{section=}\StringTok{"INPUT"}\NormalTok{,}
+               \DataTypeTok{newlines=}\NormalTok{nmCode}\OperatorTok{$}\NormalTok{INPUT)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1366,7 +1390,7 @@ All arguments to \texttt{fwrite} can be modified using the
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $dataCreate$CreationTime
-## [1] "2022-06-29 21:11:38 EDT"
+## [1] "2022-06-30 13:44:28 EDT"
 ## 
 ## $dataCreate$writtenTo
 ## [1] "derived/pk.csv"
@@ -1386,7 +1410,7 @@ All arguments to \texttt{fwrite} can be modified using the
 ## [1] "NMdata_Rpackage.Rmd"
 ## 
 ## $dataCreate$CreationTime
-## [1] "2022-06-29 21:11:38 EDT"
+## [1] "2022-06-30 13:44:28 EDT"
 ## 
 ## $dataCreate$writtenTo
 ## [1] "derived/pk.rds"
@@ -1410,8 +1434,8 @@ runs}\label{retrieving-data-from-nonmem-runs}}
 \begin{itemize}
 \tightlist
 \item
-  It returns one data set combining all information from input data and
-  all output tables.
+  Returns one data set combining all information from input data and all
+  output tables. Performs multiple consistency checks.
 \end{itemize}
 
 Based on the list file (\texttt{.lst}) it will:
@@ -1427,8 +1451,6 @@ Based on the list file (\texttt{.lst}) it will:
   If wanted, also restore rows from input data that were disregarded in
   \texttt{Nonmem} (e.g.~observations or subjects that are not part of
   the analysis)
-\item
-  Perform multiple consistency checks
 \end{itemize}
 
 \pause
@@ -1673,21 +1695,22 @@ Using a unique row identifier for merging data is highly recommended:
 \begin{frame}[fragile]{Compare models using \texttt{NMscanMultiple}}
 \protect\hypertarget{compare-models-using-nmscanmultiple}{}
 
+A wrapper of \texttt{NMscanData} that reads and stacks multiple models.
+
 \begin{columns}[T]
 \begin{column}{0.45\textwidth}
 \footnotesize
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{NMdataConf}\NormalTok{(}\DataTypeTok{as.fun=}\StringTok{"data.table"}\NormalTok{)}
-\KeywordTok{NMdataConf}\NormalTok{(}\DataTypeTok{col.row=}\StringTok{"ROW"}\NormalTok{)}
-\KeywordTok{NMdataConf}\NormalTok{(}\DataTypeTok{merge.by.row=}\OtherTok{TRUE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+\begin{itemize}
+\tightlist
+\item
+  A simple example comparing a single-compartment and a two-compartment
+  model.
+\end{itemize}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{models <-}\StringTok{ }\KeywordTok{file.nm}\NormalTok{(}\KeywordTok{cc}\NormalTok{(xgxr001.lst,xgxr014.lst))}
+\NormalTok{models <-}\StringTok{ }\KeywordTok{file.nm}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"xgxr001.lst"}\NormalTok{,}\StringTok{"xgxr014.lst"}\NormalTok{))}
 
 \NormalTok{res.mult <-}\StringTok{ }\KeywordTok{NMscanMultiple}\NormalTok{(}\DataTypeTok{files=}\NormalTok{models,}\DataTypeTok{quiet=}\NormalTok{T)}
 \end{Highlighting}
@@ -1696,9 +1719,9 @@ Using a unique row identifier for merging data is highly recommended:
 \begin{verbatim}
 ## 
 ## Overview of model scanning results:
-##                                                                                         lst
-## 1: /data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/xgxr001.lst
-## 2: /data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/xgxr014.lst
+##                                                                  lst
+## 1: /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr001.lst
+## 2: /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr014.lst
 ##    nrows ncols success warning
 ## 1:   905    40    TRUE   FALSE
 ## 2:   905    36    TRUE   FALSE
@@ -1706,19 +1729,20 @@ Using a unique row identifier for merging data is highly recommended:
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{## Deriving geometric mean PRED vs time for each}
+\CommentTok{## model and treatment}
 \NormalTok{res.mult[EVID}\OperatorTok{==}\DecValTok{0}\OperatorTok{&}\NormalTok{nmout}\OperatorTok{==}\OtherTok{TRUE}\NormalTok{,}
 \NormalTok{         gmPRED}\OperatorTok{:}\ErrorTok{=}\KeywordTok{exp}\NormalTok{(}\KeywordTok{mean}\NormalTok{(}\KeywordTok{log}\NormalTok{(PRED))),}
 \NormalTok{         by=.(model,trtact,NOMTIME)]}
-\KeywordTok{class}\NormalTok{(res.mult)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## [1] "NMdata"     "data.table" "data.frame"
-\end{verbatim}
-
-\texttt{NMscanMultiple} can search for models by matching file names to
-a regular expression, similarly to \texttt{NMwriteSection}.
+\begin{itemize}
+\tightlist
+\item
+  \texttt{NMscanMultiple} can search for models by matching file names
+  to a regular expression, similarly to \texttt{NMwriteSection}.
+\end{itemize}
 \end{column}
 
 \begin{column}{0.55\textwidth}
@@ -1853,13 +1877,13 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## [2] "    quiet = TRUE)"                                                   
 ## 
 ## $time.NMscanData
-## [1] "2022-06-29 21:11:38 EDT"
+## [1] "2022-06-30 13:44:29 EDT"
 ## 
 ## $file.lst
-## [1] "/data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/xgxr003.lst"
+## [1] "/data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr003.lst"
 ## 
 ## $file.mod
-## [1] "/data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/xgxr003.mod"
+## [1] "/data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr003.mod"
 ## 
 ## $time.ok
 ## [1] "Not checked"
@@ -1880,22 +1904,22 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## [1] "ROW"
 ## 
 ## $file.input
-## [1] "/data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/../data/xgxr1.csv"
+## [1] "/data/home/philipde/wdirs/NMdata/inst/examples/nonmem/../data/xgxr1.csv"
 ## 
 ## $logtime.lst
 ## [1] NA
 ## 
 ## $mtime.lst
-## [1] "2022-06-29 16:28:03 EDT"
+## [1] "2022-05-17 15:28:08 EDT"
 ## 
 ## $method.time.lst
 ## [1] NA
 ## 
 ## $mtime.mod
-## [1] "2022-06-29 16:28:03 EDT"
+## [1] "2022-05-17 15:28:08 EDT"
 ## 
 ## $mtime.input
-## [1] "2022-06-29 16:28:03 EDT"
+## [1] "2022-05-14 23:22:02 EDT"
 ## 
 ## $logtime.input
 ## [1] NA
@@ -1937,15 +1961,15 @@ dropping the \texttt{NMdata} class and then perform the operation.
 ## 3: firstonly       FALSE       TRUE       FALSE   output
 ## 4:      <NA>        TRUE       TRUE          NA     text
 ##      format          file.mtime
-## 1:          2022-06-29 16:28:03
-## 2:   tF13.4 2022-06-29 16:28:03
-## 3: ,1PE15.8 2022-06-29 16:28:03
-## 4:     <NA> 2022-06-29 16:28:03
-##                                                                                                 file
-## 1:      /data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/xgxr003_res.txt
-## 2: /data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/xgxr003_res_vols.txt
-## 3:   /data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/xgxr003_res_fo.txt
-## 4:    /data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/../data/xgxr1.csv
+## 1:          2022-05-17 15:28:08
+## 2:   tF13.4 2022-05-17 15:28:08
+## 3: ,1PE15.8 2022-05-17 15:28:08
+## 4:     <NA> 2022-05-14 23:22:02
+##                                                                          file
+## 1:      /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr003_res.txt
+## 2: /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr003_res_vols.txt
+## 3:   /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr003_res_fo.txt
+## 4:    /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/../data/xgxr1.csv
 ##    noheader file.logtime
 ## 1:    FALSE           NA
 ## 2:    FALSE           NA
@@ -2041,7 +2065,7 @@ In this case, input column names are aligned with \texttt{\$DATA}
 
 \begin{verbatim}
 ## Read rds input data file:
-## /data/home/philipde/R/x86_64-pc-linux-gnu-library/4.0/NMdata/examples/nonmem/../data/xgxr2.rds.
+## /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/../data/xgxr2.rds.
 \end{verbatim}
 
 \begin{verbatim}
@@ -2426,7 +2450,7 @@ Data creation
 \begin{itemize}
 \tightlist
 \item
-  \texttt{renameByContents} -
+  \texttt{renameByContents}
 \item
   \texttt{compareCols}
 \item
@@ -2459,6 +2483,8 @@ Retrieve data from Nonmem runs
 \tightlist
 \item
   \texttt{NMscanData}
+\item
+  \texttt{NMscanMultiple}
 \item
   \texttt{summary}, \texttt{NMinfo}
 \item
@@ -2583,9 +2609,12 @@ Limitations
 \begin{itemize}
 \tightlist
 \item
-  \texttt{ggwrite}: Saves images in sizes made for powerpoint, including
-  stamps (time, source, output filename). It can save multiple plots at
-  once as one file (pdf) or multiple files.
+  New package on CRAN from same author as \texttt{NMdata}
+\item
+  A small package focusing on making outputs (graphics) traceable back
+  to code
+\item
+  The author has been using the code for years
 \end{itemize}
 
 \end{frame}
@@ -2593,6 +2622,10 @@ Limitations
 \begin{frame}[fragile]{\texttt{ggwrite}: Flexible saving of tracable
 output}
 \protect\hypertarget{ggwrite-flexible-saving-of-tracable-output}{}
+
+Saves images in sizes made for powerpoint, including stamps (time,
+source, output filename). It can save multiple plots at once as one file
+(pdf) or multiple files.
 
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
@@ -2626,31 +2659,28 @@ output}
 \end{column}
 
 \begin{column}{0.48\textwidth}
-Save pls1, as one file and as multiple files, named by the dose levels.
 \footnotesize
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{writeOutput <-}\StringTok{ }\OtherTok{TRUE}
 \NormalTok{script <-}\StringTok{ "path/to/script.R"}
-\KeywordTok{ggwrite}\NormalTok{(pls1,}\DataTypeTok{file=}\StringTok{"results/individual_profiles.png"}\NormalTok{,}
-        \DataTypeTok{stamp=}\NormalTok{script,}\DataTypeTok{canvas=}\StringTok{"wide-screen"}\NormalTok{,}\DataTypeTok{useNames=}\OtherTok{TRUE}\NormalTok{,}
+\NormalTok{p1 <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(res1,}\KeywordTok{aes}\NormalTok{(PRED,DV,}\DataTypeTok{colour=}\NormalTok{TRTACT))}\OperatorTok{+}\KeywordTok{geom_point}\NormalTok{()}\OperatorTok{+}
+\StringTok{    }\KeywordTok{geom_abline}\NormalTok{(}\DataTypeTok{slope=}\DecValTok{1}\NormalTok{)}\OperatorTok{+}
+\StringTok{    }\KeywordTok{scale_x_log10}\NormalTok{()}\OperatorTok{+}\KeywordTok{scale_y_log10}\NormalTok{()}
+\KeywordTok{ggwrite}\NormalTok{(p1,}\DataTypeTok{file=}\StringTok{"results/pred_dv.png"}\NormalTok{,}
+        \DataTypeTok{script=}\NormalTok{script,}
         \DataTypeTok{save=}\NormalTok{writeOutput)}
-\KeywordTok{ggwrite}\NormalTok{(pls1,}\DataTypeTok{file=}\StringTok{"results/individual_profiles.pdf"}\NormalTok{,}
-        \DataTypeTok{stamp=}\NormalTok{script,}\DataTypeTok{canvas=}\StringTok{"wide-screen"}\NormalTok{,}\DataTypeTok{useNames=}\OtherTok{TRUE}\NormalTok{,}
-        \DataTypeTok{save=}\NormalTok{writeOutput,}\DataTypeTok{onefile=}\OtherTok{TRUE}\NormalTok{)}
-\KeywordTok{list.files}\NormalTok{(}\StringTok{"results"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{itemize}
 \tightlist
 \item
-  Showing a bottom-right snip of
-  \texttt{results/individual\_profiles\_trtact300mg.png}:
+  Notice the caption with output and script file names.
 
   \begin{center}
-  \includegraphics[trim={30cm 0 0 14cm},clip]{results/individual_profiles_trtact300mg.png}
+  \includegraphics{results/pred_dv.png}
   \end{center}
 \end{itemize}
 \end{column}

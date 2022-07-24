@@ -29,8 +29,8 @@
 ##' @param copy For the $INPUT text proposal only. If you plan to use
 ##'     additional names for columns in Nonmem $INPUT, NMwriteData can
 ##'     adjust the suggested $INPUT text. Say you plan to use CONC as
-##'     DV in Nonmem, use rename=c(DV="CONC"),
-##'     i.e. rename=c(newname="existing"). INPUT suggestion will in
+##'     DV in Nonmem, use copy=c(DV="CONC"),
+##'     i.e. copy=c(newname="existing"). INPUT suggestion will in
 ##'     this case contain DV=CONC.
 ##' @param file The file name NONMEM will read the data from (for the
 ##'     $DATA section). It can be a full path.
