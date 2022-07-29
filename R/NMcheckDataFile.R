@@ -37,13 +37,17 @@ NMcheckDataFile <- function(file,col.row,col.id="ID",use.rds=FALSE,quiet=FALSE,f
     }
     col.row <- NMdataDecideOption("col.row",col.row)
 
+    dots <- list(...)
+    if("use.input"%in%names(dots) && !dots$use.input){
+        messageWrap("use.input=FALSE not allowed",track.msg = TRUE,fun.msg=stop)
+    }
+    
     inp <- NMscanInput(file,use.rds=use.rds,col.id=col.id,col.row=col.row,
                        translate=TRUE,recover.cols=FALSE,applyFilters=TRUE,
                        file.mod=file.mod,dir.data=dir.data,
                        quiet=TRUE,as.fun=as.fun)
 
-    dots <- list(...)
-
+    
     cols.num <- setdiff(colnames(inp),c("DV","AMT"))
     res.check <- NMcheckData(inp,return.summary=TRUE,col.id=col.id,
                              col.row=col.row,quiet=TRUE,as.fun=as.fun,

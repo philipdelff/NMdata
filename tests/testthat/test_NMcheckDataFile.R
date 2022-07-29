@@ -56,3 +56,13 @@ test_that("Using control stream file",{
 
 
 
+test_that("Input control stream missing",{
+    NMdataConf(reset=TRUE)
+    NMdataConf(file.mod="doesNotExist.mod")
+
+    fileRef <- "testReference/NMcheckDataFile_02.rds"
+    file.lst <- "testData/nonmem/xgxr001.lst"
+
+    expect_error(NMcheckDataFile(file=file.lst,use.input=F))
+
+})
