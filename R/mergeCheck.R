@@ -260,10 +260,11 @@ mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expec
         if(rows.disappeared) messageWrap("Rows disappeared during merge.",fun.msg=message,track.msg=track.msg)
         if(rows.dup) messageWrap("Rows duplicated during merge.",fun.msg=message,track.msg=track.msg)
         if(rows.created) messageWrap("New rows appeared during merge.",fun.msg=message,track.msg=track.msg)
+
         
-        dims.rep <- dims(list.data=
-                             setNames(list(x,y,df3),c(name.x,name.y,name.df3))
-                         )
+        list.data.rep <- list(x[,setdiff(colnames(x),c(rowcol)),with=FALSE],y,df3[,setdiff(colnames(df3),c(rowcol)),with=FALSE])
+        setNames(list.data.rep,c(setdiff(name.x,rowcol),name.y,name.df3))
+        dims.rep <- dims(list.data=list.data.rep)
         
         message("Overview of dimensions of input and output data:\n",
                 paste0(capture.output(dims.rep), collapse = "\n"),"\n"
