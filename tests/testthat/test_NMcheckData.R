@@ -1,4 +1,4 @@
-context("mergeCheck")
+context("NMcheckData")
 
 ## meta is if x is metadata rather than an NMdata object
 fix.time <- function(x,meta=T){
@@ -146,28 +146,6 @@ test_that("With II, no ADDL",{
 })
 
 
-test_that("Using control stream file",{
-    NMdataConf(reset=TRUE)
-    fileRef <- "testReference/NMcheckData_10.rds"
-
-    file.lst <- "testData/nonmem/xgxr001.lst"
-    
-    res1a <- NMcheckData(file=file.lst)
-
-    res1a <- fix.time(res1a,meta=F)
-    expect_equal_to_reference(res1a,fileRef)
-
-    ## res.ref <- readRDS(fileRef)
-    ## res <- lapply(names(res.ref),function(name){
-    ##     expect_equal(res.ref[[name]],res1a[[name]])
-    ## })
-    
-    res1b <- NMcheckData(file=file.lst)
-    res1b <- fix.time(res1b,meta=F)
-
-    expect_equal(res1a,res1b)
-
-})
 
 
 

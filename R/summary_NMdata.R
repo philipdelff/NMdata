@@ -120,7 +120,6 @@ print.summary_NMdata <- function(x,...){
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
-    
     if(!"summary_NMdata"%in%class(x)){
         stop("list does not seem to be of class NMdata")
     }
@@ -185,8 +184,9 @@ print.summary_NMdata <- function(x,...){
     vars[source%in%c("input","output"),source2:="inout"]
     levels(vars$source2) <- c("inout","NMscanData")
     ncols <- paste(vars[!is.na(COLNUM),.N,by=.(source2)][,N],collapse="+")
-    row.res <- data.table(file="(result)",rows=x$N.rows[,sum(N.rows)],columns=ncols,IDs=x$N.ids[,sum(N.ids)])
-    row.res[IDs==0,IDs:="NA"] 
+    row.res <- data.table(file="(result)",rows=x$N.rows[,sum(N.rows)],columns=ncols,IDs=as.character(x$N.ids[,sum(N.ids)]))
+
+    row.res[IDs=="0",IDs:="NA"] 
     vars.sum2 <- rbind(vars.sum2,row.res)
     
 #### other info to include. 
