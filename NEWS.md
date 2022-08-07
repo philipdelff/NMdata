@@ -3,6 +3,8 @@
 ## New functions
 * NMexpandDoses - Transform repeated dosing events (ADDL/II) to
   individual dosing events
+* addTAD - Add cumulative number of doses, time of last dose and time
+  since last dose to data
 
 ## New data
 A new data set called mad is included. It is based on the

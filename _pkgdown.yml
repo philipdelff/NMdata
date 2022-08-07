@@ -46,6 +46,8 @@ reference:
           - renameByContents
           - flagsAssign
           - flagsCount
+	  - addTAD
+	  - NMexpandDoses
       - title: "Write data"
         desc: "Write data and edit update NONMEM control streams"
         contents:
