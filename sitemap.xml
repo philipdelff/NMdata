@@ -64,6 +64,9 @@
     <loc>https://philipdelff.github.io/NMdata/reference/NMdataOperations.html</loc>
   </url>
   <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMexpandDoses.html</loc>
+  </url>
+  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMextractDataFile.html</loc>
   </url>
   <url>
@@ -113,6 +116,9 @@
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMwriteSection.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/addTAD.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/cc.html</loc>
