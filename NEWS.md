@@ -4,6 +4,12 @@
 * NMexpandDoses - Transform repeated dosing events (ADDL/II) to
   individual dosing events
 
+## New data
+A new data set called mad is included. It is based on the
+mad_missing_duplicates from the xgxr package. Doses are implemented
+using ADDL and II (so only one dosing row per subject). It is included
+for testing the new NMexpandDoses and coming addTAD functions.
+
 ## Bugfixes
 Non-critical bugfix in mergeCheck dimensions overview printed to
 console. One column too many was reported in input and result data. No

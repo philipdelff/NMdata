@@ -6,13 +6,21 @@
 ##' 
 ##' @param data The data set to expand
 ##' @param quiet Suppress messages back to user (default is FALSE)
+##' @param as.fun The default is to return data as a data.frame. Pass
+##'     a function (say tibble::as_tibble) in as.fun to convert to
+##'     something else. If data.tables are wanted, use
+##'     as.fun="data.table". The default can be configured using
+##'     NMdataConf.
 ##' @return A data set with at least as many rows as data. If doses
 ##'     are found to expand, these will be added.
 ##' @import data.table
 ##' @details This is still experimental. 
 ##' @export
 
-NMexpandDoses <- function(data,quiet=FALSE){
+NMexpandDoses <- function(data,quiet=FALSE,as.fun){
+
+    if(missing(as.fun)) as.fun <- NULL
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
 
     if(!all(cc(ADDL,II)%in%colnames(data))){
         if(!quiet) message("ADDL and II not found in data. Nothing done.")
@@ -25,9 +33,11 @@ NMexpandDoses <- function(data,quiet=FALSE){
     
     recs.folded <- data[EVID==1&!is.na(ADDL)&ADDL>0,get(rec.tmp)]
     newtimes <- data[get(rec.tmp)%in%recs.folded,
-                     .(TIME=seq(TIME,by=II,length.out=ADDL+1))
+                     .(TIME=seq(TIME,by=II,length.out=ADDL+1)
+                      ,ADDL=0
+                      ,II=0)
                     ,by=rec.tmp]
-    newdoses <- mergeCheck(newtimes,data[,!("TIME")],by=rec.tmp,quiet=T)
+    newdoses <- mergeCheck(newtimes,data[,!(c("TIME","ADDL","II"))],by=rec.tmp,quiet=T)
 
     ## rbind
     newdat <- rbind(data[!get(rec.tmp)%in%recs.folded],newdoses)
@@ -36,7 +46,9 @@ NMexpandDoses <- function(data,quiet=FALSE){
     setorderv(newdat,c("ID","TIME",rec.tmp))
 
     ## discard tmp columns
-    newdat[,rec.tmp:=NULL]
+    newdat[,(rec.tmp):=NULL]
+
+    newdat <- as.fun(newdat)
     
     return(newdat)
 }
