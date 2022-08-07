@@ -1,9 +1,13 @@
 # Post 0.0.12
 
+## New functions
+* NMexpandDoses - Transform repeated dosing events (ADDL/II) to
+  individual dosing events
+
 ## Bugfixes
-Non-critical bugfix in mergeCheck dimensions overview printed to console. One
-column too many was reported in input and result data. No implications
-on results from mergeCheck.
+Non-critical bugfix in mergeCheck dimensions overview printed to
+console. One column too many was reported in input and result data. No
+implications on results from mergeCheck.
 
 # NMdata 0.0.12
 
