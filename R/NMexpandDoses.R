@@ -19,6 +19,17 @@
 
 NMexpandDoses <- function(data,quiet=FALSE,as.fun){
 
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+
+    . <- NULL
+    ADDL <- NULL
+    II <- NULL
+    EVID <- NULL
+    TIME <- NULL
+    
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+
+    
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
@@ -28,7 +39,7 @@ NMexpandDoses <- function(data,quiet=FALSE,as.fun){
     }
 
     data <- copy(data)
-    rec.tmp <- NMdata:::tmpcol(data)
+    rec.tmp <- tmpcol(data)
     data[,(rec.tmp):=.I]
     
     recs.folded <- data[EVID==1&!is.na(ADDL)&ADDL>0,get(rec.tmp)]

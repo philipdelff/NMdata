@@ -27,6 +27,15 @@
 
 addTAD <- function(data,col.time="TIME",col.tdos="TDOS",col.tad="TAD",col.ndoses="NDOSES",col.evid="EVID",by="ID",as.fun){
 
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+
+    NDOSES <- NULL
+    TDOS <- NULL
+    TAD <- NULL
+    
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+
+    
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
