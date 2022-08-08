@@ -15,8 +15,19 @@
 ##'     subject.
 ##' @param col.evid The name of the event ID column. This must exist
 ##'     in data. Default is EVID.
-##' @param subset.dos
-##' @param subset.is.complete
+##' @param col.amt col.evid The name of the dose amount column. This
+##'     must exist in data. Default is AMT.
+##' @param subset.dos A string that will be evaluated as a custom
+##'     expression to identify relevant events. See subset.is.complete
+##'     as well.
+##' @param subset.is.complete Only used in combination with
+##'     non-missing subset.dos. By default, subset.dos is used in
+##'     addition to the impact of col.evid and col.amt. If
+##'     subset.is.complete=TRUE, subset.dos is used alone, and
+##'     col.evid and col.amt are completely ignored. This is typically
+##'     useful if the events are not doses but other events that are
+##'     not expressed as a typical dose combination of EVID and AMT
+##'     columns.
 ##' @param by Columns to do calculations within. Default is ID.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
