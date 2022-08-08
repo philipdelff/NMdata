@@ -13,8 +13,11 @@
 ##' @param col.ndoses The name of the column (created by addTAD) that
 ##'     holds the cumulative number of doses administered to the
 ##'     subject.
-##' @param col.evid The name of the event ID column. This must exist in data. Default is EVID.
-##' @param by Columns to do calculations within. Default is ID. 
+##' @param col.evid The name of the event ID column. This must exist
+##'     in data. Default is EVID.
+##' @param subset.dos
+##' @param subset.is.complete
+##' @param by Columns to do calculations within. Default is ID.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
@@ -25,7 +28,7 @@
 ##' @export
 
 
-addTAD <- function(data,col.time="TIME",col.tdos="TDOS",col.tad="TAD",col.ndoses="NDOSES",col.evid="EVID",by="ID",as.fun){
+addTAD <- function(data,col.time="TIME",col.tdos="TDOS",col.tad="TAD",col.ndoses="NDOSES",col.evid="EVID",col.amt="AMT",subset.dos,subset.is.complete,by="ID",as.fun){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -39,7 +42,20 @@ addTAD <- function(data,col.time="TIME",col.tdos="TDOS",col.tad="TAD",col.ndoses
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
-
+    if(!missing(subset.is.complete)&&missing(subset.dos)) {
+        messageWrap("subset.is.complete can only be used in combination with subset.dos.",fun.msg=stop)
+    }
+    if(missing(subset.is.complete)) subset.is.complete <- FALSE
+    
+    subset.event.0 <- sprintf("%s%%in%%c(1,4)&%s>0",col.evid,col.amt)
+    if(subset.is.complete) {
+        subset.event <- subset.dos
+    } else if(!missing(subset.dos)) {
+        subset.event <- paste0(subset.dos,subset.event.0,sep="&")
+    } else {
+        subset.event <- subset.event.0
+    }
+    
     if(is.data.table(data)){
         data <- copy(data)
     } else {
@@ -49,36 +65,43 @@ addTAD <- function(data,col.time="TIME",col.tdos="TDOS",col.tad="TAD",col.ndoses
     ## row identifier for reordering data back to original order after modifications
     col.row.tmp <- tmpcol(data)
     data[,(col.row.tmp):=.I]
+
+    col.event <- tmpcol(data,base="event")
+    data[,(col.event):=FALSE]
+    data[eval(parse(text=subset.event)),(col.event):=TRUE]
     
 ### quit if no doses found etc
     
-
-
     
     ## expand doses if necessary
     data2 <- NMexpandDoses(data=data,quiet=TRUE,as.fun="data.table")
 
     addVars <- function(data){
+
         ## NDOSPERIOD
-        data[,NDOSES:=cumsum(get(col.evid)%in%c(1,4)),by=by]
+        data[,NDOSES:=cumsum(get(col.event)==TRUE),by=by]
         ## TDOS
-        data[get(col.evid)%in%c(1,4),TDOS:=get(col.time)]
+        data[get(col.event)==TRUE,TDOS:=get(col.time)]
         data[,TDOS:=nafill(TDOS,type="locf"),by=by]
         ## TAD
         data[,TAD:=get(col.time)-TDOS]
+
     }
     
     data2 <- addVars(data2)
     
 ### If doses were expanded, we need to revert that
-    doses <- data[get(col.evid)%in%c(1,4)]
+    doses <- data[get(col.event)==TRUE]
 
     doses <- addVars(doses)
     
     data3 <- rbind(doses
-                  ,data2[!get(col.evid)%in%c(1,4)]
+                  ,data2[get(col.event)!=TRUE]
                   ,fill=T)
     setorderv(data3,col.row.tmp)
+
+    ## clean up
+    data3[,(col.event):=NULL]
     data3[,(col.row.tmp):=NULL]
     
     setnames(data3,cc(TDOS,NDOSES,TAD),c(col.tdos,col.ndoses,col.tad))
