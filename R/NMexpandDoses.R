@@ -17,7 +17,7 @@
 ##' @details This is still experimental. 
 ##' @export
 
-NMexpandDoses <- function(data,quiet=FALSE,as.fun){
+NMexpandDoses <- function(data,col.time="TIME",col.id="ID",quiet=FALSE,as.fun){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -44,17 +44,25 @@ NMexpandDoses <- function(data,quiet=FALSE,as.fun){
     
     recs.folded <- data[EVID==1&!is.na(ADDL)&ADDL>0,get(rec.tmp)]
     newtimes <- data[get(rec.tmp)%in%recs.folded,
-                     .(TIME=seq(TIME,by=II,length.out=ADDL+1)
+                     .(TIME=seq(get(col.time),by=II,length.out=ADDL+1)
                       ,ADDL=0
                       ,II=0)
                     ,by=rec.tmp]
-    newdoses <- mergeCheck(newtimes,data[,!(c("TIME","ADDL","II"))],by=rec.tmp,quiet=T)
+    setnames(newtimes,"TIME",col.time)
+    data.merge <- copy(data)
+
+    
+    
+    data.merge[,(col.time):=NULL][
+       ,ADDL:=NULL][
+       ,II:=NULL]
+    newdoses <- mergeCheck(newtimes,data.merge,by=rec.tmp,quiet=T)
 
     ## rbind
     newdat <- rbind(data[!get(rec.tmp)%in%recs.folded],newdoses)
 
     ## setorder - remember ID and groups
-    setorderv(newdat,c("ID","TIME",rec.tmp))
+    setorderv(newdat,c(col.id,col.time,rec.tmp))
 
     ## discard tmp columns
     newdat[,(rec.tmp):=NULL]

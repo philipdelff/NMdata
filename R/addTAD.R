@@ -28,6 +28,12 @@
 ##'     useful if the events are not doses but other events that are
 ##'     not expressed as a typical dose combination of EVID and AMT
 ##'     columns.
+##' @param order.evid Order of events. This will only matter if there
+##'     are simultaneous events of different event types within
+##'     subjects. Typically if using nominal time, it may be important
+##'     to specify whether samples at dosing times are pre-dose
+##'     samples. The default is c(3,0,4,1,2) - i.e. samples and
+##'     simulations are pre-dose.
 ##' @param by Columns to do calculations within. Default is ID.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
@@ -39,7 +45,7 @@
 ##' @export
 
 
-addTAD <- function(data,col.time="TIME",col.tdos="TDOS",col.tad="TAD",col.ndoses="NDOSES",col.evid="EVID",col.amt="AMT",subset.dos,subset.is.complete,by="ID",as.fun){
+addTAD <- function(data,col.time="TIME",col.tdos="TDOS",col.tad="TAD",col.ndoses="NDOSES",col.evid="EVID",col.amt="AMT",subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by="ID",as.fun){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -74,7 +80,7 @@ addTAD <- function(data,col.time="TIME",col.tdos="TDOS",col.tad="TAD",col.ndoses
     }    
 
     ## row identifier for reordering data back to original order after modifications
-    col.row.tmp <- tmpcol(data)
+    col.row.tmp <- tmpcol(data,base="row")
     data[,(col.row.tmp):=.I]
 
     col.event <- tmpcol(data,base="event")
@@ -85,26 +91,34 @@ addTAD <- function(data,col.time="TIME",col.tdos="TDOS",col.tad="TAD",col.ndoses
     
     
     ## expand doses if necessary
-    data2 <- NMexpandDoses(data=data,quiet=TRUE,as.fun="data.table")
-
+    data2 <- NMexpandDoses(data=data,col.id=by,quiet=TRUE,as.fun="data.table",col.time=col.time)
+    
+    col.evidorder <- tmpcol(data2,base="evidorder")
+    data2[,(col.evidorder):=match(get(col.evid),table=order.evid)]
+    
+    setorderv(data2,c(by,col.time,col.evidorder))
+    
     addVars <- function(data){
-
+        ## data <- copy(data)
         ## NDOSPERIOD
-        data[,NDOSES:=cumsum(get(col.event)==TRUE),by=by]
+        data[!is.na(get(col.time)),NDOSES:=cumsum(get(col.event)==TRUE),by=by]
         ## TDOS
         data[get(col.event)==TRUE,TDOS:=get(col.time)]
         data[,TDOS:=nafill(TDOS,type="locf"),by=by]
         ## TAD
         data[,TAD:=get(col.time)-TDOS]
-
+        ## data
     }
+
     
-    data2 <- addVars(data2)
+    ## data2 <- addVars(data2)
+    addVars(data2)
     
 ### If doses were expanded, we need to revert that
     doses <- data[get(col.event)==TRUE]
 
-    doses <- addVars(doses)
+    ## doses <- addVars(doses)
+    addVars(doses)
     
     data3 <- rbind(doses
                   ,data2[get(col.event)!=TRUE]
@@ -114,7 +128,8 @@ addTAD <- function(data,col.time="TIME",col.tdos="TDOS",col.tad="TAD",col.ndoses
     ## clean up
     data3[,(col.event):=NULL]
     data3[,(col.row.tmp):=NULL]
-    
+    data3[,(col.evidorder):=NULL]
+
     setnames(data3,cc(TDOS,NDOSES,TAD),c(col.tdos,col.ndoses,col.tad))
 
     data3 <- as.fun(data3)
