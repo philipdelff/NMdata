@@ -45,14 +45,16 @@
 ##' @export
 
 
-addTAD <- function(data,col.time="TIME",col.tdos="TDOS",col.tad="TAD",col.ndoses="NDOSES",col.evid="EVID",col.amt="AMT",subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by="ID",as.fun){
+addTAD <- function(data,col.time="TIME",col.tdos="TDOS",col.tad="TAD",col.ndoses="NDOSES",col.evid="EVID",col.amt="AMT",col.pdosamt="PDOSAMT",col.doscuma="DOSCUMA",subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by="ID",as.fun){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     NDOSES <- NULL
     TDOS <- NULL
     TAD <- NULL
-    
+    PDOSAMT <- NULL
+    DOSCUMA <- NULL
+
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
     
@@ -99,15 +101,19 @@ addTAD <- function(data,col.time="TIME",col.tdos="TDOS",col.tad="TAD",col.ndoses
     setorderv(data2,c(by,col.time,col.evidorder))
     
     addVars <- function(data){
-        ## data <- copy(data)
         ## NDOSPERIOD
         data[!is.na(get(col.time)),NDOSES:=cumsum(get(col.event)==TRUE),by=by]
         ## TDOS
         data[get(col.event)==TRUE,TDOS:=get(col.time)]
         data[,TDOS:=nafill(TDOS,type="locf"),by=by]
-        ## TAD
+        ## Relative time since previous dose
+        ## data[,APRELTM:=get(col.time)-TDOS]
         data[,TAD:=get(col.time)-TDOS]
-        ## data
+        ## previous dose amount
+        data[,PDOSAMT:=nafill(get(col.amt),type="locf"),by=by]
+        ## Cumulative Amount of Dose Received
+        data[!is.na(get(col.amt)),DOSCUMA:=cumsum(get(col.amt)),by=by]
+        data[,DOSCUMA:=nafill(DOSCUMA),by=by]
     }
 
     
@@ -130,8 +136,17 @@ addTAD <- function(data,col.time="TIME",col.tdos="TDOS",col.tad="TAD",col.ndoses
     data3[,(col.row.tmp):=NULL]
     data3[,(col.evidorder):=NULL]
 
-    setnames(data3,cc(TDOS,NDOSES,TAD),c(col.tdos,col.ndoses,col.tad))
-
+    ## args <- as.list(environment())
+    ## args.rel <- args[[cc(col.tdos,col.ndoses)]]
+    ## for(narg in args.rel){
+    ##     if(is.null(col.tdos)) {
+    ##         data3[,(col.tdos):=NULL]
+    ##     } else {
+    ##         setnames(data3,"TDOS",col.tdos)
+    ##     }
+    ## }
+    
+    setnames(data3,cc(TDOS,NDOSES,TAD,PDOSAMT,DOSCUMA),c(col.tdos,col.ndoses,col.tad,col.pdosamt,col.doscuma))
     data3 <- as.fun(data3)
 
     return(data3)
