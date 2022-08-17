@@ -6,6 +6,11 @@
 ##' 
 ##' @param data The data set to expand
 ##' @param quiet Suppress messages back to user (default is FALSE)
+##' @param col.time The name of the column holding the time on which
+##'     time since previous dose will be based. This is typically
+##'     actual or nominal time since first dose.
+##' @param col.id The subject identifier. All new columns will be
+##'     derived within unique values of this column.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
@@ -14,7 +19,7 @@
 ##' @return A data set with at least as many rows as data. If doses
 ##'     are found to expand, these will be added.
 ##' @import data.table
-##' @details This is still experimental. 
+##' @details This is still experimental.
 ##' @export
 
 NMexpandDoses <- function(data,col.time="TIME",col.id="ID",quiet=FALSE,as.fun){

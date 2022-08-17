@@ -4,10 +4,17 @@
 \alias{NMexpandDoses}
 \title{Transform repeated dosing events (ADDL/II) to individual dosing events}
 \usage{
-NMexpandDoses(data, quiet = FALSE, as.fun)
+NMexpandDoses(data, col.time = "TIME", col.id = "ID", quiet = FALSE, as.fun)
 }
 \arguments{
 \item{data}{The data set to expand}
+
+\item{col.time}{The name of the column holding the time on which
+time since previous dose will be based. This is typically
+actual or nominal time since first dose.}
+
+\item{col.id}{The subject identifier. All new columns will be
+derived within unique values of this column.}
 
 \item{quiet}{Suppress messages back to user (default is FALSE)}
 
