@@ -12,10 +12,9 @@
 ##' @seealso make.names
 ##' @family DataCreate
 ##' @keywords internal
+##' @export
 
-### export from pmxtricks. It's not a Nonmem or pmx data specific thing.
-
-tmpcol <- function(data,names=NULL,base="atmpcol999",max.it=100,prefer.plain=TRUE){
+tmpcol <- function(data,names=NULL,base="tmpcol",max.it=100,prefer.plain=TRUE){
     stopifnot(xor(missing(data),is.null(names)))
 
     if(!missing(data)) names <- names(data)

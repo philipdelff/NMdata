@@ -4,13 +4,7 @@
 \alias{tmpcol}
 \title{generate a name for a new data column that is not already in use.}
 \usage{
-tmpcol(
-  data,
-  names = NULL,
-  base = "atmpcol999",
-  max.it = 100,
-  prefer.plain = TRUE
-)
+tmpcol(data, names = NULL, base = "tmpcol", max.it = 100, prefer.plain = TRUE)
 }
 \arguments{
 \item{data}{The dataset to find a new element name for}
