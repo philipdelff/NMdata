@@ -3,8 +3,11 @@
 ## New functions
 * NMexpandDoses - Transform repeated dosing events (ADDL/II) to
   individual dosing events
-* addTAD - Add cumulative number of doses, time of last dose and time
-  since last dose to data
+* addTAPD - Add cumulative number of doses, time of last dose,
+  previous dose amount, cumulative dose amount, and time since
+  previous dose to data
+* tmpcol provides column names not already used in data sets. tmpcol
+  has long been part of NMdata but has not been exported until now.
 
 ## New data
 A new data set called mad is included. It is based on the
