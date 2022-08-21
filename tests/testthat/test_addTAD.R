@@ -7,6 +7,8 @@ test_that("basic",{
     res <- addTAPD(data=dat)
 
     expect_equal_to_reference(res,fileRef,version=2)
+    ## dims(res,readRDS(fileRef))
+    ## compareCols(res,readRDS(fileRef))
 })
 
 

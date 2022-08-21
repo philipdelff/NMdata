@@ -57,12 +57,6 @@ addTAPD <- function(data,col.time="TIME",col.tpdos="TPDOS",col.tapd="TAPD",col.n
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
-    NDOSES <- NULL
-    TPDOS <- NULL
-    TAPD <- NULL
-    PDOSAMT <- NULL
-    DOSCUMA <- NULL
-
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
     
@@ -99,7 +93,6 @@ addTAPD <- function(data,col.time="TIME",col.tpdos="TPDOS",col.tapd="TAPD",col.n
     
 ### quit if no doses found etc
     
-    
     ## expand doses if necessary
     data2 <- NMexpandDoses(data=data,col.id=by,quiet=TRUE,as.fun="data.table",col.time=col.time)
     
@@ -107,21 +100,37 @@ addTAPD <- function(data,col.time="TIME",col.tpdos="TPDOS",col.tapd="TAPD",col.n
     data2[,(col.evidorder):=match(get(col.evid),table=order.evid)]
     
     setorderv(data2,c(by,col.time,col.evidorder))
+
+    col.tpdos.tmp <- tmpcol(data2,base="tpdos.tmp")
     
     addVars <- function(data){
         ## NDOSPERIOD
-        data[!is.na(get(col.time)),NDOSES:=cumsum(get(col.event)==TRUE),by=by]
-        ## TPDOS
-        data[get(col.event)==TRUE,TPDOS:=get(col.time)]
-        data[,TPDOS:=nafill(TPDOS,type="locf"),by=by]
+        if(!is.null(col.ndoses)){
+            data[!is.na(get(col.time)),(col.ndoses):=cumsum(get(col.event)==TRUE),by=by]
+        }
+        ## TPDOS - needed for TAPD
+        data[get(col.event)==TRUE,(col.tpdos.tmp):=get(col.time)]
+        data[,(col.tpdos.tmp):=nafill(get(col.tpdos.tmp),type="locf"),by=by]
         ## Relative time since previous dose
-        ## data[,APRELTM:=get(col.time)-TPDOS]
-        data[,TAPD:=get(col.time)-TPDOS]
+        if(!is.null(col.tapd)){
+            data[,(col.tapd):=get(col.time)-get(col.tpdos.tmp)]
+        }
         ## previous dose amount
-        data[,PDOSAMT:=nafill(get(col.amt),type="locf"),by=by]
+        if(!is.null(col.pdosamt)){
+            data[,(col.pdosamt):=nafill(get(col.amt),type="locf"),by=by]
+        }
         ## Cumulative Amount of Dose Received
-        data[!is.na(get(col.amt)),DOSCUMA:=cumsum(get(col.amt)),by=by]
-        data[,DOSCUMA:=nafill(DOSCUMA),by=by]
+        if(!is.null(col.doscuma)){
+            data[!is.na(get(col.amt)),(col.doscuma):=cumsum(get(col.amt)),by=by]
+            data[,(col.doscuma):=nafill(get(col.doscuma)),by=by]
+        }
+        ## clean up tpdos
+        if(is.null(col.tpdos)){
+            data[,(col.tpdos.tmp):=NULL]
+        } else {
+            setnames(data,col.tpdos.tmp,col.tpdos)
+        }
+        invisible(data)
     }
 
     
@@ -145,24 +154,6 @@ addTAPD <- function(data,col.time="TIME",col.tpdos="TPDOS",col.tapd="TAPD",col.n
     data3[,(col.evidorder):=NULL]
 
     
-    args <- as.list(environment())
-    args.rel <- args[cc(col.tpdos,col.ndoses,col.tapd,col.pdosamt,col.doscuma)]
-    defs.args <- cc(TPDOS,NDOSES,TAPD,PDOSAMT,DOSCUMA)
-    names.args <- names(args.rel)
-    vals.args <- as.character(args.rel)
-
-    
-    
-    for(narg in seq_along(args.rel)){
-        if(is.null(args.rel[[narg]])) {
-        ## if(vals.args[narg]=="NULL") {
-            data3[,(defs.args[narg]):=NULL]
-        } else {
-            setnames(data3,defs.args[narg],vals.args[narg])
-        }
-    }
-    
-    ## setnames(data3,cc(TDOS,NDOSES,TAPD,PDOSAMT,DOSCUMA),c(col.tdos,col.ndoses,col.tapd,col.pdosamt,col.doscuma))
     data3 <- as.fun(data3)
 
     return(data3)

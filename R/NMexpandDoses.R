@@ -38,12 +38,20 @@ NMexpandDoses <- function(data,col.time="TIME",col.id="ID",quiet=FALSE,as.fun){
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
+    ## copy must be before testing if anything to do. If not, a
+    ## reference to original data is returned which is not intended.
+    if(is.data.table(data)){
+        data <- copy(data)
+    } else {
+        data <- as.data.table(data)   
+    }    
+
+
     if(!all(cc(ADDL,II)%in%colnames(data))){
         if(!quiet) message("ADDL and II not found in data. Nothing done.")
         return(data)
     }
 
-    data <- copy(data)
     rec.tmp <- tmpcol(data)
     data[,(rec.tmp):=.I]
     

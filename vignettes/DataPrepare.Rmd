@@ -274,12 +274,16 @@ administered, keep track of previous dose amount and most recent
 dosing time. These are all within at least the subject
 subject. `addTAPD.R` adds these really easily.
 
+
 ```{r}
 cnames.1 <- colnames(pk)
 pk <- addTAPD(pk)
 cnames.2 <- colnames(pk)
 setdiff(cnames.2,cnames.1)
 ```
+
+By default, the column names shown above are used. `addTAPD` takes
+arguments to customize the generated column names and of course to indicate what columns are store the used information, such as dose amounts, time etc
 
 ## Exclusion flags
 There is no way around excluding some of the events in data due to various reasons. And we need to be able to answer to why we excluded each of the points, and to how many points were excluded due to which criteria. `NMdata` provides two functions to handle this - `flagsAssign` assigns exclusion flags to data records (rows), and `flagsCount` summarizes the number of discarded rows and the reasons. 
