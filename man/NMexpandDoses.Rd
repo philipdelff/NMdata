@@ -4,7 +4,14 @@
 \alias{NMexpandDoses}
 \title{Transform repeated dosing events (ADDL/II) to individual dosing events}
 \usage{
-NMexpandDoses(data, col.time = "TIME", col.id = "ID", quiet = FALSE, as.fun)
+NMexpandDoses(
+  data,
+  col.time = "TIME",
+  col.id = "ID",
+  col.evid = "EVID",
+  quiet = FALSE,
+  as.fun
+)
 }
 \arguments{
 \item{data}{The data set to expand}
@@ -15,6 +22,9 @@ actual or nominal time since first dose.}
 
 \item{col.id}{The subject identifier. All new columns will be
 derived within unique values of this column.}
+
+\item{col.evid}{The name of the event ID column. This must exist
+in data. Default is EVID.}
 
 \item{quiet}{Suppress messages back to user (default is FALSE)}
 
@@ -32,7 +42,4 @@ A data set with at least as many rows as data. If doses
 Replaces single row repeated dosing events by multiple lines, then
 reorders rows with respect to ID and TIME. If the row order is
 different, you have to reorder the output manually.
-}
-\details{
-This is still experimental.
 }

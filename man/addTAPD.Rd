@@ -2,16 +2,18 @@
 % Please edit documentation in R/addTAPD.R
 \name{addTAPD}
 \alias{addTAPD}
-\title{Add cumulative number of doses, time of last dose and time since last dose to data}
+\title{Add time since previous dose to data, time of previous dose, most
+recent dose amount, cumulative number of doses, and cumulative
+dose amount.}
 \usage{
 addTAPD(
   data,
   col.time = "TIME",
+  col.evid = "EVID",
+  col.amt = "AMT",
   col.tpdos = "TPDOS",
   col.tapd = "TAPD",
   col.ndoses = "NDOSES",
-  col.evid = "EVID",
-  col.amt = "AMT",
   col.pdosamt = "PDOSAMT",
   col.doscuma = "DOSCUMA",
   subset.dos,
@@ -27,6 +29,12 @@ addTAPD(
 \item{col.time}{Name of time column (created by addTAPD). Default
 it TIME.}
 
+\item{col.evid}{The name of the event ID column. This must exist
+in data. Default is EVID.}
+
+\item{col.amt}{col.evid The name of the dose amount column. This
+must exist in data. Default is AMT.}
+
 \item{col.tpdos}{Name of the time of previous dose column (created
 by addTAPD). Default is TPDOS. Set to NULL to not create this
 column.}
@@ -38,12 +46,6 @@ column.}
 \item{col.ndoses}{The name of the column (created by addTAPD) that
 holds the cumulative number of doses administered to the
 subject. Set to NULL to not create this column.}
-
-\item{col.evid}{The name of the event ID column. This must exist
-in data. Default is EVID.}
-
-\item{col.amt}{col.evid The name of the dose amount column. This
-must exist in data. Default is AMT.}
 
 \item{col.pdosamt}{The name of the column to be created holding
 the previous dose amount. Set to NULL to not create this
@@ -85,7 +87,4 @@ NMdataConf.}
 For now, doses have to be in data as EVID=1 and/or EVID=4
 records. They can be in the format of one row per dose or repeated
 dosing notation using ADDL and II.
-}
-\details{
-This is still experimental.
 }
