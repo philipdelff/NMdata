@@ -88,7 +88,14 @@ different, you have to reorder the output manually.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMexpandDoses</span><span class="op">(</span><span class="va">data</span>, col.time <span class="op">=</span> <span class="st">"TIME"</span>, col.id <span class="op">=</span> <span class="st">"ID"</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">as.fun</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMexpandDoses</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  col.time <span class="op">=</span> <span class="st">"TIME"</span>,</span>
+<span>  col.id <span class="op">=</span> <span class="st">"ID"</span>,</span>
+<span>  col.evid <span class="op">=</span> <span class="st">"EVID"</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">as.fun</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -106,6 +113,11 @@ actual or nominal time since first dose.</p></dd>
 <dt>col.id</dt>
 <dd><p>The subject identifier. All new columns will be
 derived within unique values of this column.</p></dd>
+
+
+<dt>col.evid</dt>
+<dd><p>The name of the event ID column. This must exist
+in data. Default is EVID.</p></dd>
 
 
 <dt>quiet</dt>
@@ -126,10 +138,6 @@ NMdataConf.</p></dd>
 
 <p>A data set with at least as many rows as data. If doses
     are found to expand, these will be added.</p>
-    </div>
-    <div id="details">
-    <h2>Details</h2>
-    <p>This is still experimental.</p>
     </div>
 
   </div>
