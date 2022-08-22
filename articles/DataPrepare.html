@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.12.907</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.12.908</span>
       </span>
     </div>
 
@@ -117,7 +117,7 @@
 
     
     
-<p>Built 2022-08-19 using NMdata 0.0.12.907.</p>
+<p>Built 2022-08-22 using NMdata 0.0.12.908.</p>
 <p>This vignette is still under development. Please make sure to see latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
 <h2 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
@@ -274,15 +274,25 @@
 </div>
 </div>
 <div class="section level2">
-<h2 id="adding-time-since-previous-dose-cumulative-number-of-doses-etc-">Adding time since previous dose, cumulative number of doses etc.<a class="anchor" aria-label="anchor" href="#adding-time-since-previous-dose-cumulative-number-of-doses-etc-"></a>
+<h2 id="time-since-previous-dose-cumulative-number-of-doses-etc-">Time since previous dose, cumulative number of doses etc.<a class="anchor" aria-label="anchor" href="#time-since-previous-dose-cumulative-number-of-doses-etc-"></a>
 </h2>
 <p>In addition to stacking doses and concentration data and merging in covariates, we often need to derive time since previous dose, we may want to cumulatively count the number and amounts of drug administered, keep track of previous dose amount and most recent dosing time. These are all within at least the subject subject. <code>addTAPD.R</code> adds these really easily.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cnames.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span></span>
-<span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/addTAPD.html">addTAPD</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span></span>
-<span><span class="va">cnames.2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="va">cnames.2</span>, <span class="va">cnames.1</span><span class="op">)</span></span>
+<span><span class="va">pk.tapd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/addTAPD.html">addTAPD</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span></span>
+<span><span class="va">cnames.tapd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">pk.tapd</span><span class="op">)</span></span>
+<span><span class="co">## These are the columns added by addTAPD</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="va">cnames.tapd</span>, <span class="va">cnames.1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "NDOSES"  "TPDOS"   "TAPD"    "PDOSAMT" "DOSCUMA"</span></span></code></pre></div>
+<p>By default, the column names shown above are used. <code>addTAPD</code> takes arguments to customize the generated column names and of course to indicate what columns are store the used information, such as dose amounts, time etc. By default, <code>addTAPD</code> adds the five columns listed above. The following example derives time since previous dose based on nominal time, uses customized names for derived column names, and skips derivation of cumulated dose amount.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pk.tapd2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/addTAPD.html">addTAPD</a></span><span class="op">(</span><span class="va">pk</span>, col.time <span class="op">=</span> <span class="st">"NOMTIME"</span>, col.tapd <span class="op">=</span> <span class="st">"NTAPD"</span>,</span>
+<span>    col.tpdos <span class="op">=</span> <span class="st">"NTPDOS"</span>, col.ndoses <span class="op">=</span> <span class="st">"NOMNDOSES"</span>, col.doscuma <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="va">cnames.tapd2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">pk.tapd2</span><span class="op">)</span></span>
+<span><span class="co">## These are the columns added by addTAPD</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="va">cnames.tapd2</span>, <span class="va">cnames.1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "NOMNDOSES" "NTPDOS"    "NTAPD"     "PDOSAMT"</span></span></code></pre></div>
+<p><code>addTAPD</code> uses information in <code>TIME</code>, <code>ID</code>, <code>EVID</code> and <code>AMT</code> (names of columns holding this information can be speified using arguments). It respects repeated dosing defined in <code>ADDL</code> and <code>II</code>. Under the hood, <code>NMexpandDoses</code> is used to achieve this but the returned data will have the exact same rows as the input data (i.e. if doses are expanded, it is only for internal calculations on the existing rows).</p>
 </div>
 <div class="section level2">
 <h2 id="exclusion-flags">Exclusion flags<a class="anchor" aria-label="anchor" href="#exclusion-flags"></a>
@@ -295,7 +305,7 @@
 </h3>
 <p>For use in NONMEM’s <code>IGNORE</code> feature, the easiest is that inclusion/exclusion is determined by a single column in data - we call that column <code>FLAG</code> here, but any column name can be used. <code>FLAG</code> obviously draws on information from other columns such as <code>TIME</code>, <code>DV</code>, and many others, depending on your dataset and your way of working.</p>
 <p>The function that applies inclusion/excluasion rules is called <code>flagsAssign</code>, and it takes a dataset and a data.frame with rules as arguments. In this simple example we only exclude data due to two different reasons - and only samples (keeping all doses in the analysis). We exclude all pre-dose samples. For post-dose samples, we exclude those below LLOQ.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"FLAG,flag,condition</span></span>
 <span><span class="st">10,Below LLOQ,BLQ==1</span></span>
 <span><span class="st">100,Negative time,TIME&lt;0"</span><span class="op">)</span></span>
@@ -314,7 +324,7 @@
 <h3 id="summarize-data-exclusions">Summarize data exclusions<a class="anchor" aria-label="anchor" href="#summarize-data-exclusions"></a>
 </h3>
 <p>An overview of the number of observations disregarded due to the different conditions is then obtained using <code>flagsCount</code>. As we see from the <code>names</code> call below, both discarded, cumulative discarded, and observations left after application of the respective criterion are available. Choose the ones you prefer - here we show how many observations and subjects were matched by each criterion and how many were left after application of each criterion.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tab.count</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsCount.html">flagsCount</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pk</span><span class="op">[</span><span class="va">EVID</span> <span class="op">==</span> <span class="fl">0</span><span class="op">]</span>, tab.flags <span class="op">=</span> <span class="va">dt.flags</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tab.count</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "flag"          "N.left"        "Nobs.left"     "N.discard"    </span></span>
@@ -337,7 +347,7 @@
 </h3>
 <p>The order of columns in NONMEM is important for two reasons. One is that a character in a variable read into NONMEM will make the run fail. The other is that there are restrictions on the number of variables you can read into NONMEM, depending on the version. <code>NMorderColumns</code> tries to put the used columns first, and other or maybe even unusable columns in the back of the dataset. It does so by a mix of recognition of column names and analysis of the column contents.</p>
 <p>Columns that cannot be converted to numeric are put in the back, while column bearing standard NONMEM variable names like <code>ID</code>, <code>TIME</code>, <code>EVID</code> etc. will be pulled up front. You can of course add column names to prioritize to front (<code>first</code>) or back (<code>last</code>). See <code><a href="../reference/NMorderColumns.html">?NMorderColumns</a></code> for more options.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMorderColumns.html">NMorderColumns</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span></span></code></pre></div>
 <p>One trick is worth mentioning here. If you are adding variables to a data set after having started to model with NONMEM, you may not want to have to update and rerun your NONMEM models right away. <code>NMorderColumns</code> has options for putting some variable last (to the right) in data. That argument is called <code>last</code>. It has several other options to tweak how the columns are ordered so you can hopefully get the order you want.</p>
 </div>
@@ -348,7 +358,7 @@
 <p>Before we save the data and go to model estimation, <code>NMdata</code> offers a quite extensive and automated function to check data for consistency and compatibility with NONMEM.</p>
 <p><code>NMcheckData</code> checks all the standard NONMEM columns against the NONMEM requirements and looks for other common data issues. The list is quite long. Please see <code><a href="../reference/NMcheckData.html">?NMcheckData</a></code> for a list of performed checks.</p>
 <p>We can add subject level covariates, and subject-occasion covariates to be checked for whether they are non-missing, numeric and not varying with subject or subject-occasion. We can also add other numeric variables to use in NONMEM to check for missing values.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">findings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMcheckData.html">NMcheckData</a></span><span class="op">(</span><span class="va">pk</span>, covs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DOSE"</span>, <span class="st">"WEIGHTB"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   column                     check  N Nid</span></span>
 <span><span class="co">#&gt;     EVID        Subject has no obs 19  19</span></span>
@@ -357,7 +367,7 @@
 <span><span class="co">#&gt;      AMT Non-positive dose amounts  1   1</span></span>
 <span><span class="co">#&gt;     EVID           EVID not in 0:4  1   1</span></span></code></pre></div>
 <p>Let’s look at these findings:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">findings</span></span>
 <span><span class="co">#&gt;     row  ID  column                     check  level  ROW</span></span>
 <span><span class="co">#&gt; 1    NA  31    EVID        Subject has no obs     ID   NA</span></span>
@@ -384,14 +394,14 @@
 <span><span class="co">#&gt; 22 1403 171     AMT Non-positive dose amounts    row 1403</span></span>
 <span><span class="co">#&gt; 23 1480 178    EVID           EVID not in 0:4    row 1480</span></span></code></pre></div>
 <p>Depending on <code>level</code> we can now take a look at single rows, data from a subject or fix a column to address these. The fact that some subjects are missing observations in this case is not necessarily an error (they are in this case all BLQ), but <code>WEIGHTB</code> has to be constant within subjects, and for NONMEM to even run, <code>EVID</code> must be in <code>0:4</code>. So those have to be fixed. For the rest of the vignette, assume we fixed those issues.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/copy.html" class="external-link">copy</a></span><span class="op">(</span><span class="va">pk.copy</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="writing-data-to-files">Writing data to files<a class="anchor" aria-label="anchor" href="#writing-data-to-files"></a>
 </h3>
 <p>For the final step of writing the dataset, <code>NMwriteData</code> is provided. Most importantly, it writes a csv file with appropriate options for NONMEM to read it as well as possible. It can also write an rds for R with equal contents (or RData if you prefer), but with the rds including all information (such as factor levels) which cannot be saved in csv. If you should use <code>NMscanData</code> to read NONMEM results, this information can be used automatically. <code>NMwriteData</code> also by default calls <code>NMgenText</code> which provides a proposal for text to include in the <code>$INPUT</code> and <code>$DATA</code> sections of the NONMEM control streams. There are several arguments that will affect the proposed text for the NONMEM run, see <code><a href="../reference/NMwriteData.html">?NMwriteData</a></code> and especially <code><a href="../reference/NMgenText.html">?NMgenText</a></code>.</p>
 <p>Let’s include the origin script of the data as meta data. <code>write.csv=TRUE</code> is default but included here because we often want to use something like <code>write.csv=writeOutput</code> where <code>writeOutput</code> is a switching variable we set to <code>TRUE</code> or <code>FALSE</code> in the initialization section of the script.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">text.nm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMwriteData.html">NMwriteData</a></span><span class="op">(</span><span class="va">pk</span>, file <span class="op">=</span> <span class="st">"derived/pkdata.csv"</span>, script <span class="op">=</span> <span class="st">"DataPrepare.Rmd"</span>,</span>
 <span>    write.csv <span class="op">=</span> <span class="cn">TRUE</span>, args.stamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Description <span class="op">=</span> <span class="st">"PK data for the Data Preparation vignette."</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Data written to file(s):</span></span>
@@ -405,11 +415,11 @@
 <span><span class="co">#&gt; IGNORE=(FLAG.NE.0)</span></span></code></pre></div>
 <p>We are being told that two files were saved, and then we get some text to use in the NONMEM control streams. <code>NMwriteData</code> detected the exclusion flag and suggests to include it in <code>$DATA</code>.</p>
 <p>Let’s take a look at what was saved:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="st">"derived"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "pkdata_meta.txt" "pkdata.csv"      "pkdata.rds"</span></span></code></pre></div>
 <p>There is a metadata file which <code>NMreadCsv</code> will automatically recognize if found. The metadata becomes accessible using <code>NMinfo</code>:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat.inp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMreadCsv.html">NMreadCsv</a></span><span class="op">(</span><span class="st">"derived/pkdata.csv"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/NMinfo.html">NMinfo</a></span><span class="op">(</span><span class="va">dat.inp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $dataCreate</span></span>
@@ -417,7 +427,7 @@
 <span><span class="co">#&gt; [1] "DataPrepare.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2022-08-19 10:41:11 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2022-08-22 12:15:49 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$writtenTo</span></span>
 <span><span class="co">#&gt; [1] "derived/pkdata.csv"</span></span>
@@ -425,7 +435,7 @@
 <span><span class="co">#&gt; $dataCreate$Description</span></span>
 <span><span class="co">#&gt; [1] "PK data for the Data Preparation vignette."</span></span></code></pre></div>
 <p>With the flexibility of the <code>rds</code> format, we don’t need such an additional file. Only difference on the metadata for the rds file is the filename:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat.inp.rds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"derived/pkdata.rds"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/NMinfo.html">NMinfo</a></span><span class="op">(</span><span class="va">dat.inp.rds</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $dataCreate</span></span>
@@ -433,7 +443,7 @@
 <span><span class="co">#&gt; [1] "DataPrepare.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2022-08-19 10:41:11 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2022-08-22 12:15:49 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$writtenTo</span></span>
 <span><span class="co">#&gt; [1] "derived/pkdata.rds"</span></span>
@@ -446,7 +456,7 @@
 </h3>
 <p>If we have to update the input data file, the NONMEM <code>$INPUT</code> sections no longer match the input data. We saw in <code>NMorderColumns</code> how we can use the <code>last</code> argument to get columns pushed towards the back so the NONMEM runs should still work. But maybe you need the column in your nonmem runs, and so you have no way around updating the control streams. And that can be quite a lot of control streams. With <code>NMdata</code> that is really easy.</p>
 <p><code>NMdata</code> has a couple of functions to extract and write sections to NONMEM control streams called <code>NMreadSection</code> and <code>NMwriteSection</code>. Those functions are very flexible for updating NONMEM control streams, and we will not go into detail with them, but let’s stick to the example above. We can do</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/NMwriteSection.html">NMwriteSection</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="st">"nonmem"</span>, file.pattern <span class="op">=</span> <span class="st">"run1.*\\.mod"</span>,</span>
 <span>    list.sections <span class="op">=</span> <span class="va">text.nm</span><span class="op">[</span><span class="st">"INPUT"</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p>This updates the INPUT section (and not DATA) for all control streams in directory “nonmem” which file names start with “run1” and end in “.mod” (say “run101.mod” to “run199.mod”). If we had done simply <code>list.sections=text.nm</code> instead of <code>list.sections=text.nm["INPUT"]</code>, it would have replaced the <code>$DATA</code> section too. However, the <code>DATA</code> section rarely needs update following an update of the input data file, and oftentimes <code>$DATA</code> can vary among control streams that use the same input data (some models may be estimated on a smaller subset of data), so be careful with that.</p>
@@ -458,7 +468,7 @@
 <h2 id="stamp-objects-for-traceability">Stamp objects for traceability<a class="anchor" aria-label="anchor" href="#stamp-objects-for-traceability"></a>
 </h2>
 <p>We saw how <code>NMwriteDatat</code> saves metadata automatically. Even if <code>NMwriteData</code> can actually be used as a simple rds writer that adds meta data the same way, we may want to save data or any R object using <code>saveRDS</code>. In that case, use <code>NMstamp</code> (which is also what <code>NMwriteData</code> does).</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMstamp.html">NMstamp</a></span><span class="op">(</span><span class="va">pk</span>, script <span class="op">=</span> <span class="st">"vignettes/DataCreate.Rmd"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/NMinfo.html">NMinfo</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $dataCreate</span></span>
@@ -466,9 +476,9 @@
 <span><span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2022-08-19 10:41:11 UTC"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "2022-08-22 12:15:50 UTC"</span></span></code></pre></div>
 <p>The <code>script</code> argument is recognized by <code>NMstamp</code>, but you can add anything to this. We want to keep descriptive note too. Another often useful piece of information is what source data files were read in order to generate the saved data. <code>Description</code> and <code>Source.Files</code> are only examples - any name can be used.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMstamp.html">NMstamp</a></span><span class="op">(</span><span class="va">pk</span>, script <span class="op">=</span> <span class="st">"vignettes/DataCreate.Rmd"</span>, Description <span class="op">=</span> <span class="st">"A PK dataset used for examples."</span>,</span>
 <span>    Source.Files <span class="op">=</span> <span class="st">"/path/to/adpc.sas7bdat,/path/to/adsl.sas7bdat"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/NMinfo.html">NMinfo</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span></span>
@@ -477,7 +487,7 @@
 <span><span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2022-08-19 10:41:11 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2022-08-22 12:15:50 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$Description</span></span>
 <span><span class="co">#&gt; [1] "A PK dataset used for examples."</span></span>
