@@ -129,9 +129,17 @@ Use the `cols.wanted` argument for the overview to especially focus on the colum
 ```{r}
 pk2 <- mergeCheck(pk,covs2,by="ID")
 ```
-We did not get an error from `mergeCheck` so we know that the rows in `pk2` are exactly identical to those in `pk`, except the addition of a column called `cov2`. If rows duplicate or disappear `mergeCheck` does a good job telling you where in data to address the issues. 
 
-`renameByContents` - Keep track of what columns are compatible with NONMEM by renaming columns accordingly. `NMisNumeric` evaluates whether NONMEM can interpret contents as numeric (different from `is.numeric`):
+We did not get an error from `mergeCheck` so we know that the rows in
+`pk2` are exactly identical to those in `pk`, except the addition of a
+column called `cov2`. If rows duplicate or disappear `mergeCheck` does
+a good job telling you where in data to address the issues.
+
+`renameByContents` - Keep track of what columns are compatible with
+NONMEM by renaming columns accordingly. `NMisNumeric` evaluates
+whether NONMEM can interpret contents as numeric (different from
+`is.numeric`):
+
 ```{r,eval=FALSE}
 ## Example 1: Append an "N" to columns that NONMEM _can_ read (as numeric)
 pk <- renameByContents(data=pk,
@@ -144,13 +152,22 @@ pk <- renameByContents(data=pk,
                        invert.test = TRUE)
 ```
 
+`addTAPD` - Add time since previous dose to data, time of previous
+dose, most recent dose amount, cumulative number of doses, and
+cumulative dose amount. It supports repeated dosing defined in `ADDL`
+and `II`.
 
 `flagsAssign` - Sequentially assign exclusion flags to a dataset based
 on a set of user-specified exclusion criteria.
 
-`flagsCount` - Create an overview of number of retained and discarded datapoints.
+`flagsCount` - Create an overview of number of retained and discarded
+datapoints.
 
-Example with only two exclusion flags applied to samples. If time is negative, we assign exclusion flag `FLAG=100`. If (time is non-negative and) `BLQ==1` we assign `FLAG=10`. If none of these conditions are met, `FLAG=0`, and the row is to be included in the analysis. (`fread` is just for row-wise readability.)
+Example with only two exclusion flags applied to samples. If time is
+negative, we assign exclusion flag `FLAG=100`. If (time is
+non-negative and) `BLQ==1` we assign `FLAG=10`. If none of these
+conditions are met, `FLAG=0`, and the row is to be included in the
+analysis. (`fread` is just for row-wise readability.)
 
 ```{r,include=FALSE}
 pk[,(cc(FLAG,flag)):=NULL]

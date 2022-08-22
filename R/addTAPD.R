@@ -1,4 +1,7 @@
-##' Add cumulative number of doses, time of last dose and time since last dose to data
+##' Add time since previous dose to data, time of previous dose, most
+##' recent dose amount, cumulative number of doses, and cumulative
+##' dose amount.
+##' 
 ##'
 ##' For now, doses have to be in data as EVID=1 and/or EVID=4
 ##' records. They can be in the format of one row per dose or repeated
@@ -49,11 +52,10 @@
 ##'     as.fun="data.table". The default can be configured using
 ##'     NMdataConf.
 ##' @import data.table
-##' @details This is still experimental.
 ##' @export
 
 
-addTAPD <- function(data,col.time="TIME",col.tpdos="TPDOS",col.tapd="TAPD",col.ndoses="NDOSES",col.evid="EVID",col.amt="AMT",col.pdosamt="PDOSAMT",col.doscuma="DOSCUMA",subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by="ID",as.fun){
+addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos="TPDOS",col.tapd="TAPD",col.ndoses="NDOSES",col.pdosamt="PDOSAMT",col.doscuma="DOSCUMA",subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by="ID",as.fun){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -83,6 +85,12 @@ addTAPD <- function(data,col.time="TIME",col.tpdos="TPDOS",col.tapd="TAPD",col.n
         data <- as.data.table(data)   
     }    
 
+    ## report if columns will be overwriten
+    cols.exist <- intersect(colnames(data),c(col.tpdos,col.tapd,col.ndoses,col.pdosamt,col.doscuma))
+    if(length(cols.exist)){
+        messageWrap(paste0("Columns will be overwritten: ",paste(cols.exist,collapse=", ")),fun.msg=warning)
+    }
+    
     ## row identifier for reordering data back to original order after modifications
     col.row.tmp <- tmpcol(data,base="row")
     data[,(col.row.tmp):=.I]
@@ -94,7 +102,7 @@ addTAPD <- function(data,col.time="TIME",col.tpdos="TPDOS",col.tapd="TAPD",col.n
 ### quit if no doses found etc
     
     ## expand doses if necessary
-    data2 <- NMexpandDoses(data=data,col.id=by,quiet=TRUE,as.fun="data.table",col.time=col.time)
+    data2 <- NMexpandDoses(data=data,col.id=by,quiet=TRUE,as.fun="data.table",col.time=col.time,col.evid=col.evid)
     
     col.evidorder <- tmpcol(data2,base="evidorder")
     data2[,(col.evidorder):=match(get(col.evid),table=order.evid)]

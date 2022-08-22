@@ -11,6 +11,8 @@
 ##'     actual or nominal time since first dose.
 ##' @param col.id The subject identifier. All new columns will be
 ##'     derived within unique values of this column.
+##' @param col.evid The name of the event ID column. This must exist
+##'     in data. Default is EVID.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
@@ -19,10 +21,9 @@
 ##' @return A data set with at least as many rows as data. If doses
 ##'     are found to expand, these will be added.
 ##' @import data.table
-##' @details This is still experimental.
 ##' @export
 
-NMexpandDoses <- function(data,col.time="TIME",col.id="ID",quiet=FALSE,as.fun){
+NMexpandDoses <- function(data,col.time="TIME",col.id="ID",col.evid="EVID",quiet=FALSE,as.fun){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -55,7 +56,7 @@ NMexpandDoses <- function(data,col.time="TIME",col.id="ID",quiet=FALSE,as.fun){
     rec.tmp <- tmpcol(data)
     data[,(rec.tmp):=.I]
     
-    recs.folded <- data[EVID==1&!is.na(ADDL)&ADDL>0,get(rec.tmp)]
+    recs.folded <- data[get(col.evid)%in%c(1,4)&!is.na(ADDL)&ADDL>0,get(rec.tmp)]
     newtimes <- data[get(rec.tmp)%in%recs.folded,
                      .(TIME=seq(get(col.time),by=II,length.out=ADDL+1)
                       ,ADDL=0
@@ -69,7 +70,7 @@ NMexpandDoses <- function(data,col.time="TIME",col.id="ID",quiet=FALSE,as.fun){
     data.merge[,(col.time):=NULL][
        ,ADDL:=NULL][
        ,II:=NULL]
-    newdoses <- mergeCheck(newtimes,data.merge,by=rec.tmp,quiet=T)
+    newdoses <- mergeCheck(newtimes,data.merge,by=rec.tmp,quiet=TRUE)
 
     ## rbind
     newdat <- rbind(data[!get(rec.tmp)%in%recs.folded],newdoses)

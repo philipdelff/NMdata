@@ -266,7 +266,7 @@ behavior of `merge.data.frame` is to merge by all common column names,
 but for coding transparency, this is intentionally not allowed by
 `mergeCheck`.
 
-## Adding time since previous dose, cumulative number of doses etc.
+## Time since previous dose, cumulative number of doses etc.
 In addition to stacking doses and concentration data and merging in
 covariates, we often need to derive time since previous dose, we may
 want to cumulatively count the number and amounts of drug
@@ -277,13 +277,35 @@ subject. `addTAPD.R` adds these really easily.
 
 ```{r}
 cnames.1 <- colnames(pk)
-pk <- addTAPD(pk)
-cnames.2 <- colnames(pk)
-setdiff(cnames.2,cnames.1)
+pk.tapd <- addTAPD(pk)
+cnames.tapd <- colnames(pk.tapd)
+## These are the columns added by addTAPD
+setdiff(cnames.tapd,cnames.1)
 ```
 
+
+
 By default, the column names shown above are used. `addTAPD` takes
-arguments to customize the generated column names and of course to indicate what columns are store the used information, such as dose amounts, time etc
+arguments to customize the generated column names and of course to
+indicate what columns are store the used information, such as dose
+amounts, time etc. By default, `addTAPD` adds the five columns listed above. The following example derives time since previous dose based on nominal time, uses customized names for derived column names, and skips derivation of cumulated dose amount.
+
+
+```{r}
+pk.tapd2 <- addTAPD(pk,col.time="NOMTIME",col.tapd="NTAPD",col.tpdos="NTPDOS",col.ndoses="NOMNDOSES",col.doscuma=NULL)
+cnames.tapd2 <- colnames(pk.tapd2)
+## These are the columns added by addTAPD
+setdiff(cnames.tapd2,cnames.1)
+```
+
+`addTAPD` uses information in `TIME`, `ID`, `EVID` and `AMT` (names of
+columns holding this information can be speified using arguments). It
+respects repeated dosing defined in `ADDL` and `II`. Under the hood,
+`NMexpandDoses` is used to achieve this but the returned data will
+have the exact same rows as the input data (i.e. if doses are
+expanded, it is only for internal calculations on the existing rows).
+
+
 
 ## Exclusion flags
 There is no way around excluding some of the events in data due to various reasons. And we need to be able to answer to why we excluded each of the points, and to how many points were excluded due to which criteria. `NMdata` provides two functions to handle this - `flagsAssign` assigns exclusion flags to data records (rows), and `flagsCount` summarizes the number of discarded rows and the reasons. 
