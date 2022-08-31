@@ -1,4 +1,4 @@
-##' Replace ($)sections of a nonmem control stream
+##' Replace ($)sections of a Nonmem control stream
 ##'
 ##' Just give the section name, the new lines and the file path, and the
 ##' "$section", and the input to Nonmem will be updated.
@@ -120,6 +120,7 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections
 
         ## put this part in a function to be sequentially applied for all elements in list.
         replaceOnePart <- function(lines,section,newlines){
+            if(!quiet) message(paste("Writing",newfile))
             
             ## make sure section is capital and does not start with $.
             section <- gsub(" ","",section)
@@ -140,7 +141,10 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections
                                         keepName=TRUE,keepComments=TRUE,asOne=TRUE,
                                         cleanSpaces=FALSE)
 
-            stopifnot(length(idx.dlines)>0)
+            if(length(idx.dlines)==0) {
+                message("section not found. Nothing to be done.")
+                return(lines)
+            }
             
             if(length(idx.dlines)>1) {
                 ## if th
@@ -186,7 +190,6 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections
             return(newlines)
         }
         
-        if(!quiet) cat("writing",newfile,"\n")
         con.newfile <- file(newfile,"wb")
         writeLines(newlines,con=con.newfile)
         close(con.newfile)
