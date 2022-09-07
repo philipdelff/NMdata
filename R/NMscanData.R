@@ -652,6 +652,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                 ## check that we are not getting new values of
                 ## col.row from input to output.
                 if(!all( tab.row[,get(col.row)] %in% data.input[,get(col.row)])){
+                    
                     messageWrap("values of unique row identifier found in output data that are not present in input data. Please use another row identifier or don't use any (not recommended).",fun.msg=stop)
                 }
             }

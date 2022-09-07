@@ -136,6 +136,7 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
         if(is.null(col.tpdos)){
             data[,(col.tpdos.tmp):=NULL]
         } else {
+            if(col.tpdos%in%colnames(data)) data[,(col.tpdos):=NULL]
             setnames(data,col.tpdos.tmp,col.tpdos)
         }
         invisible(data)
