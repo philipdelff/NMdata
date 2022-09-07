@@ -130,7 +130,7 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
         ## Cumulative Amount of Dose Received
         if(!is.null(col.doscuma)){
             data[!is.na(get(col.amt)),(col.doscuma):=cumsum(get(col.amt)),by=by]
-            data[,(col.doscuma):=nafill(get(col.doscuma)),by=by]
+            data[,(col.doscuma):=nafill(get(col.doscuma),type="locf"),by=by]
         }
         ## clean up tpdos
         if(is.null(col.tpdos)){
