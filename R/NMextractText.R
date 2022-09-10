@@ -15,8 +15,8 @@
 ##'     "PK", "TABLE", etc. It can also be result sections like
 ##'     "MINIMIZATION".
 ##' @param char.section The section denoted as a string compatible
-##'     with regular expressions. "\\$" for sections in .mod files,
-##'     "0" for results in .lst files.
+##'     with regular expressions. "$" (remember to escape properly)
+##'     for sections in .mod files, "0" for results in .lst files.
 ##' @param char.end A regular expression to capture the end of the
 ##'     section. The default is to look for the next occurrence of
 ##'     char.section.

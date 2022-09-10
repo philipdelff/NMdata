@@ -44,22 +44,29 @@
 ##'     subjects. Typically if using nominal time, it may be important
 ##'     to specify whether samples at dosing times are pre-dose
 ##'     samples. The default is c(3,0,4,1,2) - i.e. samples and
-##'     simulations are pre-dose.
+##'     simulations are pre-dose. See details.
 ##' @param by Columns to do calculations within. Default is ID.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
 ##'     as.fun="data.table". The default can be configured using
 ##'     NMdataConf.
+##' @details addTAPD does not require the data to be ordered, and it
+##'     will not order it. This means you can run addTAPD before
+##'     ordering data (which may be one of the final steps) in data
+##'     set prepation. The argument called order.evid is important
+##'     because of this. If a dosing event and a sample occur at the
+##'     same time, when which dose was the previous for that sample?
+##'     Default is to assume the sample is a pre-dose sample, and
+##'     hence output will be calculated in relation to the dose
+##'     before. If no dose event is found before, NA's will be
+##'     assigned.
 ##' @import data.table
 ##' @export
+##' @family DataCreate
 
 
 addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos="TPDOS",col.tapd="TAPD",col.ndoses="NDOSES",col.pdosamt="PDOSAMT",col.doscuma="DOSCUMA",subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by="ID",as.fun){
-
-#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
-
-### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
     
     if(missing(as.fun)) as.fun <- NULL
@@ -99,8 +106,7 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
     data[,(col.event):=FALSE]
     data[eval(parse(text=subset.event)),(col.event):=TRUE]
     
-### quit if no doses found etc
-    
+   
     ## expand doses if necessary
     data2 <- NMexpandDoses(data=data,col.id=by,quiet=TRUE,as.fun="data.table",col.time=col.time,col.evid=col.evid)
     

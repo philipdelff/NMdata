@@ -73,7 +73,7 @@ are simultaneous events of different event types within
 subjects. Typically if using nominal time, it may be important
 to specify whether samples at dosing times are pre-dose
 samples. The default is c(3,0,4,1,2) - i.e. samples and
-simulations are pre-dose.}
+simulations are pre-dose. See details.}
 
 \item{by}{Columns to do calculations within. Default is ID.}
 
@@ -88,3 +88,27 @@ For now, doses have to be in data as EVID=1 and/or EVID=4
 records. They can be in the format of one row per dose or repeated
 dosing notation using ADDL and II.
 }
+\details{
+addTAPD does not require the data to be ordered, and it
+    will not order it. This means you can run addTAPD before
+    ordering data (which may be one of the final steps) in data
+    set prepation. The argument called order.evid is important
+    because of this. If a dosing event and a sample occur at the
+    same time, when which dose was the previous for that sample?
+    Default is to assume the sample is a pre-dose sample, and
+    hence output will be calculated in relation to the dose
+    before. If no dose event is found before, NA's will be
+    assigned.
+}
+\seealso{
+Other DataCreate: 
+\code{\link{NMorderColumns}()},
+\code{\link{NMstamp}()},
+\code{\link{findCovs}()},
+\code{\link{findVars}()},
+\code{\link{flagsAssign}()},
+\code{\link{flagsCount}()},
+\code{\link{mergeCheck}()},
+\code{\link{tmpcol}()}
+}
+\concept{DataCreate}

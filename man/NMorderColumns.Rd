@@ -106,6 +106,7 @@ This function will change the order of columns but it
 \seealso{
 Other DataCreate: 
 \code{\link{NMstamp}()},
+\code{\link{addTAPD}()},
 \code{\link{findCovs}()},
 \code{\link{findVars}()},
 \code{\link{flagsAssign}()},

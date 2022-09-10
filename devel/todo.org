@@ -49,17 +49,20 @@ With load_all():
     Risk now is that arguments are set to NULL
     Export to parent. Not sure check allows though...
 ** Function improvements
+*** addTAPD
+**** TODO Quit if no doses found etc
 *** cl
 *** dims
 **** DONE Check if objects are data.frames
 *** DONE fnAppend
 **** TODO Support strings without extensions
 Example: fnAppend("run",".lst")
-**** TODO Make internal in tracee
+fnAppend("run",".lst",sep="")
+**** DONE Make internal in tracee
 *** NMcheckColNames
 **** return input column names and Nonmem interpretation for user to spot errors
 **** Bad name, what could we call it?
-*** cc - create character vector function
+*** cc - create character vector function*
 *** NMgenText
 **** TODO Handle until values not matching column names
 **** DONE Add a until argument to specify the last column to use in nonmem
@@ -114,7 +117,7 @@ Error if not convertible and not NA or ""? "b" should be an error right?
 *** TODO [#B] NMcreateDoses Generate dosing schedule with loading, ADDL etc :newFunction:
     This is available as a suitcase function
 *** TODO [#B] Function for complex dosing regimens              :newFunction:
-*** TODO [#B] Function to unfold ADDL/II doses to multiple rows :newFunction:
+*** DONE [#B] Function to unfold ADDL/II doses to multiple rows :newFunction:
 *** mergeCheck
 **** TODO [#B] Implement a faster method?
 What if we just check for matches in by columns?
