@@ -23,7 +23,7 @@ dosing notation using ADDL and II."><meta property="og:image" content="https://p
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.12.908</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.901</span>
       </span>
     </div>
 
@@ -186,7 +186,7 @@ are simultaneous events of different event types within
 subjects. Typically if using nominal time, it may be important
 to specify whether samples at dosing times are pre-dose
 samples. The default is c(3,0,4,1,2) - i.e. samples and
-simulations are pre-dose.</p></dd>
+simulations are pre-dose. See details.</p></dd>
 
 
 <dt>by</dt>
@@ -201,6 +201,31 @@ as.fun="data.table". The default can be configured using
 NMdataConf.</p></dd>
 
 </dl></div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>addTAPD does not require the data to be ordered, and it
+    will not order it. This means you can run addTAPD before
+    ordering data (which may be one of the final steps) in data
+    set prepation. The argument called order.evid is important
+    because of this. If a dosing event and a sample occur at the
+    same time, when which dose was the previous for that sample?
+    Default is to assume the sample is a pre-dose sample, and
+    hence output will be calculated in relation to the dose
+    before. If no dose event is found before, NA's will be
+    assigned.</p>
+    </div>
+    <div id="see-also">
+    <h2>See also</h2>
+    <div class="dont-index"><p>Other DataCreate: 
+<code><a href="NMorderColumns.html">NMorderColumns</a>()</code>,
+<code><a href="NMstamp.html">NMstamp</a>()</code>,
+<code><a href="findCovs.html">findCovs</a>()</code>,
+<code><a href="findVars.html">findVars</a>()</code>,
+<code><a href="flagsAssign.html">flagsAssign</a>()</code>,
+<code><a href="flagsCount.html">flagsCount</a>()</code>,
+<code><a href="mergeCheck.html">mergeCheck</a>()</code>,
+<code><a href="tmpcol.html">tmpcol</a>()</code></p></div>
+    </div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
