@@ -38,8 +38,8 @@ linesep argument. Use only one of file, lines, and text.}
 "MINIMIZATION".}
 
 \item{char.section}{The section denoted as a string compatible
-with regular expressions. "\\$" for sections in .mod files,
-"0" for results in .lst files.}
+with regular expressions. "$" (remember to escape properly)
+for sections in .mod files, "0" for results in .lst files.}
 
 \item{char.end}{A regular expression to capture the end of the
 section. The default is to look for the next occurrence of

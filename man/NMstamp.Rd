@@ -37,6 +37,7 @@ NMinfo
 
 Other DataCreate: 
 \code{\link{NMorderColumns}()},
+\code{\link{addTAPD}()},
 \code{\link{findCovs}()},
 \code{\link{findVars}()},
 \code{\link{flagsAssign}()},

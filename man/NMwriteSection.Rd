@@ -2,7 +2,7 @@
 % Please edit documentation in R/NMwriteSection.R
 \name{NMwriteSection}
 \alias{NMwriteSection}
-\title{Replace ($)sections of a nonmem control stream}
+\title{Replace ($)sections of a Nonmem control stream}
 \usage{
 NMwriteSection(
   files,

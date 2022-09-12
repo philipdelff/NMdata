@@ -31,6 +31,5 @@ ggIndProfs(mad.all.exp,amt="AMT")
 
 mad.all <- NMorderColumns(mad.all)
 
-NMwriteData(mad.all,file="~/wdirs/NMdata/inst/examples/data/mad.rds",write.csv=FALSE,write.rds=TRUE)
+NMwriteData(mad.all,file="~/wdirs/NMdata/inst/examples/data/mad.rds",write.csv=FALSE,write.rds=TRUE,args.rds=list(version=2))
 file.copy("~/wdirs/NMdata/inst/examples/data/mad.rds","~/wdirs/NMdata/tests/testthat/testData/data",overwrite=T)
-
