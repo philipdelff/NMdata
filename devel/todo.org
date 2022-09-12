@@ -212,6 +212,7 @@ check. Maybe check in a subset and expect NA in the rest?
      If one is present, presence of the other is tested. If not found,
      it says "II Column not found". Would be helpful to know that it
      is because ADDL is found.
+**** TODO ADDL and II: II cannot be >0 if ADDL=0
 **** DONE Check for , in character column contents not working
 **** DONE Checks for availability
 I ran it on an immature dataset and got this error:
