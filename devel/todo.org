@@ -56,6 +56,7 @@ With load_all():
 **** DONE Check if objects are data.frames
 *** DONE fnAppend
 **** TODO Support strings without extensions
+Was I confusing with fnExtension when writing this?
 Example: fnAppend("run",".lst")
 fnAppend("run",".lst",sep="")
 **** DONE Make internal in tracee

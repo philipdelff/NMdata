@@ -19,5 +19,6 @@ Very simple but often applicable function to change the file name extension (fro
 }
 \examples{
 fnExtension("file.lst",".mod")
+fnExtension("file.lst","mod")
 fnExtension("file.lst","")
 }

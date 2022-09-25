@@ -1,3 +1,9 @@
+# Post 0.0.13
+## New features
+* fnExtension now ignores leading spaces in new extension, and
+  extensions with zero or one leading period are treated identically
+  (so asking for xml or .xml is the same).
+
 # 0.0.13
 
 ## New functions
