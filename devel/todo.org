@@ -54,10 +54,12 @@ With load_all():
 *** cl
 *** dims
 **** DONE Check if objects are data.frames
-*** DONE fnAppend
+*** fnAppend
+*** fnExtention
 **** TODO Support strings without extensions
-Example: fnAppend("run",".lst")
-fnAppend("run",".lst",sep="")
+ Example: fnExtension("run",".lst")
+**** TODO fnExtension("run.lst","") should return run
+**** TODO fnExtension("run.lst") should return lst
 **** DONE Make internal in tracee
 *** NMcheckColNames
 **** return input column names and Nonmem interpretation for user to spot errors
@@ -268,6 +270,7 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMscanInput
+**** TODO Make work without filters
 **** TODO [#B] Time check of lst vs input belongs here rather than in NMscanData
 Not sure.
 **** TODO [#B] Add NMinfo data on whether column names were translated according to $INPUT
@@ -396,7 +399,13 @@ in var table
 See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
 is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
+*** NMscanMultiple
+**** TODO Check if models are repeated
+It now throws a weird error
 *** NMwriteData
+**** TODO [#A] Include option for non-nonmem data
+We want to write any csv or rds with meta data. Maybe just a message
+instead of the current warning when flags etc arent found?
 **** DONE deprecate RData
 **** DONE BUG NA's are not .
 does fwrite use args.fwrite at all?

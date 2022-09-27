@@ -45,6 +45,7 @@ devel/NMdata_Rpackage/derived/*
 devel/NMdata_Rpackage/NMdata_Rpackage\.pdf
 doc
 docs
+tests/testthat/testOutput
 vignettes/*\.pdf
 vignettes/NMdata-FAQ.html
 vignettes/DataPrepare.html
