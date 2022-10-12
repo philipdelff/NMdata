@@ -43,6 +43,8 @@
 ##'     control streams based on the result. This will update your
 ##'     control streams to match your new data file with just one
 ##'     command.
+##' @param genText Run and report results of NMgenText? Default is
+##'     TRUE.
 ##' @param nmdir.data Deprecated, use
 ##'     args.NMgenText=list(dir.data="your/path") instead.
 ##' @param nm.copy Deprecated, use
@@ -75,6 +77,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
                         write.RData=FALSE,script,args.stamp,
                         args.fwrite, args.rds,args.RData,
                         quiet,args.NMgenText,
+                        genText=TRUE,
 ### deprecated NMgenText arguments
                         nm.drop,
                         nmdir.data,col.flagn, nm.rename,nm.copy,
@@ -269,13 +272,19 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
     
     
     ## NONMEM text
-    NMtext <- try(do.call(NMgenText,
-                      append(
-                          list(data=data.dt,file=file)
-                         ,args.NMgenText)
-                      ))
-    
-    
-    invisible(list(INPUT=NMtext$INPUT,DATA=NMtext$DATA))
+    if(genText){
+        NMtext <- try(do.call(NMgenText,
+                              append(
+                                  list(data=data.dt,file=file)
+                                 ,args.NMgenText)
+                              ))
+        if("try-error"%in%class(NMtext)){
+            stop("NMgenText failed.") 
+        } else {
+            return(invisible(list(INPUT=NMtext$INPUT,DATA=NMtext$DATA)))
+        }
+    }
+    invisible(NULL)
+
 
 }

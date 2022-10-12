@@ -144,9 +144,9 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     expressions.list <- sub("([[:alpha:]]+) +([[:alnum:]]+)","\\1==\\2",expressions.list)
 
     vars.cond <- sub("([[:alnum:]])[^[:alnum:]]+.*","\\1",expressions.list)
-
+    
     if(length(vars.cond)){
-        missings <- listMissings(data,cols=vars.cond)
+        missings <- listMissings(data,cols=unique(vars.cond))
         if(!is.null(missings)&&nrow(missings)>0){
             warning(paste("Missing values found in columns used for ACCEPT/IGNORE statements. This is not supported. If at all possible, please use a unique row identifier to merge by and/or make sure values are not missing in these colums.\n",paste(capture.output(print(missings[,.N,by=.(variable,value)])),collapse="\n")))
             

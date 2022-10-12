@@ -27,7 +27,7 @@
 listMissings <- function(data,cols,by,na.strings=c("","."),quiet=FALSE,as.fun){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
-
+    
     dots <- NULL
     value <- NULL
     . <- NULL
