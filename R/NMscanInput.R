@@ -155,8 +155,9 @@ NMscanInput <- function(file, use.rds, file.mod, dir.data=NULL,
     ## rows. This is used for very litle which should be done here
     ## instead of making a deep copy.
     data.input.0 <- copy(data.input)
-    
-    nminfo.input.0 <- NMinfoDT(data.input)
+
+    ### not used
+    ## nminfo.input.0 <- NMinfoDT(data.input)
 
     
     
