@@ -137,6 +137,7 @@ xgxr1.csv,1 csv only
 xgxr1_flag0.csv,pk FLAG==0
 xgxr2.csv,1 +rds +meta
 xgxr2_flag0.csv,2 FLAG==0
+xgxr2_flag0_nocolnames.csv,2 FLAG==0 no colnames in csv
 xgxr3.csv,duplic column names
 xgxr4.csv,1 without ROW
 xgxr5.csv,2 char and .
@@ -184,6 +185,13 @@ files <- list.files(path=file.data(),pattern=paste0(fnExtension(fn.data,ext=""),
 for(fn in files){
     file.copy(file.data.test(fn),file.data.inst(),overwrite=T)
 }
+
+fn.data <- "xgxr2_flag0_nocolnames.csv"
+dt.data[file.data==fn.data,
+        nmCode:=list(list(
+            NMwriteData(pk[FLAG==0],file=file.data.test(fn.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2),script=script.1,args.fwrite=list(na=".",quote=FALSE,row.names=FALSE,scipen=0,col.names=FALSE))
+        ))]
+
 
 ## a version with duplicated column names for testing
 pk2 <- cbind(pk,pk[,.(DOSE)])

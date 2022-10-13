@@ -17,6 +17,7 @@ NMwriteData(
   args.RData,
   quiet,
   args.NMgenText,
+  genText = TRUE,
   nm.drop,
   nmdir.data,
   col.flagn,
@@ -68,6 +69,10 @@ NONMEM - and NMwriteSection can even update multiple NONMEM
 control streams based on the result. This will update your
 control streams to match your new data file with just one
 command.}
+
+\item{genText}{Run and report results of NMgenText? Default is
+TRUE. You may want to disable this if data set is not for
+Nonmem.}
 
 \item{nm.drop}{Deprecated, use
 args.NMgenText=list(drop=c("column")) instead.}

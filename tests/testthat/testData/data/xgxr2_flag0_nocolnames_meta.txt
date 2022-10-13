@@ -1,0 +1,4 @@
+"parameter","value"
+"DataCreateScript","dsCreate_1.R"
+"CreationTime","2022-10-12 19:40:00 EDT"
+"writtenTo","../../tests/testthat/testData/data/xgxr2_flag0_nocolnames.csv"

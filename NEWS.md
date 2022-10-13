@@ -1,8 +1,14 @@
 # Post 0.0.13
 ## New features
-* fnExtension now ignores leading spaces in new extension, and
-  extensions with zero or one leading period are treated identically
-  (so asking for xml or .xml is the same).
+* fnExtension has been generalized. It now ignores leading spaces in
+  new extension, and extensions with zero or one leading period are
+  treated identically (so asking for xml or .xml is the same). Also,
+  by providing "" as the new extension will now remove the extension,
+  and if extension is not provided, fnExtension will retrieve the
+  extension rather than replace it.
+  
+* NMwriteData has got an arguement 'genText' to control whether text
+  for Nonmem should be generated. Default is to do so.
 
 # 0.0.13
 

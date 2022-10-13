@@ -44,7 +44,8 @@
 ##'     control streams to match your new data file with just one
 ##'     command.
 ##' @param genText Run and report results of NMgenText? Default is
-##'     TRUE.
+##'     TRUE. You may want to disable this if data set is not for
+##'     Nonmem.
 ##' @param nmdir.data Deprecated, use
 ##'     args.NMgenText=list(dir.data="your/path") instead.
 ##' @param nm.copy Deprecated, use
@@ -94,7 +95,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
         file <- NULL
     } else {
 #### check file name for compatibility with replacing extension
-        if(!grepl("\\..+$",file)) stop("Cannot replace extension on filename. Choose a file name that ends in an extension, like \"file.csv\" or \"file.rds\".")
+        ## if(!grepl("\\..+$",file)) stop("Cannot replace extension on filename. Choose a file name that ends in an extension, like \"file.csv\" or \"file.rds\".")
     }
     
     if(is.null(file)) {

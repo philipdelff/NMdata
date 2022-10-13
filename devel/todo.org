@@ -50,22 +50,24 @@ With load_all():
     Export to parent. Not sure check allows though...
 ** Function improvements
 *** addTAPD
-**** TODO Quit if no doses found etc
+**** TODO [#A] add SDOSE argument
+which scales AMT to DOSE variables. Sometimes AMT is say mcg but DOSE
+i mg. Then also one could want PDOS etc to be in mg.
+**** TODO [#B] Quit if no doses found etc
 *** cl
 *** dims
 **** DONE Check if objects are data.frames
 *** fnAppend
 *** fnExtention
-**** TODO Support strings without extensions
+**** DONE Support strings without extensions
  Example: fnExtension("run",".lst")
-**** TODO fnExtension("run.lst","") should return run
-**** TODO fnExtension("run.lst") should return lst
->>>>>>> 9654a90d5c9fb1f34537b9ddd06547aaa2418e1b
+**** DONE fnExtension("run.lst","") should return run
+**** DONE fnExtension("run.lst") should return lst
 **** DONE Make internal in tracee
 *** NMcheckColNames
 **** return input column names and Nonmem interpretation for user to spot errors
 **** Bad name, what could we call it?
-*** cc - create character vector function*
+*** cc - create character vector function
 *** NMgenText
 **** TODO Handle until values not matching column names
 **** DONE Add a until argument to specify the last column to use in nonmem
@@ -98,6 +100,8 @@ helpful. Only list other columns than the scope.
 List missing elements
 For specific columns, look for missing elements (NA, "", length(x)==0
 in case of lists?). Tabulate and list. 
+**** TODO [#A] check for duplicates in columns requested to check
+**** TODO [#A] Check for duplicate column names in data
 **** TODO [#B] Align reporting with NMcheckData?
 **** TODO [#B] dcast summary when using by
 This is quite powerfull:
@@ -271,7 +275,10 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMscanInput
-**** TODO Make work without filters
+**** TODO [#A] Make work without filters
+Generated xgxr027.mod with a dataset without column names for the
+purpose. Needs to be run with Nonmem, then test.
+**** TODO [#B] Make work without column names in input data file
 **** TODO [#B] Time check of lst vs input belongs here rather than in NMscanData
 Not sure.
 **** TODO [#B] Add NMinfo data on whether column names were translated according to $INPUT
@@ -329,8 +336,9 @@ A way to limit rows read into nonmem
 ***** diff
 ***** off
 *** NMscanTables
+**** TODO [#A] Make work with commented variable lists
 **** DONE include meta data as NMinfo
-**** TODO [#A] Integrate the reduction into one table from NMscanData
+**** TODO [#B] Integrate the reduction into one table from NMscanData
 **** DONE Lastonly does the same as firstonly
 *** NMscanData
 **** DONE Split out data finder handling
@@ -340,6 +348,7 @@ NMscanData. This should be done in NMscanInput or NMextractDataFile so
 that other functions such as NMcheckData gets the same behaviour.
 
 This is now handled by NMextractDataFile
+**** TODO [#A] Test on a simulation model with subproblems
 **** TODO [#B] Simplify timestamp warnings
      When .mod is newer than .lst and or tables, reduce to one warning
      summarizing both findings.

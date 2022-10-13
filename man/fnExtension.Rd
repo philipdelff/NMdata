@@ -7,18 +7,26 @@
 fnExtension(fn, ext)
 }
 \arguments{
-\item{fn}{file name}
+\item{fn}{file name. Often ending in an extension after a period
+but the extension is not needed.}
 
-\item{ext}{new file name extension}
+\item{ext}{new file name extension. If omitted or NULL, the
+extension of fn is returned.}
 }
 \value{
 A text string
 }
 \description{
-Very simple but often applicable function to change the file name extension (from say file.lst to file.mod)
+Very simple but often applicable function to retrieve or change
+the file name extension (from say file.lst to file.mod)
 }
 \examples{
 fnExtension("file.lst",".mod")
 fnExtension("file.lst","mod")
+fnExtension("file.lst","..mod")
+fnExtension("file.lst",cc(.mod,xml))
+fnExtension(cc(file1.lst,file2.lst),cc(.xml))
+fnExtension(cc(file1.lst,file2.lst),cc(.xml,.cov))
 fnExtension("file.lst","")
+fnExtension("file.lst")
 }
