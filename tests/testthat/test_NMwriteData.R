@@ -1,5 +1,5 @@
 ## library(devtools)
-## load_all("c:/Users/delff/working_copies/NMdata")
+## load_all()
 
 ## for some reason, the linebreaking is not consistent in $INPUT
 ## making these tests fail. So for now, we don't test te line
@@ -33,7 +33,7 @@ test_that("nm.drop is an empty string - not allowed",{
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     ## not allowed
     expect_error(
-        NMwriteData(pk
+        res <- NMwriteData(pk
                    ,file=system.file("examples/data/xgxr1.csv",package="NMdata")
                    ,write.rds=F,write.csv=F
                    ,nm.drop=""
