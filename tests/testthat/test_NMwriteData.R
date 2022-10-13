@@ -1,5 +1,5 @@
 ## library(devtools)
-## load_all("c:/Users/delff/working_copies/NMdata")
+## load_all()
 
 ## for some reason, the linebreaking is not consistent in $INPUT
 ## making these tests fail. So for now, we don't test te line
@@ -18,7 +18,7 @@ test_that("basic",{
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 
     NMwriteData(pk,file="testOutput/NMwriteData1.csv",
-                        write.rds=F,write.csv=T,nmdir.data="/example")
+                write.rds=F,write.csv=T,nmdir.data="/example")
     res1 <- readLines("testOutput/NMwriteData1.csv")
 
     ## lapply(res1,print)
@@ -172,5 +172,39 @@ test_that("with stamp on csv",{
     expect_equal_to_reference(
         res1
        ,fileRef,version=2)
+}
+)
+
+
+test_that("Quiet but get text for NM",{
+
+    fileRef <- "testReference/NMwriteData_9.rds"
+    outfile <- "testOutput/stampedData_9.csv"
+    
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+
+    res1 <- NMwriteData(pk,file=outfile
+                       ,script="A simple test",write.rds=FALSE,
+                        args.stamp=list(time=as.POSIXct("2021-11-21 11:00:00")),
+                        quiet=T)
+    res1 <- fix.input(res1)
+
+    expect_equal_to_reference(
+        res1
+       ,fileRef,version=2)
+}
+)
+
+test_that("Not quiet but no text for NM",{
+    
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+
+    res1 <- NMwriteData(pk,file=tempfile(),
+                       ,script="A simple test",write.rds=FALSE,
+                        args.stamp=list(time=as.POSIXct("2021-11-21 11:00:00")),
+                        quiet=FALSE,
+                        genText=FALSE)
+    expect_null(res1)
+
 }
 )
