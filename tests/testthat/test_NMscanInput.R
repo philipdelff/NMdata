@@ -151,3 +151,14 @@ test_that("CYCLE=DROP",{
     nm1 <- NMinfo(res)
     expect_equal_to_reference(nm1,fileRef,version=2)
 })
+
+
+
+test_that("No filters",{
+
+    fileRef <- "testReference/NMscanInput_08.rds"
+
+    inp <- NMscanInput("testData/nonmem/xgxr027.lst")
+
+    expect_equal_to_reference(inp,fileRef,version=2)
+})

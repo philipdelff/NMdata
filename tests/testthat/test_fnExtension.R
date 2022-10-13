@@ -13,11 +13,24 @@ test_that("basic",{
        ,
         ## Adding extension where not existing is also supported
         fnExtension("feww",".rds")
+        ,
+        ## we don't need the period
+        fnExtension("feww","rds")
        ,
         ## we can remove extension
         fnExtension("feww.csv","")
+    
     )
 
     expect_equal_to_reference(res1,fileRef)
     
 })
+
+test_that("Rerieve extension",{
+
+    expect_equal(fnExtension("feww.csv"),"csv")
+    expect_equal(fnExtension("feww.aa.csv"),"csv")
+    expect_equal(fnExtension("csv"),"csv")
+
+        
+}
