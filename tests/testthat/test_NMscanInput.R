@@ -159,6 +159,7 @@ test_that("No filters",{
     fileRef <- "testReference/NMscanInput_08.rds"
 
     inp <- NMscanInput("testData/nonmem/xgxr027.lst")
+    inp <- fix.time(inp)
 
     expect_equal_to_reference(inp,fileRef,version=2)
 })

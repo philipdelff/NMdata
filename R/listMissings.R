@@ -35,13 +35,14 @@ listMissings <- function(data,cols,by,na.strings=c("","."),quiet=FALSE,as.fun){
 ###  Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
     
+#### Section start: Checking arguments ####
+
     data <- copy(as.data.table(data))
     if(missing(cols)) cols <- copy(colnames(data))
 
     if(is.data.table(dots[[1]]) && is.null(as.fun)) as.fun <- "data.table"
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
-    
     if(missing(by)){
         by <- "by"
         data[,(by):=1]
@@ -52,6 +53,19 @@ listMissings <- function(data,cols,by,na.strings=c("","."),quiet=FALSE,as.fun){
             stop("all elements in by must be existing column names in data.")
         }
     }
+
+    if(any(duplicated(cols))){
+        warning("Removing replications of values in cols.")
+        cols <- unique(cols)
+    }
+
+    ## not sure this will work if there are duplicate column names in data
+    cols.matched <- intersect(cols,colnames(data))
+    if(any(duplicated(cols.matched))){
+        stop("One or more of the column names to be checked is or refer to multiple columns in data.",paste(unique(cols.matched[duplicated(cols.matched)]),collapse=", "))
+    }
+    
+###  Section end: Checking arguments
     
     is.missing <- function(x) {
         is.na(x) |

@@ -100,8 +100,8 @@ helpful. Only list other columns than the scope.
 List missing elements
 For specific columns, look for missing elements (NA, "", length(x)==0
 in case of lists?). Tabulate and list. 
-**** TODO [#A] check for duplicates in columns requested to check
-**** TODO [#A] Check for duplicate column names in data
+**** DONE check for duplicates in columns requested to check
+**** DONE Check for duplicate column names in data
 **** TODO [#B] Align reporting with NMcheckData?
 **** TODO [#B] dcast summary when using by
 This is quite powerfull:

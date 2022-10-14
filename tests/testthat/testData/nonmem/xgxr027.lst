@@ -39,7 +39,7 @@ $SIGMA  .2
 $SIGMA  .2
 $ESTIMATION METHOD=1 POSTHOC INTER MAXEVAL=9999 NSIG=2 SIGL=9 PRINT=10
             NOABORT
-$TABLE      ID CWRES PRED IPRED FILE=xgxr013_res1.txt NOPRINT
+$TABLE      ID CWRES PRED IPRED FILE=xgxr027_res1.txt NOPRINT
 
 
 NM-TRAN MESSAGES
@@ -60,6 +60,7 @@ NM-TRAN MESSAGES
  * THE MAXIMUM NUMBER OF WARNINGS OF ONE OR MORE TYPES WAS REACHED.
  IT IS POSSIBLE THAT SOME WARNING MESSAGES WERE SUPPRESSED.
 
+Days until program expires :  96
 1NONLINEAR MIXED EFFECTS MODEL PROGRAM (NONMEM) VERSION 7.5.0
  ORIGINALLY DEVELOPED BY STUART BEAL, LEWIS SHEINER, AND ALISON BOECKMANN
  CURRENT DEVELOPERS ARE ROBERT BAUER, ICON DEVELOPMENT SOLUTIONS,
@@ -325,8 +326,8 @@ NM-TRAN MESSAGES
  TOTAL EFFECTIVE ETAS (NIND*NETA):                           393
   
  #TERE:
- Elapsed estimation  time in seconds:     8.30
- Elapsed postprocess time in seconds:     0.05
+ Elapsed estimation  time in seconds:     8.28
+ Elapsed postprocess time in seconds:     0.06
 1
  
  
@@ -450,5 +451,6 @@ NM-TRAN MESSAGES
 +        0.00E+00  3.73E-02
  
  Elapsed finaloutput time in seconds:     0.02
- #CPUT: Total CPU Time in Seconds,        8.507
-Stop Time:
+ #CPUT: Total CPU Time in Seconds,        8.496
+
+
