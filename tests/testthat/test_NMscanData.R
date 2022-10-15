@@ -41,6 +41,7 @@ test_that("basic",{
     ## NMreadSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
     res <- NMscanData(file=file.lst, quiet=T, order.columns = F, merge.by.row=FALSE, check.time = FALSE)
+    ## res2 <- NMscanData(file=file.lst, quiet=T, order.columns = F, merge.by.row=FALSE, check.time = FALSE,tab.count=T)
     ## dim(res)
 
     fix.time(res)
@@ -833,9 +834,16 @@ test_that("Input control stream missing",{
     fileRef <- "testReference/NMscanData_30.rds"
     file.lst <- "testData/nonmem/xgxr001.lst"
     res <- NMscanData(file=file.lst,use.input=F)
-## check file.mod wasn't used
-##    NMinfo(res1a,"details")
+    ## check file.mod wasn't used
+    ##    NMinfo(res1a,"details")
     fix.time(res)
     expect_equal_to_reference(res,fileRef,version=2)
     
 })
+
+
+res1 <- NMscanData("testData/nonmem/xgxr008.lst",recover.rows=T)
+res2 <- NMscanData("testData/nonmem/xgxr008.lst",recover.rows=T,merge.by.row = FALSE)
+dims(res1,res2)
+inp <- fread("testData/nonmem/../data/xgxr1_flag0.csv")
+inp[,.N,by=.(DOSE>=10|WEIGHTB>100)]

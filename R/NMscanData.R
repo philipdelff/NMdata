@@ -326,7 +326,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         messageWrap(paste0("column",col.model," (value of col.model) existed and was overwritten. To avoid this, use argument col.model. To skip, use col.model=NULL."),fun.msg=warning)
     }
 
-    ##
+    ## col.nmout
     if(missing(col.nmout)) col.nmout <- NULL
     col.nmout <- NMdataDecideOption("col.nmout",col.nmout)
     
@@ -497,40 +497,12 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
         ## if no method is specified, search for possible col.row to help the user
         if(search.col.row){
-            
-            dia <- suppressWarnings(NMscanInput(file,file.mod=file.mod
-                                               ,dir.data=dir.data
-                                               ,file.data=file.data
-                                               ,quiet=TRUE
-                                               ,translate=translate.input
-                                               ,use.rds=use.rds
-                                               ,applyFilters=FALSE
-                                               ,args.fread=args.fread
-                                               ,details=TRUE
-                                               ,col.id=col.id
-                                               ,as.fun="data.table"))
-            
-            cols.row.input <- colnames(dia)[dia[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
+            msg0 <- searchColRow(file,dir.data,file.data,translate.input,use.rds,args.fread,col.id,tab.row)
+            msg <- paste0(msg0,"\n",
+                          "To skip this check, please use merge.by.row=TRUE or merge.by.row=FALSE.")
+            messageWrap(msg,fun.msg=message)
+            cat("\n")
 
-            cols.row.output <- colnames(tab.row)[tab.row[,unlist(lapply(.SD,function(x)uniqueN(x)==.N))]]
-
-            cols.row.both <- intersect(cols.row.input,cols.row.output)
-### we should not merge on these even if unique
-            cols.row.both <- setdiff(cols.row.both,c("AMT","DV"))            
-            if(length(cols.row.both)){
-                
-                msg0 <- paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in both input and output data. If this column or one of these columns is not modified by the Nonmem run, consider using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.both,collapse=", "))
-            } else if(length(cols.row.input)) {
-                msg0 <- paste("\nInput data columns will be appended to output data. However, column(s) were identified as unique identifiers, present in input data. If this column or one of these columns is not modified by the Nonmem run, consider adding it to a row-level output table and using this in col.row for a robust merge of input and output data. Candidate columns:",paste(cols.row.input,collapse=", "))
-            } else {
-                msg0 <- ""
-            }
-            if(msg0!=""){
-                msg <- paste0(msg0,"\n",
-                              "To skip this check, please use merge.by.row=TRUE or merge.by.row=FALSE.")
-                messageWrap(msg,fun.msg=message)
-                cat("\n")
-            }
         }
         
         if(cbind.by.filters) {
