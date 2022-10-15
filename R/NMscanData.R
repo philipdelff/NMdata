@@ -157,7 +157,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                        order.columns=TRUE, check.time, tz.lst) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
-
+    
     . <- NULL
     COLNUM <- NULL
     DV <- NULL
@@ -256,22 +256,12 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 #### Section start: read all output tables and add to meta data ####
     
-    tables <- NMscanTables(file,tab.count=tab.count,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id)
+    ## tables <- NMscanTables(file,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id,tab.count=tab.count)
+    tables <- NMscanTables(file,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id,tab.count=TRUE)
     meta.output <- copy(NMinfoDT(tables)$tables)
     
-    rows.flo <- meta.output[scope=="firstlastonly"]
-    if(rows.flo[,.N]>0) {
-        warning("One or more output tables with FIRSTLASTONLY option detected. This is not supported, and the table will be disregarded. Use a combination of NMscanTables, NMscanInput, and merge manually.")
-        k <- meta.output[,which(scope=="firstlastonly")]
-        tables <- tables[-k]
-        meta.output <- meta.output[-k]
-    }
-    data <- tables
-    overview.tables <- meta.output
-    
 ### combine full tables into one
-    col.row.in.output <- overview.tables[level=="row",any(has.col.row)]
-    
+    col.row.in.output <- meta.output[level=="row",any(has.col.row)]
     
     if(use.input && is.logical(merge.by.row) && merge.by.row) {
         if(!col.row.in.output) {
@@ -344,7 +334,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(is.null(col.nmout)) {
         col.nmout <- tmpcol(names=allnames,base="nmout",prefer.plain=TRUE)
         if(recover.rows){
-            messageWrap(paste0("col.model is NULL, but this is not allowed for recover.rows=TRUE. col.nmout is set to ",col.nmout),fun.msg=warning)
+            messageWrap(paste0("col.nmout is NULL, but this is not allowed for recover.rows=TRUE. col.nmout is set to ",col.nmout),fun.msg=warning)
         } else {
             use.nmout <- FALSE
         }
@@ -356,70 +346,25 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 ### Section end: col.nmout and col.model
     
 
-#### Section start:  merge to max one idlevel and max one row ####
+#### Section start:  merge output to max one idlevel and max one row ####
     
-    tab.row <- NULL
-    dt.vars <- NULL
     
-    if(overview.tables[level=="row",.N]) {
-        
-        ## there might be a little bit to save by reducing the columns before cbind.
-        tab.row <- Reduce(cbind,data[which(overview.tables$level=="row")])
-### get all names from this and then select unique to get a table with the included variables
-        list.vars <- lapply(data[which(overview.tables$level=="row")],names)
-        list.vars <- lapply(list.vars,as.data.table)
-        list.vars <- lapply(seq_along(list.vars),function(n)list.vars[[n]][,file:=names(list.vars)[n]])
-        dt.vars1 <- rbindlist(list.vars)
-        setnames(dt.vars1,c("V1"),"variable")
-        ## notice the selection of names in dt.vars and tab.row must be identical
-        dt.vars1[,included:=!duplicated(variable)]
-        dt.vars1[,`:=`(source="output",level="row")]
-        
-        tab.row <- tab.row[,!duplicated(colnames(tab.row)),with=FALSE]
-
-        tab.row[,(col.nmout):=TRUE]
-
-        dt.vars <- rbind(dt.vars,dt.vars1)
-        
-        dt.vars <- rbind(dt.vars,
-                         data.table(variable=col.nmout
-                                   ,file=NA_character_
-                                   ,included=TRUE 
-                                   ,source="NMscanData"
-                                   ,level="row"
-                                    ))
-    } 
-
-
-### combine idlevel tables into one
-    tab.idlevel <- NULL
-    if(any(overview.tables$level=="id")) {
-        
-        tab.idlevel <- Reduce(cbind,data[which(overview.tables$level=="id")])
-        tab.idlevel <- tab.idlevel[,unique(colnames(tab.idlevel)),with=FALSE]
-
-### get all names from this and then select unique to get a table with the included variables
-        list.vars.id <- lapply(data[which(overview.tables$level=="id")],names)
-        list.vars.id <- lapply(list.vars.id,as.data.table)
-        list.vars.id <- lapply(seq_along(list.vars.id),function(n)list.vars.id[[n]][,file:=names(list.vars.id)[n]])
-        dt.vars.id1 <- rbindlist(list.vars.id)
-        setnames(dt.vars.id1,c("V1"),"variable")
-        dt.vars.id1[,included:=!duplicated(variable)]
-        ## notice the selection of names in dt.vars.id and tab.row must be identical
-        ## dt.vars.id1[,included:=!duplicated(variable)]
-        dt.vars.id1[,`:=`(source="output",level="id")]
-    }
+    object.tables <- reduceTables(tables,col.nmout=col.nmout)
+    tab.row <- object.tables$tab.row
+    tab.idlevel <- object.tables$tab.idlevel
+    dt.vars <- object.tables$dt.vars
+    dt.vars.id <- object.tables$dt.vars.id
     
     ## use.rows means if to use row-data from output tables
     use.rows <- TRUE
-    if(!any(overview.tables$level=="row")) {
+    if(!any(meta.output$level=="row")) {
         use.rows <- FALSE
-        col.row.in.output <- overview.tables[full.length==FALSE,any(has.col.row)]
+        col.row.in.output <- meta.output[full.length==FALSE,any(has.col.row)]
     }
 
 ###  Section end:  merge to max one idlevel and max one row
-
-
+    
+    
 
 #### Section start: Check file modification times ####
     if(is.null(tz.lst)){
@@ -495,8 +440,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         
     }
 
-
 ### Section end: Check file modification times
+
     if(use.input){
         
         cnames.input.nonmem  <- nminfo.input$input.colnames[,nonmem]
@@ -547,6 +492,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     }
 
     if(use.input&&any(meta.output$full.length)) {
+        if(recover.rows && tab.row[,uniqueN(TABLENO)]>1) messageWrap("Output tables seem repeated (is this a simulation with multiple subproblems?). recover.rows=TRUE is not supported in this case.",fun.msg=stop)
         ## if(!quiet) messageWrap("Searching for input data.")
 
         ## if no method is specified, search for possible col.row to help the user
@@ -641,7 +587,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             col.row.in.output <- FALSE
             if(col.row%in%colnames(tab.row)) {
                 if( tab.row[,any(duplicated(get(col.row)))]) {
-                    messageWrap("merge.by.row is TRUE, but col.row has duplicate values in _output_ data. col.row must be a unique row identifier. It is unique in input data, so how did rows get repeated in output data? Has input data been edited since the model was run?",fun.msg=stop)
+                    ## messageWrap("merge.by.row is TRUE, but col.row has duplicate values in _output_ data. col.row must be a unique row identifier. It is unique in input data, so how did rows get repeated in output data? Has input data been edited since the model was run?",fun.msg=stop)
+                    warning("skipping a check")
                 }
                 col.row.in.output <- TRUE
             } else {
@@ -671,8 +618,19 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                          ]
 
                 dt.vars <- rbind(dt.vars,dt.vars1)
-                tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=TRUE,as.fun="data.table",quiet=TRUE)
-                
+### if recover, mergeCheck(input,output,all.x=T)
+### else, mergeCheck(output,input,all.x=T)
+
+#### before implementation of tableno
+                ## tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=TRUE,as.fun="data.table",quiet=TRUE)
+
+                ## after implementation of tableno
+                if(recover.rows){
+                    tab.row <- mergeCheck(data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],tab.row,by=col.row,all.x=TRUE,as.fun="data.table",quiet=TRUE)
+                } else {
+                    tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=TRUE,as.fun="data.table",quiet=TRUE)
+                }
+                tab.row[is.na(get(col.nmout)),(col.nmout):=FALSE]
             }
             
         }
@@ -725,7 +683,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             ## there's nothing else - so just return idlevel data
             tab.row <- tab.idlevel
 
-            dt.vars <- rbind(dt.vars,dt.vars.id1)
+            dt.vars <- rbind(dt.vars,dt.vars.id)
             tab.row[,(col.nmout):=TRUE]
             
         } else {
@@ -742,7 +700,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                 tab.idlevel[,(col.row):=NULL]
                 id.cols.not.new <- c(col.row,col.id)
                 
-                overview.tables[level=="id",nid:=tab.idlevel[,uniqueN(get(col.id))]]
+                meta.output[level=="id",nid:=tab.idlevel[,uniqueN(get(col.id))]]
             }
             ## For now, we don't support disjoint ID's in combination with idlevel tables. 
             if(col.id%in%colnames(tab.idlevel)) {
@@ -759,11 +717,11 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                 tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=FALSE]
                 tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="data.table",quiet=TRUE)
                 
-                dt.vars.id1[,included:=FALSE]
-                dt.vars.id1[variable%in%setdiff(cols.to.use,id.cols.not.new),included:=TRUE]
-                dt.vars.id1[included==TRUE,included:=!duplicated(variable)]
+                dt.vars.id[,included:=FALSE]
+                dt.vars.id[variable%in%setdiff(cols.to.use,id.cols.not.new),included:=TRUE]
+                dt.vars.id[included==TRUE,included:=!duplicated(variable)]
                 
-                dt.vars <- rbind(dt.vars,dt.vars.id1)
+                dt.vars <- rbind(dt.vars,dt.vars.id)
             }
         }
     }
