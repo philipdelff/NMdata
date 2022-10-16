@@ -115,7 +115,7 @@ NMscanTables <- function(file,as.fun,quiet,tab.count=FALSE,col.id="ID",col.row,d
         if(!file.exists(meta[I,file])) stop(paste0("NMscanTables: File not found: ",meta[I,file],". Did you copy the lst file but forgot table
 file?"))
         tables[[I]] <- NMreadTab(meta[I,file],quiet=TRUE,tab.count=tab.count,showProgress=FALSE,as.fun=identity,header=meta[I,!noheader])
-        dim.tmp <- dim(tables[[I]])
+        dim.tmp <- dim(tables[[I]][,!colnames(tables[[I]])=="TABLENO",with=FALSE])
         meta[I,nrow:=dim.tmp[1]]
         meta[I,ncol:=dim.tmp[2]]
         

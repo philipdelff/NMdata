@@ -1,8 +1,9 @@
 ##' @keywords internal
 
-searchColRow <- function(file,dir.data,file.data,translate.input,use.rds,args.fread,col.id,tab.row){
+searchColRow <- function(file,file.mod=file.mod,dir.data,file.data,translate.input,use.rds,args.fread,col.id,tab.row){
 
-    dia <- suppressWarnings(NMscanInput(file,file.mod=file.mod
+    dia <- suppressWarnings(NMscanInput(file
+                                       ,file.mod=file.mod
                                        ,dir.data=dir.data
                                        ,file.data=file.data
                                        ,quiet=TRUE

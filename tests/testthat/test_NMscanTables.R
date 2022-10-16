@@ -35,7 +35,7 @@ test_that("Details table",{
     fileRef <- "testReference/NMscanTables2.rds"
     file.lst <- system.file("examples/nonmem/xgxr003.lst", package="NMdata")
 
-    res <- NMscanTables(file=file.lst,details=T,as.fun="data.table",tab.count=TRUE)
+    res <- NMscanTables(file=file.lst,as.fun="data.table",tab.count=TRUE)
 ### this will make trouble because meta data table contains absolute
 ### paths which is machine dependent. So removing path.
     meta <- attributes(res)$NMdata
@@ -52,7 +52,7 @@ test_that("$TABLE header options",{
     fileRef <- "testReference/NMscanTables3.rds"
     file.lst <- "testData/nonmem/xgxr024.lst"
 
-    res <- NMscanTables(file=file.lst,details=T,as.fun="data.table",tab.count=TRUE)
+    res <- NMscanTables(file=file.lst,as.fun="data.table",tab.count=TRUE)
     meta <- NMinfoDT(res)
     meta$tables[,file:=basename(file)]
     meta$tables$file.mtime <- NULL

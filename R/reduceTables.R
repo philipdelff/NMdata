@@ -1,3 +1,7 @@
+##' @import data.table
+##' @keywords internal
+
+
 reduceTables <- function(tables,col.nmout){
 
     meta.output <- copy(NMinfoDT(tables)$tables)
@@ -55,7 +59,7 @@ reduceTables <- function(tables,col.nmout){
 
 ### get all names from this and then select unique to get a table with the included variables
         list.vars.id <- lapply(tables[which(meta.output$level=="id")],names)
-        list.vars.id <- lapply(list.vars.id,as.table.table)
+        list.vars.id <- lapply(list.vars.id,as.data.table)
         list.vars.id <- lapply(seq_along(list.vars.id),function(n)list.vars.id[[n]][,file:=names(list.vars.id)[n]])
         dt.vars.id <- rbindlist(list.vars.id)
         setnames(dt.vars.id,c("V1"),"variable")
