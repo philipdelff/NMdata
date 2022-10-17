@@ -4,6 +4,7 @@
 :LOGGING: nil
   :END:
 ** Design
+*** TODO [#A] Add version to welcome message
 *** TODO [#B] deprecate "default" option in NMdataConf
     has no benefit over NULL, so redundant and prevents the use of "default" as an actual param value.
 *** DONE Allow for say input.txt/output.txt
