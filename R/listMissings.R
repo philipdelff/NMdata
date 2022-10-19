@@ -79,7 +79,7 @@ listMissings <- function(data,cols,by,na.strings=c("","."),quiet=FALSE,as.fun){
     res <- data.l[is.missing(value),c(by,"variable","row","value"),with=F]
 
     if(nrow(res)==0){
-        message("No missing values identified")
+        if(!quiet) message("No missing values identified")
         return(invisible(NULL))
     }
     

@@ -70,9 +70,11 @@ NMreadTab <- function(file,tab.count=TRUE,header=TRUE,skip,quiet,as.fun,...) {
     if(!quiet){
         message("Adding table numbers to data")
     }
+    
     if(tab.count){
         ## find table numbers
-        dt1[grep("^TABLE +NO\\. +[0-9]+ *$",as.character(get(cnames[1])),invert=FALSE,perl=TRUE),TABLE:=get(cnames[1])]
+        ## dt1[grep("^TABLE +NO\\. +[0-9]+ *$",as.character(get(cnames[1])),invert=FALSE,perl=TRUE),TABLE:=get(cnames[1])]
+        dt1[grep("^TABLE",as.character(get(cnames[1])),invert=FALSE,perl=TRUE),TABLE:=get(cnames[1])]
         if(header){
             dt1[,TABLENO:=cumsum(!is.na(TABLE))+1]
         }

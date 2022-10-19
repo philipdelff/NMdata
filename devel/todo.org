@@ -4,6 +4,7 @@
 :LOGGING: nil
   :END:
 ** Design
+*** TODO [#A] Add version to welcome message
 *** TODO [#B] deprecate "default" option in NMdataConf
     has no benefit over NULL, so redundant and prevents the use of "default" as an actual param value.
 *** DONE Allow for say input.txt/output.txt
@@ -341,6 +342,14 @@ A way to limit rows read into nonmem
 **** TODO [#B] Integrate the reduction into one table from NMscanData
 **** DONE Lastonly does the same as firstonly
 *** NMscanData
+**** TODO [#A] Make clear how TABLENO is being counted
+ #### TABLENO is now added to the number of columns taken from the
+ #### output table that has TABLENO. Is that what we want? Or +1? +1 is
+ #### very complicated for user. Maybe better: if tab.count, it is treated like any other column, but in NMinfo(,"tables") there is a column, hasTABLENO
+**** TODO [#A] Support for custom TABLENO column
+One may use REP=IREP or something like that and avoid the table
+headers in output. That is not supported now. It wouldn't be hard to
+include.
 **** DONE Split out data finder handling
 There is a few different ways to get to the data file path. Some
 checks are being done on the compatibility of the arguments in
