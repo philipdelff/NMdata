@@ -7,8 +7,15 @@
   and if extension is not provided, fnExtension will retrieve the
   extension rather than replace it.
   
+* Added support for repeated outputs, like those created using the
+  SUBPROBLEM option.
+  
 * NMwriteData has got an arguement 'genText' to control whether text
   for Nonmem should be generated. Default is to do so.
+
+## Other improvements
+* Internally, combination of input and output data without a row
+  identifier is simplified.
 
 # 0.0.13
 

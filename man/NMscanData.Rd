@@ -22,7 +22,7 @@ NMscanData(
   modelname,
   col.model,
   col.nmout,
-  tab.count = FALSE,
+  tab.count,
   order.columns = TRUE,
   check.time,
   tz.lst

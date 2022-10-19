@@ -162,9 +162,12 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     COLNUM <- NULL
     DV <- NULL
     ID.jump <- NULL
+    N <- NULL
+    TABLENO <- NULL
     ## firstlastonly <- NULL
     ## firstonly <- NULL
     ## lastonly <- NULL
+    dup <- NULL
     full.length <- NULL
     has.col.row <- NULL
     included <- NULL
@@ -573,7 +576,10 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             
             col.row.in.output <- FALSE
             if(col.row%in%colnames(tab.row)) {
-                found.dups <- tab.row[,.(dup=duplicated(get(col.row))),by=.(TABLENO)][,any(dup)]
+                
+                col.by <- NULL
+                if("TABLENO"%in%colnames(tab.row)) col.by <- "TABLENO"
+                found.dups <- tab.row[,.(dup=duplicated(get(col.row))),by=col.by][,any(dup)]
                 if( found.dups ) {
                     messageWrap("merge.by.row is TRUE, but col.row has duplicate values (within TABLENO) in _output_ data. col.row must be a unique row identifier. It is unique in input data, so how did rows get repeated in output data? Has input data been edited since the model was run?",fun.msg=stop)
                     ## warning("skipping a check")

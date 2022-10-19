@@ -1,9 +1,26 @@
+##' reduce tables from NMscanTables to fewer objects
+##' @param tables Object from NMtables
+##' @param col.nmout The name of the column holding logical of whether
+##'     row was found in output tables.
 ##' @import data.table
+##' @details This function is under development. It is not polished
+##'     for other than internal use by NMscanData. It will likely
+##'     return a different format in the future.
 ##' @keywords internal
 
 
 reduceTables <- function(tables,col.nmout){
 
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+    
+    included <- NULL
+    level <- NULL
+    scope <- NULL
+    variable <- NULL
+    
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+
+    
     meta.output <- copy(NMinfoDT(tables)$tables)
 
     
