@@ -422,6 +422,8 @@ data. It should be based on tables in meta$tables.
 **** TODO Check if models are repeated
 It now throws a weird error
 *** NMwriteData
+**** TODO [#A] Support for script=NULL
+Not sure how deep back this support is missing
 **** DONE Include option for non-nonmem data
 We want to write any csv or rds with meta data. Maybe just a message
 instead of the current warning when flags etc arent found?
