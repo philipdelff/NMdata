@@ -150,6 +150,8 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
     if(any(c("data","file")%in%names(args.NMgenText))){
         messageWrap("data and file are not allowed in args.NMgenText. If you want to set those, use NMgenText directly instead.",fun.msg=stop)
     }
+
+    
     
 ### stamp arguments
     doStamp <- TRUE
@@ -161,12 +163,21 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
         }
     }
     
-    if(missing(script)){
+    if(missing(script)||is.null(script)){
         doStamp <- FALSE
     } else {
         args.stamp$script <- script
     }
-
+    if(!doStamp&&!is.null(NMinfo(data))){
+        ## we are not stamping new info to data, but data may already have
+        ## some. We don't want to inherit when and where it was saved from
+        ## where it was previously read.
+        data <- copy(data)
+        nminfo <- NMinfoDT(data)
+        try(nminfo$dataCreate <- NULL)
+        writeNMinfo(data,meta=nminfo,append=FALSE)
+    }
+    
     
 ### rds arguments
     if(!missing(args.rds) && !write.rds ){

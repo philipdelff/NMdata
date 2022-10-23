@@ -11,12 +11,15 @@
   SUBPROBLEM option.
   
 * NMwriteData has got an arguement 'genText' to control whether text
-  for Nonmem should be generated. Default is to do so.
+  for Nonmem should be generated. Default is to do so. Also, support
+  is added for script=NULL which now means the same as not specifying
+  script.
 
 ## Other improvements
 * Internally, combination of input and output data without a row
   identifier is simplified.
-
+  
+* NMdata version added to welcome message.
 # 0.0.13
 
 ## New functions
