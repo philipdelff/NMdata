@@ -46,6 +46,9 @@
 ##'     samples. The default is c(3,0,4,1,2) - i.e. samples and
 ##'     simulations are pre-dose. See details.
 ##' @param by Columns to do calculations within. Default is ID.
+##' @param SDOS Scaling value for columns related to dose amount,
+##'     relative to AMT values. col.pdosamt and col.doscuma are
+##'     affected and will be derived as AMT/SDOSE.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
@@ -66,7 +69,7 @@
 ##' @family DataCreate
 
 
-addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos="TPDOS",col.tapd="TAPD",col.ndoses="NDOSES",col.pdosamt="PDOSAMT",col.doscuma="DOSCUMA",subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by="ID",as.fun){
+addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos="TPDOS",col.tapd="TAPD",col.ndoses="NDOSES",col.pdosamt="PDOSAMT",col.doscuma="DOSCUMA",subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by="ID",SDOS=1,as.fun){
 
     
     if(missing(as.fun)) as.fun <- NULL
@@ -122,7 +125,7 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
         if(!is.null(col.ndoses)){
             data[!is.na(get(col.time)),(col.ndoses):=cumsum(get(col.event)==TRUE),by=by]
         }
-        ## TPDOS - needed for TAPD
+        ## TPDOS - time of previous dose - needed for TAPD
         data[get(col.event)==TRUE,(col.tpdos.tmp):=get(col.time)]
         data[,(col.tpdos.tmp):=nafill(get(col.tpdos.tmp),type="locf"),by=by]
         ## Relative time since previous dose
@@ -131,11 +134,11 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
         }
         ## previous dose amount
         if(!is.null(col.pdosamt)){
-            data[,(col.pdosamt):=nafill(get(col.amt),type="locf"),by=by]
+            data[,(col.pdosamt):=nafill(get(col.amt),type="locf")/SDOS,by=by]
         }
-        ## Cumulative Amount of Dose Received
+        ## DOSCUMA - Cumulative Amount of Dose Received
         if(!is.null(col.doscuma)){
-            data[!is.na(get(col.amt)),(col.doscuma):=cumsum(get(col.amt)),by=by]
+            data[!is.na(get(col.amt)),(col.doscuma):=cumsum(get(col.amt))/SDOS,by=by]
             data[,(col.doscuma):=nafill(get(col.doscuma),type="locf"),by=by]
         }
         ## clean up tpdos

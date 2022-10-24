@@ -54,6 +54,9 @@ With load_all():
 **** TODO [#A] add SDOSE argument
 which scales AMT to DOSE variables. Sometimes AMT is say mcg but DOSE
 i mg. Then also one could want PDOS etc to be in mg.
+
+pdosamt, doscuma
+**** TODO [#A] Add test of SDOSE
 **** TODO [#B] Quit if no doses found etc
 *** cl
 *** dims
@@ -338,6 +341,7 @@ A way to limit rows read into nonmem
 ***** off
 *** NMscanTables
 **** TODO [#A] Make work with commented variable lists
+xgxr028.mod created
 **** DONE include meta data as NMinfo
 **** TODO [#B] Integrate the reduction into one table from NMscanData
 **** DONE Lastonly does the same as firstonly
