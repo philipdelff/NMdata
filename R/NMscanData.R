@@ -193,7 +193,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(!file.exists(file)) messageWrap(paste0("Model file ",file," does not exist."),fun.msg=stop)
     dir <- dirname(file)
 
-
+    
+    
     ## for easier passing of the argument
     if(missing(dir.data)) dir.data <- NULL
     if(missing(file.mod)) file.mod <- NULL
@@ -298,17 +299,17 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(use.input){
         
         data.input.full <- NMscanInput(file
-                                 ,file.mod=file.mod
-                                 ,dir.data=dir.data
-                                 ,file.data=file.data
-                                 ,quiet=TRUE
-                                 ,translate=translate.input
-                                 ,use.rds=use.rds
-                                 ,applyFilters=FALSE
-                                 ,args.fread=args.fread
-                                 ,as.fun="data.table"
-                                 ,col.id=col.id
-                                 ,details=TRUE)
+                                      ,file.mod=file.mod
+                                      ,dir.data=dir.data
+                                      ,file.data=file.data
+                                      ,quiet=TRUE
+                                      ,translate=translate.input
+                                      ,use.rds=use.rds
+                                      ,applyFilters=FALSE
+                                      ,args.fread=args.fread
+                                      ,as.fun="data.table"
+                                      ,col.id=col.id
+                                      ,details=TRUE)
         
         nminfo.input <- NMinfoDT(data.input.full)
         
@@ -490,16 +491,16 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             nrow.tab.row <- 0
             if(!is.null(tab.row)){
                 nrow.tab.row <- tab.row[,.N,by=(TABLENO)][,unique(N)]
-            
-            if( nrow.data.input!=nrow.tab.row) {
+                
+                if( nrow.data.input!=nrow.tab.row) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.
-                messageWrap(sprintf("After applying filters to input data, the resulting number of rows (%d) differs from the number of rows in output data (%d). Please check that input data hasn't changed since Nonmem was run, and that $INPUT section matches columns in input data. Also, NMdata may not be able to interpret your IGNORE/ACCEPT statements correctly (see ?NMapplyFilters). Please consider including a unique row identifier in both input and output data if possible. Another reason for the error could be that the model is a simulation that returns a multiple of the input events in output data.",nrow.data.input,nrow.tab.row),fun.msg=stop)
+                    messageWrap(sprintf("After applying filters to input data, the resulting number of rows (%d) differs from the number of rows in output data (%d). Please check that input data hasn't changed since Nonmem was run, and that $INPUT section matches columns in input data. Also, NMdata may not be able to interpret your IGNORE/ACCEPT statements correctly (see ?NMapplyFilters). Please consider including a unique row identifier in both input and output data if possible. Another reason for the error could be that the model is a simulation that returns a multiple of the input events in output data.",nrow.data.input,nrow.tab.row),fun.msg=stop)
 
-            }
+                }
 
-            
-            tab.row[,(col.row.merge):=data.input[,get(col.row.merge)],by=.(TABLENO)]
-            ## if(!recover.rows) data.input <- data.input
+                
+                tab.row[,(col.row.merge):=data.input[,get(col.row.merge)],by=.(TABLENO)]
+                ## if(!recover.rows) data.input <- data.input
 
             }
 
@@ -732,7 +733,8 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             
             ## use tab.vars for the subset
             if(!skip.idlevel){
-                cols.to.use <- unique(c(col.id,setdiff(colnames(tab.idlevel),dt.vars[source=="output",variable])))
+                
+                cols.to.use <- unique(c(col.id,setdiff(colnames(tab.idlevel),dt.vars[included==TRUE,variable])))
                 tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=FALSE]
                 tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="data.table",quiet=TRUE)
                 ## repeating in case there was no full-length tables

@@ -84,7 +84,8 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
     if(subset.is.complete) {
         subset.event <- subset.dos
     } else if(!missing(subset.dos)) {
-        subset.event <- paste0(subset.dos,subset.event.0,sep="&")
+        
+        subset.event <- paste(subset.dos,subset.event.0,sep="&")
     } else {
         subset.event <- subset.event.0
     }
