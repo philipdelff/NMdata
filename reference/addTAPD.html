@@ -23,7 +23,7 @@ dosing notation using ADDL and II."><meta property="og:image" content="https://p
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.911</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.912</span>
       </span>
     </div>
 
@@ -108,6 +108,7 @@ dosing notation using ADDL and II.</p>
 <span>  <span class="va">subset.is.complete</span>,</span>
 <span>  order.evid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  by <span class="op">=</span> <span class="st">"ID"</span>,</span>
+<span>  SDOS <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  <span class="va">as.fun</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -191,6 +192,12 @@ simulations are pre-dose. See details.</p></dd>
 
 <dt>by</dt>
 <dd><p>Columns to do calculations within. Default is ID.</p></dd>
+
+
+<dt>SDOS</dt>
+<dd><p>Scaling value for columns related to dose amount,
+relative to AMT values. col.pdosamt and col.doscuma are
+affected and will be derived as AMT/SDOSE.</p></dd>
 
 
 <dt>as.fun</dt>
