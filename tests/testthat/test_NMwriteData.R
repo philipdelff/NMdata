@@ -34,10 +34,10 @@ test_that("nm.drop is an empty string - not allowed",{
     ## not allowed
     expect_error(
         res <- NMwriteData(pk
-                   ,file=system.file("examples/data/xgxr1.csv",package="NMdata")
-                   ,write.rds=F,write.csv=F
-                   ,nm.drop=""
-                    )
+                          ,file=system.file("examples/data/xgxr1.csv",package="NMdata")
+                          ,write.rds=F,write.csv=F
+                          ,nm.drop=""
+                           )
     )
 })
 
@@ -208,3 +208,28 @@ test_that("Not quiet but no text for NM",{
 
 }
 )
+
+
+test_that("script=NULL",{
+
+    fileRef <- "testReference/NMwriteData_10.rds"
+
+    pk0 <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- copy(pk0)
+    is.NMdata(pk)
+    NMinfo(pk)
+    res1 <- NMwriteData(pk,file="testOutput/NMwriteData10.csv",
+                        write.rds=T,write.csv=T,nmdir.data="/example",script=NULL)
+
+    written1 <- readRDS("testOutput/NMwriteData10.rds")
+    NMinfo(written1)
+
+    
+    expect_equal_to_reference(
+        written1
+       ,fileRef,version=2)
+
+    ## that must not have affected pk
+    expect_equal(pk,pk0)
+
+})

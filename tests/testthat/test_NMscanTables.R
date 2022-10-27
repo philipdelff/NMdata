@@ -2,7 +2,7 @@
 ## load_all("NMdata")
 ## setwd("NMdata/tests/testthat")
 
-## load_all("c:/Users/delff/working_copies/NMdata")
+## load_all()
 
 context("NMscanTables")
 
@@ -76,4 +76,21 @@ test_that("Two firstonly, one full-length",{
 
     expect_equal_to_reference(res,fileRef,version=2)
     
+})
+
+
+test_that("Commented output table",{
+
+    fileRef <- "testReference/NMscanTables5.rds"
+    file.lst <- "testData/nonmem/xgxr028.lst"
+
+    tabs <- NMscanTables(file.lst)
+
+    meta <- NMinfoDT(tabs)
+    meta$tables[,file:=basename(file)]
+    meta$tables$file.mtime <- NULL
+    writeNMinfo(tabs,meta)
+
+    expect_equal_to_reference(tabs,fileRef,version=2)
+
 })

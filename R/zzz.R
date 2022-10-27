@@ -5,6 +5,7 @@
 .NMdata$options <- list()
 NMdataConf(reset=TRUE)
 
+##' @importFrom utils packageVersion
 .onAttach <- function(libname,pkgname){
-    packageStartupMessage("Welcome to NMdata. Best place to browse NMdata documentation is\nhttps://philipdelff.github.io/NMdata/")
+    packageStartupMessage(paste0("Welcome to NMdata ",packageVersion("NMdata"),". Best place to browse NMdata documentation is\nhttps://philipdelff.github.io/NMdata/"))
 }

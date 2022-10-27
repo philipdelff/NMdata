@@ -20,6 +20,7 @@ addTAPD(
   subset.is.complete,
   order.evid = c(3, 0, 2, 4, 1),
   by = "ID",
+  SDOS = 1,
   as.fun
 )
 }
@@ -76,6 +77,10 @@ samples. The default is c(3,0,4,1,2) - i.e. samples and
 simulations are pre-dose. See details.}
 
 \item{by}{Columns to do calculations within. Default is ID.}
+
+\item{SDOS}{Scaling value for columns related to dose amount,
+relative to AMT values. col.pdosamt and col.doscuma are
+affected and will be derived as AMT/SDOSE.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to

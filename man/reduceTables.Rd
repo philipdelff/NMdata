@@ -16,7 +16,8 @@ row was found in output tables.}
 reduce tables from NMscanTables to fewer objects
 }
 \details{
-This function is under development. It will likely return
-    a different format in the future.
+This function is under development. It is not polished
+    for other than internal use by NMscanData. It will likely
+    return a different format in the future.
 }
 \keyword{internal}

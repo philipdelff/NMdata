@@ -11,12 +11,26 @@
   SUBPROBLEM option.
   
 * NMwriteData has got an arguement 'genText' to control whether text
-  for Nonmem should be generated. Default is to do so.
+  for Nonmem should be generated. Default is to do so. Also, support
+  is added for script=NULL which now means the same as not specifying
+  script.
+  
+* addTAPD now includes SDOS, a scalar to be applied when computing
+  last dose amount and cumulative dose amount from AMT. Sometimes, AMT
+  is in one unit, and other variables related to doses is in
+  another. Say that dose is in mg and concentrations are in ng/mL,
+  then AMT should be in mcg. But you may wtill want everything else
+  related to doses to be in mg. Then use SDOS=1000.
+
+* flagsAssign will now report that data is empty and return the data
+  if nothing is left after applying subset. It used to return an
+  error.
 
 ## Other improvements
 * Internally, combination of input and output data without a row
   identifier is simplified.
-
+  
+* NMdata version added to welcome message.
 # 0.0.13
 
 ## New functions

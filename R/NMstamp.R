@@ -23,6 +23,7 @@
 
 NMstamp <- function(data,script,time=Sys.time(),...){
 
+    if(missing(script)) script <- NULL
     writeNMinfo(data,
                 list(dataCreate=list(
                          DataCreateScript=script,
@@ -31,7 +32,6 @@ NMstamp <- function(data,script,time=Sys.time(),...){
                      )),byRef=TRUE
                 )
     return(invisible(data))
-
     
 }
 

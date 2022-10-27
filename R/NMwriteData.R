@@ -103,7 +103,8 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
         write.RData=FALSE
         write.rds=FALSE
     }
-
+    name.data <- deparse(substitute(data))
+    
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
@@ -150,6 +151,8 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
     if(any(c("data","file")%in%names(args.NMgenText))){
         messageWrap("data and file are not allowed in args.NMgenText. If you want to set those, use NMgenText directly instead.",fun.msg=stop)
     }
+
+    
     
 ### stamp arguments
     doStamp <- TRUE
@@ -161,12 +164,21 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
         }
     }
     
-    if(missing(script)){
+    if(missing(script)||is.null(script)){
         doStamp <- FALSE
     } else {
         args.stamp$script <- script
     }
-
+    if(!doStamp&&!is.null(NMinfo(data))){
+        ## we are not stamping new info to data, but data may already have
+        ## some. We don't want to inherit when and where it was saved from
+        ## where it was previously read.
+        data <- copy(data)
+        nminfo <- NMinfoDT(data)
+        try(nminfo$dataCreate <- NULL)
+        writeNMinfo(data,meta=nminfo,append=FALSE)
+    }
+    
     
 ### rds arguments
     if(!missing(args.rds) && !write.rds ){
@@ -241,9 +253,10 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
     
     if(write.RData){
         messageWrap("Writing to RData files is deprecated and this option will be removed from NMwriteData. Please use write.rds instead.")
-        name.data <- deparse(substitute(data))
+        
         file.RData <- fnExtension(file,".RData")
         if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.RData),args.stamp))
+        
         assign(name.data,data)
         save(list=name.data,file=file.RData)
         do.call(save,append(list(list=name.data,file=file.RData),args.RData))

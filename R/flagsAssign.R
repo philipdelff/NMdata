@@ -93,6 +93,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     col.flagc <- NMdataDecideOption("col.flagc",col.flagc)
 
 ####### check args end ######
+
     
 ####### Check data ######
     if(!is.data.frame(data)){stop("data must be a data.frame")}
@@ -174,12 +175,19 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     
 ####### END Check tab.flags ####
     
-### check for incompatible groups (say doses and observations)
+
     if(subset.data=="") {
         data.sub <- data
     } else {
         data.sub <- data[eval(parse(text=subset.data))]
     }
+    if(nrow(data.sub)==0){
+        message("Data set empty (after applying subset if used).")
+        return(data)
+    }
+
+    
+### check for incompatible groups (say doses and observations)
     check.incomp <- intersect(datacols,grp.incomp)
     if(length(check.incomp)>0) {
         covs.incomp <- findCovs(data.sub[,check.incomp,with=FALSE])
