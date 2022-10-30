@@ -914,9 +914,10 @@ test_that("simulation model with subproblems",{
     fileRef <- "testReference/NMscanData_31.rds"
     
 ### sim a model with subproblems
+    ## library(devtools)
     ## load_all("~/wdirs/NMexec")
     ## file.mod <- "testData/nonmem/xgxr014.mod"
-    ## NMexec(file.mod,sge=FALSE,wait=T)
+    ## ## NMexec(file.mod,sge=FALSE,wait=T)
     ## doses <- NMcreateDoses(TIME=0,AMT=data.table(AMT=c(10,100),DOSE=c(10,100)))
     ## simdat <- addEVID2(doses,time.sim=1:24,CMT=2)
     ## simdat[,DV:=NA][
