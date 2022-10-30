@@ -35,3 +35,16 @@ test_that("Custom names and discard one",{
     
     
 })
+
+
+test_that("SDOSE",{
+    NMdataConf(as.fun="data.table")
+
+    dat <- readRDS("testData/data/xgxr2.rds")
+    res1 <- addTAPD(data=dat)
+    res2 <- addTAPD(data=dat,SDOS=1000)
+
+    res2[,PDOSAMT:=PDOSAMT*1000]
+    res2[,DOSCUMA:=DOSCUMA*1000]
+    expect_equal(res1,res2,version=2)
+})

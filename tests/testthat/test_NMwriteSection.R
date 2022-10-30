@@ -7,7 +7,7 @@ test_that("basic",{
     outfile <- "testOutput/xgxr011_update1.mod"
     newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
     section <- "input"
-    NMwriteSection(system.file("examples/nonmem/xgxr011.mod", package = "NMdata")
+    NMwriteSection(files="testData/nonmem/xgxr011.mod"
                   ,section=section
                   ,newlines=newlines
                   ,newfile=outfile)
@@ -16,6 +16,20 @@ test_that("basic",{
 
 })
 
+
+test_that("$section",{
+    fileRef <- "testReference/NMwriteSection_1.rds"
+    outfile <- "testOutput/xgxr011_update1b.mod"
+    newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
+    section <- "$input"
+    NMwriteSection(files="testData/nonmem/xgxr011.mod"
+                  ,section=section
+                  ,newlines=newlines
+                  ,newfile=outfile)
+    res <- readLines(outfile)
+    expect_equal_to_reference(res,fileRef,version=2)
+
+}) 
 
 
 
@@ -27,7 +41,7 @@ test_that("list.section",{
     outfile <- "testOutput/xgxr011_update2.mod"
     newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
     section <- "input"
-    NMwriteSection( system.file("examples/nonmem/xgxr011.mod", package = "NMdata")
+    NMwriteSection("testData/nonmem/xgxr011.mod"
                   ,list.section=list(input=newlines)
                   ,newfile=outfile
                    )
@@ -79,7 +93,7 @@ test_that("No files matched",{
     newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
     section <- "input"
 
-    res <- NMwriteSection(dir=system.file("examples/nonmem/", package = "NMdata")
+    res <- NMwriteSection(dir="testData/nonmem"
                          ,file.pattern="gerge"
                          ,section=section
                          ,data.file="../data/xgxr2.csv"
@@ -119,7 +133,20 @@ test_that("update INPUT based on NMgenText",{
 
     ##input.new
     input.new <- NMreadSection(lines=res,section="input")
-        
+    
     expect_equal_to_reference(input.new,fileRef)
 })
 
+
+### I cant reproduce a problem on NMsim where a commented out $COV section gives an error
+## test_that("Section not found",{
+
+##     section <- "$simulation"
+##     res <- NMwriteSection("testData/nonmem/xgxr011.mod",
+##                           section=section,
+##                           newlines=""
+##                          ,newfile=NULL
+##                           )
+
+    
+## })

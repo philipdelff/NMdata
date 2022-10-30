@@ -936,6 +936,10 @@ test_that("simulation model with subproblems",{
     res <- NMscanData("testOutput/simulations/xgxr014_testsim1.lst")
     
     fix.time(res)
+    meta.x <- attr(res,"NMdata")
+    meta.x$details$time.ok <- NULL
+    setattr(res,"NMdata",meta.x)
+    
     expect_equal_to_reference(res,fileRef,version=2)
 
 })

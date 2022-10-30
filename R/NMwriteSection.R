@@ -12,20 +12,20 @@
 ##'     specific data file.
 ##' @param dir If file.pattern is used, dir is the directory to search
 ##'     in.
-##' @param section The name of the section to update without
-##'     "$". Example: section="EST" to edit the sections starting by
-##'     $EST. Section specification is not case-sensitive. See
-##'     ?NMreadSection too.
+##' @param section The name of the section to update with or without
+##'     "$". Example: section="EST" or section="$EST" to edit the
+##'     sections starting by $EST. Section specification is not
+##'     case-sensitive. See ?NMreadSection too.
 ##' @param newlines The new text (including "$SECTION"). Better be
 ##'     broken into lines in a character vector since this is simply
 ##'     past to writeLines.
 ##' @param list.sections Named list of new sections, each element
 ##'     containing a section. Names must be section names, contents of
 ##'     each element are the new section lines for each section.
-##' @param newfile path and filename to new run. If missing, the original
-##'     file (from \code{files} or \code{file.pattern}) is overwritten
-##'     (see the \code{backup} option below). If NULL, output is returned
-##'     as a character vector rather than written.
+##' @param newfile path and filename to new run. If missing, the
+##'     original file (from \code{files} or \code{file.pattern}) is
+##'     overwritten (see the \code{backup} option below). If NULL,
+##'     output is returned as a character vector rather than written.
 ##' @param backup In case you are overwriting the old file, do you
 ##'     want to backup the file (to say, backup_run001.mod)?
 ##' @param blank.append Append a blank line to output?
@@ -128,13 +128,7 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections
             section <- toupper(section)
 
             ## make sure newlines start with $SECTION
-            newlines <- sub("^ +","",newlines)
-### doesn't work. For now, user has to supply newlines including a valid $SECTION start.
-            ## if(grepl(paste0("^\\",section),newlines,ignore.case=TRUE)){
-            ##     newlines <-
-            ##         sub("^([^ ]+)(\\s.*)","\\1",newlines,perl=TRUE)
-            ## }
-            
+            newlines <- sub("^ +","",newlines)            
             if(blank.append) newlines <- c(newlines,"")
             
             idx.dlines <- NMreadSection(lines=lines,section=section,return="idx",keepEmpty=TRUE,

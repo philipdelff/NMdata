@@ -42,4 +42,4 @@ input.grd
 input.shk
 INTER
 LINK.LNK
-
+tests/testthat/testOutput/simulations/nonmem
