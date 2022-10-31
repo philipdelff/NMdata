@@ -355,14 +355,22 @@ xgxr028.mod created and it works
 **** TODO [#B] Integrate the reduction into one table from NMscanData
 **** DONE Lastonly does the same as firstonly
 *** NMscanData
+**** DONE Rename TABLENO to NMREP
+**** TODO [#A] Deprecate tab.count
 **** TODO [#A] Make clear how TABLENO is being counted
  #### TABLENO is now added to the number of columns taken from the
- #### output table that has TABLENO. Is that what we want? Or +1? +1 is
- #### very complicated for user. Maybe better: if tab.count, it is treated like any other column, but in NMinfo(,"tables") there is a column, hasTABLENO
-**** TODO [#A] Support for custom TABLENO column
+ #### output table that has TABLENO. Is that what we want? Or +1? +1
+ #### is very complicated for user. Maybe better: if tab.count, it is
+ #### treated like any other column, but in NMinfo(,"tables") there is
+ #### a column, hasTABLENO
+**** TODO [#B] in NMinfo(,"tables"), include hasNMREP
+**** TODO [#B] Support for custom NMREP column
 One may use REP=IREP or something like that and avoid the table
 headers in output. That is not supported now. It wouldn't be hard to
 include.
+**** TODO [#B] Support for deriving NMREP in NOHEADER case
+The replication of the row counters show - at least for full length
+tables
 **** DONE Split out data finder handling
 There is a few different ways to get to the data file path. Some
 checks are being done on the compatibility of the arguments in

@@ -20,6 +20,7 @@ LINKC.LNK
 PRSIZES.f90
 compile.lnk
 gfortran.txt
+*\.cpu
 *\.ext
 *\.phi
 input.cpu
@@ -61,4 +62,8 @@ inst/examples/nonmem/*\.phi
 inst/examples/nonmem/xgxr001dir/backup_*
 /doc/
 /Meta/
-
+*\.pnm
+*\.dir[0-9]*
+*_input\.rds
+*\.xml
+NMdata_backup

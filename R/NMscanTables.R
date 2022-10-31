@@ -8,10 +8,10 @@
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using
 ##'     NMdataConf.
-##' @param tab.count Nonmem includes a counter of tables in the
+##' @param rep.count Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. However, if
-##'     tab.count is TRUE (not default), this will be carried forward
-##'     and added as a column called TABLENO.
+##'     rep.count is TRUE (not default), this will be carried forward
+##'     and added as a column called NMREP.
 ##' @param col.id name of the subject ID column. Used for calculation
 ##'     of the number of subjects in each table.
 ##' @param as.fun The default is to return data as a data.frame. Pass
@@ -31,7 +31,7 @@
 ##' @import data.table
 ##' @export
 
-NMscanTables <- function(file,as.fun,quiet,tab.count=FALSE,col.id="ID",col.row,details){
+NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,details){
     
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
@@ -114,8 +114,10 @@ NMscanTables <- function(file,as.fun,quiet,tab.count=FALSE,col.id="ID",col.row,d
     for(I in 1:nrow(meta)){
         if(!file.exists(meta[I,file])) stop(paste0("NMscanTables: File not found: ",meta[I,file],". Did you copy the lst file but forgot table
 file?"))
-        tables[[I]] <- NMreadTab(meta[I,file],quiet=TRUE,tab.count=tab.count,showProgress=FALSE,as.fun=identity,header=meta[I,!noheader])
-        dim.tmp <- dim(tables[[I]][,!colnames(tables[[I]])=="TABLENO",with=FALSE])
+        tables[[I]] <- NMreadTab(meta[I,file],quiet=TRUE,rep.count=rep.count,showProgress=FALSE,as.fun=identity,header=meta[I,!noheader])
+### to not include NMREP when counting columns
+        ## dim.tmp <- dim(tables[[I]][,!colnames(tables[[I]])=="NMREP",with=FALSE])
+        dim.tmp <- dim(tables[[I]])
         meta[I,nrow:=dim.tmp[1]]
         meta[I,ncol:=dim.tmp[2]]
         
@@ -133,7 +135,7 @@ file?"))
             nce <- length(cnames.extra)
             
             if(nce){
-                ## subtracting 1 from indeces because NMreadTab adds TABLENO
+                ## Adding 1 to indeces because NMreadTab adds NMREP
                 cnames.all[(ncol.I-nce+1):(ncol.I)] <- cnames.extra
             }
             cnames <- cnames.all[1:ncol.I]

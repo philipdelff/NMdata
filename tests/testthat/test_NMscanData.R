@@ -41,7 +41,7 @@ test_that("basic",{
     ## NMreadSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
     res <- NMscanData(file=file.lst, quiet=T, order.columns = F, merge.by.row=FALSE, check.time = FALSE)
-    ## res2 <- NMscanData(file=file.lst, quiet=T, order.columns = F, merge.by.row=FALSE, check.time = FALSE,tab.count=T)
+    ## res2 <- NMscanData(file=file.lst, quiet=T, order.columns = F, merge.by.row=FALSE, check.time = FALSE,rep.count=T)
     ## dim(res)
 
     fix.time(res)
@@ -333,7 +333,9 @@ test_that("Only a firstonly without ID but with ROW",{
 
 test_that("Only a firstonly without ID but with ROW. Using merge.by.row=TRUE.",{
 ### ROW is used to recover firstonly data.
-
+##    NMdataConf(as.fun="data.table")
+    ## NMdataConf(as.fun=NULL)
+    NMdataConf(reset=TRUE)
     fileRef <- "testReference/NMscanData15b.rds"
 
     ## file.lst <- NMdata_filepath("examples/nonmem/xgxr011.lst")
@@ -717,7 +719,7 @@ test_that("Including a redundant output table",{
 
     ## notice no cols are taken from the redundant table - correct
     res1 <- NMscanData(file=file.lst,merge.by.row="ifAvailable",as.fun="data.table",check.time = FALSE)
-    ##     tabs1 <- NMscanTables(file=file.lst,as.fun="data.table",details=T,tab.count=F)
+    ##     tabs1 <- NMscanTables(file=file.lst,as.fun="data.table",details=T,rep.count=F)
     ##     tabs1$meta
     ## tabs1$data[[4]]
     ## NMinfo(res1,"tables")
@@ -749,7 +751,7 @@ test_that("redundant output",{
     )
 
 
-    ##     tabs1 <- NMscanTables(file=file.lst,as.fun="data.table",details=T,tab.count=F)
+    ##     tabs1 <- NMscanTables(file=file.lst,as.fun="data.table",details=T,rep.count=F)
     ##     tabs1$meta
     ## tabs1$data[[4]]
     ## NMinfo(res1,"tables")
@@ -855,15 +857,15 @@ test_that("Two firstonly, one full-length",{
     
 })
 
-test_that("Two firstonly, one full-length with tab.count",{
+test_that("Two firstonly, one full-length with rep.count",{
     NMdataConf(reset=TRUE)
 #### TABLENO is now added to the number of columns taken from the
 #### output table that has TABLENO. Is that what we want? Or +1? +1 is
-#### very complicated for user. Maybe better: if tab.count, it is treated like any other column, but in NMinfo(,"tables") there is a column, hasTABLENO
+#### very complicated for user. Maybe better: if rep.count, it is treated like any other column, but in NMinfo(,"tables") there is a column, hasTABLENO
     fileRef <- "testReference/NMscanData28b.rds"
     file.lst <- "testData/nonmem/xgxr025.lst"
 
-    res <- NMscanData(file=file.lst,check.time=F,tab.count=T)
+    res <- NMscanData(file=file.lst,check.time=F,rep.count=T)
     res <- fix.time(res)
     ## ref <- readRDS(fileRef)
     
@@ -932,7 +934,7 @@ test_that("simulation model with subproblems",{
 
     ## sim1
 ##### sim done
-  
+    
 
     res <- NMscanData("testOutput/simulations/xgxr014_testsim1.lst")
     
@@ -944,4 +946,4 @@ test_that("simulation model with subproblems",{
     expect_equal_to_reference(res,fileRef,version=2)
 
 })
-    
+
