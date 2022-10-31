@@ -35,10 +35,20 @@ NMexpandDoses <- function(data,col.time="TIME",col.id="ID",col.evid="EVID",quiet
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
-    
+### data.was.dt is used to making as.fun="data.table" default if data was dt.
+    data.was.dt <- TRUE
+    if(is.data.table(data)){
+        data <- copy(data)
+    } else {
+        data <- as.data.table(data)
+        data.was.dt <- FALSE
+    }
+
     if(missing(as.fun)) as.fun <- NULL
+    if(data.was.dt && is.null(as.fun)) as.fun <- "data.table"
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
+    
     ## copy must be before testing if anything to do. If not, a
     ## reference to original data is returned which is not intended.
     if(is.data.table(data)){
@@ -47,11 +57,19 @@ NMexpandDoses <- function(data,col.time="TIME",col.id="ID",col.evid="EVID",quiet
         data <- as.data.table(data)   
     }    
 
-
     if(!all(cc(ADDL,II)%in%colnames(data))){
         if(!quiet) message("ADDL and II not found in data. Nothing done.")
         return(data)
     }
+
+    if(!col.id%in%colnames(data)){
+        stop("col.id must refer to a name of an existing column in data.")
+    }
+    if(!col.time%in%colnames(data)){
+        stop("col.time must refer to a name of an existing column in data.")
+    }
+
+    
 
     rec.tmp <- tmpcol(data)
     data[,(rec.tmp):=.I]

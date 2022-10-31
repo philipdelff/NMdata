@@ -189,7 +189,7 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections
         close(con.newfile)
         return(invisible(newlines))
     }
-
+    
     
     res <- lapply(all.files,NMwriteSectionOne,section=section,newlines=newlines,
                   list.sections=list.sections,newfile=newfile,

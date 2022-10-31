@@ -9,7 +9,8 @@ context("NMscanTables")
 test_that("Multiple output table formats",{
 
     fileRef <- "testReference/NMscanTables1.rds"
-    file.lst <- system.file("examples/nonmem/xgxr003.lst",package="NMdata")
+    ## file.lst <- system.file("examples/nonmem/xgxr003.lst",package="NMdata")
+    file.lst <- "testData/nonmem/xgxr003.lst"
 
     res.dt <- NMscanTables(file=file.lst,as.fun="data.table",tab.count=TRUE)
     meta <- NMinfoDT(res.dt)

@@ -263,7 +263,8 @@ extension is .rds?
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
 *** NMwriteSection
-**** TODO [#A] Allow to remove a section if it doesn't exist
+**** TODO [#B] Support insertion of new sectin before or after another section
+**** DONE Allow to remove a section if it doesn't exist
 **** DONE Put backup files in NMdata_backup
 **** DONE Check if any files matched before running lapply
 **** TODO [#B] When using list.files, give overview of matches by expression and by data.file
@@ -275,9 +276,9 @@ extension is .rds?
 Instead of the section argument, NMreplacepart must accept newlines as a named
 list.
 *** NMexpandDoses
-**** TODO [#A] col.time must be in data
-**** TODO [#A] col.id must be in data
-**** TODO [#A] Return data.table when working with data.table?
+**** DONE col.time must be in data
+**** DONE col.id must be in data
+**** DONE Return data.table when working with data.table?
 Do the same as mergeCheck, flagsAssign etc
 *** NMextractText
 **** TODO [#B] reduce lines and text to one argument
