@@ -357,7 +357,7 @@ xgxr028.mod created and it works
 *** NMscanData
 **** DONE Rename TABLENO to NMREP
 **** TODO [#A] Deprecate tab.count
-**** TODO [#A] Make clear how TABLENO is being counted
+**** DONE Make clear how TABLENO is being counted
  #### TABLENO is now added to the number of columns taken from the
  #### output table that has TABLENO. Is that what we want? Or +1? +1
  #### is very complicated for user. Maybe better: if tab.count, it is
