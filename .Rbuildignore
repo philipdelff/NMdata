@@ -43,3 +43,4 @@ input.shk
 INTER
 LINK.LNK
 tests/testthat/testOutput/simulations/nonmem
+.*_input.rds
