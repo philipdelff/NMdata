@@ -929,14 +929,13 @@ test_that("simulation model with subproblems",{
     ## NMdataConf(as.fun="data.table")
 
     ## sim1 <- NMsim(file.mod,data=simdat,
-    ##               suffix.sim="testsim1",dir.sim="testOutput/simulations"
+    ##               suffix.sim="testsim1",dir.sim="testData/simulations"
     ##              ,seed=343108,subproblems=100,nmquiet=T)
 
     ## sim1
 ##### sim done
     
-
-    res <- NMscanData("testOutput/simulations/xgxr014_testsim1.lst")
+    res <- NMscanData("testData/simulations/xgxr014_testsim1.lst")
     
     fix.time(res)
     meta.x <- attr(res,"NMdata")
