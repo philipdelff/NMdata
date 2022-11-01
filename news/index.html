@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.921</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.923</span>
       </span>
     </div>
 
@@ -116,7 +116,7 @@
 <li>The NMcheckData argument, col.cmt now supports a vector of length&gt;1. This is helpful to support data where switching CMT column is used to switch between definitions for different compounds or even just models where compartment numbers are not compatible.</li>
 <li>NMscanInput has the new argument recover.cols. Default is TRUE - use FALSE to not include columns that NONMEM did not read.</li>
 <li>mergeCheck now retains column order from x. It has a few other improvements too, like checking for missing values in by columns.</li>
-<li>listMissings is new function that looks for missing values or strings that represent missing values (like "" or “.”) in multiple columns. This can be useful when combining source data sets. However, the function is still underdevelopment and what exactly is being reported may change in future releases.</li>
+<li>listMissings is new function that looks for missing values or strings that represent missing values (like “” or “.”) in multiple columns. This can be useful when combining source data sets. However, the function is still underdevelopment and what exactly is being reported may change in future releases.</li>
 </ul><div class="section level3">
 <h3 id="bugfixes-0-0-11">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-0-11"></a></h3>
 <ul><li>NMwriteData now respects NMdataConf()$args.fwrite</li>

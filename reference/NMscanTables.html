@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.921</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.923</span>
       </span>
     </div>
 
@@ -88,7 +88,7 @@
 <span>  <span class="va">file</span>,</span>
 <span>  <span class="va">as.fun</span>,</span>
 <span>  <span class="va">quiet</span>,</span>
-<span>  tab.count <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  rep.count <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  col.id <span class="op">=</span> <span class="st">"ID"</span>,</span>
 <span>  <span class="va">col.row</span>,</span>
 <span>  <span class="va">details</span></span>
@@ -116,11 +116,13 @@ non-interactive use. Default can be configured using
 NMdataConf.</p></dd>
 
 
-<dt>tab.count</dt>
+<dt>rep.count</dt>
 <dd><p>Nonmem includes a counter of tables in the
 written data files. These are often not useful. However, if
-tab.count is TRUE (not default), this will be carried forward
-and added as a column called TABLENO.</p></dd>
+rep.count is TRUE (not default), this will be carried forward
+and added as a column called NMREP. Even if NMREP is generated
+by NMscanTables, it is treated like any other table column in
+meta (?NMinfo) data.</p></dd>
 
 
 <dt>col.id</dt>
@@ -129,8 +131,8 @@ of the number of subjects in each table.</p></dd>
 
 
 <dt>col.row</dt>
-<dd><p>The name of the row counter column. Optional and only
-used to check whether the row counter is in the data.</p></dd>
+<dd><p>The name of the row counter column. Optional and
+only used to check whether the row counter is in the data.</p></dd>
 
 
 <dt>details</dt>
@@ -146,8 +148,7 @@ properties of the output.</p></dd>
 
 <p>A list of all the tables as data.frames. If details=TRUE,
     this is in one element, called data, and meta is another
-    element. If not, only the data is
-    returned.</p>
+    element. If not, only the data is returned.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

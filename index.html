@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.921</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.923</span>
       </span>
     </div>
 
@@ -111,6 +111,7 @@
 <a class="anchor" aria-label="anchor" href="#nmdata"></a>
 </h1></div>
 <!-- badges: start -->
+
 <div class="section level2">
 <h2 id="a-fast-r-package-for-efficient-data-preparation-consistency-checking-and-post-processing-in-pkpd-modeling">A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling<a class="anchor" aria-label="anchor" href="#a-fast-r-package-for-efficient-data-preparation-consistency-checking-and-post-processing-in-pkpd-modeling"></a>
 </h2>
@@ -129,14 +130,16 @@
 <h3 id="more-information">More information<a class="anchor" aria-label="anchor" href="#more-information"></a>
 </h3>
 <p>The best place to browse information about the package is <a href="https://philipdelff.github.io/NMdata/">here</a>. The quickest way in is the <a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html" class="external-link">Cheatsheet</a>.</p>
-<!-- ![Cheatsheet](man/figures/cheatsheet_icon_0010.png){width="15%"} --><!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html) --><p><a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html" class="external-link"><img src="reference/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"></a></p>
+<!-- ![Cheatsheet](man/figures/cheatsheet_icon_0010.png){width="15%"} -->
+<!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html) -->
+<p><a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html" class="external-link"><img src="reference/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"></a></p>
 </div>
 <div class="section level3">
 <h3 id="how-to-install">How to install<a class="anchor" aria-label="anchor" href="#how-to-install"></a>
 </h3>
 <p><code>NMdata</code> is on <a href="https://cran.r-project.org/" class="external-link">CRAN</a>, <a href="https://mran.microsoft.com/" class="external-link">MRAN</a>, and <a href="https://mpn.metworx.com" class="external-link">MPN</a>. To install from the package archive you are already using, do:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">"NMdata"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(NMdata)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"NMdata"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(NMdata)</span></code></pre></div>
 <p>See further below for instructions on how to install from other sources than your default archive, if need be.</p>
 </div>
 </div>
@@ -231,14 +234,14 @@
 <h2 id="get-the-most-recent-version">Get the most recent version<a class="anchor" aria-label="anchor" href="#get-the-most-recent-version"></a>
 </h2>
 <p>If your archive has not been updated since July 2021, you may not find <code>NMdata</code> if you try to install with <code>install.packages</code> (option 1). In that case you have two other options. You can explicitly select CRAN for the installation. Or if you should want a version that has not yet reached CRAN, installing from Github is easy too.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">## Option 2: Install explicitly from CRAN</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="kw">install.packages</span>(<span class="st">"NMdata"</span>,<span class="dt">repos=</span><span class="st">"https://cloud.r-project.org"</span>)</span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="kw">library</span>(NMdata)</span>
-<span id="cb7-4"><a href="#cb7-4"></a></span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="co">## Option 3: Install from github</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="kw">library</span>(remotes)</span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="kw">install_github</span>(<span class="st">"philipdelff/NMdata"</span>)</span>
-<span id="cb7-8"><a href="#cb7-8"></a><span class="kw">library</span>(NMdata)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Option 2: Install explicitly from CRAN</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"NMdata"</span>,<span class="at">repos=</span><span class="st">"https://cloud.r-project.org"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(NMdata)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Option 3: Install from github</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(remotes)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">install_github</span>(<span class="st">"philipdelff/NMdata"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(NMdata)</span></code></pre></div>
 <p>If you use the Github version, you may want to see the <a href="https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html">FAQ</a> for how to install specific releases from Github (ensuring reproducibility).</p>
 </div>
 <div class="section level2">

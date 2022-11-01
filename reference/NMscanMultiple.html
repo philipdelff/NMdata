@@ -19,7 +19,7 @@ arguments."><meta property="og:image" content="https://philipdelff.github.io/NMd
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.921</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.923</span>
       </span>
     </div>
 
@@ -215,18 +215,18 @@ NMdataConf.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   All All    905    905</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Overview of model scanning results:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                    lst nrows</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: /Users/runner/work/_temp/Library/NMdata/examples/nonmem/xgxr001.lst   905</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: /Users/runner/work/_temp/Library/NMdata/examples/nonmem/xgxr002.lst   905</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: /Users/runner/work/_temp/Library/NMdata/examples/nonmem/xgxr003.lst   905</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: /Users/runner/work/_temp/Library/NMdata/examples/nonmem/xgxr014.lst   905</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: /Users/runner/work/_temp/Library/NMdata/examples/nonmem/xgxr018.lst   905</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                   lst nrows</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: /home/runner/work/_temp/Library/NMdata/examples/nonmem/xgxr001.lst   905</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: /home/runner/work/_temp/Library/NMdata/examples/nonmem/xgxr002.lst   905</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: /home/runner/work/_temp/Library/NMdata/examples/nonmem/xgxr003.lst   905</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: /home/runner/work/_temp/Library/NMdata/examples/nonmem/xgxr014.lst   905</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: /home/runner/work/_temp/Library/NMdata/examples/nonmem/xgxr018.lst   905</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    ncols success warning</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    40    TRUE    TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    34    TRUE    TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    34    TRUE    TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    36    TRUE    TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    33    TRUE    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    40    TRUE   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    34    TRUE   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    34    TRUE   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    36    TRUE   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    33    TRUE   FALSE</span>
 <span class="r-in"><span><span class="va">res.mean</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span>meanPRED<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">PRED</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,by<span class="op">=</span><span class="fu">.</span><span class="op">(</span><span class="va">model</span>,<span class="va">NOMTIME</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">res.mean</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">NOMTIME</span>,<span class="va">meanPRED</span>,colour<span class="op">=</span><span class="va">model</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> </span></span>
