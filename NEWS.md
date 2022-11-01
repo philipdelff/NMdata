@@ -22,7 +22,7 @@
   then AMT should be in mcg. But you may wtill want everything else
   related to doses to be in mg. Then use SDOS=1000.
 
-* flagsAssign will now report that data is empty and return the data
+* flagsAssign now reports that data is empty and return the data
   if nothing is left after applying subset. It used to return an
   error.
 
