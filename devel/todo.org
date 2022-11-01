@@ -39,7 +39,7 @@ With load_all():
 ** New functions
 *** TODO [#B] function to add variables to $TABLE               :newFunction:
 **** Which $TABLE to add to?
-*** TODO [#B] NMfreezeModels                                    :newFunction:
+*** TODO [#C] NMfreezeModels                                    :newFunction:
     Remember to add chmod and describe that only a flat dir structure is supported so far
 *** DONE function to replace file name extension - fnExtension
 *** DONE summary.NMdata
@@ -51,7 +51,7 @@ With load_all():
     Export to parent. Not sure check allows though...
 ** Function improvements
 *** addTAPD
-**** TODO [#A] add SDOSE argument
+**** DONE add SDOSE argument
 which scales AMT to DOSE variables. Sometimes AMT is say mcg but DOSE
 i mg. Then also one could want PDOS etc to be in mg.
 
@@ -258,7 +258,11 @@ extension is .rds?
 **** DONE Return data, summary and more                             :v0_0_11:
 **** TODO [#B] Check whether NA's are coded with .'s
 *** NMextractDataFile
-**** WAIT [#A] Test with absolute path in $DATA
+**** TODO [#A] col.time must be in data
+**** TODO [#A] col.id must be in data
+**** TODO [#A] Return data.table when working with data.table?
+Do the same as mergeCheck, flagsAssign etc
+**** WAIT [#B] Test with absolute path in $DATA
 **** DONE Add support for windows absolute paths
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
@@ -279,6 +283,8 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMscanInput
+**** TODO [#A] Test with multiple filters on the same column
+like IGNORE(ID=2) IGNORE(ID=3)
 **** DONE Make work without filters
 Generated xgxr027.mod with a dataset without column names for the
 purpose. Needs to be run with Nonmem, then test.
@@ -340,8 +346,8 @@ A way to limit rows read into nonmem
 ***** diff
 ***** off
 *** NMscanTables
-**** TODO [#A] Make work with commented variable lists
-xgxr028.mod created
+**** DONE Make work with commented variable lists
+xgxr028.mod created and it works
 **** DONE include meta data as NMinfo
 **** TODO [#B] Integrate the reduction into one table from NMscanData
 **** DONE Lastonly does the same as firstonly
@@ -361,7 +367,7 @@ NMscanData. This should be done in NMscanInput or NMextractDataFile so
 that other functions such as NMcheckData gets the same behaviour.
 
 This is now handled by NMextractDataFile
-**** TODO [#A] Test on a simulation model with subproblems
+**** DONE Test on a simulation model with subproblems
 **** TODO [#B] Simplify timestamp warnings
      When .mod is newer than .lst and or tables, reduce to one warning
      summarizing both findings.
@@ -412,7 +418,7 @@ whenever ID changes, but test this.
 check if variables are consistent within ROW: ID (others?) This is
 fatal and will happen when using long ID's and non-matching format
 when writing tables from Nonmem.
-**** TODO [#A] New argument to define columns to read from input data
+**** TODO [#B] New argument to define columns to read from input data
 ID should be default. Maybe TIME too?
 **** DONE Run NMorderColumns in the end
 Remember to use what we know about col.row. 
@@ -468,7 +474,7 @@ Not warning. Warning if standard variable?
 **** DONE subsets of zero rows should return a message, not an error
 say subset="EVID==2" will return an error if no rows found. 
 ***** TODO [#A] Test 
-**** TODO [#A] We need to work in IDhasNoObs and IDhasNoDos
+**** TODO [#B] We need to work in IDhasNoObs and IDhasNoDos
 This likely means a restructure so all tables have to be given
 together and these subject-level flags are set across EVID after 
 **** DONE check for whether there are any contents in data - just warning and return nothing
@@ -540,7 +546,7 @@ arguments. NMdata calls this "writtenTo".
 **** DONE renameByContents example
 *** Vignettes
 *** pkgdown
-**** TODO [#A] := prints in manual
+**** TODO [#B] := prints in manual
      https://philipdelff.github.io/NMdata/reference/renameByContents.html
 **** TODO Add bug list
 **** TODO Rename menu items

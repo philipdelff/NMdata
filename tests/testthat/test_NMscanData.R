@@ -856,6 +856,7 @@ test_that("Two firstonly, one full-length",{
 })
 
 test_that("Two firstonly, one full-length with tab.count",{
+    NMdataConf(reset=TRUE)
 #### TABLENO is now added to the number of columns taken from the
 #### output table that has TABLENO. Is that what we want? Or +1? +1 is
 #### very complicated for user. Maybe better: if tab.count, it is treated like any other column, but in NMinfo(,"tables") there is a column, hasTABLENO
@@ -907,13 +908,35 @@ test_that("Input control stream missing",{
 })
 
 
-if(FALSE){
-    res0 <- NMscanData("testData/nonmem/xgxr008.lst")
-    res1 <- NMscanData("testData/nonmem/xgxr008.lst",recover.rows=T)
-    res2 <- NMscanData("testData/nonmem/xgxr008.lst",recover.rows=T,merge.by.row = FALSE)
-    dims(res1,res2)
-    compareCols(res1,res2)
-    inp <- fread("testData/nonmem/../data/xgxr1_flag0.csv")
-    inp[,.N,by=.(DOSE>=10|WEIGHTB>100)]
-}
+test_that("simulation model with subproblems",{
+    NMdataConf(reset=TRUE)
 
+    fileRef <- "testReference/NMscanData_31.rds"
+    
+### sim a model with subproblems
+    ## load_all("~/wdirs/NMexec")
+    ## file.mod <- "testData/nonmem/xgxr014.mod"
+    ## NMexec(file.mod,sge=FALSE,wait=T)
+    ## doses <- NMcreateDoses(TIME=0,AMT=data.table(AMT=c(10,100),DOSE=c(10,100)))
+    ## simdat <- addEVID2(doses,time.sim=1:24,CMT=2)
+    ## simdat[,DV:=NA][
+    ##     ,ROW:=.I]
+    ## NMcheckData(simdat)
+
+    ## NMdataConf(as.fun="data.table")
+
+    ## sim1 <- NMsim(file.mod,data=simdat,
+    ##               suffix.sim="testsim1",dir.sim="testOutput/simulations"
+    ##              ,seed=343108,subproblems=100,nmquiet=T)
+
+    ## sim1
+##### sim done
+  
+
+    res <- NMscanData("testOutput/simulations/xgxr014_testsim1.lst")
+    
+    fix.time(res)
+    expect_equal_to_reference(res,fileRef,version=2)
+
+})
+    

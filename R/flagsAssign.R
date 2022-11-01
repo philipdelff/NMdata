@@ -181,7 +181,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     } else {
         data.sub <- data[eval(parse(text=subset.data))]
     }
-    if(nrow(data.sub)){
+    if(nrow(data.sub)==0){
         message("Data set empty (after applying subset if used).")
         return(data)
     }
