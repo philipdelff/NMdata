@@ -22,14 +22,14 @@ NMscanData(
   modelname,
   col.model,
   col.nmout,
-  tab.count,
+  rep.count,
   order.columns = TRUE,
   check.time,
   tz.lst
 )
 }
 \arguments{
-\item{file}{A nonmem control stream or output file from nonmem
+\item{file}{A Nonmem control stream or output file from Nonmem
 (.mod or .lst)}
 
 \item{col.row}{A column with a unique value for each row. Such a
@@ -77,7 +77,7 @@ used, the control streams are not used at all.}
 
 \item{translate.input}{Default is TRUE, meaning that input data
 column names are translated according to $INPUT section in
-nonmem listing file.}
+Nonmem listing file.}
 
 \item{quiet}{The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
@@ -124,13 +124,13 @@ using NMdataConf.}
 representing whether row was in output table or not. Default
 can be modified using NMdataConf.}
 
-\item{tab.count}{Nonmem includes a counter of tables in the
+\item{rep.count}{Nonmem includes a counter of tables in the
 written data files. These are often not useful. Especially for
 NMscanData output it can be meaningless because multiple
 tables can be combined so this information is not unique
-across those source tables. However, if tab.count is TRUE (not
+across those source tables. However, if rep.count is TRUE (not
 default), this will be carried forward and added as a column
-called TABLENO. The argument is passed to NMscanTables.}
+called NMREP. The argument is passed to NMscanTables.}
 
 \item{order.columns}{If TRUE (default), NMorderColumns is used to
 reorder the columns before returning the data. NMorderColumns
@@ -165,7 +165,7 @@ This is a very general solution to automatically identifying, reading, and  merg
 steps are
 \itemize{
  \item{Read and combine output tables,}
- \item{If wanted, read input data and restore variables that were not output from the nonmem model}
+ \item{If wanted, read input data and restore variables that were not output from the Nonmem model}
  \item{If wanted, also restore rows from input data that were disregarded in
 Nonmem (e.g. observations or subjects that are not part of the analysis)}
 }
@@ -175,8 +175,8 @@ This function makes it very easy to collect the data from
     a Nonmem run.
 
 A useful feature of this function is that it can automatically
-combine "input" data (the data read by nonmem in $INPUT or
-$INFILE) with "output" data (tables written by nonmem in
+combine "input" data (the data read by Nonmem in $INPUT or
+$INFILE) with "output" data (tables written by Nonmem in
 $TABLE). There are two implemented methods for doing so. One (the
 default but not recommended) relies on interpretation of filter
 (IGNORE and ACCEPT) statements in $INPUT. This will work in most

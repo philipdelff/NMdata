@@ -33,10 +33,10 @@ specific data file.}
 \item{dir}{If file.pattern is used, dir is the directory to search
 in.}
 
-\item{section}{The name of the section to update without
-"$". Example: section="EST" to edit the sections starting by
-$EST. Section specification is not case-sensitive. See
-?NMreadSection too.}
+\item{section}{The name of the section to update with or without
+"$". Example: section="EST" or section="$EST" to edit the
+sections starting by $EST. Section specification is not
+case-sensitive. See ?NMreadSection too.}
 
 \item{newlines}{The new text (including "$SECTION"). Better be
 broken into lines in a character vector since this is simply
@@ -46,10 +46,10 @@ past to writeLines.}
 containing a section. Names must be section names, contents of
 each element are the new section lines for each section.}
 
-\item{newfile}{path and filename to new run. If missing, the original
-file (from \code{files} or \code{file.pattern}) is overwritten
-(see the \code{backup} option below). If NULL, output is returned
-as a character vector rather than written.}
+\item{newfile}{path and filename to new run. If missing, the
+original file (from \code{files} or \code{file.pattern}) is
+overwritten (see the \code{backup} option below). If NULL,
+output is returned as a character vector rather than written.}
 
 \item{backup}{In case you are overwriting the old file, do you
 want to backup the file (to say, backup_run001.mod)?}

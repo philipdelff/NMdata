@@ -2,20 +2,23 @@
 % Please edit documentation in R/NMreadTab.R
 \name{NMreadTab}
 \alias{NMreadTab}
-\title{Read an output table file from NONMEM}
+\title{Read an output table file from Nonmem}
 \usage{
-NMreadTab(file, tab.count = TRUE, header = TRUE, skip, quiet, as.fun, ...)
+NMreadTab(file, rep.count = TRUE, header = TRUE, skip, quiet, as.fun, ...)
 }
 \arguments{
-\item{file}{path to NONMEM table file}
+\item{file}{path to Nonmem table file}
 
-\item{tab.count}{Nonmem includes a counter of tables in the
-written data files. These are often not useful. However, if
-tab.count is TRUE (default), a counter of tables is included
-as a column called TABLENO. Just notice, the table numbers in
-TABLENO are just cumulatively counting the number of tables
-reported in the file. TABLENO is not true to the actual table
-number as given by Nonmem.}
+\item{rep.count}{In case of simulations where tables are being
+repeated, a counter of the repetition number can useful to
+include in the output. For now, this will only work if the
+NOHEADER option is not used. This is because NMreadTab
+searches for the "TABLE NO..." strings in Nonmem output
+tables. If rep.count is TRUE (default), a counter of tables is
+included as a column called NMREP. Notice, the table numbers
+in NMREP are cumulatively counting the number of tables
+reported in the file. NMREP is not the actual table number as
+given by Nonmem.}
 
 \item{header}{Use header=FALSE if table was created with NOHEADER
 option in $TABLE.}
