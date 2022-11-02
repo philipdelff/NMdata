@@ -2,7 +2,7 @@
 % Please edit documentation in R/NMreadCsv.R
 \name{NMreadCsv}
 \alias{NMreadCsv}
-\title{Read input data formatted for nonmem}
+\title{Read input data formatted for Nonmem}
 \usage{
 NMreadCsv(file, args.fread, as.fun = NULL)
 }
@@ -30,7 +30,7 @@ using NMwriteData.
 \details{
 This is almost just a shortcut to fread so you don't have
     to remember how to read the data that was exported for
-    nonmem. The only added feature is that meta data as written by
+    Nonmem. The only added feature is that meta data as written by
     NMwriteData is read and attached as NMdata metadata before
     data is returned.
 }

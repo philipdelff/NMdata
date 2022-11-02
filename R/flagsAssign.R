@@ -85,7 +85,8 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
 
 ####### check args ######
     if(missing(as.fun)) as.fun <- NULL
-    as.fun.arg <- as.fun
+    ## as.fun.arg <- as.fun
+    if(is.null(as.fun) && is.data.table(data)) as.fun <- "data.table"
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     if(missing(col.flagn)) col.flagn <- NULL
     if(missing(col.flagc)) col.flagc <- NULL
@@ -101,7 +102,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
 
     if(nrow(data)==0) {
         warning("data is empty. Nothing to do.")
-        as.fun <- NMdataDecideOption("as.fun",as.fun)
+        ## as.fun <- NMdataDecideOption("as.fun",as.fun)
         data <- as.fun(data)
         return(data)
     }
@@ -183,7 +184,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     }
     if(nrow(data.sub)==0){
         message("Data set empty (after applying subset if used).")
-        return(data)
+        return(as.fun(data))
     }
 
     
@@ -267,8 +268,6 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
 ### FLAG==0 cannot be customized. If not in table, put in table. Return the
 ### table as well. Maybe a reduced table containing only used FLAGS
     
-####### TODO: for now, FLAG=0 is not allowed in tab.flags
-    
     if(!0%in%tab.flags[,FLAG]) {
         tab.flags <- rbind(
             data.table(FLAG=0,
@@ -296,9 +295,6 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     
     data.flags[,FLAG:=0]
     
-    ## tab.flags[,Nmatched:=NA_real_]
-    ## tab.flags[,Nobs:=NA_real_]
-    ## tab.flags[,NID:=NA_real_]
     nconds <- tab.flags[,.N]
     if(nconds>0){
         for(fn in 1:nconds){
@@ -342,19 +338,14 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     ## add the data where flags have not been assigned
     data <- rbind(data.noflags,data.flags,fill=TRUE)
     
-### arrange back to original order
+    ## arrange back to original order
     setorderv(data,col.row)
     data[,(col.row):=NULL]
+
     ## order columns
-    
-    
     setcolorder(data,datacols)
 
-    
-    if(data.was.data.table && is.null(as.fun.arg)) as.fun <- "data.table"
-    as.fun <- NMdataDecideOption("as.fun",as.fun)
     data <- as.fun(data)
-    
     return(data)
 
 }

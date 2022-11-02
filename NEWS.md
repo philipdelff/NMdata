@@ -46,8 +46,7 @@
 * A new data set called mad is included. It is based on the
   mad_missing_duplicates from the xgxr package. Doses are implemented
   using ADDL and II (so only one dosing row per subject). It is
-  included for testing the new NMexpandDoses and coming addTAD
-  functions.
+  included for testing the new NMexpandDoses and addTAPD functions.
 
 ## Bugfixes
 * Non-critical bugfix in mergeCheck dimensions overview printed to

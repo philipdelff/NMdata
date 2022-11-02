@@ -2,7 +2,7 @@
 ##'
 ##' Instead of trying to remember the arguments to pass to write.csv,
 ##' use this wrapper. It tells you what to write in $DATA and $INPUT
-##' in nonmem, and it (additionally) exports an rds file as
+##' in Nonmem, and it (additionally) exports an rds file as
 ##' well which is highly preferable for use in R. It never edits the
 ##' data before writing the datafile. The filenames for csv, rds
 ##' etc. are derived by replacing the extension to the filename given
@@ -37,9 +37,9 @@
 ##'     NMdataConf.
 ##' @param args.NMgenText List of arguments to pass to NMgenText - the
 ##'     function that generates text suggestion for INPUT and DATA
-##'     sections in the NONMEM control stream. You can use these
+##'     sections in the Nonmem control stream. You can use these
 ##'     arguments to get a text suggestion you an use directly in
-##'     NONMEM - and NMwriteSection can even update multiple NONMEM
+##'     Nonmem - and NMwriteSection can even update multiple Nonmem
 ##'     control streams based on the result. This will update your
 ##'     control streams to match your new data file with just one
 ##'     command.
@@ -285,7 +285,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
 
     
     
-    ## NONMEM text
+    ## Nonmem text
     if(genText){
         NMtext <- try(do.call(NMgenText,
                               append(

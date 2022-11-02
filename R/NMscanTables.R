@@ -1,5 +1,5 @@
-##' Find and read all output data tables in nonmem run
-##' @param file the nonmem file to read (normally .mod or .lst)
+##' Find and read all output data tables in Nonmem run
+##' @param file the Nonmem file to read (normally .mod or .lst)
 ##' @param details If TRUE, metadata is added to output. In this case,
 ##'     you get a list. Typically, this is mostly useful if
 ##'     programming up functions which behavior must depend on

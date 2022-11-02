@@ -23,7 +23,7 @@ NMcheckDataFile(
 
 \item{col.id}{subject identifier}
 
-\item{use.rds}{use rds file instead of csv. This is typically not wanted because we want to test the input data as read by NONMEM.}
+\item{use.rds}{use rds file instead of csv. This is typically not wanted because we want to test the input data as read by Nonmem.}
 
 \item{quiet}{Keep quiet? Default is FALSE.}
 
@@ -40,7 +40,7 @@ provided, the .mod file is not used at all.}
 \item{...}{passed to NMcheckData}
 }
 \description{
-Finds input data and checks compatibility with nonmem control
+Finds input data and checks compatibility with Nonmem control
 stream and runs NMcheckData. Don't call this function directly -
 use the file argument in NMcheckData instead.
 }

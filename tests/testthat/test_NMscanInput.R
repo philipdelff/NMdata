@@ -163,3 +163,19 @@ test_that("No filters",{
 
     expect_equal_to_reference(inp,fileRef,version=2)
 })
+
+
+test_that("Multiple filters on same column",{
+    NMdataConf(as.fun="data.table")
+    fileRef <- "testReference/NMscanInput_09.rds"
+
+    inp.nofilt <- NMscanInput("testData/nonmem/xgxr029.mod",applyFilters=FALSE)[,data:="nofilt"]
+    inp.filt <- NMscanInput("testData/nonmem/xgxr029.mod",applyFilters=TRUE)[,data:="filt"]
+    inp <- rbind(inp.nofilt,inp.filt)
+    
+    tab.count <- dcast(
+        inp[,.N,by=.(ID,data)]
+       ,ID~data,value.var="N")
+
+    expect_equal_to_reference(tab.count,fileRef,version=2)
+})

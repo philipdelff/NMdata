@@ -1,13 +1,13 @@
 ##' check input data based on control stream
 ##'
-##' Finds input data and checks compatibility with nonmem control
+##' Finds input data and checks compatibility with Nonmem control
 ##' stream and runs NMcheckData. Don't call this function directly -
 ##' use the file argument in NMcheckData instead.
 ##'
 ##' @param file a model file (input or output control stream)
 ##' @param col.row row identifier
 ##' @param col.id subject identifier
-##' @param use.rds use rds file instead of csv. This is typically not wanted because we want to test the input data as read by NONMEM.
+##' @param use.rds use rds file instead of csv. This is typically not wanted because we want to test the input data as read by Nonmem.
 ##' @param quiet Keep quiet? Default is FALSE.
 ##' @param file.mod How to find the input control stream if you are using the output control stream.
 ##' @param dir.data The data directory can only be read from the
@@ -64,7 +64,7 @@ NMcheckDataFile <- function(file,col.row,col.id="ID",use.rds=FALSE,quiet=FALSE,f
         ##         message(print(list.res$colnames))
         ## cat("\n\n")
         print(list.res$input.colnames)
-        message("NMcheckData on data as read by NONMEM:")
+        message("NMcheckData on data as read by Nonmem:")
         print(list.res$NMcheckData$summary)
     }
     

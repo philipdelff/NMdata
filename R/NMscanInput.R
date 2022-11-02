@@ -9,10 +9,10 @@
 ##' and it can also read an rds file instead of the delimited text
 ##' file used by Nonmem.
 ##' 
-##' @description Based on a nonmem run (lst and/or mod file), this
+##' @description Based on a Nonmem run (lst and/or mod file), this
 ##'     function finds the input data and reads it. It reads the data
-##'     like the nonmem run by applying DROP/SKIP arguments and
-##'     alternative naming of columns in the nonmem run.
+##'     like the Nonmem run by applying DROP/SKIP arguments and
+##'     alternative naming of columns in the Nonmem run.
 ##' @param file a .lst (output) or a .mod (input) control stream
 ##'     file. The filename does not need to end in .lst. It is
 ##'     recommended to use the output control stream because it
@@ -39,14 +39,14 @@
 ##'     instead? The default is yes, and NMwriteData will create this
 ##'     by default too.
 ##' @param applyFilters If TRUE (default), IGNORE and ACCEPT
-##'     statements in the nonmem control streams are applied before
+##'     statements in the Nonmem control streams are applied before
 ##'     returning the data.
 ##' @param translate If TRUE (default), data columns are named as
 ##'     interpreted by Nonmem (in $INPUT). If data file contains more
 ##'     columns than mentioned in $INPUT, these will be named as in
 ##'     data file (if data file contains named variables).
 ##' @param recover.cols recover columns that were not used in the
-##'     NONMEM control stream? Default is TRUE. Can only be negative
+##'     Nonmem control stream? Default is TRUE. Can only be negative
 ##'     when translate=FALSE.
 ##' @param details If TRUE, metadata is added to output. In this case,
 ##'     you get a list. Typically, this is mostly useful if

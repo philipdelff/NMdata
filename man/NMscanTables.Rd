@@ -2,7 +2,7 @@
 % Please edit documentation in R/NMscanTables.R
 \name{NMscanTables}
 \alias{NMscanTables}
-\title{Find and read all output data tables in nonmem run}
+\title{Find and read all output data tables in Nonmem run}
 \usage{
 NMscanTables(
   file,
@@ -15,7 +15,7 @@ NMscanTables(
 )
 }
 \arguments{
-\item{file}{the nonmem file to read (normally .mod or .lst)}
+\item{file}{the Nonmem file to read (normally .mod or .lst)}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
@@ -52,7 +52,7 @@ A list of all the tables as data.frames. If details=TRUE,
     element. If not, only the data is returned.
 }
 \description{
-Find and read all output data tables in nonmem run
+Find and read all output data tables in Nonmem run
 }
 \examples{
 tabs1 <- NMscanTables(system.file("examples/nonmem/xgxr001.lst", package="NMdata"))

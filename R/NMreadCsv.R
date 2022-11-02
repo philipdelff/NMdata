@@ -1,4 +1,4 @@
-##' Read input data formatted for nonmem
+##' Read input data formatted for Nonmem
 ##'
 ##' This function is especially useful if the csv file was written
 ##' using NMwriteData.
@@ -15,7 +15,7 @@
 ##'     NMdataConf.
 ##' @details This is almost just a shortcut to fread so you don't have
 ##'     to remember how to read the data that was exported for
-##'     nonmem. The only added feature is that meta data as written by
+##'     Nonmem. The only added feature is that meta data as written by
 ##'     NMwriteData is read and attached as NMdata metadata before
 ##'     data is returned.
 ##' @return A data set of class as defined by as.fun.

@@ -98,7 +98,7 @@ This function will change the order of columns but it
  \item{"not editable - "}{Standard Nonmem columns: TIME, EVID, CMT, AMT, RATE, DV, MDV}
  \item{"last - "}{user-specified last columns}
  \item{"chars.last - "}{numeric, or interpretable as numeric}
- \item{"not editable - "}{less often used nonmem names: col.flagn, OCC, ROUTE, GRP, TRIAL, DRUG, STUDY}
+ \item{"not editable - "}{less often used Nonmem names: col.flagn, OCC, ROUTE, GRP, TRIAL, DRUG, STUDY}
  \item{"lower.last - "}{lower case in name}
  \item{"alpha - "}{Alphabetic/numeric sorting}
 }

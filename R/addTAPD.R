@@ -12,7 +12,7 @@
 ##' @param col.tpdos Name of the time of previous dose column (created
 ##'     by addTAPD). Default is TPDOS. Set to NULL to not create this
 ##'     column.
-##' @param col.tapd Name of the time of prvious dose column (created
+##' @param col.tapd Name of the time of previous dose column (created
 ##'     by addTAPD). Default is TAPD. Set to NULL to not create this
 ##'     column.
 ##' @param col.ndoses The name of the column (created by addTAPD) that
@@ -57,7 +57,7 @@
 ##' @details addTAPD does not require the data to be ordered, and it
 ##'     will not order it. This means you can run addTAPD before
 ##'     ordering data (which may be one of the final steps) in data
-##'     set prepation. The argument called order.evid is important
+##'     set preparation. The argument called order.evid is important
 ##'     because of this. If a dosing event and a sample occur at the
 ##'     same time, when which dose was the previous for that sample?
 ##'     Default is to assume the sample is a pre-dose sample, and

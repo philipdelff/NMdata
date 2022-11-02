@@ -61,7 +61,7 @@
 ##'  \item{"not editable - "}{Standard Nonmem columns: TIME, EVID, CMT, AMT, RATE, DV, MDV}
 ##'  \item{"last - "}{user-specified last columns}
 ##'  \item{"chars.last - "}{numeric, or interpretable as numeric}
-##'  \item{"not editable - "}{less often used nonmem names: col.flagn, OCC, ROUTE, GRP, TRIAL, DRUG, STUDY}
+##'  \item{"not editable - "}{less often used Nonmem names: col.flagn, OCC, ROUTE, GRP, TRIAL, DRUG, STUDY}
 ##'  \item{"lower.last - "}{lower case in name}
 ##'  \item{"alpha - "}{Alphabetic/numeric sorting}
 ##' }
@@ -127,7 +127,7 @@ NMorderColumns <- function(data,
     if(!quiet && length(nms.dup)) messageWrap(paste0("Duplicated column names:\n",paste(nms.dup,collapse=", ")),fun.msg=warning)
     ### these checks are now done in NMcheckData
     ## missing <- setdiff(setdiff(first1,c("II","ADDL","RATE","SS")),nms)
-    ## if(!quiet && length(missing)) messageWrap(paste0("These standard nonmem columns were not found in data:\n",paste(missing,collapse="\n")),fun.msg=message)
+    ## if(!quiet && length(missing)) messageWrap(paste0("These standard Nonmem columns were not found in data:\n",paste(missing,collapse="\n")),fun.msg=message)
 
     first <- c(first1,first)
 

@@ -57,7 +57,7 @@ provided, the .mod file is not used at all.}
 used, the control streams are not used at all.}
 
 \item{applyFilters}{If TRUE (default), IGNORE and ACCEPT
-statements in the nonmem control streams are applied before
+statements in the Nonmem control streams are applied before
 returning the data.}
 
 \item{translate}{If TRUE (default), data columns are named as
@@ -66,7 +66,7 @@ columns than mentioned in $INPUT, these will be named as in
 data file (if data file contains named variables).}
 
 \item{recover.cols}{recover columns that were not used in the
-NONMEM control stream? Default is TRUE. Can only be negative
+Nonmem control stream? Default is TRUE. Can only be negative
 when translate=FALSE.}
 
 \item{details}{If TRUE, metadata is added to output. In this case,
@@ -103,10 +103,10 @@ NMdataConf.}
 A data set, class defined by 'as.fun'
 }
 \description{
-Based on a nonmem run (lst and/or mod file), this
+Based on a Nonmem run (lst and/or mod file), this
     function finds the input data and reads it. It reads the data
-    like the nonmem run by applying DROP/SKIP arguments and
-    alternative naming of columns in the nonmem run.
+    like the Nonmem run by applying DROP/SKIP arguments and
+    alternative naming of columns in the Nonmem run.
 }
 \details{
 This function finds and reads the input data based on a control
