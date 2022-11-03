@@ -116,6 +116,7 @@
 ##'     the time stamp in the output control stream. Please supply
 ##'     something listed in OlsonNames(). Can be configured using
 ##'     NMdataConf() too.
+##' @param tab.count Deprecated. Use rep.count.
 ##'
 ##' @details This function makes it very easy to collect the data from
 ##'     a Nonmem run.
@@ -152,9 +153,10 @@
 NMscanData <- function(file, col.row, use.input, merge.by.row,
                        recover.rows,file.mod,dir.data,file.data,
                        translate.input=TRUE, quiet, use.rds,
-                       args.fread, as.fun, col.id="ID",
-                       modelname, col.model, col.nmout,rep.count,
-                       order.columns=TRUE, check.time, tz.lst) {
+                       args.fread, as.fun, col.id="ID", modelname,
+                       col.model, col.nmout,rep.count,
+                       order.columns=TRUE, check.time, tz.lst,
+                       tab.count) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
     
@@ -216,7 +218,9 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     args.fread <- NMdataDecideOption("args.fread",args.fread)
     ## if null, rep.count will later be set to TRUE if NMREP varies
     if(missing(rep.count)) rep.count <- NULL
-    
+    if(!missing(tab.count)) .Deprecated("rep.count",old="tab.count")
+    if(!is.null(rep.count)&&!missing(tab.count)) stop("Use rep.count, not tab.count.")
+    if(!missing(tab.count)) rep.count <- tab.count
     
     runname <- modelname(file)
     ## file.mod is treated later if we need the input control stream

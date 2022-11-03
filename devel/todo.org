@@ -359,7 +359,7 @@ xgxr028.mod created and it works
 **** DONE Lastonly does the same as firstonly
 *** NMscanData
 **** DONE Rename TABLENO to NMREP
-**** TODO [#A] Deprecate tab.count
+**** DONE Deprecate tab.count
 **** DONE Make clear how TABLENO is being counted
  #### TABLENO is now added to the number of columns taken from the
  #### output table that has TABLENO. Is that what we want? Or +1? +1
