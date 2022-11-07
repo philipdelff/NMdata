@@ -28,6 +28,12 @@
 ##' @param col.doscuma The name of the column to be created holding
 ##'     the cumulative dose amount. Set to NULL to not create this
 ##'     column.
+##' @param cols.prefix String to be prepended to all generated column
+##'     names, that is each of col.tpdos, col.tapd, col.ndoses,
+##'     col.pdosamt, col.doscuma that are not NULL.
+##' @param cols.suffix String to be appended to all generated column
+##'     names, that is each of col.tpdos, col.tapd, col.ndoses,
+##'     col.pdosamt, col.doscuma that are not NULL.
 ##' @param subset.dos A string that will be evaluated as a custom
 ##'     expression to identify relevant events. See subset.is.complete
 ##'     as well.
@@ -69,8 +75,7 @@
 ##' @family DataCreate
 
 
-addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos="TPDOS",col.tapd="TAPD",col.ndoses="NDOSES",col.pdosamt="PDOSAMT",col.doscuma="DOSCUMA",subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by="ID",SDOS=1,as.fun){
-
+addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos="TPDOS",col.tapd="TAPD",col.ndoses="NDOSES",col.pdosamt="PDOSAMT",col.doscuma="DOSCUMA",prefix.cols,suffix.cols,subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by="ID",SDOS=1,as.fun){
     
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
@@ -89,6 +94,8 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
     } else {
         subset.event <- subset.event.0
     }
+    if(missing(prefix.cols)) prefix.cols <- NULL
+    if(missing(suffix.cols)) suffix.cols <- NULL
     
     if(is.data.table(data)){
         data <- copy(data)
@@ -96,85 +103,95 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
         data <- as.data.table(data)   
     }    
 
-    ## report if columns will be overwriten
-    cols.exist <- intersect(colnames(data),c(col.tpdos,col.tapd,col.ndoses,col.pdosamt,col.doscuma))
-    if(length(cols.exist)){
-        messageWrap(paste0("Columns will be overwritten: ",paste(cols.exist,collapse=", ")),fun.msg=warning)
-    }
-    
-    ## row identifier for reordering data back to original order after modifications
-    col.row.tmp <- tmpcol(data,base="row")
-    data[,(col.row.tmp):=.I]
-
-    col.event <- tmpcol(data,base="event")
-    data[,(col.event):=FALSE]
-    data[eval(parse(text=subset.event)),(col.event):=TRUE]
-    
-   
-    ## expand doses if necessary
-    data2 <- NMexpandDoses(data=data,col.id=by,quiet=TRUE,as.fun="data.table",col.time=col.time,col.evid=col.evid)
-    
-    col.evidorder <- tmpcol(data2,base="evidorder")
-    data2[,(col.evidorder):=match(get(col.evid),table=order.evid)]
-    
-    setorderv(data2,c(by,col.time,col.evidorder))
-
-    col.tpdos.tmp <- tmpcol(data2,base="tpdos.tmp")
-    
-    addVars <- function(data){
-        ## NDOSPERIOD
-        if(!is.null(col.ndoses)){
-            data[!is.na(get(col.time)),(col.ndoses):=cumsum(get(col.event)==TRUE),by=by]
+    args.create.optional <- cc(col.tpdos,col.tapd,col.ndoses,col.pdosamt,col.doscuma)
+    if(!is.null(prefix.cols) || !is.null(suffix.cols)){
+        for(col in cols.create.optional){
+            if(!is.null(get(col))){
+                assign(col,paste0(prefix.cols,col,suffix.cols))
+            }
         }
-        ## TPDOS - time of previous dose - needed for TAPD
-        data[get(col.event)==TRUE,(col.tpdos.tmp):=get(col.time)]
-        data[,(col.tpdos.tmp):=nafill(get(col.tpdos.tmp),type="locf"),by=by]
-        ## Relative time since previous dose
-        if(!is.null(col.tapd)){
-            data[,(col.tapd):=get(col.time)-get(col.tpdos.tmp)]
-        }
-        ## previous dose amount
-        if(!is.null(col.pdosamt)){
-            data[,(col.pdosamt):=nafill(get(col.amt),type="locf")/SDOS,by=by]
-        }
-        ## DOSCUMA - Cumulative Amount of Dose Received
-        if(!is.null(col.doscuma)){
-            data[!is.na(get(col.amt)),(col.doscuma):=cumsum(get(col.amt))/SDOS,by=by]
-            data[,(col.doscuma):=nafill(get(col.doscuma),type="locf"),by=by]
-        }
-        ## clean up tpdos
-        if(is.null(col.tpdos)){
-            data[,(col.tpdos.tmp):=NULL]
-        } else {
-            if(col.tpdos%in%colnames(data)) data[,(col.tpdos):=NULL]
-            setnames(data,col.tpdos.tmp,col.tpdos)
-        }
-        invisible(data)
     }
 
-    
-    ## data2 <- addVars(data2)
-    addVars(data2)
-    
+
+## report if columns will be overwriten
+cols.exist <- intersect(colnames(data),c(col.tpdos,col.tapd,col.ndoses,col.pdosamt,col.doscuma))
+if(length(cols.exist)){
+    messageWrap(paste0("Columns will be overwritten: ",paste(cols.exist,collapse=", ")),fun.msg=warning)
+}
+
+## row identifier for reordering data back to original order after modifications
+col.row.tmp <- tmpcol(data,base="row")
+data[,(col.row.tmp):=.I]
+
+col.event <- tmpcol(data,base="event")
+data[,(col.event):=FALSE]
+data[eval(parse(text=subset.event)),(col.event):=TRUE]
+
+
+## expand doses if necessary
+data2 <- NMexpandDoses(data=data,col.id=by,quiet=TRUE,as.fun="data.table",col.time=col.time,col.evid=col.evid)
+
+col.evidorder <- tmpcol(data2,base="evidorder")
+data2[,(col.evidorder):=match(get(col.evid),table=order.evid)]
+
+setorderv(data2,c(by,col.time,col.evidorder))
+
+col.tpdos.tmp <- tmpcol(data2,base="tpdos.tmp")
+
+addVars <- function(data){
+    ## NDOSPERIOD
+    if(!is.null(col.ndoses)){
+        data[!is.na(get(col.time)),(col.ndoses):=cumsum(get(col.event)==TRUE),by=by]
+    }
+    ## TPDOS - time of previous dose - needed for TAPD
+    data[get(col.event)==TRUE,(col.tpdos.tmp):=get(col.time)]
+    data[,(col.tpdos.tmp):=nafill(get(col.tpdos.tmp),type="locf"),by=by]
+    ## Relative time since previous dose
+    if(!is.null(col.tapd)){
+        data[,(col.tapd):=get(col.time)-get(col.tpdos.tmp)]
+    }
+    ## previous dose amount
+    if(!is.null(col.pdosamt)){
+        data[,(col.pdosamt):=nafill(get(col.amt),type="locf")/SDOS,by=by]
+    }
+    ## DOSCUMA - Cumulative Amount of Dose Received
+    if(!is.null(col.doscuma)){
+        data[!is.na(get(col.amt)),(col.doscuma):=cumsum(get(col.amt))/SDOS,by=by]
+        data[,(col.doscuma):=nafill(get(col.doscuma),type="locf"),by=by]
+    }
+    ## clean up tpdos
+    if(is.null(col.tpdos)){
+        data[,(col.tpdos.tmp):=NULL]
+    } else {
+        if(col.tpdos%in%colnames(data)) data[,(col.tpdos):=NULL]
+        setnames(data,col.tpdos.tmp,col.tpdos)
+    }
+    invisible(data)
+}
+
+
+## data2 <- addVars(data2)
+addVars(data2)
+
 ### If doses were expanded, we need to revert that
-    doses <- data[get(col.event)==TRUE]
+doses <- data[get(col.event)==TRUE]
 
-    ## doses <- addVars(doses)
-    addVars(doses)
-    
-    data3 <- rbind(doses
-                  ,data2[get(col.event)!=TRUE]
-                  ,fill=T)
-    setorderv(data3,col.row.tmp)
+## doses <- addVars(doses)
+addVars(doses)
 
-    ## clean up
-    data3[,(col.event):=NULL]
-    data3[,(col.row.tmp):=NULL]
-    data3[,(col.evidorder):=NULL]
+data3 <- rbind(doses
+              ,data2[get(col.event)!=TRUE]
+              ,fill=T)
+setorderv(data3,col.row.tmp)
 
-    
-    data3 <- as.fun(data3)
+## clean up
+data3[,(col.event):=NULL]
+data3[,(col.row.tmp):=NULL]
+data3[,(col.evidorder):=NULL]
 
-    return(data3)
+
+data3 <- as.fun(data3)
+
+return(data3)
 
 }

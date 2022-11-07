@@ -21,7 +21,7 @@ lstExtractTime <- function(file,tz.lst="as.is"){
         stop("tz.lst must be a character vector of length one.")
     }
 
-    ### the time stamp must be before any $ blocks
+### the time stamp must be before any $ blocks
     lines <- readLines(file)
     last.pre <- min(grep(" *\\$",lines))-1
     if(last.pre<1) return(NA)
@@ -34,9 +34,15 @@ lstExtractTime <- function(file,tz.lst="as.is"){
     time.char <- sub("^... ","",time.char)
     if(tz.lst=="as.is"){
         tz <- sub(".+ ([^ ]+) [0-9]{4}$","\\1",time.char)
+        if(!tz%in%OlsonNames()){
+            tz.sys <- Sys.timezone()
+            message(sprintf("Identified tz %s not recognized on system. System timezone (%s) used instead.",tz,tz.sys))
+            tz <- tz.sys
+        }
     } else {
         tz <- tz.lst
     }
+    
     timedate <- sub("(.+) [^ ]+ ([0-9]{4})$","\\1 \\2",time.char)
     time.file <- as.POSIXct(timedate,format="%b %d %H:%M:%S %Y",tz=tz)
     time.file

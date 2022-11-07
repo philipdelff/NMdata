@@ -935,7 +935,7 @@ test_that("simulation model with subproblems",{
     ## sim1
 ##### sim done
     
-    res <- NMscanData("testData/simulations/xgxr014_testsim1.lst")
+    res <- NMscanData("testData/simulations/xgxr014_testsim1.lst",check.time=F)
     
     fix.time(res)
     meta.x <- attr(res,"NMdata")
