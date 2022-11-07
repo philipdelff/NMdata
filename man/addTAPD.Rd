@@ -16,6 +16,8 @@ addTAPD(
   col.ndoses = "NDOSES",
   col.pdosamt = "PDOSAMT",
   col.doscuma = "DOSCUMA",
+  prefix.cols,
+  suffix.cols,
   subset.dos,
   subset.is.complete,
   order.evid = c(3, 0, 2, 4, 1),
@@ -55,6 +57,14 @@ column.}
 \item{col.doscuma}{The name of the column to be created holding
 the cumulative dose amount. Set to NULL to not create this
 column.}
+
+\item{prefix.cols}{String to be prepended to all generated column
+names, that is each of col.tpdos, col.tapd, col.ndoses,
+col.pdosamt, col.doscuma that are not NULL.}
+
+\item{suffix.cols}{String to be appended to all generated column
+names, that is each of col.tpdos, col.tapd, col.ndoses,
+col.pdosamt, col.doscuma that are not NULL.}
 
 \item{subset.dos}{A string that will be evaluated as a custom
 expression to identify relevant events. See subset.is.complete

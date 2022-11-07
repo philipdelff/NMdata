@@ -11,3 +11,12 @@ test_that("basic",{
 })
 
 
+test_that("keep track of expansions",{
+    fileRef <- "testReference/NMexpandDoses_02.rds"
+    
+    mad <- readRDS("testData/data/mad.rds")
+
+    res <- NMexpandDoses(mad,as.fun="data.table",track.expand = T)
+
+    expect_equal_to_reference(res,fileRef,version=2)
+})

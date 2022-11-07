@@ -30,8 +30,8 @@
 ##'     additional names for columns in Nonmem $INPUT, NMwriteData can
 ##'     adjust the suggested $INPUT text. Say you plan to use CONC as
 ##'     DV in Nonmem, use copy=c(DV="CONC"),
-##'     i.e. copy=c(newname="existing"). INPUT suggestion will in
-##'     this case contain DV=CONC.
+##'     i.e. copy=c(newname="existing"). INPUT suggestion will in this
+##'     case contain DV=CONC.
 ##' @param file The file name NONMEM will read the data from (for the
 ##'     $DATA section). It can be a full path.
 ##' @param dir.data For the $DATA text proposal only. The path to the
@@ -54,6 +54,9 @@
 ##'     Nonmem can read TIME even if it can't be translated to
 ##'     numeric. This is necessary if using the 00:00 format. Default
 ##'     is TRUE.
+##' @param width If positive, will be passed to strwrap for the $INPUT
+##'     text. If missing or NULL, strwrap will be called with default
+##'     value. If negative or zero, strwrap will not be called.
 ##' @param quiet Hold messages back? Default is defined by NMdataConf.
 ##' @return Text for inclusion in Nonmem control stream, invisibly.
 ##' @family Nonmem
@@ -69,7 +72,9 @@ NMgenText <- function(data,
                       capitalize=FALSE,
                       until,
                       allow.char.TIME=TRUE,
-                      quiet){
+                      width,
+                      quiet
+                      ){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####    
     occ.cum <- NULL
@@ -109,7 +114,7 @@ NMgenText <- function(data,
     if(any(is.na(drop)|drop=="")){
         stop("drop cannot contain empty strings and NA's.")
     }
-
+    if(missing(width)) width <- NULL
     
 ### capitalize, allow.char.TIME have to be logical
     
@@ -213,9 +218,18 @@ NMgenText <- function(data,
 
     colnames.nm <- dt.num.ok[include==TRUE,name.nm]
 
-    text.nm.input <- strwrap(
-        paste0("$INPUT ",paste(colnames.nm,collapse=" "))
-    )
+    text.nm.input <- paste0("$INPUT ",paste(colnames.nm,collapse=" "))
+    ## wrap if width is missing or positive
+    if(is.null(width)){
+        text.nm.input <- strwrap(
+            text.nm.input
+        )
+        } else if(width>0){
+        text.nm.input <- strwrap(
+            text.nm.input
+           ,width=width
+        )
+    }
 
     text.nm.data <- c(paste0("$DATA ", file.nm)
                      ,paste0("IGN=@")

@@ -5,7 +5,6 @@
 ##' different, you have to reorder the output manually.
 ##' 
 ##' @param data The data set to expand
-##' @param quiet Suppress messages back to user (default is FALSE)
 ##' @param col.time The name of the column holding the time on which
 ##'     time since previous dose will be based. This is typically
 ##'     actual or nominal time since first dose.
@@ -13,6 +12,13 @@
 ##'     derived within unique values of this column.
 ##' @param col.evid The name of the event ID column. This must exist
 ##'     in data. Default is EVID.
+##' @param track.expand Keep track of what rows were in data
+##'     originally and which ones are added by NMexpandDoses by
+##'     including a column called nmexpand? nmexpand will be TRUE if
+##'     the row is "generated" by NMexpandDoses.
+##' @param subset.dos A string that will be evaluated as a custom
+##'     expression to identify relevant events. 
+##' @param quiet Suppress messages back to user (default is FALSE)
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
@@ -23,7 +29,7 @@
 ##' @import data.table
 ##' @export
 
-NMexpandDoses <- function(data,col.time="TIME",col.id="ID",col.evid="EVID",quiet=FALSE,as.fun){
+NMexpandDoses <- function(data,col.time="TIME",col.id="ID",col.evid="EVID",track.expand=FALSE,subset.dos,quiet=FALSE,as.fun){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -32,6 +38,7 @@ NMexpandDoses <- function(data,col.time="TIME",col.id="ID",col.evid="EVID",quiet
     II <- NULL
     EVID <- NULL
     TIME <- NULL
+    nmexpand <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
@@ -49,16 +56,26 @@ NMexpandDoses <- function(data,col.time="TIME",col.id="ID",col.evid="EVID",quiet
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
     
+    if(missing(subset.dos)) subset.dos <- NULL
+    col.subset.dos <- tmpcol(data,base="tmp.subset.dos",prefer.plain=TRUE)
+    if(is.null(subset.dos)){
+        data[,(col.subset.dos):=TRUE]
+    } else {
+        data[eval(parse(text=subset.dos)),(col.subset.dos):=TRUE]
+    }
+
     ## copy must be before testing if anything to do. If not, a
     ## reference to original data is returned which is not intended.
     if(is.data.table(data)){
         data <- copy(data)
     } else {
-        data <- as.data.table(data)   
+        data <- as.data.table(data)
     }    
 
     if(!all(cc(ADDL,II)%in%colnames(data))){
         if(!quiet) message("ADDL and II not found in data. Nothing done.")
+        if(track.expand) data[,nmexpand:=FALSE]
+        data[,(col.subset.dos):=NULL]
         return(data)
     }
 
@@ -70,15 +87,32 @@ NMexpandDoses <- function(data,col.time="TIME",col.id="ID",col.evid="EVID",quiet
     }
 
     
+    if(data[get(col.subset.dos)==TRUE&
+            get(col.evid)%in%c(1,4)&
+            !is.na(ADDL)&
+            ADDL>0,.N]==0){
+        if(!quiet) message("No dosing events with ADDL>0 found. Nothing to be done.")
+        if(track.expand) data[,nmexpand:=FALSE]
+        data[,(col.subset.dos):=NULL]
+        return(data)
+    }
 
     rec.tmp <- tmpcol(data)
     data[,(rec.tmp):=.I]
     
-    recs.folded <- data[get(col.evid)%in%c(1,4)&!is.na(ADDL)&ADDL>0,get(rec.tmp)]
+    recs.folded <- data[get(col.subset.dos)==TRUE&
+                        get(col.evid)%in%c(1,4)&
+                        !is.na(ADDL)&ADDL>0,get(rec.tmp)]
+    
+    if(any(recs.folded[II==0|is.na(II)])) {
+        warning("II values of zero found in events to be expanded. Is this an error?")
+    }
+    
     newtimes <- data[get(rec.tmp)%in%recs.folded,
                      .(TIME=seq(get(col.time),by=II,length.out=ADDL+1)
                       ,ADDL=0
-                      ,II=0)
+                      ,II=0
+                      ,nmexpand=c(FALSE,rep(TRUE,ADDL)))
                     ,by=rec.tmp]
     setnames(newtimes,"TIME",col.time)
     data.merge <- copy(data)
@@ -89,7 +123,13 @@ NMexpandDoses <- function(data,col.time="TIME",col.id="ID",col.evid="EVID",quiet
        ,ADDL:=NULL][
        ,II:=NULL]
     newdoses <- mergeCheck(newtimes,data.merge,by=rec.tmp,quiet=TRUE)
-
+    if(track.expand) { 
+    ##     newdoses[,nmexpand:=TRUE]
+        data[,nmexpand:=FALSE]
+    } else {
+        newdoses[,nmexpand:=NULL]
+    }
+    
     ## rbind
     newdat <- rbind(data[!get(rec.tmp)%in%recs.folded],newdoses)
 
@@ -98,6 +138,8 @@ NMexpandDoses <- function(data,col.time="TIME",col.id="ID",col.evid="EVID",quiet
 
     ## discard tmp columns
     newdat[,(rec.tmp):=NULL]
+    
+    newdat[,(col.subset.dos):=NULL]
 
     newdat <- as.fun(newdat)
     

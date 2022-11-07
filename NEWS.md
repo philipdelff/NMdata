@@ -1,4 +1,4 @@
-# Post 0.0.13
+# 0.0.14
 ## New features
 * fnExtension has been generalized. It now ignores leading spaces in
   new extension, and extensions with zero or one leading period are
@@ -22,9 +22,24 @@
   then AMT should be in mcg. But you may wtill want everything else
   related to doses to be in mg. Then use SDOS=1000.
 
+* addTAPD includes convenient prefix.cols and suffix.cols arguments
+  that will prepend or append strings to all created columns. This is
+  useful if dosing more than one drug, and you want to run addTAPD for
+  both (different suffixes?), or if you want to run for nominal and
+  actual time (prefix A and N?).
+
 * flagsAssign now reports that data is empty and return the data
   if nothing is left after applying subset. It used to return an
   error.
+  
+* NMgenText has a new argument, width, passed to strwrap to control
+  the width of the $INPUT text for Nonmem.
+
+## Bugfixes
+* NMapplyFilters (and then NMscanInput and NMscanData) gave an error
+  when multiple filters were applied on the same column. Fixed.
+
+* addTAPD was not respecting subset.dos for all generated columns. 
 
 ## Other improvements
 * Internally, combination of input and output data without a row

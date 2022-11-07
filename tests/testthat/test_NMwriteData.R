@@ -108,12 +108,8 @@ test_that("nm.copy, nm.rename, drop",{
     nmCode <- NMwriteData(pk,file="derived/pk.csv",
                           write.csv=FALSE,
 ### arguments that tailors text for Nonmem
-                          nmdir.data="../derived",
-                          nm.drop="PROFDAY",
-                          nm.copy=c(CONC="DV"),
-                          nm.rename=c(BBW="WEIGHTB"),
                           ## PSN compatibility
-                          nm.capitalize=TRUE)
+                          args.NMgenText=list(dir.data="../derived",drop="PROFDAY",copy=c(CONC="DV"),rename=c(BBW="WEIGHTB"),capitalize=TRUE,width=80))
 
     expect_equal_to_reference(nmCode,fileRef,version=2)
 })
@@ -130,7 +126,8 @@ test_that("nm.copy, nm.rename, drop",{
                           write.RData=TRUE
 ### arguments that tailors text for Nonmem
                          ,args.rds=list(version=2),
-                         ,args.RData=list(version=2))
+                         ,args.RData=list(version=2)
+                         ,args.NMgenText=list(width=95))
 ### for testing of file contents. Not used.
     ## load("testOutput/pk.RData")
     ## pk.rdata <- pk

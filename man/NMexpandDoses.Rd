@@ -9,6 +9,8 @@ NMexpandDoses(
   col.time = "TIME",
   col.id = "ID",
   col.evid = "EVID",
+  track.expand = FALSE,
+  subset.dos,
   quiet = FALSE,
   as.fun
 )
@@ -25,6 +27,14 @@ derived within unique values of this column.}
 
 \item{col.evid}{The name of the event ID column. This must exist
 in data. Default is EVID.}
+
+\item{track.expand}{Keep track of what rows were in data
+originally and which ones are added by NMexpandDoses by
+including a column called nmexpand? nmexpand will be TRUE if
+the row is "generated" by NMexpandDoses.}
+
+\item{subset.dos}{A string that will be evaluated as a custom
+expression to identify relevant events.}
 
 \item{quiet}{Suppress messages back to user (default is FALSE)}
 

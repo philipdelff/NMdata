@@ -51,7 +51,7 @@ With load_all():
     Export to parent. Not sure check allows though...
 ** Function improvements
 *** addTAPD
-**** TODO [#A] add suffix and prefix arguments
+**** DONE add suffix and prefix arguments
 prefix="N" for nominal or suffix="R" and suffix="CMT==5" for rescue
 medication.
 **** DONE add SDOSE argument

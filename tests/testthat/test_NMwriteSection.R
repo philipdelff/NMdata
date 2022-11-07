@@ -126,7 +126,7 @@ test_that("basic - write file",{
 test_that("update INPUT based on NMgenText",{
     fileRef <- "testReference/NMwriteSection_5.rds"
 
-    text.nm <- NMgenText(NMreadCsv("testData/data/xgxr2.csv"),capitalize = T)
+    text.nm <- NMgenText(NMreadCsv("testData/data/xgxr2.csv"),capitalize = T,width=95)
     res <- NMwriteSection("testData/nonmem/xgxr011.mod",
                           list.section=text.nm["INPUT"],newfile=NULL
                           )
