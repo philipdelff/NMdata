@@ -23,7 +23,7 @@ dosing notation using ADDL and II."><meta property="og:image" content="https://p
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.925</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.926</span>
       </span>
     </div>
 
@@ -104,6 +104,8 @@ dosing notation using ADDL and II.</p>
 <span>  col.ndoses <span class="op">=</span> <span class="st">"NDOSES"</span>,</span>
 <span>  col.pdosamt <span class="op">=</span> <span class="st">"PDOSAMT"</span>,</span>
 <span>  col.doscuma <span class="op">=</span> <span class="st">"DOSCUMA"</span>,</span>
+<span>  <span class="va">prefix.cols</span>,</span>
+<span>  <span class="va">suffix.cols</span>,</span>
 <span>  <span class="va">subset.dos</span>,</span>
 <span>  <span class="va">subset.is.complete</span>,</span>
 <span>  order.evid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">1</span><span class="op">)</span>,</span>
@@ -162,6 +164,18 @@ column.</p></dd>
 <dd><p>The name of the column to be created holding
 the cumulative dose amount. Set to NULL to not create this
 column.</p></dd>
+
+
+<dt>prefix.cols</dt>
+<dd><p>String to be prepended to all generated column
+names, that is each of col.tpdos, col.tapd, col.ndoses,
+col.pdosamt, col.doscuma that are not NULL.</p></dd>
+
+
+<dt>suffix.cols</dt>
+<dd><p>String to be appended to all generated column
+names, that is each of col.tpdos, col.tapd, col.ndoses,
+col.pdosamt, col.doscuma that are not NULL.</p></dd>
 
 
 <dt>subset.dos</dt>

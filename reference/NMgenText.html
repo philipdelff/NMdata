@@ -25,7 +25,7 @@ tested for whether character or not."><meta property="og:image" content="https:/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.925</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.926</span>
       </span>
     </div>
 
@@ -110,6 +110,7 @@ tested for whether character or not.</p>
 <span>  capitalize <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">until</span>,</span>
 <span>  allow.char.TIME <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">width</span>,</span>
 <span>  <span class="va">quiet</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -150,8 +151,8 @@ include BBW and not BWBASE.</p></dd>
 additional names for columns in Nonmem $INPUT, NMwriteData can
 adjust the suggested $INPUT text. Say you plan to use CONC as
 DV in Nonmem, use copy=c(DV="CONC"),
-i.e. copy=c(newname="existing"). INPUT suggestion will in
-this case contain DV=CONC.</p></dd>
+i.e. copy=c(newname="existing"). INPUT suggestion will in this
+case contain DV=CONC.</p></dd>
 
 
 <dt>file</dt>
@@ -189,6 +190,12 @@ supplied).</p></dd>
 Nonmem can read TIME even if it can't be translated to
 numeric. This is necessary if using the 00:00 format. Default
 is TRUE.</p></dd>
+
+
+<dt>width</dt>
+<dd><p>If positive, will be passed to strwrap for the $INPUT
+text. If missing or NULL, strwrap will be called with default
+value. If negative or zero, strwrap will not be called.</p></dd>
 
 
 <dt>quiet</dt>
