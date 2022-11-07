@@ -1,4 +1,4 @@
-context("addTAD")
+context("addTAPD")
 
 test_that("basic",{
     fileRef <- "testReference/addTAPD_01.rds"
@@ -48,3 +48,18 @@ test_that("SDOSE",{
     res2[,DOSCUMA:=DOSCUMA*1000]
     expect_equal(res1,res2,version=2)
 })
+
+
+if(F){
+    library(devtools)
+    load_all("~/wdirs/NMexec")
+
+    doses.1 <- NMcreateDoses(TIME=c(0,3,12,24),CMT=1)
+    doses.2 <- NMcreateDoses(TIME=0,addl=list(ADDL=4,II=6),CMT=2)
+    doses.all <- rbind(doses.1,doses.2,fill=TRUE)
+    doses.all <- egdt(doses.all[,!("ID")],data.table(ID=1:2))
+    doses.all <- addEVID2(doses.all,time.sim=seq(0,26,by=2),CMT=3)
+
+    addTAPD(doses.all,subset.dos="CMT==1",cols.suffix="1")
+
+}

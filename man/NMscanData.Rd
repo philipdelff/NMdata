@@ -25,7 +25,8 @@ NMscanData(
   rep.count,
   order.columns = TRUE,
   check.time,
-  tz.lst
+  tz.lst,
+  tab.count
 )
 }
 \arguments{
@@ -156,6 +157,8 @@ files, the file modification times are used.}
 the time stamp in the output control stream. Please supply
 something listed in OlsonNames(). Can be configured using
 NMdataConf() too.}
+
+\item{tab.count}{Deprecated. Use rep.count.}
 }
 \value{
 A data set of class 'NMdata'.
