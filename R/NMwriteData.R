@@ -35,6 +35,9 @@
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using
 ##'     NMdataConf.
+##' @param genText Run and report results of NMgenText? Default is
+##'     TRUE. You may want to disable this if data set is not for
+##'     Nonmem.
 ##' @param args.NMgenText List of arguments to pass to NMgenText - the
 ##'     function that generates text suggestion for INPUT and DATA
 ##'     sections in the Nonmem control stream. You can use these
@@ -43,9 +46,18 @@
 ##'     control streams based on the result. This will update your
 ##'     control streams to match your new data file with just one
 ##'     command.
-##' @param genText Run and report results of NMgenText? Default is
-##'     TRUE. You may want to disable this if data set is not for
-##'     Nonmem.
+##' @param csv.trunc.as.nm If TRUE, csv file will be truncated
+##'     horizontally (columns will be dropped) to match the $INPUT
+##'     text generated for Nonmem (genText must be TRUE for this
+##'     option to be allowed). This can be a great advantage when
+##'     dealing with large datasets that can create problems in
+##'     parallellization. Combined with write.rds=TRUE, the full data
+##'     set will still be written to an rds file, so this can be used
+##'     when combining output and input data when reading model
+##'     results. This is done by default by NMscanData. This means
+##'     writing a lean (narrow) csv file for Nonmem while keeping
+##'     columns of non-numeric class like character and factor for
+##'     post-processing.
 ##' @param nmdir.data Deprecated, use
 ##'     args.NMgenText=list(dir.data="your/path") instead.
 ##' @param nm.copy Deprecated, use
@@ -70,14 +82,14 @@
 ##' is stopped. Only exception is TIME which is not tested for whether
 ##' character or not. 
 ##' 
-##' @family Nonmem
+##' @family DataCreate
 ##' @export
 
 
 NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
                         write.RData=FALSE,script,args.stamp,
                         args.fwrite, args.rds,args.RData,
-                        quiet,args.NMgenText,
+                        quiet,args.NMgenText,csv.trunc.as.nm=FALSE,
                         genText=TRUE,
 ### deprecated NMgenText arguments
                         nm.drop,
@@ -204,10 +216,13 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
     }
 
 
-
+### csv.trunc.as.nm
+    if(csv.trunc.as.nm && !genText){
+        messageWrap("when csv.trunc.as.nm==TRUE, genText must be TRUE too. Use quiet=TRUE to avoid text in console.",fun.msg=stop)
+    }
     
 ###  Section end: Process arguments
-
+    
     data.dt <- copy(as.data.table(data))
 
     ## Check if character variables contain commas
@@ -233,11 +248,27 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
                       ))
     }
 
+    ## Nonmem text
+    NMtext <- NULL
+    if(genText || (write.csv && csv.trunc.as.nm)){
+        NMtext <- try(do.call(NMgenText,
+                              append(
+                                  list(data=data.dt,file=file)
+                                 ,args.NMgenText)
+                              ))
+}
+
     files.written=c()
     if(write.csv){
         file.csv <- fnExtension(file,".csv")
-        
-        do.call(fwrite,append(list(x=data,file=file.csv),args.fwrite))
+        data.csv <- data
+        if(csv.trunc.as.nm){
+            
+            string.trunc <- sub(" *\\$INPUT *","",paste(NMtext$INPUT,collapse=" "))
+            n.cols.trunc <- length(strsplit(string.trunc,split=" ")[[1]])
+            data.csv <- data[,1:n.cols.trunc]
+        }
+        do.call(fwrite,append(list(x=data.csv,file=file.csv),args.fwrite))
         ## fwrite      (data,na=".",quote=FALSE,row.names=FALSE,scipen=0,file=file.csv)
         files.written <- c(files.written,file.csv)
         if(doStamp){
@@ -283,22 +314,13 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
         
     }
 
+    if(is.null(NMtext)) return(invisible(NULL))
     
-    
-    ## Nonmem text
-    if(genText){
-        NMtext <- try(do.call(NMgenText,
-                              append(
-                                  list(data=data.dt,file=file)
-                                 ,args.NMgenText)
-                              ))
-        if("try-error"%in%class(NMtext)){
-            stop("NMgenText failed.") 
-        } else {
-            return(invisible(list(INPUT=NMtext$INPUT,DATA=NMtext$DATA)))
-        }
+    if("try-error"%in%class(NMtext)){
+        stop("NMgenText failed.") 
+    } else {
+        return(invisible(list(INPUT=NMtext$INPUT,DATA=NMtext$DATA)))
     }
-    invisible(NULL)
 
-
+    
 }

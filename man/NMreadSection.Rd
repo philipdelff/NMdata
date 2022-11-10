@@ -87,7 +87,6 @@ Other Nonmem:
 \code{\link{NMapplyFilters}()},
 \code{\link{NMextractText}()},
 \code{\link{NMgenText}()},
-\code{\link{NMwriteData}()},
 \code{\link{NMwriteSection}()}
 }
 \concept{Nonmem}

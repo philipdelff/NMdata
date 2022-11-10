@@ -55,6 +55,7 @@ findCovs(findVars(dt1,"ID"),c("ID","OCC"))
 Other DataCreate: 
 \code{\link{NMorderColumns}()},
 \code{\link{NMstamp}()},
+\code{\link{NMwriteData}()},
 \code{\link{addTAPD}()},
 \code{\link{findCovs}()},
 \code{\link{flagsAssign}()},

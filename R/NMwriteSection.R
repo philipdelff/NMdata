@@ -62,8 +62,10 @@
 ##' @export
 
 
-NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections,newfile,
-                           backup=TRUE,blank.append=TRUE,data.file,write=TRUE,quiet,simplify=TRUE){
+NMwriteSection <- function(files,file.pattern,dir,section,newlines,
+                           list.sections,newfile,
+                           backup=TRUE,blank.append=TRUE,data.file,
+                           write=TRUE,quiet,simplify=TRUE){
 
 
     
@@ -160,7 +162,6 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections
                               lines[(max.dl+1):length(lines)])
             }
 
-            ##  function end
             newlines
         }
         

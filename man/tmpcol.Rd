@@ -33,6 +33,7 @@ make.names
 Other DataCreate: 
 \code{\link{NMorderColumns}()},
 \code{\link{NMstamp}()},
+\code{\link{NMwriteData}()},
 \code{\link{addTAPD}()},
 \code{\link{findCovs}()},
 \code{\link{findVars}()},

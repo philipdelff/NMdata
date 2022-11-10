@@ -7,8 +7,20 @@
   and if extension is not provided, fnExtension will retrieve the
   extension rather than replace it.
   
-* Added support for repeated outputs, like those created using the
-  SUBPROBLEM option.
+* NMscanData now supports repeated output tables, like those created
+  using the SUBPROBLEM option.
+  
+* NMwriteData has a new argument csv.trunc.as.nm. If TRUE, csv file
+  will be truncated horizontally (columns will be dropped) to match
+  the $INPUT text generated for Nonmem (genText must be TRUE for this
+  option to be allowed). This can be a great advantage when dealing
+  with large datasets that can create problems in
+  parallellization. Combined with write.rds=TRUE, the full data set
+  will still be written to an rds file, so this can be used when
+  combining output and input data when reading model results. This is
+  done by default by NMscanData. This means writing a lean (narrow)
+  csv file for Nonmem while keeping columns of non-numeric class like
+  character and factor for post-processing.
   
 * NMwriteData has got an arguement 'genText' to control whether text
   for Nonmem should be generated. Default is to do so. Also, support

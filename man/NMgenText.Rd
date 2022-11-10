@@ -99,7 +99,6 @@ Other Nonmem:
 \code{\link{NMapplyFilters}()},
 \code{\link{NMextractText}()},
 \code{\link{NMreadSection}()},
-\code{\link{NMwriteData}()},
 \code{\link{NMwriteSection}()}
 }
 \concept{Nonmem}

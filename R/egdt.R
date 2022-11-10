@@ -41,8 +41,8 @@ egdt <- function(dt1,dt2,quiet){
     if(length(cols.common)>0) messageWrap(sprintf("Common column names in dt1 and dt2. If a merge is intended, it is beyond the scope of egdt. If you still want to use egdt, you can rename the common column names first. Common column names: %s.",paste(cols.common,collapse=", ")),fun.msg=stop)
     tc <- tmpcol(names=c(colnames(dt1),colnames(dt2)))
 
-    dt1[,(tc):=1]
-    dt2[,(tc):=1]
+    dt1[,(tc):=1L]
+    dt2[,(tc):=1L]
 
     result <- merge(dt1,dt2,by=tc,allow.cartesian = TRUE)
     result[,(tc):=NULL]

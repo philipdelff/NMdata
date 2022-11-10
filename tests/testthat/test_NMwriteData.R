@@ -230,3 +230,26 @@ test_that("script=NULL",{
     expect_equal(pk,pk0)
 
 })
+
+test_that("csv.trunc.as.nm",{
+
+    fileRef <- "testReference/NMwriteData_11.rds"
+
+    pk <- readRDS(file="testData/data/xgxr2.rds")
+ 
+    res1 <- NMwriteData(pk,file="testOutput/NMwriteData11.csv",
+                        write.rds=T,write.csv=T,nmdir.data="/example",script=NULL
+                        ,csv.trunc.as.nm=T)
+
+    written1.rds <- readRDS("testOutput/NMwriteData11.rds")
+    written1.csv <- NMreadCsv("testOutput/NMwriteData11.csv")
+
+    
+    expect_equal_to_reference(
+list(colnames(written1.rds),colnames(written1.csv))
+       ,fileRef,version=2)
+
+
+})
+
+

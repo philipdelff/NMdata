@@ -266,7 +266,11 @@ extension is .rds?
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
 *** NMwriteSection
-**** TODO [#A] Support insertion of new section before or after another section
+**** TODO [#B] Support insertion of new section before or after another section
+location="replace" is default. "before" and "after" should be
+additional allowed values. Think about how to handle this for
+lists. Maybe just OK to insert before and after with a list? Or is it
+too rarely needed?
 **** DONE Allow to remove a section if it doesn't exist
 **** DONE Put backup files in NMdata_backup
 **** DONE Check if any files matched before running lapply
@@ -446,7 +450,7 @@ data. It should be based on tables in meta$tables.
 **** TODO Check if models are repeated
 It now throws a weird error
 *** NMwriteData
-**** TODO [#A] Support not writing all columns to csv
+**** DONE Support not writing all columns to csv
 It would be faster and sometimes only feasible to use the dataset with
 nonmem if columns are omitted from csv. But this is still very small
 data amounts to handle with data.table so one could still want to keep
@@ -569,6 +573,7 @@ arguments. NMdata calls this "writtenTo".
 *** Examples
 **** DONE renameByContents example
 *** Vignettes
+**** TODO [#A] Rebuild vignettes
 *** pkgdown
 **** TODO [#B] := prints in manual
      https://philipdelff.github.io/NMdata/reference/renameByContents.html

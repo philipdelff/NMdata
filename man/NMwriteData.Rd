@@ -17,6 +17,7 @@ NMwriteData(
   args.RData,
   quiet,
   args.NMgenText,
+  csv.trunc.as.nm = FALSE,
   genText = TRUE,
   nm.drop,
   nmdir.data,
@@ -69,6 +70,19 @@ Nonmem - and NMwriteSection can even update multiple Nonmem
 control streams based on the result. This will update your
 control streams to match your new data file with just one
 command.}
+
+\item{csv.trunc.as.nm}{If TRUE, csv file will be truncated
+horizontally (columns will be dropped) to match the $INPUT
+text generated for Nonmem (genText must be TRUE for this
+option to be allowed). This can be a great advantage when
+dealing with large datasets that can create problems in
+parallellization. Combined with write.rds=TRUE, the full data
+set will still be written to an rds file, so this can be used
+when combining output and input data when reading model
+results. This is done by default by NMscanData. This means
+writing a lean (narrow) csv file for Nonmem while keeping
+columns of non-numeric class like character and factor for
+post-processing.}
 
 \item{genText}{Run and report results of NMgenText? Default is
 TRUE. You may want to disable this if data set is not for
@@ -123,11 +137,15 @@ is stopped. Only exception is TIME which is not tested for whether
 character or not.
 }
 \seealso{
-Other Nonmem: 
-\code{\link{NMapplyFilters}()},
-\code{\link{NMextractText}()},
-\code{\link{NMgenText}()},
-\code{\link{NMreadSection}()},
-\code{\link{NMwriteSection}()}
+Other DataCreate: 
+\code{\link{NMorderColumns}()},
+\code{\link{NMstamp}()},
+\code{\link{addTAPD}()},
+\code{\link{findCovs}()},
+\code{\link{findVars}()},
+\code{\link{flagsAssign}()},
+\code{\link{flagsCount}()},
+\code{\link{mergeCheck}()},
+\code{\link{tmpcol}()}
 }
-\concept{Nonmem}
+\concept{DataCreate}
