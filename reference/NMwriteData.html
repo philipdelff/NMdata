@@ -23,7 +23,7 @@ in the file argument."><meta property="og:image" content="https://philipdelff.gi
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.926</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.931</span>
       </span>
     </div>
 
@@ -109,6 +109,7 @@ in the file argument.</p>
 <span>  <span class="va">args.RData</span>,</span>
 <span>  <span class="va">quiet</span>,</span>
 <span>  <span class="va">args.NMgenText</span>,</span>
+<span>  csv.trunc.as.nm <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  genText <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">nm.drop</span>,</span>
 <span>  <span class="va">nmdir.data</span>,</span>
@@ -188,6 +189,21 @@ control streams to match your new data file with just one
 command.</p></dd>
 
 
+<dt>csv.trunc.as.nm</dt>
+<dd><p>If TRUE, csv file will be truncated
+horizontally (columns will be dropped) to match the $INPUT
+text generated for Nonmem (genText must be TRUE for this
+option to be allowed). This can be a great advantage when
+dealing with large datasets that can create problems in
+parallellization. Combined with write.rds=TRUE, the full data
+set will still be written to an rds file, so this can be used
+when combining output and input data when reading model
+results. This is done by default by NMscanData. This means
+writing a lean (narrow) csv file for Nonmem while keeping
+columns of non-numeric class like character and factor for
+post-processing.</p></dd>
+
+
 <dt>genText</dt>
 <dd><p>Run and report results of NMgenText? Default is
 TRUE. You may want to disable this if data set is not for
@@ -252,12 +268,16 @@ character or not.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p>Other Nonmem: 
-<code><a href="NMapplyFilters.html">NMapplyFilters</a>()</code>,
-<code><a href="NMextractText.html">NMextractText</a>()</code>,
-<code><a href="NMgenText.html">NMgenText</a>()</code>,
-<code><a href="NMreadSection.html">NMreadSection</a>()</code>,
-<code><a href="NMwriteSection.html">NMwriteSection</a>()</code></p></div>
+    <div class="dont-index"><p>Other DataCreate: 
+<code><a href="NMorderColumns.html">NMorderColumns</a>()</code>,
+<code><a href="NMstamp.html">NMstamp</a>()</code>,
+<code><a href="addTAPD.html">addTAPD</a>()</code>,
+<code><a href="findCovs.html">findCovs</a>()</code>,
+<code><a href="findVars.html">findVars</a>()</code>,
+<code><a href="flagsAssign.html">flagsAssign</a>()</code>,
+<code><a href="flagsCount.html">flagsCount</a>()</code>,
+<code><a href="mergeCheck.html">mergeCheck</a>()</code>,
+<code><a href="tmpcol.html">tmpcol</a>()</code></p></div>
     </div>
 
   </div>

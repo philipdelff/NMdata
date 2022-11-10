@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.926</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13.931</span>
       </span>
     </div>
 
@@ -117,7 +117,7 @@
 
     
     
-<p>Built 2022-11-07 using NMdata 0.0.13.926.</p>
+<p>Built 2022-11-10 using NMdata 0.0.13.931.</p>
 <p>This vignette is still under development. Please make sure to see
 latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
@@ -659,15 +659,15 @@ the script.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">text.nm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMwriteData.html">NMwriteData</a></span><span class="op">(</span><span class="va">pk</span>, file <span class="op">=</span> <span class="st">"derived/pkdata.csv"</span>, script <span class="op">=</span> <span class="st">"DataPrepare.Rmd"</span>,</span>
 <span>    write.csv <span class="op">=</span> <span class="cn">TRUE</span>, args.stamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Description <span class="op">=</span> <span class="st">"PK data for the Data Preparation vignette."</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Data written to file(s):</span></span>
-<span><span class="co">#&gt; derived/pkdata.csv</span></span>
-<span><span class="co">#&gt; derived/pkdata.rds</span></span>
 <span><span class="co">#&gt; For NONMEM:</span></span>
 <span><span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span></span>
 <span><span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB eff0</span></span>
 <span><span class="co">#&gt; $DATA derived/pkdata.csv</span></span>
 <span><span class="co">#&gt; IGN=@</span></span>
-<span><span class="co">#&gt; IGNORE=(FLAG.NE.0)</span></span></code></pre></div>
+<span><span class="co">#&gt; IGNORE=(FLAG.NE.0)</span></span>
+<span><span class="co">#&gt; Data written to file(s):</span></span>
+<span><span class="co">#&gt; derived/pkdata.csv</span></span>
+<span><span class="co">#&gt; derived/pkdata.rds</span></span></code></pre></div>
 <p>We are being told that two files were saved, and then we get some
 text to use in the NONMEM control streams. <code>NMwriteData</code>
 detected the exclusion flag and suggests to include it in
@@ -687,7 +687,7 @@ automatically recognize if found. The metadata becomes accessible using
 <span><span class="co">#&gt; [1] "DataPrepare.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2022-11-07 18:18:44 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2022-11-10 04:27:46 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$writtenTo</span></span>
 <span><span class="co">#&gt; [1] "derived/pkdata.csv"</span></span>
@@ -705,7 +705,7 @@ file is the filename:</p>
 <span><span class="co">#&gt; [1] "DataPrepare.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2022-11-07 18:18:44 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2022-11-10 04:27:46 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$writtenTo</span></span>
 <span><span class="co">#&gt; [1] "derived/pkdata.rds"</span></span>
@@ -769,7 +769,7 @@ does).</p>
 <span><span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2022-11-07 18:18:44 UTC"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "2022-11-10 04:27:47 UTC"</span></span></code></pre></div>
 <p>The <code>script</code> argument is recognized by
 <code>NMstamp</code>, but you can add anything to this. We want to keep
 descriptive note too. Another often useful piece of information is what
@@ -785,7 +785,7 @@ source data files were read in order to generate the saved data.
 <span><span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2022-11-07 18:18:44 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2022-11-10 04:27:47 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$Description</span></span>
 <span><span class="co">#&gt; [1] "A PK dataset used for examples."</span></span>
