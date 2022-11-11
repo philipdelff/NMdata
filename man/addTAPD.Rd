@@ -72,7 +72,7 @@ as well.}
 
 \item{subset.is.complete}{Only used in combination with
 non-missing subset.dos. By default, subset.dos is used in
-addition to the impact of col.evid and col.amt. If
+addition to the impact of col.evid (must be 1 or 4) and col.amt (greater than zero). If
 subset.is.complete=TRUE, subset.dos is used alone, and
 col.evid and col.amt are completely ignored. This is typically
 useful if the events are not doses but other events that are

@@ -932,7 +932,9 @@ test_that("simulation model with subproblems",{
     ##               suffix.sim="testsim1",dir.sim="testData/simulations"
     ##              ,seed=343108,subproblems=100,nmquiet=T)
 
-    ## sim1
+### NMsim saves serialized rds. Resaving as version 2
+    ## res.sim <- readRDS("testData/simulations/NMsimData_xgxr014_testsim1.rds")
+    ## saveRDS(res.sim,"testData/simulations/NMsimData_xgxr014_testsim1.rds",version=2)
 ##### sim done
     
     res <- NMscanData("testData/simulations/xgxr014_testsim1.lst",check.time=F)
