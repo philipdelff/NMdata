@@ -89,7 +89,7 @@ summary.NMdata <- function(object,...){
 ##' print method for NMdata summaries
 ##' @param x The summary object to be printed. See ?summary.NMdata
 ##' @param ... Arguments passed to other print methods.
-##'
+##' @return NULL (invisibly)
 ##' @import data.table
 ##' @export
 print.summary_NMdata <- function(x,...){

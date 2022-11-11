@@ -10,6 +10,9 @@ cc(...)
 \item{...}{The unquoted names that will become character values in
 the returned vector.}
 }
+\value{
+A character vector
+}
 \description{
 When creating character vectors with several elements, it becomes
 a lot of quotes to type. cc provides a simple way to skip the

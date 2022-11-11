@@ -33,6 +33,8 @@
 ##'     if you only have the output file, use dir.data to tell in
 ##'     which directory to find the data file. If dir.data is
 ##'     provided, the .mod file is not used at all.
+##' @param file.data Specification of the data file path. When this is
+##'     used, the control streams are not used at all.
 ##' @param use.rds If an rds file is found with the exact same name
 ##'     (except for .rds instead of say .csv) as the text file
 ##'     mentioned in the Nonmem control stream, should this be used
@@ -71,8 +73,6 @@
 ##' @param invert If TRUE, the data rows that are dismissed by the
 ##'     Nonmem data filters (ACCEPT and IGNORE) and only this will be
 ##'     returned. Only used if applyFilters is TRUE.
-##' @param file.data Specification of the data file path. When this is
-##'     used, the control streams are not used at all.
 ##' @details Columns that are dropped (using DROP or SKIP in $INPUT)
 ##'     in the model will be included in the output.
 ##'

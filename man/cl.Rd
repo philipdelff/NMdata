@@ -9,6 +9,9 @@ cl(...)
 \arguments{
 \item{...}{unique elements or vectors with unique elements}
 }
+\value{
+A factor (vector)
+}
 \description{
 This is a shortcut for creating factors with levels as the order
 of appearance of the specified levels.

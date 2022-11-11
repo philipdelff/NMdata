@@ -17,6 +17,7 @@
 ##'     provided, the .mod file is not used at all.
 ##' @param as.fun The function to run results through before returning them.
 ##' @param ... passed to NMcheckData
+##' @return A list of diagnostics 
 ##' @keywords internal
 
 ### Don't export. NMcheckData will be the way in.

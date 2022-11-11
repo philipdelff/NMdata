@@ -39,6 +39,9 @@ provided, the .mod file is not used at all.}
 
 \item{...}{passed to NMcheckData}
 }
+\value{
+A list of diagnostics
+}
 \description{
 Finds input data and checks compatibility with Nonmem control
 stream and runs NMcheckData. Don't call this function directly -

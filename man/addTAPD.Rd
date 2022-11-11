@@ -98,6 +98,9 @@ something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.}
 }
+\value{
+A data.frame with additional columns
+}
 \description{
 For now, doses have to be in data as EVID=1 and/or EVID=4
 records. They can be in the format of one row per dose or repeated

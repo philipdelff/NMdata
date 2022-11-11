@@ -11,6 +11,7 @@
 ##'     10,... and not 1, 2,...,10,...
 ##' @param sep The separator between the exsting file name (until
 ##'     extension) and the addition.
+##' @return A character (vector)
 ##'
 ##' @export
 

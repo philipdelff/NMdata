@@ -6,6 +6,8 @@
 ##' @details This function is under development. It is not polished
 ##'     for other than internal use by NMscanData. It will likely
 ##'     return a different format in the future.
+##' @return A list of data.tables: One row-level, one id-level data
+##'     set and their column specifications.
 ##' @keywords internal
 
 

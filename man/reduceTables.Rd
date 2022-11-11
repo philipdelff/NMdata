@@ -12,6 +12,10 @@ reduceTables(tables, col.nmout)
 \item{col.nmout}{The name of the column holding logical of whether
 row was found in output tables.}
 }
+\value{
+A list of data.tables: One row-level, one id-level data
+    set and their column specifications.
+}
 \description{
 reduce tables from NMscanTables to fewer objects
 }

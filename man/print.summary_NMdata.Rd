@@ -11,6 +11,9 @@
 
 \item{...}{Arguments passed to other print methods.}
 }
+\value{
+NULL (invisibly)
+}
 \description{
 print method for NMdata summaries
 }

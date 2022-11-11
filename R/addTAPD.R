@@ -70,6 +70,7 @@
 ##'     hence output will be calculated in relation to the dose
 ##'     before. If no dose event is found before, NA's will be
 ##'     assigned.
+##' @return A data.frame with additional columns
 ##' @import data.table
 ##' @export
 ##' @family DataCreate

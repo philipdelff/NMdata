@@ -153,7 +153,7 @@
 ##' vice versa.
 ##'
 ##' }
-##'
+##' @return A table with findings
 ##' @examples
 ##' dat <- readRDS(system.file("examples/data/xgxr2.rds", package="NMdata"))
 ##' NMcheckData(dat)

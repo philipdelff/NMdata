@@ -4,6 +4,7 @@
 ##' of appearance of the specified levels.
 ##' 
 ##' @param ... unique elements or vectors with unique elements
+##' @return A factor (vector)
 ##' @examples
 ##' factor("b","a")
 ##' cl("b","a")

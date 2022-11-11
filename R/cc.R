@@ -9,6 +9,7 @@
 ##'     alphanumerics and no spaces supported. Also, remember that
 ##'     numerics are converted using as.character. Eg, this means that
 ##'     leading zeros are dropped.
+##' @return A character vector
 ##' @export
 ##' @seealso cl
 ##' 

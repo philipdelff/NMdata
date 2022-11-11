@@ -114,6 +114,9 @@ something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.}
 }
+\value{
+A table with findings
+}
 \description{
 Check data in various ways for compatibility with Nonmem. Some
 findings will be reported even if they will not make Nonmem fail
