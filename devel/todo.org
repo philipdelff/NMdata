@@ -573,7 +573,7 @@ arguments. NMdata calls this "writtenTo".
 *** Examples
 **** DONE renameByContents example
 *** Vignettes
-**** TODO [#A] Rebuild vignettes
+**** DONE Rebuild vignettes
 *** pkgdown
 **** TODO [#B] := prints in manual
      https://philipdelff.github.io/NMdata/reference/renameByContents.html
