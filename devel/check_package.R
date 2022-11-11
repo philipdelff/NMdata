@@ -8,5 +8,10 @@ as.data.table(finds)
 globals <- get_no_visible(path.pkg, quiet = TRUE)
 print_globals(globals)
 
+
+
 ######## NO!!!!!
 ### check_as_cran(check_dir = )
+check_dir <- tempfile("example")
+# Check the current directory
+check_as_cran(check_dir = check_dir)
