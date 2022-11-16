@@ -24,3 +24,21 @@ test_that("element-wise",{
 
     expect_equal_to_reference(res,fileRef,version=2)
 })
+
+
+test_that("NA's",{
+    fileRef <- "testReference/NMisNumeric_4.rds"
+
+    dttest <- data.table(logic=NA
+                        ,char2=NA_character_
+                        ,num=NA_real_
+                        ,int=NA_integer_
+                         )
+    
+    res <- sapply(dttest,NMisNumeric)
+
+res
+
+
+    expect_equal_to_reference(res,fileRef,version=2)
+})

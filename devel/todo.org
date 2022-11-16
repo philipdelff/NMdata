@@ -293,9 +293,7 @@ The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMisNumeric
-**** TODO [#A] NA_character is not recognized as numeric
-NMisNumeric(c(NA)) is FALSE
-NMisNumeric(NA_real_) is TRUE
+**** DONE NA_character is not recognized as numeric
 *** NMscanInput
 **** DONE Test with multiple filters on the same column
 like IGNORE(ID=2) IGNORE(ID=3)

@@ -53,6 +53,9 @@
 
 * addTAPD was not respecting subset.dos for all generated columns. 
 
+* NMisNumeric would interpret a NA of class character or logical as
+  non-numeric. Fixed.
+
 ## Other improvements
 * Internally, combination of input and output data without a row
   identifier is simplified.

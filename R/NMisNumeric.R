@@ -30,11 +30,12 @@ NMisNumeric <- function(x,na.strings=".",each=FALSE){
             inherits(x, "POSIXt")  ||
             inherits(x, "Date")
     }
-
+    
     ok <- rep(TRUE,length(x))
     if(is.logical(x) || is.timestamp(x)) {
-        ok[] <- FALSE
+        ok[!is.na(x)] <- FALSE
     } else if(!is.numeric(x)){
+        
         ok[!is.na(x)&!as.character(x)%in%na.strings] <- 
             suppressWarnings(!is.na(as.numeric(as.character(x)[!is.na(x)&!as.character(x)%in%na.strings])))
     }
