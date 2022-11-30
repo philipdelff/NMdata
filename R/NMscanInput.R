@@ -173,7 +173,11 @@ NMscanInput <- function(file, use.rds, file.mod, dir.data=NULL,
     
     col.id.inp <- col.id
     if(translate){
-        col.id.inp <- NMinfoDT(data.input,"input.colnames")[result==col.id,datafile][1]
+        ## this is done in two steps because up until data.table
+        ## 1.14.7 this could assign indices to data.input if done
+        ## without the copy.
+        col.id.inp <- copy(NMinfoDT(data.input,"input.colnames"))
+        col.id.inp <- col.id.inp[result==col.id,datafile][1]
     }
 
     as.fun <- NMdataDecideOption("as.fun",as.fun)

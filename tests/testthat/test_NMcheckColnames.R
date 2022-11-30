@@ -1,7 +1,4 @@
 context("NMcheckColnames")
-NMdata_filepath <- function(...) {
-    system.file(..., package = "NMdata")
-}
 
 
 test_that("basic",{

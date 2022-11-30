@@ -83,7 +83,6 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
     nmexpand <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
-
     
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)

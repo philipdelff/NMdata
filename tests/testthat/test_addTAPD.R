@@ -80,5 +80,3 @@ if(F){
     dat.all3
 
 }
-
-### double check NMexpandDoses. Is the first one retrned marked nmexpanded? That would be a bug.

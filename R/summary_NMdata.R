@@ -210,7 +210,7 @@ print.summary_NMdata <- function(x,...){
 
     ## overview of processed tables
     cat("\nUsed tables, contents shown as used/total:\n")
-    print(vars.sum2,row.names=FALSE)
+    print(vars.sum2,row.names=FALSE,print.keys=FALSE,class=FALSE)
 
     if(x$details$input.used){
         if(x$details$merge.by.row){
@@ -224,7 +224,7 @@ Nonmem data filters (not recommended).")
     }
     
     ## cat("\nNumbers of rows and subjects\n")
-    ## print(n5,row.names=FALSE,...)
+    ## print(n5,row.names=FALSE,print.keys=FALSE,class=FALSE,...)
     cat("\n")
 
     if(any(!is.na(x$N.evids))){
@@ -249,7 +249,7 @@ Nonmem data filters (not recommended).")
                         neworder=intersect(cc(EVID,CMT,"input-only","output","result"),colnames(evids2)))
 
             cat("Distribution of rows on event types in returned data:\n")
-            print(evids2,row.names=FALSE)
+            print(evids2,row.names=FALSE,print.keys=FALSE,class=FALSE)
         })
     }        
 
