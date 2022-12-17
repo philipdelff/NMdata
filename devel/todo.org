@@ -296,6 +296,7 @@ issued. Once done, NMgetSection must be updated as well.
 *** NMisNumeric
 **** DONE NA_character is not recognized as numeric
 *** NMscanInput
+**** TODO Bug: Error when ID not in data but var=ID in $INPUT
 **** DONE Test with multiple filters on the same column
 like IGNORE(ID=2) IGNORE(ID=3)
 **** DONE Make work without filters

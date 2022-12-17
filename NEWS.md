@@ -1,3 +1,12 @@
+# Post 0.0.15
+## Bugfixes
+NMcheckData did not check columns listed in cols.num for NA
+elements. Now it does.
+
+
+# 0.0.15
+Only a technical change in order for tests not to fail with new data.table release.
+
 # 0.0.14
 ## New features
 * fnExtension has been generalized. It now ignores leading spaces in

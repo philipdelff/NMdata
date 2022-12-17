@@ -535,36 +535,47 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 
 
     
-    
 ######## Default numeric columns. Will be checked for presence, NA, non-numeric (col-level)
 ### Others that: If column present, must be numeric, and values must be non-NA. Remember eg DV, CMT and AMT can be NA.
-    cols.num.all <- c( col.time,"EVID",col.id,col.mdv,col.flagn,
-                      covs,names(covs.occ),as.character(unlist(covs.occ)))
-    cols.num.all <- unique(cols.num.all)
-### check for missing in cols.num.all
     
-    for(col in cols.num.all){
-        findings <- listEvents(col,name="is NA",fun=is.na,invert=TRUE,new.rows.only=T,debug=FALSE,events=findings) 
-        findings <- listEvents(col,name="Not numeric",
-                               fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
-                               new.rows.only=TRUE,events=findings)
-    }
+    cols.num.all <- c( col.time,"EVID",col.id,col.mdv,col.flagn,
+                      covs,names(covs.occ),as.character(unlist(covs.occ))
+                      )
+##     cols.num.all <- unique(cols.num.all)
+## ### check for missing in cols.num.all
+    
+##     for(col in cols.num.all){
+##         findings <- listEvents(col,name="is NA",fun=is.na,invert=TRUE,new.rows.only=T,debug=FALSE,events=findings) 
+##         findings <- listEvents(col,name="Not numeric",
+##                                fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+##                                new.rows.only=TRUE,events=findings)
+##     }
 
-    ## cols.num is a named list. Names are subsets.
-    if(!is.null(cols.num)){
+    cols.num.all <- c(list(`TRUE`=cols.num.all),
+                       cols.num)
+
+    ##### I believe this is covered altogether ass part of cols.num.all.
+##     ## cols.num is a named list. Names are subsets.
+    if(!is.null(cols.num.all
+                )){
         
         subsets.cols.num <- names(cols.num)
-        
-        
+      
         for(n in 1:length(cols.num)){
+                ##             
             expr.sub <- subsets.cols.num[n]
             rows.sub <- data[eval(parse(text=expr.sub)),get(rowint)]
             for(col in cols.num[[n]]){
+                ## will this ever be needed? cols.num is only what is
+                ## supplied as arg, and those are already checked as
+                ## part of cols.num.all.
                 findings <- listEvents(col,name="Not numeric",
                                        fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
                                        new.rows.only=TRUE,events=findings,dat=data[eval(parse(text=expr.sub))])
+                findings <- listEvents(col,name="is NA",
+                                       fun=is.na,invert=TRUE,new.rows.only=T,debug=FALSE,events=findings,dat=data[get(rowint)%in%rows.sub])
                 ## not expecting values if outside subset
-                
+                ### can a col.num ever be outside subset?
                 findings <- listEvents(col,name="NA expected",
                                        fun=NMisMissing,
                                        new.rows.only=FALSE,events=findings,dat=data[!get(rowint)%in%rows.sub])
