@@ -165,7 +165,6 @@
 
 
 NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="TIME",col.dv="DV",col.mdv="MDV",col.cmt="CMT",col.amt="AMT",col.flagn,col.row,col.usubjid,na.strings,return.summary=FALSE,quiet=FALSE,as.fun){
-
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -541,6 +540,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     cols.num.all <- c( col.time,"EVID",col.id,col.mdv,col.flagn,
                       covs,names(covs.occ),as.character(unlist(covs.occ))
                       )
+    
 ##     cols.num.all <- unique(cols.num.all)
 ## ### check for missing in cols.num.all
     
@@ -551,7 +551,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 ##                                new.rows.only=TRUE,events=findings)
 ##     }
 
-    cols.num.all <- c(list(`TRUE`=cols.num.all),
+    cols.num.all <- c(list("TRUE"=cols.num.all),
                        cols.num)
 
     ##### I believe this is covered altogether ass part of cols.num.all.
@@ -559,13 +559,13 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     if(!is.null(cols.num.all
                 )){
         
-        subsets.cols.num <- names(cols.num)
+        subsets.cols.num <- names(cols.num.all)
       
-        for(n in 1:length(cols.num)){
+        for(n in 1:length(cols.num.all)){
                 ##             
             expr.sub <- subsets.cols.num[n]
             rows.sub <- data[eval(parse(text=expr.sub)),get(rowint)]
-            for(col in cols.num[[n]]){
+            for(col in cols.num.all[[n]]){
                 ## will this ever be needed? cols.num is only what is
                 ## supplied as arg, and those are already checked as
                 ## part of cols.num.all.
@@ -595,8 +595,12 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
                                events=findings,debug=FALSE)
     }
 
-    cols.num.all <- intersect(cols.num.all,cnames.data.0)
+    
+    cols.num.all <- intersect(
+        do.call(c,cols.num.all)
+                             ,cnames.data.0)
 ##### Done checking required columns for NMisNumeric. overwrite cols.num.all with NMasNumeric of cols.num.all.
+    
     data[,(cols.num.all):=lapply(.SD,NMasNumeric),.SDcols=cols.num.all]
 
     
