@@ -629,6 +629,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     
     cols.req <- c(col.cmt,col.dv,col.amt)
     for(col in cols.req){
+        
         findings <- listEvents(col,name="Not numeric",fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
                                new.rows.only=T,events=findings)
     }
@@ -660,7 +661,11 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 ###### DV
 ### DV must be present
 ### DV must be numeric for EVID==0
+if(col.mdv%in%colnames(data)){
+    findings <- listEvents(col.dv,"DV not numeric",fun=is.na,events=findings,invert=TRUE,dat=data[EVID%in%c(0)&get(col.mdv)==0])
+} else {
     findings <- listEvents(col.dv,"DV not numeric",fun=is.na,events=findings,invert=TRUE,dat=data[EVID%in%c(0)])
+}
 
 ### DV should be NA for dosing records
     findings <- listEvents(col.dv,"DV not NA in dosing recs",fun=is.na,events=findings,dat=data[EVID%in%c(1,4)])
