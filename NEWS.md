@@ -3,6 +3,13 @@
 NMcheckData did not check columns listed in cols.num for NA
 elements. Now it does.
 
+NMcheckData now only checks col.id to be non-NA for col.mdv==0 if
+col.mdv is present.
+
+NMscanInput would fail if there was no column called ID in the dataset
+on file. This has been fixed to support cases where renaming or a
+pseudonym is being used to generate an ID column in $INPUT.
+
 
 # 0.0.15
 Only a technical change in order for tests not to fail with new data.table release.

@@ -170,6 +170,7 @@ NMscanInput <- function(file, use.rds, file.mod, dir.data=NULL,
     
 ### cnames.input is the names of columns as in input data file
     data.input <- NMtransInp(data.input,file,translate=translate,recover.cols=recover.cols)
+    data.input.0.trans <- NMtransInp(data.input.0,file,translate=translate,recover.cols=recover.cols)
     
     col.id.inp <- col.id
     if(translate){
@@ -177,7 +178,7 @@ NMscanInput <- function(file, use.rds, file.mod, dir.data=NULL,
         ## 1.14.7 this could assign indices to data.input if done
         ## without the copy.
         col.id.inp <- copy(NMinfoDT(data.input,"input.colnames"))
-        col.id.inp <- col.id.inp[result==col.id,datafile][1]
+        col.id.inp <- col.id.inp[result==col.id,result][1]
     }
 
     as.fun <- NMdataDecideOption("as.fun",as.fun)
@@ -189,6 +190,7 @@ NMscanInput <- function(file, use.rds, file.mod, dir.data=NULL,
         input.create.time <- NMinfo(data.input)$dataCreate$CreationTime
         if(is.null(input.create.time)) input.create.time <- NA
 
+        
         meta$tables <- data.table(
             source="input",
             file=path.data.input,
@@ -216,7 +218,9 @@ NMscanInput <- function(file, use.rds, file.mod, dir.data=NULL,
 
         
         if(col.id%in%NMinfoDT(data.input,"input.colnames")[,result]) {
-            meta$tables[,nid:=data.input.0[,uniqueN(get(col.id.inp))]]
+            meta$tables[,nid:=
+                             data.input.0.trans[,uniqueN(get(col.id.inp))]
+                        ]
         }
 
         data.input <- as.fun(data.input)
