@@ -1,7 +1,19 @@
+# Post 0.0.15
+## Bugfixes
+NMcheckData did not check columns listed in cols.num for NA
+elements. Now it does.
+
+NMcheckData now only checks col.id to be non-NA for col.mdv==0 if
+col.mdv is present.
+
+NMscanInput would fail if there was no column called ID in the dataset
+on file. This has been fixed to support cases where renaming or a
+pseudonym is being used to generate an ID column in $INPUT.
+
+
 # 0.0.15
 This update is of no difference to users. A technicality has been
 chaned to ensure consistent test results once data.table 1.14.7 is
-released, that's all.
 
 # 0.0.14
 ## New features

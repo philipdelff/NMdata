@@ -165,7 +165,6 @@
 
 
 NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="TIME",col.dv="DV",col.mdv="MDV",col.cmt="CMT",col.amt="AMT",col.flagn,col.row,col.usubjid,na.strings,return.summary=FALSE,quiet=FALSE,as.fun){
-
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -535,36 +534,48 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 
 
     
-    
 ######## Default numeric columns. Will be checked for presence, NA, non-numeric (col-level)
 ### Others that: If column present, must be numeric, and values must be non-NA. Remember eg DV, CMT and AMT can be NA.
-    cols.num.all <- c( col.time,"EVID",col.id,col.mdv,col.flagn,
-                      covs,names(covs.occ),as.character(unlist(covs.occ)))
-    cols.num.all <- unique(cols.num.all)
-### check for missing in cols.num.all
     
-    for(col in cols.num.all){
-        findings <- listEvents(col,name="is NA",fun=is.na,invert=TRUE,new.rows.only=T,debug=FALSE,events=findings) 
-        findings <- listEvents(col,name="Not numeric",
-                               fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
-                               new.rows.only=TRUE,events=findings)
-    }
+    cols.num.all <- c( col.time,"EVID",col.id,col.mdv,col.flagn,
+                      covs,names(covs.occ),as.character(unlist(covs.occ))
+                      )
+    
+##     cols.num.all <- unique(cols.num.all)
+## ### check for missing in cols.num.all
+    
+##     for(col in cols.num.all){
+##         findings <- listEvents(col,name="is NA",fun=is.na,invert=TRUE,new.rows.only=T,debug=FALSE,events=findings) 
+##         findings <- listEvents(col,name="Not numeric",
+##                                fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
+##                                new.rows.only=TRUE,events=findings)
+##     }
 
-    ## cols.num is a named list. Names are subsets.
-    if(!is.null(cols.num)){
+    cols.num.all <- c(list("TRUE"=cols.num.all),
+                       cols.num)
+
+    ##### I believe this is covered altogether ass part of cols.num.all.
+##     ## cols.num is a named list. Names are subsets.
+    if(!is.null(cols.num.all
+                )){
         
-        subsets.cols.num <- names(cols.num)
-        
-        
-        for(n in 1:length(cols.num)){
+        subsets.cols.num <- names(cols.num.all)
+      
+        for(n in 1:length(cols.num.all)){
+                ##             
             expr.sub <- subsets.cols.num[n]
             rows.sub <- data[eval(parse(text=expr.sub)),get(rowint)]
-            for(col in cols.num[[n]]){
+            for(col in cols.num.all[[n]]){
+                ## will this ever be needed? cols.num is only what is
+                ## supplied as arg, and those are already checked as
+                ## part of cols.num.all.
                 findings <- listEvents(col,name="Not numeric",
                                        fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
                                        new.rows.only=TRUE,events=findings,dat=data[eval(parse(text=expr.sub))])
+                findings <- listEvents(col,name="is NA",
+                                       fun=is.na,invert=TRUE,new.rows.only=T,debug=FALSE,events=findings,dat=data[get(rowint)%in%rows.sub])
                 ## not expecting values if outside subset
-                
+                ### can a col.num ever be outside subset?
                 findings <- listEvents(col,name="NA expected",
                                        fun=NMisMissing,
                                        new.rows.only=FALSE,events=findings,dat=data[!get(rowint)%in%rows.sub])
@@ -584,8 +595,12 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
                                events=findings,debug=FALSE)
     }
 
-    cols.num.all <- intersect(cols.num.all,cnames.data.0)
+    
+    cols.num.all <- intersect(
+        do.call(c,cols.num.all)
+                             ,cnames.data.0)
 ##### Done checking required columns for NMisNumeric. overwrite cols.num.all with NMasNumeric of cols.num.all.
+    
     data[,(cols.num.all):=lapply(.SD,NMasNumeric),.SDcols=cols.num.all]
 
     
@@ -614,6 +629,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     
     cols.req <- c(col.cmt,col.dv,col.amt)
     for(col in cols.req){
+        
         findings <- listEvents(col,name="Not numeric",fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
                                new.rows.only=T,events=findings)
     }
@@ -645,7 +661,11 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 ###### DV
 ### DV must be present
 ### DV must be numeric for EVID==0
+if(col.mdv%in%colnames(data)){
+    findings <- listEvents(col.dv,"DV not numeric",fun=is.na,events=findings,invert=TRUE,dat=data[EVID%in%c(0)&get(col.mdv)==0])
+} else {
     findings <- listEvents(col.dv,"DV not numeric",fun=is.na,events=findings,invert=TRUE,dat=data[EVID%in%c(0)])
+}
 
 ### DV should be NA for dosing records
     findings <- listEvents(col.dv,"DV not NA in dosing recs",fun=is.na,events=findings,dat=data[EVID%in%c(1,4)])

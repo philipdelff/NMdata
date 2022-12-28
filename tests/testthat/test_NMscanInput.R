@@ -179,3 +179,15 @@ test_that("Multiple filters on same column",{
 
     expect_equal_to_reference(tab.count,fileRef,version=2)
 })
+
+
+test_that("ID only from pseudonym",{
+    NMdataConf(as.fun="data.table")
+    fileRef <- "testReference/NMscanInput_10.rds"
+
+    inp <- NMscanInput("testData/nonmem/pred030.mod")
+    inp <- fix.time(inp)    
+
+    expect_equal_to_reference(inp,fileRef,version=2)
+})
+

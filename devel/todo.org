@@ -51,7 +51,7 @@ With load_all():
     Export to parent. Not sure check allows though...
 ** Function improvements
 *** addTAPD
-**** TODO [#A] Not evaluated at dose times for other doses than captured by subset
+**** DONE Not evaluated at dose times for other doses than captured by subset
 **** DONE add suffix and prefix arguments
 prefix="N" for nominal or suffix="R" and suffix="CMT==5" for rescue
 medication.
@@ -159,7 +159,7 @@ because by and by.x+by.y are handled differently the second time? Clen this.
 *** NMapplyFilters
 **** DONE Check if there are missings in columns used for filters
 If so, give a warning
-**** TODO [#B] Support for no filters
+**** DONE Support for no filters
 I don't think I ever tried this. What will NMscanData do if input data
 has no headers, and there are no filters? I think NMapplyFilters may
 fail.
@@ -296,6 +296,7 @@ issued. Once done, NMgetSection must be updated as well.
 *** NMisNumeric
 **** DONE NA_character is not recognized as numeric
 *** NMscanInput
+**** DONE Bug: Error when ID not in data but var=ID in $INPUT
 **** DONE Test with multiple filters on the same column
 like IGNORE(ID=2) IGNORE(ID=3)
 **** DONE Make work without filters
