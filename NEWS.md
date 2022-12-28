@@ -1,3 +1,8 @@
+# 0.0.15
+This update is of no difference to users. A technicality has been
+chaned to ensure consistent test results once data.table 1.14.7 is
+released, that's all.
+
 # 0.0.14
 ## New features
 * fnExtension has been generalized. It now ignores leading spaces in
@@ -31,7 +36,7 @@
   last dose amount and cumulative dose amount from AMT. Sometimes, AMT
   is in one unit, and other variables related to doses is in
   another. Say that dose is in mg and concentrations are in ng/mL,
-  then AMT should be in mcg. But you may wtill want everything else
+  then AMT should be in mcg. But you may want everything else
   related to doses to be in mg. Then use SDOS=1000.
 
 * addTAPD includes convenient prefix.cols and suffix.cols arguments

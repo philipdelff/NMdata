@@ -216,7 +216,7 @@ test_that("script=NULL",{
     is.NMdata(pk)
     NMinfo(pk)
     res1 <- NMwriteData(pk,file="testOutput/NMwriteData10.csv",
-                        write.rds=T,write.csv=T,nmdir.data="/example",script=NULL)
+                        write.rds=T,write.csv=T,nmdir.data="/example",script=NULL                         ,args.rds=list(version=2))
 
     written1 <- readRDS("testOutput/NMwriteData10.rds")
     NMinfo(written1)
@@ -239,7 +239,7 @@ test_that("csv.trunc.as.nm",{
  
     res1 <- NMwriteData(pk,file="testOutput/NMwriteData11.csv",
                         write.rds=T,write.csv=T,nmdir.data="/example",script=NULL
-                        ,csv.trunc.as.nm=T)
+                        ,csv.trunc.as.nm=T,args.rds=list(version=2))
 
     written1.rds <- readRDS("testOutput/NMwriteData11.rds")
     written1.csv <- NMreadCsv("testOutput/NMwriteData11.csv")
