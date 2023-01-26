@@ -164,6 +164,9 @@ I don't think I ever tried this. What will NMscanData do if input data
 has no headers, and there are no filters? I think NMapplyFilters may
 fail.
 *** NMcheckData
+**** TODO Add support for simulation dataset
+ID's are expected to have sim records rather than obs.
+***** TODO What happens if they have obs too?
 **** CANCELLED Look for NA's coded as "."
 **** DONE Bug if no numeric cols found?
      Warning message:
@@ -522,6 +525,9 @@ It's fairly easy to implement. Paste in front of the expression.use column.
      Or is FLAG==0 reserved?
 use flagsAssign(data,subset.data="EVID==1",flagc.0="Dosing")
 *** flagsCount
+**** TODO [#A] Replace 0 with NA for "all avail data"
+N.disc.cum and Nobs.disc.cum are zero but there is no counting to
+report here
 **** DONE bug in 0.0.9: Nobs.disc.cum ignores by
 **** DONE OK respect decreasing or increasing order.flags
 **** DONE add .cum of N and Nobs

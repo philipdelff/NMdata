@@ -1,4 +1,10 @@
 # Post 0.0.15
+## New features
+* NMreadSection adds support for partial matching of section
+  names. Specifically, this means that the first three characters will
+  be matched only, i.e. allowing say "$SIMULATION" to match "$SIM" or
+  "$ESTIMATION" to match "$EST".
+
 ## Bugfixes
 NMcheckData did not check columns listed in cols.num for NA
 elements. Now it does.

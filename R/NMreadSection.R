@@ -70,6 +70,7 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
                          cleanSpaces=cleanSpaces,
                          ## we only consider the model definition, not results.
                          type="mod",
+                         match.exactly=FALSE,
                          ...)
 
     

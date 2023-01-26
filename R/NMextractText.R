@@ -58,6 +58,7 @@ NMextractText <- function(file, lines, text, section, char.section,
                           keepEmpty=FALSE, keepName=TRUE,
                           keepComments=TRUE, asOne=TRUE,
                           simplify=TRUE, cleanSpaces=FALSE,
+                          match.exactly=TRUE,
                           type="mod", linesep="\n"){
 
     
@@ -74,7 +75,9 @@ NMextractText <- function(file, lines, text, section, char.section,
         lines <- strsplit(text,split=linesep)[[1]]
     }
 
-    
+    if(!match.exactly){
+        section <- substring(section,1,3)
+    }
     
     if(!return%in%c("idx","text")) stop("text must be one of text or idx.")
     
@@ -135,7 +138,8 @@ NMextractText <- function(file, lines, text, section, char.section,
         if(!return=="text") {
             stop("keepName can only be FALSE if return=='text'")
         }
-        result <- lapply(result, function(x)sub(paste0("^ *\\$",section),"",x))
+        ### todo test the addition of "[a-zA-Z]*"
+        result <- lapply(result, function(x)sub(paste0("^ *\\$",section,"[a-zA-Z]*"),"",x))
     }
 
     if(cleanSpaces){
