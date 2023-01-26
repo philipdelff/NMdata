@@ -48,6 +48,18 @@
 ##' @param keepNames Deprecated. Use keep.names instead.
 ##' @return A data.frame with an overview of elements and their
 ##'     classes of objects in ... Class as defined by as.fun.
+##' @details
+##' Despite the name of the argument fun.class, it can be any
+##' function to be evaluated on each element in `...`. See examples for how
+##' to extract SAS labels on an object read with `read_sas` from
+##' the `haven` package.
+##' @examples
+##' ## get sas labels from objects read with haven::read_sas
+##' \dontrun{
+##' compareCols(...,fun.class=function(x)attributes(x)$label)
+##' }
+##' 
+##'
 ##' @family DataWrangling
 ##' @export
 
