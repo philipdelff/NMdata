@@ -270,7 +270,7 @@ extension is .rds?
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
 *** NMwriteSection
-**** TODO [#B] Support insertion of new section before or after another section
+**** DONE Support insertion of new section before or after another section
 location="replace" is default. "before" and "after" should be
 additional allowed values. Think about how to handle this for
 lists. Maybe just OK to insert before and after with a list? Or is it

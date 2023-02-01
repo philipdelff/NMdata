@@ -1,5 +1,10 @@
 # Post 0.0.15
 ## New features
+* NMwrieSection includes argument `location`. Default is "replace"
+  which means that newlines will be inserted instead of
+  `section`. location="before" means that newlines is inserted before
+  `section`.
+
 * NMreadSection adds support for partial matching of section
   names. Specifically, this means that the first three characters will
   be matched only, i.e. allowing say "$SIMULATION" to match "$SIM" or

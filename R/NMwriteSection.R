@@ -63,7 +63,7 @@
 
 
 NMwriteSection <- function(files,file.pattern,dir,section,newlines,
-                           list.sections,newfile,
+                           list.sections,location="replace",newfile,
                            backup=TRUE,blank.append=TRUE,data.file,
                            write=TRUE,quiet,simplify=TRUE){
 
@@ -76,7 +76,7 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,
     if(missing(files)) files <- NULL
     if(missing(dir)) dir <- NULL
     if(missing(file.pattern)) file.pattern <- NULL
-   
+    
     all.files <- getFilePaths(files=files,file.pattern=file.pattern,dir=dir,quiet=quiet)
 
     if(length(all.files)==0){
@@ -153,15 +153,28 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,
             stopifnot(min.dl>1)
             stopifnot(max.dl<=length(lines))
 
-            if(min.dl>1){
-                newlines <- c(lines[1:(min.dl-1)],
-                              newlines)
+            if(location=="replace"){
+                if(min.dl>1){
+                    newlines <- c(lines[1:(min.dl-1)],
+                                  newlines)
+                }
+                if(max.dl<length(lines)){
+                    newlines <- c(newlines,
+                                  lines[(max.dl+1):length(lines)])
+                }
             }
-            if(max.dl<length(lines)){
-                newlines <- c(newlines,
-                              lines[(max.dl+1):length(lines)])
+            if(location=="before"){
+                
+                ## newlines <- lines
+                if(min.dl>1){
+                    newlines <- c(lines[1:(min.dl-1)],
+                                  newlines,
+                                  lines[(min.dl:length(lines))]
+                                  )
+                } else {
+                    newlines <- lines
+                }
             }
-
             newlines
         }
         

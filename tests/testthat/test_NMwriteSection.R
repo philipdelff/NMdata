@@ -57,7 +57,7 @@ test_that("Dependent on data.file",{
 
     fileRef <- "testReference/NMwriteSection_3.rds"
     
-    outfile <- "testOutput/xgxr011_update1.mod"
+    outfile <- "testOutput/xgxr011_update3.mod"
     newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
     section <- "input"
 
@@ -75,7 +75,7 @@ test_that("Dependent on data.file",{
 
 test_that(".mod does not exist",{
 
-    outfile <- "testOutput/xgxr011_update1.mod"
+    outfile <- "testOutput/xgxr011_update4.mod"
     newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
     section <- "input"
 
@@ -109,7 +109,7 @@ test_that("basic - write file",{
 
     fileRef <- "testReference/NMwriteSection_4.rds"
     
-    outfile <- "testOutput/xgxr011_update1.mod"
+    outfile <- "testOutput/xgxr011_update5.mod"
     newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
     section <- "input"
     NMwriteSection("testData/nonmem/xgxr011.mod" 
@@ -150,3 +150,20 @@ test_that("update INPUT based on NMgenText",{
 
     
 ## })
+
+test_that("Insert new section before another",{
+
+    fileRef <- "testReference/NMwriteSection_6.rds"
+    
+    outfile <- "testOutput/xgxr011_update6.mod"
+    newlines <- "$MSFI FILE=file.msf"
+    section <- "TABLE"
+    NMwriteSection("testData/nonmem/xgxr011.mod" 
+                  ,section=section
+                  ,newlines=newlines
+                  ,newfile=outfile
+                  ,location="before")
+    res <- readLines(outfile)
+    expect_equal_to_reference(res,fileRef,version=2)
+
+})
