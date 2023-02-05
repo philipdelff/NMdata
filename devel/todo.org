@@ -270,11 +270,15 @@ extension is .rds?
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
 *** NMwriteSection
-**** DONE Support insertion of new section before or after another section
+**** Support insertion of new section before or after another section
 location="replace" is default. "before" and "after" should be
-additional allowed values. Think about how to handle this for
+additional allowed values.
+***** TODO Handle lists
+Think about how to handle this for
 lists. Maybe just OK to insert before and after with a list? Or is it
 too rarely needed?
+***** TODO use switch instead of if else
+***** TODO Tests
 **** DONE Allow to remove a section if it doesn't exist
 **** DONE Put backup files in NMdata_backup
 **** DONE Check if any files matched before running lapply
