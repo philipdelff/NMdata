@@ -11,6 +11,7 @@ NMwriteSection(
   section,
   newlines,
   list.sections,
+  location = "replace",
   newfile,
   backup = TRUE,
   blank.append = TRUE,
@@ -45,6 +46,10 @@ past to writeLines.}
 \item{list.sections}{Named list of new sections, each element
 containing a section. Names must be section names, contents of
 each element are the new section lines for each section.}
+
+\item{location}{In combination with `section`, this determines
+where the new section is inserter. Posible values are
+"replace" (default), "before", "after", "first", "last".}
 
 \item{newfile}{path and filename to new run. If missing, the
 original file (from \code{files} or \code{file.pattern}) is

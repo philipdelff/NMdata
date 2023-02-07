@@ -80,6 +80,19 @@ to check the compatibility of the data.
 technically, this function compares classes of elements in
     lists. However, in relation to NMdata, this will most of the
     time be columns in data.frames.
+
+Despite the name of the argument fun.class, it can be any
+function to be evaluated on each element in `...`. See examples for how
+to extract SAS labels on an object read with `read_sas` from
+the `haven` package.
+}
+\examples{
+## get sas labels from objects read with haven::read_sas
+\dontrun{
+compareCols(...,fun.class=function(x)attributes(x)$label)
+}
+
+
 }
 \seealso{
 Other DataWrangling: 

@@ -22,6 +22,9 @@
 ##' @param list.sections Named list of new sections, each element
 ##'     containing a section. Names must be section names, contents of
 ##'     each element are the new section lines for each section.
+##' @param location In combination with `section`, this determines
+##'     where the new section is inserter. Posible values are
+##'     "replace" (default), "before", "after", "first", "last".
 ##' @param newfile path and filename to new run. If missing, the
 ##'     original file (from \code{files} or \code{file.pattern}) is
 ##'     overwritten (see the \code{backup} option below). If NULL,
@@ -108,6 +111,10 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,
 
     NMwriteSectionOne <- function(file0,section,newlines,list.sections,newfile,
                                   backup=TRUE,blank.append=TRUE,write=TRUE){
+
+        after <- NULL 
+        before <- NULL
+        mad.dl <- NULL
         
         file0 <- filePathSimple(file0)
         stopifnot(file.exists(file0))
@@ -147,7 +154,7 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,
                 stopifnot(max(diff(idx.dlines))==1)
             }
             if(location%in%cc(replace,before,after))
-            min.dl <- min(idx.dlines)
+                min.dl <- min(idx.dlines)
             max.dl <- max(idx.dlines)
 
 ### these two cases need to be handled slightly differently so not supported for now
@@ -183,9 +190,9 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,
                 all.lines <- c(lines,newlines)
                 if(min.dl>1){
                     all.lines <- c(lines[1:(max.dl)],
-                                  newlines,
-                                  lines[(max.dl+1):length(lines)]
-                                  )
+                                   newlines,
+                                   lines[(max.dl+1):length(lines)]
+                                   )
                 } else {
                     all.lines <- lines
                 }

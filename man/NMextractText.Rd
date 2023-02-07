@@ -18,6 +18,7 @@ NMextractText(
   asOne = TRUE,
   simplify = TRUE,
   cleanSpaces = FALSE,
+  match.exactly = TRUE,
   type = "mod",
   linesep = "\\n"
 )
@@ -69,6 +70,11 @@ probably want FALSE.}
 \item{cleanSpaces}{If TRUE, leading and trailing are removed, and
 multiplied succeeding white spaces are reduced to single white
 spaces.}
+
+\item{match.exactly}{Default is to search for exact matches of
+`section`. If FALSE, only the first three characters are
+macthed. E.G., this allows "ESTIMATION" to match "ESTIMATION"
+or "EST".}
 
 \item{type}{Either mod, res or NULL. mod is for information that
 is given in .mod (.lst file can be used but results section is

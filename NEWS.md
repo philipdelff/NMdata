@@ -3,7 +3,7 @@
 * NMwrieSection includes argument `location`. In combination with
   `section`, this determines where the new section is
   inserter. Posible values are "replace" (default), "before", "after",
-  "first", "last". newlines will be inserted instead of
+  "first", "last".
   
 * NMreadSection adds support for partial matching of section
   names. Specifically, this means that the first three characters will
