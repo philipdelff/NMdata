@@ -186,6 +186,10 @@ your workflow. Default can be configured with NMdataConf.</p></dd>
     <p>technically, this function compares classes of elements in
     lists. However, in relation to NMdata, this will most of the
     time be columns in data.frames.</p>
+<p>Despite the name of the argument fun.class, it can be any
+function to be evaluated on each element in `...`. See examples for how
+to extract SAS labels on an object read with `read_sas` from
+the `haven` package.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -194,6 +198,16 @@ your workflow. Default can be configured with NMdataConf.</p></dd>
 <code><a href="listMissings.html">listMissings</a>()</code></p></div>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## get sas labels from objects read with haven::read_sas</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">compareCols</span><span class="op">(</span><span class="va">...</span>,fun.class<span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">label</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

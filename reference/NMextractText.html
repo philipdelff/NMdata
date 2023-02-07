@@ -102,6 +102,7 @@ extract eg result sections.</p>
 <span>  asOne <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  simplify <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  cleanSpaces <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  match.exactly <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"mod"</span>,</span>
 <span>  linesep <span class="op">=</span> <span class="st">"\n"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -180,6 +181,13 @@ probably want FALSE.</p></dd>
 <dd><p>If TRUE, leading and trailing are removed, and
 multiplied succeeding white spaces are reduced to single white
 spaces.</p></dd>
+
+
+<dt>match.exactly</dt>
+<dd><p>Default is to search for exact matches of
+`section`. If FALSE, only the first three characters are
+macthed. E.G., this allows "ESTIMATION" to match "ESTIMATION"
+or "EST".</p></dd>
 
 
 <dt>type</dt>
