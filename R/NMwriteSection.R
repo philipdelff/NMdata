@@ -104,6 +104,10 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,
         ## this must be list, not as.list. as.list would translate multiple lines into multiple sections.
         list.sections=list(newlines)
         names(list.sections) <- section
+    } else {
+        if(location!="replace"){
+            messageWrap("Only location=replace is supported in combination with list.sections.",fun.msg=stop)
+        }
     }
     
 ###  Section end: handle arguments

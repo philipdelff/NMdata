@@ -273,7 +273,7 @@ extension is .rds?
 **** Support insertion of new section before or after another section
 location="replace" is default. "before" and "after" should be
 additional allowed values.
-***** TODO Handle lists
+***** DONE Handle lists
 Think about how to handle this for
 lists. Maybe just OK to insert before and after with a list? Or is it
 too rarely needed?
