@@ -30,6 +30,12 @@
 ##'     something else. If data.tables are wanted, use
 ##'     as.fun="data.table". The default can be configured using
 ##'     NMdataConf.
+##' @param rm.name logical stating if the 'NAME' column should be
+##'     removed before importing the data. By default, this is 'TRUE'
+##'     when reading a '.cov' file that represents the covariance
+##'     matrix and 'FALSE' otherwise.  Without this being 'TRUE' this
+##'     will not successfully read a '.cov' file (which can be used
+##'     for simulation with uncertainty in your parameter estimates)
 ##' @param ... Arguments passed to fread.
 ##' @return The Nonmem table data.
 ##' @details The actual reading of data is based on
@@ -40,12 +46,13 @@
 ##' @export
 
 
-NMreadTab <- function(file,rep.count=TRUE,header=TRUE,skip,quiet,as.fun,...) {
+NMreadTab <- function(file,rep.count=TRUE,header=TRUE,skip,quiet,as.fun,rm.name,...) {
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     TABLE <- NULL
     NMREP <- NULL
+    NAME <- NULL
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
@@ -54,12 +61,26 @@ NMreadTab <- function(file,rep.count=TRUE,header=TRUE,skip,quiet,as.fun,...) {
     if(!is.character(file)) stop("file should be a character string",call.=FALSE)
     if(!file.exists(file)) stop("argument file is not a path to an existing file.",call.=FALSE)
 
+    if (missing(rm.name)) {
+        if (tools::file_ext(file) == "cov") {
+            rm.name <- TRUE
+        } else {
+            rm.name <- TRUE
+        }
+    } else if (!inherits(rm.name, "logical")) {
+        stop("'rm.name' needs to be a logical value")
+    } else if (is.na(rm.name)) {
+        stop("'rm.name' needs to be either 'TRUE' or 'FALSE'")
+    }
+
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
-    
+
+
+  
     if(!quiet){
         message("Reading data using fread")
     }
@@ -95,11 +116,20 @@ NMreadTab <- function(file,rep.count=TRUE,header=TRUE,skip,quiet,as.fun,...) {
         
     }
 
-    ## columns added and clened since cnames was created. 
+    ## columns added and clened since cnames was created.
     cnames <- colnames(dt1)
+    if (rm.name && "NAME" %in% cnames) {
+        dt1[,`:=`(NAME, NULL)]
+        cnames <- colnames(dt1)
+    }
+
     dt1[,(cnames):=lapply(.SD,as.numeric)]
 
     dt1 <- as.fun(dt1)
     
     return(dt1)
 }
+
+## Local Variables:
+## ess-indent-level: 4
+## End:
