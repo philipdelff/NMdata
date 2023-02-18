@@ -192,6 +192,9 @@ I don't think I ever tried this. What will NMscanData do if input data
 has no headers, and there are no filters? I think NMapplyFilters may
 fail.
 *** NMcheckData
+**** TODO Allow _ in column names?
+Currently, these are findings
+**** TODO Allow special characters in columns not readable by nonmem?
 **** TODO [#A] RATE must be missing or 0 for non-dose events
 **** TODO [#A] Add support for simulation dataset
 ID's are expected to have sim records rather than obs.

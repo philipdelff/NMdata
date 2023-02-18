@@ -16,8 +16,6 @@ library(remotes)
 ## library(NMdata)
 
 library(devtools)
-## load_all("c:/Users/delff/working_copies/NMdata")
-## load_all("c:/Users/Philip Delff/wdirs/NMdata")
 load_all("~/wdirs/NMdata")
 
 ##### Please change working dir to the location of this script
