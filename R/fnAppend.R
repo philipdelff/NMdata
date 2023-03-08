@@ -28,10 +28,10 @@ fnAppend <- function(fn,x,pad0=0,sep="_"){
     } else {
         string <- x
     }
-if(nchar(string)>0){
-    paste0(fnroot,sep,string,".",fnext)
-} else {
-    fn
-}
+    if(nchar(string)>0){
+        paste0(fnroot,sep,string,".",fnext)
+    } else {
+        fn
+    }
     
 }
