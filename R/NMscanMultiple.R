@@ -70,7 +70,7 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
     if(missing(files)) files <- NULL
     if(missing(dir)) dir <- NULL
     if(missing(file.pattern)) file.pattern <- NULL
-   
+    
     all.files <- getFilePaths(files=files,file.pattern=file.pattern,dir=dir)
     
     if(length(all.files)==0) {
@@ -79,7 +79,7 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
     }
     
 
-    testfun <- function(x)NMscanData(x,as.fun="data.table",...)
+    testfun <- function(x) NMscanData(x,as.fun="data.table",...)
     fun.apply <- function(x){
         cat(sprintf("\nReading %s:\n\n",x))
         res <- catchAnything(testfun)
@@ -96,8 +96,12 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
 
     ## add dimensions of the read data.
     names(res.all.list) <- all.files
+
     
     res.all.list <- lapply(res.all.list,function(x)x[[1]])
+    if(dt.lst[,sum(as.numeric(success))] == 0 ) {
+        stop("No models were succesfully read.")
+    }
     dims.res <- dims(list.data=res.all.list[dt.lst[,which(success)]])
     dt.lst <- mergeCheck(dt.lst,dims.res,by.x="lst",by.y="data",all.x=T,quiet=TRUE)
 
