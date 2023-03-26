@@ -459,7 +459,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
         
         ## leading zeros if character?
         if(col.row%in%colnames(data)&&data[,is.character(get(col.row))]){
-            findings <- listEvents(col.row,"Leading zero will corrupt merging",
+            findings <- listEvents(col.row,"Leading zero may corrupt merging",
                                    fun=function(x)grepl("^0.+",x),invert=TRUE,
                                    events=findings,debug=FALSE)
         }
