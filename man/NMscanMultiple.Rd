@@ -34,7 +34,7 @@ arguments.
 }
 \examples{
 res <- NMscanMultiple(dir=system.file("examples/nonmem", package="NMdata"),
-file.pattern="xgxr.*\\\\.lst",as.fun="data.table")
+file.pattern="xgxr01.*\\\\.lst",as.fun="data.table")
 res.mean <- res[,.(meanPRED=exp(mean(log(PRED)))),by=.(model,NOMTIME)]
 library(ggplot2)
 ggplot(res.mean,aes(NOMTIME,meanPRED,colour=model))+geom_line() 
