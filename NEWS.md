@@ -14,7 +14,7 @@
 NMcheckData did not check columns listed in cols.num for NA
 elements. Now it does.
 
-NMcheckData now only checks col.id to be non-NA for col.mdv==0 if
+NMcheckData now only checks col.dv to be non-NA for col.mdv==0 if
 col.mdv is present.
 
 NMscanInput would fail if there was no column called ID in the dataset
