@@ -132,6 +132,9 @@
 ##'
 ##' \item all ID's must have observations (EVID==0)
 ##'
+##' \item ID's should not have leading zeros since these will be lost
+##' when Nonmem read, then write the data.
+##'
 ##' \item If a unique row identifier is used, this must be
 ##'     non-missing, increasing, integer
 ##'

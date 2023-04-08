@@ -1,4 +1,4 @@
-# Post 0.0.15
+# 0.0.16
 ## New features
 * NMwrieSection includes argument `location`. In combination with
   `section`, this determines where the new section is

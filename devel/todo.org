@@ -51,6 +51,9 @@ With load_all():
     Export to parent. Not sure check allows though...
 ** Function improvements
 *** addTAPD
+**** TODO [#A] Rename NDOSES to DOSCUMN
+It aligns with DOSCUMA and it is clearer from DOSCUMN that its
+cumulative number of doses. NDOSES could be total number of doses.
 **** DONE Bug in DOSCUMA
 If a sim rec is simultaneos to, occurring below in data, and
 order.event-ordered before first dose, DOSCUMA comes out wrong.
@@ -114,7 +117,10 @@ helpful. Only list other columns than the scope.
 *** listMissings
 List missing elements
 For specific columns, look for missing elements (NA, "", length(x)==0
-in case of lists?). Tabulate and list. 
+in case of lists?). Tabulate and list.
+**** TODO Arg for row counter
+For now, a new row counter is generated. But if data is filtered after
+that means, one has to rerun listMissings for reference to be updated.
 **** DONE check for duplicates in columns requested to check
 **** DONE Check for duplicate column names in data
 **** TODO [#B] Align reporting with NMcheckData?
@@ -192,9 +198,14 @@ I don't think I ever tried this. What will NMscanData do if input data
 has no headers, and there are no filters? I think NMapplyFilters may
 fail.
 *** NMcheckData
+**** TODO [#A] Support for col.evid
+**** TODO [#A] It should not be a finding if col.flagn is not supplied and FLAG is not found
+**** TODO [#A] DV=0 in dosing records is OK
+For now NA expected
+**** TODO [#A] MDV can be 0, 1 or missing in non-obs events
 **** TODO Allow _ in column names?
 Currently, these are findings
-**** TODO Allow special characters in columns not readable by nonmem?
+**** TODO Allow special characters in names of columns not readable by nonmem?
 **** TODO [#A] RATE must be missing or 0 for non-dose events
 **** TODO [#A] Add support for simulation dataset
 ID's are expected to have sim records rather than obs.
