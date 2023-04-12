@@ -4,7 +4,16 @@
 \alias{NMreadTab}
 \title{Read an output table file from Nonmem}
 \usage{
-NMreadTab(file, rep.count = TRUE, header = TRUE, skip, quiet, as.fun, ...)
+NMreadTab(
+  file,
+  rep.count = TRUE,
+  header = TRUE,
+  skip,
+  quiet,
+  as.fun,
+  rm.name,
+  ...
+)
 }
 \arguments{
 \item{file}{path to Nonmem table file}
@@ -35,6 +44,13 @@ a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.}
+
+\item{rm.name}{logical stating if the 'NAME' column should be
+removed before importing the data. By default, this is 'TRUE'
+when reading a '.cov' file that represents the covariance
+matrix and 'FALSE' otherwise.  Without this being 'TRUE' this
+will not successfully read a '.cov' file (which can be used
+for simulation with uncertainty in your parameter estimates)}
 
 \item{...}{Arguments passed to fread.}
 }
