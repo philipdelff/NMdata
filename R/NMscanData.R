@@ -116,6 +116,8 @@
 ##'     the time stamp in the output control stream. Please supply
 ##'     something listed in OlsonNames(). Can be configured using
 ##'     NMdataConf() too.
+##' @param skip.absent Skip missing output table files with a warning?
+##'     Default is FALSE in which case an error is thrown.
 ##' @param tab.count Deprecated. Use rep.count.
 ##'
 ##' @details This function makes it very easy to collect the data from
@@ -156,7 +158,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                        args.fread, as.fun, col.id="ID", modelname,
                        col.model, col.nmout,rep.count,
                        order.columns=TRUE, check.time, tz.lst,
-                       tab.count) {
+                       skip.absent=FALSE,tab.count) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
     
@@ -267,7 +269,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 #### Section start: read all output tables and add to meta data ####
     
     ## tables <- NMscanTables(file,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id,rep.count=rep.count)
-    tables <- NMscanTables(file,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id,rep.count=TRUE)
+    tables <- NMscanTables(file,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id,rep.count=TRUE,skip.absent=skip.absent)
     meta.output <- copy(NMinfoDT(tables)$tables)
 
     

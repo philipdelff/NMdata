@@ -12,7 +12,7 @@
 
 
 reduceTables <- function(tables,col.nmout){
-
+    
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
     
     included <- NULL

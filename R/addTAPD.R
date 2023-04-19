@@ -15,9 +15,6 @@
 ##' @param col.tapd Name of the time of previous dose column (created
 ##'     by addTAPD). Default is TAPD. Set to NULL to not create this
 ##'     column.
-##' @param col.ndoses The name of the column (created by addTAPD) that
-##'     holds the cumulative number of doses administered to the
-##'     subject. Set to NULL to not create this column.
 ##' @param col.evid The name of the event ID column. This must exist
 ##'     in data. Default is EVID.
 ##' @param col.amt col.evid The name of the dose amount column. This
@@ -28,6 +25,9 @@
 ##' @param col.doscuma The name of the column to be created holding
 ##'     the cumulative dose amount. Set to NULL to not create this
 ##'     column.
+##' @param col.doscumn The name of the column (created by addTAPD) that
+##'     holds the cumulative number of doses administered to the
+##'     subject. Set to NULL to not create this column.
 ##' @param prefix.cols String to be prepended to all generated column
 ##'     names, that is each of col.tpdos, col.tapd, col.ndoses,
 ##'     col.pdosamt, col.doscuma that are not NULL.
@@ -60,6 +60,7 @@
 ##'     something else. If data.tables are wanted, use
 ##'     as.fun="data.table". The default can be configured using
 ##'     NMdataConf.
+##' @param col.ndoses Deprecated. Use col.doscumn instead.
 ##' @details addTAPD does not require the data to be ordered, and it
 ##'     will not order it. This means you can run addTAPD before
 ##'     ordering data (which may be one of the final steps) in data
@@ -76,13 +77,20 @@
 ##' @family DataCreate
 
 
-addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos="TPDOS",col.tapd="TAPD",col.ndoses="NDOSES",col.pdosamt="PDOSAMT",col.doscuma="DOSCUMA",prefix.cols,suffix.cols,subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by="ID",SDOS=1,as.fun){
+addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos="TPDOS",col.tapd="TAPD",col.pdosamt="PDOSAMT",col.doscuma="DOSCUMA",col.doscumn="DOSCUMN",prefix.cols,suffix.cols,subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by="ID",SDOS=1,as.fun,col.ndoses){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
     
     nmexpand <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+
+    if(!missing(col.ndoses)){
+        if(col.doscumn!="DOSCUMN"){
+            stop("col.ndoses is deprecated. Use col.doscumn instead.")
+        }
+        warning("col.ndoses is deprecated. Use col.doscumn instead.")
+    }
     
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
@@ -113,7 +121,7 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
     }    
 
     
-    args.create.optional <- cc(col.tpdos,col.tapd,col.ndoses,col.pdosamt,col.doscuma)
+    args.create.optional <- cc(col.tpdos,col.tapd,col.doscumn,col.pdosamt,col.doscuma)
     if(!is.null(prefix.cols) || !is.null(suffix.cols)){
         for(col in args.create.optional){
             if(!is.null(get(col))){
@@ -124,7 +132,7 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
 
 
     ## report if columns will be overwriten
-    cols.exist <- intersect(colnames(data),c(col.tpdos,col.tapd,col.ndoses,col.pdosamt,col.doscuma))
+    cols.exist <- intersect(colnames(data),c(col.tpdos,col.tapd,col.doscumn,col.pdosamt,col.doscuma))
     if(length(cols.exist)){
         messageWrap(paste0("Columns will be overwritten: ",paste(cols.exist,collapse=", ")),fun.msg=warning)
     }
@@ -151,8 +159,8 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
 
     addVars <- function(data){
         ## NDOSPERIOD
-        if(!is.null(col.ndoses)){
-            data[!is.na(get(col.time)),(col.ndoses):=cumsum(get(col.event)==TRUE),by=by]
+        if(!is.null(col.doscumn)){
+            data[!is.na(get(col.time)),(col.doscumn):=cumsum(get(col.event)==TRUE),by=by]
         }
         ## TPDOS - time of previous dose - needed for TAPD
         data[get(col.event)==TRUE,(col.tpdos.tmp):=get(col.time)]

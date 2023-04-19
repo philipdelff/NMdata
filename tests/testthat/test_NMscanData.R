@@ -102,6 +102,7 @@ test_that("Multiple output table formats",{
     ## res <- NMscanData(file=file.lst)
     res <- NMscanData(file=file.lst, check.time = FALSE, merge.by.row=FALSE)
     fix.time(res)
+
     
     expect_equal_to_reference(res,fileRef,version=2)
 
@@ -306,7 +307,8 @@ test_that("FO and row-level output. No ID, no row. cbind.by.filters=T",{
 })
 
 
-## bug. This should return a meaningful error msg 
+## bug. This should return a meaningful error msg
+## "bug" confirmed after release of 0.0.16. 
 test_that("Only a firstonly without ID but with ROW",{
 ### cbind.by.filters is TRUE, so ROW is not used to recover firstonly data.
 

@@ -26,6 +26,7 @@ NMscanData(
   order.columns = TRUE,
   check.time,
   tz.lst,
+  skip.absent = FALSE,
   tab.count
 )
 }
@@ -157,6 +158,9 @@ files, the file modification times are used.}
 the time stamp in the output control stream. Please supply
 something listed in OlsonNames(). Can be configured using
 NMdataConf() too.}
+
+\item{skip.absent}{Skip missing output table files with a warning?
+Default is FALSE in which case an error is thrown.}
 
 \item{tab.count}{Deprecated. Use rep.count.}
 }

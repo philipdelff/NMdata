@@ -1,6 +1,19 @@
+# Post 0.0.16
+
+## New features
+* NMscanTables (and hence NMscanData) now allows to skip missing
+  output tables (files missing) and continue combining what is
+  found. This is handled by the `skip.absent` argument.
+
+## Other improvements
+* addTAPD's col.ndoses argument has been renamed to col.doscumn and
+  the default value is now "DOSCUMN". This makes it clear that it is a
+  cumulative number and it aligns with col.doscuma which is the
+  cumulative amount.
+
 # 0.0.16
 ## New features
-* NMwrieSection includes argument `location`. In combination with
+* NMwriteSection includes argument `location`. In combination with
   `section`, this determines where the new section is
   inserter. Posible values are "replace" (default), "before", "after",
   "first", "last".

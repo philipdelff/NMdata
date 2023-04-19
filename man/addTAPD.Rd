@@ -13,9 +13,9 @@ addTAPD(
   col.amt = "AMT",
   col.tpdos = "TPDOS",
   col.tapd = "TAPD",
-  col.ndoses = "NDOSES",
   col.pdosamt = "PDOSAMT",
   col.doscuma = "DOSCUMA",
+  col.doscumn = "DOSCUMN",
   prefix.cols,
   suffix.cols,
   subset.dos,
@@ -23,7 +23,8 @@ addTAPD(
   order.evid = c(3, 0, 2, 4, 1),
   by = "ID",
   SDOS = 1,
-  as.fun
+  as.fun,
+  col.ndoses
 )
 }
 \arguments{
@@ -46,10 +47,6 @@ column.}
 by addTAPD). Default is TAPD. Set to NULL to not create this
 column.}
 
-\item{col.ndoses}{The name of the column (created by addTAPD) that
-holds the cumulative number of doses administered to the
-subject. Set to NULL to not create this column.}
-
 \item{col.pdosamt}{The name of the column to be created holding
 the previous dose amount. Set to NULL to not create this
 column.}
@@ -57,6 +54,10 @@ column.}
 \item{col.doscuma}{The name of the column to be created holding
 the cumulative dose amount. Set to NULL to not create this
 column.}
+
+\item{col.doscumn}{The name of the column (created by addTAPD) that
+holds the cumulative number of doses administered to the
+subject. Set to NULL to not create this column.}
 
 \item{prefix.cols}{String to be prepended to all generated column
 names, that is each of col.tpdos, col.tapd, col.ndoses,
@@ -97,6 +98,8 @@ a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.}
+
+\item{col.ndoses}{Deprecated. Use col.doscumn instead.}
 }
 \value{
 A data.frame with additional columns

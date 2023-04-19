@@ -2,7 +2,8 @@ context("addTAPD")
 
 test_that("basic",{
     fileRef <- "testReference/addTAPD_01.rds"
-
+    ## resRef <- readRDS(fileRef)
+    
     dat <- readRDS("testData/data/xgxr2.rds")
     res <- addTAPD(data=dat)
 
@@ -14,6 +15,7 @@ test_that("basic",{
 
 test_that("repeated dosing data",{
     fileRef <- "testReference/addTAPD_02.rds"
+    ## resRef <- readRDS(fileRef)
 
     dat <- readRDS("testData/data/mad.rds")
     res <- addTAPD(data=dat,as.fun="data.table")
@@ -28,9 +30,9 @@ test_that("Custom names and discard one",{
 
     dat <- readRDS("testData/data/mad.rds")
     res1 <- addTAPD(data=dat,as.fun="data.table")
-    res2 <- addTAPD(data=dat,col.tpdos="ATSPD",col.ndoses=NULL,as.fun="data.table")
+    res2 <- addTAPD(data=dat,col.tpdos="ATSPD",col.doscumn=NULL,as.fun="data.table")
 
-    expect_equal( setdiff(colnames(res1),colnames(res2)),c("NDOSES", "TPDOS" ))
+    expect_equal( setdiff(colnames(res1),colnames(res2)),c("DOSCUMN", "TPDOS" ))
     expect_equal(setdiff(colnames(res2),colnames(res1)),c("ATSPD"))
     
     

@@ -51,9 +51,13 @@ With load_all():
     Export to parent. Not sure check allows though...
 ** Function improvements
 *** addTAPD
-**** TODO [#A] Rename NDOSES to DOSCUMN
+**** DONE Rename NDOSES to DOSCUMN
 It aligns with DOSCUMA and it is clearer from DOSCUMN that its
-cumulative number of doses. NDOSES could be total number of doses.
+cumulative number of doses.
+**** TODO [#B] DOSTOTN could be total number of doses.
+Not to be added by default
+**** TODO [#B] DOSTOTA could be total dose amount.
+Not to be added by default
 **** DONE Bug in DOSCUMA
 If a sim rec is simultaneos to, occurring below in data, and
 order.event-ordered before first dose, DOSCUMA comes out wrong.

@@ -23,6 +23,8 @@
 ##'     NMdataConf.
 ##' @param col.row The name of the row counter column. Optional and
 ##'     only used to check whether the row counter is in the data.
+##' @param skip.absent Skip missing output table files with a warning?
+##'     Default is FALSE in which case an error is thrown.
 ##' @return A list of all the tables as data.frames. If details=TRUE,
 ##'     this is in one element, called data, and meta is another
 ##'     element. If not, only the data is returned.
@@ -32,7 +34,7 @@
 ##' @import data.table
 ##' @export
 
-NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,details){
+NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,details,skip.absent=FALSE){
     
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
@@ -112,9 +114,19 @@ NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,d
     }
     tables <- list()
 
+    meta[,exists:=TRUE]
     for(I in 1:nrow(meta)){
-        if(!file.exists(meta[I,file])) stop(paste0("NMscanTables: File not found: ",meta[I,file],". Did you copy the lst file but forgot table
+        if(!file.exists(meta[I,file])) {
+            meta[I,exists:=FALSE]
+            if(skip.absent) {
+                messageWrap(paste0("NMscanTables: File not found: ",meta[I,file],". Skipping."),fun.msg=message)
+                ## meta <- meta[-I]
+                next
+            }
+            stop(paste0("NMscanTables: File not found: ",meta[I,file],". Did you copy the lst file but forgot table
 file?"))
+        }
+            
         tables[[I]] <- NMreadTab(meta[I,file],quiet=TRUE,rep.count=rep.count,showProgress=FALSE,as.fun=identity,header=meta[I,!noheader])
 ### to not include NMREP when counting columns
         ## dim.tmp <- dim(tables[[I]][,!colnames(tables[[I]])=="NMREP",with=FALSE])
@@ -160,21 +172,22 @@ file?"))
         }
     }
 
+    
     has.row.level <- meta[,any((firstonly+lastonly+firstlastonly)==0)]
     ## level is the observed level. If a first only table has as many
     ## rows as a row-level table, it's row label.
     if(has.row.level){
-        meta[,full.length:=(nrow==max(nrow))]
+        meta[,full.length:=(nrow==max(nrow,na.rm=TRUE))]
         meta[full.length==TRUE,level:="row"]
         meta[full.length==FALSE,level:="id"]
     } else {
         meta[,full.length:=FALSE]
-        meta[,level:="id"]
+        meta[!is.na(nrow),level:="id"]
     }
     ## not supported
     meta[firstlastonly==TRUE,level:=NA_character_]
     
-    meta[,scope:="all"]
+    meta[exists==TRUE,scope:="all"]
     meta[firstonly==TRUE,scope:="firstonly"]
     meta[lastonly==TRUE,scope:="lastonly"]
     meta[firstlastonly==TRUE,scope:="firstlastonly"]
@@ -196,9 +209,9 @@ file?"))
     
     
     if(!quiet){
-        msg <- paste0("Number of output tables read: ",meta[,.N])
-        NIDL <- meta[level=="id",.N]
-        NFLO <- meta[scope=="firstlastonly",.N]
+        msg <- paste0("Number of output tables read: ",meta[exists==TRUE,.N])
+        NIDL <- meta[exists==TRUE&level=="id",.N]
+        NFLO <- meta[exists==TRUE&scope=="firstlastonly",.N]
         mNIDL <- NULL
         if(NIDL>0) mNIDL <- paste0(NIDL, " idlevel")
         mNFLO <- NULL

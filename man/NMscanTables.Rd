@@ -11,7 +11,8 @@ NMscanTables(
   rep.count = FALSE,
   col.id = "ID",
   col.row,
-  details
+  details,
+  skip.absent = FALSE
 )
 }
 \arguments{
@@ -45,6 +46,9 @@ only used to check whether the row counter is in the data.}
 you get a list. Typically, this is mostly useful if
 programming up functions which behavior must depend on
 properties of the output.}
+
+\item{skip.absent}{Skip missing output table files with a warning?
+Default is FALSE in which case an error is thrown.}
 }
 \value{
 A list of all the tables as data.frames. If details=TRUE,
