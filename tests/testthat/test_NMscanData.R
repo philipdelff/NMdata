@@ -947,6 +947,6 @@ test_that("simulation model with subproblems",{
     setattr(res,"NMdata",meta.x)
     
     expect_equal_to_reference(res,fileRef,version=2)
-
-})
+}
+)
 
