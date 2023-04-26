@@ -174,7 +174,8 @@ because by and by.x+by.y are handled differently the second time? Clen this.
      the merge is done.
 **** DONE Test the check for row duplications
 *** NMapplyFilters
-**** TODO [#A] IGN() support
+**** DONE IGN() support
+***** TODO [#A] Tests of this missing
 IGN(SUSP.NE.1) gave an error in NMscanData.
 IGN=(SUSP.NE.1) gave the same error.
 
@@ -203,8 +204,8 @@ has no headers, and there are no filters? I think NMapplyFilters may
 fail.
 *** NMcheckData
 **** TODO [#A] Support for col.evid
-**** TODO [#A] It should not be a finding if col.flagn is not supplied and FLAG is not found
-**** TODO [#A] DV=0 in dosing records is OK
+**** DONE It should not be a finding if col.flagn is not supplied and FLAG is not found
+**** DONE DV=0 in dosing records is OK
 For now NA expected
 **** TODO [#A] MDV can be 0, 1 or missing in non-obs events
 **** TODO Allow _ in column names?

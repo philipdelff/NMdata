@@ -487,18 +487,22 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     
 ### check flags for NA's before subsetting on FLAG
     if(!is.null(col.flagn)){
+        
         findings <- listEvents(col.flagn,"Missing value",
-                               fun=is.na,invert=TRUE,events=findings,debug=FALSE)
+                               fun=is.na,invert=TRUE,events=findings,
+                               col.required=!is.null(col.flagn.orig),debug=FALSE)
         ## not sure if this should be NMisNumeric(...,each=T). I guess
         ## something is completely wrong with the column if elements
         ## are not numeric. But other columns are check with each=T.
         findings <- listEvents(col.flagn,"Not numeric",
                                fun=function(x)NMisNumeric(x,na.strings=na.strings),
                                events=findings,
-                               new.rows.only=T)
+                               new.rows.only=T,
+                               col.required=!is.null(col.flagn.orig))
         findings <- listEvents(col.flagn,"col.flagn not an integer",
                                fun=function(x)as.numeric(x)%%1==0,events=findings,
-                               new.rows.only=T)
+                               new.rows.only=T,
+                               col.required=!is.null(col.flagn.orig))
         if(col.flagn%in%colnames(data)){
 
 ### Done checking flagn. For rest of checks, only consider data where col.flagn==0
@@ -540,9 +544,10 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 ######## Default numeric columns. Will be checked for presence, NA, non-numeric (col-level)
 ### Others that: If column present, must be numeric, and values must be non-NA. Remember eg DV, CMT and AMT can be NA.
     
-    cols.num.all <- c( col.time,"EVID",col.id,col.mdv,col.flagn,
+    cols.num.all <- c( col.time,"EVID",col.id,col.mdv,
                       covs,names(covs.occ),as.character(unlist(covs.occ))
                       )
+    if(!is.null(col.flagn.orig)) cols.num.all <- c(cols.num.all,col.flagn)
     
     ##     cols.num.all <- unique(cols.num.all)
     ## ### check for missing in cols.num.all
@@ -671,7 +676,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     }
 
 ### DV should be NA for dosing records
-    findings <- listEvents(col.dv,"DV not NA in dosing recs",fun=is.na,events=findings,dat=data[EVID%in%c(1,4)])
+    findings <- listEvents(col.dv,"DV not NA or 0 in dosing recs",fun=function(x)is.na(x)|as.numeric(x)==0,events=findings,dat=data[EVID%in%c(1,4)])
 
 
 #### AMT

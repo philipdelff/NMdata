@@ -286,3 +286,15 @@ test_that("usubjid not unique",{
     res <- NMcheckData(pk,col.usubjid="usubjid")
     expect_equal_to_reference(res,fileRef,version=2)
 })
+
+
+test_that("no col.flagn",{
+    
+    pk <- readRDS(file="testData/data/xgxr2.rds")
+    pk <- pk[FLAG==0]
+    res1 <- NMcheckData(pk)
+
+    pk[,FLAG:=NULL]
+    res2 <- NMcheckData(pk)
+    expect_equal(res1,res2)
+})
