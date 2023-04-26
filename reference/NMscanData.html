@@ -24,7 +24,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.16.901</span>
       </span>
     </div>
 
@@ -117,6 +117,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
 <span>  order.columns <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">check.time</span>,</span>
 <span>  <span class="va">tz.lst</span>,</span>
+<span>  skip.absent <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">tab.count</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -291,6 +292,11 @@ files, the file modification times are used.</p></dd>
 the time stamp in the output control stream. Please supply
 something listed in OlsonNames(). Can be configured using
 NMdataConf() too.</p></dd>
+
+
+<dt>skip.absent</dt>
+<dd><p>Skip missing output table files with a warning?
+Default is FALSE in which case an error is thrown.</p></dd>
 
 
 <dt>tab.count</dt>

@@ -21,7 +21,7 @@ but because they are typical dataset issues."><meta property="og:image" content=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.16.901</span>
       </span>
     </div>
 
@@ -282,6 +282,8 @@ records. ADDL must be present.</p></li>
 <li><p>TIME cannot be decreasing within ID, unless EVID in 3,4.</p></li>
 <li><p>all ID's must have doses (EVID in 1,4)</p></li>
 <li><p>all ID's must have observations (EVID==0)</p></li>
+<li><p>ID's should not have leading zeros since these will be lost
+when Nonmem read, then write the data.</p></li>
 <li><p>If a unique row identifier is used, this must be
     non-missing, increasing, integer</p></li>
 <li><p>Character values must not contain commas (they will mess up
