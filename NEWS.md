@@ -5,6 +5,13 @@
   output tables (files missing) and continue combining what is
   found. This is handled by the `skip.absent` argument.
 
+## Bugfixes
+* Filtering by the abbreviated IGN notation in Nonmem control
+  statements would not always work when not using a row identifier for
+  combining input and output data. This should now be fixed. However,
+  it is still recommended to use a row identifier to merge input and
+  output data.
+
 ## Other improvements
 * addTAPD's col.ndoses argument has been renamed to col.doscumn and
   the default value is now "DOSCUMN". This makes it clear that it is a
