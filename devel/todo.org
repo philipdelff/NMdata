@@ -204,10 +204,10 @@ has no headers, and there are no filters? I think NMapplyFilters may
 fail.
 *** NMcheckData
 **** TODO [#A] Support for col.evid
-**** DONE It should not be a finding if col.flagn is not supplied and FLAG is not found
+**** DONE Should not be a finding if col.flagn is not supplied and FLAG is not found
 **** DONE DV=0 in dosing records is OK
 For now NA expected
-**** TODO [#A] MDV can be 0, 1 or missing in non-obs events
+**** DONE [#A] MDV can be 0, 1 or missing in non-obs events
 **** TODO Allow _ in column names?
 Currently, these are findings
 **** TODO Allow special characters in names of columns not readable by nonmem?

@@ -45,7 +45,12 @@
 ##'     of the dependent variable missing. Default is MDV.
 ##' @param col.flagn Optionally, the name of the column holding
 ##'     numeric exclusion flags. Default value is FLAG and can be
-##'     configured using NMdataConf. Disable by using col.flagn=FALSE.
+##'     configured using NMdataConf. Even though FLAG is the default
+##'     value, no finding will be returned if the column is missing
+##'     unless explecitely defined as col.flagn="FLAG". This is
+##'     because this way of using exclusion flags is only one of many
+##'     ways you could choose to handle exclusions. Disable completely
+##'     by using col.flagn=FALSE.
 ##' @param col.row A column with a unique value for each row. Such a
 ##'     column is recommended to use if possible. Default ("ROW") can
 ##'     be modified using NMdataConf.
@@ -83,7 +88,7 @@
 ##'     names must be unique and not contain special characters
 ##' 
 ##' \item If an exclusion flag is used (for ACCEPT/IGNORE in Nonmem),
-##'     elements must be non-missing and integers. If an exclusion
+##'     elements must be non-missing and integers. Notice, if an exclusion
 ##'     flag is found, the rest of the checks are performed on rows
 ##'     where that flag equals 0 (zero) only.
 ##'
@@ -100,7 +105,8 @@
 ##'
 ##' \item CMT must be positive integers. However, can be missing or zero for EVID==3.
 ##'
-##' \item MDV must be the binary (1/0) representation of is.na(DV)
+##' \item MDV must be the binary (1/0) representation of is.na(DV) for
+##' dosing records (EVID==0).
 ##'
 ##' \item AMT must be 0 or NA for EVID 0 and 2
 ##'
@@ -206,6 +212,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     
 #### Section start: Checks of arguments ####
     
+    col.evid <- "EVID"
     if(missing(covs)) covs <- NULL
     if(missing(covs.occ)) covs.occ <- NULL
     if(missing(cols.num)) cols.num <- NULL
@@ -627,7 +634,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 ### MDV should perfectly reflect is.na(DV)
     if(col.mdv%in%colnames(data)){
         
-        data[,MDVDV:=!is.na(get(col.mdv))&get(col.mdv)==as.numeric(is.na(get(col.dv)))]
+        data[,MDVDV:=get(col.evid)!=0|(!is.na(get(col.mdv))&get(col.mdv)==as.numeric(is.na(get(col.dv))))]
         findings <- listEvents("MDVDV","MDV does not match DV",colname=col.mdv,fun=function(x)x==TRUE,events=findings)
     }
 
