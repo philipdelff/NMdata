@@ -207,11 +207,11 @@ fail.
 **** DONE Should not be a finding if col.flagn is not supplied and FLAG is not found
 **** DONE DV=0 in dosing records is OK
 For now NA expected
-**** DONE [#A] MDV can be 0, 1 or missing in non-obs events
+**** DONE MDV can be 0, 1 or missing in non-obs events
 **** TODO Allow _ in column names?
 Currently, these are findings
 **** TODO Allow special characters in names of columns not readable by nonmem?
-**** TODO [#A] RATE must be missing or 0 for non-dose events
+**** DONE RATE must be missing or 0 for non-dose events
 **** TODO [#A] Add support for simulation dataset
 ID's are expected to have sim records rather than obs.
 ***** TODO What happens if they have obs too?

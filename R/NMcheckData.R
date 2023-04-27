@@ -634,8 +634,8 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
 ### MDV should perfectly reflect is.na(DV)
     if(col.mdv%in%colnames(data)){
         
-        data[,MDVDV:=get(col.evid)!=0|(!is.na(get(col.mdv))&get(col.mdv)==as.numeric(is.na(get(col.dv))))]
-        findings <- listEvents("MDVDV","MDV does not match DV",colname=col.mdv,fun=function(x)x==TRUE,events=findings)
+        data[,MDVDV:=!is.na(get(col.mdv))&get(col.mdv)==as.numeric(is.na(get(col.dv)))]
+        findings <- listEvents("MDVDV","MDV does not match DV",colname=col.mdv,fun=function(x)x==TRUE,dat=data[get(col.evid)==0],events=findings)
     }
 
 ###  columns that are required for all rows done
@@ -682,7 +682,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
         findings <- listEvents(col.dv,"DV not numeric",fun=is.na,events=findings,invert=TRUE,dat=data[EVID%in%c(0)])
     }
 
-### DV should be NA for dosing records
+### DV should be NA or 0 for dosing records
     findings <- listEvents(col.dv,"DV not NA or 0 in dosing recs",fun=function(x)is.na(x)|as.numeric(x)==0,events=findings,dat=data[EVID%in%c(1,4)])
 
 
@@ -721,8 +721,14 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="T
     findings <- listEvents("RATE","Must be -2 or non-negative",
                            fun=function(x)x==-2|x>=0,events=findings,
                            col.required=FALSE,
-                           dat=data[EVID%in%c(1,4)])        
+                           dat=data[EVID%in%c(1,4)])
     
+    ## RATE 0 or missing for !EVID%in%c(1,4)
+    findings <- listEvents("RATE","Expecting missing or zero for non-dose events",
+                           fun=function(x)is.na(x)|x==0,events=findings,
+                           col.required=FALSE,
+                           dat=data[!EVID%in%c(1,4)])
+
     ## SS 0 or 1
     findings <- listEvents("SS","must be 0 or 1",
                            col.required=FALSE,
