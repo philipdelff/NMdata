@@ -189,7 +189,12 @@ also used in checks for row duplicates.</p></dd>
 <dt>col.flagn</dt>
 <dd><p>Optionally, the name of the column holding
 numeric exclusion flags. Default value is FLAG and can be
-configured using NMdataConf. Disable by using col.flagn=FALSE.</p></dd>
+configured using NMdataConf. Even though FLAG is the default
+value, no finding will be returned if the column is missing
+unless explecitely defined as col.flagn="FLAG". This is
+because this way of using exclusion flags is only one of many
+ways you could choose to handle exclusions. Disable completely
+by using col.flagn=FALSE.</p></dd>
 
 
 <dt>col.row</dt>
@@ -252,7 +257,7 @@ NMdataConf.</p></dd>
     sense a valid numeric, "id2" is not.</p><ul><li><p>Column
     names must be unique and not contain special characters</p></li>
 <li><p>If an exclusion flag is used (for ACCEPT/IGNORE in Nonmem),
-    elements must be non-missing and integers. If an exclusion
+    elements must be non-missing and integers. Notice, if an exclusion
     flag is found, the rest of the checks are performed on rows
     where that flag equals 0 (zero) only.</p></li>
 <li><p>If a unique row identifier is found, it has to be
@@ -263,7 +268,8 @@ non-missing, increasing integers.</p></li>
 <li><p>col.time (TIME) must be non-negative</p></li>
 <li><p>EVID must be in 0,1,2,3,4</p></li>
 <li><p>CMT must be positive integers. However, can be missing or zero for EVID==3.</p></li>
-<li><p>MDV must be the binary (1/0) representation of is.na(DV)</p></li>
+<li><p>MDV must be the binary (1/0) representation of is.na(DV) for
+dosing records (EVID==0).</p></li>
 <li><p>AMT must be 0 or NA for EVID 0 and 2</p></li>
 <li><p>AMT must be positive for EVID 1 and 4</p></li>
 <li><p>DV must be numeric</p></li>
