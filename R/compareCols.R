@@ -167,7 +167,7 @@ compareCols <- function(...,list.data,keep.names=TRUE,testEqual=FALSE,diff.only=
     if(!quiet) {
         if(all(sapply(dots,is.data.frame))){
             message("Dimensions:")
-            print(dims(list.data=dots))
+            print(as.fun(dims(list.data=dots)))
         }
 
         if(nrow(dt.cols)==0&&ndots==1){
@@ -177,12 +177,12 @@ compareCols <- function(...,list.data,keep.names=TRUE,testEqual=FALSE,diff.only=
         } else {
             if(diff.only){
                 message("\nColumns that differ:")
-                print(dt.cols)
+                print(as.fun(dt.cols))
                 message()
                 messageWrap(paste0("\nColumns where no differences were found: ",paste(dt.cols.full[nu==1&n==ndots,column],collapse=", "),"."),fun.msg=message)
             } else {
                 message("\nOverview of all columns:")
-                print(dt.cols)
+                print(as.fun(dt.cols))
             }
         }
         return(invisible(as.fun(dt.cols)))

@@ -11,8 +11,16 @@
   combining input and output data. This should now be fixed. However,
   it is still recommended to use a row identifier to merge input and
   output data.
+  
+* flagsCount now reports NA discards for total and analysis data. It
+  used to report zero but these criteria are not applied at these
+  steps.
 
 ## Other improvements
+* NMcheckData has improved checks of some columns related to either
+  observations (like MDV) or doses (like RATE). This will give less
+  findings that Nonmem would not fail on anyway.
+
 * addTAPD's col.ndoses argument has been renamed to col.doscumn and
   the default value is now "DOSCUMN". This makes it clear that it is a
   cumulative number and it aligns with col.doscuma which is the

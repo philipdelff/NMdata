@@ -112,8 +112,8 @@ pdosamt, doscuma
 like copy, synonym etc. Doesn't make sense to use in more than one.
 *** findCovs
 *** compareCols
-**** TODO [#A] Only print results if data.table is non-empty
-**** TODO [#B] print results should be run through as.fun
+**** DONE Only print results if data.table is non-empty
+**** DONE print results should be run through as.fun
 The user likely wants to see the print style they work with
 **** DONE Support for list.data                                     :v0_0_12:
      Same way as dims
@@ -141,7 +141,7 @@ in case of lists?). Tabulate and list.
 **** TODO Arg for row counter
 For now, a new row counter is generated. But if data is filtered after
 that means, one has to rerun listMissings for reference to be updated.
-**** TODO [#B] If nothing found, return an empty data.table ()
+**** DONE If nothing found, return an empty data.table ()
 **** DONE check for duplicates in columns requested to check
 **** DONE Check for duplicate column names in data
 **** TODO [#B] Align reporting with NMcheckData?

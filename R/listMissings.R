@@ -80,7 +80,8 @@ listMissings <- function(data,cols,by,na.strings=c("","."),quiet=FALSE,as.fun){
 
     if(nrow(res)==0){
         if(!quiet) message("No missing values identified")
-        return(invisible(NULL))
+        ## return(invisible(NULL))
+        return(invisible(res))
     }
     
     setorderv(res,c(by,"variable","row"))
