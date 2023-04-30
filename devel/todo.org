@@ -37,6 +37,19 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
+*** TODO [#A] Remove commas from character strings
+The following code does not look at column names
+
+#+begin_src R
+## get rid of commas in character values
+cnames.char <- colnames(nmdat)[ !sapply(nmdat,function(x)NMisNumeric(x)||"POSIXct"%in%class(x)||is.factor(x))]
+## character columns are edited removing commas from strings in all elements (contents of columns, not names)
+nmdat[,(cnames.char):=lapply(.SD,function(x)gsub(",","",x)),.SDcols=cnames.char]
+## factors are checked for commas in strings but not edited (because then factor levels would be lost)
+cnames.fac <- colnames(nmdat)[ !sapply(nmdat,function(x)NMisNumeric(x)||"POSIXct"%in%class(x))&sapply(nmdat,function(x)is.factor(x))]
+if(any(nmdat[,sapply(.SD,function(x)any(grepl(",",x))),.SDcols=cnames.fac])) stop("commas found in factors. This will cause problems when reading data into NONMEM. Please fix.")
+#+end_src
+
 *** TODO [#B] function to add variables to $TABLE               :newFunction:
 **** Which $TABLE to add to?
 *** TODO [#C] NMfreezeModels                                    :newFunction:
@@ -99,6 +112,9 @@ pdosamt, doscuma
 like copy, synonym etc. Doesn't make sense to use in more than one.
 *** findCovs
 *** compareCols
+**** TODO [#A] Only print results if data.table is non-empty
+**** TODO [#B] print results should be run through as.fun
+The user likely wants to see the print style they work with
 **** DONE Support for list.data                                     :v0_0_12:
      Same way as dims
 **** DONE Bug - overview of columns is given twice
@@ -125,6 +141,7 @@ in case of lists?). Tabulate and list.
 **** TODO Arg for row counter
 For now, a new row counter is generated. But if data is filtered after
 that means, one has to rerun listMissings for reference to be updated.
+**** TODO [#B] If nothing found, return an empty data.table ()
 **** DONE check for duplicates in columns requested to check
 **** DONE Check for duplicate column names in data
 **** TODO [#B] Align reporting with NMcheckData?
@@ -175,7 +192,7 @@ because by and by.x+by.y are handled differently the second time? Clen this.
 **** DONE Test the check for row duplications
 *** NMapplyFilters
 **** DONE IGN() support
-***** TODO [#A] Tests of this missing
+***** TODO [#A] Tests missing
 IGN(SUSP.NE.1) gave an error in NMscanData.
 IGN=(SUSP.NE.1) gave the same error.
 
@@ -203,7 +220,7 @@ I don't think I ever tried this. What will NMscanData do if input data
 has no headers, and there are no filters? I think NMapplyFilters may
 fail.
 *** NMcheckData
-**** TODO [#A] Support for col.evid
+**** TODO [#B] Support for col.evid
 **** DONE Should not be a finding if col.flagn is not supplied and FLAG is not found
 **** DONE DV=0 in dosing records is OK
 For now NA expected
@@ -577,7 +594,7 @@ It's fairly easy to implement. Paste in front of the expression.use column.
      Or is FLAG==0 reserved?
 use flagsAssign(data,subset.data="EVID==1",flagc.0="Dosing")
 *** flagsCount
-**** TODO [#A] Replace 0 with NA for "all avail data"
+**** DONE Replace 0 with NA for "all avail data"
 N.disc.cum and Nobs.disc.cum are zero but there is no counting to
 report here
 **** DONE bug in 0.0.9: Nobs.disc.cum ignores by

@@ -245,11 +245,12 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
                     data[FLAG==0,.(FLAG=0,N.left=uniqueN(get(col.id)),Nobs.left=.N,N.discard=NA,Nobs.discard=NA),by=by],
                     fill=TRUE)
     
-    ##  tab.flags <- rbind(tab.flags,data.table(FLAG=-Inf,flag="All data"),fill=TRUE)
+
 ### this is how many N/obs are left after the flags/conditions are applied
+    
     allres[is.na(alldata),alldata:=FALSE]
     allres <- mergeCheck(allres,rbind(tab.flags.0,tab.flags)[,.(FLAG,flag)],by="FLAG",all.x=TRUE,quiet=TRUE)
-    allres[alldata==TRUE,flag:=name.all.data]
+    allres[alldata==TRUE,`:=`(flag=name.all.data)]
     allres[,notAll:=alldata!=1]
     allres[,isFinal:=FLAG==0]
 
@@ -265,6 +266,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     allres[,Nobs.discard.0:=Nobs.discard]
     allres[is.na(Nobs.discard),Nobs.discard.0:=0]
     allres[,Nobs.disc.cum:=cumsum(Nobs.discard.0),by=by]
+    allres[alldata==TRUE,`:=`(N.disc.cum=NA,Nobs.disc.cum=NA)]
 
 ### select columns to report, depending on argument
     allres[,`:=`(FLAG=NULL
