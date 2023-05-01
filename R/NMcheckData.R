@@ -173,7 +173,11 @@
 ##' @export
 
 
-NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",col.time="TIME",col.dv="DV",col.mdv="MDV",col.cmt="CMT",col.amt="AMT",col.flagn,col.row,col.usubjid,na.strings,return.summary=FALSE,quiet=FALSE,as.fun){
+NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
+                        col.time="TIME",col.dv="DV",col.mdv="MDV",
+                        col.cmt="CMT",col.amt="AMT",col.flagn,col.row,
+                        col.usubjid,na.strings,return.summary=FALSE,
+                        quiet=FALSE,as.fun){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
