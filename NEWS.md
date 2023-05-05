@@ -1,4 +1,6 @@
-# Post 0.0.16
+# 0.0.17
+
+This release provides a few bugfixes, nothing major.
 
 ## New features
 * NMscanTables (and hence NMscanData) now allows to skip missing
