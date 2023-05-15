@@ -70,7 +70,7 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,
                            backup=TRUE,blank.append=TRUE,data.file,
                            write=TRUE,quiet,simplify=TRUE){
 
-
+    
     
 #### Section start: handle arguments ####
     if(missing(quiet)) quiet <- NULL
@@ -149,7 +149,7 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,
                                         cleanSpaces=FALSE)
 
             if(length(idx.dlines)==0&location%in%cc(replace,before,after)) {
-                message("section not found. Nothing to be done.")
+                if(!quiet) message("Section not found. Nothing to be done.")
                 return(lines)
             }
             
@@ -157,13 +157,15 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,
                 ## if th
                 stopifnot(max(diff(idx.dlines))==1)
             }
-            if(location%in%cc(replace,before,after))
+            
+            if(location%in%cc(replace,before,after)){
                 min.dl <- min(idx.dlines)
-            max.dl <- max(idx.dlines)
+                max.dl <- max(idx.dlines)
 
 ### these two cases need to be handled slightly differently so not supported for now
-            stopifnot(min.dl>1)
-
+                
+                stopifnot(min.dl>1)
+            }
             nlines <- length(lines)
             
             if(location=="replace"){
