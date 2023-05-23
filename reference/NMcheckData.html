@@ -21,7 +21,7 @@ but because they are typical dataset issues."><meta property="og:image" content=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.902</span>
       </span>
     </div>
 
@@ -106,6 +106,7 @@ but because they are typical dataset issues.</p>
 <span>  <span class="va">col.flagn</span>,</span>
 <span>  <span class="va">col.row</span>,</span>
 <span>  <span class="va">col.usubjid</span>,</span>
+<span>  <span class="va">cols.dup</span>,</span>
 <span>  <span class="va">na.strings</span>,</span>
 <span>  return.summary <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -216,6 +217,13 @@ unique within the unique subject ID (a violation of the latter
 is less likely).</p></dd>
 
 
+<dt>cols.dup</dt>
+<dd><p>Additional column names to consider in search of
+duplicate events. col.id, col.cmt, col.evid, and col.time are
+always considered if found in data, and cols.dup is added to
+this list if provided.</p></dd>
+
+
 <dt>na.strings</dt>
 <dd><p>Strings to be accepted when trying to convert
 characters to numerics. This will typically be a string that
@@ -263,7 +271,7 @@ NMdataConf.</p></dd>
 <li><p>If a unique row identifier is found, it has to be
 non-missing, increasing integers.</p></li>
 <li><p>col.time (TIME),
-    EVID, ID, CMT, MDV: If present, elements must be non-missing
+    EVID, col.id (ID), col.cmt (CMT), and col.mdv (MDV): If present, elements must be non-missing
     and numeric.</p></li>
 <li><p>col.time (TIME) must be non-negative</p></li>
 <li><p>EVID must be in 0,1,2,3,4</p></li>
@@ -304,6 +312,17 @@ when Nonmem read, then write the data.</p></li>
 <li><p>If a unique subject identifier column (col.usubjid) is
 provided, col.id must be unique within values of col.usubjid and
 vice versa.</p></li>
+<li><p>Events should not be duplicated. For all rows, the
+combination of col.id, col.cmt ,col.evid, col.time plus the
+optional columns specified in cols.dup must be unique. In other
+words, if a subject (col.id) that has say observations (col.evid)
+at the same time (col.time), this is considered a duplicate. The
+exception is if there is a reset event (col.evid is 3 or 4) in
+between the two rows. cols.dup can be used to add columns to this
+analysis. This is useful for different assays run on the same
+compartment (say a DVID column) or maybe stacked datasets. If
+col.cmt is of length&gt;1, this search is repeated for each cmt
+column.</p></li>
 </ul></div>
 
     <div id="ref-examples">
