@@ -1,3 +1,13 @@
+# Post 0.0.17
+
+## New features
+* NMcheckData has a new argument, `cols.dup`, to include additional
+  columns (to col.id, col.cmt, col.evid, and col.time) in search for
+  duplicated events. This is useful for different assays run on the
+  same compartment (say a DVID column) or maybe stacked datasets. If
+  col.cmt is of length>1, this search is repeated for each cmt
+  column. Thanks to Eric Anderson for suggesting this.
+
 # 0.0.17
 
 This release provides a few bugfixes, nothing major.

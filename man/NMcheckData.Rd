@@ -20,6 +20,7 @@ NMcheckData(
   col.flagn,
   col.row,
   col.usubjid,
+  cols.dup,
   na.strings,
   return.summary = FALSE,
   quiet = FALSE,
@@ -100,6 +101,11 @@ ID's are unique across actual subjects), and that col.id is
 unique within the unique subject ID (a violation of the latter
 is less likely).}
 
+\item{cols.dup}{Additional column names to consider in search of
+duplicate events. col.id, col.cmt, col.evid, and col.time are
+always considered if found in data, and cols.dup is added to
+this list if provided.}
+
 \item{na.strings}{Strings to be accepted when trying to convert
 characters to numerics. This will typically be a string that
 represents missing values. Default is ".". Notice, actual NA,
@@ -145,7 +151,7 @@ The following checks are performed. The term "numeric"
 non-missing, increasing integers. 
 
 \item col.time (TIME),
-    EVID, ID, CMT, MDV: If present, elements must be non-missing
+    EVID, col.id (ID), col.cmt (CMT), and col.mdv (MDV): If present, elements must be non-missing
     and numeric.
 
 \item col.time (TIME) must be non-negative
@@ -209,6 +215,18 @@ when Nonmem read, then write the data.
 \item If a unique subject identifier column (col.usubjid) is
 provided, col.id must be unique within values of col.usubjid and
 vice versa.
+
+\item Events should not be duplicated. For all rows, the
+combination of col.id, col.cmt ,col.evid, col.time plus the
+optional columns specified in cols.dup must be unique. In other
+words, if a subject (col.id) that has say observations (col.evid)
+at the same time (col.time), this is considered a duplicate. The
+exception is if there is a reset event (col.evid is 3 or 4) in
+between the two rows. cols.dup can be used to add columns to this
+analysis. This is useful for different assays run on the same
+compartment (say a DVID column) or maybe stacked datasets. If
+col.cmt is of length>1, this search is repeated for each cmt
+column.
 
 }
 }

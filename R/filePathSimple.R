@@ -10,9 +10,6 @@
 ##' @family FileSystem
 ##' @keywords internal
 
-### This function is exported from pmxtricks. It is included in NMdata not to
-### depend on pmxtricks. However, please align.
-
 filePathSimple <- function(...){
     
     fpath <- file.path(...)

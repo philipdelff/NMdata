@@ -64,6 +64,10 @@
 ##'     ID's are unique across actual subjects), and that col.id is
 ##'     unique within the unique subject ID (a violation of the latter
 ##'     is less likely).
+##' @param cols.dup Additional column names to consider in search of
+##'     duplicate events. col.id, col.cmt, col.evid, and col.time are
+##'     always considered if found in data, and cols.dup is added to
+##'     this list if provided.
 ##' @param na.strings Strings to be accepted when trying to convert
 ##'     characters to numerics. This will typically be a string that
 ##'     represents missing values. Default is ".". Notice, actual NA,
@@ -96,7 +100,7 @@
 ##' non-missing, increasing integers. 
 ##'
 ##' \item col.time (TIME),
-##'     EVID, ID, CMT, MDV: If present, elements must be non-missing
+##'     EVID, col.id (ID), col.cmt (CMT), and col.mdv (MDV): If present, elements must be non-missing
 ##'     and numeric.
 ##'
 ##' \item col.time (TIME) must be non-negative
@@ -161,6 +165,18 @@
 ##' provided, col.id must be unique within values of col.usubjid and
 ##' vice versa.
 ##'
+##' \item Events should not be duplicated. For all rows, the
+##' combination of col.id, col.cmt ,col.evid, col.time plus the
+##' optional columns specified in cols.dup must be unique. In other
+##' words, if a subject (col.id) that has say observations (col.evid)
+##' at the same time (col.time), this is considered a duplicate. The
+##' exception is if there is a reset event (col.evid is 3 or 4) in
+##' between the two rows. cols.dup can be used to add columns to this
+##' analysis. This is useful for different assays run on the same
+##' compartment (say a DVID column) or maybe stacked datasets. If
+##' col.cmt is of length>1, this search is repeated for each cmt
+##' column.
+##'
 ##' }
 ##' @return A table with findings
 ##' @examples
@@ -176,7 +192,7 @@
 NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
                         col.time="TIME",col.dv="DV",col.mdv="MDV",
                         col.cmt="CMT",col.amt="AMT",col.flagn,col.row,
-                        col.usubjid,na.strings,return.summary=FALSE,
+                        col.usubjid,cols.dup,na.strings,return.summary=FALSE,
                         quiet=FALSE,as.fun){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -239,6 +255,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     if(!is.null(cols.num) && !is.list(cols.num) ){
         cols.num <- list("TRUE"=cols.num)
     }
+    if(missing(cols.dup)) cols.dup <- NULL
 
     names.cols.num <- names(cols.num)
     
@@ -318,7 +335,12 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
         col.id.orig <- tmpcol(data,base="id.orig",prefer.plain=TRUE)
         data[,(col.id.orig):=get(col.id)]
     }
-    
+
+    if(any(!cols.dup%in%colnames(data))){
+        warning("Not all columns specified in cols.dup found in data. Skipping those not found.")
+        cols.dup <- intersect(cols.dup,colnames(data))
+    }
+
 
     NMasNumeric <- function(x,warn=F) {
         if(warn){
@@ -807,15 +829,15 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     nfindings <- findings[,.N]
     for(count.cmt in 1:nruns){
         
-        data[,Nrep:=.N,by=intersect(c("newID",col.cmt.found[count.cmt],"EVID",col.time),colnames(data))]
-        findings <- listEvents(col="Nrep",name="Duplicated event",function(x) x<2,colname=paste(c(col.id,col.cmt.found[count.cmt], "EVID", col.time),collapse=", "),events=findings)
+        data[,Nrep:=.N,by=intersect(c("newID",col.cmt.found[count.cmt],col.evid,col.time,cols.dup),colnames(data))]
+        findings <- listEvents(col="Nrep",name="Duplicated event",function(x) x<2,colname=paste(c(col.id,col.cmt.found[count.cmt], col.evid, col.time, cols.dup),collapse=", "),events=findings)
     }
     nfindings.new <- findings[,.N]
     if(count.cmt>1 && nfindings.new>nfindings){
         messageWrap("Due to multiple CMT columns, duplicate events may be reported with respect to each of these columns.",fun.msg=message)
     }
     
-    if("EVID"%in%colnames(data)){
+    if(col.evid%in%colnames(data)){
 ### subjects without doses
         all.ids <- data[,unique(get(col.id.orig))]
         tab.evid.id <- data[,.N,by=c(col.id.orig,"EVID")]
