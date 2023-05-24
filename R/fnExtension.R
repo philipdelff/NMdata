@@ -21,11 +21,11 @@
 fnExtension <- function(fn,ext){
 
     if(missing(ext) || is.null(ext)){
-        return(sub(".*\\.([^.]*)","\\1",x=fn))
+        return(sub(".*\\.([^/.]*)","\\1",x=fn))
     }
 
-    ext <- sub("^ *\\.{0,1}(.+)","\\.\\1",ext)
-    fn.new <- sub("\\.[^\\.]+$","",fn)
+    ext <- sub("^ *\\.{0,1}([^/]+)","\\.\\1",ext)
+    fn.new <- sub("\\.[^/\\.]+$","",fn)
     fn.new <- paste0(fn.new,ext)
     fn.new
 }

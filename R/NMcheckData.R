@@ -840,7 +840,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     if(col.evid%in%colnames(data)){
 ### subjects without doses
         all.ids <- data[,unique(get(col.id.orig))]
-        tab.evid.id <- data[,.N,by=c(col.id.orig,"EVID")]
+        tab.evid.id <- data[,.N,by=c(col.id.orig,col.evid)]
         ids.no.doses <- setdiff(all.ids,tab.evid.id[EVID%in%c(1,4),get(col.id.orig)])
 
         if(length(ids.no.doses)>0){
