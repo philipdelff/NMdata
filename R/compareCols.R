@@ -54,7 +54,7 @@
 ##' to extract SAS labels on an object read with `read_sas` from
 ##' the `haven` package.
 ##' @examples
-##' ## get sas labels from objects read with haven::read_sas
+##' ## get SAS labels from objects read with haven::read_sas
 ##' \dontrun{
 ##' compareCols(...,fun.class=function(x)attributes(x)$label)
 ##' }
