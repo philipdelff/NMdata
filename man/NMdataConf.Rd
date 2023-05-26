@@ -4,15 +4,20 @@
 \alias{NMdataConf}
 \title{Configure default behavior of NMdata functions}
 \usage{
-NMdataConf(...)
+NMdataConf(..., allow.unknown = FALSE)
 }
 \arguments{
 \item{...}{NMdata options to modify. These are named arguments,
-    like for base::options. Normally, multiple arguments can be
-    used. The exception is if reset=TRUE is used which means all
-    options are restored to default values. If NULL is passed to
-    an argument, the argument is reset to default.  is See
-    examples for how to use.
+like for base::options. Normally, multiple arguments can be
+used. The exception is if reset=TRUE is used which means all
+options are restored to default values. If NULL is passed to
+an argument, the argument is reset to default.  is See
+examples for how to use.}
+
+\item{allow.unknown}{Allow to store configuration of variables
+    that are not pre-defined in NMdata. This should only be needed
+    in cases where say another package wants to use the NMdata
+    configuration system for variables unknown to NMdata.
 
 Parameters that can be controlled are:
 
