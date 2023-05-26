@@ -22,7 +22,7 @@ data.frames)."><meta property="og:image" content="https://philipdelff.github.io/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.902</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.903</span>
       </span>
     </div>
 
@@ -94,18 +94,25 @@ data.frames).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMdataConf</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMdataConf</span><span class="op">(</span><span class="va">...</span>, allow.unknown <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>...</dt>
 <dd><p>NMdata options to modify. These are named arguments,
-    like for base::options. Normally, multiple arguments can be
-    used. The exception is if reset=TRUE is used which means all
-    options are restored to default values. If NULL is passed to
-    an argument, the argument is reset to default.  is See
-    examples for how to use.</p>
+like for base::options. Normally, multiple arguments can be
+used. The exception is if reset=TRUE is used which means all
+options are restored to default values. If NULL is passed to
+an argument, the argument is reset to default.  is See
+examples for how to use.</p></dd>
+
+
+<dt>allow.unknown</dt>
+<dd><p>Allow to store configuration of variables
+    that are not pre-defined in NMdata. This should only be needed
+    in cases where say another package wants to use the NMdata
+    configuration system for variables unknown to NMdata.</p>
 <p>Parameters that can be controlled are:</p>
 <ul><li><p>args.fread Arguments passed to fread when reading _input_
 data files (fread options for reading Nonmem output tables cannot
@@ -225,7 +232,7 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(as.data.frame(list()))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     UseMethod("as.data.frame")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x560c3c191478&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5635ec9da5e0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:base&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $check.time</span>
@@ -249,11 +256,14 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $col.row</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ROW"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $dir.psn</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] ""</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file.mod</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fnExtension(file, ext = ".mod")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x560c3c1a70f8&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x560c3c194978&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5635ec9e8bd8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5635ec9d9cb0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file.data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "extract"</span>
@@ -264,8 +274,11 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $modelname</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fnExtension(basename(file), "")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x560c3c1a6aa0&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x560c3c194978&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5635ec9e8580&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5635ec9d9cb0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $path.nonmem</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "nmfe75"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $quiet</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
