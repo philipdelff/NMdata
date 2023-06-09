@@ -5,6 +5,7 @@
   :END:
 ** Design
 *** DONE Add version to welcome message
+*** TODO [#A] All arguments should be arg.foo rather than argFoo
 *** TODO [#B] deprecate "default" option in NMdataConf
     has no benefit over NULL, so redundant and prevents the use of "default" as an actual param value.
 *** DONE Allow for say input.txt/output.txt
@@ -334,6 +335,8 @@ extension is .rds?
 **** DONE Add support for windows absolute paths
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
+*** NMreplaceDataFile
+**** TODO [#A] Implement function
 *** NMwriteSection
 **** Support insertion of new section before or after another section
 location="replace" is default. "before" and "after" should be
@@ -374,6 +377,15 @@ like IGNORE(ID=2) IGNORE(ID=3)
 **** DONE Make work without filters
 Generated xgxr027.mod with a dataset without column names for the
 purpose. Needs to be run with Nonmem, then test.
+**** TODO [#A] Check for existence of data file to read
+Currently, the error is coming from NMextractText:
+> data <- NMscanInput(file.path(DirNonmem,"osmodel_estim1_tvmr.ctl"))
+Error in NMextractText(file = file, lines = lines, text = text, section = section,  : 
+  When using the file argument, file has to point to an existing file.
+In addition: Warning message:
+Input control stream (typically .mod) not found. Default is to look next to
+.lst file. See argument file.mod if you want to look elsewhere. If you don't
+have a .mod file, see the dir.data argument. Input data not used. 
 **** TODO [#B] Make work without column names in input data file
 **** TODO [#B] Time check of lst vs input belongs here rather than in NMscanData
 Not sure.
@@ -462,9 +474,9 @@ that other functions such as NMcheckData gets the same behaviour.
 
 This is now handled by NMextractDataFile
 **** DONE Test on a simulation model with subproblems
-**** TODO [#B] Simplify timestamp warnings
-     When .mod is newer than .lst and or tables, reduce to one warning
-     summarizing both findings.
+**** TODO [#A] Simplify timestamp warnings
+Ideally, When .mod is newer than .lst and or tables, reduce to one warning
+summarizing both findings. At least, just give brief one-liners.
 **** DONE nmout and model must not overwrite existing
      The can still overwrite, but a warning is thrown
 **** DONE Check that no new values of col.row are found in output

@@ -9,13 +9,13 @@
 ##' Nonmem (e.g. observations or subjects that are not part of the analysis)}
 ##' }
 ##' 
-##' @param file A Nonmem control stream or output file from Nonmem
-##'     (.mod or .lst)
-##' @param file.mod The input control stream. Default is to look for
-##'     \"file\" with extension changed to .mod (PSN style). You can
-##'     also supply the path to the file, or you can provide a
-##'     function that translates the output file path to the input
-##'     file path. The default behavior can be configured using
+##' @param file Path to a Nonmem control stream or output file from
+##'     Nonmem (.mod or .lst)
+##' @param file.mod The input control stream file path. Default is to
+##'     look for \"file\" with extension changed to .mod (PSN
+##'     style). You can also supply the path to the file, or you can
+##'     provide a function that translates the output file path to the
+##'     input file path. The default behavior can be configured using
 ##'     NMdataConf. See dir.data too.
 ##' @param col.id The name of the subject ID variable, default is
 ##'     "ID".

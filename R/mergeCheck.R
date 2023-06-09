@@ -38,8 +38,8 @@
 ##' @param fun.na.by If NA's are found in (matched) by columns in both
 ##'     x and why, what should we do? This could be OK, but in many
 ##'     cases, it's because something unexpected is happening. Use
-##'     fun.na.by=NULL in cases where you really don't care about this
-##'     and want to go ahead regardless.
+##'     fun.na.by=NULL if you don't want to be notified and want to go
+##'     ahead regardless.
 ##' @param as.fun The default is to return a data.table if x is a
 ##'     data.table and return a data.frame in all other cases. Pass a
 ##'     function in as.fun to convert to something else.
@@ -67,11 +67,11 @@
 ##'     unchanged. This is even further limited than a left join where
 ##'     you can match rows multiple times. A common example of the use
 ##'     of mergeCheck is for adding covariates to a pk/pd data set. We
-##'     do not want that to remove or duplicate doses, observations, or
-##'     simulation records. In those cases, mergeCheck does all needed
-##'     checks, and you can run full speed without checking dimensions
-##'     (which is anyway not exactly the right thing to do in the
-##'     general case) or worry that something might go wrong. 
+##'     do not want that to remove or duplicate doses, observations,
+##'     or simulation records. In those cases, mergeCheck does all
+##'     needed checks, and you can run full speed without checking
+##'     dimensions (which is anyway not exactly the right thing to do
+##'     in the general case) or worry that something might go wrong.
 ##'
 ##' Checks performed:
 ##' 

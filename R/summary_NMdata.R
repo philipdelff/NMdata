@@ -217,7 +217,7 @@ print.summary_NMdata <- function(x,...){
             cat("\nInput and output data merged by:",x$details$col.row,"\n")
         } else {
             message("Input and output data combined by translation of
-Nonmem data filters (not recommended).")
+Nonmem data filters.")
         }
     } else {
         cat("Input data not used.\n")

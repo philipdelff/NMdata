@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 
 Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
-This vignette is still under development. Please make sure to see latest version available [here](https://philipdelff.github.io/NMdata/).
+Please make sure to see latest vignette version available [here](https://philipdelff.github.io/NMdata/).
 
 ## Objectives
 This vignettes aims at enabling you at 

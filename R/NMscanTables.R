@@ -34,7 +34,7 @@
 ##' @import data.table
 ##' @export
 
-NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,details,skip.absent=FALSE){
+NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,details,skip.absent=FALSE,meta.only=FALSE){
     
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
@@ -114,19 +114,26 @@ NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,d
     }
     tables <- list()
 
-    meta[,exists:=TRUE]
+    meta[,exists:=file.exists(file)]
+    meta[,filetype:="output"]    
+    meta[,file.mtime:=file.mtime(file)]
+
+    if(meta.only){
+        setcolorder(meta,intersect(c("source","name","nrow","ncol","nid","level","scope","has.col.row","has.col.id","full.length","filetype","format",
+                                     "file.mtime","file"),colnames(meta)))
+        return(as.fun(meta))
+    }
+
+######## read data
     for(I in 1:nrow(meta)){
-        if(!file.exists(meta[I,file])) {
-            meta[I,exists:=FALSE]
+        if(meta[I,!exists]) {
             if(skip.absent) {
                 messageWrap(paste0("NMscanTables: File not found: ",meta[I,file],". Skipping."),fun.msg=message)
-                ## meta <- meta[-I]
                 next
             }
-            stop(paste0("NMscanTables: File not found: ",meta[I,file],". Did you copy the lst file but forgot table
-file?"))
+            stop(paste0("NMscanTables: File not found: ",meta[I,file],". Did you copy the lst file but forgot table file?"))
         }
-            
+        
         tables[[I]] <- NMreadTab(meta[I,file],quiet=TRUE,rep.count=rep.count,showProgress=FALSE,as.fun=identity,header=meta[I,!noheader])
 ### to not include NMREP when counting columns
         ## dim.tmp <- dim(tables[[I]][,!colnames(tables[[I]])=="NMREP",with=FALSE])
@@ -197,12 +204,6 @@ file?"))
                )]
 
 
-    meta[,filetype:="output"]
-    ##
-    ##    meta[,full.length:=nrow==max(nrow)]
-    ## test if all  have same length within level. 
-    
-    meta[,file.mtime:=file.mtime(file)]
     ## sep not used so omitted 
     setcolorder(meta,intersect(c("source","name","nrow","ncol","nid","level","scope","has.col.row","has.col.id","full.length","filetype","format",
                                  "file.mtime","file"),colnames(meta)))
@@ -228,7 +229,7 @@ file?"))
     
     names(tables) <- meta[,name]
 
-    as.fun <- NMdataDecideOption("as.fun",as.fun)
+
     tables <- lapply(tables,as.fun)
     
     writeNMinfo(tables,list(tables=meta),byRef=TRUE)

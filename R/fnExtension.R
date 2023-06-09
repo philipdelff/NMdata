@@ -21,7 +21,13 @@
 fnExtension <- function(fn,ext){
 
     if(missing(ext) || is.null(ext)){
-        return(sub(".*\\.([^/.]*)","\\1",x=fn))
+        ## disregarding any parent dirs        
+        fn <- sub(".*/","",fn)
+        ## if no dot in file name, there is no extension
+        fn[!grepl("\\.",fn)] <- ""
+        return(
+            sub(".*\\.([^/.]*)","\\1",x=fn)
+        )
     }
 
     ext <- sub("^ *\\.{0,1}([^/]+)","\\.\\1",ext)

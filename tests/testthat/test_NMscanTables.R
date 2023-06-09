@@ -95,3 +95,14 @@ test_that("Commented output table",{
     expect_equal_to_reference(tabs,fileRef,version=2)
 
 })
+
+test_that("Commented output table",{
+
+    fileRef <- "testReference/NMscanTables_06.rds"
+
+    file.lst <- "testData/nonmem/xgxr028.lst"
+    tabs <- NMscanTables(file.lst,meta.only=TRUE)
+
+    expect_equal_to_reference(tabs,fileRef,version=2)
+
+})

@@ -18,3 +18,11 @@ test_that("basic",{
     expect_equal_to_reference(res1,fileRef)
     
 })
+
+test_that("skip directory .s",{
+    ## todo. This should return an error. There is no extension to
+    ## append in front of.
+    fnAppend("fe/../egef","hmm")
+    ## should also return error:
+    fnAppend("egef","hmm")
+})
