@@ -1,3 +1,4 @@
+context("findCovs")
 
 test_that("basic",{
     fileRef <- "testReference/findCovs_1.rds"

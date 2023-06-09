@@ -1,3 +1,4 @@
+context("egdt")
 
 test_that("basic",{
     fileRef <- "testReference/egdt_1.rds"

@@ -102,7 +102,8 @@ test_that("Commented output table",{
 
     file.lst <- "testData/nonmem/xgxr028.lst"
     tabs <- NMscanTables(file.lst,meta.only=TRUE)
-
+    tabs$file.mtime <- NULL
+    
     expect_equal_to_reference(tabs,fileRef,version=2)
 
 })

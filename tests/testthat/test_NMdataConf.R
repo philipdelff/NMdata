@@ -2,7 +2,7 @@ context("NMdataConf")
 
 test_that("defaults",{
 
-    fileRef <- "testReference/NMdataConf1.rds"
+    fileRef <- "testReference/NMdataConf_01.rds"
 
     defaults <- NMdataConf()
     defaults$as.fun <- NULL

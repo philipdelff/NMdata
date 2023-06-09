@@ -23,7 +23,7 @@
 
 
 editCharCols <- function(data,pattern,replacement,as.fun,...){
-
+    
 #### Section start: Pre-process arguments ####
 
     ## make sure to work on a copy of data and not edit by ref
@@ -50,11 +50,15 @@ editCharCols <- function(data,pattern,replacement,as.fun,...){
 
     ## factors are checked for commas in strings but not edited
     cnames.fac <- colnames(data)[ !sapply(data,function(x)NMisNumeric(x)||"POSIXct"%in%class(x))&sapply(data,function(x)is.factor(x))]
-
-    factors.found <- cnames.fac[data[,sapply(.SD,function(x)any(grepl(pattern,x))),.SDcols=cnames.fac]]
-    if(any(factors.found)){
-        stop(paste("Pattern found in factors. These have NOT been removed. Concerned columns:",factors.found))
+    if(length(cnames.fac)){
+        
+        factors.found <- cnames.fac[
+            data[,sapply(.SD,function(x)any(grepl(pattern,x))),.SDcols=cnames.fac]
+        ]
+        if(length(factors.found)){
+            stop(paste("Pattern found in factors. These have NOT been removed. Concerned columns:",factors.found))
+        }
     }
 
-    data
+    as.fun(data)
 }
