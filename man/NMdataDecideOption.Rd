@@ -4,7 +4,7 @@
 \alias{NMdataDecideOption}
 \title{Determine active parameter value based on argument and NMdataConf setting}
 \usage{
-NMdataDecideOption(name, argument)
+NMdataDecideOption(name, argument, allow.unknown = FALSE)
 }
 \arguments{
 \item{name}{The name of the parameter, say "as.fun"}

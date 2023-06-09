@@ -4,10 +4,15 @@
 \alias{NMdataConfOptions}
 \title{Get NMdataConf parameter properties}
 \usage{
-NMdataConfOptions(name)
+NMdataConfOptions(name, allow.unknown = TRUE)
 }
 \arguments{
 \item{name}{Optionally, a single parameter name (say "as.fun").}
+
+\item{allow.unknown}{Allow access to configuration of variables
+that are not pre-defined in NMdata. This should only be needed
+in cases where say another package wants to use the NMdata
+configuration system for variables unknown to NMdata.}
 }
 \value{
 If name is provided, a list representing one argument,

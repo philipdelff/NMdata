@@ -14,6 +14,11 @@
 ##'     an argument, the argument is reset to default.  is See
 ##'     examples for how to use.
 ##'
+##' @param allow.unknown Allow to store configuration of variables
+##'     that are not pre-defined in NMdata. This should only be needed
+##'     in cases where say another package wants to use the NMdata
+##'     configuration system for variables unknown to NMdata.
+##'
 ##' Parameters that can be controlled are:
 ##'
 ##' \itemize{
@@ -129,7 +134,7 @@
 ##'     arguments given and no issues found, TRUE invisibly.
 ##' @export
 
-NMdataConf <- function(...){
+NMdataConf <- function(...,allow.unknown=FALSE){
     
     dots <- list(...)
     if(length(dots)==0){
@@ -158,12 +163,12 @@ NMdataConf <- function(...){
             return(.NMdata$options)
         }
     } else {
-
+        
         args <- lapply(1:N.args,function(I){
             val <- dots[[I]]
             if(is.null(val)) val <- "default"
             ## if(is.character(val)&&length(val)==1&val=="default") val <- NULL
-            NMdataDecideOption(names.args[I],val)
+            NMdataDecideOption(names.args[I],val,allow.unknown=allow.unknown)
         })
 
     }
@@ -181,6 +186,10 @@ NMdataConf <- function(...){
 ##' Get NMdataConf parameter properties
 ##'
 ##' @param name Optionally, a single parameter name (say "as.fun").
+##' @param allow.unknown Allow access to configuration of variables
+##'     that are not pre-defined in NMdata. This should only be needed
+##'     in cases where say another package wants to use the NMdata
+##'     configuration system for variables unknown to NMdata.
 ##' @return If name is provided, a list representing one argument,
 ##'     otherwise a list with an element for each argument that can be
 ##'     customized using NMdataConf.
@@ -188,7 +197,7 @@ NMdataConf <- function(...){
 
 ## do not export
 
-NMdataConfOptions <- function(name){
+NMdataConfOptions <- function(name,allow.unknown=TRUE){
 
     all.options <- list(
         args.fread=list(
@@ -389,6 +398,8 @@ NMdataConfOptions <- function(name){
         if(length(name)==1){
             if(name%in%names(all.options)){
                 return(all.options[[name]])
+            } else if(allow.unknown) {
+                return(NULL)
             } else {
                 messageWrap("Option not found",fun.msg=stop,track.msg=FALSE)
             }
@@ -409,13 +420,26 @@ NMdataConfOptions <- function(name){
 ##' @keywords internal
 
 ## Do not export.
-NMdataDecideOption <- function(name,argument){
+NMdataDecideOption <- function(name,argument,allow.unknown=FALSE){
     
-    values.option <- NMdataConfOptions(name)
-
+    values.option <- NMdataConfOptions(name,allow.unknown=allow.unknown)
+    ## TODO. This is wrong. This means nothing is pre-defined for the option. It doesn't mean no value is configured.
+    ## if nothing found and unknown parameters allowed, we just use the supplied value
+    is.unknown <- is.null(values.option)
+    if(is.unknown && allow.unknown) {
+        ##return(argument)
+        ## define a tmp object that serves purpose?
+        values.option <- list(default=NULL
+                             ,is.allowed=function(x)TRUE
+                             ,process=identity
+                              )
+    }
+    
     if(!missing(argument) && is.character(argument) && length(argument)==1 && argument=="default") {
         return(values.option$default)
     }
+
+
     ## if(is.null(argument)) {
     ##     return(values.option$default)
     ## }
@@ -423,9 +447,14 @@ NMdataDecideOption <- function(name,argument){
     
 
     if(missing(argument)||is.null(argument)) return(NMdataGetOption(name))
+    ## if(!(is.null(values.option)&&allow.unknown)){
     if(!values.option$is.allowed(argument)) messageWrap(values.option$msg.not.allowed,fun.msg=stop,track.msg = FALSE)
-
     argument <- values.option$process(argument)
+    ## } else {
+    ##     argument <- NULL
+    ## }
+
+
 
     return(argument)
 }
