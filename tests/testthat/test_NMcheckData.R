@@ -298,3 +298,24 @@ test_that("no col.flagn",{
     res2 <- NMcheckData(pk)
     expect_equal(res1,res2)
 })
+
+dups_data <- data.frame(
+  ID = c(1, 1, 1),
+  TIME = c(1, 2, 2),
+  DV = c(NA, 20, 50),
+  AMT = c(100, 0, 0),
+  EVID = c(1, 0, 0),
+  DVID = c(1, 2, 3),
+  ROW = 1:3,
+  CMT = 1,
+  MDV = c(0, 0, 0)
+)
+
+
+test_that("check data files without cols.dup, but passed with it",{
+  no_dup_specified <- NMcheckData(dups_data)
+  dup_specified <- NMcheckData(dups_data, cols.dup = "DVID")
+  
+  expect_equal(nrow(no_dup_specified), 1)
+  expect_equal(nrow(dup_specified), 0)
+})
