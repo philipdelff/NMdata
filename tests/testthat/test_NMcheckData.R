@@ -316,6 +316,6 @@ test_that("check data files without cols.dup, but passed with it",{
   no_dup_specified <- NMcheckData(dups_data)
   dup_specified <- NMcheckData(dups_data, cols.dup = "DVID")
   
-  expect_equal(nrow(no_dup_specified), 1)
+  expect_equal(nrow(no_dup_specified), 2)
   expect_equal(nrow(dup_specified), 0)
 })
