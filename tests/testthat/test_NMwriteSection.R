@@ -167,3 +167,22 @@ test_that("Insert new section before another",{
     expect_equal_to_reference(res,fileRef,version=2)
 
 })
+
+
+test_that("No newfile supplied",{
+
+    fileRef <- "testReference/NMwriteSection_07.rds"
+
+    outfile <- "testOutput/NMwriteSection_07.mod"
+    file.copy("testData/nonmem/xgxr011.mod",outfile)
+    
+    newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
+    section <- "input"
+    NMwriteSection(files=outfile
+                  ,section=section
+                  ,newlines=newlines
+                   )
+    res <- readLines(outfile)
+    expect_equal_to_reference(res,fileRef,version=2)
+
+})

@@ -1,6 +1,6 @@
 library(data.table)
 
-context("test_editCharCols")
+context("editCharCols")
 
 test_that("basic",{
 

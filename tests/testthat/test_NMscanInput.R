@@ -191,3 +191,9 @@ test_that("ID only from pseudonym",{
     expect_equal_to_reference(inp,fileRef,version=2)
 })
 
+
+test_that("Missing control stream",{
+
+    expect_error(NMscanInput("testData/nonmem/doesnotexist.mod"))
+})
+

@@ -1,12 +1,16 @@
 # Post 0.0.17
 
 ## New features
+* New function NMreplaceDataFile to replace the input data file in a
+  control stream. A simple wrapper of NMwriteSection but useful for
+  this specific purpose.
+
 * NMcheckData has a new argument, `cols.dup`, to include additional
   columns (to col.id, col.cmt, col.evid, and col.time) in search for
   duplicated events. This is useful for different assays run on the
   same compartment (say a DVID column) or maybe stacked datasets. If
   col.cmt is of length>1, this search is repeated for each cmt
-  column. Thanks to Eric Anderson for suggesting this.
+  column. Thanks to Eric Anderson for suggesting and testing this.
 
 # 0.0.17
 

@@ -109,6 +109,11 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,
             messageWrap("Only location=replace is supported in combination with list.sections.",fun.msg=stop)
         }
     }
+
+    ## newfile
+    if(!missing(newfile)&&!is.null(newfile) && length(all.files)>1) {
+        stop("if multiple files are edited, newfile must be missing or NULL.")
+    }
     
 ###  Section end: handle arguments
 
