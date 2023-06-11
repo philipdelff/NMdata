@@ -1,9 +1,19 @@
 ##' Replace data file used in Nonmem control stream
 ##'
-##' @param file.mod
-##' @param path.data
-##' @param newfile
-##'
+##' @param file.mod Path to input control stream to modify. See
+##'     file.pattern and dir too.
+##' @param file.pattern A pattern to look for if `dir` is supplied too
+##'     (and not `file.mod`). This is used to modify multiple input
+##'     control streams at once.
+##' @param dir Directory in which to look for `file.pattern`. Notice,
+##'     use either just `file.mod` or both `dir` and `file.pattern`.
+##' @param path.data Path to input control stream to use in newfile
+##' @param newfile A path to a new control stream to write to (and
+##'     don't edit contents of `file.mod`). Default is to overwrite `file.mod`.
+##' @param ... Additional arguments to pass to NMwriteSection.
+##' @return Lines for a new control stream (invisibly)
+##' @family Nonmem
+##' 
 ##' @export
 
 NMreplaceDataFile <- function(files,file.pattern,dir,path.data,newfile=file.mod,...){
