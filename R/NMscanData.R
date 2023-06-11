@@ -416,12 +416,14 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             mtime.mod <- file.info.mod$mtime
             
             if(mtime.mod>testtime.lst){
-                messageWrap(paste0("input control stream (",file.mod,") is newer than output control stream (",file,"). Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
+                ## messageWrap(paste0("input control stream (",file.mod,") is newer than output control stream (",file,"). Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
+                messageWrap("Input control stream is newer than output control stream.",
                             fun.msg=warning)
                 time.ok <- c(time.ok,"mod > lst")
             }
             if(mtime.mod>min(meta.output[,file.mtime])){
-                messageWrap(paste0("input control stream (",file.mod,") is newer than output tables. Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
+                ## messageWrap(paste0("input control stream (",file.mod,") is newer than output tables. Seems like model has been edited since last run. If data sections have been edited, this can corrupt results."),
+                messageWrap("Input control stream is newer than output tables.",
                             fun.msg=warning)
                 time.ok <- c(time.ok,"mod > output")
             }
