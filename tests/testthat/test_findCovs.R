@@ -32,7 +32,7 @@ test_that("with by of length 2",{
 
 ## 
 test_that("deprecated cols.id",{
-    expect_warning(
+    expect_message(
         findCovs(data.frame(x=rep(1:2,each=2),y=c(rep(c("a"),2),"v","w")),cols.id="x")
     )
     expect_error(

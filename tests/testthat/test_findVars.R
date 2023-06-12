@@ -37,7 +37,7 @@ test_that("basic2",{
 
 ## 
 test_that("deprecated cols.id",{
-    expect_warning(
+    expect_message(
         findVars(data.frame(x=rep(1:2,each=2),y=c(rep(c("a"),2),"v","w")),cols.id="x")
     )
     expect_error(

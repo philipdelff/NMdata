@@ -11,7 +11,7 @@
 ##' @param keep.names If TRUE, the original dataset names are used in
 ##'     reported table. If not, generic x1, x2,... are used. The
 ##'     latter may be preferred for readability.
-##' @param testEqual Do you just want a TRUE/FALSE to whether the
+##' @param test.equal Do you just want a TRUE/FALSE to whether the
 ##'     names of the two objects are the same? Default is FALSE which
 ##'     means to return an overview for interactive use. You might
 ##'     want to use TRUE in programming. However, notice that this
@@ -46,6 +46,7 @@
 ##'     lists. However, in relation to NMdata, this will most of the
 ##'     time be columns in data.frames.
 ##' @param keepNames Deprecated. Use keep.names instead.
+##' @param testEqual Deprecated. Use test.equal instead.
 ##' @return A data.frame with an overview of elements and their
 ##'     classes of objects in ... Class as defined by as.fun.
 ##' @details
@@ -64,7 +65,7 @@
 ##' @export
 
 
-compareCols <- function(...,list.data,keep.names=TRUE,testEqual=FALSE,diff.only=TRUE,cols.wanted,fun.class=base::class,quiet,as.fun,keepNames){
+compareCols <- function(...,list.data,keep.names=TRUE,test.equal=FALSE,diff.only=TRUE,cols.wanted,fun.class=base::class,quiet,as.fun,keepNames,testEqual){
     
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -80,10 +81,16 @@ compareCols <- function(...,list.data,keep.names=TRUE,testEqual=FALSE,diff.only=
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
 
-    if(!missing(keepNames)){
-        message("compareCols: keepNames argument is deprecated. Use keep.names instead. For now, keepNames is overruling keep.names.")
-        keep.names <- keepNames
-    }
+
+    
+##    args <- getArgs()
+    
+    ## deprecated since 2023-06-10
+    ## keep.names <- deprecatedArg("keepNames","keep.names",args=args)
+    keep.names <- deprecatedArg("keepNames","keep.names")
+    ## deprecated since 2023-06-10
+    test.equal <- deprecatedArg("testEqual","test.equal")
+    
     
     if(missing(list.data)){
         dots <- list(...)
@@ -96,6 +103,7 @@ compareCols <- function(...,list.data,keep.names=TRUE,testEqual=FALSE,diff.only=
     }
 
     
+
     ndots <- length(dots)
     if(ndots==0) stop("No data supplied.")
     if(ndots==1&&missing(diff.only)) diff.only <- FALSE
@@ -138,7 +146,7 @@ compareCols <- function(...,list.data,keep.names=TRUE,testEqual=FALSE,diff.only=
     dt.cols <- mergeCheck(dt.cols,nu.classes,by="column",quiet=TRUE)
     
     
-    if(testEqual) return(dt.cols[n<ndots|nu>1,.N]==0)
+    if(test.equal) return(dt.cols[n<ndots|nu>1,.N]==0)
 
     if(is.null(cols.wanted)){
         dt.cols[,(col.wanted):=0]
@@ -166,6 +174,7 @@ compareCols <- function(...,list.data,keep.names=TRUE,testEqual=FALSE,diff.only=
     
     if(!quiet) {
         if(all(sapply(dots,is.data.frame))){
+            
             message("Dimensions:")
             print(as.fun(dims(list.data=dots)))
         }

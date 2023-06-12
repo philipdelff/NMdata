@@ -38,7 +38,9 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** New functions
-*** TODO [#A] Remove commas from character strings
+*** DONE Remove commas from character strings
+Added editCharCols
+
 The following code does not look at column names
 
 #+begin_src R
@@ -336,7 +338,8 @@ extension is .rds?
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
 *** NMreplaceDataFile
-**** TODO [#A] Implement function
+**** DONE Implement function
+**** DONE Tests
 *** NMwriteSection
 **** Support insertion of new section before or after another section
 location="replace" is default. "before" and "after" should be
@@ -377,7 +380,9 @@ like IGNORE(ID=2) IGNORE(ID=3)
 **** DONE Make work without filters
 Generated xgxr027.mod with a dataset without column names for the
 purpose. Needs to be run with Nonmem, then test.
-**** TODO [#A] Check for existence of data file to read
+**** DONE Check for existence of data file to read
+I currently can't reproduce this. Tried with test "Missing control stream"
+
 Currently, the error is coming from NMextractText:
 > data <- NMscanInput(file.path(DirNonmem,"osmodel_estim1_tvmr.ctl"))
 Error in NMextractText(file = file, lines = lines, text = text, section = section,  : 
@@ -474,7 +479,7 @@ that other functions such as NMcheckData gets the same behaviour.
 
 This is now handled by NMextractDataFile
 **** DONE Test on a simulation model with subproblems
-**** TODO [#A] Simplify timestamp warnings
+**** DONE Simplify timestamp warnings
 Ideally, When .mod is newer than .lst and or tables, reduce to one warning
 summarizing both findings. At least, just give brief one-liners.
 **** DONE nmout and model must not overwrite existing

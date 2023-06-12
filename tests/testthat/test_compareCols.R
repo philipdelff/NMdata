@@ -14,6 +14,7 @@ test_that("basic",{
     pk.reduced[,CYCLE:=NULL]
     pk.reduced[,AMT:=as.character(AMT)]
 
+
     res1 <- compareCols(pk,pk.reduced)
 
     expect_equal_to_reference(res1,fileRef)
@@ -51,7 +52,7 @@ test_that("diff.only=FALSE, keepNames = F",{
 
     expect_equal_to_reference(res1,fileRef)
 
-    res2 <- compareCols(pk,pk.reduced,diff.only=FALSE,keepNames = F)
+    res2 <- compareCols(pk,pk.reduced,diff.only=FALSE,keep.names = F)
     expect_equal(res1,res2)
 })
 

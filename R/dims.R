@@ -19,11 +19,10 @@
 
 dims <- function(...,list.data,keep.names=TRUE,as.fun=NULL,keepNames){
 
-    if(!missing(keepNames)){
-        message("compareCols: keepNames argument is deprecated. Use keep.names instead. For now, keepNames is overruling keep.names.")
-        keep.names <- keepNames
-    }
-
+    ## Was deprecated way before 2023-06-10. keepNames was deprecated in compareCols on that date.
+    keep.names <- deprecatedArg("keepNames","keep.names")
+    
+    
     if(missing(list.data)){
         dots <- list(...)
         if(keep.names){
