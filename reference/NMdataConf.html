@@ -153,6 +153,9 @@ time. This is only used for sorting columns by NMorderColumns.</p></li>
 <li><p>col.row The name of the column containing a unique row
 identifier. This is used by NMscanData when merge.by.row=TRUE, and
 by NMorderColumns (row counter will be first column in data).</p></li>
+<li><p>dir.psn The directory in which to find psn executables like
+`execute` and `update_inits`. Default is "" meaning that
+executables must be in the system search path. Not used by NMdata.</p></li>
 <li><p>file.mod A function that will derive the path to the input control
 stream based on the path to the output control stream. Technically, it can
 be a string too, but when using NMdataConf, this would make little sense
@@ -170,6 +173,8 @@ path to a model name. Default is to strip .lst, so /path/to/run1.lst will
 become run1. Technically, it can be a string too, but when using NMdataConf,
 this would make little sense because it would translate all output control
 streams model name.</p></li>
+<li><p>path.nonmem Path (a character string) to a nonmem
+executable. Not used by NMdata. Default is NULL.</p></li>
 <li><p>quiet For non-interactive scripts, you can switch off the
 chatty behavior once and for all using this setting.</p></li>
 <li><p>recover.rows In NMscanData, Include rows from input data
@@ -232,7 +237,7 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(as.data.frame(list()))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     UseMethod("as.data.frame")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55b2367da028&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x557ae01b7188&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:base&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $check.time</span>
@@ -262,8 +267,8 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file.mod</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fnExtension(file, ext = ".mod")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55b2367fce00&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55b2367d9148&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x557ae01de520&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x557ae01b6858&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file.data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "extract"</span>
@@ -274,8 +279,8 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $modelname</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fnExtension(basename(file), "")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55b2367ff458&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55b2367d9148&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x557ae01e1c18&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x557ae01b6858&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $quiet</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>

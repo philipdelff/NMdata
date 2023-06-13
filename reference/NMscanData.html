@@ -125,8 +125,8 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>file</dt>
-<dd><p>A Nonmem control stream or output file from Nonmem
-(.mod or .lst)</p></dd>
+<dd><p>Path to a Nonmem control stream or output file from
+Nonmem (.mod or .lst)</p></dd>
 
 
 <dt>col.row</dt>
@@ -165,11 +165,11 @@ not. Default is FALSE and can be configured using NMdataConf.</p></dd>
 
 
 <dt>file.mod</dt>
-<dd><p>The input control stream. Default is to look for
-\"file\" with extension changed to .mod (PSN style). You can
-also supply the path to the file, or you can provide a
-function that translates the output file path to the input
-file path. The default behavior can be configured using
+<dd><p>The input control stream file path. Default is to
+look for \"file\" with extension changed to .mod (PSN
+style). You can also supply the path to the file, or you can
+provide a function that translates the output file path to the
+input file path. The default behavior can be configured using
 NMdataConf. See dir.data too.</p></dd>
 
 

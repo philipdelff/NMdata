@@ -92,7 +92,8 @@
 <span>  col.id <span class="op">=</span> <span class="st">"ID"</span>,</span>
 <span>  <span class="va">col.row</span>,</span>
 <span>  <span class="va">details</span>,</span>
-<span>  skip.absent <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  skip.absent <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  meta.only <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -146,6 +147,14 @@ properties of the output.</p></dd>
 <dt>skip.absent</dt>
 <dd><p>Skip missing output table files with a warning?
 Default is FALSE in which case an error is thrown.</p></dd>
+
+
+<dt>meta.only</dt>
+<dd><p>If TRUE, tables are not read, only a table is
+returned showing what tables were found and some available
+meta information. Notice, not all meta information (e.g.,
+dimensions) are available because the tables need to be read
+to derive that.</p></dd>
 
 </dl></div>
     <div id="value">
