@@ -25,6 +25,11 @@
 ##'     only used to check whether the row counter is in the data.
 ##' @param skip.absent Skip missing output table files with a warning?
 ##'     Default is FALSE in which case an error is thrown.
+##' @param meta.only If TRUE, tables are not read, only a table is
+##'     returned showing what tables were found and some available
+##'     meta information. Notice, not all meta information (e.g.,
+##'     dimensions) are available because the tables need to be read
+##'     to derive that.
 ##' @return A list of all the tables as data.frames. If details=TRUE,
 ##'     this is in one element, called data, and meta is another
 ##'     element. If not, only the data is returned.
@@ -69,7 +74,8 @@ NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,d
     }    
     col.row <- NMdataDecideOption("col.row",col.row)
 
-    if(!missing(details)) message("NMscanTables: argument details is deprecated.")
+    ## if(!missing(details)) message("NMscanTables: argument details is deprecated.")
+    deprecatedArg(oldarg="details",args=getArgs())
     
     dir <- dirname(file)
     extract.info <- function(x,NAME,default){

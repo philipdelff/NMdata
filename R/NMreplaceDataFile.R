@@ -18,6 +18,16 @@
 
 NMreplaceDataFile <- function(files,file.pattern,dir,path.data,newfile=file.mod,...){
 
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+
+    file.mod <- NULL
+    quiet <- NULL
+    
+
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks 
+
+
+    
     if(missing(files)) files <- NULL
     if(missing(dir)) dir <- NULL
     if(missing(file.pattern)) file.pattern <- NULL
