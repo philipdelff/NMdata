@@ -104,6 +104,7 @@ Other Nonmem:
 \code{\link{NMapplyFilters}()},
 \code{\link{NMgenText}()},
 \code{\link{NMreadSection}()},
+\code{\link{NMreplaceDataFile}()},
 \code{\link{NMwriteSection}()}
 }
 \concept{Nonmem}

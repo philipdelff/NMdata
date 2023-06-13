@@ -107,6 +107,7 @@ Other Nonmem:
 \code{\link{NMapplyFilters}()},
 \code{\link{NMextractText}()},
 \code{\link{NMgenText}()},
-\code{\link{NMreadSection}()}
+\code{\link{NMreadSection}()},
+\code{\link{NMreplaceDataFile}()}
 }
 \concept{Nonmem}

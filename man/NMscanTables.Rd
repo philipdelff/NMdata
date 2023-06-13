@@ -12,7 +12,8 @@ NMscanTables(
   col.id = "ID",
   col.row,
   details,
-  skip.absent = FALSE
+  skip.absent = FALSE,
+  meta.only = FALSE
 )
 }
 \arguments{
@@ -49,6 +50,12 @@ properties of the output.}
 
 \item{skip.absent}{Skip missing output table files with a warning?
 Default is FALSE in which case an error is thrown.}
+
+\item{meta.only}{If TRUE, tables are not read, only a table is
+returned showing what tables were found and some available
+meta information. Notice, not all meta information (e.g.,
+dimensions) are available because the tables need to be read
+to derive that.}
 }
 \value{
 A list of all the tables as data.frames. If details=TRUE,

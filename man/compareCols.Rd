@@ -8,13 +8,14 @@ compareCols(
   ...,
   list.data,
   keep.names = TRUE,
-  testEqual = FALSE,
+  test.equal = FALSE,
   diff.only = TRUE,
   cols.wanted,
   fun.class = base::class,
   quiet,
   as.fun,
-  keepNames
+  keepNames,
+  testEqual
 )
 }
 \arguments{
@@ -27,7 +28,7 @@ sets in a list here.}
 reported table. If not, generic x1, x2,... are used. The
 latter may be preferred for readability.}
 
-\item{testEqual}{Do you just want a TRUE/FALSE to whether the
+\item{test.equal}{Do you just want a TRUE/FALSE to whether the
 names of the two objects are the same? Default is FALSE which
 means to return an overview for interactive use. You might
 want to use TRUE in programming. However, notice that this
@@ -65,6 +66,8 @@ return a data.frame. Use whatever to get what fits in with
 your workflow. Default can be configured with NMdataConf.}
 
 \item{keepNames}{Deprecated. Use keep.names instead.}
+
+\item{testEqual}{Deprecated. Use test.equal instead.}
 }
 \value{
 A data.frame with an overview of elements and their
@@ -87,7 +90,7 @@ to extract SAS labels on an object read with `read_sas` from
 the `haven` package.
 }
 \examples{
-## get sas labels from objects read with haven::read_sas
+## get SAS labels from objects read with haven::read_sas
 \dontrun{
 compareCols(...,fun.class=function(x)attributes(x)$label)
 }

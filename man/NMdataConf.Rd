@@ -72,6 +72,10 @@ time. This is only used for sorting columns by NMorderColumns.
 identifier. This is used by NMscanData when merge.by.row=TRUE, and
 by NMorderColumns (row counter will be first column in data).
 
+\item{dir.psn} The directory in which to find psn executables like
+`execute` and `update_inits`. Default is "" meaning that
+executables must be in the system search path. Not used by NMdata.
+
 \item{file.mod} A function that will derive the path to the input control
 stream based on the path to the output control stream. Technically, it can
 be a string too, but when using NMdataConf, this would make little sense
@@ -93,6 +97,8 @@ become run1. Technically, it can be a string too, but when using NMdataConf,
 this would make little sense because it would translate all output control
 streams model name.
 
+\item{path.nonmem} Path (a character string) to a nonmem
+executable. Not used by NMdata. Default is NULL.
 
 \item{quiet} For non-interactive scripts, you can switch off the
 chatty behavior once and for all using this setting.

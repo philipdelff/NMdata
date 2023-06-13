@@ -31,8 +31,8 @@ NMscanData(
 )
 }
 \arguments{
-\item{file}{A Nonmem control stream or output file from Nonmem
-(.mod or .lst)}
+\item{file}{Path to a Nonmem control stream or output file from
+Nonmem (.mod or .lst)}
 
 \item{col.row}{A column with a unique value for each row. Such a
 column is recommended to use if possible. See merge.by.row and
@@ -61,11 +61,11 @@ is taken into account. A column called nmout will be TRUE when
 the row was found in output tables, and FALSE when
 not. Default is FALSE and can be configured using NMdataConf.}
 
-\item{file.mod}{The input control stream. Default is to look for
-\"file\" with extension changed to .mod (PSN style). You can
-also supply the path to the file, or you can provide a
-function that translates the output file path to the input
-file path. The default behavior can be configured using
+\item{file.mod}{The input control stream file path. Default is to
+look for \"file\" with extension changed to .mod (PSN
+style). You can also supply the path to the file, or you can
+provide a function that translates the output file path to the
+input file path. The default behavior can be configured using
 NMdataConf. See dir.data too.}
 
 \item{dir.data}{The data directory can only be read from the
