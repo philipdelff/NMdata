@@ -7,6 +7,9 @@
 NMreplaceDataFile(files, file.pattern, dir, path.data, newfile = file.mod, ...)
 }
 \arguments{
+\item{files}{Paths to input control streams to modify. See
+file.pattern and dir too.}
+
 \item{file.pattern}{A pattern to look for if `dir` is supplied too
 (and not `file.mod`). This is used to modify multiple input
 control streams at once.}
@@ -20,9 +23,6 @@ use either just `file.mod` or both `dir` and `file.pattern`.}
 don't edit contents of `file.mod`). Default is to overwrite `file.mod`.}
 
 \item{...}{Additional arguments to pass to NMwriteSection.}
-
-\item{file.mod}{Path to input control stream to modify. See
-file.pattern and dir too.}
 }
 \value{
 Lines for a new control stream (invisibly)

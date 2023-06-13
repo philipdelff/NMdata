@@ -220,7 +220,9 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     args.fread <- NMdataDecideOption("args.fread",args.fread)
     ## if null, rep.count will later be set to TRUE if NMREP varies
     if(missing(rep.count)) rep.count <- NULL
-    if(!missing(tab.count)) .Deprecated("rep.count",old="tab.count")
+### deprecated before 2023-06-12
+    ## if(!missing(tab.count)) .Deprecated("rep.count",old="tab.count")
+    rep.count <- deprecatedArg(oldarg="tab.count",newarg="rep.count",args=getArgs())
     if(!is.null(rep.count)&&!missing(tab.count)) stop("Use rep.count, not tab.count.")
     if(!missing(tab.count)) rep.count <- tab.count
     

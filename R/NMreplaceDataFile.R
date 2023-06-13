@@ -1,6 +1,6 @@
 ##' Replace data file used in Nonmem control stream
 ##'
-##' @param file.mod Path to input control stream to modify. See
+##' @param files Paths to input control streams to modify. See
 ##'     file.pattern and dir too.
 ##' @param file.pattern A pattern to look for if `dir` is supplied too
 ##'     (and not `file.mod`). This is used to modify multiple input

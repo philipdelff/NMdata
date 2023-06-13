@@ -174,7 +174,7 @@ Error if not convertible and not NA or ""? "b" should be an error right?
 **** TODO [#B] Implement a faster method?
 What if we just check for matches in by columns?
 **** TODO [#B] accept common columns not being merged by if suffixes are provided
-**** TODO [#B] If results are not accepted. Check for whether y is unique in by
+**** TODO [#A] If results are not accepted. Check for whether y is unique in by
 **** TODO [#B] Add at least number of NA's to message about what was added
 Probably add class too.
 Number of unique combinations of by? This seems too advanced
