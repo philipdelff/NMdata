@@ -24,7 +24,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.906</span>
       </span>
     </div>
 
@@ -255,12 +255,14 @@ can be modified using NMdataConf.</p></dd>
 
 <dt>rep.count</dt>
 <dd><p>Nonmem includes a counter of tables in the
-written data files. These are often not useful. Especially for
-NMscanData output it can be meaningless because multiple
-tables can be combined so this information is not unique
-across those source tables. However, if rep.count is TRUE (not
-default), this will be carried forward and added as a column
-called NMREP. The argument is passed to NMscanTables.</p></dd>
+written data files. This does not relate to the order of the
+$TABLE statements but to cases where a $TABLE statement is run
+repeatedly. E.g., in combination with the SUBPROBLEMS feature
+in Nonmem, it is useful to keep track of the table
+(repetition) number. If rep.count is TRUE, this will be
+carried forward and added as a column called NMREP. This is
+default behavior when more than one $TABLE repetition is found
+in data. The argument is passed to NMscanTables.</p></dd>
 
 
 <dt>order.columns</dt>
@@ -368,7 +370,7 @@ list of known limitations:</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Philip Delff.</p>
+  <p></p><p>Developed by Philip Delff, Eric Anderson.</p>
 </div>
 
 <div class="pkgdown">

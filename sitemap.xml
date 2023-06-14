@@ -94,6 +94,9 @@
     <loc>https://philipdelff.github.io/NMdata/reference/NMreadTab.html</loc>
   </url>
   <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMreplaceDataFile.html</loc>
+  </url>
+  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMscanData.html</loc>
   </url>
   <url>
@@ -133,7 +136,13 @@
     <loc>https://philipdelff.github.io/NMdata/reference/compareCols.html</loc>
   </url>
   <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/deprecatedArg.html</loc>
+  </url>
+  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/dims.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/editCharCols.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/egdt.html</loc>
@@ -158,6 +167,9 @@
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/fnExtension.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/getArgs.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/getFilePaths.html</loc>

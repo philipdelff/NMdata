@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.906</span>
       </span>
     </div>
 
@@ -117,7 +117,7 @@
 
     
     
-<p>Built 2023-06-13 using NMdata 0.0.17.904.</p>
+<p>Built 2023-06-14 using NMdata 0.0.17.906.</p>
 <p>This vignette is still under development. Please make sure to see
 latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
@@ -426,8 +426,7 @@ cumulated dose amount.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pk.tapd2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/addTAPD.html">addTAPD</a></span><span class="op">(</span><span class="va">pk</span>, col.time <span class="op">=</span> <span class="st">"NOMTIME"</span>, col.tapd <span class="op">=</span> <span class="st">"NTAPD"</span>,</span>
 <span>    col.tpdos <span class="op">=</span> <span class="st">"NTPDOS"</span>, col.ndoses <span class="op">=</span> <span class="st">"NOMNDOSES"</span>, col.doscuma <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in addTAPD(pk, col.time = "NOMTIME", col.tapd = "NTAPD", col.tpdos =</span></span>
-<span><span class="co">#&gt; "NTPDOS", : col.ndoses is deprecated. Use col.doscumn instead.</span></span>
+<span><span class="co">#&gt; col.ndoses is a deprecated argument. Please use col.doscumn instead.</span></span>
 <span><span class="va">cnames.tapd2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">pk.tapd2</span><span class="op">)</span></span>
 <span><span class="co">## These are the columns added by addTAPD</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="va">cnames.tapd2</span>, <span class="va">cnames.1</span><span class="op">)</span></span>
@@ -661,6 +660,7 @@ the script.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">text.nm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMwriteData.html">NMwriteData</a></span><span class="op">(</span><span class="va">pk</span>, file <span class="op">=</span> <span class="st">"derived/pkdata.csv"</span>, script <span class="op">=</span> <span class="st">"DataPrepare.Rmd"</span>,</span>
 <span>    write.csv <span class="op">=</span> <span class="cn">TRUE</span>, args.stamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Description <span class="op">=</span> <span class="st">"PK data for the Data Preparation vignette."</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; arguments in the format write.xxx are deprecated. Use the `formats` argument instead. Example: formats=c("csv","rds")</span></span>
 <span><span class="co">#&gt; For NONMEM:</span></span>
 <span><span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span></span>
 <span><span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB eff0</span></span>
@@ -689,7 +689,7 @@ automatically recognize if found. The metadata becomes accessible using
 <span><span class="co">#&gt; [1] "DataPrepare.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2023-06-13 04:46:23.81901"</span></span>
+<span><span class="co">#&gt; [1] "2023-06-14 03:39:37.707551"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$writtenTo</span></span>
 <span><span class="co">#&gt; [1] "derived/pkdata.csv"</span></span>
@@ -707,7 +707,7 @@ file is the filename:</p>
 <span><span class="co">#&gt; [1] "DataPrepare.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2023-06-13 04:46:23 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2023-06-14 03:39:37 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$writtenTo</span></span>
 <span><span class="co">#&gt; [1] "derived/pkdata.rds"</span></span>
@@ -771,7 +771,7 @@ does).</p>
 <span><span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2023-06-13 04:46:24 UTC"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "2023-06-14 03:39:38 UTC"</span></span></code></pre></div>
 <p>The <code>script</code> argument is recognized by
 <code>NMstamp</code>, but you can add anything to this. We want to keep
 descriptive note too. Another often useful piece of information is what
@@ -787,7 +787,7 @@ source data files were read in order to generate the saved data.
 <span><span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2023-06-13 04:46:24 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2023-06-14 03:39:38 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$Description</span></span>
 <span><span class="co">#&gt; [1] "A PK dataset used for examples."</span></span>
@@ -816,7 +816,7 @@ applied automatically.</p>
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Philip Delff.</p>
+<p>Developed by Philip Delff, Eric Anderson.</p>
 </div>
 
 <div class="pkgdown">
