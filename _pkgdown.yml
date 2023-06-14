@@ -54,6 +54,7 @@ reference:
   - flagsCount
   - addTAPD
   - NMexpandDoses
+  - editCharCols
 - title: Write data
   desc: Write data and edit update NONMEM control streams
   contents:
@@ -61,6 +62,7 @@ reference:
   - NMgenText
   - NMstamp
   - NMwriteSection
+  - NMreplaceDataFile
 - title: Retrieve NONMEM data
   desc: Functions for retrieving NONMEM input and output data
   contents:
