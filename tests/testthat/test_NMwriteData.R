@@ -19,6 +19,9 @@ test_that("basic",{
 
     NMwriteData(pk,file="testOutput/NMwriteData1.csv",
                 write.rds=F,write.csv=T,nmdir.data="/example")
+    NMwriteData(pk,file="testOutput/NMwriteData1.csv",
+                formats=cc(csv),nmdir.data="/example")
+
     res1 <- readLines("testOutput/NMwriteData1.csv")
 
     ## lapply(res1,print)
@@ -34,7 +37,7 @@ test_that("nm.drop is an empty string - not allowed",{
     ## not allowed
     expect_error(
         res <- NMwriteData(pk
-                          ,file=system.file("examples/data/xgxr1.csv",package="NMdata")
+                          ,file="testOutput/NMwriteDataTmp.csv"
                           ,write.rds=F,write.csv=F
                           ,nm.drop=""
                            )
@@ -45,7 +48,7 @@ test_that("Dropping a column in Nonmem",{
 
     fileRef <- "testReference/NMwriteData_2.rds"
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
-    res2 <- NMwriteData(pk,file=system.file("examples/data/xgxr1.csv",package="NMdata"),
+    res2 <- NMwriteData(pk,file="testOutput/NMwriteDataTmp.csv",
                         write.rds=F,write.csv=F,
                         nm.drop="PART",
                         nmdir.data="/example")
@@ -59,7 +62,7 @@ test_that("Dropping a column in Nonmem",{
     pk[,CYCLE:=paste0(as.character(CYCLE),"a")]
     fileRef <- "testReference/NMwriteData_3.rds"
 
-    res2b <- NMwriteData(pk,file=system.file("examples/data/xgxr1.csv",package="NMdata"),
+    res2b <- NMwriteData(pk,file="testOutput/NMwriteDataTmp.csv",
                          write.rds=F,write.csv=F,
                          nm.drop="CYCLE",
                          nmdir.data="/example")
@@ -82,7 +85,7 @@ test_that("A comma in a character",{
     fileRef <- "testReference/NMwriteData_3.rds"
 
     expect_error(
-        NMwriteData(pk,file=system.file("examples/data/xgxr1.csv",package="NMdata"),
+        NMwriteData(pk,file="testOutput/NMwriteDataTmp.csv",
                     write.rds=F,write.csv=F,
                     nm.drop="CYCLE")
     )
@@ -94,7 +97,7 @@ test_that("Identical column names",{
 
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     pk <- cbind(pk[,.(CYCLE)],pk)
-    expect_warning(NMwriteData(pk,file=system.file("examples/data/xgxr1.csv",package="NMdata")
+    expect_warning(NMwriteData(pk,file="testOutput/NMwriteDataTmp.csv"
                               ,write.rds=F,write.csv=F
                                ))
 
@@ -104,8 +107,9 @@ test_that("Identical column names",{
 test_that("nm.copy, nm.rename, drop",{
     fileRef <- "testReference/NMwriteData_4.rds"
     
+    ##    pk <- readRDS(system.file("examples/data/xgxr1.rds",package="NMdata"))
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
-    nmCode <- NMwriteData(pk,file="derived/pk.csv",
+    nmCode <- NMwriteData(pk,file="testOutput/NMwriteDataTmp.csv",
                           write.csv=FALSE,
 ### arguments that tailors text for Nonmem
                           ## PSN compatibility
@@ -236,17 +240,17 @@ test_that("csv.trunc.as.nm",{
     fileRef <- "testReference/NMwriteData_11.rds"
 
     pk <- readRDS(file="testData/data/xgxr2.rds")
- 
+    
     res1 <- NMwriteData(pk,file="testOutput/NMwriteData11.csv",
                         write.rds=T,write.csv=T,nmdir.data="/example",script=NULL
-                        ,csv.trunc.as.nm=T,args.rds=list(version=2))
+                       ,csv.trunc.as.nm=T,args.rds=list(version=2))
 
     written1.rds <- readRDS("testOutput/NMwriteData11.rds")
     written1.csv <- NMreadCsv("testOutput/NMwriteData11.csv")
 
     
     expect_equal_to_reference(
-list(colnames(written1.rds),colnames(written1.csv))
+        list(colnames(written1.rds),colnames(written1.csv))
        ,fileRef,version=2)
 
 

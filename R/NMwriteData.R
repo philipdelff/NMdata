@@ -14,8 +14,9 @@
 ##'     standard file name extensions are added.
 ##' @param write.csv Write to csv file?
 ##' @param write.rds write an rds file?
-##' @param write.RData In case you want to save to .RData
-##'     object. Deprecated and not recommended. Use write.rds instead.
+##' @param write.RData Deprecated and not recommended - will be
+##'     removed. In case you want to save to .RData object. Please use
+##'     write.rds instead.
 ##' @param script If provided, the object will be stamped with this
 ##'     script name before saved to rds or RData. See ?NMstamp.
 ##' @param args.stamp A list of arguments to be passed to NMstamp.
@@ -86,11 +87,12 @@
 ##' @export
 
 
-NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
-                        write.RData=FALSE,script,args.stamp,
+NMwriteData <- function(data,file,write.csv,write.rds,
+                        write.RData,script,args.stamp,
                         args.fwrite, args.rds,args.RData,
                         quiet,args.NMgenText,csv.trunc.as.nm=FALSE,
                         genText=TRUE,
+                        formats=c("csv","rds"),
 ### deprecated NMgenText arguments
                         nm.drop,
                         nmdir.data,col.flagn, nm.rename,nm.copy,
@@ -105,16 +107,51 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
     stopifnot(is.data.frame(data)) 
     if(missing(file)||is.null(file)){
         file <- NULL
-    } else {
-#### check file name for compatibility with replacing extension
-        ## if(!grepl("\\..+$",file)) stop("Cannot replace extension on filename. Choose a file name that ends in an extension, like \"file.csv\" or \"file.rds\".")
     }
-    
+
     if(is.null(file)) {
+        formats <- c()
         write.csv=FALSE
         write.RData=FALSE
         write.rds=FALSE
     }
+    args <- getArgs()
+    
+    args.write.depr <- cc(write.rds,write.csv,write.rdata)
+    if(any(args.write.depr %in% names(args))) {
+        message("arguments in the format write.xxx are deprecated. Use the `formats` argument instead. Example: formats=c(\"csv\",\"rds\")")
+        if(missing(write.csv)) write.csv <- NULL
+        if(missing(write.rds)) write.rds <- NULL
+        if(missing(write.RData)) write.RData <- NULL
+
+        if(!is.null(write.csv)){
+            if(write.csv) {
+                formats <- c(formats,"csv")
+            } else {
+                formats <- setdiff(formats,"csv")
+            }
+        }
+        if(!is.null(write.rds)){
+            if(write.rds) {
+                formats <- c(formats,"rds")
+            } else {
+                formats <- setdiff(formats,"rds")
+            }
+        }
+        if(!is.null(write.RData)){
+            if(write.RData) {
+                formats <- c(formats,"RData")
+            } else {
+                formats <- setdiff(formats,"RData")
+            }
+        }
+    }
+    formats <- unique(tolower(gsub(" ","",formats)))
+    write.rds <- "rds" %in% formats
+    write.csv <- "csv" %in% formats
+    write.RData <- "rdata" %in% formats
+
+    
     name.data <- deparse(substitute(data))
     
     if(missing(quiet)) quiet <- NULL
@@ -134,11 +171,13 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
         "allow.char.TIME")
 
     ## if args.NMgenText is used, the deprecated ags are not allowed
-    all.args <- as.list(match.call(expand.dots=FALSE))
+    ## all.args <- as.list(match.call(expand.dots=FALSE))
+    ## These were deprecated way before 2023-06-13
+    all.args <- getArgs()
     if(missing(args.NMgenText)) {
         args.NMgenText <- NULL
     } else {
-        if(any(args.text.depr%in%names(all.args))){
+        if(any(args.text.depr%in%names(args))){
             messageWrap(paste0("Please only use args.NMgenText and not the deprecated arguments ",paste(args.text.depr,collapse=", "),". Those are only accepted if you aren't using the args.NMgenText argument yet.")
                        ,fun.msg=stop)
         }
@@ -194,7 +233,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
     
 ### rds arguments
     if(!missing(args.rds) && !write.rds ){
-        warning("args.rds supplied, but write.rds is FALSE. rds file will not be written.")
+        warning("args.rds supplied, but rds is not a requested format. rds file will not be written.")
     }
     if(missing(args.rds)) {
         args.rds <- list()
@@ -205,7 +244,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
     }
 ### RData arguments
     if(!missing(args.RData) && !write.RData ){
-        warning("args.RData supplied, but write.RData is FALSE. RData file will not be written.")
+        warning("args.RData supplied, but RData is not a requested format. RData file will not be written.")
     }
     if(missing(args.RData)) {
         args.RData <- list()
@@ -256,7 +295,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
                                   list(data=data.dt,file=file)
                                  ,args.NMgenText)
                               ))
-}
+    }
 
     files.written=c()
     if(write.csv){
@@ -268,6 +307,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
             n.cols.trunc <- length(strsplit(string.trunc,split=" ")[[1]])
             data.csv <- data[,1:n.cols.trunc]
         }
+        
         do.call(fwrite,append(list(x=data.csv,file=file.csv),args.fwrite))
         ## fwrite      (data,na=".",quote=FALSE,row.names=FALSE,scipen=0,file=file.csv)
         files.written <- c(files.written,file.csv)
@@ -283,7 +323,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
     }
     
     if(write.RData){
-        messageWrap("Writing to RData files is deprecated and this option will be removed from NMwriteData. Please use write.rds instead.")
+        messageWrap("Writing to RData files is deprecated and this option will be removed from NMwriteData. Please use rds instead.")
         
         file.RData <- fnExtension(file,".RData")
         if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.RData),args.stamp))
