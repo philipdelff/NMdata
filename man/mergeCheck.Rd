@@ -141,7 +141,7 @@ Moreover, row and column order from x is retained in the result.
                    x2 = 1:11,
                    stringsAsFactors=FALSE)
 
- mc1 <- mergeCheck(df1,df2,by="y")
+ mc1 <- mergeCheck(x=df1,y=df2,by="y")
 
 ## Notice as opposed to most merge/join algorithms, mergeCheck by
 #default retains both row and column order from x

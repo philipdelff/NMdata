@@ -12,11 +12,9 @@
 ##' @param file The file to write to. The extension (everything after
 ##'     and including last ".") is dropped. csv, rds and other
 ##'     standard file name extensions are added.
-##' @param write.csv Write to csv file?
-##' @param write.rds write an rds file?
-##' @param write.RData Deprecated and not recommended - will be
-##'     removed. In case you want to save to .RData object. Please use
-##'     write.rds instead.
+##' @param formats character vector of formats. Default is
+##'     c("csv","rds"), and those are currently the only two provided
+##'     formats.
 ##' @param script If provided, the object will be stamped with this
 ##'     script name before saved to rds or RData. See ?NMstamp.
 ##' @param args.stamp A list of arguments to be passed to NMstamp.
@@ -36,6 +34,13 @@
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using
 ##'     NMdataConf.
+##' @param write.csv Write to csv file? Deprecated, use `formats`
+##'     instead.
+##' @param write.rds write an rds file? Deprecated, use `formats`
+##'     instead.
+##' @param write.RData Deprecated and not recommended - will be
+##'     removed. RData is not a adequate format for a dataset (but is
+##'     for environments). Please use write.rds instead.
 ##' @param genText Run and report results of NMgenText? Default is
 ##'     TRUE. You may want to disable this if data set is not for
 ##'     Nonmem.
@@ -87,12 +92,14 @@
 ##' @export
 
 
-NMwriteData <- function(data,file,write.csv,write.rds,
-                        write.RData,script,args.stamp,
+NMwriteData <- function(data,file,formats=c("csv","rds"),
+                        script,args.stamp,
                         args.fwrite, args.rds,args.RData,
                         quiet,args.NMgenText,csv.trunc.as.nm=FALSE,
                         genText=TRUE,
-                        formats=c("csv","rds"),
+### deprecated write.xxx arguments
+                        write.csv,write.rds,
+                        write.RData,
 ### deprecated NMgenText arguments
                         nm.drop,
                         nmdir.data,col.flagn, nm.rename,nm.copy,
@@ -117,7 +124,7 @@ NMwriteData <- function(data,file,write.csv,write.rds,
     }
     args <- getArgs()
     
-    args.write.depr <- cc(write.rds,write.csv,write.rdata)
+    args.write.depr <- cc(write.rds,write.csv,write.RData)
     if(any(args.write.depr %in% names(args))) {
         message("arguments in the format write.xxx are deprecated. Use the `formats` argument instead. Example: formats=c(\"csv\",\"rds\")")
         if(missing(write.csv)) write.csv <- NULL

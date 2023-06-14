@@ -127,12 +127,14 @@ representing whether row was in output table or not. Default
 can be modified using NMdataConf.}
 
 \item{rep.count}{Nonmem includes a counter of tables in the
-written data files. These are often not useful. Especially for
-NMscanData output it can be meaningless because multiple
-tables can be combined so this information is not unique
-across those source tables. However, if rep.count is TRUE (not
-default), this will be carried forward and added as a column
-called NMREP. The argument is passed to NMscanTables.}
+written data files. This does not relate to the order of the
+$TABLE statements but to cases where a $TABLE statement is run
+repeatedly. E.g., in combination with the SUBPROBLEMS feature
+in Nonmem, it is useful to keep track of the table
+(repetition) number. If rep.count is TRUE, this will be
+carried forward and added as a column called NMREP. This is
+default behavior when more than one $TABLE repetition is found
+in data. The argument is passed to NMscanTables.}
 
 \item{order.columns}{If TRUE (default), NMorderColumns is used to
 reorder the columns before returning the data. NMorderColumns

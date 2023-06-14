@@ -10,6 +10,7 @@ test_that("basic",{
     NMdataConf(reset=T)
     
     file.lst.1 <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
+
     res1 <- NMscanData(file=file.lst.1, quiet=T, order.columns = F, merge.by.row=FALSE, check.time = FALSE)
 
     file.lst.2 <- NMdata_filepath("examples/nonmem/xgxr002.lst")

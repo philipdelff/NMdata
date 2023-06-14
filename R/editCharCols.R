@@ -17,6 +17,15 @@
 ##' @param ... Additional arguments passed to `gsub()`. Especially,
 ##'     notice fixed=TRUE will disable interpretation of `pattern` and
 ##'     `replace` as regular expressions.
+##' @examples
+##' ### remove commas from character columns 
+##' dat <- data.frame(A=1:3,text=cc(a,"a,d","g"))
+##' editCharCols(dat,pattern=",","")
+##' ### factors are not edited but result in an error
+##'\dontrun{
+##' dat <- data.frame(A=1:3,text=cc(a,"a,d",g),fac=cl("a","a,d","g"))
+##' editCharCols(dat,pattern=",","")
+##' }
 ##' 
 ##' @export
 

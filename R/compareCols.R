@@ -83,13 +83,14 @@ compareCols <- function(...,list.data,keep.names=TRUE,test.equal=FALSE,diff.only
 
 
     
-##    args <- getArgs()
+    args <- getArgs()
+
     
     ## deprecated since 2023-06-10
     ## keep.names <- deprecatedArg("keepNames","keep.names",args=args)
-    keep.names <- deprecatedArg("keepNames","keep.names")
+    keep.names <- deprecatedArg("keepNames","keep.names",args=args)
     ## deprecated since 2023-06-10
-    test.equal <- deprecatedArg("testEqual","test.equal")
+    test.equal <- deprecatedArg("testEqual","test.equal",args=args)
     
     
     if(missing(list.data)){
@@ -174,9 +175,10 @@ compareCols <- function(...,list.data,keep.names=TRUE,test.equal=FALSE,diff.only
     
     if(!quiet) {
         if(all(sapply(dots,is.data.frame))){
-            
+
+            res.dims <- dims(list.data=dots)
             message("Dimensions:")
-            print(as.fun(dims(list.data=dots)))
+            print(as.fun(res.dims))
         }
 
         if(nrow(dt.cols)==0&&ndots==1){

@@ -18,4 +18,7 @@ test_that("basic",{
 
     expect_equal(fun1(a=1),1)
 
+    bb=3
+    fun1(b=bb)
+    
 })

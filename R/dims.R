@@ -18,9 +18,16 @@
 
 
 dims <- function(...,list.data,keep.names=TRUE,as.fun=NULL,keepNames){
-
+    
     ## Was deprecated way before 2023-06-10. keepNames was deprecated in compareCols on that date.
-    keep.names <- deprecatedArg("keepNames","keep.names")
+    args <- getArgs()
+    keep.names <- deprecatedArg("keepNames","keep.names",args=args)
+
+    ## if(!missing(keepNames)){
+    ##     if(!keep.names) stop("keepNames is deprecated. Use only keep.names.")
+    ##     message("keepNames is deprecated. Please use keep.names.")
+    ##     keep.names <- keepNames
+    ## }
     
     
     if(missing(list.data)){
@@ -31,8 +38,9 @@ dims <- function(...,list.data,keep.names=TRUE,as.fun=NULL,keepNames){
     } else {
         dots <- list.data
         names.dots <- names(dots)
-        
     }
+    ndots <- length(dots)
+
     if(!all(sapply(dots,is.data.frame))) stop("All objects must be data.frames.")
     if(!keep.names) {
         names.dots <- paste0("x",seq(ndots))
@@ -41,7 +49,7 @@ dims <- function(...,list.data,keep.names=TRUE,as.fun=NULL,keepNames){
     if(is.data.table(dots[[1]]) && is.null(as.fun)) as.fun <- "data.table"
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     
-    ndots <- length(dots)
+
 
     dt.dims <- rbindlist(lapply(1:ndots,function(n) data.table(data=names.dots[n],nrows=nrow(dots[[n]]),ncols=ncol(dots[[n]]))))
 

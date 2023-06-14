@@ -7,9 +7,7 @@
 NMwriteData(
   data,
   file,
-  write.csv = TRUE,
-  write.rds = write.csv,
-  write.RData = FALSE,
+  formats = c("csv", "rds"),
   script,
   args.stamp,
   args.fwrite,
@@ -19,6 +17,9 @@ NMwriteData(
   args.NMgenText,
   csv.trunc.as.nm = FALSE,
   genText = TRUE,
+  write.csv,
+  write.rds,
+  write.RData,
   nm.drop,
   nmdir.data,
   col.flagn,
@@ -35,12 +36,9 @@ NMwriteData(
 and including last ".") is dropped. csv, rds and other
 standard file name extensions are added.}
 
-\item{write.csv}{Write to csv file?}
-
-\item{write.rds}{write an rds file?}
-
-\item{write.RData}{In case you want to save to .RData
-object. Deprecated and not recommended. Use write.rds instead.}
+\item{formats}{character vector of formats. Default is
+c("csv","rds"), and those are currently the only two provided
+formats.}
 
 \item{script}{If provided, the object will be stamped with this
 script name before saved to rds or RData. See ?NMstamp.}
@@ -87,6 +85,16 @@ post-processing.}
 \item{genText}{Run and report results of NMgenText? Default is
 TRUE. You may want to disable this if data set is not for
 Nonmem.}
+
+\item{write.csv}{Write to csv file? Deprecated, use `formats`
+instead.}
+
+\item{write.rds}{write an rds file? Deprecated, use `formats`
+instead.}
+
+\item{write.RData}{Deprecated and not recommended - will be
+removed. RData is not a adequate format for a dataset (but is
+for environments). Please use write.rds instead.}
 
 \item{nm.drop}{Deprecated, use
 args.NMgenText=list(drop=c("column")) instead.}

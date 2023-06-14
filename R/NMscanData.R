@@ -88,12 +88,14 @@
 ##'     as.fun="data.table". The default can be configured using
 ##'     NMdataConf.
 ##' @param rep.count Nonmem includes a counter of tables in the
-##'     written data files. These are often not useful. Especially for
-##'     NMscanData output it can be meaningless because multiple
-##'     tables can be combined so this information is not unique
-##'     across those source tables. However, if rep.count is TRUE (not
-##'     default), this will be carried forward and added as a column
-##'     called NMREP. The argument is passed to NMscanTables.
+##'     written data files. This does not relate to the order of the
+##'     $TABLE statements but to cases where a $TABLE statement is run
+##'     repeatedly. E.g., in combination with the SUBPROBLEMS feature
+##'     in Nonmem, it is useful to keep track of the table
+##'     (repetition) number. If rep.count is TRUE, this will be
+##'     carried forward and added as a column called NMREP. This is
+##'     default behavior when more than one $TABLE repetition is found
+##'     in data. The argument is passed to NMscanTables.
 ##' @param order.columns If TRUE (default), NMorderColumns is used to
 ##'     reorder the columns before returning the data. NMorderColumns
 ##'     will be called with alpha=FALSE, so columns are not sorted
@@ -219,12 +221,22 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     use.rds <- NMdataDecideOption("use.rds",use.rds)
     args.fread <- NMdataDecideOption("args.fread",args.fread)
     ## if null, rep.count will later be set to TRUE if NMREP varies
-    if(missing(rep.count)) rep.count <- NULL
+
 ### deprecated before 2023-06-12
     ## if(!missing(tab.count)) .Deprecated("rep.count",old="tab.count")
-    rep.count <- deprecatedArg(oldarg="tab.count",newarg="rep.count",args=getArgs())
-    if(!is.null(rep.count)&&!missing(tab.count)) stop("Use rep.count, not tab.count.")
-    if(!missing(tab.count)) rep.count <- tab.count
+
+if(!missing(tab.count)||!missing(rep.count)){
+    args <- getArgs()
+    rep.count <- deprecatedArg(oldarg="tab.count",newarg="rep.count",args=args)
+}
+    if(missing(rep.count)) rep.count <- NULL
+    
+    ## if(!missing(tab.count)){
+    ##     if(!missing(rep.count)) stop("keepNames is deprecated. Use only keep.names.")
+    ##     message("keepNames is deprecated. Please use keep.names.")
+    ##     rep.count <- tab.count
+    ## }
+
     
     runname <- modelname(file)
     ## file.mod is treated later if we need the input control stream

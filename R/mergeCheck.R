@@ -104,7 +104,7 @@
 ##'                    x2 = 1:11,
 ##'                    stringsAsFactors=FALSE)
 ##'
-##'  mc1 <- mergeCheck(df1,df2,by="y")
+##'  mc1 <- mergeCheck(x=df1,y=df2,by="y")
 ##' 
 ##' ## Notice as opposed to most merge/join algorithms, mergeCheck by
 ##' #default retains both row and column order from x
@@ -136,9 +136,18 @@ mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expec
 
 ###  Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
-    ## deprecate df1 and df2    
-    if(!xor(missing(x),missing(df1))){stop("You must supply x.")}
-    if(!xor(missing(y),missing(df2))){stop("You must supply y.")}
+    ## deprecate df1 and df2. This was done way before 2023-06-13.
+    ## hard to use deprecatedArg because name.x and name.y depend on it.
+    ## args <- getArgs()    
+    ## x <- deprecatedArg("df1","x",args=args)
+    ## y <- deprecatedArg("df2","y",args=args)
+    ## name.x <- deparse(substitute(x))
+    ## name.y <- deparse(substitute(y))
+
+    
+    if(!xor(missing(x),missing(df1))){stop("You must supply x. Don't use the deprecated df1.")}
+    if(!xor(missing(y),missing(df2))){stop("You must supply y. Don't use the deprecated df2.")}
+
     if(!missing(df1)) {
         message("\"df1\" argument deprecated. Use \"x\" instead.")
         x <- df1

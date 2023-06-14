@@ -2,11 +2,12 @@
 ##' @param which How many environment levels to go up to look for
 ##'     arguments.
 ##' @return A named list
+##' @family arguments
 ##' @keywords internal
 getArgs <- function(which=1){
     
     cl <- sys.call(-which)
-    ## f <- get(as.character(cl[[1]]), mode="function", sys.frame(-which-1))
+    ## f1 <- get(as.character(cl[[1]]), mode="function", sys.frame(-which-1))
     ## accordng to Hadley, this is "better"
     f1 <- eval(cl[[1]], parent.frame(which))
     cl <- match.call(definition=f1, call=cl)
@@ -14,15 +15,46 @@ getArgs <- function(which=1){
 }
 
 
+getArgs2 <- function(which = 1) {
+  cl <- sys.call(-which)
+  f1 <- eval(cl[[1]], parent.frame(which))
+  cl <- match.call(definition = f1, call = cl)
+  cl[[1]] <- quote(list)
+  eval(cl, parent.frame(which))
+}
+
 ##' Report if an argument is deprecated.
 ##'
 ##' Only supposed to be called from within a function. For now only
 ##' works for arguments that have been replaced by others.
 ##' 
 ##' @param oldarg The deprecated argument name (a character string).
-##' @param newarg The non-deprecated argument name (a character string).
+##' @param newarg The non-deprecated argument name (a character
+##'     string).
+##' @param args List of arguments in the function call to look for
+##'     oldarg and newarg. See `?getArgs`. If missing, `getArgs()`
+##'     will be called from within `deprecatedArg`. See `which` too.
+##' @param which If calling `getArgs` this is passed along, refering
+##'     to how many environments to jump to look at arguments.
 ##' @return The coalesced value of arguments
+##' @family arguments
 ##' @keywords internal
+##' @examples
+##' \dontrun{
+##'    fun1 <- function(a=1,b=2){
+##'        ## b is deprecated
+##'        a <- deprecatedArg("b","a")
+##'        a
+##'    }
+##'
+##'    expect_error(
+##'        fun1(a=1,b=2)
+##'    )
+##'    expect_message(
+##'        fun1(b=2)
+##'    )
+##'}
+
 deprecatedArg <- function(oldarg,newarg,args,which=2){
     
     ## args <- callArgs(-2,env)

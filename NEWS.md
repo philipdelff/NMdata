@@ -5,12 +5,25 @@
   control stream. A simple wrapper of NMwriteSection but useful for
   this specific purpose.
 
+* New function editCharCols
+
 * NMcheckData has a new argument, `cols.dup`, to include additional
   columns (to col.id, col.cmt, col.evid, and col.time) in search for
   duplicated events. This is useful for different assays run on the
   same compartment (say a DVID column) or maybe stacked datasets. If
   col.cmt is of length>1, this search is repeated for each cmt
   column. Thanks to Eric Anderson for suggesting and testing this.
+
+## Other improvements
+* NMwriteData now uses the `formats` argument to specify the requested
+  file formats. This replaces arguments like write.csv and
+  write.rds. To get those two, do formats=c("csv","rds") (which is
+  default).
+  
+* Arguement name format has been cleaned and aligned to follow the
+  an.arg format rather than camel toe which was also used in some
+  functions before. All deprecated arguments have been soft deprecated
+  meaning they still work.
 
 # 0.0.17
 

@@ -17,8 +17,8 @@ test_that("basic",{
 
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 
-    NMwriteData(pk,file="testOutput/NMwriteData1.csv",
-                write.rds=F,write.csv=T,nmdir.data="/example")
+    ## NMwriteData(pk,file="testOutput/NMwriteData1.csv",
+    ##             write.rds=F,write.csv=T,nmdir.data="/example")
     NMwriteData(pk,file="testOutput/NMwriteData1.csv",
                 formats=cc(csv),nmdir.data="/example")
 
@@ -40,6 +40,7 @@ test_that("nm.drop is an empty string - not allowed",{
                           ,file="testOutput/NMwriteDataTmp.csv"
                           ,write.rds=F,write.csv=F
                           ,nm.drop=""
+                          ## ,args.rds=list(version=2)
                            )
     )
 })
@@ -113,7 +114,7 @@ test_that("nm.copy, nm.rename, drop",{
                           write.csv=FALSE,
 ### arguments that tailors text for Nonmem
                           ## PSN compatibility
-                          args.NMgenText=list(dir.data="../derived",drop="PROFDAY",copy=c(CONC="DV"),rename=c(BBW="WEIGHTB"),capitalize=TRUE,width=80))
+                          args.NMgenText=list(dir.data="../derived",drop="PROFDAY",copy=c(CONC="DV"),rename=c(BBW="WEIGHTB"),capitalize=TRUE,width=80),args.rds=list(version=2))
 
     expect_equal_to_reference(nmCode,fileRef,version=2)
 })

@@ -9,7 +9,15 @@ deprecatedArg(oldarg, newarg, args, which = 2)
 \arguments{
 \item{oldarg}{The deprecated argument name (a character string).}
 
-\item{newarg}{The non-deprecated argument name (a character string).}
+\item{newarg}{The non-deprecated argument name (a character
+string).}
+
+\item{args}{List of arguments in the function call to look for
+oldarg and newarg. See `?getArgs`. If missing, `getArgs()`
+will be called from within `deprecatedArg`. See `which` too.}
+
+\item{which}{If calling `getArgs` this is passed along, refering
+to how many environments to jump to look at arguments.}
 }
 \value{
 The coalesced value of arguments
@@ -18,4 +26,25 @@ The coalesced value of arguments
 Only supposed to be called from within a function. For now only
 works for arguments that have been replaced by others.
 }
+\examples{
+\dontrun{
+   fun1 <- function(a=1,b=2){
+       ## b is deprecated
+       a <- deprecatedArg("b","a")
+       a
+   }
+
+   expect_error(
+       fun1(a=1,b=2)
+   )
+   expect_message(
+       fun1(b=2)
+   )
+}
+}
+\seealso{
+Other arguments: 
+\code{\link{getArgs}()}
+}
+\concept{arguments}
 \keyword{internal}

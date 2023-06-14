@@ -16,4 +16,9 @@ A named list
 \description{
 Get provided arguments as a named list
 }
+\seealso{
+Other arguments: 
+\code{\link{deprecatedArg}()}
+}
+\concept{arguments}
 \keyword{internal}

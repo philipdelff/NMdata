@@ -51,7 +51,8 @@ findCovs <- function(data,by=NULL,cols.id,as.fun=NULL){
 
     
     ## check arguments
-    by <- deprecatedArg("cols.id","by")
+    args <- getArgs()
+    by <- deprecatedArg("cols.id","by",args=args)
 
     if(!is.data.frame(data)){
         stop("data must be a data.frame (or data.table)")

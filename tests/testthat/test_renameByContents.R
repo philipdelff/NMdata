@@ -6,6 +6,7 @@
 ## pk2
 
 context("renameByContents")
+library(data.table)
 
 test_that("basic",{
 
@@ -14,11 +15,14 @@ test_that("basic",{
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     pk[,trtact:=NULL]
     pk.0 <- copy(pk)
-    pk <- renameByContents(data=pk,
+    pk.1 <- renameByContents(data=pk,
                            fun.test=NMisNumeric,
                            fun.rename = tolower,
                            invert.test = TRUE)
-    res <- compareCols(pk,pk.0)
+    res <- colnames(pk.1)
+    
+    ## res <- compareCols(pk,pk.0)
+    ## expect_equal_to_reference(res,fileRef)
     expect_equal_to_reference(res,fileRef)
     
     ## pkref <- readRDS(fileRef)
