@@ -19,7 +19,7 @@ extract eg result sections."><meta property="og:image" content="https://philipde
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.906</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.907</span>
       </span>
     </div>
 
@@ -96,15 +96,20 @@ extract eg result sections.</p>
 <span>  <span class="va">char.section</span>,</span>
 <span>  char.end <span class="op">=</span> <span class="va">char.section</span>,</span>
 <span>  return <span class="op">=</span> <span class="st">"text"</span>,</span>
-<span>  keepEmpty <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  keepName <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  keepComments <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  asOne <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  keep.empty <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  keep.name <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  keep.comments <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  as.one <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  clean.spaces <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  simplify <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  cleanSpaces <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  match.exactly <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"mod"</span>,</span>
-<span>  linesep <span class="op">=</span> <span class="st">"\n"</span></span>
+<span>  linesep <span class="op">=</span> <span class="st">"\n"</span>,</span>
+<span>  <span class="va">keepEmpty</span>,</span>
+<span>  <span class="va">keepName</span>,</span>
+<span>  <span class="va">keepComments</span>,</span>
+<span>  <span class="va">asOne</span>,</span>
+<span>  <span class="va">cleanSpaces</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -149,20 +154,20 @@ char.section.</p></dd>
 matching line numbers are returned. "text" is default.</p></dd>
 
 
-<dt>keepEmpty</dt>
+<dt>keep.empty</dt>
 <dd><p>Keep empty lines in output? Default is FALSE.</p></dd>
 
 
-<dt>keepName</dt>
+<dt>keep.name</dt>
 <dd><p>Keep the section name in output (say, "$PROBLEM")
-Default is TRUE. It can only be FALSE, if return"idx".</p></dd>
+Default is TRUE. It can only be FALSE, if return="text".</p></dd>
 
 
-<dt>keepComments</dt>
+<dt>keep.comments</dt>
 <dd><p>Keep comment lines?</p></dd>
 
 
-<dt>asOne</dt>
+<dt>as.one</dt>
 <dd><p>If multiple hits, concatenate into one. This will
 most often be relevant with name="TABLE". If FALSE, a list
 will be returned, each element representing a table. Default
@@ -170,17 +175,17 @@ is TRUE. So if you want to process the tables separately, you
 probably want FALSE here.</p></dd>
 
 
+<dt>clean.spaces</dt>
+<dd><p>If TRUE, leading and trailing are removed, and
+multiplied succeeding white spaces are reduced to single white
+spaces.</p></dd>
+
+
 <dt>simplify</dt>
 <dd><p>If asOne=FALSE, do you want the result to be
 simplified if only one table is found? Default is TRUE which
 is desirable for interactive analysis. For programming, you
 probably want FALSE.</p></dd>
-
-
-<dt>cleanSpaces</dt>
-<dd><p>If TRUE, leading and trailing are removed, and
-multiplied succeeding white spaces are reduced to single white
-spaces.</p></dd>
 
 
 <dt>match.exactly</dt>
@@ -200,6 +205,26 @@ considered.</p></dd>
 <dt>linesep</dt>
 <dd><p>If using the text argument, use linesep to indicate
 how lines should be separated.</p></dd>
+
+
+<dt>keepEmpty</dt>
+<dd><p>Deprecated. See keep.empty.</p></dd>
+
+
+<dt>keepName</dt>
+<dd><p>Deprecated. See keep.name.</p></dd>
+
+
+<dt>keepComments</dt>
+<dd><p>Deprecated. See keep.comments.</p></dd>
+
+
+<dt>asOne</dt>
+<dd><p>Deprecated. See as.one.</p></dd>
+
+
+<dt>cleanSpaces</dt>
+<dd><p>Deprecated. See clean.spaces.</p></dd>
 
 </dl></div>
     <div id="value">
