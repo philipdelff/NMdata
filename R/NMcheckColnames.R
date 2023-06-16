@@ -14,7 +14,7 @@
 ##' @export 
 
 NMcheckColnames <- function(file,as.fun,...){
-
+    
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     ## translate and details are not allowed in ellipses

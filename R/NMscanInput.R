@@ -106,7 +106,7 @@ NMscanInput <- function(file, use.rds, file.mod, dir.data=NULL,
     
 ### the lst file only contains the name of the data file, not the path
 ### to it. So we need to find the .mod instead.
-
+    
     if(missing(file)) {
         messageWrap("file is needed. If you want to use input control stream only, use that as file and ignore the file.mod argument.",fun.msg=stop)
     }

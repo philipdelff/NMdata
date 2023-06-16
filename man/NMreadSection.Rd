@@ -11,12 +11,17 @@ NMreadSection(
   text = NULL,
   section,
   return = "text",
-  keepEmpty = FALSE,
-  keepName = TRUE,
-  keepComments = TRUE,
-  asOne = TRUE,
+  keep.empty = FALSE,
+  keep.name = TRUE,
+  keep.comments = TRUE,
+  as.one = TRUE,
+  clean.spaces = FALSE,
   simplify = TRUE,
-  cleanSpaces = FALSE,
+  keepEmpty,
+  keepName,
+  keepComments,
+  asOne,
+  cleanSpaces,
   ...
 )
 
@@ -41,31 +46,43 @@ sensitive.}
 \item{return}{If "text", plain text lines are returned. If "idx",
 matching line numbers are returned. "text" is default.}
 
-\item{keepEmpty}{Keep empty lines in output? Default is FALSE.}
+\item{keep.empty}{Keep empty lines in output? Default is FALSE.}
 
-\item{keepName}{Keep the section name in output (say, "$PROBLEM")
-Default is TRUE. It can only be FALSE, if return"idx".}
+\item{keep.name}{Keep the section name in output (say, "$PROBLEM")
+Default is FALSE. It can only be FALSE, if return="text".}
 
-\item{keepComments}{Keep comment lines?}
+\item{keep.comments}{Keep comment lines?}
 
-\item{asOne}{If multiple hits, concatenate into one. This will
+\item{as.one}{If multiple hits, concatenate into one. This will
 most often be relevant with name="TABLE". If FALSE, a list
 will be returned, each element representing a table. Default
 is TRUE. So if you want to process the tables separately, you
 probably want FALSE here.}
+
+\item{clean.spaces}{If TRUE, leading and trailing are removed, and
+multiplied succeeding white spaces are reduced to single white
+spaces.}
 
 \item{simplify}{If asOne=FALSE, do you want the result to be
 simplified if only one section is found? Default is TRUE which
 is desirable for interactive analysis. For programming, you
 probably want FALSE.}
 
-\item{cleanSpaces}{If TRUE, leading and trailing are removed, and
-multiplied succeeding white spaces are reduced to single white
-spaces.}
+\item{keepEmpty}{Deprecated. See keep.empty.}
+
+\item{keepName}{Deprecated. See keep.name.}
+
+\item{keepComments}{Deprecated. See keep.comments.}
+
+\item{asOne}{Deprecated. See as.one.}
+
+\item{cleanSpaces}{Deprecated. See clean.spaces.}
 
 \item{...}{Additional arguments passed to NMextractText}
 }
 \value{
+character vector with extracted lines.
+
 character vector with extracted lines.
 }
 \description{

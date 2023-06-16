@@ -75,7 +75,8 @@ NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,d
     col.row <- NMdataDecideOption("col.row",col.row)
 
     ## if(!missing(details)) message("NMscanTables: argument details is deprecated.")
-    deprecatedArg(oldarg="details",args=getArgs())
+    args <- getArgs()
+    deprecatedArg(oldarg="details",args=args)
     
     dir <- dirname(file)
     extract.info <- function(x,NAME,default){
@@ -88,9 +89,9 @@ NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,d
         info
     }
     
-    lines.table <- NMreadSection(file,section="TABLE",keepName=FALSE,
-                                 keepComments=FALSE,keepEmpty=FALSE,
-                                 asOne=FALSE, simplify=FALSE)
+    lines.table <- NMreadSection(file,section="TABLE",keep.name=FALSE,
+                                 keep.comments=FALSE,keep.empty=FALSE,
+                                 as.one=FALSE, simplify=FALSE)
     if(length(lines.table)==0) {
         messageWrap("No TABLE sections found in control stream. Please inspect the control stream.",
                     fun.msg=stop)

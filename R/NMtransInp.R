@@ -34,9 +34,9 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
     if( !translate && !recover.cols ) {messageWrap("recover.rows=FALSE is only allowed when translate=TRUE.",fun.msg=stop)}
     
     ## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    
-    lines <- NMreadSection(file,section="INPUT",keepName=FALSE,keepComments=FALSE,cleanSpaces=TRUE)
+    lines <- NMreadSection(file,section="INPUT",keep.name=FALSE,keep.comments=FALSE,clean.spaces=TRUE)
     if(is.null(lines)) {
-        lines <- NMreadSection(file,section="INPT",keepName=FALSE,keepComments=FALSE,cleanSpaces=TRUE)
+        lines <- NMreadSection(file,section="INPT",keep.name=FALSE,keep.comments=FALSE,clean.spaces=TRUE)
     }
     if(is.null(lines)) {stop("Could not find $INPUT or $INPT section in control stream. Cannot interpret data. Is file really the path to a valid nonmem control stream?")}
     

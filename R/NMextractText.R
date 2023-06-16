@@ -22,11 +22,11 @@
 ##'     char.section.
 ##' @param return If "text", plain text lines are returned. If "idx",
 ##'     matching line numbers are returned. "text" is default.
-##' @param keepEmpty Keep empty lines in output? Default is FALSE.
-##' @param keepName Keep the section name in output (say, "$PROBLEM")
-##'     Default is TRUE. It can only be FALSE, if return"idx".
-##' @param keepComments Keep comment lines?
-##' @param asOne If multiple hits, concatenate into one. This will
+##' @param keep.empty Keep empty lines in output? Default is FALSE.
+##' @param keep.name Keep the section name in output (say, "$PROBLEM")
+##'     Default is TRUE. It can only be FALSE, if return="text".
+##' @param keep.comments Keep comment lines?
+##' @param as.one If multiple hits, concatenate into one. This will
 ##'     most often be relevant with name="TABLE". If FALSE, a list
 ##'     will be returned, each element representing a table. Default
 ##'     is TRUE. So if you want to process the tables separately, you
@@ -35,7 +35,7 @@
 ##'     simplified if only one table is found? Default is TRUE which
 ##'     is desirable for interactive analysis. For programming, you
 ##'     probably want FALSE.
-##' @param cleanSpaces If TRUE, leading and trailing are removed, and
+##' @param clean.spaces If TRUE, leading and trailing are removed, and
 ##'     multiplied succeeding white spaces are reduced to single white
 ##'     spaces.
 ##' @param match.exactly Default is to search for exact matches of
@@ -48,6 +48,11 @@
 ##'     considered.
 ##' @param linesep If using the text argument, use linesep to indicate
 ##'     how lines should be separated.
+##' @param keepComments Deprecated. See keep.comments.
+##' @param keepEmpty Deprecated. See keep.empty.
+##' @param keepName Deprecated. See keep.name.
+##' @param asOne Deprecated. See as.one.
+##' @param cleanSpaces Deprecated. See clean.spaces.
 ##' @return character vector with extracted lines.
 ##' @details This function is planned to get a more general name and
 ##'     then be called by NMreadSection.
@@ -59,13 +64,30 @@
 
 NMextractText <- function(file, lines, text, section, char.section,
                           char.end=char.section, return="text",
-                          keepEmpty=FALSE, keepName=TRUE,
-                          keepComments=TRUE, asOne=TRUE,
-                          simplify=TRUE, cleanSpaces=FALSE,
+                          keep.empty=FALSE,keep.name=TRUE, keep.comments=TRUE,as.one=TRUE,
+                          clean.spaces=FALSE, simplify=TRUE,
                           match.exactly=TRUE,
-                          type="mod", linesep="\n"){
+                          type="mod", linesep="\n",
+                          ## deprecated arguments
+                          keepEmpty, keepName,
+                          keepComments, asOne,
+                          cleanSpaces
+                          ){
 
+#### Section start: Pre-process arguments ####
     
+    args <- getArgs()
+    
+    ### deprecated since 2023-06-14: keepEmpty, keepName, keepComments, asOne, cleanSpaces
+    keep.empty <- deprecatedArg("keepEmpty","keep.empty",args=args)
+    keep.name <- deprecatedArg("keepName","keep.name",args=args)
+    keep.comments <- deprecatedArg("keepComments","keep.comments",args=args)
+    as.one <- deprecatedArg("asOne","as.one",args=args)
+    clean.spaces <- deprecatedArg("cleanSpaces","clean.spaces",args=args)
+
+### Section end: Pre-process arguments
+
+
 
     if(sum(c(!missing(file)&&!is.null(file),
              !missing(lines)&&!is.null(lines),
@@ -121,13 +143,13 @@ NMextractText <- function(file, lines, text, section, char.section,
     })
     result <- idx.sections
 
-    if(!keepEmpty){
+    if(!keep.empty){
         result <- lapply(result,function(x)
             x[!grepl("^ *$",lines[x])]
             )
     }
     
-    if(!keepComments){
+    if(!keep.comments){
         result <- lapply(result,function(x)
             x[!grepl("^ *;",lines[x])]
             )
@@ -138,15 +160,15 @@ NMextractText <- function(file, lines, text, section, char.section,
         result <- lapply(result,function(x)lines[x])
     }
     
-    if(!keepName){
+    if(!keep.name){
         if(!return=="text") {
             stop("keepName can only be FALSE if return=='text'")
         }
-        ### todo test the addition of "[a-zA-Z]*"
+### todo test the addition of "[a-zA-Z]*"
         result <- lapply(result, function(x)sub(paste0("^ *\\$",section,"[a-zA-Z]*"),"",x))
     }
 
-    if(cleanSpaces){
+    if(clean.spaces){
         if(!return=="text") {
             stop("cleanSpaces can only be TRUE if return=='text'")
         }
@@ -155,7 +177,7 @@ NMextractText <- function(file, lines, text, section, char.section,
         result <- lapply(result, function(x)sub(paste0(" +")," ",x))
     }
     
-    if(asOne) {result <- do.call(c,result)}
+    if(as.one) {result <- do.call(c,result)}
 
     if(simplify && length(result)==1) result <- result[[1]]
     

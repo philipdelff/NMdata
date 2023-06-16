@@ -17,11 +17,11 @@
 ##'     sensitive.
 ##' @param return If "text", plain text lines are returned. If "idx",
 ##'     matching line numbers are returned. "text" is default.
-##' @param keepEmpty Keep empty lines in output? Default is FALSE.
-##' @param keepName Keep the section name in output (say, "$PROBLEM")
-##'     Default is TRUE. It can only be FALSE, if return"idx".
-##' @param keepComments Keep comment lines?
-##' @param asOne If multiple hits, concatenate into one. This will
+##' @param keep.empty Keep empty lines in output? Default is FALSE.
+##' @param keep.name Keep the section name in output (say, "$PROBLEM")
+##'     Default is FALSE. It can only be FALSE, if return="text".
+##' @param keep.comments Keep comment lines?
+##' @param as.one If multiple hits, concatenate into one. This will
 ##'     most often be relevant with name="TABLE". If FALSE, a list
 ##'     will be returned, each element representing a table. Default
 ##'     is TRUE. So if you want to process the tables separately, you
@@ -30,9 +30,15 @@
 ##'     simplified if only one section is found? Default is TRUE which
 ##'     is desirable for interactive analysis. For programming, you
 ##'     probably want FALSE.
-##' @param cleanSpaces If TRUE, leading and trailing are removed, and
+##' @param clean.spaces If TRUE, leading and trailing are removed, and
 ##'     multiplied succeeding white spaces are reduced to single white
 ##'     spaces.
+##' @param keepComments Deprecated. See keep.comments.
+##' @param keepEmpty Deprecated. See keep.empty.
+##' @param keepName Deprecated. See keep.name.
+##' @param asOne Deprecated. See as.one.
+##' @param cleanSpaces Deprecated. See clean.spaces.
+##' @return character vector with extracted lines.
 ##' @param ... Additional arguments passed to NMextractText
 ##' @return character vector with extracted lines.
 ##' @family Nonmem
@@ -43,16 +49,28 @@
 
 
 NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="text",
-                          keepEmpty=FALSE, keepName=TRUE,
-                          keepComments=TRUE, asOne=TRUE,
-                          simplify=TRUE, cleanSpaces=FALSE, ...){
+                          keep.empty=FALSE,keep.name=TRUE, keep.comments=TRUE,as.one=TRUE,
+                          clean.spaces=FALSE, simplify=TRUE,
+                          ## deprecated arguments
+                          keepEmpty, keepName,
+                          keepComments, asOne,
+                          cleanSpaces, ...){
 
+    args <- getArgs()
+ #   if(missing(asOne)) asOne <- NULL
+    as.one <- deprecatedArg("asOne","as.one",args=args)
+#    if(missing(cleanSpaces)) cleanSpaces <- NULL
+    clean.spaces <- deprecatedArg("cleanSpaces","clean.spaces",args=args)
+    keep.empty <- deprecatedArg("keepEmpty","keep.empty",args=args)
+    keep.name <- deprecatedArg("keepName","keep.name",args=args)
+    keep.comments <- deprecatedArg("keepComments","keep.comments",args=args)
+    
     if(missing(section)||is.null(section)){
         section="."
-        asOne=FALSE
+        as.one=FALSE
         simplify=FALSE
-        keepName.arg <- keepName
-        keepName=TRUE
+        keepName.arg <- keep.name
+        keep.name=TRUE
         
     } else {
         section <- toupper(section)
@@ -62,15 +80,21 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
                          ## this wrapper is especially made for "$" sections
                          char.section="\\$",
                          return=return,
-                         keepEmpty=keepEmpty,
-                         keepName=keepName,
-                         keepComments=keepComments,
-                         asOne=asOne,
+                         keep.empty=keep.empty,
+                         keep.name=keep.name,
+                         keep.comments=keep.comments,
+                         as.one=as.one,
                          simplify=simplify,
-                         cleanSpaces=cleanSpaces,
+                         clean.spaces=clean.spaces,
                          ## we only consider the model definition, not results.
                          type="mod",
                          match.exactly=FALSE,
+                         ## deprecated args
+                         ## keepEmpty=keepEmpty,
+                         ## keepName=keepName,
+                         ## keepComments=keepComments,
+                         ## asOne=asOne,
+                         ## cleanSpaces=cleanSpaces,
                          ...)
 
     
