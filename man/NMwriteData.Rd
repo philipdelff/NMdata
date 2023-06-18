@@ -17,6 +17,7 @@ NMwriteData(
   args.NMgenText,
   csv.trunc.as.nm = FALSE,
   genText = TRUE,
+  save = TRUE,
   write.csv,
   write.rds,
   write.RData,
@@ -85,6 +86,11 @@ post-processing.}
 \item{genText}{Run and report results of NMgenText? Default is
 TRUE. You may want to disable this if data set is not for
 Nonmem.}
+
+\item{save}{Save defined files? Default is TRUE. If a variable is
+used to control whether a script generates outputs (say
+`writeOutputs=TRUE/FALSE`), if you use `save=writeOutputs` to
+comply with this.}
 
 \item{write.csv}{Write to csv file? Deprecated, use `formats`
 instead.}

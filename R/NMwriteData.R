@@ -44,7 +44,10 @@
 ##' @param genText Run and report results of NMgenText? Default is
 ##'     TRUE. You may want to disable this if data set is not for
 ##'     Nonmem.
-##' @param save
+##' @param save Save defined files? Default is TRUE. If a variable is
+##'     used to control whether a script generates outputs (say
+##'     `writeOutputs=TRUE/FALSE`), if you use `save=writeOutputs` to
+##'     comply with this.
 ##' @param args.NMgenText List of arguments to pass to NMgenText - the
 ##'     function that generates text suggestion for INPUT and DATA
 ##'     sections in the Nonmem control stream. You can use these
@@ -95,7 +98,7 @@
 
 NMwriteData <- function(data,file,formats=c("csv","rds"),
                         script,args.stamp,
-                        args.fwrite, args.rds,args.RData,
+                        args.fwrite, args.rds,  args.RData,
                         quiet,args.NMgenText,csv.trunc.as.nm=FALSE,
                         genText=TRUE,
                         save=TRUE,
@@ -159,7 +162,7 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
     write.rds <- "rds" %in% formats
     write.csv <- "csv" %in% formats
     write.RData <- "rdata" %in% formats
-    
+    ## write.fst <- "fst" %in% formats
     
     name.data <- deparse(substitute(data))
     
@@ -223,6 +226,7 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
             stop("args.stamp must be a list of arguments.")
         }
     }
+
     
     if(missing(script)||is.null(script)){
         doStamp <- FALSE
@@ -319,18 +323,20 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
         
         do.call(fwrite,append(list(x=data.csv,file=file.csv),args.fwrite))
         ## fwrite      (data,na=".",quote=FALSE,row.names=FALSE,scipen=0,file=file.csv)
-        files.written <- c(files.written,file.csv)
+
         if(doStamp){
-            
             do.call(NMstamp,append(list(data=data,writtenTo=file.csv),args.stamp))
-            data.meta.csv <- NMinfo(data,"dataCreate")
-            data.meta.csv <- data.table(parameter=names(data.meta.csv)
-                                       ,value=unlist(lapply(data.meta.csv,as.character,usetz=T)))
-            file.csv.meta <- paste0(fnExtension(file.csv,ext=""),"_meta.txt")
-            fwrite(data.meta.csv,file=file.csv.meta,quote=TRUE,row.names=FALSE,sep=",")
+
+            data.meta <- NMinfo(data,"dataCreate")
+            data.meta <- data.table(parameter=names(data.meta)
+                                   ,value=unlist(lapply(data.meta,as.character,usetz=T)))
+            ## file.meta <- paste0(fnExtension(file.csv,ext=""),"_meta.txt")
+            file.meta <- fnAppend(fnExtension(file,".csv"),"meta")
+            fwrite(data.meta,file=file.meta,quote=TRUE,row.names=FALSE,sep=",")
         }
+        files.written <- c(files.written,file.csv)
     }
-    
+
     if(write.RData){
         messageWrap("Writing to RData files is deprecated and this option will be removed from NMwriteData. Please use rds instead.")
         
@@ -338,9 +344,8 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
         if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.RData),args.stamp))
         
         assign(name.data,data)
-        ## save(list=name.data,file=file.RData)
-        ### explicitly doing base::save because otherwise do.call will
-        ### find the save variable controling whether to save or not.
+### explicitly doing base::save because otherwise do.call will
+### find the save variable controling whether to save or not.
         do.call(base::save,append(list(list=name.data,file=file.RData),args.RData))
         files.written <- c(files.written,file.RData)
     }
@@ -350,6 +355,27 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
         do.call(saveRDS,append(list(object=data,file=file.rds),args.rds))
         files.written <- c(files.written,file.rds)
     }
+    ## if(write.fst){
+    ##     file.fst <- fnExtension(file,".fst")
+    ##     if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.fst),args.stamp))
+    ##     do.call(write_fst,append(list(x=data,path=file.rds),args.fst))
+    ##     files.written <- c(files.written,file.rds)
+    ## }
+
+
+
+    ## if(doStamp && (write.csv || write.fst) ){
+
+    ##     do.call(NMstamp,append(list(data=data,writtenTo=paste(files.written,collapse=" ")),args.stamp))
+    ##     data.meta <- NMinfo(data,"dataCreate")
+    ##     data.meta <- data.table(parameter=names(data.meta)
+    ##                            ,value=unlist(lapply(data.meta,as.character,usetz=T)))
+    ##     ## file.meta <- paste0(fnExtension(file.csv,ext=""),"_meta.txt")
+    ##     file.meta <- fnAppend(fnExtension(file,".csv"),"meta")
+    ##     fwrite(data.meta,file=file.meta,quote=TRUE,row.names=FALSE,sep=",")
+    ## }
+
+
     written <- length(files.written)>0
     if(!quiet){
         if(written){
@@ -366,12 +392,12 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
     }
 
     if(is.null(NMtext)) return(invisible(NULL))
-    
+
     if("try-error"%in%class(NMtext)){
         stop("NMgenText failed.") 
     } else {
         return(invisible(list(INPUT=NMtext$INPUT,DATA=NMtext$DATA)))
     }
 
-    
+
 }
