@@ -109,6 +109,7 @@ in the file argument.</p>
 <span>  <span class="va">args.NMgenText</span>,</span>
 <span>  csv.trunc.as.nm <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  genText <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  save <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">write.csv</span>,</span>
 <span>  <span class="va">write.rds</span>,</span>
 <span>  <span class="va">write.RData</span>,</span>
@@ -202,6 +203,13 @@ post-processing.</p></dd>
 <dd><p>Run and report results of NMgenText? Default is
 TRUE. You may want to disable this if data set is not for
 Nonmem.</p></dd>
+
+
+<dt>save</dt>
+<dd><p>Save defined files? Default is TRUE. If a variable is
+used to control whether a script generates outputs (say
+`writeOutputs=TRUE/FALSE`), if you use `save=writeOutputs` to
+comply with this.</p></dd>
 
 
 <dt>write.csv</dt>
