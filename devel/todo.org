@@ -5,7 +5,7 @@
   :END:
 ** Design
 *** DONE Add version to welcome message
-*** TODO [#A] All arguments should be arg.foo rather than argFoo
+*** DONE All arguments should be arg.foo rather than argFoo
 *** TODO [#B] deprecate "default" option in NMdataConf
     has no benefit over NULL, so redundant and prevents the use of "default" as an actual param value.
 *** DONE Allow for say input.txt/output.txt
@@ -545,12 +545,13 @@ data. It should be based on tables in meta$tables.
 **** TODO Check if models are repeated
 It now throws a weird error
 *** NMwriteData
+**** TODO [#A] Support writing fst
 **** DONE Support not writing all columns to csv
 It would be faster and sometimes only feasible to use the dataset with
 nonmem if columns are omitted from csv. But this is still very small
 data amounts to handle with data.table so one could still want to keep
 it all in rds.
-**** TODO [#A] Change from write.csv, write.rds etc to formats and save
+**** DONE Change from write.csv, write.rds etc to formats and save
 default would be formats=cc(csv,rds) if fnExtension(file)=="csv" and
 if not then fnExtension(file). This aligns with tracee and is more
 intuitive for using a save=writeOutput standard in scripts. Maybe

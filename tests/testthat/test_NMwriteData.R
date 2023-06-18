@@ -258,3 +258,14 @@ test_that("csv.trunc.as.nm",{
 })
 
 
+test_that("No saving",{
+
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+
+    fn <- "testOutput/NMwriteData_nottowrite.csv"
+    NMwriteData(pk,file=fn,
+                formats=cc(csv),save=FALSE)
+
+    expect_false(file.exists(fn))
+    
+})

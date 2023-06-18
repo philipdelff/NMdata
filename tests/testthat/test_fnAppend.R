@@ -19,7 +19,7 @@ test_that("basic",{
     
 })
 
-test_that("skip directory .s",{
+test_that("skip directory double dots",{
     ## todo. This should return an error. There is no extension to
     ## append in front of.
     fnAppend("fe/../egef","hmm")

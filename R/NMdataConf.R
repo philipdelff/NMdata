@@ -424,11 +424,9 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
 NMdataDecideOption <- function(name,argument,allow.unknown=FALSE){
     
     values.option <- NMdataConfOptions(name,allow.unknown=allow.unknown)
-    ## TODO. This is wrong. This means nothing is pre-defined for the option. It doesn't mean no value is configured.
     ## if nothing found and unknown parameters allowed, we just use the supplied value
     is.unknown <- is.null(values.option)
     if(is.unknown && allow.unknown) {
-        ##return(argument)
         ## define a tmp object that serves purpose?
         values.option <- list(default=NULL
                              ,is.allowed=function(x)TRUE
@@ -441,21 +439,10 @@ NMdataDecideOption <- function(name,argument,allow.unknown=FALSE){
     }
 
 
-    ## if(is.null(argument)) {
-    ##     return(values.option$default)
-    ## }
-
-    
-
     if(missing(argument)||is.null(argument)) return(NMdataGetOption(name))
     ## if(!(is.null(values.option)&&allow.unknown)){
     if(!values.option$is.allowed(argument)) messageWrap(values.option$msg.not.allowed,fun.msg=stop,track.msg = FALSE)
     argument <- values.option$process(argument)
-    ## } else {
-    ##     argument <- NULL
-    ## }
-
-
 
     return(argument)
 }

@@ -44,6 +44,7 @@
 ##' @param genText Run and report results of NMgenText? Default is
 ##'     TRUE. You may want to disable this if data set is not for
 ##'     Nonmem.
+##' @param save
 ##' @param args.NMgenText List of arguments to pass to NMgenText - the
 ##'     function that generates text suggestion for INPUT and DATA
 ##'     sections in the Nonmem control stream. You can use these
@@ -97,6 +98,7 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
                         args.fwrite, args.rds,args.RData,
                         quiet,args.NMgenText,csv.trunc.as.nm=FALSE,
                         genText=TRUE,
+                        save=TRUE,
 ### deprecated write.xxx arguments
                         write.csv,write.rds,
                         write.RData,
@@ -116,7 +118,7 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
         file <- NULL
     }
 
-    if(is.null(file)) {
+    if(is.null(file) || !save) {
         formats <- c()
         write.csv=FALSE
         write.RData=FALSE
@@ -157,7 +159,7 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
     write.rds <- "rds" %in% formats
     write.csv <- "csv" %in% formats
     write.RData <- "rdata" %in% formats
-
+    
     
     name.data <- deparse(substitute(data))
     
@@ -336,8 +338,10 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
         if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.RData),args.stamp))
         
         assign(name.data,data)
-        save(list=name.data,file=file.RData)
-        do.call(save,append(list(list=name.data,file=file.RData),args.RData))
+        ## save(list=name.data,file=file.RData)
+        ### explicitly doing base::save because otherwise do.call will
+        ### find the save variable controling whether to save or not.
+        do.call(base::save,append(list(list=name.data,file=file.RData),args.RData))
         files.written <- c(files.written,file.RData)
     }
     if(write.rds){
