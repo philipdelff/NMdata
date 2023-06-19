@@ -161,8 +161,8 @@ test_that("with stamp",{
 
 test_that("with stamp on csv",{
 
-    fileRef <- "testReference/NMwriteData_8.rds"
-    outfile <- "testOutput/stampedData_8.csv"
+    fileRef <- "testReference/NMwriteData_08.rds"
+    outfile <- "testOutput/stampedData_08.csv"
     
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 
@@ -180,8 +180,8 @@ test_that("with stamp on csv",{
 
 test_that("Quiet but get text for NM",{
 
-    fileRef <- "testReference/NMwriteData_9.rds"
-    outfile <- "testOutput/stampedData_9.csv"
+    fileRef <- "testReference/NMwriteData_09.rds"
+    outfile <- "testOutput/stampedData_09.csv"
     
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 
