@@ -87,7 +87,7 @@
 ##' @family DataRead
 ##' @export
 
-NMscanInput <- function(file, use.rds, file.mod, dir.data=NULL,
+NMscanInput <- function(file, use.formats, file.mod, dir.data=NULL,
                         file.data=NULL, applyFilters=FALSE,
                         translate=TRUE,recover.cols=TRUE,
                         details=TRUE, col.id="ID", col.row, quiet,
@@ -124,32 +124,49 @@ NMscanInput <- function(file, use.rds, file.mod, dir.data=NULL,
 
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
-    if(missing(use.rds)) use.rds <- NULL
-    use.rds <- NMdataDecideOption("use.rds",use.rds)    
+    ## if(missing(use.rds)) use.rds <- NULL
+    ## use.rds <- NMdataDecideOption("use.rds",use.rds)
+    if(missing(use.formats)) use.formats <- NULL
+    use.formats <- NMdataDecideOption("use.formats",use.formats)    
     if(missing(args.fread)) args.fread <- NULL
     args.fread <- NMdataDecideOption("args.fread",args.fread)
-    
+    args.fst <- list(as.data.table=TRUE)
 
         
     ## identify the data file name and additional info
     info.datafile <- NMextractDataFile(file=file.find.data,dir.data,file.mod=file.mod,file.data=file.data)
+
     
-    type.file <- NA_character_
-    if(use.rds && info.datafile$exists.file.rds){
-        type.file <- "rds"
-        if(!quiet) message(paste0("Read rds input data file:\n",info.datafile$path.rds,"."))
-        path.data.input <- info.datafile$path.rds
-        data.input <- as.data.table(readRDS(path.data.input))
-    } else {
-        if(file.exists(info.datafile$path)){
-            type.file <- "text"
-            if(!quiet) message(paste0("Read delimited text input data file:\n",info.datafile$path,"."))
-            path.data.input <- info.datafile$path
-            data.input <- NMreadCsv(path.data.input,args.fread=args.fread,as.fun="data.table")
-        } else {
-            stop(paste("Input data file not found. Was expecting to find",info.datafile$path))
+    i <- 1
+    type.file <- NULL
+    for(i in 1:length(use.formats)){
+        name.var.exists <- paste0("exists.file.",use.formats[[i]])
+        if(!is.null(info.datafile[[name.var.exists]]) && info.datafile[[name.var.exists]]){
+            type.file <- use.formats[[i]]
+            break
         }
     }
+    if(is.null(type.file)) stop("None of the allowed file formats found.")
+    path.data.input <- info.datafile[[paste0("path.",type.file)]]
+    
+    data.input <- NMreadCsv(path.data.input,as.fun="data.table",args.fread=args.fread,args.fst=args.fst)
+    
+    ## type.file <- NA_character_
+    ## if(use.rds && info.datafile$exists.file.rds){
+    ##     type.file <- "rds"
+    ##     if(!quiet) message(paste0("Read rds input data file:\n",info.datafile$path.rds,"."))
+    ##     path.data.input <- info.datafile$path.rds
+    ##     data.input <- as.data.table(readRDS(path.data.input))
+    ## } else {
+    ##     if(file.exists(info.datafile$path)){
+    ##         type.file <- "text"
+    ##         if(!quiet) message(paste0("Read delimited text input data file:\n",info.datafile$path,"."))
+    ##         path.data.input <- info.datafile$path
+    ##         data.input <- NMreadCsv(path.data.input,args.fread=args.fread,as.fun="data.table")
+    ##     } else {
+    ##         stop(paste("Input data file not found. Was expecting to find",info.datafile$path))
+    ##     }
+    ## }
     
     ## keeping a backup before translating column names and filtering
     ## rows. This is used for very litle which should be done here

@@ -98,7 +98,7 @@
 
 NMwriteData <- function(data,file,formats=c("csv","rds"),
                         script,args.stamp,
-                        args.fwrite, args.rds,  args.RData,
+                        args.fwrite, args.rds, args.RData, args.fst,
                         quiet,args.NMgenText,csv.trunc.as.nm=FALSE,
                         genText=TRUE,
                         save=TRUE,
@@ -162,7 +162,7 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
     write.rds <- "rds" %in% formats
     write.csv <- "csv" %in% formats
     write.RData <- "rdata" %in% formats
-    ## write.fst <- "fst" %in% formats
+    write.fst <- "fst" %in% formats
     
     name.data <- deparse(substitute(data))
     
@@ -267,6 +267,19 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
         }
     }
 
+### fst arguments
+    if("fst"%in%formats){
+        if (!requireNamespace("fst", quietly = TRUE)) {
+            stop("fst package could not be loaded. Either install fst or drop fst from formats.")
+        }
+    }
+    if(missing(args.fst)) {
+        args.fst <- list()
+    } else {
+        if(!is.list(args.fst)){
+            stop("args.fst must be a list of arguments.")
+        }
+    }
 
 ### csv.trunc.as.nm
     if(csv.trunc.as.nm && !genText){
@@ -281,8 +294,7 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
     ## This would cause trouble when writing csv
     
     has.no.comma <- data.dt[,lapply(.SD,function(x){is.numeric(x)||!any(grepl(",",as.character(x)))})]
-
-    comma.ok=as.logical(has.no.comma[1])
+    comma.ok <- as.logical(has.no.comma[1])
 
     if(any(!comma.ok)){
         messageWrap(paste("You must avoid commas in data values. They will corrupt the csv file, so get rid of them before saving data. Comma found in column(s):",paste(colnames(data.dt)[comma.ok==FALSE],sep=", ")),
@@ -310,6 +322,13 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
                               ))
     }
 
+
+### create stamp if needed
+    if(doStamp){
+        do.call(NMstamp,append(list(data=data,writtenTo=fnExtension(file,formats)),args.stamp))
+
+    }
+    
     files.written=c()
     if(write.csv){
         file.csv <- fnExtension(file,".csv")
@@ -322,18 +341,7 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
         }
         
         do.call(fwrite,append(list(x=data.csv,file=file.csv),args.fwrite))
-        ## fwrite      (data,na=".",quote=FALSE,row.names=FALSE,scipen=0,file=file.csv)
 
-        if(doStamp){
-            do.call(NMstamp,append(list(data=data,writtenTo=file.csv),args.stamp))
-
-            data.meta <- NMinfo(data,"dataCreate")
-            data.meta <- data.table(parameter=names(data.meta)
-                                   ,value=unlist(lapply(data.meta,as.character,usetz=T)))
-            ## file.meta <- paste0(fnExtension(file.csv,ext=""),"_meta.txt")
-            file.meta <- fnAppend(fnExtension(file,".csv"),"meta")
-            fwrite(data.meta,file=file.meta,quote=TRUE,row.names=FALSE,sep=",")
-        }
         files.written <- c(files.written,file.csv)
     }
 
@@ -341,7 +349,7 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
         messageWrap("Writing to RData files is deprecated and this option will be removed from NMwriteData. Please use rds instead.")
         
         file.RData <- fnExtension(file,".RData")
-        if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.RData),args.stamp))
+        ## if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.RData),args.stamp))
         
         assign(name.data,data)
 ### explicitly doing base::save because otherwise do.call will
@@ -351,30 +359,29 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
     }
     if(write.rds){
         file.rds <- fnExtension(file,".rds")
-        if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.rds),args.stamp))
+        ## if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.rds),args.stamp))
         do.call(saveRDS,append(list(object=data,file=file.rds),args.rds))
         files.written <- c(files.written,file.rds)
     }
-    ## if(write.fst){
-    ##     file.fst <- fnExtension(file,".fst")
-    ##     if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.fst),args.stamp))
-    ##     do.call(write_fst,append(list(x=data,path=file.rds),args.fst))
-    ##     files.written <- c(files.written,file.rds)
-    ## }
+    if("fst"%in%formats){
+        file.fst <- fnExtension(file,".fst")
+        ##     if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.fst),args.stamp))
+        do.call(write_fst,append(list(x=data,path=file.fst),args.fst))
+        ##     files.written <- c(files.written,file.rds)
+    }
 
-
-
-    ## if(doStamp && (write.csv || write.fst) ){
-
-    ##     do.call(NMstamp,append(list(data=data,writtenTo=paste(files.written,collapse=" ")),args.stamp))
-    ##     data.meta <- NMinfo(data,"dataCreate")
-    ##     data.meta <- data.table(parameter=names(data.meta)
-    ##                            ,value=unlist(lapply(data.meta,as.character,usetz=T)))
-    ##     ## file.meta <- paste0(fnExtension(file.csv,ext=""),"_meta.txt")
-    ##     file.meta <- fnAppend(fnExtension(file,".csv"),"meta")
-    ##     fwrite(data.meta,file=file.meta,quote=TRUE,row.names=FALSE,sep=",")
-    ## }
-
+    ## write meta data for csv and fst
+    if(doStamp && any(cc(fst,csv)%in%formats)){
+        
+        data.meta <- NMinfo(data,"dataCreate")
+        data.meta <- data.table(parameter=names(data.meta)
+                               ,value=unlist(lapply(data.meta,function(x){
+                                   paste(as.character(x,usetz=T),collapse=" ")
+                               }))
+                                )
+        file.meta <- fnAppend(fnExtension(file,".txt"),"meta")
+        fwrite(data.meta,file=file.meta,quote=TRUE,row.names=FALSE,sep=",")
+    }
 
     written <- length(files.written)>0
     if(!quiet){

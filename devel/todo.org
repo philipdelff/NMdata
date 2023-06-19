@@ -546,6 +546,9 @@ data. It should be based on tables in meta$tables.
 It now throws a weird error
 *** NMwriteData
 **** TODO [#A] Support writing fst
+***** TODO deprecate use.rds everywhere
+***** DONE Stamp does not include both csv and rds
+Try write.rds=T in test_NMwriteData "with stamp on csv"
 **** DONE Support not writing all columns to csv
 It would be faster and sometimes only feasible to use the dataset with
 nonmem if columns are omitted from csv. But this is still very small

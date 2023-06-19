@@ -80,20 +80,24 @@ NMextractDataFile <- function(file,dir.data=NULL,file.mod,file.data=NULL){
     if(!is.null(dir.data)){
         file.data <- file.path(dir.data,basename(file.data))
     }
-
-    ## file.data.input.rds <- sub("^(.+)\\..+$","\\1.rds",file.data.input)
-    file.data.rds <- fnExtension(file.data,".rds")
-
     exists.file <- file.exists(file.data)
+    
+    file.data.rds <- fnExtension(file.data,".rds")
     exists.file.rds <- file.exists(file.data.rds)
+
+    file.data.fst <- fnExtension(file.data,".fst")
+    exists.file.fst <- file.exists(file.data.fst)
+
 
     return(list(
         DATA=lines.data
        ,string=string.file.data
-       ,path=file.data
+       ,path.text=file.data
        ,path.rds=file.data.rds
-       ,exists.file=exists.file
+       ,path.fst=file.data.fst
+       ,exists.file.text=exists.file
        ,exists.file.rds=exists.file.rds
+       ,exists.file.fst=exists.file.fst
     ))
     
 }

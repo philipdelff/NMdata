@@ -156,7 +156,7 @@
 
 NMscanData <- function(file, col.row, use.input, merge.by.row,
                        recover.rows,file.mod,dir.data,file.data,
-                       translate.input=TRUE, quiet, use.rds,
+                       translate.input=TRUE, quiet, use.formats,
                        args.fread, as.fun, col.id="ID", modelname,
                        col.model, col.nmout,rep.count,
                        order.columns=TRUE, check.time, tz.lst,
@@ -208,7 +208,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(missing(tz.lst)) tz.lst <- NULL
     if(missing(as.fun)) as.fun <- NULL
     if(missing(quiet)) quiet <- NULL
-    if(missing(use.rds)) use.rds <- NULL
+    if(missing(use.formats)) use.formats <- NULL
     if(missing(args.fread)) args.fread <- NULL
 
     check.time <- NMdataDecideOption("check.time",check.time)
@@ -218,7 +218,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(missing(recover.rows)) recover.rows <- NULL
     recover.rows <- NMdataDecideOption("recover.rows",recover.rows)
     quiet <- NMdataDecideOption("quiet",quiet)
-    use.rds <- NMdataDecideOption("use.rds",use.rds)
+    use.formats <- NMdataDecideOption("use.formats",use.formats)
     args.fread <- NMdataDecideOption("args.fread",args.fread)
     ## if null, rep.count will later be set to TRUE if NMREP varies
 
@@ -324,7 +324,7 @@ if(!missing(tab.count)||!missing(rep.count)){
                                       ,file.data=file.data
                                       ,quiet=TRUE
                                       ,translate=translate.input
-                                      ,use.rds=use.rds
+                                      ,use.formats=use.formats
                                       ,applyFilters=FALSE
                                       ,args.fread=args.fread
                                       ,as.fun="data.table"
@@ -565,7 +565,7 @@ if(!missing(tab.count)||!missing(rep.count)){
 
             ## if no method is specified, search for possible col.row to help the user
             if(search.col.row){
-                msg0 <- searchColRow(file,file.mod=file.mod,dir.data,file.data,translate.input,use.rds,args.fread,col.id,tab.row)
+                msg0 <- searchColRow(file,file.mod=file.mod,dir.data,file.data,translate.input,use.formats,args.fread,col.id,tab.row)
                 msg <- paste0(msg0,"\n",
                               "To skip this check, please use merge.by.row=TRUE or merge.by.row=FALSE.")
                 messageWrap(msg,fun.msg=message)

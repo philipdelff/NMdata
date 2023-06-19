@@ -386,10 +386,10 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
            ,process=identity
         )
        ,
-        use.rds=list(
-            default=TRUE
-           ,is.allowed=is.logical
-           ,msg.not.allowed="use.rds must be logical"
+        use.formats=list(
+            default=cc(rds,text)
+           ,is.allowed=function(x) is.character(x)&&all(x%in%cc(text,rds,fst))
+           ,msg.not.allowed="use.formats must be a character vector and can only contain the values \"text\", \"rds\", \"fst\"."
            ,process=identity
         )
     )
