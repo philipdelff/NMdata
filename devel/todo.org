@@ -299,11 +299,11 @@ Many variables are only expected to exist for say samples. Example:
 LLOQ can very well be missing for doses. And the check may depend on
 study, compound etc too. So we need to split or subset data for the
 check. Maybe check in a subset and expect NA in the rest?
-**** TODO [#A] Checks for presense of II and ADDL should report dependence
+**** DONE Checks for presense of II and ADDL should report dependence
      If one is present, presence of the other is tested. If not found,
      it says "II Column not found". Would be helpful to know that it
      is because ADDL is found.
-**** TODO [#A] ADDL and II: II cannot be >0 if ADDL=0
+**** DONE [#A] ADDL and II: II cannot be >0 if ADDL==0
 **** DONE Check for , in character column contents not working
 **** DONE Checks for availability
 I ran it on an immature dataset and got this error:

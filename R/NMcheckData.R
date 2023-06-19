@@ -763,12 +763,24 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     
     
     if("ADDL"%in%colnames(data)){
-        ## ADDL only makes sense together with II
+        ## Because ADDL is found, we require II. The label will be "II
+        ## not found" or something loke that. The label below is not
+        ## reported. We give a message because it is not clear why II
+        ## is needed.
+        if(!quiet && !"II"%in%colnames(data)){
+            messageWrap("Column ADDL is found but not II.")
+        }
         findings <- listEvents("II",name="(This label will not be used)",
                                fun=function(x)TRUE,
                                events=findings,
                                col.required=TRUE,
                                dat=data[EVID%in%c(1,4)]) 
+
+        findings <- listEvents("ADDL","Must be 0 or missing for non-dosing events",
+                               fun=function(x)is.na(x)|x==0,
+                               events=findings,
+                               new.rows.only=T,
+                               dat=data[!EVID%in%c(1,4)])
 
         findings <- listEvents("ADDL","Must be a non-negative integer",
                                fun=function(x)x>=0&x%%1==0,events=findings,
@@ -779,17 +791,32 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
 
     if("II"%in%colnames(data)){
         ## II only makes sense together with II
+        if(!quiet && !"ADDL"%in%colnames(data)){
+            messageWrap("Column II is found but not ADDL.")
+        }
         findings <- listEvents("ADDL",name="(This label will not be used)",
                                fun=function(x)TRUE,
                                events=findings,
                                col.required=TRUE,
                                dat=data[EVID%in%c(1,4)])         
-
-        findings <- listEvents("II","Must be a non-negative integer",
-                               fun=function(x)x>=0&x%%1==0,events=findings,
+        ## must be 0 or na for non-dosing events
+        findings <- listEvents("II","Must be 0 or missing for non-dosing events",
+                               fun=function(x)is.na(x)|x==0,
+                               events=findings,
                                new.rows.only=T,
-                               dat=data[EVID%in%c(1,4)])
-    }    
+                               dat=data[!EVID%in%c(1,4)])
+        
+        findings <- listEvents("II","Must be a positive integer when ADDL is positive",
+                               fun=function(x)x>0&x%%1==0,
+                               events=findings,
+                               new.rows.only=T,
+                               dat=data[EVID%in%c(1,4)&!is.na(ADDL)&ADDL>0])
+        findings <- listEvents("II","Must not be positive when ADDL is missing or zero",
+                               fun=function(x)is.na(x)|x==0,
+                               events=findings,
+                               new.rows.only=T,
+                               dat=data[EVID%in%c(1,4)&(is.na(ADDL)|ADDL==0)])
+    }
     
 
 ######## End Default columns
