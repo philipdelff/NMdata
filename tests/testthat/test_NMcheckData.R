@@ -319,3 +319,18 @@ test_that("check data files without cols.dup, but passed with it",{
   expect_equal(nrow(no_dup_specified), 2)
   expect_equal(nrow(dup_specified), 0)
 })
+
+test_that("simulation data",{
+
+    fileRef <- "testReference/NMcheckData_19.rds"
+
+    dt.dos <- data.table(ID=1,EVID=1,AMT=1,ADDL=3,II=12,CMT=1,TIME=0)
+    dt.sim <- data.table(ID=1,EVID=2,CMT=2,TIME=0:24)
+
+    dt.all <- rbind(dt.dos,dt.sim,fill=T)
+
+    res <- NMcheckData(dt.all)
+    
+    expect_equal_to_reference(res,fileRef)
+
+})
