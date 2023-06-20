@@ -546,7 +546,9 @@ data. It should be based on tables in meta$tables.
 It now throws a weird error
 *** NMwriteData
 **** TODO [#A] Support writing fst
+***** TODO formats.read instead of use.formats
 ***** TODO deprecate use.rds everywhere
+***** TODO handle use.rds in NMdataConf
 ***** DONE Stamp does not include both csv and rds
 Try write.rds=T in test_NMwriteData "with stamp on csv"
 **** DONE Support not writing all columns to csv

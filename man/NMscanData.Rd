@@ -15,7 +15,7 @@ NMscanData(
   file.data,
   translate.input = TRUE,
   quiet,
-  use.rds,
+  formats.read,
   args.fread,
   as.fun,
   col.id = "ID",
@@ -27,7 +27,8 @@ NMscanData(
   check.time,
   tz.lst,
   skip.absent = FALSE,
-  tab.count
+  tab.count,
+  use.rds
 )
 }
 \arguments{
@@ -86,11 +87,11 @@ on what data is found. But consider setting this to TRUE for
 non-interactive use. Default can be configured using
 NMdataConf.}
 
-\item{use.rds}{If an rds file is found with the exact same name
-(except for .rds instead of say .csv) as the input data file
-mentioned in the Nonmem control stream, should this be used
-instead? The default is yes, and NMwriteData will create this
-by default too. Default can be configured using NMdataConf.}
+\item{formats.read}{Prioritized input data file formats to look
+for and use if found. Default is c("rds","csv") which means
+\code{rds} will be used if found, and \code{csv} if
+not. \code{fst} is possible too. Default can be modified using
+\code{NMdataConf()}.}
 
 \item{args.fread}{List of arguments passed to when reading _input_
 data. Notice that except for "input" and "file", you need to
@@ -164,7 +165,12 @@ NMdataConf() too.}
 \item{skip.absent}{Skip missing output table files with a warning?
 Default is FALSE in which case an error is thrown.}
 
-\item{tab.count}{Deprecated. Use rep.count.}
+\item{tab.count}{Deprecated. Use \code{rep.count}.}
+
+\item{use.rds}{Deprecated - use \code{formats.read} instead. If
+provided (though not recommended), this will overwrite
+\code{formats.read}, and only formats \code{rds} and
+\code{csv} can be used.}
 }
 \value{
 A data set of class 'NMdata'.

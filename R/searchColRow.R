@@ -56,7 +56,7 @@
 ##' @return A character message about the findings if any
 ##' @keywords internal
 
-searchColRow <- function(file,file.mod=file.mod,dir.data,file.data,translate.input,use.formats,args.fread,col.id,tab.row){
+searchColRow <- function(file,file.mod=file.mod,dir.data,file.data,translate.input,formats.read,args.fread,col.id,tab.row){
 
     dia <- suppressWarnings(NMscanInput(file
                                        ,file.mod=file.mod
@@ -64,7 +64,7 @@ searchColRow <- function(file,file.mod=file.mod,dir.data,file.data,translate.inp
                                        ,file.data=file.data
                                        ,quiet=TRUE
                                        ,translate=translate.input
-                                       ,use.formats=use.formats
+                                       ,formats.read=formats.read
                                        ,applyFilters=FALSE
                                        ,args.fread=args.fread
                                        ,details=TRUE

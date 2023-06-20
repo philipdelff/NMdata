@@ -10,7 +10,7 @@ searchColRow(
   dir.data,
   file.data,
   translate.input,
-  use.rds,
+  formats.read,
   args.fread,
   col.id,
   tab.row
@@ -48,12 +48,6 @@ as interpreted by Nonmem (in $INPUT). If data file contains
 more columns than mentioned in $INPUT, these will be named as
 in data file (if data file contains named variables).}
 
-\item{use.rds}{If an rds file is found with the exact same name
-(except for .rds instead of say .csv) as the text file
-mentioned in the Nonmem control stream, should this be used
-instead? The default is yes, and NMwriteData will create this
-by default too.}
-
 \item{args.fread}{List of arguments passed to fread. Notice that
 except for "input" and "file", you need to supply all
 arguments to fread if you use this argument. Default values
@@ -62,6 +56,12 @@ can be configured using NMdataConf.}
 \item{col.id}{The name of the subject ID column. Optional and only
 used to calculate number of subjects in data. Default is
 modified by NMdataConf.}
+
+\item{use.rds}{If an rds file is found with the exact same name
+(except for .rds instead of say .csv) as the text file
+mentioned in the Nonmem control stream, should this be used
+instead? The default is yes, and NMwriteData will create this
+by default too.}
 
 \item{applyFilters}{If TRUE (default), IGNORE and ACCEPT
 statements in the Nonmem control streams are applied before

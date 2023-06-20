@@ -150,8 +150,8 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,
             if(blank.append) newlines <- c(newlines,"")
             
             idx.dlines <- NMreadSection(lines=lines,section=section,return="idx",keepEmpty=TRUE,
-                                        keepName=TRUE,keepComments=TRUE,asOne=TRUE,
-                                        cleanSpaces=FALSE)
+                                        keep.name=TRUE,keep.comments=TRUE,as.one=TRUE,
+                                        clean.spaces=FALSE)
 
             if(length(idx.dlines)==0&location%in%cc(replace,before,after)) {
                 if(!quiet) message("Section not found. Nothing to be done.")

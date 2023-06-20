@@ -3,12 +3,13 @@ context("NMdataConf")
 test_that("defaults",{
 
     fileRef <- "testReference/NMdataConf_01.rds"
+    ## ref <- readRDS(fileRef)
 
     defaults <- NMdataConf()
     defaults$as.fun <- NULL
     defaults$file.mod <- NULL
     defaults$modelname <- NULL
-    
+
     expect_equal_to_reference(defaults,fileRef)
 })
 

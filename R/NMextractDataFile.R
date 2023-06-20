@@ -92,10 +92,10 @@ NMextractDataFile <- function(file,dir.data=NULL,file.mod,file.data=NULL){
     return(list(
         DATA=lines.data
        ,string=string.file.data
-       ,path.text=file.data
+       ,path.csv=file.data
        ,path.rds=file.data.rds
        ,path.fst=file.data.fst
-       ,exists.file.text=exists.file
+       ,exists.file.csv=exists.file
        ,exists.file.rds=exists.file.rds
        ,exists.file.fst=exists.file.fst
     ))

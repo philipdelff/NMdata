@@ -4,7 +4,7 @@
 \alias{deprecatedArg}
 \title{Report if an argument is deprecated.}
 \usage{
-deprecatedArg(oldarg, newarg, args, which = 2)
+deprecatedArg(oldarg, newarg, args, msg = NULL, which = 2)
 }
 \arguments{
 \item{oldarg}{The deprecated argument name (a character string).}

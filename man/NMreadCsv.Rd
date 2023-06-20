@@ -4,7 +4,13 @@
 \alias{NMreadCsv}
 \title{Read input data formatted for Nonmem}
 \usage{
-NMreadCsv(file, args.fread, as.fun = NULL)
+NMreadCsv(
+  file,
+  args.fread,
+  as.fun = NULL,
+  format = fnExtension(file),
+  args.fst
+)
 }
 \arguments{
 \item{file}{The file to read. Must be pure text.}
@@ -19,6 +25,18 @@ a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.}
+
+\item{format}{Format of file to read. Must be one of "csv", "rds",
+or "fst". Default is to determine this from the file name
+extension. Notice, if a delimited format is used, the
+extension can very well be different from "csv" (say file name
+is "input.tab"), and one must provide format="csv". This will
+work for any delimited format supported by fread and does not
+need to be comma-separated even though the format name
+indicates so.}
+
+\item{args.fst}{Optional arguments to pass to \code{read_fst} if
+code{format="fst"} is used.}
 }
 \value{
 A data set of class as defined by as.fun.

@@ -114,7 +114,7 @@ chatty behavior once and for all using this setting.
 Using this, you don't have to worry about remembering including
 all relevant variables in the output tables. Default is TRUE.
 
-\item{use.rds} Affects NMscanData and NMscanInput. 
+\item{use.rds} Deprecated. Affects NMscanData and NMscanInput. 
 
 }}
 }

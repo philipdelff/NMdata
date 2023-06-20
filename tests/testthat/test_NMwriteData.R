@@ -87,8 +87,8 @@ test_that("A comma in a character",{
 
     expect_error(
         NMwriteData(pk,file="testOutput/NMwriteDataTmp.csv",
-                    write.rds=F,write.csv=F,
-                    nm.drop="CYCLE")
+                   ,formats=NULL
+                    ,nm.drop="CYCLE")
     )
 
 })
@@ -167,8 +167,10 @@ test_that("with stamp on csv",{
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 
     res1 <- NMwriteData(pk,file=outfile
-                       ,script="A simple test",write.rds=TRUE,
-                        args.stamp=list(time=as.POSIXct("2021-11-21 11:00:00")))
+                       ,script="A simple test",write.rds=TRUE
+                       ,args.stamp=list(time=as.POSIXct("2021-11-21 11:00:00"))
+                       ,args.rds=list(version=2)
+                        )
     res1 <- fix.input(res1)
 
     expect_equal_to_reference(
@@ -271,15 +273,15 @@ test_that("No saving",{
 })
 
 test_that("save csv and fst",{
-
+    NMdataConf(reset=TRUE)
     fileRef <- "testReference/NMwriteData_12.rds"
     outfile <- "testOutput/stampedData_10.csv"
     
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 
     nmcode <- NMwriteData(pk,file=outfile
-                       ,script="A simple test",formats=cc(csv,fst),
-                        args.stamp=list(time=as.POSIXct("2021-11-21 11:00:00")))
+                         ,script="A simple test",formats=cc(csv,fst),
+                          args.stamp=list(time=as.POSIXct("2021-11-21 11:00:00")))
     res1 <- NMreadCsv("~/wdirs/NMdata/tests/testthat/testOutput/stampedData_10.fst")
 
     expect_equal_to_reference(

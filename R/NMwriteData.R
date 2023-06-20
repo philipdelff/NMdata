@@ -12,9 +12,9 @@
 ##' @param file The file to write to. The extension (everything after
 ##'     and including last ".") is dropped. csv, rds and other
 ##'     standard file name extensions are added.
-##' @param formats character vector of formats. Default is
-##'     c("csv","rds"), and those are currently the only two provided
-##'     formats.
+##' @param formats.write character vector of formats.write. Default is
+##'     c("csv","rds"). "fst" is possible too. Default can be modified
+##'     with \code{NMdataConf()}.
 ##' @param script If provided, the object will be stamped with this
 ##'     script name before saved to rds or RData. See ?NMstamp.
 ##' @param args.stamp A list of arguments to be passed to NMstamp.
@@ -25,6 +25,8 @@
 ##' @param args.rds A list of arguments to be passed to saveRDS.
 ##' @param args.RData A list of arguments to be passed to save. Please
 ##'     note that writing RData is deprecated.
+##' @param args.write_fst An optional list of arguments to be passed
+##'     to write_fst.
 ##' @param col.flagn Name of a numeric column with zero value for rows
 ##'     to include in Nonmem run, non-zero for rows to skip. The
 ##'     argument is only used for generating the proposed $DATA text
@@ -34,10 +36,10 @@
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using
 ##'     NMdataConf.
-##' @param write.csv Write to csv file? Deprecated, use `formats`
-##'     instead.
-##' @param write.rds write an rds file? Deprecated, use `formats`
-##'     instead.
+##' @param write.csv Write to csv file? Deprecated, use
+##'     `formats.write` instead.
+##' @param write.rds write an rds file? Deprecated, use
+##'     `formats.write` instead.
 ##' @param write.RData Deprecated and not recommended - will be
 ##'     removed. RData is not a adequate format for a dataset (but is
 ##'     for environments). Please use write.rds instead.
@@ -91,14 +93,16 @@
 ##' be able to read as a numeric and column is not in nm.drop, the list
 ##' is stopped. Only exception is TIME which is not tested for whether
 ##' character or not. 
-##' 
+##'
+##' @importFrom data.table fwrite
+##' @importFrom fst write_fst
 ##' @family DataCreate
 ##' @export
 
 
-NMwriteData <- function(data,file,formats=c("csv","rds"),
+NMwriteData <- function(data,file,formats.write=c("csv","rds"),
                         script,args.stamp,
-                        args.fwrite, args.rds, args.RData, args.fst,
+                        args.fwrite, args.rds, args.RData, args.write_fst,
                         quiet,args.NMgenText,csv.trunc.as.nm=FALSE,
                         genText=TRUE,
                         save=TRUE,
@@ -122,47 +126,47 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
     }
 
     if(is.null(file) || !save) {
-        formats <- c()
+        formats.write <- c()
         write.csv=FALSE
         write.RData=FALSE
         write.rds=FALSE
     }
     args <- getArgs()
     
-    args.write.depr <- cc(write.rds,write.csv,write.RData)
+    args.write.depr <- c("write.rds","write.csv","write.RData")
     if(any(args.write.depr %in% names(args))) {
-        message("arguments in the format write.xxx are deprecated. Use the `formats` argument instead. Example: formats=c(\"csv\",\"rds\")")
+        message("arguments in the format write.xxx are deprecated. Use the `formats.write` argument instead. Example: formats.write=c(\"csv\",\"rds\")")
         if(missing(write.csv)) write.csv <- NULL
         if(missing(write.rds)) write.rds <- NULL
         if(missing(write.RData)) write.RData <- NULL
 
         if(!is.null(write.csv)){
             if(write.csv) {
-                formats <- c(formats,"csv")
+                formats.write <- c(formats.write,"csv")
             } else {
-                formats <- setdiff(formats,"csv")
+                formats.write <- setdiff(formats.write,"csv")
             }
         }
         if(!is.null(write.rds)){
             if(write.rds) {
-                formats <- c(formats,"rds")
+                formats.write <- c(formats.write,"rds")
             } else {
-                formats <- setdiff(formats,"rds")
+                formats.write <- setdiff(formats.write,"rds")
             }
         }
         if(!is.null(write.RData)){
             if(write.RData) {
-                formats <- c(formats,"RData")
+                formats.write <- c(formats.write,"RData")
             } else {
-                formats <- setdiff(formats,"RData")
+                formats.write <- setdiff(formats.write,"RData")
             }
         }
     }
-    formats <- unique(tolower(gsub(" ","",formats)))
-    write.rds <- "rds" %in% formats
-    write.csv <- "csv" %in% formats
-    write.RData <- "rdata" %in% formats
-    write.fst <- "fst" %in% formats
+    formats.write <- unique(tolower(gsub(" ","",formats.write)))
+    write.rds <- "rds" %in% formats.write
+    write.csv <- "csv" %in% formats.write
+    write.RData <- "rdata" %in% formats.write
+    write.fst <- "fst" %in% formats.write
     
     name.data <- deparse(substitute(data))
     
@@ -268,16 +272,16 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
     }
 
 ### fst arguments
-    if("fst"%in%formats){
-        if (!requireNamespace("fst", quietly = TRUE)) {
-            stop("fst package could not be loaded. Either install fst or drop fst from formats.")
-        }
-    }
-    if(missing(args.fst)) {
-        args.fst <- list()
+    ## if("fst"%in%formats.write){
+    ## if (!requireNamespace("fst", quietly = TRUE)) {
+    ##     stop("fst package could not be loaded. Either install fst or drop fst from formats.write.")
+    ## }
+    ## }
+    if(missing(args.write_fst)) {
+        args.write_fst <- list()
     } else {
-        if(!is.list(args.fst)){
-            stop("args.fst must be a list of arguments.")
+        if(!is.list(args.write_fst)){
+            stop("args.write_fst must be a list of arguments.")
         }
     }
 
@@ -325,7 +329,7 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
 
 ### create stamp if needed
     if(doStamp){
-        do.call(NMstamp,append(list(data=data,writtenTo=fnExtension(file,formats)),args.stamp))
+        do.call(NMstamp,append(list(data=data,writtenTo=fnExtension(file,formats.write)),args.stamp))
 
     }
     
@@ -363,22 +367,24 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
         do.call(saveRDS,append(list(object=data,file=file.rds),args.rds))
         files.written <- c(files.written,file.rds)
     }
-    if("fst"%in%formats){
+    if("fst"%in%formats.write){
+
+        
         file.fst <- fnExtension(file,".fst")
         ##     if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.fst),args.stamp))
-        do.call(write_fst,append(list(x=data,path=file.fst),args.fst))
+        do.call(write_fst,append(list(x=data,path=file.fst),args.write_fst))
         ##     files.written <- c(files.written,file.rds)
     }
 
     ## write meta data for csv and fst
-    if(doStamp && any(cc(fst,csv)%in%formats)){
+    if(doStamp && any(c("fst","csv")%in%formats.write)){
         
         data.meta <- NMinfo(data,"dataCreate")
         data.meta <- data.table(parameter=names(data.meta)
                                ,value=unlist(lapply(data.meta,function(x){
                                    paste(as.character(x,usetz=T),collapse=" ")
                                }))
-                                )
+                               )
         file.meta <- fnAppend(fnExtension(file,".txt"),"meta")
         fwrite(data.meta,file=file.meta,quote=TRUE,row.names=FALSE,sep=",")
     }
@@ -399,7 +405,7 @@ NMwriteData <- function(data,file,formats=c("csv","rds"),
     }
 
     if(is.null(NMtext)) return(invisible(NULL))
-
+    
     if("try-error"%in%class(NMtext)){
         stop("NMgenText failed.") 
     } else {

@@ -7,12 +7,13 @@
 NMwriteData(
   data,
   file,
-  formats = c("csv", "rds"),
+  formats.write = c("csv", "rds"),
   script,
   args.stamp,
   args.fwrite,
   args.rds,
   args.RData,
+  args.write_fst,
   quiet,
   args.NMgenText,
   csv.trunc.as.nm = FALSE,
@@ -37,9 +38,9 @@ NMwriteData(
 and including last ".") is dropped. csv, rds and other
 standard file name extensions are added.}
 
-\item{formats}{character vector of formats. Default is
+\item{formats.write}{character vector of formats.write. Default is
 c("csv","rds"), and those are currently the only two provided
-formats.}
+formats.write.}
 
 \item{script}{If provided, the object will be stamped with this
 script name before saved to rds or RData. See ?NMstamp.}
@@ -55,6 +56,9 @@ configured using NMdataConf.}
 
 \item{args.RData}{A list of arguments to be passed to save. Please
 note that writing RData is deprecated.}
+
+\item{args.write_fst}{An optional list of arguments to be passed
+to write_fst.}
 
 \item{quiet}{The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
@@ -92,11 +96,11 @@ used to control whether a script generates outputs (say
 `writeOutputs=TRUE/FALSE`), if you use `save=writeOutputs` to
 comply with this.}
 
-\item{write.csv}{Write to csv file? Deprecated, use `formats`
-instead.}
+\item{write.csv}{Write to csv file? Deprecated, use
+`formats.write` instead.}
 
-\item{write.rds}{write an rds file? Deprecated, use `formats`
-instead.}
+\item{write.rds}{write an rds file? Deprecated, use
+`formats.write` instead.}
 
 \item{write.RData}{Deprecated and not recommended - will be
 removed. RData is not a adequate format for a dataset (but is

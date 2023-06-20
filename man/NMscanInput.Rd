@@ -7,7 +7,7 @@ according to the $INPUT section}
 \usage{
 NMscanInput(
   file,
-  use.rds,
+  formats.read,
   file.mod,
   dir.data = NULL,
   file.data = NULL,
@@ -20,7 +20,8 @@ NMscanInput(
   quiet,
   args.fread,
   invert = FALSE,
-  as.fun
+  as.fun,
+  use.rds
 )
 }
 \arguments{
@@ -30,11 +31,11 @@ recommended to use the output control stream because it
 reflects the model as it was run rather than how it is planned
 for next run. However, see file.mod and dir.data.}
 
-\item{use.rds}{If an rds file is found with the exact same name
-(except for .rds instead of say .csv) as the text file
-mentioned in the Nonmem control stream, should this be used
-instead? The default is yes, and NMwriteData will create this
-by default too.}
+\item{formats.read}{Prioritized input data file formats to look
+for and use if found. Default is c("rds","csv") which means
+\code{rds} will be used if found, and \code{csv} if
+not. \code{fst} is possible too. Default can be modified using
+\code{NMdataConf()}.}
 
 \item{file.mod}{The input control stream file path. Default is to
 look for \"file\" with extension changed to .mod (PSN
@@ -98,6 +99,11 @@ a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.}
+
+\item{use.rds}{Deprecated - use \code{formats.read} instead. If
+provided (though not recommended), this will overwrite
+\code{formats.read}, and only formats \code{rds} and
+\code{csv} can be used. w}
 }
 \value{
 A data set, class defined by 'as.fun'

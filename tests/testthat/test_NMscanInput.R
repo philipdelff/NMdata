@@ -14,8 +14,9 @@ fix.time <- function(x){
     meta.x$details$mtime.input <- NULL
     meta.x$details$mtime.lst <- NULL
     meta.x$details$mtime.mod <- NULL
-    meta.x$datafile$path <- NULL
+    meta.x$datafile$path.csv <- NULL
     meta.x$datafile$path.rds <- NULL
+    meta.x$datafile$path.fst <- NULL
     meta.x$tables$file <- NULL
     meta.x$tables$file.mtime <- NULL
     setattr(x,"NMdata",meta.x)
@@ -27,7 +28,7 @@ NMdataConf(reset=TRUE)
 
 test_that("basic",{
 
-    fileRef <- "testReference/NMscanInput_1.rds"
+    fileRef <- "testReference/NMscanInput_01.rds"
     file.lst <- "testData/nonmem/xgxr004.lst"
 
     ## res1 <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")
@@ -41,7 +42,7 @@ test_that("basic",{
 
 ### this one has NMdata meta data
 test_that("input has NMdata meta data",{
-    fileRef <- "testReference/NMscanInput_2.rds"
+    fileRef <- "testReference/NMscanInput_02.rds"
     ## load_all("c:/Users/delff/working_copies/NMdata")
 
     file.lst <- "testData/nonmem/xgxr011.lst"
@@ -87,7 +88,7 @@ test_that("Duplicate columns in input data",{
 
 test_that("single-char ignore",{
     NMdataConf(reset=T)
-    fileRef <- "testReference/NMscanInput4.rds"
+    fileRef <- "testReference/NMscanInput_04.rds"
     file.lst <- "testData/nonmem/estim_debug.lst"
 
     ## inpdat <- NMscanInput(file=file.lst,applyFilters=T,file.mod=function(x)sub("\\.lst$",".ctl",x))
@@ -102,7 +103,7 @@ test_that("single-char ignore",{
 
 
 test_that(".mod with mix of space and , in $INPUT",{
-    fileRef <- "testReference/NMscanInput5.rds"
+    fileRef <- "testReference/NMscanInput_05.rds"
     file.lst <- "testData/nonmem/min036.mod"
 
     inpdat <- NMscanInput(file=file.lst)
@@ -121,7 +122,7 @@ test_that("Erroneously basing a filter on translated column names",{
 
 test_that("Including meta data",{
     NMdataConf(reset=T)
-    fileRef <- "testReference/NMscanInput6.rds"
+    fileRef <- "testReference/NMscanInput_06.rds"
     file.lst <- "testData/nonmem/xgxr004.lst"
 
     res <-
@@ -139,7 +140,7 @@ test_that("Including meta data",{
 
 test_that("CYCLE=DROP",{
 
-    fileRef <- "testReference/NMscanInput_7.rds"
+    fileRef <- "testReference/NMscanInput_07.rds"
     file.lst <- system.file("examples/nonmem/xgxr002.lst",package="NMdata")
 
     ## res <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")

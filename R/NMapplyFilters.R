@@ -61,7 +61,7 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     
     data.meta <- NMinfoDT(data)
 
-    text2 <- NMreadSection(lines=lines,section="DATA",keepComments=FALSE)
+    text2 <- NMreadSection(lines=lines,section="DATA",keep.comments=FALSE)
     text3 <- sub(";.*$","",text2)
     
     ## replace the allowed IGN with IGNORE

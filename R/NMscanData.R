@@ -59,11 +59,6 @@
 ##'     function must take one character argument and return another
 ##'     character string. As example, see NMdataConf()$modelname. The
 ##'     default can be configured using NMdataConf.
-##' @param use.rds If an rds file is found with the exact same name
-##'     (except for .rds instead of say .csv) as the input data file
-##'     mentioned in the Nonmem control stream, should this be used
-##'     instead? The default is yes, and NMwriteData will create this
-##'     by default too. Default can be configured using NMdataConf.
 ##' @param dir.data The data directory can only be read from the
 ##'     control stream (.mod) and not from the output file (.lst). So
 ##'     if you only have the output control stream, use dir.data to
@@ -74,6 +69,11 @@
 ##' @param translate.input Default is TRUE, meaning that input data
 ##'     column names are translated according to $INPUT section in
 ##'     Nonmem listing file.
+##' @param formats.read Prioritized input data file formats to look
+##'     for and use if found. Default is c("rds","csv") which means
+##'     \code{rds} will be used if found, and \code{csv} if
+##'     not. \code{fst} is possible too. Default can be modified using
+##'     \code{NMdataConf()}. 
 ##' @param quiet The default is to give some information along the way
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using
@@ -120,7 +120,11 @@
 ##'     NMdataConf() too.
 ##' @param skip.absent Skip missing output table files with a warning?
 ##'     Default is FALSE in which case an error is thrown.
-##' @param tab.count Deprecated. Use rep.count.
+##' @param tab.count Deprecated. Use \code{rep.count}.
+##' @param use.rds Deprecated - use \code{formats.read} instead. If
+##'     provided (though not recommended), this will overwrite
+##'     \code{formats.read}, and only formats \code{rds} and
+##'     \code{csv} can be used. 
 ##'
 ##' @details This function makes it very easy to collect the data from
 ##'     a Nonmem run.
@@ -156,11 +160,15 @@
 
 NMscanData <- function(file, col.row, use.input, merge.by.row,
                        recover.rows,file.mod,dir.data,file.data,
-                       translate.input=TRUE, quiet, use.formats,
+                       translate.input=TRUE, quiet, formats.read,
                        args.fread, as.fun, col.id="ID", modelname,
                        col.model, col.nmout,rep.count,
                        order.columns=TRUE, check.time, tz.lst,
-                       skip.absent=FALSE,tab.count) {
+                       skip.absent=FALSE,
+                       ## Deprecated
+                       tab.count,
+                       use.rds
+                       ) {
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
     
@@ -208,7 +216,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(missing(tz.lst)) tz.lst <- NULL
     if(missing(as.fun)) as.fun <- NULL
     if(missing(quiet)) quiet <- NULL
-    if(missing(use.formats)) use.formats <- NULL
+    if(missing(formats.read)) formats.read <- NULL
     if(missing(args.fread)) args.fread <- NULL
 
     check.time <- NMdataDecideOption("check.time",check.time)
@@ -218,17 +226,26 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(missing(recover.rows)) recover.rows <- NULL
     recover.rows <- NMdataDecideOption("recover.rows",recover.rows)
     quiet <- NMdataDecideOption("quiet",quiet)
-    use.formats <- NMdataDecideOption("use.formats",use.formats)
+    formats.read <- NMdataDecideOption("formats.read",formats.read)
     args.fread <- NMdataDecideOption("args.fread",args.fread)
     ## if null, rep.count will later be set to TRUE if NMREP varies
 
+    use.rds <- deprecatedArg(oldarg="use.rds",msg="Use `formats` instead. Overwriting `formats.read`.")
+    if(!is.null(use.rds)&&use.rds){
+        formats.read <- c("rds","csv")
+    }
+    if(!is.null(use.rds)&&!use.rds){
+        formats.read <- setdiff(formats.read,c("rds"))
+    }
+    
+    
 ### deprecated before 2023-06-12
     ## if(!missing(tab.count)) .Deprecated("rep.count",old="tab.count")
 
-if(!missing(tab.count)||!missing(rep.count)){
-    args <- getArgs()
-    rep.count <- deprecatedArg(oldarg="tab.count",newarg="rep.count",args=args)
-}
+    if(!missing(tab.count)||!missing(rep.count)){
+        args <- getArgs()
+        rep.count <- deprecatedArg(oldarg="tab.count",newarg="rep.count",args=args)
+    }
     if(missing(rep.count)) rep.count <- NULL
     
     ## if(!missing(tab.count)){
@@ -324,7 +341,7 @@ if(!missing(tab.count)||!missing(rep.count)){
                                       ,file.data=file.data
                                       ,quiet=TRUE
                                       ,translate=translate.input
-                                      ,use.formats=use.formats
+                                      ,formats.read=formats.read
                                       ,applyFilters=FALSE
                                       ,args.fread=args.fread
                                       ,as.fun="data.table"
@@ -565,7 +582,7 @@ if(!missing(tab.count)||!missing(rep.count)){
 
             ## if no method is specified, search for possible col.row to help the user
             if(search.col.row){
-                msg0 <- searchColRow(file,file.mod=file.mod,dir.data,file.data,translate.input,use.formats,args.fread,col.id,tab.row)
+                msg0 <- searchColRow(file,file.mod=file.mod,dir.data,file.data,translate.input,formats.read,args.fread,col.id,tab.row)
                 msg <- paste0(msg0,"\n",
                               "To skip this check, please use merge.by.row=TRUE or merge.by.row=FALSE.")
                 messageWrap(msg,fun.msg=message)

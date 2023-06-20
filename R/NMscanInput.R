@@ -18,6 +18,11 @@
 ##'     recommended to use the output control stream because it
 ##'     reflects the model as it was run rather than how it is planned
 ##'     for next run. However, see file.mod and dir.data.
+##' @param formats.read Prioritized input data file formats to look
+##'     for and use if found. Default is c("rds","csv") which means
+##'     \code{rds} will be used if found, and \code{csv} if
+##'     not. \code{fst} is possible too. Default can be modified using
+##'     \code{NMdataConf()}. 
 ##' @param file.mod The input control stream file path. Default is to
 ##'     look for \"file\" with extension changed to .mod (PSN
 ##'     style). You can also supply the path to the file, or you can
@@ -35,11 +40,6 @@
 ##'     provided, the .mod file is not used at all.
 ##' @param file.data Specification of the data file path. When this is
 ##'     used, the control streams are not used at all.
-##' @param use.rds If an rds file is found with the exact same name
-##'     (except for .rds instead of say .csv) as the text file
-##'     mentioned in the Nonmem control stream, should this be used
-##'     instead? The default is yes, and NMwriteData will create this
-##'     by default too.
 ##' @param applyFilters If TRUE (default), IGNORE and ACCEPT
 ##'     statements in the Nonmem control streams are applied before
 ##'     returning the data.
@@ -73,6 +73,10 @@
 ##' @param invert If TRUE, the data rows that are dismissed by the
 ##'     Nonmem data filters (ACCEPT and IGNORE) and only this will be
 ##'     returned. Only used if applyFilters is TRUE.
+##' @param use.rds Deprecated - use \code{formats.read} instead. If
+##'     provided (though not recommended), this will overwrite
+##'     \code{formats.read}, and only formats \code{rds} and
+##'     \code{csv} can be used. w
 ##' @details Columns that are dropped (using DROP or SKIP in $INPUT)
 ##'     in the model will be included in the output.
 ##'
@@ -87,11 +91,13 @@
 ##' @family DataRead
 ##' @export
 
-NMscanInput <- function(file, use.formats, file.mod, dir.data=NULL,
+NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
                         file.data=NULL, applyFilters=FALSE,
                         translate=TRUE,recover.cols=TRUE,
                         details=TRUE, col.id="ID", col.row, quiet,
-                        args.fread, invert=FALSE, as.fun) {
+                        args.fread, invert=FALSE, as.fun,
+                        ## deprecated
+                        use.rds) {
     
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -103,6 +109,8 @@ NMscanInput <- function(file, use.formats, file.mod, dir.data=NULL,
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
+#### Section start: Pre-process arguments ####
+
     
 ### the lst file only contains the name of the data file, not the path
 ### to it. So we need to find the .mod instead.
@@ -126,30 +134,41 @@ NMscanInput <- function(file, use.formats, file.mod, dir.data=NULL,
     quiet <- NMdataDecideOption("quiet",quiet)
     ## if(missing(use.rds)) use.rds <- NULL
     ## use.rds <- NMdataDecideOption("use.rds",use.rds)
-    if(missing(use.formats)) use.formats <- NULL
-    use.formats <- NMdataDecideOption("use.formats",use.formats)    
+    if(missing(formats.read)) formats.read <- NULL
+    formats.read <- NMdataDecideOption("formats.read",formats.read)    
     if(missing(args.fread)) args.fread <- NULL
     args.fread <- NMdataDecideOption("args.fread",args.fread)
     args.fst <- list(as.data.table=TRUE)
 
-        
+    use.rds <- deprecatedArg(oldarg="use.rds",msg="Use `formats` instead. Overwriting `formats.read`.")
+    if(!is.null(use.rds)&&use.rds){
+        formats.read <- c("rds","csv")
+    }
+    if(!is.null(use.rds)&&!use.rds){
+        formats.read <- setdiff(formats.read,c("rds"))
+    }
+
+
+###  Section end: Pre-process arguments
+
+    
     ## identify the data file name and additional info
     info.datafile <- NMextractDataFile(file=file.find.data,dir.data,file.mod=file.mod,file.data=file.data)
 
     
     i <- 1
     type.file <- NULL
-    for(i in 1:length(use.formats)){
-        name.var.exists <- paste0("exists.file.",use.formats[[i]])
+    for(i in 1:length(formats.read)){
+        name.var.exists <- paste0("exists.file.",formats.read[[i]])
         if(!is.null(info.datafile[[name.var.exists]]) && info.datafile[[name.var.exists]]){
-            type.file <- use.formats[[i]]
+            type.file <- formats.read[[i]]
             break
         }
     }
     if(is.null(type.file)) stop("None of the allowed file formats found.")
     path.data.input <- info.datafile[[paste0("path.",type.file)]]
     
-    data.input <- NMreadCsv(path.data.input,as.fun="data.table",args.fread=args.fread,args.fst=args.fst)
+    data.input <- NMreadCsv(path.data.input,as.fun="data.table",args.fread=args.fread,args.fst=args.fst,format=type.file)
     
     ## type.file <- NA_character_
     ## if(use.rds && info.datafile$exists.file.rds){
@@ -173,7 +192,7 @@ NMscanInput <- function(file, use.formats, file.mod, dir.data=NULL,
     ## instead of making a deep copy.
     data.input.0 <- copy(data.input)
 
-    ### not used
+### not used
     ## nminfo.input.0 <- NMinfoDT(data.input)
 
     

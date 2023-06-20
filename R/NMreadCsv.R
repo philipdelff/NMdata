@@ -13,6 +13,16 @@
 ##'     something else. If data.tables are wanted, use
 ##'     as.fun="data.table". The default can be configured using
 ##'     NMdataConf.
+##' @param format Format of file to read. Must be one of "csv", "rds",
+##'     or "fst". Default is to determine this from the file name
+##'     extension. Notice, if a delimited format is used, the
+##'     extension can very well be different from "csv" (say file name
+##'     is "input.tab"), and one must provide format="csv". This will
+##'     work for any delimited format supported by fread and does not
+##'     need to be comma-separated even though the format name
+##'     indicates so.
+##' @param args.fst Optional arguments to pass to \code{read_fst} if
+##'     code{format="fst"} is used.
 ##' @details This is almost just a shortcut to fread so you don't have
 ##'     to remember how to read the data that was exported for
 ##'     Nonmem. The only added feature is that meta data as written by
@@ -20,21 +30,22 @@
 ##'     data is returned.
 ##' @return A data set of class as defined by as.fun.
 ##' @importFrom data.table fread
+##' @importFrom fst read_fst
 ##' @family DataRead
 ##' @seealso NMwriteData
 ##' @export
 
-NMreadCsv <- function(file,args.fread,as.fun=NULL,type=fnExtension(file),args.fst){
+NMreadCsv <- function(file,args.fread,as.fun=NULL,format=fnExtension(file),args.fst){
 
     
-    if( !is.character(type) && length(type) == 1 ){
-        stop("type must be a single character string.")
+    if( !is.character(format) && length(format) == 1 ){
+        stop("format must be a single character string.")
     }
-    if(!type%in%cc(rds,fst)) type <- "text"
+    if(!format%in%c("rds","fst")) format <- "text"
     
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
-    dt <- switch(type,
+    dt <- switch(format,
                  text={
                      if(missing(args.fread)) args.fread <- NULL
                      args.fread <- NMdataDecideOption("args.fread",args.fread)
@@ -44,9 +55,9 @@ NMreadCsv <- function(file,args.fread,as.fun=NULL,type=fnExtension(file),args.fs
                      as.data.table(readRDS(file=file))
                  },
                  fst={
-                     if (!requireNamespace("fst", quietly = TRUE)) {
-                         stop("fst package could not be loaded. Either install fst or drop fst from formats.")
-                     }
+                     ## if (!requireNamespace("fst", quietly = TRUE)) {
+                     ##     stop("fst package could not be loaded. Either install fst or drop fst from formats.")
+                     ## }
                      if(missing(args.fst)){
                          args.fst <- list(as.data.table=TRUE)
                      }

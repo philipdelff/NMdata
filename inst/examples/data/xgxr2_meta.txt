@@ -1,4 +1,4 @@
 "parameter","value"
 "DataCreateScript","dsCreate_1.R"
-"CreationTime","2022-05-14 21:44:15 EDT"
-"writtenTo","../../tests/testthat/testData/data/xgxr2.csv"
+"CreationTime","2023-06-19 22:20:43 EDT"
+"writtenTo","../../tests/testthat/testData/data/xgxr2.csv ../../tests/testthat/testData/data/xgxr2.rds ../../tests/testthat/testData/data/xgxr2.fst"

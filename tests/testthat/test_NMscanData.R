@@ -20,8 +20,9 @@ fix.time <- function(x){
     meta.x$details$mtime.input <- NULL
     meta.x$details$mtime.lst <- NULL
     meta.x$details$mtime.mod <- NULL
-    meta.x$datafile$path <- NULL
+    meta.x$datafile$path.csv <- NULL
     meta.x$datafile$path.rds <- NULL
+    meta.x$datafile$path.fst <- NULL
     meta.x$tables$file <- NULL
     meta.x$tables$file.mtime <- NULL
     setattr(x,"NMdata",meta.x)
@@ -335,7 +336,7 @@ test_that("Only a firstonly without ID but with ROW",{
 
 test_that("Only a firstonly without ID but with ROW. Using merge.by.row=TRUE.",{
 ### ROW is used to recover firstonly data.
-##    NMdataConf(as.fun="data.table")
+    ##    NMdataConf(as.fun="data.table")
     ## NMdataConf(as.fun=NULL)
     NMdataConf(reset=TRUE)
     fileRef <- "testReference/NMscanData15b.rds"
@@ -950,3 +951,23 @@ test_that("simulation model with subproblems",{
 }
 )
 
+
+test_that("csv vs rds vs fst",{
+
+    fileRef <- "testReference/NMscanData_32.rds"
+
+    file.lst <- "testData/nonmem/xgxr014.lst"
+
+
+    
+    res.csv <- NMscanData(file=file.lst, order.columns = F, merge.by.row=FALSE, check.time = FALSE,formats.read=cc(csv))
+
+    res.rds <- NMscanData(file=file.lst, order.columns = F, merge.by.row=FALSE, check.time = FALSE,formats.read=cc(rds,csv))
+
+    res.fst <- NMscanData(file=file.lst, order.columns = F, merge.by.row=FALSE, check.time = FALSE,formats.read=cc(fst,csv))
+
+    res <- dims(res.csv,res.rds,res.fst)
+
+    expect_equal_to_reference(res,fileRef,version=2)
+    
+})

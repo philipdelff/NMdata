@@ -114,7 +114,7 @@ if(F){
 }
 
 
-pk <- pk[order(ID,TIME,CMT)]
+pk <- setorder(pk,ID,TIME,CMT)
 pk <- pk[DOSE>0]
 pk[,ROW:=.I]
 pk <- NMorderColumns(pk)
@@ -148,7 +148,7 @@ dt.data[file.data==fn.data,
             NMwriteData(pk,file=file.data.test(fn.data),write.csv=writeOutput,write.rds=F)
         ))]
 
-files <- list.files(path=file.data(),pattern="xgxr1.+")
+files <- list.files(path=file.data.test(),pattern="xgxr1.+",full.names=TRUE)
 for(fn in files){
     file.copy(file.data.test(fn),file.data.inst(),overwrite=T)
 }
@@ -164,12 +164,13 @@ for(fn in files){
     file.copy(file.data.test(fn),file.data.inst(),overwrite=T)
 }
 
+### xgxr2 has rds and meta data
 fn.data <- "xgxr2.csv"
 dt.data[file.data==fn.data,
         nmCode:=list(list(
-            NMwriteData(pk,file=file.data.test(fn.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2),script=script.1)
+            NMwriteData(pk,file=file.data.test(fn.data),formats=cc(csv,rds,fst),save=writeOutput,args.rds=list(version=2),script=script.1)
         ))]
-files <- list.files(path=file.data(),pattern=paste0(fnExtension(fn.data,ext=""),".+"))
+files <- list.files(path=file.data.test(),pattern=paste0(fnExtension(fn.data,ext=""),".+"))
 for(fn in files){
     file.copy(file.data.test(fn),file.data.inst(),overwrite=T)
 }
@@ -179,7 +180,7 @@ dt.data[file.data==fn.data,
         nmCode:=list(list(
             NMwriteData(pk[FLAG==0],file=file.data.test(fn.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2),script=script.1)
         ))]
-files <- list.files(path=file.data(),pattern=paste0(fnExtension(fn.data,ext=""),".+"))
+files <- list.files(path=file.data.test(),pattern=paste0(fnExtension(fn.data,ext=""),".+"))
 for(fn in files){
     file.copy(file.data.test(fn),file.data.inst(),overwrite=T)
 }
