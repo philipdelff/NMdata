@@ -181,17 +181,20 @@ NMdataConf <- function(...,allow.unknown=FALSE){
             if(is.null(val)) val <- "default"
             val <- NMdataDecideOption("use.rds",val,allow.unknown=allow.unknown)
             if(!is.null(val)){
-                args <- getArgs()
-                deprecatedArg(oldarg="use.rds",args=args)
-                    message("overwriting `formats.read`")
+                
+                args1 <- getArgs()
+                deprecatedArg(oldarg="use.rds",args=args1)
+                message("overwriting `formats.read`")
+                dots[["formats.read"]] <- c("csv")
                 if(val){
-                    args[["formats.read"]] <- c("rds","csv")
-                } else {
-                    args[["formats.read"]] <- c("csv")
+                    dots[["formats.read"]] <- c("rds","csv")
                 }
                 dots[["use.rds"]] <- NULL
+                N.args <- length(dots)
+                names.args <- names(dots)
             }
         }
+        
         
         args <- lapply(1:N.args,function(I){
             val <- dots[[I]]
@@ -421,14 +424,14 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
            ,msg.not.allowed="use.rds must be logical"
            ,process=identity
         )
-        ,
+       ,
         formats.read=list(
             default=c("rds","csv")
            ,is.allowed=function(x) is.character(x)&&all(x%in%c("csv","rds","fst"))
            ,msg.not.allowed="formats.read must be a character vector and can only contain the values \"csv\", \"rds\", \"fst\"."
            ,process=identity
         )
-        ,
+       ,
         formats.write=list(
             default=c("rds","csv")
            ,is.allowed=function(x) is.character(x)&&all(x%in%c("csv","rds","fst"))

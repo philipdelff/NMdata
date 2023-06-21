@@ -95,3 +95,41 @@ test_that("reset single option",{
     
     expect_equal(c1,c2)
 })
+
+test_that("change fun in globalenv does not affect NMdataConf()",{
+
+    NMdataConf(reset=TRUE)
+    
+    afun <- identity
+    NMdataConf(modelname=afun)
+    defaults <- NMdataConf()
+    afun <- class
+    defaults2 <- NMdataConf()
+
+    defaults$as.fun <- NULL
+    defaults$file.mod <- NULL
+    defaults$modelname <- NULL
+    defaults2$as.fun <- NULL
+    defaults2$file.mod <- NULL
+    defaults2$modelname <- NULL
+    
+    
+    expect_equal(defaults,defaults2)
+})
+
+
+test_that("deprecated use.rds",{
+
+    fileRef <- "testReference/NMdataConf_02.rds"
+    
+    NMdataConf(reset=TRUE)
+    
+    NMdataConf(use.rds=TRUE)
+    new <- NMdataConf()
+    
+    new$as.fun <- NULL
+    new$file.mod <- NULL
+    new$modelname <- NULL
+    
+    expect_equal_to_reference(new,fileRef)
+})
