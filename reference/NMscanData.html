@@ -24,7 +24,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.908</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.909</span>
       </span>
     </div>
 
@@ -106,7 +106,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
 <span>  <span class="va">file.data</span>,</span>
 <span>  translate.input <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">quiet</span>,</span>
-<span>  <span class="va">use.rds</span>,</span>
+<span>  <span class="va">formats.read</span>,</span>
 <span>  <span class="va">args.fread</span>,</span>
 <span>  <span class="va">as.fun</span>,</span>
 <span>  col.id <span class="op">=</span> <span class="st">"ID"</span>,</span>
@@ -118,7 +118,8 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
 <span>  <span class="va">check.time</span>,</span>
 <span>  <span class="va">tz.lst</span>,</span>
 <span>  skip.absent <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  <span class="va">tab.count</span></span>
+<span>  <span class="va">tab.count</span>,</span>
+<span>  <span class="va">use.rds</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -199,12 +200,12 @@ non-interactive use. Default can be configured using
 NMdataConf.</p></dd>
 
 
-<dt>use.rds</dt>
-<dd><p>If an rds file is found with the exact same name
-(except for .rds instead of say .csv) as the input data file
-mentioned in the Nonmem control stream, should this be used
-instead? The default is yes, and NMwriteData will create this
-by default too. Default can be configured using NMdataConf.</p></dd>
+<dt>formats.read</dt>
+<dd><p>Prioritized input data file formats to look
+for and use if found. Default is c("rds","csv") which means
+<code>rds</code> will be used if found, and <code>csv</code> if
+not. <code>fst</code> is possible too. Default can be modified using
+<code><a href="NMdataConf.html">NMdataConf()</a></code>.</p></dd>
 
 
 <dt>args.fread</dt>
@@ -302,7 +303,14 @@ Default is FALSE in which case an error is thrown.</p></dd>
 
 
 <dt>tab.count</dt>
-<dd><p>Deprecated. Use rep.count.</p></dd>
+<dd><p>Deprecated. Use <code>rep.count</code>.</p></dd>
+
+
+<dt>use.rds</dt>
+<dd><p>Deprecated - use <code>formats.read</code> instead. If
+provided (though not recommended), this will overwrite
+<code>formats.read</code>, and only formats <code>rds</code> and
+<code>csv</code> can be used.</p></dd>
 
 </dl></div>
     <div id="value">

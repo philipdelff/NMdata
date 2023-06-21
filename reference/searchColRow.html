@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.908</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.909</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@
 <span>  <span class="va">dir.data</span>,</span>
 <span>  <span class="va">file.data</span>,</span>
 <span>  <span class="va">translate.input</span>,</span>
-<span>  <span class="va">use.rds</span>,</span>
+<span>  <span class="va">formats.read</span>,</span>
 <span>  <span class="va">args.fread</span>,</span>
 <span>  <span class="va">col.id</span>,</span>
 <span>  <span class="va">tab.row</span></span>
@@ -140,14 +140,6 @@ more columns than mentioned in $INPUT, these will be named as
 in data file (if data file contains named variables).</p></dd>
 
 
-<dt>use.rds</dt>
-<dd><p>If an rds file is found with the exact same name
-(except for .rds instead of say .csv) as the text file
-mentioned in the Nonmem control stream, should this be used
-instead? The default is yes, and NMwriteData will create this
-by default too.</p></dd>
-
-
 <dt>args.fread</dt>
 <dd><p>List of arguments passed to fread. Notice that
 except for "input" and "file", you need to supply all
@@ -159,6 +151,14 @@ can be configured using NMdataConf.</p></dd>
 <dd><p>The name of the subject ID column. Optional and only
 used to calculate number of subjects in data. Default is
 modified by NMdataConf.</p></dd>
+
+
+<dt>use.rds</dt>
+<dd><p>If an rds file is found with the exact same name
+(except for .rds instead of say .csv) as the text file
+mentioned in the Nonmem control stream, should this be used
+instead? The default is yes, and NMwriteData will create this
+by default too.</p></dd>
 
 
 <dt>applyFilters</dt>

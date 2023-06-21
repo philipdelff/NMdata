@@ -23,7 +23,7 @@ in the file argument."><meta property="og:image" content="https://philipdelff.gi
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.908</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.909</span>
       </span>
     </div>
 
@@ -99,12 +99,13 @@ in the file argument.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMwriteData</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">file</span>,</span>
-<span>  formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"csv"</span>, <span class="st">"rds"</span><span class="op">)</span>,</span>
+<span>  formats.write <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"csv"</span>, <span class="st">"rds"</span><span class="op">)</span>,</span>
 <span>  <span class="va">script</span>,</span>
 <span>  <span class="va">args.stamp</span>,</span>
 <span>  <span class="va">args.fwrite</span>,</span>
 <span>  <span class="va">args.rds</span>,</span>
 <span>  <span class="va">args.RData</span>,</span>
+<span>  <span class="va">args.write_fst</span>,</span>
 <span>  <span class="va">quiet</span>,</span>
 <span>  <span class="va">args.NMgenText</span>,</span>
 <span>  csv.trunc.as.nm <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -135,10 +136,10 @@ and including last ".") is dropped. csv, rds and other
 standard file name extensions are added.</p></dd>
 
 
-<dt>formats</dt>
-<dd><p>character vector of formats. Default is
-c("csv","rds"), and those are currently the only two provided
-formats.</p></dd>
+<dt>formats.write</dt>
+<dd><p>character vector of formats.write. Default is
+c("csv","rds"). "fst" is possible too. Default can be modified
+with <code><a href="NMdataConf.html">NMdataConf()</a></code>.</p></dd>
 
 
 <dt>script</dt>
@@ -164,6 +165,11 @@ configured using NMdataConf.</p></dd>
 <dt>args.RData</dt>
 <dd><p>A list of arguments to be passed to save. Please
 note that writing RData is deprecated.</p></dd>
+
+
+<dt>args.write_fst</dt>
+<dd><p>An optional list of arguments to be passed
+to write_fst.</p></dd>
 
 
 <dt>quiet</dt>
@@ -213,13 +219,13 @@ comply with this.</p></dd>
 
 
 <dt>write.csv</dt>
-<dd><p>Write to csv file? Deprecated, use `formats`
-instead.</p></dd>
+<dd><p>Write to csv file? Deprecated, use
+`formats.write` instead.</p></dd>
 
 
 <dt>write.rds</dt>
-<dd><p>write an rds file? Deprecated, use `formats`
-instead.</p></dd>
+<dd><p>write an rds file? Deprecated, use
+`formats.write` instead.</p></dd>
 
 
 <dt>write.RData</dt>

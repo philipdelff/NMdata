@@ -18,7 +18,7 @@ using NMwriteData."><meta property="og:image" content="https://philipdelff.githu
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.908</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.909</span>
       </span>
     </div>
 
@@ -86,7 +86,13 @@ using NMwriteData.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMreadCsv</span><span class="op">(</span><span class="va">file</span>, <span class="va">args.fread</span>, as.fun <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMreadCsv</span><span class="op">(</span></span>
+<span>  <span class="va">file</span>,</span>
+<span>  <span class="va">args.fread</span>,</span>
+<span>  as.fun <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  format <span class="op">=</span> <span class="fu"><a href="fnExtension.html">fnExtension</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>,</span>
+<span>  <span class="va">args.fst</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -108,6 +114,22 @@ a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.</p></dd>
+
+
+<dt>format</dt>
+<dd><p>Format of file to read. Must be one of "csv", "rds",
+or "fst". Default is to determine this from the file name
+extension. Notice, if a delimited format is used, the
+extension can very well be different from "csv" (say file name
+is "input.tab"), and one must provide format="csv". This will
+work for any delimited format supported by fread and does not
+need to be comma-separated even though the format name
+indicates so.</p></dd>
+
+
+<dt>args.fst</dt>
+<dd><p>Optional arguments to pass to <code>read_fst</code> if
+codeformat="fst" is used.</p></dd>
 
 </dl></div>
     <div id="value">

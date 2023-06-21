@@ -22,7 +22,7 @@ data.frames)."><meta property="og:image" content="https://philipdelff.github.io/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.908</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.909</span>
       </span>
     </div>
 
@@ -166,6 +166,12 @@ data based on the path to the output control stream. Technically,
 it can be a string too, but when using NMdataConf, this would make
 little sense because it would direct all output control streams to
 the same input control streams.</p></li>
+<li><p>formats.read Prioritized input data file formats to look
+for and use if found. Default is c("rds","csv") which means
+<code>rds</code> will be used if found, and <code>csv</code> if
+not. <code>fst</code> is possible too.</p></li>
+<li><p>formats.write character vector of formats.write. Default is
+c("csv","rds"). "fst" is possible too.</p></li>
 <li><p>merge.by.row Adjust the default combine method in
 NMscanData.</p></li>
 <li><p>modelname A function that will translate the output control stream
@@ -186,7 +192,9 @@ chatty behavior once and for all using this setting.</p></li>
 <li><p>use.input In NMscanData, merge with columns in input data?
 Using this, you don't have to worry about remembering including
 all relevant variables in the output tables. Default is TRUE.</p></li>
-<li><p>use.rds Affects NMscanData and NMscanInput.</p></li>
+<li><p>use.rds Deprecated, use <code>formats.read</code> and
+<code>formats.write</code> instead. Affects `codeNMscanData(), 
+<code><a href="NMscanInput.html">NMscanInput()</a></code>, <code><a href="NMwriteData.html">NMwriteData()</a></code>.</p></li>
 </ul></dd>
 
 </dl></div>
@@ -237,7 +245,7 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(as.data.frame(list()))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     UseMethod("as.data.frame")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55e07f944c58&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x560edf4c9a70&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:base&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $check.time</span>
@@ -267,8 +275,8 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file.mod</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fnExtension(file, ext = ".mod")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55e07f922ae0&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55e07f945748&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x560edf4e8b70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x560edf4ccf70&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file.data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "extract"</span>
@@ -279,8 +287,8 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $modelname</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fnExtension(basename(file), "")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55e07f923218&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55e07f945748&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x560edf4e8518&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x560edf4ccf70&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $quiet</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
@@ -291,8 +299,11 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $use.input</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $use.rds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $formats.read</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "rds" "csv"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $formats.write</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "rds" "csv"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">## change a parameter</span></span></span>
 <span class="r-in"><span><span class="fu">NMdataConf</span><span class="op">(</span>check.time<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>

@@ -22,7 +22,7 @@ according to the $INPUT section — NMscanInput"><meta property="og:description"
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.908</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.17.909</span>
       </span>
     </div>
 
@@ -95,7 +95,7 @@ according to the $INPUT section</h1>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMscanInput</span><span class="op">(</span></span>
 <span>  <span class="va">file</span>,</span>
-<span>  <span class="va">use.rds</span>,</span>
+<span>  <span class="va">formats.read</span>,</span>
 <span>  <span class="va">file.mod</span>,</span>
 <span>  dir.data <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  file.data <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -108,7 +108,8 @@ according to the $INPUT section</h1>
 <span>  <span class="va">quiet</span>,</span>
 <span>  <span class="va">args.fread</span>,</span>
 <span>  invert <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  <span class="va">as.fun</span></span>
+<span>  <span class="va">as.fun</span>,</span>
+<span>  <span class="va">use.rds</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -122,12 +123,12 @@ reflects the model as it was run rather than how it is planned
 for next run. However, see file.mod and dir.data.</p></dd>
 
 
-<dt>use.rds</dt>
-<dd><p>If an rds file is found with the exact same name
-(except for .rds instead of say .csv) as the text file
-mentioned in the Nonmem control stream, should this be used
-instead? The default is yes, and NMwriteData will create this
-by default too.</p></dd>
+<dt>formats.read</dt>
+<dd><p>Prioritized input data file formats to look
+for and use if found. Default is c("rds","csv") which means
+<code>rds</code> will be used if found, and <code>csv</code> if
+not. <code>fst</code> is possible too. Default can be modified using
+<code><a href="NMdataConf.html">NMdataConf()</a></code>.</p></dd>
 
 
 <dt>file.mod</dt>
@@ -217,6 +218,13 @@ a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.</p></dd>
+
+
+<dt>use.rds</dt>
+<dd><p>Deprecated - use <code>formats.read</code> instead. If
+provided (though not recommended), this will overwrite
+<code>formats.read</code>, and only formats <code>rds</code> and
+<code>csv</code> can be used. w</p></dd>
 
 </dl></div>
     <div id="value">
