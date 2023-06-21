@@ -282,7 +282,7 @@ test_that("save csv and fst",{
     nmcode <- NMwriteData(pk,file=outfile
                          ,script="A simple test",formats=cc(csv,fst),
                           args.stamp=list(time=as.POSIXct("2021-11-21 11:00:00")))
-    res1 <- NMreadCsv("~/wdirs/NMdata/tests/testthat/testOutput/stampedData_10.fst")
+    res1 <- NMreadCsv("testOutput/stampedData_10.fst")
 
     expect_equal_to_reference(
         res1
@@ -290,10 +290,9 @@ test_that("save csv and fst",{
 
     if(FALSE){
         t0 <- Sys.time()
-        ## res.fst <- read_fst("~/wdirs/NMdata/tests/testthat/testOutput/stampedData_10.fst")
-        res.fst <- NMreadCsv("~/wdirs/NMdata/tests/testthat/testOutput/stampedData_10.fst")
+        res.fst <- NMreadCsv("testOutput/stampedData_10.fst")
         t1 <- Sys.time()
-        res.csv <- NMreadCsv("~/wdirs/NMdata/tests/testthat/testOutput/stampedData_10.csv")
+        res.csv <- NMreadCsv("testOutput/stampedData_10.csv")
         t2 <- Sys.time()
         data.table(method=cc(csv,fst),time=c(t2-t1,t1-t0))
     }

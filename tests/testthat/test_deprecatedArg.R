@@ -21,6 +21,5 @@ test_that("basic",{
     bb=3
     fun1(b=bb)
 
-## ... test
     
 })

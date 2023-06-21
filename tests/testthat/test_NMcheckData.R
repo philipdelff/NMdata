@@ -334,3 +334,18 @@ test_that("simulation data",{
     expect_equal_to_reference(res,fileRef)
 
 })
+
+test_that("empty data set",{
+
+    fileRef <- "testReference/NMcheckData_20.rds"
+
+    pk <- readRDS(file="testData/data/xgxr2.rds")
+    pk <- pk[0]
+    
+    
+    ## it finds way too many for ASSAY. Should only find 1.
+    res <- NMcheckData(pk,col.usubjid="usubjid")
+
+    expect_equal_to_reference(res,fileRef)
+})
+
