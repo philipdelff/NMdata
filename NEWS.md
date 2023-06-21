@@ -1,6 +1,11 @@
 # 0.0.18
 
 ## New features
+* the super fast `fst` format is now supported. Data sets can be
+  written to this format, and NMscanData() and related functions can
+  read it. It can be used instead of `rds` which is the default
+  full-featured data format used in the package.
+
 * New function NMreplaceDataFile to replace the input data file in a
   control stream. A simple wrapper of NMwriteSection but useful for
   this specific purpose.
@@ -27,7 +32,7 @@
   default). The argument `save` is used to control whether outputs are
   written altogether.
   
-* Arguement name format has been cleaned and aligned to follow the
+* Argument name format has been cleaned and aligned to follow the
   an.arg format rather than camel toe which was also used in some
   functions before. All deprecated arguments have been soft deprecated
   meaning they still work.
