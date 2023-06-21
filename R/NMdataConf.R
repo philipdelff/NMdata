@@ -174,7 +174,24 @@ NMdataConf <- function(...,allow.unknown=FALSE){
         }
     } else {
 
-        ### the deprecated use.rds 
+### the deprecated use.rds 
+        if("use.rds"%in%names.args){
+            ## use.rds should be defined in NMdataConfOptions(). with a NULL default? Use it to update formats.read and tell user it's deprecated.
+            val <- dots[["use.rds"]]
+            if(is.null(val)) val <- "default"
+            val <- NMdataDecideOption("use.rds",val,allow.unknown=allow.unknown)
+            if(!is.null(val)){
+                args <- getArgs()
+                deprecatedArg(oldarg="use.rds",args=args)
+                    message("overwriting `formats.read`")
+                if(val){
+                    args[["formats.read"]] <- c("rds","csv")
+                } else {
+                    args[["formats.read"]] <- c("csv")
+                }
+                dots[["use.rds"]] <- NULL
+            }
+        }
         
         args <- lapply(1:N.args,function(I){
             val <- dots[[I]]
@@ -398,12 +415,20 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
            ,process=identity
         )
        ,
+        use.rds=list(
+            default=NULL
+           ,is.allowed=is.logical
+           ,msg.not.allowed="use.rds must be logical"
+           ,process=identity
+        )
+        ,
         formats.read=list(
             default=c("rds","csv")
            ,is.allowed=function(x) is.character(x)&&all(x%in%c("csv","rds","fst"))
            ,msg.not.allowed="formats.read must be a character vector and can only contain the values \"csv\", \"rds\", \"fst\"."
            ,process=identity
         )
+        ,
         formats.write=list(
             default=c("rds","csv")
            ,is.allowed=function(x) is.character(x)&&all(x%in%c("csv","rds","fst"))

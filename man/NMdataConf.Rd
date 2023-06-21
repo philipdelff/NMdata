@@ -88,6 +88,14 @@ it can be a string too, but when using NMdataConf, this would make
 little sense because it would direct all output control streams to
 the same input control streams.
 
+\item{formats.read} Prioritized input data file formats to look
+for and use if found. Default is c("rds","csv") which means
+\code{rds} will be used if found, and \code{csv} if
+not. \code{fst} is possible too.
+
+\item{formats.write} character vector of formats.write. Default is
+c("csv","rds"). "fst" is possible too.
+
 \item{merge.by.row} Adjust the default combine method in
 NMscanData.
 
@@ -114,7 +122,9 @@ chatty behavior once and for all using this setting.
 Using this, you don't have to worry about remembering including
 all relevant variables in the output tables. Default is TRUE.
 
-\item{use.rds} Deprecated. Affects NMscanData and NMscanInput. 
+\item{use.rds} Deprecated, use \code{formats.read} and
+\code{formats.write} instead. Affects `code{NMscanData()}, 
+\code{NMscanInput()}, \code{NMwriteData()}.
 
 }}
 }

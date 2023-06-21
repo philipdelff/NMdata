@@ -39,8 +39,8 @@ and including last ".") is dropped. csv, rds and other
 standard file name extensions are added.}
 
 \item{formats.write}{character vector of formats.write. Default is
-c("csv","rds"), and those are currently the only two provided
-formats.write.}
+c("csv","rds"). "fst" is possible too. Default can be modified
+with \code{NMdataConf()}.}
 
 \item{script}{If provided, the object will be stamped with this
 script name before saved to rds or RData. See ?NMstamp.}
