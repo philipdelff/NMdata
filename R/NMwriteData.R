@@ -119,7 +119,10 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
 
     if(missing(args.fwrite)) args.fwrite <- NULL
     args.fwrite <- NMdataDecideOption("args.fwrite",args.fwrite)
+    if(missing(formats.write)) formats.write <- NULL
+    formats.write <- NMdataDecideOption("formats.write",formats.write)
 
+    
     stopifnot(is.data.frame(data)) 
     if(missing(file)||is.null(file)){
         file <- NULL

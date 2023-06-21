@@ -230,6 +230,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     args.fread <- NMdataDecideOption("args.fread",args.fread)
     ## if null, rep.count will later be set to TRUE if NMREP varies
 
+    ## deprecated 2023-06-20
     use.rds <- deprecatedArg(oldarg="use.rds",msg="Use `formats` instead. Overwriting `formats.read`.")
     if(!is.null(use.rds)&&use.rds){
         formats.read <- c("rds","csv")

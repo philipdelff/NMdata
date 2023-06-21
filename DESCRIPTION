@@ -1,7 +1,7 @@
 Package: NMdata
 Type: Package
 Title: Preparation, Checking and Post-Processing Data for PK/PD Modeling
-Version: 0.0.17.909
+Version: 0.0.17.910
 Authors@R: c(person("Philip", "Delff", email = "philip@delff.dk",
                   role = c("aut", "cre")),
            person("Eric", "Anderson", email = "andersone@metrumrg.com",
