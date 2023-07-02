@@ -303,7 +303,7 @@ check. Maybe check in a subset and expect NA in the rest?
      If one is present, presence of the other is tested. If not found,
      it says "II Column not found". Would be helpful to know that it
      is because ADDL is found.
-**** DONE [#A] ADDL and II: II cannot be >0 if ADDL==0
+**** DONE ADDL and II: II cannot be >0 if ADDL==0
 **** DONE Check for , in character column contents not working
 **** DONE Checks for availability
 I ran it on an immature dataset and got this error:
@@ -343,7 +343,10 @@ extension is .rds?
 **** DONE Implement function
 **** DONE Tests
 *** NMwriteSection
-**** Support insertion of new section before or after another section
+**** TODO [#A] newlines as a function
+If newlines is a function and location=="replace", read section, apply
+function to text, then overwrite.
+**** DONE Support insertion of new section before or after another section
 location="replace" is default. "before" and "after" should be
 additional allowed values.
 ***** DONE Handle lists
@@ -542,10 +545,12 @@ See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
 is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMscanMultiple
-**** TODO Check if models are repeated
+**** TODO [#A] Check if models are repeated
 It now throws a weird error
+**** TODO [#A] Check if input data can be reused across models
+In that case, do the merge in the end
 *** NMwriteData
-**** TODO [#A] Support writing fst
+**** DONE Support writing fst
 ***** TODO formats.read instead of use.formats
 ***** TODO deprecate use.rds everywhere
 ***** TODO handle use.rds in NMdataConf

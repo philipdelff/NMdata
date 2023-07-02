@@ -204,6 +204,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 #### Section start: Process arguments  ####
 
     file <- filePathSimple(file)
+    if(length(file)>1) stop("Argument `file` is of length > 1. NMscanData() does not support reading multiple models. To do that, please use NMscanMultiple().")
     if(!file.exists(file)) messageWrap(paste0("Model file ",file," does not exist."),fun.msg=stop)
     dir <- dirname(file)
 

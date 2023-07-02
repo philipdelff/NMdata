@@ -1,7 +1,7 @@
 # 0.0.18
 
 ## New features
-* the super fast `fst` format is now supported. Data sets can be
+* The super fast `fst` format is now supported. Data sets can be
   written to this format, and NMscanData() and related functions can
   read it. It can be used instead of `rds` which is the default
   full-featured data format used in the package.

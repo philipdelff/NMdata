@@ -79,19 +79,19 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,
     if(missing(files)) files <- NULL
     if(missing(dir)) dir <- NULL
     if(missing(file.pattern)) file.pattern <- NULL
-    
+
     all.files <- getFilePaths(files=files,file.pattern=file.pattern,dir=dir,quiet=quiet)
 
     if(length(all.files)==0){
         message("No existing files matched. Nothing to do.")
         return(invisible(NULL))
     }
-
     
     if(!missing(data.file)){
         all.files <- all.files[sapply(all.files,function(file)NMextractDataFile(file,dir.data=NULL,file.mod=identity)$string==data.file)]
     }
     if(length(all.files)==0) stop("No files to process.")
+    
     
     ## supply either section and newlines or a list
     if(!( (!missing(section)&&!missing(newlines)) ||
@@ -100,7 +100,9 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,
     ){
         stop("Either both section and newlines or list.sections must be supplied.")
     }
-    if(missing(list.sections)){
+
+    ## this is done in NMwriteSectionOne. Probably redundant here.
+    if(missing(list.sections)||is.null(list.sections)){
         ## this must be list, not as.list. as.list would translate multiple lines into multiple sections.
         list.sections=list(newlines)
         names(list.sections) <- section
@@ -116,132 +118,8 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,
     }
     
 ###  Section end: handle arguments
-
-
-    NMwriteSectionOne <- function(file0,section,newlines,list.sections,newfile,
-                                  backup=TRUE,blank.append=TRUE,write=TRUE){
-
-        after <- NULL 
-        before <- NULL
-        mad.dl <- NULL
-        
-        file0 <- filePathSimple(file0)
-        stopifnot(file.exists(file0))
-
-        if(missing(newfile)) newfile <- file0
-        if(!is.null(newfile)){
-            newfile <- filePathSimple(newfile)
-        }
-
-        ## see below why we need to read the lines for now
-        lines <- readLines(file0)
-
-        ## put this part in a function to be sequentially applied for all elements in list.
-        replaceOnePart <- function(lines,section,newlines){
-            if(!quiet) message(paste("Writing",newfile))
-            
-            ## make sure section is capital and does not start with $.
-            section <- gsub(" ","",section)
-            section <- sub("^\\$","",section)
-            section <- toupper(section)
-
-            ## make sure newlines start with $SECTION
-            newlines <- sub("^ +","",newlines)            
-            if(blank.append) newlines <- c(newlines,"")
-            
-            idx.dlines <- NMreadSection(lines=lines,section=section,return="idx",keepEmpty=TRUE,
-                                        keep.name=TRUE,keep.comments=TRUE,as.one=TRUE,
-                                        clean.spaces=FALSE)
-
-            if(length(idx.dlines)==0&location%in%cc(replace,before,after)) {
-                if(!quiet) message("Section not found. Nothing to be done.")
-                return(lines)
-            }
-            
-            if(length(idx.dlines)>1) {
-                ## if th
-                stopifnot(max(diff(idx.dlines))==1)
-            }
-            
-            if(location%in%cc(replace,before,after)){
-                min.dl <- min(idx.dlines)
-                max.dl <- max(idx.dlines)
-
-### these two cases need to be handled slightly differently so not supported for now
-                
-                stopifnot(min.dl>1)
-            }
-            nlines <- length(lines)
-            
-            if(location=="replace"){
-                
-                if(min.dl==1&&max.dl==nlines){
-                    all.lines <- newlines
-                } else if(min.dl==1){
-                    all.lines <- c(newlines,lines[(mad.dl+1),nlines])
-                } else if(max.dl==nlines){
-                    all.lines <- c(lines[1:(min.dl-1)],newlines)
-                } else {
-                    all.lines <- c(lines[1:(min.dl-1)],
-                                   newlines,
-                                   lines[(max.dl+1):nlines])
-                }
-            }
-            if(location=="before"){
-                if(min.dl==1){
-                    all.lines <- c(newlines,lines)
-                } else {
-                    all.lines <- c(lines[1:(min.dl-1)],
-                                   newlines,
-                                   lines[(min.dl:length(lines))]
-                                   )
-                } 
-            }
-            if(location=="after"){
-                all.lines <- c(lines,newlines)
-                if(min.dl>1){
-                    all.lines <- c(lines[1:(max.dl)],
-                                   newlines,
-                                   lines[(max.dl+1):length(lines)]
-                                   )
-                } else {
-                    all.lines <- lines
-                }
-            }
-            if(location=="last"){
-                all.lines <- c(lines,newlines)
-            }
-            all.lines
-        }
-        
-        newlines <- lines
-        for (I in 1:length(list.sections)) newlines <- replaceOnePart(lines=newlines,section=names(list.sections)[I],newlines=list.sections[[I]])
-        
-        if(is.null(newfile)) return(newlines)
-        
-        if(file0==newfile && backup ) {
-            dir.backup <- file.path(dirname(file0),"NMdata_backup")
-            ## make sure backup dir exists
-            if(file.exists(dir.backup)&&!dir.exists(dir.backup)) messageWrap("Something called NMdata_backup is found and it is not a directory. Please remove or use backup=FALSE.",fun.msg=stop)
-            if(!dir.exists(dir.backup)) dir.create(dir.backup)
-            ## file.copy (file0,
-            ##            sub("(.+/)([^/].+$)","\\1backup_\\2",x=file0)
-            ##            )
-            file.copy(file0,dir.backup,overwrite=T)
-        }
-
-        if(!write||is.null(file)){
-            return(newlines)
-        }
-        
-        con.newfile <- file(newfile,"wb")
-        writeLines(newlines,con=con.newfile)
-        close(con.newfile)
-        return(invisible(newlines))
-    }
     
-    
-    res <- lapply(all.files,NMwriteSectionOne,section=section,newlines=newlines,
+    res <- lapply(all.files,NMwriteSectionOne,section=section,location=location,newlines=newlines,
                   list.sections=list.sections,newfile=newfile,
                   backup=backup,blank.append=blank.append,write=write)
 

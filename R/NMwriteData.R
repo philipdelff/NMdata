@@ -408,7 +408,7 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
     }
 
     if(is.null(NMtext)) return(invisible(NULL))
-    
+
     if("try-error"%in%class(NMtext)){
         stop("NMgenText failed.") 
     } else {
