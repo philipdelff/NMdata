@@ -69,9 +69,9 @@ NMdataConf.}
 function that generates text suggestion for INPUT and DATA
 sections in the Nonmem control stream. You can use these
 arguments to get a text suggestion you an use directly in
-Nonmem - and NMwriteSection can even update multiple Nonmem
-control streams based on the result. This will update your
-control streams to match your new data file with just one
+Nonmem - and \code{NMwriteSection} can even update multiple
+Nonmem control streams based on the result. This will update
+your control streams to match your new data file with just one
 command.}
 
 \item{csv.trunc.as.nm}{If TRUE, csv file will be truncated
@@ -93,8 +93,8 @@ Nonmem.}
 
 \item{save}{Save defined files? Default is TRUE. If a variable is
 used to control whether a script generates outputs (say
-`writeOutputs=TRUE/FALSE`), if you use `save=writeOutputs` to
-comply with this.}
+\code{writeOutputs=TRUE/FALSE)}, if you use
+\code{save=writeOutputs} to comply with this.}
 
 \item{write.csv}{Write to csv file? Deprecated, use
 `formats.write` instead.}

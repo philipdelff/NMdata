@@ -48,6 +48,7 @@
 ##' @import data.table
 ##' @family DataCreate
 ##' @examples
+##' \dontrun{
 ##' pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 ##' dt.flags <- data.frame(
 ##'        flagn=10,
@@ -59,6 +60,7 @@
 ##'         col.flagn="flagn",col.flagc="flagc")
 ##' unique(pk[,c("EVID","flagn","flagc","BLQ")])
 ##' flagsCount(pk[EVID==0],dt.flags,col.flagn="flagn",col.flagc="flagc")
+##' }
 ##' @export
 
 

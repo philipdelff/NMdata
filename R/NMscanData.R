@@ -151,7 +151,9 @@
 ##'  \item{NULL}{The NULL argument to specify missing value string in input data is not respected. If delimited input data is read (as opposed to rds files), missing values are assumed to be represented by dots (.).}
 ##' }
 ##' @examples
+##' \dontrun{
 ##' res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"))
+##' }
 ##' @return A data set of class 'NMdata'.
 ##' @family DataRead
 ##' @import data.table

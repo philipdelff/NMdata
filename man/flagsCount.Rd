@@ -104,6 +104,7 @@ In the returned table, N.discarded is the difference in number of
     have been discarded by earlier flags.
 }
 \examples{
+\dontrun{
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 dt.flags <- data.frame(
        flagn=10,
@@ -115,6 +116,7 @@ pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing",
         col.flagn="flagn",col.flagc="flagc")
 unique(pk[,c("EVID","flagn","flagc","BLQ")])
 flagsCount(pk[EVID==0],dt.flags,col.flagn="flagn",col.flagc="flagc")
+}
 }
 \seealso{
 Other DataCreate: 

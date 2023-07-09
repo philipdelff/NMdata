@@ -51,10 +51,12 @@ findVars(findCovs(dt1,"ID"))
 ## occasion level
 findCovs(findVars(dt1,"ID"),c("ID","OCC"))
 ## Based on a "real data example"
+\dontrun{
 dat <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"))
 findCovs(dat,by="ID")
 ### Without an ID column we get non-varying columns
 findCovs(dat)
+}
 }
 \seealso{
 Other DataCreate: 

@@ -212,7 +212,9 @@ list of known limitations:
 }
 }
 \examples{
+\dontrun{
 res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"))
+}
 }
 \seealso{
 Other DataRead: 

@@ -46,16 +46,15 @@ the
 [Cheatsheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html).
 
 <!-- ![Cheatsheet](man/figures/cheatsheet_icon_0010.png){width="15%"} -->
-
 <!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html) -->
 
 <a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html"><img src="man/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"/></a>
 
 ### How to install
 
-`NMdata` is on [CRAN](https://cran.r-project.org/),
-[MRAN](https://mran.microsoft.com/), and [MPN](https://mpn.metworx.com).
-To install from the package archive you are already using, do:
+`NMdata` is on [CRAN](https://cran.r-project.org/package=NMdata) and
+[MPN](https://mpn.metworx.com/docs/packages/NMdata). To install from the
+package archive you are already using, do:
 
     install.packages("NMdata")
     library(NMdata)
@@ -120,7 +119,7 @@ ggplot(res.plot,aes(TIME))+
     labs(y="Concentration (unit)",colour="Observations",
          subtitle="NOTICE:\nObservations are coloured by a character column fetched from input data.\nSamples below LLOQ are rows added from input data.\nPlots are correctly sorted because factor levels of dose are preserved from input data.")+
     theme_bw()+theme(legend.position="bottom")
-#> Warning: Removed 2 row(s) containing missing values (geom_path).
+#> Warning: Removed 2 rows containing missing values (`geom_line()`).
 ```
 
 <img src="man/figures/README-NMscanData-example1-plot-1.png" width="100%" />
@@ -156,15 +155,17 @@ read multiple models and compare their predictions.
 ``` r
 res <- NMscanMultiple(dir=system.file("examples/nonmem", package="NMdata"),
 file.pattern="xgxr.*\\.lst",as.fun="data.table",quiet=TRUE)
-#> No missing values identified
+#> Input and output data were searched for candidate unique row identifiers. None
+#> found. To skip this check, please use merge.by.row=TRUE or merge.by.row=FALSE.
+#> 
 #> 
 #> Overview of model scanning results:
-#>                                                                             lst
-#> 1: /tmp/RtmpTd9QIu/temp_libpath102521020f9b7/NMdata/examples/nonmem/xgxr001.lst
-#> 2: /tmp/RtmpTd9QIu/temp_libpath102521020f9b7/NMdata/examples/nonmem/xgxr002.lst
-#> 3: /tmp/RtmpTd9QIu/temp_libpath102521020f9b7/NMdata/examples/nonmem/xgxr003.lst
-#> 4: /tmp/RtmpTd9QIu/temp_libpath102521020f9b7/NMdata/examples/nonmem/xgxr014.lst
-#> 5: /tmp/RtmpTd9QIu/temp_libpath102521020f9b7/NMdata/examples/nonmem/xgxr018.lst
+#>                                                                            lst
+#> 1: /tmp/Rtmp82nZom/temp_libpath1370126d22f6/NMdata/examples/nonmem/xgxr001.lst
+#> 2: /tmp/Rtmp82nZom/temp_libpath1370126d22f6/NMdata/examples/nonmem/xgxr002.lst
+#> 3: /tmp/Rtmp82nZom/temp_libpath1370126d22f6/NMdata/examples/nonmem/xgxr003.lst
+#> 4: /tmp/Rtmp82nZom/temp_libpath1370126d22f6/NMdata/examples/nonmem/xgxr014.lst
+#> 5: /tmp/Rtmp82nZom/temp_libpath1370126d22f6/NMdata/examples/nonmem/xgxr018.lst
 #>    nrows ncols success warning
 #> 1:   905    40    TRUE   FALSE
 #> 2:   905    34    TRUE   FALSE
@@ -195,7 +196,7 @@ reached CRAN, installing from Github is easy too.
     ## Option 2: Install explicitly from CRAN
     install.packages("NMdata",repos="https://cloud.r-project.org")
     library(NMdata)
-    
+
     ## Option 3: Install from github
     library(remotes)
     install_github("philipdelff/NMdata")

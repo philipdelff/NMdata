@@ -21,9 +21,11 @@ NMdata:::lstExtractTime(file)
 file <- system.file("examples/nonmem/xgxr003.mod",package="NMdata")
 NMdata:::lstExtractTime(file)
 
+\dontrun{
 all.lsts <- list.files(
   system.file("examples/nonmem",package="NMdata"),
   pattern="\\\\.lst",full.names=TRUE)
 lapply(all.lsts,NMdata:::lstExtractTime)
+}
 }
 \keyword{internal}

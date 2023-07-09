@@ -61,7 +61,7 @@ the
 <a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html"><img src="man/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"/></a>
 
 ### How to install
-`NMdata` is on [CRAN](https://cran.r-project.org/), [MRAN](https://mran.microsoft.com/), and [MPN](https://mpn.metworx.com). To install from the package archive you are already using, do:
+`NMdata` is on [CRAN](https://cran.r-project.org/package=NMdata) and [MPN](https://mpn.metworx.com/docs/packages/NMdata). To install from the package archive you are already using, do:
 
 ```
 install.packages("NMdata")

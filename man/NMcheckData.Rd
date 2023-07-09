@@ -231,9 +231,11 @@ column.
 }
 }
 \examples{
+\dontrun{
 dat <- readRDS(system.file("examples/data/xgxr2.rds", package="NMdata"))
 NMcheckData(dat)
 dat[EVID==0,LLOQ:=3.5]
 ## expecting LLOQ only for samples
 NMcheckData(dat,cols.num=list(c("STUDY"),"EVID==0"=c("LLOQ")))
+}
 }
