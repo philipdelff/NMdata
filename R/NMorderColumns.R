@@ -32,6 +32,9 @@
 ##'     time. If given, it will put the column quite far left, just
 ##'     after row counter and ID. Default value is NOMTIME and can be
 ##'     configured with NMdataConf.
+##' @param col.time The name of the column containing actual time. If
+##'     given, it will put the column quite far left, just after row
+##'     counter, subject ID, and nominal time. Default value is TIME.
 ##' @param col.row A row counter column. This will be the first column
 ##'     in the dataset. Technically, you can use it for whatever
 ##'     column you want first. Default value is ROW and can be
@@ -56,9 +59,10 @@
 ##' \itemize{
 ##'  \item{"col.row - "}{Row id if argument row is non-NULL}
 ##'  \item{"not editable - "}{ID (if a column is called ID)}
-##'  \item{"col.ntime - "}{Nominal time.}
+##'  \item{"col.nomtime - "}{Nominal time.}
+##'  \item{"col.time - "}{Actual time.}
 ##'  \item{"first - "}{user-specified first columns}
-##'  \item{"not editable - "}{Standard Nonmem columns: TIME, EVID, CMT, AMT, RATE, DV, MDV}
+##'  \item{"Only col.dv editable - "}{Standard Nonmem columns: EVID, CMT, AMT, RATE, col.dv, MDV}
 ##'  \item{"last - "}{user-specified last columns}
 ##'  \item{"chars.last - "}{numeric, or interpretable as numeric}
 ##'  \item{"not editable - "}{less often used Nonmem names: col.flagn, OCC, ROUTE, GRP, TRIAL, DRUG, STUDY}
@@ -79,6 +83,7 @@ NMorderColumns <- function(data,
                            chars.last=TRUE,
                            alpha=TRUE,
                            col.nomtime,
+                           col.time="TIME",
                            col.row,
                            col.flagn,
                            col.dv="DV",
@@ -100,13 +105,15 @@ NMorderColumns <- function(data,
     col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
     if(missing(col.nomtime)) col.nomtime <- NULL
     col.nomtime <- NMdataDecideOption("col.nomtime",col.nomtime)
+    ## col.time can currently not be specified with NMdataConf
+    ## if(missing(col.time)) col.time <- NULL
+    ## col.time <- NMdataDecideOption("col.time",col.time)
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
     
     if(missing(col.row)) col.row <- NULL
     col.row <- NMdataDecideOption("col.row",col.row)
 
-    
     was.dt <- FALSE
     if(is.data.table(data)){
         data <- copy(data) 
@@ -117,7 +124,7 @@ NMorderColumns <- function(data,
     if(missing(first)) first <- NULL
     if(missing(last)) last <- NULL
     
-    first1 <- c(col.row,"ID",col.nomtime,"TIME","EVID","CMT","AMT","II","ADDL","RATE",
+    first1 <- c(col.row,"ID",col.nomtime,col.time,"EVID","CMT","AMT","II","ADDL","RATE",
                 "SS",col.dv,"MDV")
     first2 <- c(col.flagn,"OCC","GRP","TRIAL","STUDY","DRUG","ROUTE")
 

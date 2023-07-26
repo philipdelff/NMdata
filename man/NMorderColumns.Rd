@@ -12,6 +12,7 @@ NMorderColumns(
   chars.last = TRUE,
   alpha = TRUE,
   col.nomtime,
+  col.time = "TIME",
   col.row,
   col.flagn,
   col.dv = "DV",
@@ -55,6 +56,10 @@ time. If given, it will put the column quite far left, just
 after row counter and ID. Default value is NOMTIME and can be
 configured with NMdataConf.}
 
+\item{col.time}{The name of the column containing actual time. If
+given, it will put the column quite far left, just after row
+counter, subject ID, and nominal time. Default value is TIME.}
+
 \item{col.row}{A row counter column. This will be the first column
 in the dataset. Technically, you can use it for whatever
 column you want first. Default value is ROW and can be
@@ -93,9 +98,10 @@ This function will change the order of columns but it
 \itemize{
  \item{"col.row - "}{Row id if argument row is non-NULL}
  \item{"not editable - "}{ID (if a column is called ID)}
- \item{"col.ntime - "}{Nominal time.}
+ \item{"col.nomtime - "}{Nominal time.}
+ \item{"col.time - "}{Actual time.}
  \item{"first - "}{user-specified first columns}
- \item{"not editable - "}{Standard Nonmem columns: TIME, EVID, CMT, AMT, RATE, DV, MDV}
+ \item{"Only col.dv editable - "}{Standard Nonmem columns: EVID, CMT, AMT, RATE, col.dv, MDV}
  \item{"last - "}{user-specified last columns}
  \item{"chars.last - "}{numeric, or interpretable as numeric}
  \item{"not editable - "}{less often used Nonmem names: col.flagn, OCC, ROUTE, GRP, TRIAL, DRUG, STUDY}

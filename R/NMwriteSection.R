@@ -121,7 +121,7 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,
     
     res <- lapply(all.files,NMwriteSectionOne,section=section,location=location,newlines=newlines,
                   list.sections=list.sections,newfile=newfile,
-                  backup=backup,blank.append=blank.append,write=write)
+                  backup=backup,blank.append=blank.append,write=write,quiet=quiet)
 
     if(simplify&&length(res)==1) res <- res[[1]]
     
