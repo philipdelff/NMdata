@@ -19,7 +19,7 @@ details."><meta property="og:image" content="https://philipdelff.github.io/NMdat
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.901</span>
       </span>
     </div>
 
@@ -96,6 +96,7 @@ details.</p>
 <span>  chars.last <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">col.nomtime</span>,</span>
+<span>  col.time <span class="op">=</span> <span class="st">"TIME"</span>,</span>
 <span>  <span class="va">col.row</span>,</span>
 <span>  <span class="va">col.flagn</span>,</span>
 <span>  col.dv <span class="op">=</span> <span class="st">"DV"</span>,</span>
@@ -155,6 +156,12 @@ after row counter and ID. Default value is NOMTIME and can be
 configured with NMdataConf.</p></dd>
 
 
+<dt>col.time</dt>
+<dd><p>The name of the column containing actual time. If
+given, it will put the column quite far left, just after row
+counter, subject ID, and nominal time. Default value is TIME.</p></dd>
+
+
 <dt>col.row</dt>
 <dd><p>A row counter column. This will be the first column
 in the dataset. Technically, you can use it for whatever
@@ -200,9 +207,10 @@ standard Nonmem columns.</p></dd>
     argument.</p>
 <ul><li><p>"col.row - "Row id if argument row is non-NULL</p></li>
 <li><p>"not editable - "ID (if a column is called ID)</p></li>
-<li><p>"col.ntime - "Nominal time.</p></li>
+<li><p>"col.nomtime - "Nominal time.</p></li>
+<li><p>"col.time - "Actual time.</p></li>
 <li><p>"first - "user-specified first columns</p></li>
-<li><p>"not editable - "Standard Nonmem columns: TIME, EVID, CMT, AMT, RATE, DV, MDV</p></li>
+<li><p>"Only col.dv editable - "Standard Nonmem columns: EVID, CMT, AMT, RATE, col.dv, MDV</p></li>
 <li><p>"last - "user-specified last columns</p></li>
 <li><p>"chars.last - "numeric, or interpretable as numeric</p></li>
 <li><p>"not editable - "less often used Nonmem names: col.flagn, OCC, ROUTE, GRP, TRIAL, DRUG, STUDY</p></li>
