@@ -93,8 +93,9 @@ NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,d
                                  keep.comments=FALSE,keep.empty=FALSE,
                                  as.one=FALSE, simplify=FALSE)
     if(length(lines.table)==0) {
-        messageWrap("No TABLE sections found in control stream. Please inspect the control stream.",
-                    fun.msg=stop)
+        if(!quiet) messageWrap("No TABLE sections found in control stream. Returning NULL",
+                               fun.msg=message)
+        return(NULL)
     }
     
     tab.files <- lapply(lines.table,function(x) {
