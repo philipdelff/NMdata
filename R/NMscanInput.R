@@ -40,7 +40,7 @@
 ##'     provided, the .mod file is not used at all.
 ##' @param file.data Specification of the data file path. When this is
 ##'     used, the control streams are not used at all.
-##' @param applyFilters If TRUE (default), IGNORE and ACCEPT
+##' @param apply.filters If TRUE (default), IGNORE and ACCEPT
 ##'     statements in the Nonmem control streams are applied before
 ##'     returning the data.
 ##' @param translate If TRUE (default), data columns are named as
@@ -73,10 +73,11 @@
 ##' @param invert If TRUE, the data rows that are dismissed by the
 ##'     Nonmem data filters (ACCEPT and IGNORE) and only this will be
 ##'     returned. Only used if applyFilters is TRUE.
+##' @param applyFilters Deprecated - use apply.filters.
 ##' @param use.rds Deprecated - use \code{formats.read} instead. If
 ##'     provided (though not recommended), this will overwrite
 ##'     \code{formats.read}, and only formats \code{rds} and
-##'     \code{csv} can be used. w
+##'     \code{csv} can be used. 
 ##' @details Columns that are dropped (using DROP or SKIP in $INPUT)
 ##'     in the model will be included in the output.
 ##'
@@ -92,11 +93,12 @@
 ##' @export
 
 NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
-                        file.data=NULL, applyFilters=FALSE,
-                        translate=TRUE,recover.cols=TRUE,
+                        file.data=NULL, apply.filters=FALSE,
+                        translate=TRUE, recover.cols=TRUE,
                         details=TRUE, col.id="ID", col.row, quiet,
                         args.fread, invert=FALSE, as.fun,
                         ## deprecated
+                        applyFilters,
                         use.rds) {
     
     
@@ -130,6 +132,9 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
     } 
     col.row <- NMdataDecideOption("col.row",col.row)
 
+    args <- getArgs()
+    apply.filters <- deprecatedArg(oldarg="applyFilters",newarg="apply.filters",args=args)
+    
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
     ## if(missing(use.rds)) use.rds <- NULL
@@ -198,7 +203,7 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
     
     
 ### filters must be applied here according to NM manual IV-1. They are applied before translating column names.
-    if(applyFilters){
+    if(apply.filters){
         
         data.input <- NMapplyFilters(data.input,file=file,invert=invert,quiet=quiet,as.fun="data.table")
     }
