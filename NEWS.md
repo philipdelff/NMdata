@@ -1,4 +1,4 @@
-# 0.0.18
+# 0.1.0
 
 ## New features
 * The super fast `fst` format is now supported. Data sets can be

@@ -379,6 +379,7 @@ issued. Once done, NMgetSection must be updated as well.
 *** NMisNumeric
 **** DONE NA_character is not recognized as numeric
 *** NMscanInput
+**** TODO [#A] applyFilters -> apply.filters
 **** DONE Bug: Error when ID not in data but var=ID in $INPUT
 **** DONE Test with multiple filters on the same column
 like IGNORE(ID=2) IGNORE(ID=3)
@@ -454,6 +455,9 @@ A way to limit rows read into nonmem
 ***** diff
 ***** off
 *** NMscanTables
+**** TODO [#A] Don't throw an error when no tables found
+Just return NULL. and a message if !silent. To find where, look for
+"No TABLE sections found in control stream. Please inspect the control stream"
 **** DONE Make work with commented variable lists
 xgxr028.mod created and it works
 **** DONE include meta data as NMinfo

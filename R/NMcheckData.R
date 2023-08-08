@@ -310,12 +310,14 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     if(!is.null(file)){
         if(!is.null(col.flagn.orig)){warning("col.flagn is not used when file is specified.")}
         col.id <- "ID"
-        use.rds <- FALSE
+        ## use.rds <- FALSE
+        formats.read="csv"
         file.mod <- NULL
         res <- NMcheckDataFile(file=file,col.time=col.time,
                                col.row=col.row,col.id=col.id,
-                               na.strings=na.strings,use.rds=use.rds,
-                               quiet=quiet,file.mod=file.mod,
+                               na.strings=na.strings
+                              ,formats.read=formats.read
+                              ,quiet=quiet,file.mod=file.mod,
                                as.fun=as.fun)
         return(invisible(res))
     }
@@ -596,6 +598,8 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
 
     cols.num.all <- c(list("TRUE"=cols.num.all),
                       cols.num)
+
+    
 
 ##### I believe this is covered altogether ass part of cols.num.all.
     ##     ## cols.num is a named list. Names are subsets.

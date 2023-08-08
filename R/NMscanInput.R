@@ -140,7 +140,7 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
     args.fread <- NMdataDecideOption("args.fread",args.fread)
     args.fst <- list(as.data.table=TRUE)
 
-    use.rds <- deprecatedArg(oldarg="use.rds",msg="Use `formats` instead. Overwriting `formats.read`.")
+    use.rds <- deprecatedArg(oldarg="use.rds",msg="Use `formats.read` instead. Overwriting `formats.read`.")
     if(!is.null(use.rds)&&use.rds){
         formats.read <- c("rds","csv")
     }
