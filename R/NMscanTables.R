@@ -59,7 +59,6 @@ NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,d
     name <- NULL
     nid <- NULL
     noheader <- NULL
-    pastes <- NULL
     scope <- NULL
 
 ###  Section end: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -118,7 +117,7 @@ NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,d
 
     meta.tabs.strange <- meta[(firstonly+lastonly+firstlastonly)>1]
     if(nrow(meta.tabs.strange)){
-        warning("Table(s) seems to have more than one of the firstonly, lastonly and firstlastonly options. Does this make sense? Look at table(s): ",pastes(meta.tabs.strange[,name],collapse=", "))
+        warning("Table(s) seems to have more than one of the firstonly, lastonly and firstlastonly options. Does this make sense? Look at table(s): ",paste(meta.tabs.strange[,name],collapse=", "))
     }
     tables <- list()
 

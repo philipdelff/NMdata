@@ -43,7 +43,17 @@ NMwriteSectionOne <- function(file0,lines,section,location="replace",
         section <- gsub(" ","",section)
         section <- sub("^\\$","",section)
         section <- toupper(section)
-
+        
+        if(is.function(newlines)){
+            ## this check should be outside replaceOnePart
+            if(location!="replace") stop("When newlines is a function, location must be replace.")
+            newlines.fun <- newlines
+            newlines <- NMreadSection(lines=lines,section=section,return="text",keep.empty=TRUE,
+                                    keep.name=TRUE,keep.comments=TRUE,as.one=TRUE,
+                                    clean.spaces=FALSE)
+            newlines <- newlines.fun(newlines)
+        }
+        
         ## make sure newlines start with $SECTION
         newlines <- sub("^ +","",newlines)            
         if(blank.append) newlines <- c(newlines,"")

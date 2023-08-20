@@ -142,7 +142,7 @@ NMextractText <- function(file, lines, text, section, char.section,
         idx.section <- idx.st:idx.end
     })
     result <- idx.sections
-
+    
     if(!keep.empty){
         result <- lapply(result,function(x)
             x[!grepl("^ *$",lines[x])]

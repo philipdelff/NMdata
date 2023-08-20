@@ -1,3 +1,12 @@
+# 0.1.1
+## New features
+* NMwriteSection can now handle functions to perform control stream
+  editing. NMwriteSection provides methods to edit control
+  streams. Until now by inserting, removing and replacing sections by
+  user-provided text. This new feature allows the user to specify a
+  function for editing the text, i.e. making it more suitable for
+  doing changes to sections like $PK/$PRED or $THETA/$OMEGA/$SIGMA.
+
 # 0.1.0
 
 ## New features

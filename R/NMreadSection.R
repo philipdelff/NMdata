@@ -57,9 +57,7 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
                           cleanSpaces, ...){
 
     args <- getArgs()
- #   if(missing(asOne)) asOne <- NULL
     as.one <- deprecatedArg("asOne","as.one",args=args)
-#    if(missing(cleanSpaces)) cleanSpaces <- NULL
     clean.spaces <- deprecatedArg("cleanSpaces","clean.spaces",args=args)
     keep.empty <- deprecatedArg("keepEmpty","keep.empty",args=args)
     keep.name <- deprecatedArg("keepName","keep.name",args=args)
@@ -98,10 +96,18 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
                          ...)
 
     
-    if(section=="."){
+    if(section=="."&&return=="text"){
+        
+        ## if(return=="text") res.text <- res
+        ## if(return=="idx"){
+        ##     all.lines <- readLines()
+        ##     res.text <- lapply(res,function(x)all.lines[min(x):max(x)])
+        ## }
+        res.text <- res
+        
         names(res) <-
             unlist(
-                lapply(res,function(x) sub("\\$([^ ]+)","\\1",strsplit(x[1]," ")[[1]][1]))
+                lapply(res.text,function(x) sub("\\$([^ ]+)","\\1",strsplit(x[1]," ")[[1]][1]))
             )
         
         res2 <- lapply(unique(names(res)),function(x)do.call(c,res[names(res)==x]))
