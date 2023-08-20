@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.905</span>
       </span>
     </div>
 
@@ -118,7 +118,7 @@ Input Data</h1>
 
     
     
-<p>Built 2023-07-26 using NMdata 0.1.0.901.</p>
+<p>Built 2023-08-20 using NMdata 0.1.0.905.</p>
 <p>Please make sure to see latest vignette version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
 <h2 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
@@ -195,7 +195,7 @@ well use base R or <code>dplyr</code> if you prefer. Then
 <code>ggplot2</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; NMdata 0.1.0.901. Browse NMdata documentation at</span></span>
+<span><span class="co">#&gt; NMdata 0.1.0.905. Browse NMdata documentation at</span></span>
 <span><span class="co">#&gt; https://philipdelff.github.io/NMdata/</span></span>
 <span><span class="co">## not necessary for NMdata to run, but we use thse in the examples</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
@@ -228,6 +228,8 @@ on.</p>
 <p>Try <code>NMscanData</code> on a control stream or a list file:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr018.lst"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; applyFilters is a deprecated argument. Please use apply.filters instead.</span></span>
+<span><span class="co">#&gt; applyFilters is a deprecated argument. Please use apply.filters instead.</span></span>
 <span><span class="co">#&gt; Input and output data were searched for candidate unique row identifiers. None</span></span>
 <span><span class="co">#&gt; found. To skip this check, please use merge.by.row=TRUE or merge.by.row=FALSE.</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -367,6 +369,7 @@ analysis back to the source data. We are now told that the data was
 merged by <code>ROW</code> - that’s better.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res1.tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr003.lst"</span><span class="op">)</span>,as.fun<span class="op">=</span><span class="fu">tibble</span><span class="fu">::</span><span class="va"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; applyFilters is a deprecated argument. Please use apply.filters instead.</span></span>
 <span><span class="co">#&gt; Model:  xgxr003 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Used tables, contents shown as used/total:</span></span>
@@ -414,7 +417,8 @@ from all data generating <code>NMdata</code> functions.</p>
 <p>We don’t want the same information about the dimensions repeated, so
 we use the <code>quiet</code> argument this time.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res1.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr003.lst"</span><span class="op">)</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">res1.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr003.lst"</span><span class="op">)</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; applyFilters is a deprecated argument. Please use apply.filters instead.</span></span></code></pre></div>
 <p>As expected we got a <code>data.table</code> this time:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">res1.dt</span><span class="op">)</span></span>
@@ -515,6 +519,7 @@ the input data rows with <code>NMscanData</code>.</p>
 <code>recover.rows=TRUE</code> to include all rows from input data.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu">file.NMdata</span><span class="op">(</span><span class="st">"xgxr014.lst"</span><span class="op">)</span>,recover.rows<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; applyFilters is a deprecated argument. Please use apply.filters instead.</span></span>
 <span><span class="co">#&gt; Model:  xgxr014 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Used tables, contents shown as used/total:</span></span>
@@ -590,10 +595,12 @@ combined.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res1.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.lst"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span>,</span>
 <span>                     quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; applyFilters is a deprecated argument. Please use apply.filters instead.</span></span>
 <span><span class="co">## using a custom modelname for this model</span></span>
 <span><span class="va">res2.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr014.lst"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span>,</span>
 <span>                     modelname<span class="op">=</span><span class="st">"One compartment"</span>,</span>
 <span>                     quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; applyFilters is a deprecated argument. Please use apply.filters instead.</span></span>
 <span><span class="co">## notice fill is an option to rbind with data.table (like bind_rows in dplyr)</span></span>
 <span><span class="va">res.mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">res1.m</span>,<span class="va">res2.m</span>,fill<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
 <span><span class="co">## Notice, the NMdata class disappeared</span></span>
@@ -614,8 +621,10 @@ integer. We could pass use the <code>modelname</code> argument in
 <span><span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>modelname<span class="op">=</span><span class="va">namefun</span><span class="op">)</span></span>
 <span><span class="va">res1.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.lst"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span>,</span>
 <span>                     quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; applyFilters is a deprecated argument. Please use apply.filters instead.</span></span>
 <span><span class="va">res2.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr014.lst"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span>,</span>
 <span>                     quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; applyFilters is a deprecated argument. Please use apply.filters instead.</span></span>
 <span><span class="co">## notice fill is an option to rbind with data.table (like bind_rows in dplyr)</span></span>
 <span><span class="va">res.mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">res1.m</span>,<span class="va">res2.m</span>,fill<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
 <span><span class="va">res.mult</span><span class="op">[</span>,<span class="va">.N</span>,by<span class="op">=</span><span class="va">model</span><span class="op">]</span></span>
