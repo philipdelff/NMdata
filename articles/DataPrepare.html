@@ -117,7 +117,7 @@
 
     
     
-<p>Built 2023-08-20 using NMdata 0.1.0.905.</p>
+<p>Built 2023-08-21 using NMdata 0.1.0.905.</p>
 <p>This vignette is still under development. Please make sure to see
 latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
@@ -134,7 +134,7 @@ data exclusions from source data to analysis data set</p></li>
 <li><p>Easily and consistently order data columns using
 <code>NMorderColumns</code></p></li>
 <li><p>Using <code>NMcheckData</code> to perform a extensive data check
-before exporting for Nonmem</p></li>
+before exporting for NONMEM</p></li>
 <li><p>Writing the prepared data to file ensuring compatibility with
 NONMEM and for post-processing in R using
 <code>NMwriteData</code></p></li>
@@ -444,9 +444,9 @@ calculations on the existing rows).</p>
 <h2 id="exclusion-flags">Exclusion flags<a class="anchor" aria-label="anchor" href="#exclusion-flags"></a>
 </h2>
 <p>There is no way around excluding some of the events in data due to
-various reasons. And we need to be able to answer to why we excluded
-each of the points, and to how many points were excluded due to which
-criteria. <code>NMdata</code> provides two functions to handle this -
+various reasons. We need to be able to answer to why we excluded each of
+the points, and to how many points were excluded due to which criteria.
+<code>NMdata</code> provides two functions to handle this -
 <code>flagsAssign</code> assigns exclusion flags to data records (rows),
 and <code>flagsCount</code> summarizes the number of discarded rows and
 the reasons.</p>
@@ -469,40 +469,59 @@ that column <code>FLAG</code> here, but any column name can be used.
 <code>FLAG</code> obviously draws on information from other columns such
 as <code>TIME</code>, <code>DV</code>, and many others, depending on
 your dataset and your way of working.</p>
-<p>The function that applies inclusion/excluasion rules is called
+<p>The function that applies exclusion rules is called
 <code>flagsAssign</code>, and it takes a dataset and a data.frame with
-rules as arguments. In this simple example we only exclude data due to
-two different reasons - and only samples (keeping all doses in the
-analysis). We exclude all pre-dose samples. For post-dose samples, we
-exclude those below LLOQ.</p>
+rules as arguments. In this example we consider four different reasons
+to exclude samples - and only samples (keeping all doses in the
+analysis). We exclude all pre-dose samples. We also exclude samples with
+missing time, missing value, and we exclude those below LLOQ. The
+<code>data.frame</code> with these rules looks like this</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"FLAG,flag,condition</span></span>
-<span><span class="st">10,Below LLOQ,BLQ==1</span></span>
-<span><span class="st">100,Negative time,TIME&lt;0"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"FLAG,  flag,               condition</span></span>
+<span><span class="st">                           40,    Pre-dose sample,    !is.na(TIME) &amp; TIME&lt;0</span></span>
+<span><span class="st">                           30,    Missing time,       is.na(TIME)</span></span>
+<span><span class="st">                           20,    Missing value,      is.na(DV)</span></span>
+<span><span class="st">                           10,    Below LLOQ,         BLQ==1"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsAssign.html">flagsAssign</a></span><span class="op">(</span><span class="va">pk</span>, tab.flags <span class="op">=</span> <span class="va">dt.flags</span>, subset.data <span class="op">=</span> <span class="st">"EVID==0"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Coding FLAG = 100, flag = Negative time</span></span>
-<span><span class="co">#&gt; Coding FLAG = 10, flag = Below LLOQ</span></span>
-<span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsAssign.html">flagsAssign</a></span><span class="op">(</span><span class="va">pk</span>, subset.data <span class="op">=</span> <span class="st">"EVID==1"</span>, flagc.0 <span class="op">=</span> <span class="st">"Dose"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">dt.flags</span></span>
+<span><span class="co">#&gt;    FLAG            flag             condition</span></span>
+<span><span class="co">#&gt; 1:   40 Pre-dose sample !is.na(TIME) &amp; TIME&lt;0</span></span>
+<span><span class="co">#&gt; 2:   30    Missing time           is.na(TIME)</span></span>
+<span><span class="co">#&gt; 3:   20   Missing value             is.na(DV)</span></span>
+<span><span class="co">#&gt; 4:   10      Below LLOQ                BLQ==1</span></span></code></pre></div>
 <p><code>fread</code> is used to create a data.table (like
 <code>read.csv</code> to create a data.frame) for readability, one line
-for each row in the data.table created. <code>flagsAssign</code> applies
-the conditions sequentially and by decreasing value of
-<code>FLAG</code>. <code>FLAG=0</code> means that the observation is
-included in the analysis. You can use any expression that can be
-evaluated within the data.frame. In this case, <code>BLQ</code> has to
+for each row in the data.table created. Notice how <code>FLAG</code> is
+numeric and interpretable by NONMEM, <code>flag</code> is descriptions
+interpretable by humans, and <code>condition</code> is expressions
+interpretable by R.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsAssign.html">flagsAssign</a></span><span class="op">(</span><span class="va">pk</span>, tab.flags <span class="op">=</span> <span class="va">dt.flags</span>, subset.data <span class="op">=</span> <span class="st">"EVID==0"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Coding FLAG = 40, flag = Pre-dose sample</span></span>
+<span><span class="co">#&gt; Coding FLAG = 30, flag = Missing time</span></span>
+<span><span class="co">#&gt; Coding FLAG = 20, flag = Missing value</span></span>
+<span><span class="co">#&gt; Coding FLAG = 10, flag = Below LLOQ</span></span></code></pre></div>
+<p><code>flagsAssign</code> applies the conditions sequentially and by
+decreasing value of <code>FLAG</code>. <code>FLAG=0</code> means that
+the observation is included in the analysis. You can use any expression
+that can be evaluated within the data.frame. In this case, numeric
+<code>TIME</code>, <code>DV</code>, and <code>BLQ</code> culomns must
 exist in <code>pk</code>.</p>
 <p>Finally, flags are assigned to <code>EVID==1</code> rows. Here, no
 flag table is used. This means that all <code>EVID==1</code> rows will
 get <code>FLAG=0</code> and <code>flag="Dose"</code>. You can use a
 separate data.frame of flags for dosing records as needed.</p>
-<p>In NONMEM, you can include <code>IGNORE=(FLAG.NE.0)</code> in
-<code>$DATA</code> or <code>$INFILE</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsAssign.html">flagsAssign</a></span><span class="op">(</span><span class="va">pk</span>, subset.data <span class="op">=</span> <span class="st">"EVID==1"</span>, flagc.0 <span class="op">=</span> <span class="st">"Dose"</span><span class="op">)</span></span></code></pre></div>
 <p>Again, the omission will be attributed to the first condition
 matched. Default is to apply the conditions by the order of decreasing
 numerical flag value. Use <code>flags.increasing=TRUE</code> if you
 prefer the opposite. However, what cannot be modified is that 0 is the
 numerical value for rows that are not matched by any conditions.</p>
+<p>In NONMEM, we can now include <code>IGNORE=(FLAG.NE.0)</code> in
+<code>$DATA</code> or <code>$INFILE</code>. NMwriteData (see later in
+this vignette) will by default look for <code>FLAG</code> and suggest an
+IGNORE statement for <code>$DATA</code>.</p>
 <p>What rows to omit from a data set can vary from one analysis to
 another. Hence, the aim with the chosen design is that the inclusion
 criteria can be changed and applied to overwrite an existing
@@ -513,7 +532,8 @@ change the <code>IGNORE</code> statement given above to
 flag for that one. If you prefer to create a new set of exclusion flags,
 just use new names for the numerical and the character flag columns so
 you don’t overwrite the old ones. See help of <code>flagsAssign</code>
-and <code>flagsCount</code> for how.</p>
+and <code>flagsCount</code> for how - arguments are called
+<code>col.flagn</code> and <code>col.flagc</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="summarize-data-exclusions">Summarize data exclusions<a class="anchor" aria-label="anchor" href="#summarize-data-exclusions"></a>
@@ -525,19 +545,76 @@ cumulative discarded, and observations left after application of the
 respective criterion are available. Choose the ones you prefer - here we
 show how many observations and subjects were matched by each criterion
 and how many were left after application of each criterion.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tab.count</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flagsCount.html">flagsCount</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pk</span><span class="op">[</span><span class="va">EVID</span> <span class="op">==</span> <span class="fl">0</span><span class="op">]</span>, tab.flags <span class="op">=</span> <span class="va">dt.flags</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tab.count</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "flag"          "N.left"        "Nobs.left"     "N.discard"    </span></span>
 <span><span class="co">#&gt; [5] "N.disc.cum"    "Nobs.discard"  "Nobs.disc.cum"</span></span>
-<span><span class="va">tab.count</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">flag</span>, <span class="va">N.discard</span>, <span class="va">Nobs.discard</span>, <span class="va">N.left</span>, <span class="va">Nobs.left</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt;                  flag N.discard Nobs.discard N.left Nobs.left</span></span>
-<span><span class="co">#&gt; 1: All available data        NA           NA    150      1352</span></span>
-<span><span class="co">#&gt; 2:      Negative time         0            2    150      1350</span></span>
-<span><span class="co">#&gt; 3:         Below LLOQ        19          595    131       755</span></span>
-<span><span class="co">#&gt; 4:       Analysis set        NA           NA    131       755</span></span></code></pre></div>
+<span><span class="va">tab.count</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>`Data cleaning step` <span class="op">=</span> <span class="va">flag</span>, <span class="va">N.discard</span>, <span class="va">Nobs.discard</span>,</span>
+<span>    <span class="va">N.left</span>, <span class="va">Nobs.left</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">kable</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Data cleaning step</th>
+<th align="right">N.discard</th>
+<th align="right">Nobs.discard</th>
+<th align="right">N.left</th>
+<th align="right">Nobs.left</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">All available data</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">150</td>
+<td align="right">1352</td>
+</tr>
+<tr class="even">
+<td align="left">Pre-dose sample</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">150</td>
+<td align="right">1350</td>
+</tr>
+<tr class="odd">
+<td align="left">Missing time</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">150</td>
+<td align="right">1350</td>
+</tr>
+<tr class="even">
+<td align="left">Missing value</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">150</td>
+<td align="right">1350</td>
+</tr>
+<tr class="odd">
+<td align="left">Below LLOQ</td>
+<td align="right">19</td>
+<td align="right">595</td>
+<td align="right">131</td>
+<td align="right">755</td>
+</tr>
+<tr class="even">
+<td align="left">Analysis set</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">131</td>
+<td align="right">755</td>
+</tr>
+</tbody>
+</table>
+<p>Notice that each row in the summary table does not describe how many
+observations <em>matched</em> the criterion, but how many observations
+were <em>excluded</em> due to the criterion. For instance, two samples
+are excluded due to values below LLOQ. All the predose samples may also
+be below LLOQ. By the order of the <code>FLAG</code> values however, we
+decided that we wanted to exclude this samples no matter of their
+values. Hence they are counted in that and only that bin.</p>
 <p><code>flagsCount</code> includes a <code>file</code> argument to save
-the the table right away.</p>
+the the table as a csv right away.</p>
 </div>
 </div>
 <div class="section level2">
@@ -565,7 +642,7 @@ while column bearing standard NONMEM variable names like
 pulled up front. You can of course add column names to prioritize to
 front (<code>first</code>) or back (<code>last</code>). See
 <code><a href="../reference/NMorderColumns.html">?NMorderColumns</a></code> for more options.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMorderColumns.html">NMorderColumns</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span></span></code></pre></div>
 <p>One trick is worth mentioning here. If you are adding variables to a
 data set after having started to model with NONMEM, you may not want to
@@ -590,7 +667,7 @@ of performed checks.</p>
 to be checked for whether they are non-missing, numeric and not varying
 with subject or subject-occasion. We can also add other numeric
 variables to use in NONMEM to check for missing values.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">findings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMcheckData.html">NMcheckData</a></span><span class="op">(</span><span class="va">pk</span>, covs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DOSE"</span>, <span class="st">"WEIGHTB"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   column                     check  N Nid</span></span>
 <span><span class="co">#&gt;     EVID        Subject has no obs 19  19</span></span>
@@ -599,7 +676,7 @@ variables to use in NONMEM to check for missing values.</p>
 <span><span class="co">#&gt;      AMT Non-positive dose amounts  1   1</span></span>
 <span><span class="co">#&gt;     EVID           EVID not in 0:4  1   1</span></span></code></pre></div>
 <p>Let’s look at these findings:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">findings</span></span>
 <span><span class="co">#&gt;     row  ID  column                     check  level  ROW</span></span>
 <span><span class="co">#&gt; 1    NA  31    EVID        Subject has no obs     ID   NA</span></span>
@@ -633,7 +710,7 @@ necessarily an error (they are in this case all BLQ), but
 to even run, <code>EVID</code> must be in <code>0:4</code>. So those
 have to be fixed. For the rest of the vignette, assume we fixed those
 issues.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/copy.html" class="external-link">copy</a></span><span class="op">(</span><span class="va">pk.copy</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="writing-data-to-files">Writing data to files<a class="anchor" aria-label="anchor" href="#writing-data-to-files"></a>
@@ -657,7 +734,7 @@ often want to use something like <code>write.csv=writeOutput</code>
 where <code>writeOutput</code> is a switching variable we set to
 <code>TRUE</code> or <code>FALSE</code> in the initialization section of
 the script.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">text.nm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMwriteData.html">NMwriteData</a></span><span class="op">(</span><span class="va">pk</span>, file <span class="op">=</span> <span class="st">"derived/pkdata.csv"</span>, script <span class="op">=</span> <span class="st">"DataPrepare.Rmd"</span>,</span>
 <span>    write.csv <span class="op">=</span> <span class="cn">TRUE</span>, args.stamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Description <span class="op">=</span> <span class="st">"PK data for the Data Preparation vignette."</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; arguments in the format write.xxx are deprecated. Use the `formats.write` argument instead. Example: formats.write=c("csv","rds")</span></span>
@@ -675,13 +752,13 @@ text to use in the NONMEM control streams. <code>NMwriteData</code>
 detected the exclusion flag and suggests to include it in
 <code>$DATA</code>.</p>
 <p>Let’s take a look at what was saved:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="st">"derived"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "pkdata_meta.txt" "pkdata.csv"      "pkdata.rds"</span></span></code></pre></div>
 <p>There is a metadata file which <code>NMreadCsv</code> will
 automatically recognize if found. The metadata becomes accessible using
 <code>NMinfo</code>:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat.inp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMreadCsv.html">NMreadCsv</a></span><span class="op">(</span><span class="st">"derived/pkdata.csv"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/NMinfo.html">NMinfo</a></span><span class="op">(</span><span class="va">dat.inp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $dataCreate</span></span>
@@ -689,7 +766,7 @@ automatically recognize if found. The metadata becomes accessible using
 <span><span class="co">#&gt; [1] "DataPrepare.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2023-08-20 10:51:14.533411"</span></span>
+<span><span class="co">#&gt; [1] "2023-08-21 00:30:28.653354"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$writtenTo</span></span>
 <span><span class="co">#&gt; [1] "derived/pkdata.rds derived/pkdata.csv"</span></span>
@@ -699,7 +776,7 @@ automatically recognize if found. The metadata becomes accessible using
 <p>With the flexibility of the <code>rds</code> format, we don’t need
 such an additional file. Only difference on the metadata for the rds
 file is the filename:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat.inp.rds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"derived/pkdata.rds"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/NMinfo.html">NMinfo</a></span><span class="op">(</span><span class="va">dat.inp.rds</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $dataCreate</span></span>
@@ -707,7 +784,7 @@ file is the filename:</p>
 <span><span class="co">#&gt; [1] "DataPrepare.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2023-08-20 10:51:14 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2023-08-21 00:30:28 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$writtenTo</span></span>
 <span><span class="co">#&gt; [1] "derived/pkdata.rds" "derived/pkdata.csv"</span></span>
@@ -731,7 +808,7 @@ sections to NONMEM control streams called <code>NMreadSection</code> and
 <code>NMwriteSection</code>. Those functions are very flexible for
 updating NONMEM control streams, and we will not go into detail with
 them, but let’s stick to the example above. We can do</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/NMwriteSection.html">NMwriteSection</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="st">"nonmem"</span>, file.pattern <span class="op">=</span> <span class="st">"run1.*\\.mod"</span>,</span>
 <span>    list.sections <span class="op">=</span> <span class="va">text.nm</span><span class="op">[</span><span class="st">"INPUT"</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p>This updates the INPUT section (and not DATA) for all control streams
@@ -763,7 +840,7 @@ writer that adds meta data the same way, we may want to save data or any
 R object using <code>saveRDS</code>. In that case, use
 <code>NMstamp</code> (which is also what <code>NMwriteData</code>
 does).</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMstamp.html">NMstamp</a></span><span class="op">(</span><span class="va">pk</span>, script <span class="op">=</span> <span class="st">"vignettes/DataCreate.Rmd"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/NMinfo.html">NMinfo</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $dataCreate</span></span>
@@ -771,14 +848,14 @@ does).</p>
 <span><span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2023-08-20 10:51:14 UTC"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "2023-08-21 00:30:29 UTC"</span></span></code></pre></div>
 <p>The <code>script</code> argument is recognized by
 <code>NMstamp</code>, but you can add anything to this. We want to keep
 descriptive note too. Another often useful piece of information is what
 source data files were read in order to generate the saved data.
 <code>Description</code> and <code>Source.Files</code> are only examples
 - any name can be used.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMstamp.html">NMstamp</a></span><span class="op">(</span><span class="va">pk</span>, script <span class="op">=</span> <span class="st">"vignettes/DataCreate.Rmd"</span>, Description <span class="op">=</span> <span class="st">"A PK dataset used for examples."</span>,</span>
 <span>    Source.Files <span class="op">=</span> <span class="st">"/path/to/adpc.sas7bdat,/path/to/adsl.sas7bdat"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/NMinfo.html">NMinfo</a></span><span class="op">(</span><span class="va">pk</span><span class="op">)</span></span>
@@ -787,7 +864,7 @@ source data files were read in order to generate the saved data.
 <span><span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2023-08-20 10:51:15 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2023-08-21 00:30:29 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$Description</span></span>
 <span><span class="co">#&gt; [1] "A PK dataset used for examples."</span></span>

@@ -99,7 +99,7 @@ according to the $INPUT section</h1>
 <span>  <span class="va">file.mod</span>,</span>
 <span>  dir.data <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  file.data <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  applyFilters <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  apply.filters <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  translate <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  recover.cols <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  details <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -109,6 +109,7 @@ according to the $INPUT section</h1>
 <span>  <span class="va">args.fread</span>,</span>
 <span>  invert <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">as.fun</span>,</span>
+<span>  <span class="va">applyFilters</span>,</span>
 <span>  <span class="va">use.rds</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -157,7 +158,7 @@ provided, the .mod file is not used at all.</p></dd>
 used, the control streams are not used at all.</p></dd>
 
 
-<dt>applyFilters</dt>
+<dt>apply.filters</dt>
 <dd><p>If TRUE (default), IGNORE and ACCEPT
 statements in the Nonmem control streams are applied before
 returning the data.</p></dd>
@@ -220,11 +221,15 @@ as.fun="data.table". The default can be configured using
 NMdataConf.</p></dd>
 
 
+<dt>applyFilters</dt>
+<dd><p>Deprecated - use apply.filters.</p></dd>
+
+
 <dt>use.rds</dt>
 <dd><p>Deprecated - use <code>formats.read</code> instead. If
 provided (though not recommended), this will overwrite
 <code>formats.read</code>, and only formats <code>rds</code> and
-<code>csv</code> can be used. w</p></dd>
+<code>csv</code> can be used.</p></dd>
 
 </dl></div>
     <div id="value">
