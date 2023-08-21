@@ -32,6 +32,7 @@ NMdataConf(check.time=FALSE)
 library(data.table)
 library(ggplot2)
 theme_set(theme_bw()+theme(legend.position="bottom"))
+library(knitr)
 ```
 Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
@@ -54,7 +55,7 @@ This vignettes aims at enabling you at
 * Easily and consistently order data columns using `NMorderColumns`
 
 * Using `NMcheckData` to perform a extensive data check before
-  exporting for Nonmem
+  exporting for NONMEM
  
 * Writing the prepared data to file ensuring compatibility with NONMEM
   and for post-processing in R using `NMwriteData`
@@ -308,7 +309,7 @@ expanded, it is only for internal calculations on the existing rows).
 
 
 ## Exclusion flags
-There is no way around excluding some of the events in data due to various reasons. And we need to be able to answer to why we excluded each of the points, and to how many points were excluded due to which criteria. `NMdata` provides two functions to handle this - `flagsAssign` assigns exclusion flags to data records (rows), and `flagsCount` summarizes the number of discarded rows and the reasons. 
+There is no way around excluding some of the events in data due to various reasons. We need to be able to answer to why we excluded each of the points, and to how many points were excluded due to which criteria. `NMdata` provides two functions to handle this - `flagsAssign` assigns exclusion flags to data records (rows), and `flagsCount` summarizes the number of discarded rows and the reasons. 
 
 This implementation makes it easy to keep the rows flagged for exclusion in the dataset and ignore them in NONMEM. Or if you prefer, you can remove the rows after generating an overview of the exclusion counts for your report. 
 
@@ -325,42 +326,58 @@ For use in NONMEM's `IGNORE` feature, the easiest is that inclusion/exclusion is
 determined by a single column in data - we call that column `FLAG`
 here, but any column name can be used. `FLAG` obviously draws on
 information from other columns such as `TIME`, `DV`, and many others,
-depending on your dataset and your way of working.
+depending on your dataset and your way of working. 
 
-The function that applies inclusion/excluasion rules is called
+The function that applies exclusion rules is called
 `flagsAssign`, and it takes a dataset and a data.frame with rules as
-arguments. In this simple example we only exclude data due to two different reasons - and only samples (keeping all doses in the analysis). We exclude all pre-dose samples. For post-dose samples, we exclude those below LLOQ.
+arguments. In this example we consider four different reasons to exclude samples - and only samples (keeping all doses in the analysis). We exclude all pre-dose samples. We also exclude samples with missing time, missing value, and we exclude those below LLOQ. The `data.frame` with these rules looks like this
 
 ```{r,include=F}
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds", package="NMdata"))
 pk[,`:=`(FLAG=NULL,flag=NULL)]
 ```
 ```{r}
-dt.flags <- fread(text="FLAG,flag,condition
-10,Below LLOQ,BLQ==1
-100,Negative time,TIME<0")
+dt.flags <- fread( text = "FLAG,  flag,               condition
+                           40,    Pre-dose sample,    !is.na(TIME) & TIME<0
+                           30,    Missing time,       is.na(TIME)
+                           20,    Missing value,      is.na(DV)
+                           10,    Below LLOQ,         BLQ==1")
 
+dt.flags
+``` 
+`fread` is used to create a data.table (like `read.csv` to create a
+data.frame) for readability, one line for each row in the data.table created. Notice how `FLAG` is numeric and interpretable by NONMEM, `flag` is descriptions interpretable by humans, and `condition` is expressions interpretable by R.
+
+```{r}
 pk <- flagsAssign(pk,tab.flags=dt.flags,subset.data="EVID==0")
-pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dose")
 ```
 
-`fread` is used to create a data.table (like `read.csv` to create a
-data.frame) for readability, one line for each row in the data.table created.
-`flagsAssign` applies the conditions sequentially and by decreasing 
+`flagsAssign` applies the conditions sequentially and by decreasing
 value of `FLAG`. `FLAG=0` means that the observation is included in
 the analysis. You can use any expression that can be evaluated within
-the data.frame. In this case, `BLQ` has to exist in `pk`.
+the data.frame. In this case, numeric `TIME`, `DV`, and `BLQ` culomns
+must exist in `pk`.
 
 Finally, flags are assigned to `EVID==1` rows. Here, no flag table is
-used. This means that all `EVID==1` rows will get `FLAG=0` and `flag="Dose"`. You can use a separate data.frame of flags for dosing records as needed.
+used. This means that all `EVID==1` rows will get `FLAG=0` and
+`flag="Dose"`. You can use a separate data.frame of flags for dosing
+records as needed.
 
-In NONMEM, you can include `IGNORE=(FLAG.NE.0)` in `$DATA` or `$INFILE`.
+```{r}
+pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dose")
+```
 
 Again, the omission will be attributed to the first condition
 matched. Default is to apply the conditions by the order of decreasing
 numerical flag value. Use `flags.increasing=TRUE` if you prefer the
 opposite. However, what cannot be modified is that 0 is the numerical
 value for rows that are not matched by any conditions.
+
+
+In NONMEM, we can now include `IGNORE=(FLAG.NE.0)` in `$DATA` or
+`$INFILE`. NMwriteData (see later in this vignette) will by default
+look for `FLAG` and suggest an IGNORE statement for `$DATA`.
+
 
 
 What rows to omit from a data set can vary from one analysis to
@@ -372,7 +389,8 @@ change the `IGNORE` statement given above to `IGNORE=(FLAG.LT.10)`, or
 you create a different exclusion flag for that one. If you prefer to
 create a new set of exclusion flags, just use new names for the
 numerical and the character flag columns so you don't overwrite the
-old ones. See help of `flagsAssign` and `flagsCount` for how. 
+old ones. See help of `flagsAssign` and `flagsCount` for how -
+arguments are called `col.flagn` and `col.flagc`.
 
 
 ### Summarize data exclusions
@@ -387,11 +405,19 @@ many were left after application of each criterion.
 ```{r}
 tab.count <- flagsCount(data=pk[EVID==0],tab.flags=dt.flags)
 names(tab.count)
-tab.count[,.( flag, N.discard, Nobs.discard,N.left, Nobs.left)]
+tab.count[,.("Data cleaning step"=flag, N.discard, Nobs.discard,N.left, Nobs.left)] |> kable()
 ```
 
-`flagsCount` includes a `file` argument to save the the table right
-away.
+Notice that each row in the summary table does not describe how many
+observations _matched_ the criterion, but how many observations were
+_excluded_ due to the criterion. For instance, two samples are
+excluded due to values below LLOQ. All the predose samples may also be
+below LLOQ. By the order of the `FLAG` values however, we decided that
+we wanted to exclude this samples no matter of their values. Hence
+they are counted in that and only that bin.
+
+`flagsCount` includes a `file` argument to save the the table as a csv
+right away.
 
 
 ## Finalize data format and write to file

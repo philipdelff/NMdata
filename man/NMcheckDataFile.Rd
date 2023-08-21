@@ -8,11 +8,12 @@ NMcheckDataFile(
   file,
   col.row,
   col.id = "ID",
-  use.rds = FALSE,
+  formats.read = "csv",
   quiet = FALSE,
   file.mod,
   dir.data,
   as.fun,
+  use.rds,
   ...
 )
 }
@@ -23,11 +24,16 @@ NMcheckDataFile(
 
 \item{col.id}{subject identifier}
 
-\item{use.rds}{use rds file instead of csv. This is typically not wanted because we want to test the input data as read by Nonmem.}
+\item{formats.read}{Prioritized input data file formats to look
+for and use if found. Default is c("csv") which means
+\code{rds} and \code{fst} will _not_ be used. Typically only
+the csv file is wanted because we want to test the input data
+as read by Nonmem.}
 
 \item{quiet}{Keep quiet? Default is FALSE.}
 
-\item{file.mod}{How to find the input control stream if you are using the output control stream.}
+\item{file.mod}{How to find the input control stream if you are
+using the output control stream.}
 
 \item{dir.data}{The data directory can only be read from the
 control stream (.mod) and not from the output file (.lst). So
@@ -35,7 +41,10 @@ if you only have the output control stream, use dir.data to
 tell in which directory to find the data file. If dir.data is
 provided, the .mod file is not used at all.}
 
-\item{as.fun}{The function to run results through before returning them.}
+\item{as.fun}{The function to run results through before returning
+them.}
+
+\item{use.rds}{Deprecated. Use formats.read instead.}
 
 \item{...}{passed to NMcheckData}
 }
