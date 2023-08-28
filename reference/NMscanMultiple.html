@@ -19,7 +19,7 @@ arguments."><meta property="og:image" content="https://philipdelff.github.io/NMd
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.905</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.911</span>
       </span>
     </div>
 
@@ -104,8 +104,11 @@ list.files(). See file.pattern argument too.</p></dd>
 
 
 <dt>file.pattern</dt>
-<dd><p>The pattern used to match the filenames to read
-with NMscanData. Passed to list.files(). See dir argument too.</p></dd>
+<dd><p>The pattern used to match the filenames to
+read with NMscanData. Passed to list.files(). If <code>dir</code> is
+supplied and <code>files</code> is not (or is <code>NULL</code>), the
+default is <code>".*\.lst"</code> which means all files ending in
+`<code>.lst</code>`. See <code>dir</code> argument too.</p></dd>
 
 
 <dt>as.fun</dt>
