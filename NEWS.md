@@ -7,6 +7,10 @@
   function for editing the text, i.e. making it more suitable for
   doing changes to sections like $PK/$PRED or $THETA/$OMEGA/$SIGMA.
 
+## Other improvements
+* NMscanMultiple now by default looks for all .lst files if provided
+  with a directory (`dir`) only.
+
 # 0.1.0
 
 ## New features

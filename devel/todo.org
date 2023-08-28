@@ -340,14 +340,14 @@ extension is .rds?
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
 *** NMreadSection
-**** TODO [#A] error returned when return="idx" and no section specified :Bug: 
+**** DONE error returned when return="idx" and no section specified     :Bug: 
 **** TODO [#B] return="text"/"idx" should be return.idx=TRUE/FALSE instead
 It would be easier to remember
 *** NMreplaceDataFile
 **** DONE Implement function
 **** DONE Tests
 *** NMwriteSection
-**** TODO [#A] newlines as a function
+**** DONE newlines as a function
 If newlines is a function and location=="replace", read section, apply
 function to text, then overwrite.
 ***** DONE Implement: newlines as a function
@@ -555,6 +555,7 @@ See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
 is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
 *** NMscanMultiple
+**** DONE set default file pattern to all lsts
 **** TODO [#A] Check if models are repeated
 It now throws a weird error
 **** TODO [#A] Check if input data can be reused across models

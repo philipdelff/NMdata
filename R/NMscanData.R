@@ -346,7 +346,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                                       ,quiet=TRUE
                                       ,translate=translate.input
                                       ,formats.read=formats.read
-                                      ,applyFilters=FALSE
+                                      ,apply.filters=FALSE
                                       ,args.fread=args.fread
                                       ,as.fun="data.table"
                                       ,col.id=col.id

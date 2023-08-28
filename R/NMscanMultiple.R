@@ -8,8 +8,11 @@
 ##'     edit. See file.pattern too.
 ##' @param dir The directory in which to find the models. Passed to
 ##'     list.files(). See file.pattern argument too.
-##' @param file.pattern The pattern used to match the filenames to read
-##'     with NMscanData. Passed to list.files(). See dir argument too.
+##' @param file.pattern The pattern used to match the filenames to
+##'     read with NMscanData. Passed to list.files(). If \code{dir} is
+##'     supplied and \code{files} is not (or is \code{NULL}), the
+##'     default is \code{".*\\.lst"} which means all files ending in
+##'     `\code{.lst}`. See \code{dir} argument too.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
@@ -73,7 +76,10 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
     
     if(missing(files)) files <- NULL
     if(missing(dir)) dir <- NULL
-    if(missing(file.pattern)) file.pattern <- NULL
+    ## if(missing(file.pattern)) file.pattern <- NULL
+    if(is.null(files) && !is.null(dir) && is.null(file.pattern)) {
+        file.pattern=".+\\.lst"
+    }
     
     all.files <- getFilePaths(files=files,file.pattern=file.pattern,dir=dir)
     
