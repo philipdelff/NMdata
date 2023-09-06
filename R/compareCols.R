@@ -101,6 +101,11 @@ compareCols <- function(...,list.data,keep.names=TRUE,test.equal=FALSE,diff.only
     } else {
         dots <- list.data
         names.dots <- names(dots)
+        if(is.null(names.dots)) names.dots <- paste0("x",1:length(list.data))
+        if(""%in%names.dots){
+            names.dots[names.dots==""] <- paste0("x",which(names.dots==""))
+        }
+        names(dots) <- names.dots
     }
 
     

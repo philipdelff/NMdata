@@ -48,6 +48,7 @@ NMwriteSectionOne <- function(file0,lines,section,location="replace",
             ## this check should be outside replaceOnePart
             if(location!="replace") stop("When newlines is a function, location must be replace.")
             newlines.fun <- newlines
+            
             newlines <- NMreadSection(lines=lines,section=section,return="text",keep.empty=TRUE,
                                     keep.name=TRUE,keep.comments=TRUE,as.one=TRUE,
                                     clean.spaces=FALSE)

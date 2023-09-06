@@ -1,7 +1,11 @@
 ##' Extract run time from output control stream
 ##'
 ##' @param file path to output control stream
-##'
+##' @param tz.lst The time zone of the time stamp from Nonmem. The
+##'     default ("as.is") is to try to extract it or take it from the
+##'     system on which this function is run. See details.
+##' @details Time zones are system specific. See \code{OlsonNames()}
+##'     for a list of what time zones are available on the system.
 ##' @return A POSIXct date-time object
 ##' @examples
 ##' file <- system.file("examples/nonmem/xgxr003.lst",package="NMdata")

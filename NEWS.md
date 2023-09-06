@@ -10,6 +10,7 @@
 ## Other improvements
 * NMscanMultiple now by default looks for all .lst files if provided
   with a directory (`dir`) only.
+* Minor bugfix in compareCols in case input is an unnamed list
 
 # 0.1.0
 
