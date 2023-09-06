@@ -234,8 +234,9 @@ For now NA expected
 Currently, these are findings
 **** TODO Allow special characters in names of columns not readable by nonmem?
 **** DONE RATE must be missing or 0 for non-dose events
-**** TODO [#A] Add support for simulation dataset
-ID's are expected to have sim records rather than obs.
+**** DONE Add support for simulation dataset
+ID's are expected to have sim records rather than obs. And col.row not
+expected. It's not used by NMsim anyway.
 ***** TODO What happens if they have obs too?
 **** CANCELLED Look for NA's coded as "."
 **** DONE Bug if no numeric cols found?

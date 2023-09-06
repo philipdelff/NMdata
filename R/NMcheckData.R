@@ -68,6 +68,11 @@
 ##'     duplicate events. col.id, col.cmt, col.evid, and col.time are
 ##'     always considered if found in data, and cols.dup is added to
 ##'     this list if provided.
+##' @param type.data "est" for estimation data (default), and "sim"
+##'     for simulation data. Differences are that \code{col.row} is
+##'     not expected for simulation data, and subjects will be checked
+##'     to have EVID==0 rows for estimation data and EVID==2 rows for
+##'     simulation data.
 ##' @param na.strings Strings to be accepted when trying to convert
 ##'     characters to numerics. This will typically be a string that
 ##'     represents missing values. Default is ".". Notice, actual NA,
@@ -194,8 +199,9 @@
 NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
                         col.time="TIME",col.dv="DV",col.mdv="MDV",
                         col.cmt="CMT",col.amt="AMT",col.flagn,col.row,
-                        col.usubjid,cols.dup,na.strings,return.summary=FALSE,
-                        quiet=FALSE,as.fun){
+                        col.usubjid,cols.dup,type.data="est",
+                        na.strings,return.summary=FALSE, quiet=FALSE,
+                        as.fun){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -239,10 +245,20 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     if(missing(covs.occ)) covs.occ <- NULL
     if(missing(cols.num)) cols.num <- NULL
     if(missing(na.strings)) na.strings <- "."
+
+    if(!is.character(type.data)||!type.data%in% c("est","sim")){
+        stop("type.data myst be either \"est\" or \"sim\".")
+    }
+
+    col.row.was.mising <- FALSE
     if(missing(col.row)) {
         col.row <- NULL
+        col.row.was.mising <- TRUE
     }
-    col.row <- NMdataDecideOption("col.row",col.row)
+
+    if(! (type.data=="sim" && is.null(col.row))){
+        col.row <- NMdataDecideOption("col.row",col.row)
+    }
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
@@ -306,6 +322,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
 
     }
 
+    
 ### file mode
     if(!is.null(file)){
         if(!is.null(col.flagn.orig)){warning("col.flagn is not used when file is specified.")}
@@ -586,22 +603,13 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
                       )
     if(!is.null(col.flagn.orig)) cols.num.all <- c(cols.num.all,col.flagn)
     
-    ##     cols.num.all <- unique(cols.num.all)
-    ## ### check for missing in cols.num.all
-    
-    ##     for(col in cols.num.all){
-    ##         findings <- listEvents(col,name="is NA",fun=is.na,invert=TRUE,new.rows.only=T,debug=FALSE,events=findings) 
-    ##         findings <- listEvents(col,name="Not numeric",
-    ##                                fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
-    ##                                new.rows.only=TRUE,events=findings)
-    ##     }
 
     cols.num.all <- c(list("TRUE"=cols.num.all),
                       cols.num)
 
     
 
-##### I believe this is covered altogether ass part of cols.num.all.
+##### I believe this is covered altogether as part of cols.num.all.
     ##     ## cols.num is a named list. Names are subsets.
     if(!is.null(cols.num.all
                 )){
@@ -883,11 +891,22 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
         }
 ### subjects without observations    
         ids.no.obs <- setdiff(all.ids,tab.evid.id[EVID%in%c(0),get(col.id.orig)])
-        if(length(ids.no.obs)>0){
-            findings <- rbind(findings
-                             ,
-                              data.table(check="Subject has no obs",column="EVID",ID=ids.no.obs,level="ID")
-                             ,fill=TRUE)
+        ids.no.sim <- setdiff(all.ids,tab.evid.id[EVID%in%c(2),get(col.id.orig)])
+        if(type.data=="est"){
+            if(length(ids.no.obs)>0){
+                findings <- rbind(findings
+                                 ,
+                                  data.table(check="Subject has no obs",column="EVID",ID=ids.no.obs,level="ID")
+                                 ,fill=TRUE)
+            }
+        }
+        if(type.data=="sim"){
+            if(length(ids.no.sim)>0){
+                findings <- rbind(findings
+                                 ,
+                                  data.table(check="Subject has no sim records",column="EVID",ID=ids.no.obs,level="ID")
+                                 ,fill=TRUE)
+            }
         }
     }
 

@@ -21,6 +21,7 @@ NMcheckData(
   col.row,
   col.usubjid,
   cols.dup,
+  type.data = "est",
   na.strings,
   return.summary = FALSE,
   quiet = FALSE,
@@ -105,6 +106,12 @@ is less likely).}
 duplicate events. col.id, col.cmt, col.evid, and col.time are
 always considered if found in data, and cols.dup is added to
 this list if provided.}
+
+\item{type.data}{"est" for estimation data (default), and "sim"
+for simulation data. Differences are that \code{col.row} is
+not expected for simulation data, and subjects will be checked
+to have EVID==0 rows for estimation data and EVID==2 rows for
+simulation data.}
 
 \item{na.strings}{Strings to be accepted when trying to convert
 characters to numerics. This will typically be a string that

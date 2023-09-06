@@ -8,12 +8,20 @@ lstExtractTime(file, tz.lst = "as.is")
 }
 \arguments{
 \item{file}{path to output control stream}
+
+\item{tz.lst}{The time zone of the time stamp from Nonmem. The
+default ("as.is") is to try to extract it or take it from the
+system on which this function is run. See details.}
 }
 \value{
 A POSIXct date-time object
 }
 \description{
 Extract run time from output control stream
+}
+\details{
+Time zones are system specific. See \code{OlsonNames()}
+    for a list of what time zones are available on the system.
 }
 \examples{
 file <- system.file("examples/nonmem/xgxr003.lst",package="NMdata")

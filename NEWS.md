@@ -6,6 +6,8 @@
   user-provided text. This new feature allows the user to specify a
   function for editing the text, i.e. making it more suitable for
   doing changes to sections like $PK/$PRED or $THETA/$OMEGA/$SIGMA.
+* NMcheckData has a new argument `type.data` which allows switching
+  between estimation and simulation type data.
 
 ## Other improvements
 * NMscanMultiple now by default looks for all .lst files if provided
