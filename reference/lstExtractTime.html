@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.911</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.921</span>
       </span>
     </div>
 
@@ -92,12 +92,23 @@
     <dl><dt>file</dt>
 <dd><p>path to output control stream</p></dd>
 
+
+<dt>tz.lst</dt>
+<dd><p>The time zone of the time stamp from Nonmem. The
+default ("as.is") is to try to extract it or take it from the
+system on which this function is run. See details.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
 <p>A POSIXct date-time object</p>
+    </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>Time zones are system specific. See <code><a href="https://rdrr.io/r/base/timezones.html" class="external-link">OlsonNames()</a></code>
+    for a list of what time zones are available on the system.</p>
     </div>
 
     <div id="ref-examples">

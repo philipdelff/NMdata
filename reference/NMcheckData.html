@@ -21,7 +21,7 @@ but because they are typical dataset issues."><meta property="og:image" content=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.911</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.921</span>
       </span>
     </div>
 
@@ -107,6 +107,7 @@ but because they are typical dataset issues.</p>
 <span>  <span class="va">col.row</span>,</span>
 <span>  <span class="va">col.usubjid</span>,</span>
 <span>  <span class="va">cols.dup</span>,</span>
+<span>  type.data <span class="op">=</span> <span class="st">"est"</span>,</span>
 <span>  <span class="va">na.strings</span>,</span>
 <span>  return.summary <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -222,6 +223,14 @@ is less likely).</p></dd>
 duplicate events. col.id, col.cmt, col.evid, and col.time are
 always considered if found in data, and cols.dup is added to
 this list if provided.</p></dd>
+
+
+<dt>type.data</dt>
+<dd><p>"est" for estimation data (default), and "sim"
+for simulation data. Differences are that <code>col.row</code> is
+not expected for simulation data, and subjects will be checked
+to have EVID==0 rows for estimation data and EVID==2 rows for
+simulation data.</p></dd>
 
 
 <dt>na.strings</dt>
