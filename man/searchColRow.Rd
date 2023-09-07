@@ -57,30 +57,7 @@ can be configured using NMdataConf.}
 used to calculate number of subjects in data. Default is
 modified by NMdataConf.}
 
-\item{use.rds}{If an rds file is found with the exact same name
-(except for .rds instead of say .csv) as the text file
-mentioned in the Nonmem control stream, should this be used
-instead? The default is yes, and NMwriteData will create this
-by default too.}
-
-\item{applyFilters}{If TRUE (default), IGNORE and ACCEPT
-statements in the Nonmem control streams are applied before
-returning the data.}
-
-\item{recover.cols}{recover columns that were not used in the
-Nonmem control stream? Default is TRUE. Can only be negative
-when translate=FALSE.}
-
-\item{details}{If TRUE, metadata is added to output. In this case,
-you get a list. Typically, this is mostly useful if
-programming up functions which behavior must depend on
-properties of the output. See details.}
-
-\item{col.row}{The name of the row counter column. Optional and
-only used to check whether the row counter is in the data.}
-
-\item{quiet}{Default is to inform a little, but TRUE is useful for
-non-interactive stuff.}
+\item{tab.row}{row-level data}
 }
 \value{
 A character message about the findings if any

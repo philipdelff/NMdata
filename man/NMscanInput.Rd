@@ -93,7 +93,7 @@ can be configured using NMdataConf.}
 
 \item{invert}{If TRUE, the data rows that are dismissed by the
 Nonmem data filters (ACCEPT and IGNORE) and only this will be
-returned. Only used if applyFilters is TRUE.}
+returned. Only used if apply.filters is TRUE.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to

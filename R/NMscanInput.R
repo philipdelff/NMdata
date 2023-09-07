@@ -72,7 +72,7 @@
 ##'     NMdataConf.
 ##' @param invert If TRUE, the data rows that are dismissed by the
 ##'     Nonmem data filters (ACCEPT and IGNORE) and only this will be
-##'     returned. Only used if applyFilters is TRUE.
+##'     returned. Only used if apply.filters is TRUE.
 ##' @param applyFilters Deprecated - use apply.filters.
 ##' @param use.rds Deprecated - use \code{formats.read} instead. If
 ##'     provided (though not recommended), this will overwrite

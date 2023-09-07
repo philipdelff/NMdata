@@ -23,36 +23,18 @@
 ##'     provided, the .mod file is not used at all.
 ##' @param file.data Specification of the data file path. When this is
 ##'     used, the control streams are not used at all.
-##' @param use.rds If an rds file is found with the exact same name
-##'     (except for .rds instead of say .csv) as the text file
-##'     mentioned in the Nonmem control stream, should this be used
-##'     instead? The default is yes, and NMwriteData will create this
-##'     by default too.
-##' @param applyFilters If TRUE (default), IGNORE and ACCEPT
-##'     statements in the Nonmem control streams are applied before
-##'     returning the data.
 ##' @param translate.input If TRUE (default), data columns are named
 ##'     as interpreted by Nonmem (in $INPUT). If data file contains
 ##'     more columns than mentioned in $INPUT, these will be named as
 ##'     in data file (if data file contains named variables).
-##' @param recover.cols recover columns that were not used in the
-##'     Nonmem control stream? Default is TRUE. Can only be negative
-##'     when translate=FALSE.
-##' @param details If TRUE, metadata is added to output. In this case,
-##'     you get a list. Typically, this is mostly useful if
-##'     programming up functions which behavior must depend on
-##'     properties of the output. See details.
 ##' @param col.id The name of the subject ID column. Optional and only
 ##'     used to calculate number of subjects in data. Default is
 ##'     modified by NMdataConf.
-##' @param col.row The name of the row counter column. Optional and
-##'     only used to check whether the row counter is in the data.
-##' @param quiet Default is to inform a little, but TRUE is useful for
-##'     non-interactive stuff.
 ##' @param args.fread List of arguments passed to fread. Notice that
 ##'     except for "input" and "file", you need to supply all
 ##'     arguments to fread if you use this argument. Default values
 ##'     can be configured using NMdataConf.
+##' @param tab.row row-level data
 ##' @return A character message about the findings if any
 ##' @keywords internal
 
@@ -65,7 +47,7 @@ searchColRow <- function(file,file.mod=file.mod,dir.data,file.data,translate.inp
                                        ,quiet=TRUE
                                        ,translate=translate.input
                                        ,formats.read=formats.read
-                                       ,applyFilters=FALSE
+                                       ,apply.filters=FALSE
                                        ,args.fread=args.fread
                                        ,details=TRUE
                                        ,col.id=col.id

@@ -59,7 +59,7 @@ NMcheckDataFile <- function(file,col.row,col.id="ID",formats.read="csv",quiet=FA
     }
 
     inp <- NMscanInput(file,formats.read=formats.read,col.id=col.id,col.row=col.row,
-                       translate=TRUE,recover.cols=FALSE,applyFilters=TRUE,
+                       translate=TRUE,recover.cols=FALSE,apply.filters=TRUE,
                        file.mod=file.mod,dir.data=dir.data,
                        quiet=TRUE,as.fun=as.fun
                       )

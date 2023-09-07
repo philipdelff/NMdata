@@ -79,7 +79,7 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
     if(missing(file.pattern)) file.pattern <- NULL
     ## in case only a dir is provided, we want to look for all lsts
     if(is.null(files) && !is.null(dir) && is.null(file.pattern)) {
-        file.pattern=".+\\.lst"
+        file.pattern=".+\\.lst$"
     }
     
     all.files <- getFilePaths(files=files,file.pattern=file.pattern,dir=dir)
