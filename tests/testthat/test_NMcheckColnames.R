@@ -7,7 +7,7 @@ test_that("basic",{
 
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
     
-    res1 <- NMcheckColnames(file=file.lst)
+    res1 <- NMcheckColnames(file=file.lst,quiet=TRUE)
     ## dim(res1)
 
     expect_equal_to_reference(res1,fileRef,version=2)
@@ -19,7 +19,7 @@ test_that("results as data.frame",{
 
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
     
-    res1 <- NMcheckColnames(file=file.lst,as.fun=as.data.frame)
+    res1 <- NMcheckColnames(file=file.lst,as.fun=as.data.frame, quiet=TRUE)
 
     expect_equal_to_reference(res1,fileRef,version=2)
 })

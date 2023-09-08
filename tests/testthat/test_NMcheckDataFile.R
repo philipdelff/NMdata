@@ -36,7 +36,7 @@ test_that("Using control stream file",{
 
     file.lst <- "testData/nonmem/xgxr001.lst"
     
-    res1a <- NMcheckData(file=file.lst)
+    res1a <- NMcheckData(file=file.lst,quiet=TRUE)
 
     res1a <- fix.time(res1a,meta=F)
     expect_equal_to_reference(res1a,fileRef)
@@ -46,7 +46,7 @@ test_that("Using control stream file",{
     ##     expect_equal(res.ref[[name]],res1a[[name]])
     ## })
     
-    res1b <- NMcheckData(file=file.lst)
+    res1b <- NMcheckData(file=file.lst,quiet=TRUE)
     res1b <- fix.time(res1b,meta=F)
 
     expect_equal(res1a,res1b)
@@ -63,6 +63,6 @@ test_that("Input control stream missing",{
     fileRef <- "testReference/NMcheckDataFile_02.rds"
     file.lst <- "testData/nonmem/xgxr001.lst"
 
-    expect_error(NMcheckDataFile(file=file.lst,use.input=F))
+    expect_error(NMcheckDataFile(file=file.lst,use.input=F,quiet=TRUE))
 
 })

@@ -1,5 +1,8 @@
 context("NMcheckData")
 
+library(data.table)
+data.table::setDTthreads(1)
+
 ## meta is if x is metadata rather than an NMdata object
 fix.time <- function(x,meta=T){
     if(meta){
@@ -34,7 +37,7 @@ test_that("basic",{
     fileRef <- "testReference/NMcheckData_1.rds"
     
     pk <- readRDS(file="testData/data/xgxr2.rds")
-    res <- NMcheckData(pk)
+    res <- NMcheckData(pk, quiet=TRUE)
 
    expect_equal_to_reference(res,fileRef,version=2)
 })
@@ -43,7 +46,7 @@ test_that("No col.flagn",{
     fileRef <- "testReference/NMcheckData_2.rds"
     
     pk <- readRDS(file="testData/data/xgxr2.rds")
-    res <- NMcheckData(pk,col.flagn=FALSE)
+    res <- NMcheckData(pk,col.flagn=FALSE, quiet=TRUE)
     expect_equal_to_reference(res,fileRef,version=2)
 })
 
@@ -56,7 +59,7 @@ test_that("Misc findings",{
     ## a comma in a string - but with FLAG>0
     pk[2,ret.4:="3,mg"]
 
-    res <- NMcheckData(pk)
+    res <- NMcheckData(pk, quiet=TRUE)
     expect_equal_to_reference(res,fileRef,version=2)
     
 })
@@ -70,7 +73,7 @@ test_that("TIME with characters",{
     pk[,TIME:=as.character(TIME)]
     pk[ROW==204,TIME:=paste0(TIME,"p")]
 
-    res <- NMcheckData(pk)
+    res <- NMcheckData(pk, quiet=TRUE)
     expect_equal_to_reference(res,fileRef,version=2)
     
 })
@@ -87,7 +90,7 @@ test_that("Misc findings and dup colname",{
     colnames(pk)[22] <- "NAME"
     pk[2,ret.4:="3,mg"]
 
-    res <- expect_warning(NMcheckData(pk))
+    res <- expect_warning(NMcheckData(pk, quiet=TRUE))
     expect_equal_to_reference(res,fileRef,version=2)
     
 })
@@ -98,7 +101,7 @@ test_that("missing EVID",{
     pk <- readRDS(file="testData/data/xgxr2.rds")
     pk[,EVID:=NULL]
 
-    res <- NMcheckData(pk)
+    res <- NMcheckData(pk, quiet=TRUE)
     expect_equal_to_reference(res,fileRef,version=2)
     
 })
@@ -109,7 +112,7 @@ test_that("missing ID",{
     pk <- readRDS(file="testData/data/xgxr2.rds")
     pk[,ID:=NULL]
 
-    expect_error( NMcheckData(pk))
+    expect_error( NMcheckData(pk, quiet=TRUE))
 })
 
 test_that("missing MDV",{
@@ -118,7 +121,7 @@ test_that("missing MDV",{
     pk <- readRDS(file="testData/data/xgxr2.rds")
     pk[,MDV:=1]
 
-    res <- NMcheckData(pk)
+    res <- NMcheckData(pk, quiet=TRUE)
     expect_equal_to_reference(res,fileRef,version=2)
     ##         expect_equal(as.data.table(res)[level=="row"],as.data.table(readRDS(fileRef))[level=="row"])
 })
@@ -130,7 +133,7 @@ test_that("With ADDL, no II",{
     pk <- readRDS(file="testData/data/xgxr2.rds")
     pk[EVID==1,ADDL:=1]
 
-    res <- NMcheckData(pk)
+    res <- NMcheckData(pk, quiet=TRUE)
     expect_equal_to_reference(res,fileRef,version=2)
 })
 
@@ -141,7 +144,7 @@ test_that("With II, no ADDL",{
     pk <- readRDS(file="testData/data/xgxr2.rds")
     pk[EVID==1,II:=24]
 
-    res <- NMcheckData(pk)
+    res <- NMcheckData(pk, quiet=TRUE)
     expect_equal_to_reference(res,fileRef,version=2)
 })
 
@@ -163,7 +166,7 @@ test_that("ID and row with leading 0",{
     
     
     
-    res <- NMcheckData(pk)
+    res <- NMcheckData(pk, quiet=TRUE)
     ## res
     expect_equal_to_reference(res,fileRef,version=2)
 })
@@ -180,7 +183,7 @@ test_that("One covariate varying within ID",{
     pk <- readRDS(file="testData/data/xgxr2.rds")    
 
     pk[1500,WEIGHTB:=30]  
-    res <- NMcheckData(pk,covs=c("trtact","WEIGHTB","CYCLE","DOSE"))
+    res <- NMcheckData(pk,covs=c("trtact","WEIGHTB","CYCLE","DOSE"), quiet=TRUE)
     ## res
     expect_equal_to_reference(res,fileRef,version=2)
 })
@@ -201,7 +204,7 @@ test_that("with IOV",{
                  pk.fed)
     pk2[,ROW:=.I]
 
-    res <- NMcheckData(pk2,covs.occ=list(PERIOD=c("FED")),cols.num="REE")
+    res <- NMcheckData(pk2,covs.occ=list(PERIOD=c("FED")),cols.num="REE", quiet=TRUE)
     expect_equal_to_reference(res,fileRef,version=2)
 
 })
@@ -218,7 +221,7 @@ test_that("covariates within subsets",{
     pk[EVID==1,ASSAY:=c(rep(NA,3),1,rep(NA,.N-4))]
 
     ## it finds way too many for ASSAY. Should only find 1.
-    res <- NMcheckData(pk,cols.num=list("EVID==0"=c("LLOQ","ASSAY"),"EVID==1"=c("site"),"WEIGHTB"))
+    res <- NMcheckData(pk,cols.num=list("EVID==0"=c("LLOQ","ASSAY"),"EVID==1"=c("site"),"WEIGHTB"), quiet=TRUE)
     expect_equal_to_reference(res,fileRef,version=2)
 
 })
@@ -232,7 +235,7 @@ test_that("numerical coded as char and NA as .",{
     pk <- readRDS(file="testData/data/xgxr5.rds")
     
     ## it finds way too many for ASSAY. Should only find 1.
-    res <- NMcheckData(pk,na.strings=NULL)
+    res <- NMcheckData(pk,na.strings=NULL, quiet=TRUE)
     expect_equal_to_reference(res,fileRef,version=2)
 
 })
@@ -246,7 +249,7 @@ test_that("usubjid OK",{
     pk[,usubjid:=paste0("100-",ID)]
     
     ## it finds way too many for ASSAY. Should only find 1.
-    res <- NMcheckData(pk,col.usubjid="usubjid")
+    res <- NMcheckData(pk,col.usubjid="usubjid", quiet=TRUE)
     expect_equal_to_reference(res,fileRef,version=2)
 
 
@@ -264,7 +267,7 @@ test_that("ID not unique",{
 
     
     ## it finds way too many for ASSAY. Should only find 1.
-    res <- NMcheckData(pk,col.usubjid="usubjid")
+    res <- NMcheckData(pk,col.usubjid="usubjid", quiet=TRUE)
     expect_equal_to_reference(res,fileRef,version=2)
 
 
@@ -283,7 +286,7 @@ test_that("usubjid not unique",{
 
     
     ## it finds way too many for ASSAY. Should only find 1.
-    res <- NMcheckData(pk,col.usubjid="usubjid")
+    res <- NMcheckData(pk,col.usubjid="usubjid", quiet=TRUE)
     expect_equal_to_reference(res,fileRef,version=2)
 })
 
@@ -292,10 +295,10 @@ test_that("no col.flagn",{
     
     pk <- readRDS(file="testData/data/xgxr2.rds")
     pk <- pk[FLAG==0]
-    res1 <- NMcheckData(pk)
+    res1 <- NMcheckData(pk, quiet=TRUE)
 
     pk[,FLAG:=NULL]
-    res2 <- NMcheckData(pk)
+    res2 <- NMcheckData(pk, quiet=TRUE)
     expect_equal(res1,res2)
 })
 
@@ -313,8 +316,8 @@ dups_data <- data.frame(
 
 
 test_that("check data files without cols.dup, but passed with it",{
-  no_dup_specified <- NMcheckData(dups_data)
-  dup_specified <- NMcheckData(dups_data, cols.dup = "DVID")
+  no_dup_specified <- NMcheckData(dups_data, quiet=TRUE)
+  dup_specified <- NMcheckData(dups_data, cols.dup = "DVID", quiet=TRUE)
   
   expect_equal(nrow(no_dup_specified), 2)
   expect_equal(nrow(dup_specified), 0)
@@ -329,7 +332,7 @@ test_that("simulation data",{
 
     dt.all <- rbind(dt.dos,dt.sim,fill=T)
 
-    res <- NMcheckData(dt.all)
+    res <- NMcheckData(dt.all, quiet=TRUE)
     
     expect_equal_to_reference(res,fileRef)
 
@@ -344,7 +347,7 @@ test_that("empty data set",{
     
     
     ## it finds way too many for ASSAY. Should only find 1.
-    res <- NMcheckData(pk,col.usubjid="usubjid")
+    res <- NMcheckData(pk,col.usubjid="usubjid", quiet=TRUE)
 
     expect_equal_to_reference(res,fileRef)
 })

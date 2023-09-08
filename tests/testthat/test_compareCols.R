@@ -16,7 +16,7 @@ test_that("basic",{
     pk.reduced[,AMT:=as.character(AMT)]
 
 
-    res1 <- compareCols(pk,pk.reduced)
+    res1 <- compareCols(pk,pk.reduced,quiet=TRUE)
 
     expect_equal_to_reference(res1,fileRef)
 
@@ -32,7 +32,7 @@ test_that("diff.only=FALSE",{
     pk.reduced[,CYCLE:=NULL]
     pk.reduced[,AMT:=as.character(AMT)]
 
-    res1 <- compareCols(pk,pk.reduced,diff.only=FALSE)
+    res1 <- compareCols(pk,pk.reduced,diff.only=FALSE,quiet=TRUE)
 
     expect_equal_to_reference(res1,fileRef)
 
@@ -49,11 +49,11 @@ test_that("diff.only=FALSE, keepNames = F",{
     pk.reduced[,CYCLE:=NULL]
     pk.reduced[,AMT:=as.character(AMT)]
 
-    res1 <- compareCols(pk,pk.reduced,diff.only=FALSE,keep.names = F)
+    res1 <- compareCols(pk,pk.reduced,diff.only=FALSE,keep.names = F,quiet=TRUE)
 
     expect_equal_to_reference(res1,fileRef)
 
-    res2 <- compareCols(pk,pk.reduced,diff.only=FALSE,keep.names = F)
+    res2 <- compareCols(pk,pk.reduced,diff.only=FALSE,keep.names = F,quiet=TRUE)
     expect_equal(res1,res2)
 })
 
@@ -71,14 +71,15 @@ test_that("messy names",{
             data.table(variable=c("CPDVG","CMDVG","efef"))
            ,
             data.table(variable=c("CPDVG","CMDVG"),compound=c("C-1","C-2"))
-        )
+        ,quiet=TRUE)
         ## now, clean because of keepNames=F
        ,
         compareCols(
             data.table(variable=c("CPDVG","CMDVG","efef"))
            ,
             data.table(variable=c("CPDVG","CMDVG"),compound=c("C-1","C-2"))
-           ,keepNames=FALSE)
+           ,keepNames=FALSE
+        ,quiet=TRUE)
     )
     
     expect_equal_to_reference(res1,fileRef)
@@ -96,7 +97,8 @@ test_that("cols.wanted",{
     pk.reduced[,CYCLE:=NULL]
     pk.reduced[,AMT:=as.character(AMT)]
 
-    res1 <- compareCols(pk,pk.reduced,cols.wanted=c("TIME","NAME","NOEXISTS"))
+    res1 <- compareCols(pk,pk.reduced,cols.wanted=c("TIME","NAME","NOEXISTS")
+                        ,quiet=TRUE)
 
     expect_equal_to_reference(res1,fileRef)
 
@@ -112,8 +114,8 @@ test_that("list.data",{
     pk.reduced[,CYCLE:=NULL]
     pk.reduced[,AMT:=as.character(AMT)]
 
-    res1 <- compareCols(pk,pk.reduced)
-    res2 <- compareCols(list.data=list(pk=pk,pk.reduced=pk.reduced))
+    res1 <- compareCols(pk,pk.reduced,quiet=TRUE)
+    res2 <- compareCols(list.data=list(pk=pk,pk.reduced=pk.reduced),quiet=TRUE)
 
     expect_equal(res1,res2)
 
