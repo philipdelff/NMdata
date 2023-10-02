@@ -34,7 +34,7 @@ test_that("basic",{
     fileRef <- "testReference/NMscanMultiple1.rds"
     resRef <- if(file.exists(fileRef)) readRDS(fileRef) else NULL
     
-    res <- NMscanMultiple(dir=system.file("examples/nonmem",package="NMdata"),file.pattern="xgxr.*\\.lst", check.time = FALSE)
+    res <- NMscanMultiple(dir=system.file("examples/nonmem",package="NMdata"),file.pattern="xgxr.*\\.lst", check.time = FALSE,quiet=TRUE)
     ## dim(res)
 
     res <- lapply(res,fix.time)

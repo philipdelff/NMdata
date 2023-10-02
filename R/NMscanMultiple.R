@@ -38,7 +38,6 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
     lst <- NULL
     ncols <- NULL
     nrows <- NULL
-    quiet <- NULL
     success <- NULL
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
@@ -124,9 +123,12 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
     res.all <- rbindlist(res.all.list[dt.lst[,which(success)]],fill=TRUE)
     writeNMinfo(res.all,info.list)
     
-    setcolorder(dt.lst,cc(lst,nrows,ncols,success,warning))
-    cat("\nOverview of model scanning results:\n")
-    print(dt.lst)
+### quiet would have to be looked for in ...
+    ## if(!quiet){
+        setcolorder(dt.lst,cc(lst,nrows,ncols,success,warning))
+        cat("\nOverview of model scanning results:\n")
+        print(dt.lst)
+   ## }
     
     ## run as.fun
     res.all <- as.fun(res.all)
