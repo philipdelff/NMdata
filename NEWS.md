@@ -1,3 +1,8 @@
+# 0.1.2
+## Other improvements
+* NMreadCsv supports multiple prioritized formats in the `format`
+  arguments.
+
 # 0.1.1
 ## New features
 * NMwriteSection can now handle functions to perform control stream
