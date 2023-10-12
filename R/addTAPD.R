@@ -85,12 +85,6 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
-    ## if(!missing(col.ndoses)){
-    ##     if(col.doscumn!="DOSCUMN"){
-    ##         stop("col.ndoses is deprecated. Use col.doscumn instead.")
-    ##     }
-    ##     warning("col.ndoses is deprecated. Use col.doscumn instead.")
-    ## }
     args <- getArgs()
     deprecatedArg("col.ndoses","col.doscumn",args=args)
     

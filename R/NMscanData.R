@@ -218,6 +218,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(missing(check.time)) check.time <- NULL
     if(missing(tz.lst)) tz.lst <- NULL
     if(missing(as.fun)) as.fun <- NULL
+    ### why is this not needed?
     ## if(missing(modelname)) modelname <- NULL
     if(missing(quiet)) quiet <- NULL
     if(missing(formats.read)) formats.read <- NULL

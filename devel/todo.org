@@ -79,6 +79,7 @@ if(any(nmdat[,sapply(.SD,function(x)any(grepl(",",x))),.SDcols=cnames.fac])) sto
     Export to parent. Not sure check allows though...
 ** Function improvements
 *** addTAPD
+**** TODO [#A] Add subset.data arg like in flags functions
 **** DONE Rename NDOSES to DOSCUMN
 It aligns with DOSCUMA and it is clearer from DOSCUMN that its
 cumulative number of doses.
@@ -119,6 +120,8 @@ pdosamt, doscuma
 **** Bad name, what could we call it?
 *** cc - create character vector function
 *** NMgenText
+**** TODO Test variables given in until arg exist
+Or only use those that do exist. Right now a strange error is returned
 **** TODO Handle until values not matching column names
 **** DONE Add a until argument to specify the last column to use in nonmem
 **** TODO [#B] checks: duplicate column names
