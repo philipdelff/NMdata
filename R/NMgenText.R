@@ -58,7 +58,8 @@
 ##'     text. If missing or NULL, strwrap will be called with default
 ##'     value. If negative or zero, strwrap will not be called.
 ##' @param quiet Hold messages back? Default is defined by NMdataConf.
-##' @return Text for inclusion in Nonmem control stream, invisibly.
+##' @return Text for inclusion in Nonmem control stream, invisibly. A
+##'     list with elements `DATA` and `INPUT`.
 ##' @family Nonmem
 ##' @export
 

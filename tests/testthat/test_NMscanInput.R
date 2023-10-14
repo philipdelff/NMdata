@@ -54,7 +54,7 @@ test_that("input has NMdata meta data",{
     fix.time(res)
     nm1 <- NMinfo(res)
     expect_equal_to_reference(nm1,fileRef,version=2)
-## readRDS(fileRef)$tables; nm1$tables    
+    ## readRDS(fileRef)$tables; nm1$tables    
     
 })
 
@@ -196,5 +196,74 @@ test_that("ID only from pseudonym",{
 test_that("Missing control stream",{
 
     expect_error(NMscanInput("testData/nonmem/doesnotexist.mod"))
+})
+
+test_that("apply.filters=F and recover.rows=FALSE",{
+
+    fileRef <- "testReference/NMscanInput_11.rds"
+    file.lst <- system.file("examples/nonmem/xgxr002.lst",package="NMdata")
+
+    ## res <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")
+### using as.data.table for as.fun is not recommended but still allowed
+    res <-
+        NMscanInput(file=file.lst,apply.filters = F,as.fun="data.table",recover.cols=FALSE)
+
+    fix.time(res)
+    nm1 <- NMinfo(res)
+    expect_equal_to_reference(nm1,fileRef,version=2)
+})
+
+test_that("Space CYCLE =DROP",{
+    NMdataConf(reset=TRUE)
+    fileRef <- "testReference/NMscanInput_12.rds"
+    file.mod <- "testData/nonmem/xgxr030.mod"
+
+    ## res <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")
+### using as.data.table for as.fun is not recommended but still allowed
+    res <-
+        NMscanInput(file=file.mod,file.mod=identity,apply.filters = F,as.fun="data.table",recover.cols=FALSE)
+
+    fix.time(res)
+    nm1 <- NMinfo(res)
+    expect_equal_to_reference(nm1,fileRef,version=2)
+})
+
+
+test_that("Combinations of translate and recover.cols",{
+    NMdataConf(reset=TRUE)
+    fileRef <- "testReference/NMscanInput_13.rds"
+    file.mod <- "testData/nonmem/xgxr030.mod"
+
+### using as.data.table for as.fun is not recommended but still allowed
+    res1 <-
+        NMscanInput(file=file.mod,file.mod=identity,apply.filters = F,as.fun="data.table",
+                    translate=FALSE,recover.cols=FALSE)
+    ## colnames(res1)
+    ## NMinfo(res1,"input.colnames")
+
+    res2 <-
+        NMscanInput(file=file.mod,file.mod=identity,apply.filters = F,as.fun="data.table",
+                    translate=FALSE,recover.cols=TRUE)
+    ## colnames(res2)
+    ## NMinfo(res2,"input.colnames")
+
+    res3 <-
+        NMscanInput(file=file.mod,file.mod=identity,apply.filters = F,as.fun="data.table",
+                    translate=TRUE,recover.cols=FALSE)
+    ## colnames(res3)
+    ## NMinfo(res3,"input.colnames")
+
+
+    res4 <-
+        NMscanInput(file=file.mod,file.mod=identity,apply.filters = F,as.fun="data.table",
+                    translate=TRUE,recover.cols=TRUE)
+    ## colnames(res4)
+    ## NMinfo(res4,"input.colnames")
+
+
+    all.res <- list(res1,res2,res3,res4)
+    all.res <- lapply(all.res,fix.time)
+
+    expect_equal_to_reference(res,fileRef,version=2)
 })
 

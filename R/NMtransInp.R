@@ -17,9 +17,6 @@
 ## don't export. An internal function used by NMscanInput. 
 
 NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
-    
-
-    
 
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
     datafile <- NULL
@@ -31,7 +28,8 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
 
     stopifnot(is.data.table(data))
 
-    if( !translate && !recover.cols ) {messageWrap("recover.rows=FALSE is only allowed when translate=TRUE.",fun.msg=stop)}
+#### this should be supported now
+    ##    if( !translate && !recover.cols ) {messageWrap("recover.rows=FALSE is only allowed when translate=TRUE.",fun.msg=stop)}
     
     ## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    
     lines <- NMreadSection(file,section="INPUT",keep.name=FALSE,keep.comments=FALSE,clean.spaces=TRUE)
@@ -48,6 +46,9 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
     line <- gsub(" +"," ",paste(lines,collapse=" "))
     line <- sub("^ ","",line)
     line <- sub(" $","",line)
+    ## not sure what DV =A would do but it may be valid, so reduce to DV=A
+    line <- sub(" *= *","=",line)
+
     
 ### nms is the names of columns as in nonmem control stream
     nms <- strsplit(line," ")[[1]]
@@ -55,7 +56,8 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
     
     
 ### this is to keep even dropped columns
-    nms <- sub("(.*) *= *(DROP|SKIP)","\\1",nms)
+    idx.drop <- grep("=(DROP|SKIP)",nms0)
+    nms <- sub("(.*)=(DROP|SKIP)","\\1",nms)
     ## For now, we just take the first name used in A=B labeling. 
     renamed.from <- NULL
     renamed.to <- NULL
@@ -83,7 +85,6 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
             data <- data[,1:length(nms)]
             cnames.input <- cnames.input[1:length(nms)]
         }
-        
         colnames(data) <- cnames.input
         
         ## add the synononyms
@@ -111,10 +112,16 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
             
             data <- data[,unique(cnames.input),with=FALSE]
         }
-        
-
     }
-    
+
+    ## if(!translate && !recover.cols){
+    ##     data <- data[,1:length(nms)]
+    ## }
+    if(!recover.cols){
+        data <- data[,1:length(nms)]
+    }
+
+
     length.max <- max(length(cnames.input.0), ## datafile
                       length(nms0),       ## DATA
                       length(nms1),       ## nonmem

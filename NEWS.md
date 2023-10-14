@@ -3,10 +3,13 @@
 * NMreadExt is a new function that reads parameter estimates,
   uncertainties if available, estimation iterations and other
   information from .ext files. 
+* NMscanInput now supports all combinations of `translate` and
+  `recover.cols`.
 
 ## Other improvements
 * NMreadCsv supports multiple prioritized formats in the `format`
   arguments.
+
 
 # 0.1.1
 ## New features

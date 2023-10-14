@@ -10,6 +10,9 @@
     has no benefit over NULL, so redundant and prevents the use of "default" as an actual param value.
 *** DONE Allow for say input.txt/output.txt
 **** NMtransInput
+*** TODO Support a drop argument
+It has been initiated in the code. I believe it can be finished after
+the translate part. The colnames table is the trickier part to update.
 *** DONE Support for return as tibble or whatever
 Could we use an option, NMdata.return="dplyr::as.tibble" which could then be
 reached and applied from within NMdata? It would have to not create extra
@@ -476,6 +479,13 @@ A way to limit rows read into nonmem
 ***** tolower(nonmem)==tolower(input) OK
 ***** diff
 ***** off
+*** NMreadExt
+**** DONE Include model column same way as NMscanData
+**** DONE Support multiple files
+**** DONE Intro arg return
+Something like
+if return="estimates" only return pars
+if return="iterations" only return iterations
 *** NMreadTab
 **** TODO [#B] Include metadata
 ***** TODO Include path to file

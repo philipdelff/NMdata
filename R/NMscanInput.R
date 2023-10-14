@@ -4,15 +4,11 @@
 ##' This function finds and reads the input data based on a control
 ##' stream file path. It can align the column names to the definitions
 ##' in $INPUT in the control stream, and it can subset the data based
-##' on ACCEPT/IGNORE statements in $DATA. I supports a few other ways
+##' on ACCEPT/IGNORE statements in $DATA. It supports a few other ways
 ##' to identify the input data file than reading the control stream,
-##' and it can also read an rds file instead of the delimited text
-##' file used by Nonmem.
+##' and it can also read an rds or fst file instead of the delimited
+##' text file used by Nonmem.
 ##' 
-##' @description Based on a Nonmem run (lst and/or mod file), this
-##'     function finds the input data and reads it. It reads the data
-##'     like the Nonmem run by applying DROP/SKIP arguments and
-##'     alternative naming of columns in the Nonmem run.
 ##' @param file a .lst (output) or a .mod (input) control stream
 ##'     file. The filename does not need to end in .lst. It is
 ##'     recommended to use the output control stream because it
@@ -175,22 +171,6 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
     
     data.input <- NMreadCsv(path.data.input,as.fun="data.table",args.fread=args.fread,args.fst=args.fst,format=type.file)
     
-    ## type.file <- NA_character_
-    ## if(use.rds && info.datafile$exists.file.rds){
-    ##     type.file <- "rds"
-    ##     if(!quiet) message(paste0("Read rds input data file:\n",info.datafile$path.rds,"."))
-    ##     path.data.input <- info.datafile$path.rds
-    ##     data.input <- as.data.table(readRDS(path.data.input))
-    ## } else {
-    ##     if(file.exists(info.datafile$path)){
-    ##         type.file <- "text"
-    ##         if(!quiet) message(paste0("Read delimited text input data file:\n",info.datafile$path,"."))
-    ##         path.data.input <- info.datafile$path
-    ##         data.input <- NMreadCsv(path.data.input,args.fread=args.fread,as.fun="data.table")
-    ##     } else {
-    ##         stop(paste("Input data file not found. Was expecting to find",info.datafile$path))
-    ##     }
-    ## }
     
     ## keeping a backup before translating column names and filtering
     ## rows. This is used for very litle which should be done here
