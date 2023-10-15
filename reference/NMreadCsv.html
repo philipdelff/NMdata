@@ -18,7 +18,7 @@ using NMwriteData."><meta property="og:image" content="https://philipdelff.githu
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1.902</span>
       </span>
     </div>
 
@@ -117,19 +117,18 @@ NMdataConf.</p></dd>
 
 
 <dt>format</dt>
-<dd><p>Format of file to read. Must be one of "csv", "rds",
-or "fst". Default is to determine this from the file name
-extension. Notice, if a delimited format is used, the
-extension can very well be different from "csv" (say file name
-is "input.tab"), and one must provide format="csv". This will
-work for any delimited format supported by fread and does not
-need to be comma-separated even though the format name
-indicates so.</p></dd>
+<dd><p>Format of file to read. Can be of length&gt;1 in which
+case the first format found will be used (i.e. format is a
+prioritized vector). If not one of "rds" or "fst", it is
+assumed to be a delimited text file. Default is to determine
+this from the file name extension. Notice, if a delimited
+format is used, the extension can very well be different from
+"csv" (say file name is
+"input.tab")". This will work for any delimited format supported by fread.</p></dd>
 
 
 <dt>args.fst</dt>
-<dd><p>Optional arguments to pass to <code>read_fst</code> if
-codeformat="fst" is used.</p></dd>
+<dd><p>Optional arguments to pass to <code>read_fst</code> if codeformat="fst" is used.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -140,11 +139,7 @@ codeformat="fst" is used.</p></dd>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>This is almost just a shortcut to fread so you don't have
-    to remember how to read the data that was exported for
-    Nonmem. The only added feature is that meta data as written by
-    NMwriteData is read and attached as NMdata metadata before
-    data is returned.</p>
+    <p>This is almost just a shortcut to fread so you don't have to remember how to read the data that was exported for Nonmem. The only added feature is that meta data as written by NMwriteData is read and attached as NMdata metadata before data is returned.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
