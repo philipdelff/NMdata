@@ -1,11 +1,18 @@
 ##' Read information from Nonmem phi files
 ##'
 ##' @param file.phi Path to the phi file
+##' @param as.fun The default is to return data as a data.frame. Pass
+##'     a function (say tibble::as_tibble) in as.fun to convert to
+##'     something else. If data.tables are wanted, use
+##'     as.fun="data.table". The default can be configured using
+##'     NMdataConf.
+##' @param modelname See ?NMscanData
+##' @param col.model See ?NMscanData
 ##'
 ##' @return A list with a final parameter table and a table of the iterations
 ##' @export
 
-NMreadPhi <- function(file.phi){
+NMreadPhi <- function(file.phi,as.fun,modelname,col.model){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
