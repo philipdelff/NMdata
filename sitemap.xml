@@ -85,7 +85,16 @@
     <loc>https://philipdelff.github.io/NMdata/reference/NMorderColumns.html</loc>
   </url>
   <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMreadCov.html</loc>
+  </url>
+  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMreadCsv.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMreadExt.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMreadPhi.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMreadSection.html</loc>
