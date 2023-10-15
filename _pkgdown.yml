@@ -70,7 +70,10 @@ reference:
   - NMscanMultiple
   - NMscanTables
   - NMscanInput
+  - NMreadCov
   - NMreadCsv
+  - NMreadExt
+  - NMreadPhi
   - NMreadTab
   - NMinfo
 - title: Checking and Debugging
