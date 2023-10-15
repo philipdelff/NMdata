@@ -4,10 +4,20 @@
 \alias{NMreadPhi}
 \title{Read information from Nonmem phi files}
 \usage{
-NMreadPhi(file.phi)
+NMreadPhi(file.phi, as.fun, modelname, col.model)
 }
 \arguments{
 \item{file.phi}{Path to the phi file}
+
+\item{as.fun}{The default is to return data as a data.frame. Pass
+a function (say tibble::as_tibble) in as.fun to convert to
+something else. If data.tables are wanted, use
+as.fun="data.table". The default can be configured using
+NMdataConf.}
+
+\item{modelname}{See ?NMscanData}
+
+\item{col.model}{See ?NMscanData}
 }
 \value{
 A list with a final parameter table and a table of the iterations
