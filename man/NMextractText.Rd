@@ -59,7 +59,9 @@ matching line numbers are returned. "text" is default.}
 \item{keep.name}{Keep the section name in output (say, "$PROBLEM")
 Default is TRUE. It can only be FALSE, if return="text".}
 
-\item{keep.comments}{Keep comment lines?}
+\item{keep.comments}{Keep comment lines? This concerns lines that
+consist of only white space and comments; comments after
+actual contents are not concerned.}
 
 \item{as.one}{If multiple hits, concatenate into one. This will
 most often be relevant with name="TABLE". If FALSE, a list

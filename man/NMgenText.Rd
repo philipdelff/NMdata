@@ -83,7 +83,8 @@ value. If negative or zero, strwrap will not be called.}
 \item{quiet}{Hold messages back? Default is defined by NMdataConf.}
 }
 \value{
-Text for inclusion in Nonmem control stream, invisibly.
+Text for inclusion in Nonmem control stream, invisibly. A
+    list with elements `DATA` and `INPUT`.
 }
 \description{
 The user is provided with text to use in Nonmem. NMwriteSection

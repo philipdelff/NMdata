@@ -264,6 +264,6 @@ test_that("Combinations of translate and recover.cols",{
     all.res <- list(res1,res2,res3,res4)
     all.res <- lapply(all.res,fix.time)
 
-    expect_equal_to_reference(res,fileRef,version=2)
+    expect_equal_to_reference(all.res,fileRef,version=2)
 })
 

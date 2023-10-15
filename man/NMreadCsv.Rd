@@ -26,17 +26,16 @@ something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.}
 
-\item{format}{Format of file to read. Must be one of "csv", "rds",
-or "fst". Default is to determine this from the file name
-extension. Notice, if a delimited format is used, the
-extension can very well be different from "csv" (say file name
-is "input.tab"), and one must provide format="csv". This will
-work for any delimited format supported by fread and does not
-need to be comma-separated even though the format name
-indicates so.}
+\item{format}{Format of file to read. Can be of length>1 in which
+case the first format found will be used (i.e. format is a
+prioritized vector). If not one of "rds" or "fst", it is
+assumed to be a delimited text file. Default is to determine
+this from the file name extension. Notice, if a delimited
+format is used, the extension can very well be different from
+"csv" (say file name is
+"input.tab")". This will work for any delimited format supported by fread.}
 
-\item{args.fst}{Optional arguments to pass to \code{read_fst} if
-code{format="fst"} is used.}
+\item{args.fst}{Optional arguments to pass to \code{read_fst} if code{format="fst"} is used.}
 }
 \value{
 A data set of class as defined by as.fun.
@@ -46,11 +45,7 @@ This function is especially useful if the csv file was written
 using NMwriteData.
 }
 \details{
-This is almost just a shortcut to fread so you don't have
-    to remember how to read the data that was exported for
-    Nonmem. The only added feature is that meta data as written by
-    NMwriteData is read and attached as NMdata metadata before
-    data is returned.
+This is almost just a shortcut to fread so you don't have to remember how to read the data that was exported for Nonmem. The only added feature is that meta data as written by NMwriteData is read and attached as NMdata metadata before data is returned.
 }
 \seealso{
 NMwriteData

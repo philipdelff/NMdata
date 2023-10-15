@@ -112,20 +112,15 @@ provided (though not recommended), this will overwrite
 A data set, class defined by 'as.fun'
 }
 \description{
-Based on a Nonmem run (lst and/or mod file), this
-    function finds the input data and reads it. It reads the data
-    like the Nonmem run by applying DROP/SKIP arguments and
-    alternative naming of columns in the Nonmem run.
-}
-\details{
 This function finds and reads the input data based on a control
 stream file path. It can align the column names to the definitions
 in $INPUT in the control stream, and it can subset the data based
-on ACCEPT/IGNORE statements in $DATA. I supports a few other ways
+on ACCEPT/IGNORE statements in $DATA. It supports a few other ways
 to identify the input data file than reading the control stream,
-and it can also read an rds file instead of the delimited text
-file used by Nonmem.
-
+and it can also read an rds or fst file instead of the delimited
+text file used by Nonmem.
+}
+\details{
 Columns that are dropped (using DROP or SKIP in $INPUT)
     in the model will be included in the output.
 

@@ -7,7 +7,8 @@
 *** DONE Add version to welcome message
 *** DONE All arguments should be arg.foo rather than argFoo
 *** TODO [#B] deprecate "default" option in NMdataConf
-    has no benefit over NULL, so redundant and prevents the use of "default" as an actual param value.
+    has no benefit over NULL, so redundant and prevents the use of
+    "default" as an actual param value.
 *** DONE Allow for say input.txt/output.txt
 **** NMtransInput
 *** TODO Support a drop argument

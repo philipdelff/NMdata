@@ -238,7 +238,7 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
         setcolorder(meta$tables,intersect(c("source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype","file.mtime","file.logtime","file"),colnames(meta$tables)))
 
         
-        if(col.id%in%NMinfoDT(data.input,"input.colnames")[,result]) {
+        if(!is.null(col.id) && col.id%in%NMinfoDT(data.input,"input.colnames")[,result]) {
             meta$tables[,nid:=
                              data.input.0.trans[,uniqueN(get(col.id.inp))]
                         ]
