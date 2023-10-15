@@ -21,8 +21,6 @@ PRSIZES.f90
 compile.lnk
 gfortran.txt
 *\.cpu
-*\.ext
-*\.phi
 input.cpu
 input.ext
 input.grd
