@@ -11,7 +11,7 @@
     "default" as an actual param value.
 *** DONE Allow for say input.txt/output.txt
 **** NMtransInput
-*** TODO Support a drop argument
+*** TODO [#B] Support a drop argument
 It has been initiated in the code. I believe it can be finished after
 the translate part. The colnames table is the trickier part to update.
 *** DONE Support for return as tibble or whatever
