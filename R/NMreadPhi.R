@@ -32,8 +32,14 @@ NMreadPhi <- function(file.phi,as.fun,modelname,col.model){
     modelname <- NMdataDecideOption("modelname",modelname)
 
     
-    res.NMdat <- NMreadTab(file.phi,as.fun="data.table",quiet=TRUE)
-    pars <- melt(res.NMdat,id.vars=c("SUBJECT_NO","ID","NMREP"),variable.name="parameter")
+    ## res.NMdat <- NMreadTab(file.phi,as.fun="data.table",quiet=TRUE)
+    res.NMdat <- lapply(file.phi,function(file){
+        this.model <- modelname(file)
+        NMreadTab(file,as.fun="data.table",quiet=TRUE)[,(col.model):=this.model]
+    })
+    res.NMdat <- rbindlist(res.NMdat)
+    
+    pars <- melt(res.NMdat,id.vars=c("model","SUBJECT_NO","ID","NMREP"),variable.name="parameter")
 
     pars[,par.type:=NA_character_]
     pars[grepl("^ETA",parameter),par.type:="ETA"]

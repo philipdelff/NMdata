@@ -42,18 +42,18 @@
 ##'     default is to return a data.table, if not the default is to
 ##'     return a data.frame. Use whatever to get what fits in with
 ##'     your workflow. Default can be configured with NMdataConf.
-##' @details technically, this function compares classes of elements in
-##'     lists. However, in relation to NMdata, this will most of the
-##'     time be columns in data.frames.
 ##' @param keepNames Deprecated. Use keep.names instead.
 ##' @param testEqual Deprecated. Use test.equal instead.
 ##' @return A data.frame with an overview of elements and their
 ##'     classes of objects in ... Class as defined by as.fun.
-##' @details
-##' Despite the name of the argument fun.class, it can be any
-##' function to be evaluated on each element in `...`. See examples for how
-##' to extract SAS labels on an object read with `read_sas` from
-##' the `haven` package.
+##' @details technically, this function compares classes of elements
+##'     in lists. However, in relation to NMdata, this will most of
+##'     the time be columns in data.frames.
+##' 
+##' Despite the name of the argument fun.class, it can be any function
+##' to be evaluated on each element in `...`. See examples for how to
+##' extract SAS labels on an object read with `read_sas` from the
+##' `haven` package.
 ##' @examples
 ##' ## get SAS labels from objects read with haven::read_sas
 ##' \dontrun{
