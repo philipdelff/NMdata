@@ -129,11 +129,11 @@
 ##'
 ##' \item If found, SS must be a numeric, equaling 0 or 1 for dosing records.
 ##'
-##' \item If found, ADDL must be a non-negative integer for dosing
+##' \item If found, \code{ADDL} must be a non-negative integer for dosing
 ##' records. II must be present.
 ##'
 ##' \item If found, II must be a non-negative integer for dosing
-##' records. ADDL must be present.
+##' records. \code{ADDL} must be present.
 ##'
 ##' \item ID must be positive and values cannot be disjoint (all
 ##'     records for each ID must be following each other. This is
