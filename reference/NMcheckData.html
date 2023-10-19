@@ -283,14 +283,14 @@ non-missing, increasing integers.</p></li>
     EVID, col.id (ID), col.cmt (CMT), and col.mdv (MDV): If present, elements must be non-missing
     and numeric.</p></li>
 <li><p>col.time (TIME) must be non-negative</p></li>
-<li><p>EVID must be in 0,1,2,3,4</p></li>
+<li><p>EVID must be in {0,1,2,3,4}.</p></li>
 <li><p>CMT must be positive integers. However, can be missing or zero for EVID==3.</p></li>
 <li><p>MDV must be the binary (1/0) representation of is.na(DV) for
 dosing records (EVID==0).</p></li>
 <li><p>AMT must be 0 or NA for EVID 0 and 2</p></li>
 <li><p>AMT must be positive for EVID 1 and 4</p></li>
 <li><p>DV must be numeric</p></li>
-<li><p>DV must be missing for EVID in 1,4.</p></li>
+<li><p>DV must be missing for EVID in {1,4}.</p></li>
 <li><p>If found, RATE must be a numeric, equaling -2 or non-negative for dosing events.</p></li>
 <li><p>If found, SS must be a numeric, equaling 0 or 1 for dosing records.</p></li>
 <li><p>If found, <code>ADDL</code> must be a non-negative integer for dosing
@@ -302,8 +302,8 @@ records. <code>ADDL</code> must be present.</p></li>
     technically not a requirement in Nonmem but most often an
     error. Use a second ID column if you deliberately want to
     soften this check)</p></li>
-<li><p>TIME cannot be decreasing within ID, unless EVID in 3,4.</p></li>
-<li><p>all ID's must have doses (EVID in 1,4)</p></li>
+<li><p>TIME cannot be decreasing within ID, unless EVID in {3,4}.</p></li>
+<li><p>all ID's must have doses (EVID in {1,4})</p></li>
 <li><p>all ID's must have observations (EVID==0)</p></li>
 <li><p>ID's should not have leading zeros since these will be lost
 when Nonmem read, then write the data.</p></li>
