@@ -94,9 +94,9 @@ suitable for the results part too.
 }
 \section{Functions}{
 \itemize{
-\item \code{NMgetSection}: Deprecated function name. Use NMreadSection.
-}}
+\item \code{NMgetSection()}: Deprecated function name. Use NMreadSection.
 
+}}
 \examples{
 NMreadSection(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),section="DATA")
 
