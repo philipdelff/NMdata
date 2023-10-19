@@ -16,7 +16,7 @@ string).}
 oldarg and newarg. See `?getArgs`. If missing, `getArgs()`
 will be called from within `deprecatedArg`. See `which` too.}
 
-\item{which}{If calling `getArgs` this is passed along, refering
+\item{which}{If calling `getArgs` this is passed along, referring
 to how many environments to jump to look at arguments.}
 }
 \value{

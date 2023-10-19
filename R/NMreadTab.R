@@ -40,7 +40,7 @@
 ##' @export
 
 
-NMreadTab <- function(file,rep.count=TRUE,header=TRUE,skip,quiet,as.fun,...) {
+NMreadTab <- function(file,rep.count=TRUE,header=TRUE,skip,quiet=TRUE,as.fun,...) {
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -59,9 +59,10 @@ NMreadTab <- function(file,rep.count=TRUE,header=TRUE,skip,quiet,as.fun,...) {
 
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
-    
+
+    ### this message is not informative
     if(!quiet){
-        message("Reading data using fread")
+        message("Reading data")
     }
     if(missing(skip)){
         skip <- 1

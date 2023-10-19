@@ -80,14 +80,14 @@ or class across multiple datasets. Before running rbind, you may want
 to check the compatibility of the data.
 }
 \details{
-technically, this function compares classes of elements in
-    lists. However, in relation to NMdata, this will most of the
-    time be columns in data.frames.
+technically, this function compares classes of elements
+    in lists. However, in relation to NMdata, this will most of
+    the time be columns in data.frames.
 
-Despite the name of the argument fun.class, it can be any
-function to be evaluated on each element in `...`. See examples for how
-to extract SAS labels on an object read with `read_sas` from
-the `haven` package.
+Despite the name of the argument fun.class, it can be any function
+to be evaluated on each element in `...`. See examples for how to
+extract SAS labels on an object read with `read_sas` from the
+`haven` package.
 }
 \examples{
 ## get SAS labels from objects read with haven::read_sas

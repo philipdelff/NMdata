@@ -4,7 +4,15 @@
 \alias{NMreadTab}
 \title{Read an output table file from Nonmem}
 \usage{
-NMreadTab(file, rep.count = TRUE, header = TRUE, skip, quiet, as.fun, ...)
+NMreadTab(
+  file,
+  rep.count = TRUE,
+  header = TRUE,
+  skip,
+  quiet = TRUE,
+  as.fun,
+  ...
+)
 }
 \arguments{
 \item{file}{path to Nonmem table file}
