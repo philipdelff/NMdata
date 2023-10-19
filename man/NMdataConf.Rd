@@ -123,7 +123,7 @@ Using this, you don't have to worry about remembering including
 all relevant variables in the output tables. Default is TRUE.
 
 \item{use.rds} Deprecated, use \code{formats.read} and
-\code{formats.write} instead. Affects `code{NMscanData()}, 
+\code{formats.write} instead. Affects \code{NMscanData()}, 
 \code{NMscanInput()}, \code{NMwriteData()}.
 
 }}
