@@ -110,7 +110,7 @@
 ##'
 ##' \item col.time (TIME) must be non-negative
 ##'
-##' \item EVID must be in {0,1,2,3,4}
+##' \item EVID must be in {0,1,2,3,4}.
 ##'
 ##' \item CMT must be positive integers. However, can be missing or zero for EVID==3.
 ##'
