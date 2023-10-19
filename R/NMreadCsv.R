@@ -21,7 +21,7 @@
 ##'     format is used, the extension can very well be different from
 ##'     "csv" (say file name is
 ##'     "input.tab")". This will work for any delimited format supported by fread.
-##' @param args.fst Optional arguments to pass to \code{read_fst} if code{format="fst"} is used.
+##' @param args.fst Optional arguments to pass to \code{read_fst} if \code{format="fst"} is used.
 ##' @details This is almost just a shortcut to fread so you don't have to remember how to read the data that was exported for Nonmem. The only added feature is that meta data as written by NMwriteData is read and attached as NMdata metadata before data is returned.
 ##' @return A data set of class as defined by as.fun.
 ##' @importFrom data.table fread

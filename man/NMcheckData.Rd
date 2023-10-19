@@ -163,7 +163,7 @@ non-missing, increasing integers.
 
 \item col.time (TIME) must be non-negative
 
-\item EVID must be in {0,1,2,3,4}
+\item EVID must be in \{0,1,2,3,4\}.
 
 \item CMT must be positive integers. However, can be missing or zero for EVID==3.
 
@@ -176,7 +176,7 @@ dosing records (EVID==0).
 
 \item DV must be numeric
 
-\item DV must be missing for EVID in {1,4}.
+\item DV must be missing for EVID in \{1,4\}.
 
 \item If found, RATE must be a numeric, equaling -2 or non-negative for dosing events.
 
@@ -194,9 +194,9 @@ records. \code{ADDL} must be present.
     error. Use a second ID column if you deliberately want to
     soften this check)
 
-\item TIME cannot be decreasing within ID, unless EVID in {3,4}.
+\item TIME cannot be decreasing within ID, unless EVID in \{3,4\}.
 
-\item all ID's must have doses (EVID in {1,4})
+\item all ID's must have doses (EVID in \{1,4\})
 
 \item all ID's must have observations (EVID==0)
 

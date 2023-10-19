@@ -6,7 +6,8 @@
 ##'  \item{Read and combine output tables,}
 ##'  \item{If wanted, read input data and restore variables that were not output from the Nonmem model}
 ##'  \item{If wanted, also restore rows from input data that were disregarded in
-##' Nonmem (e.g. observations or subjects that are not part of the analysis)}
+##' Nonmem (e.g. observations or subjects that are not part of the analysis)
+##' }
 ##' }
 ##' 
 ##' @param file Path to a Nonmem control stream or output file from
@@ -293,7 +294,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     ## For now, searching for a row identifier is disabled. This may belong in a separate function. 
     search.col.row <- FALSE
 ### notice, this can't be evaluated if merge.by.row=="ifAvailable"
-    if(is.null(merge.by.row.arg) && is.character(merge.by.row) && merge.by.row=="ifAvailable"){
+    if(!quiet && is.null(merge.by.row.arg) && is.character(merge.by.row) && merge.by.row=="ifAvailable"){
         search.col.row <- TRUE
     }
 

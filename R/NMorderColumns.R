@@ -56,7 +56,7 @@
 ##'     following steps, each step depending on corresponding
 ##'     argument.
 ##'
-##' \itemize{
+##' \describe{
 ##'  \item{"col.row - "}{Row id if argument row is non-NULL}
 ##'  \item{"not editable - "}{ID (if a column is called ID)}
 ##'  \item{"col.nomtime - "}{Nominal time.}

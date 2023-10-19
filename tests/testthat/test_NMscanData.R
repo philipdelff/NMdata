@@ -616,7 +616,7 @@ test_that("Modifying row identifier",{
 
 test_that("merge.by.row=ifAvailable when available",{
     NMdataConf(reset=TRUE)
-    fileRef <- "testReference/NMscanData21.rds"
+    fileRef <- "testReference/NMscanData_21.rds"
 
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
     

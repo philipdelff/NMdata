@@ -35,7 +35,7 @@ format is used, the extension can very well be different from
 "csv" (say file name is
 "input.tab")". This will work for any delimited format supported by fread.}
 
-\item{args.fst}{Optional arguments to pass to \code{read_fst} if code{format="fst"} is used.}
+\item{args.fst}{Optional arguments to pass to \code{read_fst} if \code{format="fst"} is used.}
 }
 \value{
 A data set of class as defined by as.fun.

@@ -28,17 +28,25 @@ fix.time <- function(x){
     invisible(x)
 }
 
+
+
 NMdataConf(reset=TRUE)
 test_that("basic",{
 
-    fileRef <- "testReference/NMscanMultiple1.rds"
+    fileRef <- "testReference/NMscanMultiple_01.rds"
     resRef <- if(file.exists(fileRef)) readRDS(fileRef) else NULL
-    
-    res <- NMscanMultiple(dir=system.file("examples/nonmem",package="NMdata"),file.pattern="xgxr.*\\.lst", check.time = FALSE,quiet=TRUE)
+
+### we do this in two steps because not all systems will find the files in same order apparently
+    lsts <- list.files(path="testData/nonmem/",pattern="xgxr00[1-9]\\.lst",full.names=TRUE)
+    lsts <- sort(lsts)
+    res <- NMscanMultiple(lsts, check.time = FALSE,quiet=TRUE)
     ## dim(res)
 
-    res <- lapply(res,fix.time)
-    
+    ## res <- lapply(res,fix.time)
+    res <- as.data.frame(res)
+    unNMdata(res)
+    ## res[,.N,by=.(model)]
+
     expect_equal_to_reference(res,fileRef,version=2)
     ## without meta
     ##    expect_equal(unNMdata(res1),unNMdata(readRDS(fileRef)))

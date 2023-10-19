@@ -182,7 +182,8 @@ steps are
  \item{Read and combine output tables,}
  \item{If wanted, read input data and restore variables that were not output from the Nonmem model}
  \item{If wanted, also restore rows from input data that were disregarded in
-Nonmem (e.g. observations or subjects that are not part of the analysis)}
+Nonmem (e.g. observations or subjects that are not part of the analysis)
+}
 }
 }
 \details{
