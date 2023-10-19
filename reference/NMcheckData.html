@@ -21,7 +21,7 @@ but because they are typical dataset issues."><meta property="og:image" content=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1.911</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.2</span>
       </span>
     </div>
 
@@ -293,10 +293,10 @@ dosing records (EVID==0).</p></li>
 <li><p>DV must be missing for EVID in 1,4.</p></li>
 <li><p>If found, RATE must be a numeric, equaling -2 or non-negative for dosing events.</p></li>
 <li><p>If found, SS must be a numeric, equaling 0 or 1 for dosing records.</p></li>
-<li><p>If found, ADDL must be a non-negative integer for dosing
+<li><p>If found, <code>ADDL</code> must be a non-negative integer for dosing
 records. II must be present.</p></li>
 <li><p>If found, II must be a non-negative integer for dosing
-records. ADDL must be present.</p></li>
+records. <code>ADDL</code> must be present.</p></li>
 <li><p>ID must be positive and values cannot be disjoint (all
     records for each ID must be following each other. This is
     technically not a requirement in Nonmem but most often an
