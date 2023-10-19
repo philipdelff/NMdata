@@ -337,10 +337,17 @@ argument.</p>
 <p>Limitations. A number of Nonmem features are not supported. Most
 of this can be overcome by using merge.by.row=TRUE. Incomplete
 list of known limitations:</p>
-<ul><li><p>character TIMEIf Nonmem is used to translate DAY and a character TIME column, TIME has to be available in an output table. NMscanData does not do the translation to numeric.</p></li>
-<li><p>RECORDSThe RECORDS option to limit the part of the input data being used is not searched for. Using merge.by.row=TRUE will work unaffectedly.</p></li>
-<li><p>NULLThe NULL argument to specify missing value string in input data is not respected. If delimited input data is read (as opposed to rds files), missing values are assumed to be represented by dots (.).</p></li>
-</ul></div>
+<dl><dt>character TIME</dt>
+<dd><p>If Nonmem is used to translate DAY and a character TIME column, TIME has to be available in an output table. NMscanData does not do the translation to numeric.</p></dd>
+
+ <dt>RECORDS</dt>
+<dd><p>The RECORDS option to limit the part of the input data being used is not searched for. Using merge.by.row=TRUE will work unaffectedly.</p></dd>
+
+ <dt>NULL</dt>
+<dd><p>The NULL argument to specify missing value string in input data is not respected. If delimited input data is read (as opposed to rds files), missing values are assumed to be represented by dots (.).</p></dd>
+
+
+</dl></div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>Other DataRead: 
