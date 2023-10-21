@@ -34,7 +34,7 @@ NMreadExt <- function(file.ext,return="pars",as.fun,modelname,col.model){
     j <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
-
+    
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     if(missing(col.model)) col.model <- NULL 

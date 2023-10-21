@@ -44,7 +44,7 @@ NMreplaceDataFile <- function(files,file.pattern,dir,path.data,newfile=file.mod,
     res <- lapply(files,function(file.mod){
         if(is.missing.newfile) newfile <- file.mod
         extr.data <- NMextractDataFile(file.mod)
-        sec.data.new <- paste("$DATA",sub(extr.data$string,path.data,extr.data$DATA,fixed=TRUE))
+        sec.data.new <- paste("$DATA",paste(sub(extr.data$string,path.data,extr.data$DATA,fixed=TRUE),collapse="\n"))
         NMwriteSection(files=files,section="DATA",newlines=sec.data.new,newfile=newfile,...)
     })
     
