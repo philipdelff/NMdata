@@ -1,4 +1,10 @@
 # 0.1.2
+* Improved support for reading multiple models with NMreadExt and
+NMreadPhi. 
+
+
+
+# 0.1.2
 ## New features
 * NMreadExt is a new function that reads parameter estimates,
   uncertainties if available, estimation iterations and other

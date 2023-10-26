@@ -34,4 +34,3 @@ A list with a final parameter table and a table of the
 \description{
 Read information from Nonmem ext files
 }
-\keyword{export}

@@ -37,7 +37,7 @@ NMreadPhi <- function(file.phi,as.fun,modelname,col.model){
         this.model <- modelname(file)
         NMreadTab(file,as.fun="data.table",quiet=TRUE)[,(col.model):=this.model]
     })
-    res.NMdat <- rbindlist(res.NMdat)
+    res.NMdat <- rbindlist(res.NMdat,fill=TRUE)
     
     pars <- melt(res.NMdat,id.vars=c("model","SUBJECT_NO","ID","NMREP"),variable.name="parameter")
 
