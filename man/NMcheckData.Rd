@@ -35,13 +35,14 @@ anything that can be converted to data.table.}
 \item{file}{Alternatively to checking a data object, you can use
 file to specify a control stream to check. This can either be
 a (working or non-working) input control stream or an output
-control stream. In this case, NMdataCheck checks column names
-in data against control stream (see NMcheckColnames), reads
-the data as NONMEM would do, and do the same checks on the
-data as NMdataCheck would do using the data
-argument. col.flagn is ignored in this case - instead,
-ACCEPT/IGNORE statements in control stream are applied. The
-file argument is useful for debugging a Nonmem model.}
+control stream. In this case, \code{NMdataCheck} checks column
+names in data against control stream (see
+\code{NMcheckColnames}), reads the data as Nonmem would do,
+and do the same checks on the data as NMdataCheck would do
+using the data argument. \code{col.flagn} is ignored in this
+case - instead, ACCEPT/IGNORE statements in control stream are
+applied. The file argument is useful for debugging a Nonmem
+model.}
 
 \item{covs}{columns that contain subject-level covariates. They
 are expected to be non-missing, numeric and not varying within
@@ -50,9 +51,9 @@ subjects.}
 \item{covs.occ}{A list specifying columns that contain
 subject:occasion-level covariates. They are expected to be
 non-missing, numeric and not varying within combinations of
-subject and occasion. covs.occ=list(PERIOD=c("FED")) means
-that FED is the covariate, while PERIOD indicates the
-occasion.}
+subject and occasion. \code{covs.occ=list(PERIOD=c("FED"))}
+means that \code{FED} is the covariate, while \code{PERIOD}
+indicates the occasion.}
 
 \item{cols.num}{Columns that are expected to be present, numeric
 and non-NA. If a character vector is given, the columns are
@@ -66,11 +67,12 @@ identifier. Default is "ID".}
 \item{col.time}{The name of the column holding actual time.}
 
 \item{col.dv}{The name of the column holding the dependent
-variable. For now, only one column can be specified, and MDV
-is assumed to match this column. Default is DV.}
+variable. For now, only one column can be specified, and
+\code{MDV} is assumed to match this column. Default is
+\code{DV}.}
 
 \item{col.mdv}{The name of the column holding the binary indicator
-of the dependent variable missing. Default is MDV.}
+of the dependent variable missing. Default is \code{MDV}.}
 
 \item{col.cmt}{The name(s) of the compartment column(s). These
 will be checked to be positive integers for all rows. They are
@@ -79,17 +81,18 @@ also used in checks for row duplicates.}
 \item{col.amt}{The name of the dose amount column.}
 
 \item{col.flagn}{Optionally, the name of the column holding
-numeric exclusion flags. Default value is FLAG and can be
-configured using NMdataConf. Even though FLAG is the default
-value, no finding will be returned if the column is missing
-unless explecitely defined as col.flagn="FLAG". This is
-because this way of using exclusion flags is only one of many
-ways you could choose to handle exclusions. Disable completely
-by using col.flagn=FALSE.}
+numeric exclusion flags. Default value is \code{FLAG} and can
+be configured using \code{NMdataConf}. Even though \code{FLAG}
+is the default value, no finding will be returned if the
+column is missing unless explicitly defined as
+\code{col.flagn="FLAG"}. This is because this way of using
+exclusion flags is only one of many ways you could choose to
+handle exclusions. Disable completely by using
+\code{col.flagn=FALSE}.}
 
 \item{col.row}{A column with a unique value for each row. Such a
-column is recommended to use if possible. Default ("ROW") can
-be modified using NMdataConf.}
+column is recommended to use if possible. Default
+(\code{"ROW"}) can be modified using \code{NMdataConf}.}
 
 \item{col.usubjid}{Optional unique subject identifier. It is
 recommended to keep a unique subject identifier (typically a
@@ -110,27 +113,28 @@ this list if provided.}
 \item{type.data}{"est" for estimation data (default), and "sim"
 for simulation data. Differences are that \code{col.row} is
 not expected for simulation data, and subjects will be checked
-to have EVID==0 rows for estimation data and EVID==2 rows for
-simulation data.}
+to have \code{EVID==0} rows for estimation data and
+\code{EVID==2} rows for simulation data.}
 
 \item{na.strings}{Strings to be accepted when trying to convert
 characters to numerics. This will typically be a string that
 represents missing values. Default is ".". Notice, actual NA,
 i.e. not a string, is allowed independently of na.strings. See
-?NMisNumeric.}
+\code{?NMisNumeric}.}
 
 \item{return.summary}{If TRUE (not default), the table summary
-that is printed if quiet=FALSE is returned as well. In that
-case, a list is returned, and the findings are in an element
-called findings.}
+that is printed if \code{quiet=FALSE} is returned as well. In
+that case, a list is returned, and the findings are in an
+element called findings.}
 
 \item{quiet}{Keep quiet? Default is not to.}
 
-\item{as.fun}{The default is to return data as a data.frame. Pass
-a function (say tibble::as_tibble) in as.fun to convert to
-something else. If data.tables are wanted, use
-as.fun="data.table". The default can be configured using
-NMdataConf.}
+\item{as.fun}{The default is to return data as a
+\code{data.frame}. Pass a function (say
+\code{tibble::as_tibble}) in as.fun to convert to something
+else. If \code{data.tables} are wanted, use
+\code{as.fun="data.table"}. The default can be configured
+using \code{NMdataConf}.}
 }
 \value{
 A table with findings

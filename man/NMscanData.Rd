@@ -22,7 +22,7 @@ NMscanData(
   modelname,
   col.model,
   col.nmout,
-  rep.count,
+  col.tableno,
   order.columns = TRUE,
   check.time,
   tz.lst,
@@ -127,13 +127,13 @@ using NMdataConf.}
 representing whether row was in output table or not. Default
 can be modified using NMdataConf.}
 
-\item{rep.count}{Nonmem includes a counter of tables in the
+\item{col.tableno}{Nonmem includes a counter of tables in the
 written data files. This does not relate to the order of the
 $TABLE statements but to cases where a $TABLE statement is run
 repeatedly. E.g., in combination with the SUBPROBLEMS feature
 in Nonmem, it is useful to keep track of the table
-(repetition) number. If rep.count is TRUE, this will be
-carried forward and added as a column called NMREP. This is
+(repetition) number. If col.tableno is TRUE, this will be
+carried forward and added as a column called TABLE.NO. This is
 default behavior when more than one $TABLE repetition is found
 in data. The argument is passed to NMscanTables.}
 
@@ -165,7 +165,7 @@ NMdataConf() too.}
 \item{skip.absent}{Skip missing output table files with a warning?
 Default is FALSE in which case an error is thrown.}
 
-\item{tab.count}{Deprecated. Use \code{rep.count}.}
+\item{tab.count}{Deprecated. Use \code{col.tableno}.}
 
 \item{use.rds}{Deprecated - use \code{formats.read} instead. If
 provided (though not recommended), this will overwrite

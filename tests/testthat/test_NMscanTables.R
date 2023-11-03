@@ -12,7 +12,7 @@ test_that("Multiple output table formats",{
     ## file.lst <- system.file("examples/nonmem/xgxr003.lst",package="NMdata")
     file.lst <- "testData/nonmem/xgxr003.lst"
 
-    res.dt <- NMscanTables(file=file.lst,as.fun="data.table",rep.count=TRUE)
+    res.dt <- NMscanTables(file=file.lst,as.fun="data.table",col.tableno="NMREP")
     meta <- NMinfoDT(res.dt)
     meta$tables[,file.mtime:=NULL]
     meta$tables[,file:=basename(file)]
@@ -24,7 +24,7 @@ test_that("Multiple output table formats",{
 
     ## and if we convert to df, we get exactly the same as when relying on default
     res.dt.df <- lapply(res.dt,as.data.frame)
-    res.df <- NMscanTables(file=file.lst,rep.count=TRUE)
+    res.df <- NMscanTables(file=file.lst,col.tableno="NMREP")
     ## unNMdata(res.df)
     setattr(res.df,"NMdata",NULL)
     expect_equal(res.df,res.dt.df)
@@ -36,7 +36,7 @@ test_that("Details table",{
     fileRef <- "testReference/NMscanTables2.rds"
     file.lst <- system.file("examples/nonmem/xgxr003.lst", package="NMdata")
 
-    res <- NMscanTables(file=file.lst,as.fun="data.table",rep.count=TRUE)
+    res <- NMscanTables(file=file.lst,as.fun="data.table",col.tableno="NMREP")
 ### this will make trouble because meta data table contains absolute
 ### paths which is machine dependent. So removing path.
     meta <- attributes(res)$NMdata
@@ -53,7 +53,7 @@ test_that("$TABLE header options",{
     fileRef <- "testReference/NMscanTables3.rds"
     file.lst <- "testData/nonmem/xgxr024.lst"
 
-    res <- NMscanTables(file=file.lst,as.fun="data.table",rep.count=TRUE)
+    res <- NMscanTables(file=file.lst,as.fun="data.table",col.tableno="NMREP")
     meta <- NMinfoDT(res)
     meta$tables[,file:=basename(file)]
     meta$tables$file.mtime <- NULL
@@ -68,7 +68,8 @@ test_that("Two firstonly, one full-length",{
     fileRef <- "testReference/NMscanTables4.rds"
     file.lst <- "testData/nonmem/xgxr025.lst"
 
-    res <- NMscanTables(file=file.lst,details=T,as.fun="data.table",rep.count=TRUE)
+    res <- NMscanTables(file=file.lst,details=T,as.fun="data.table",
+                        col.tableno="NMREP")
 
     meta <- NMinfoDT(res)
     meta$tables[,file:=basename(file)]

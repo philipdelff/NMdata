@@ -8,9 +8,9 @@
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using
 ##'     NMdataConf.
-##' @param rep.count Nonmem includes a counter of tables in the
+##' @param col.tableno Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. However, if
-##'     rep.count is TRUE (not default), this will be carried forward
+##'     col.tableno is TRUE (not default), this will be carried forward
 ##'     and added as a column called NMREP. Even if NMREP is generated
 ##'     by NMscanTables, it is treated like any other table column in
 ##'     meta (?NMinfo) data.
@@ -39,7 +39,7 @@
 ##' @import data.table
 ##' @export
 
-NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,details,skip.absent=FALSE,meta.only=FALSE){
+NMscanTables <- function(file,as.fun,quiet,col.tableno=FALSE,col.id="ID",col.row,details,skip.absent=FALSE,meta.only=FALSE){
     
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
@@ -141,7 +141,7 @@ NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,d
             stop(paste0("NMscanTables: File not found: ",meta[I,file],". Did you copy the lst file but forgot table file?"))
         }
         
-        tables[[I]] <- NMreadTab(meta[I,file],quiet=TRUE,rep.count=rep.count,showProgress=FALSE,as.fun=identity,header=meta[I,!noheader])
+        tables[[I]] <- NMreadTab(meta[I,file],quiet=TRUE,col.tableno=col.tableno,showProgress=FALSE,as.fun=identity,header=meta[I,!noheader],col.table.name=FALSE)
 ### to not include NMREP when counting columns
         ## dim.tmp <- dim(tables[[I]][,!colnames(tables[[I]])=="NMREP",with=FALSE])
         dim.tmp <- dim(tables[[I]])

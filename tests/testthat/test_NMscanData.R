@@ -863,15 +863,15 @@ test_that("Two firstonly, one full-length",{
     
 })
 
-test_that("Two firstonly, one full-length with rep.count",{
+test_that("Two firstonly, one full-length with col.tableno",{
     NMdataConf(reset=TRUE)
 #### TABLENO is now added to the number of columns taken from the
 #### output table that has TABLENO. Is that what we want? Or +1? +1 is
-#### very complicated for user. Maybe better: if rep.count, it is treated like any other column, but in NMinfo(,"tables") there is a column, hasTABLENO
+#### very complicated for user. Maybe better: if col.tableno, it is treated like any other column, but in NMinfo(,"tables") there is a column, hasTABLENO
     fileRef <- "testReference/NMscanData_28b.rds"
     file.lst <- "testData/nonmem/xgxr025.lst"
 
-    res <- NMscanData(file=file.lst,check.time=F,rep.count=T, quiet=T)
+    res <- NMscanData(file=file.lst,check.time=F,col.tableno=T, quiet=T)
     res <- fix.time(res)
     ## ref <- readRDS(fileRef)
     

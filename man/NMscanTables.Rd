@@ -8,7 +8,7 @@ NMscanTables(
   file,
   as.fun,
   quiet,
-  rep.count = FALSE,
+  col.tableno = FALSE,
   col.id = "ID",
   col.row,
   details,
@@ -30,9 +30,9 @@ on what data is found. But consider setting this to TRUE for
 non-interactive use. Default can be configured using
 NMdataConf.}
 
-\item{rep.count}{Nonmem includes a counter of tables in the
+\item{col.tableno}{Nonmem includes a counter of tables in the
 written data files. These are often not useful. However, if
-rep.count is TRUE (not default), this will be carried forward
+col.tableno is TRUE (not default), this will be carried forward
 and added as a column called NMREP. Even if NMREP is generated
 by NMscanTables, it is treated like any other table column in
 meta (?NMinfo) data.}

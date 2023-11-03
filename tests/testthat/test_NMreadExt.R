@@ -26,3 +26,22 @@ test_that("basic - all from multiple models",{
     res.dt <- NMreadExt(file=file.ext,as.fun="data.table",return="all")
     expect_equal_to_reference(res.dt,fileRef)
 })
+
+
+test_that("muref - all",{
+
+    fileRef <- "testReference/NMreadExt_04.rds"
+    file.ext <- "testData/nonmem/xgxr031.ext"
+
+    res.dt <- NMreadExt(file=file.ext,as.fun="data.table",return="all")
+    expect_equal_to_reference(res.dt,fileRef)
+})
+
+test_that("muref SAEM - all",{
+
+    fileRef <- "testReference/NMreadExt_05.rds"
+    file.ext <- "testData/nonmem/xgxr032.ext"
+
+    res.dt <- NMreadExt(file=file.ext,as.fun="data.table",return="all")
+    expect_equal_to_reference(res.dt,fileRef)
+})
