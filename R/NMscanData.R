@@ -94,7 +94,7 @@
 ##'     repeatedly. E.g., in combination with the SUBPROBLEMS feature
 ##'     in Nonmem, it is useful to keep track of the table
 ##'     (repetition) number. If col.tableno is TRUE, this will be
-##'     carried forward and added as a column called TABLE.NO. This is
+##'     carried forward and added as a column called TABLENO. This is
 ##'     default behavior when more than one $TABLE repetition is found
 ##'     in data. The argument is passed to NMscanTables.
 ##' @param order.columns If TRUE (default), NMorderColumns is used to
@@ -165,7 +165,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                        recover.rows,file.mod,dir.data,file.data,
                        translate.input=TRUE, quiet, formats.read,
                        args.fread, as.fun, col.id="ID", modelname,
-                       col.model, col.nmout,col.tableno,
+                       col.model, col.nmout, col.tableno,
                        order.columns=TRUE, check.time, tz.lst,
                        skip.absent=FALSE,
                        ## Deprecated
@@ -180,7 +180,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     DV <- NULL
     ID.jump <- NULL
     N <- NULL
-    TABLE.NO <- NULL
+    NMREP <- NULL
     ## firstlastonly <- NULL
     ## firstonly <- NULL
     ## lastonly <- NULL
@@ -234,7 +234,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     quiet <- NMdataDecideOption("quiet",quiet)
     formats.read <- NMdataDecideOption("formats.read",formats.read)
     args.fread <- NMdataDecideOption("args.fread",args.fread)
-    ## if null, col.tableno will later be set to TRUE if TABLE.NO varies
+    ## if null, col.tableno will later be set to TRUE if TABLENO varies
 
     ## deprecated 2023-06-20
     use.rds <- deprecatedArg(oldarg="use.rds",msg="Use `formats` instead. Overwriting `formats.read`.")
@@ -307,7 +307,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 #### Section start: read all output tables and add to meta data ####
     
     ## tables <- NMscanTables(file,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id,col.tableno=col.tableno)
-    tables <- NMscanTables(file,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id,col.tableno=TRUE,skip.absent=skip.absent)
+    tables <- NMscanTables(file,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id,col.tableno=col.tableno,col.nmrep,skip.absent=skip.absent)
     meta.output <- copy(NMinfoDT(tables)$tables)
     
     
@@ -408,8 +408,11 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     dt.vars <- object.tables$dt.vars
     dt.vars.id <- object.tables$dt.vars.id
     
-    
-    if(is.null(col.tableno)&&!is.null(tab.row)) col.tableno <- tab.row[,uniqueN(TABLE.NO)>1]
+    rm.col.tableno <- !is.null(col.tableno) && !isFALSE(col.tableno)
+    if(is.null(col.tableno)&&!is.null(tab.row)) rm.col.tableno <- !tab.row[,uniqueN(get(col.tableno))>1]
+
+    rm.col.nmrep <- !is.null(col.nmrep) && !isFALSE(col.nmrep)
+    if(is.null(col.nmrep)&&!is.null(tab.row)) rm.col.nmrep <- !tab.row[,uniqueN(NMREP)>1]
     
     ## use.rows means if to use row-data from output tables
     use.rows <- TRUE
@@ -533,10 +536,10 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 ### here we need to check that we got the correct number of lines
             nrow.data.input <- nrow(data.input)
             
-#### This needs to be by TABLE.NO. Would be good to have this info in tables metadata
+#### This needs to be by NMREP. Would be good to have this info in tables metadata
             nrow.tab.row <- 0
             if(!is.null(tab.row)){
-                nrow.tab.row <- tab.row[,.N,by=(TABLE.NO)][,unique(N)]
+                nrow.tab.row <- tab.row[,.N,by=(NMREP)][,unique(N)]
                 
                 if( nrow.data.input!=nrow.tab.row) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.
@@ -545,7 +548,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                 }
 
                 
-                tab.row[,(col.row.merge):=data.input[,get(col.row.merge)],by=.(TABLE.NO)]
+                tab.row[,(col.row.merge):=data.input[,get(col.row.merge)],by=.(NMREP)]
                 ## if(!recover.rows) data.input <- data.input
 
             }
@@ -584,7 +587,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         }
 
         if(use.input&&any(meta.output$full.length)) {
-            if(recover.rows && tab.row[,uniqueN(TABLE.NO)]>1) messageWrap("Output tables seem repeated (is this a simulation with multiple subproblems?). recover.rows=TRUE is not supported in this case.",fun.msg=stop)
+            if(recover.rows && tab.row[,uniqueN(NMREP)]>1) messageWrap("Output tables seem repeated (is this a simulation with multiple subproblems?). recover.rows=TRUE is not supported in this case.",fun.msg=stop)
             ## if(!quiet) messageWrap("Searching for input data.")
 
             ## if no method is specified, search for possible col.row to help the user
@@ -625,10 +628,10 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             if(col.row%in%colnames(tab.row)) {
                 
                 col.by <- NULL
-                if("TABLE.NO"%in%colnames(tab.row)) col.by <- "TABLE.NO"
+                if("NMREP"%in%colnames(tab.row)) col.by <- "NMREP"
                 found.dups <- tab.row[,.(dup=duplicated(get(col.row))),by=col.by][,any(dup)]
                 if( found.dups ) {
-                    messageWrap("merge.by.row is TRUE, but col.row has duplicate values (within TABLE.NO) in _output_ data. col.row must be a unique row identifier. It is unique in input data, so how did rows get repeated in output data? Has input data been edited since the model was run?",fun.msg=stop)
+                    messageWrap("merge.by.row is TRUE, but col.row has duplicate values (within NMREP) in _output_ data. col.row must be a unique row identifier. It is unique in input data, so how did rows get repeated in output data? Has input data been edited since the model was run?",fun.msg=stop)
                     ## warning("skipping a check")
                 }
                 col.row.in.output <- TRUE
@@ -784,7 +787,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                 tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=FALSE]
                 tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="data.table",quiet=TRUE)
                 ## repeating in case there was no full-length tables
-                if(is.null(col.tableno)&&!is.null(tab.row)) col.tableno <- tab.row[,uniqueN(TABLE.NO)>1]           
+                ## if(is.null(col.tableno)&&!is.null(tab.row)) col.tableno <- tab.row[,uniqueN(NMREP)>1]           
                 dt.vars.id[,included:=FALSE]
                 dt.vars.id[variable%in%setdiff(cols.to.use,id.cols.not.new),included:=TRUE]
                 dt.vars.id[included==TRUE,included:=!duplicated(variable)]
@@ -821,11 +824,18 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         dt.vars <- dt.vars[variable!=col.row.merge]
     }
     
-### clean up TABLE.NO if not wanted
-    
-    if(!is.null(col.tableno) && !col.tableno){
-        tab.row[,TABLE.NO:=NULL]
-        dt.vars <- dt.vars[variable!="TABLE.NO"]
+### clean up NMREP if not wanted
+    ## if(!is.null(col.tableno) && !col.tableno){
+    ##     tab.row[,NMREP:=NULL]
+    ##     dt.vars <- dt.vars[variable!="NMREP"]
+    ## }
+    if(rm.col.nmrep){
+        tab.row[,(col.nmrep):=NULL]
+        dt.vars <- dt.vars[variable!=col.nmrep]
+    }
+    if(rm.col.tableno){
+        tab.row[,(col.tableno):=NULL]
+        dt.vars <- dt.vars[variable!=col.tableno]
     }
 
     

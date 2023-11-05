@@ -108,3 +108,14 @@ test_that("Commented output table",{
     expect_equal_to_reference(tabs,fileRef,version=2)
 
 })
+
+
+test_that("Table with repetitions",{
+
+    fileRef <- "testReference/NMscanTables_07.rds"
+
+    res <- NMscanTables("testData/nonmem/xgxr014.lst")
+    res$file.mtime <- NULL
+    
+    expect_equal_to_reference(res,fileRef,version=2)
+})

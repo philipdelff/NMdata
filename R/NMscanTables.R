@@ -39,7 +39,7 @@
 ##' @import data.table
 ##' @export
 
-NMscanTables <- function(file,as.fun,quiet,col.tableno=FALSE,col.id="ID",col.row,details,skip.absent=FALSE,meta.only=FALSE){
+NMscanTables <- function(file,as.fun,quiet,col.nmrep=TRUE,col.tableno=FALSE,col.id="ID",col.row,details,skip.absent=FALSE,meta.only=FALSE){
     
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
@@ -104,7 +104,7 @@ NMscanTables <- function(file,as.fun,quiet,col.tableno=FALSE,col.id="ID",col.row
                          ,lastonly=any(grepl("LASTONLY",x))
                          ,firstlastonly=any(grepl("FIRSTLASTONLY",x))
                          ,format=extract.info(x,"FORMAT",default=" ")
-                         ,noheader=any(grepl("NOHEADER",x)))
+                         ,noheader=any(grepl("(NOHEADER|NOLABEL)",x)))
         tab
     })
 
@@ -141,7 +141,7 @@ NMscanTables <- function(file,as.fun,quiet,col.tableno=FALSE,col.id="ID",col.row
             stop(paste0("NMscanTables: File not found: ",meta[I,file],". Did you copy the lst file but forgot table file?"))
         }
         
-        tables[[I]] <- NMreadTab(meta[I,file],quiet=TRUE,col.tableno=col.tableno,showProgress=FALSE,as.fun=identity,header=meta[I,!noheader],col.table.name=FALSE)
+        tables[[I]] <- NMreadTab(meta[I,file],quiet=TRUE,col.nmrep=col.nmrep,col.tableno=col.tableno,showProgress=FALSE,as.fun=identity,header=meta[I,!noheader],col.table.name=FALSE)
 ### to not include NMREP when counting columns
         ## dim.tmp <- dim(tables[[I]][,!colnames(tables[[I]])=="NMREP",with=FALSE])
         dim.tmp <- dim(tables[[I]])
@@ -149,7 +149,7 @@ NMscanTables <- function(file,as.fun,quiet,col.tableno=FALSE,col.id="ID",col.row
         meta[I,ncol:=dim.tmp[2]]
         
         if(meta[I,noheader]) {
-            messageWrap("Using NOHEADER option in $TABLE is only experimentally supported in NMdata. Please double check the resuling column names. NMdata functions can handle the recurring headers in Nonmem tables so the NOHEADER option should not be needed.",fun.msg=message)
+            messageWrap("Using NOHEADER and NOLABEL options in $TABLE is only experimentally supported in NMdata. Please double check the resuling column names. NMdata functions can handle the recurring headers in Nonmem tables so these $TABLE options should not be needed.",fun.msg=message)
             cnames.text <- lines.table[[I]]
             cnames.text <- gsub(","," ",cnames.text)
             cnames.text <- sub("^ *","",cnames.text)

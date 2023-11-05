@@ -43,8 +43,8 @@
 ##' @export
 
 
-NMreadTab <- function(file,col.tableno,col.table.name,header=TRUE,skip,quiet=TRUE,as.fun,...) {
-    
+NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip,quiet=TRUE,as.fun,...) {
+
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     TABLE <- NULL
@@ -52,25 +52,46 @@ NMreadTab <- function(file,col.tableno,col.table.name,header=TRUE,skip,quiet=TRU
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
-### todo: Keep track of whether to keep col.tableno and col.table.name
+### todo: Keep track of whether to keep col.nmrep and col.table.name
 
+### Default is to keep TABLENO
+    if(missing(col.nmrep) || is.null(col.nmrep) || isTRUE(col.nmrep) ){
+        col.nmrep <- "NMREP"
+    }
+    rm.col.nmrep <- FALSE
+    if(isFALSE(col.nmrep)){
+        col.nmrep <- "NMREP"
+        rm.col.nmrep <- TRUE
+    }
+
+    
+### default is not to keep table.name
+    rm.col.table.name <- FALSE
+    if(missing(col.table.name) || is.null(col.table.name) || isFALSE(col.table.name) ){
+        col.table.name <- "table.name"
+        rm.col.table.name <- TRUE
+    }
+    if(isTRUE(col.table.name)){
+        col.table.name <- "table.name"
+    }
+
+### Default is to keep TABLENO
     if(missing(col.tableno) || is.null(col.tableno) || isTRUE(col.tableno) ){
-        col.tableno <- "TABLE.NO"
+        col.tableno <- "TABLENO"
     }
     rm.col.tableno <- FALSE
     if(isFALSE(col.tableno)){
-        col.tableno <- "TABLE.NO"
+        col.tableno <- "TABLENO"
         rm.col.tableno <- TRUE
     }
 
-    if(missing(col.table.name) || is.null(col.table.name) || isTRUE(col.table.name) ){
-        col.table.name <- "table.name"
-    }
 
-    rm.col.table.name <- FALSE
-    if(isFALSE(col.table.name)){
-        col.table.name <- "table.name"
-        rm.col.table.name <- TRUE
+    ## function to strip strings from leading, trailing and duplicate spaces
+    cleanSpaces <- function(x){
+        x <- sub("^ +","",x)
+        x <- sub(" +$","",x)
+        x <- gsub(" +"," ",x)
+        x
     }
     
     ## arg checks
@@ -85,7 +106,6 @@ NMreadTab <- function(file,col.tableno,col.table.name,header=TRUE,skip,quiet=TRU
 
     if(missing(skip)){
         skip <- 1
-### Not sure this is correct. Are header and "TABLE" printing options related?
         if(!header) skip <- 0
     }
     dt1 <- fread(file,fill=TRUE,header=header,skip=skip,...)
@@ -95,40 +115,48 @@ NMreadTab <- function(file,col.tableno,col.table.name,header=TRUE,skip,quiet=TRU
         message("Adding table numbers to data")
     }
     
-    ## if(col.tableno){
-    ##     ## find table numbers
-    ##     dt1[grep("^TABLE",as.character(get(cnames[1])),invert=FALSE,perl=TRUE),TABLE:=get(cnames[1])]
-    ##     if(header){
-    ##         dt1[,NMREP:=cumsum(!is.na(TABLE))+1]
-    ##     }
-    ##     dt1[,TABLE:=NULL]
-    ## }
-
-    ## if(col.tableno){
+    
+    ## if(col.nmrep){
     ## find table numbers
+
+    col.table.name.text <- tmpcol(dt1,base="tabtext")
+    
+
+    
+    if(skip==1){
+        title.tab1 <- data.table(readLines(file,n=1))
+        colnames(title.tab1) <- colnames(dt1)[1]
+        dt1 <- rbind(title.tab1,dt1,fill=TRUE)
+        ## dt1[1,(col.table.name.text):=title.tab1]
+    }
     col.row.tmp <- tmpcol(dt1)
     dt1[,(col.row.tmp):=.I]
-    dt1[grep("^TABLE",as.character(get(cnames[1])),invert=FALSE,perl=TRUE),(col.table.name):=paste(unlist(.SD),collapse=" "),by=col.row.tmp]
-    dt1[,(col.row.tmp):=NULL]
-    if(skip==1){
-        title.tab1 <- readLines(file,n=1)
-        dt1[1,(col.table.name):=title.tab1]
+
+    mypaste <- function(x) {
+        x <- paste(unlist(x)[!is.na(x)],collapse=" ")
+        x <- cleanSpaces(x)
+        x
     }
-    if(header){
-        
-        dt1[,(col.tableno):=cumsum(!is.na(get(col.table.name)))]
-        ## }
-#### todo: avoid zoo dependency by merging table.name findings by (col.tableno)
-        ##dt1[,(col.table.name):=na.locf(get(col.table.name),na.rm=FALSE)]
-        ## dt1 <- mergeCheck(dt1[,!(col.table.name) ,with=FALSE],
-        ##                   unique(dt1[!is.na(get(col.table.name)),c(col.tableno,col.table.name),with=FALSE])
-        ##                  ,by=col.tableno,quiet=TRUE)
-        ## dt1[,uniquePresent(get(col.table.name)),by=col.table.name]
-        dt1[,(col.table.name):=get(col.table.name)[!is.na(get(col.table.name))],by=col.tableno]
-        
-        ## dt1[,(col.table.name):=na.locf(get(col.table.name),na.rm=FALSE)]
-        ## dt1[,TABLE:=NULL]
-    }
+    
+    dt1[grep("^TABLE",as.character(get(cnames[1])),perl=TRUE),(col.table.name.text):=mypaste(.SD),by=col.row.tmp]
+    
+    
+    dt1[grepl("^TABLE",as.character(get(cnames[1])),perl=TRUE),
+    (col.tableno):=as.numeric(sub("^ *TABLE NO\\. *([0-9]+).*","\\1",get(col.table.name.text))),by=col.row.tmp]
+    dt1[grepl("^TABLE",as.character(get(cnames[1])),perl=TRUE),
+    (col.table.name):=sub("^ *TABLE NO\\. *([1-9][0-9]+) *: *(.*)$","\\2",get(col.table.name.text)),
+    by=col.row.tmp]
+    ## getting rid of trailing spaces
+    dt1[,(col.table.name):=sub(" *$","",get(col.table.name))]
+    
+### count table replicates    
+    ##    if(header){
+    dt1[,(col.tableno):=nafill(get(col.tableno),type="locf")]
+    dt1[,(col.nmrep):=cumsum(!is.na(get(col.table.name))),by=col.tableno]
+    ## carry non-missing to missing values
+    
+    dt1[,(col.table.name):=get(col.table.name)[!is.na(get(col.table.name))],by=c(col.tableno,col.nmrep)]
+    ##    }
     
     if(!quiet){
         message("getting rid of non-data rows")
@@ -142,12 +170,14 @@ NMreadTab <- function(file,col.tableno,col.table.name,header=TRUE,skip,quiet=TRU
         
     }
 
-
+    dt1[,(col.row.tmp):=NULL]
+    dt1[,(col.table.name.text):=NULL]
     if(rm.col.table.name) dt1[,(col.table.name):=NULL]
+    if(rm.col.nmrep) dt1[,(col.nmrep):=NULL]
     if(rm.col.tableno) dt1[,(col.tableno):=NULL]
     
     ## columns added and clened since cnames was created.
-    cnames <- setdiff(colnames(dt1),c(col.table.name,col.tableno))
+    cnames <- setdiff(colnames(dt1),c(col.table.name,col.nmrep))
     dt1[,(cnames):=lapply(.SD,as.numeric),.SDcols=cnames]
 
     

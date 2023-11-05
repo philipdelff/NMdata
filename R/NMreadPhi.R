@@ -35,13 +35,13 @@ NMreadPhi <- function(file.phi,as.fun,modelname,col.model){
     ## res.NMdat <- NMreadTab(file.phi,as.fun="data.table",quiet=TRUE)
     res.NMdat <- lapply(file.phi,function(file){
         this.model <- modelname(file)
-        NMreadTab(file,as.fun="data.table",quiet=TRUE)[,(col.model):=this.model]
+        NMreadTab(file,as.fun="data.table",col.table.name=TRUE,quiet=TRUE)[,(col.model):=this.model]
     })
     res.NMdat <- rbindlist(res.NMdat)
 
     res.NMdat <- addTableStep(res.NMdat,keep.table.name=FALSE)
     
-    pars <- melt(res.NMdat,id.vars=c("model","TABLE.NO","table.step","SUBJECT_NO","ID"),variable.name="parameter")
+    pars <- melt(res.NMdat,id.vars=c("model","TABLENO","NMREP","table.step","SUBJECT_NO","ID"),variable.name="parameter")
 
     pars[,par.type:=NA_character_]
     ## pars[grepl("^ETA",parameter),par.type:="ETA"]

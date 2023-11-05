@@ -53,7 +53,7 @@ NMreadExt <- function(file.ext,return="pars",as.fun,modelname,col.model){
 
     res.NMdat <- lapply(file.ext,function(file){
         this.model <- modelname(file)
-        NMreadTab(file,as.fun="data.table",quiet=TRUE)[,(col.model):=this.model]
+        NMreadTab(file,as.fun="data.table",quiet=TRUE,col.table.name=TRUE)[,(col.model):=this.model]
     })
     res.NMdat <- rbindlist(res.NMdat)
 
@@ -86,8 +86,8 @@ NMreadExt <- function(file.ext,return="pars",as.fun,modelname,col.model){
     
     pars <- addTableStep(pars,keep.table.name=FALSE)
     
-    pars <- melt(pars,id.vars=cc(model,TABLE.NO,table.step,ITERATION,variable),variable.name="parameter")
-    pars <- dcast(pars,model+TABLE.NO+table.step+parameter~variable,value.var="value")
+    pars <- melt(pars,id.vars=cc(model,TABLENO,NMREP,table.step,ITERATION,variable),variable.name="parameter")
+    pars <- dcast(pars,model+TABLENO+NMREP+table.step+parameter~variable,value.var="value")
 
     pars[,par.type:=NA_character_]
     pars[grepl("^THETA",parameter),par.type:="THETA"]
@@ -104,7 +104,7 @@ NMreadExt <- function(file.ext,return="pars",as.fun,modelname,col.model){
     ## what to do about OBJ? Disregard? And keep in a iteration table instead?
     iterations <- res.NMdat[as.numeric(ITERATION)>(-1e9),!("variable")] 
     iterations <- addTableStep(iterations,keep.table.name=FALSE)
-    iterations <- melt(iterations,id.vars=cc(model,TABLE.NO,table.step,ITERATION),variable.name="parameter")
+    iterations <- melt(iterations,id.vars=cc(model,TABLENO,NMREP,table.step,ITERATION),variable.name="parameter")
 
     res <- list(pars=pars,iterations=iterations)
     res <- lapply(res,as.fun)
