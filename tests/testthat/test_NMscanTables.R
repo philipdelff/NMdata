@@ -51,6 +51,7 @@ test_that("Details table",{
 test_that("$TABLE header options",{
 
     fileRef <- "testReference/NMscanTables3.rds"
+    ## ref <- readRDS(fileRef)
     file.lst <- "testData/nonmem/xgxr024.lst"
 
     res <- NMscanTables(file=file.lst,as.fun="data.table",col.tableno="NMREP")
@@ -66,6 +67,7 @@ test_that("$TABLE header options",{
 test_that("Two firstonly, one full-length",{
 
     fileRef <- "testReference/NMscanTables4.rds"
+    ## ref <- readRDS(fileRef)
     file.lst <- "testData/nonmem/xgxr025.lst"
 
     res <- NMscanTables(file=file.lst,details=T,as.fun="data.table",
@@ -83,17 +85,18 @@ test_that("Two firstonly, one full-length",{
 
 test_that("Commented output table",{
 
-    fileRef <- "testReference/NMscanTables5.rds"
+    fileRef <- "testReference/NMscanTables_05.rds"
+    ## ref <- readRDS(fileRef)
     file.lst <- "testData/nonmem/xgxr028.lst"
 
-    tabs <- NMscanTables(file.lst)
+    res <- NMscanTables(file.lst)
 
-    meta <- NMinfoDT(tabs)
+    meta <- NMinfoDT(res)
     meta$tables[,file:=basename(file)]
     meta$tables$file.mtime <- NULL
-    writeNMinfo(tabs,meta)
+    writeNMinfo(res,meta)
 
-    expect_equal_to_reference(tabs,fileRef,version=2)
+    expect_equal_to_reference(res,fileRef,version=2)
 
 })
 

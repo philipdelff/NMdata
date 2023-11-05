@@ -150,15 +150,27 @@ NMscanTables <- function(file,as.fun,quiet,col.nmrep=TRUE,col.tableno=FALSE,col.
         
         if(meta[I,noheader]) {
             messageWrap("Using NOHEADER and NOLABEL options in $TABLE is only experimentally supported in NMdata. Please double check the resuling column names. NMdata functions can handle the recurring headers in Nonmem tables so these $TABLE options should not be needed.",fun.msg=message)
-            cnames.text <- lines.table[[I]]
+            cnames.text <- paste(lines.table[[I]],collapse=" ")
             cnames.text <- gsub(","," ",cnames.text)
             cnames.text <- sub("^ *","",cnames.text)
             cnames.text <- sub(" +"," ",cnames.text)
-            cnames.all <- strsplit(cnames.text," ")[[1]]
+            
+            
+            ## this is experimental. The list isn't exhaustive, and could these be column names if mixed in earlier in the $TABLE statement? Or are they all reserved names?
+            cnames.notcols <- c("NOHEADER","FIRSTONLY","NOLABEL","ONEHEADER","LASTONLY","PRINT","NOPRINT","FILE *=")
+            cnames.text <- sub(paste0("(",cnames.notcols,collapse="|",").*"),"",cnames.text)
 
+            cnames.all <- strsplit(cnames.text," ")[[1]]
+                        
             cnames.extra <- cc(DV,PRED,RES,WRES)
             cnames.extra <- setdiff(cnames.extra,cnames.all)
             ncol.I <- ncol(tables[[I]])
+            ## if some were named by NMreadTable, we want to keep
+            ## those names - they are most likely NMREP etc
+            idx.named <- grep("V[1-9][0-9]*",colnames(tables[[I]]),invert=TRUE)
+            if(length(idx.named)){
+                ncol.I <- min(c(ncol.I,idx.named-1))
+            }
             nce <- length(cnames.extra)
             
             if(nce){

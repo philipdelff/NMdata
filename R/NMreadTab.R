@@ -110,7 +110,7 @@ NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip
     }
     dt1 <- fread(file,fill=TRUE,header=header,skip=skip,...)
     
-    cnames <- colnames(dt1)
+    cnames <- copy(colnames(dt1))
     if(!quiet){
         message("Adding table numbers to data")
     }
@@ -151,8 +151,12 @@ NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip
     
 ### count table replicates    
     ##    if(header){
+    
     dt1[,(col.tableno):=nafill(get(col.tableno),type="locf")]
     dt1[,(col.nmrep):=cumsum(!is.na(get(col.table.name))),by=col.tableno]
+    if(dt1[,min(get(col.nmrep),na.rm=TRUE)]==0){
+        dt1[,(col.nmrep):=get(col.nmrep)+1]
+    }
     ## carry non-missing to missing values
     
     dt1[,(col.table.name):=get(col.table.name)[!is.na(get(col.table.name))],by=c(col.tableno,col.nmrep)]
@@ -166,7 +170,7 @@ NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip
     cols.dup <- duplicated(colnames(dt1))
     if(any(cols.dup)){
         messageWrap(paste0("Cleaned duplicated column names: ",paste(colnames(dt1)[cols.dup],collapse=",")),fun.msg=message)
-        dt1 <- dt1[,unique(cnames),with=FALSE]
+        dt1 <- dt1[,unique(colnames(dt1)),with=FALSE]
         
     }
 
