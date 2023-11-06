@@ -118,7 +118,10 @@ test_that("Table with repetitions",{
     fileRef <- "testReference/NMscanTables_07.rds"
 
     res <- NMscanTables("testData/nonmem/xgxr014.lst")
-    res$file.mtime <- NULL
+    meta <- NMinfoDT(res)
+    meta$tables[,file:=basename(file)]
+    meta$tables$file.mtime <- NULL
+    writeNMinfo(res,meta)
     
     expect_equal_to_reference(res,fileRef,version=2)
 })

@@ -8,6 +8,7 @@ NMscanTables(
   file,
   as.fun,
   quiet,
+  col.nmrep = TRUE,
   col.tableno = FALSE,
   col.id = "ID",
   col.row,
@@ -29,6 +30,17 @@ NMdataConf.}
 on what data is found. But consider setting this to TRUE for
 non-interactive use. Default can be configured using
 NMdataConf.}
+
+\item{col.nmrep}{col.nmrep If tables are repeated, include a
+counter? It does not relate to the order of the $TABLE
+statements but to cases where a $TABLE statement is run
+repeatedly. E.g., in combination with the SUBPROBLEMS feature
+in Nonmem, it is useful to keep track of the table
+(repetition) number. If col.nmrep is TRUE, this will be
+carried forward and added as a column called NMREP. This is
+default behavior when more than one $TABLE repetition is found
+in data. Set it to a different string to request the column
+with a different name. The argument is passed to NMscanTables.}
 
 \item{col.tableno}{Nonmem includes a counter of tables in the
 written data files. These are often not useful. However, if

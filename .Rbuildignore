@@ -44,4 +44,7 @@ INTER
 LINK.LNK
 tests/testthat/testOutput/simulations/nonmem
 tests/testthat/testOutput/simulations/NMsimData_xgxr.+\.rds
+tests/testthat/testData/simulations/xgxr..._subprobs/NMsim_xgxr..._subprobs_dir.+
+tests/testthat/testData/simulations/xgxr.*/.*.rds
+tests/testthat/testData/simulations/xgxr.*/.*.csv
 .*_input.rds

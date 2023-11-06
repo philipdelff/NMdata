@@ -181,7 +181,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     DV <- NULL
     ID.jump <- NULL
     N <- NULL
-    ## NMREP <- NULL
+     NMREP <- NULL
     ## firstlastonly <- NULL
     ## firstonly <- NULL
     ## lastonly <- NULL
@@ -424,7 +424,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     
 
     
-    if(was.null.col.nmrep&&!is.null(tab.row)) rm.col.nmrep <- !tab.row[,uniqueN(NMREP)>1]
+    if(was.null.col.nmrep&&!is.null(tab.row)) rm.col.nmrep <- !tab.row[,uniqueN(get(col.nmrep))>1]
     
     ## use.rows means if to use row-data from output tables
     use.rows <- TRUE
@@ -552,7 +552,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 #### This needs to be by NMREP. Would be good to have this info in tables metadata
             nrow.tab.row <- 0
             if(!is.null(tab.row)){
-                nrow.tab.row <- tab.row[,.N,by=(NMREP)][,unique(N)]
+                nrow.tab.row <- tab.row[,.N,by=col.nmrep][,unique(N)]
                 
                 if( nrow.data.input!=nrow.tab.row) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.
@@ -561,7 +561,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                 }
 
                 
-                tab.row[,(col.row.merge):=data.input[,get(col.row.merge)],by=.(NMREP)]
+                tab.row[,(col.row.merge):=data.input[,get(col.row.merge)],by=col.nmrep]
                 ## if(!recover.rows) data.input <- data.input
 
             }
@@ -600,7 +600,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         }
 
         if(use.input&&any(meta.output$full.length)) {
-            if(recover.rows && tab.row[,uniqueN(NMREP)]>1) messageWrap("Output tables seem repeated (is this a simulation with multiple subproblems?). recover.rows=TRUE is not supported in this case.",fun.msg=stop)
+            if(recover.rows && tab.row[,uniqueN(get(col.nmrep))]>1) messageWrap("Output tables seem repeated (is this a simulation with multiple subproblems?). recover.rows=TRUE is not supported in this case.",fun.msg=stop)
             ## if(!quiet) messageWrap("Searching for input data.")
 
             ## if no method is specified, search for possible col.row to help the user
@@ -641,7 +641,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             if(col.row%in%colnames(tab.row)) {
                 
                 col.by <- NULL
-                if("NMREP"%in%colnames(tab.row)) col.by <- "NMREP"
+                if(col.nmrep%in%colnames(tab.row)) col.by <- col.nmrep
                 found.dups <- tab.row[,.(dup=duplicated(get(col.row))),by=col.by][,any(dup)]
                 if( found.dups ) {
                     messageWrap("merge.by.row is TRUE, but col.row has duplicate values (within NMREP) in _output_ data. col.row must be a unique row identifier. It is unique in input data, so how did rows get repeated in output data? Has input data been edited since the model was run?",fun.msg=stop)

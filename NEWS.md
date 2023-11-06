@@ -61,9 +61,9 @@
 * NMcheckData has improved checks of II and ADDL columns.
 
 ## Other improvements
-* NMwriteData now uses the `formats` argument to specify the requested
-  file formats. This replaces arguments like write.csv and
-  write.rds. To get those two, do formats=c("csv","rds") (which is
+* `NMwriteData` now uses the `formats` argument to specify the requested
+  file formats. This replaces arguments like `write.csv` and
+  `write.rds`. To get those two, do `formats=c("csv","rds")` (which is
   default). The argument `save` is used to control whether outputs are
   written altogether.
   
@@ -106,7 +106,7 @@ This release provides a few bugfixes, nothing major.
 ## New features
 * NMwriteSection includes argument `location`. In combination with
   `section`, this determines where the new section is
-  inserter. Posible values are "replace" (default), "before", "after",
+  inserter. Possible values are "replace" (default), "before", "after",
   "first", "last".
   
 * NMreadSection adds support for partial matching of section
@@ -268,37 +268,37 @@ chaned to ensure consistent test results once data.table 1.14.7 is
   dataset that may change over time and the model runs that become
   self-contained packages of input and output data.
 
-* Support for NOHEADER option in Nonmem $TABLE blocks. If NMdata is
+* Support for `NOHEADER` option in Nonmem `$TABLE` blocks. If `NMdata` is
   used to read the results, there is no need to use NOHEADER (which
   opens the door to mistakes if manually renaming the columns in
   results), but NMdata should now also be able to handle this. 
 
-* If found in data, CMT is added to the breakdown of rows when
+* If found in data, `CMT` is added to the breakdown of rows when
   summarizing results from NMscanData. Before, it was broken down on
   EVID only. Also, a total line is included with total number of rows
   in each of input-only, output, and result.
 
-* Support for non-event (say for $PRED) datasets in NMcheckData.
+* Support for non-event (say for `$PRED`) datasets in `NMcheckData`.
 
-* Support for custom column names for DV (col.dv) and MDV (col.mdv),
+* Support for custom column names for `DV` (`col.dv`) and MDV (col.mdv),
   ID (col.ID), AMT (col.amt) in NMcheckData.
 
 * Support for file.mod and dir.data arguments in NMcheckData when
   running on a control stream.
 
-* NMgenText now has an argument called until that specifies the last
+* `NMgenText` now has an argument called until that specifies the last
   column(s) to include in $INPUT.
 
-* compareCols takes the list.data argument same way as dims()
+* `compareCols` takes the list.data argument same way as dims()
   does. This is often easier to use in programming.
 
-* If NMgenText does not find any Nonmem-compatible columns to report,
+* If `NMgenText` does not find any Nonmem-compatible columns to report,
   it now throws a warning and returns NULL.
 
 ## Bugfixes
 * NMextractDataFile was not cleaning all paths correctly. This mostly
-  impacts NMcheckData's ability to find data files when using the file
-  argument in NMcheckData. Only affects certain models.
+  impacts `NMcheckData`'s ability to find data files when using the file
+  argument in `NMcheckData`. Only affects certain models.
 * NMextractDataFile was not working with dir.data. Fixed.
 * NMextractDataFile Now handles absolute paths correctly.
 
@@ -306,13 +306,13 @@ chaned to ensure consistent test results once data.table 1.14.7 is
 * compareCols now by default lists the columns where no differences
   were found. 
 
-* NMreadTab throws a message instead of a warning in case duplicate
+* `NMreadTab` throws a message instead of a warning in case duplicate
   column names are found and removed.
 	  
-* NMwriteData now runs NMgenText in try, just in case.
+* `NMwriteData` now runs `NMgenText` in try, just in case.
 
-* fnExtension now supports adding extensions to strings without
-  extensions, i.e. fnExtension("file",".txt").
+* `fnExtension` now supports adding extensions to strings without
+  extensions, i.e. `fnExtension("file",".txt")`.
 
 # NMdata 0.0.11
 

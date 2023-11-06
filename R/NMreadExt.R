@@ -32,7 +32,7 @@ NMreadExt <- function(file.ext,return="pars",as.fun,modelname,col.model){
     parameter <- NULL
     i <- NULL
     j <- NULL
-    TABLE.NO <- NULL
+    TABLENO <- NULL
     table.step <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks

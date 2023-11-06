@@ -23,7 +23,7 @@
 ##'     containing a section. Names must be section names, contents of
 ##'     each element are the new section lines for each section.
 ##' @param location In combination with `section`, this determines
-##'     where the new section is inserter. Posible values are
+##'     where the new section is inserter. Possible values are
 ##'     "replace" (default), "before", "after", "first", "last".
 ##' @param newfile path and filename to new run. If missing, the
 ##'     original file (from \code{files} or \code{file.pattern}) is
