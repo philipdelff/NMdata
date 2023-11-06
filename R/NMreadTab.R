@@ -166,7 +166,7 @@ NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip
     dt1[,(col.tableno):=nafill(get(col.tableno),type="locf")]
     dt1[,(col.nmrep):=cumsum(!is.na(get(col.table.name))),by=col.tableno]
     ## if no header was found nmrep starts at zero. That should be one.
-    dt1[,nmrep.min:=min(c(get(col.nmrep),0),na.rm=TRUE),by=col.tableno]
+    dt1[,nmrep.min:=min(c(get(col.nmrep),1),na.rm=TRUE),by=col.tableno]
     dt1[nmrep.min==0,(col.nmrep):=get(col.nmrep)+1]
     dt1[,nmrep.min:=NULL]
     ## carry non-missing to missing values
