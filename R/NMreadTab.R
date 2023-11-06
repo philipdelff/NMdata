@@ -59,6 +59,7 @@ NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip
 
     TABLE <- NULL
     NMREP <- NULL
+    nmrep.min <- NULL
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
