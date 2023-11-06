@@ -21,7 +21,7 @@ but because they are typical dataset issues."><meta property="og:image" content=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.2.902</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.2.911</span>
       </span>
     </div>
 
@@ -126,13 +126,14 @@ anything that can be converted to data.table.</p></dd>
 <dd><p>Alternatively to checking a data object, you can use
 file to specify a control stream to check. This can either be
 a (working or non-working) input control stream or an output
-control stream. In this case, NMdataCheck checks column names
-in data against control stream (see NMcheckColnames), reads
-the data as NONMEM would do, and do the same checks on the
-data as NMdataCheck would do using the data
-argument. col.flagn is ignored in this case - instead,
-ACCEPT/IGNORE statements in control stream are applied. The
-file argument is useful for debugging a Nonmem model.</p></dd>
+control stream. In this case, <code>NMdataCheck</code> checks column
+names in data against control stream (see
+<code>NMcheckColnames</code>), reads the data as Nonmem would do,
+and do the same checks on the data as NMdataCheck would do
+using the data argument. <code>col.flagn</code> is ignored in this
+case - instead, ACCEPT/IGNORE statements in control stream are
+applied. The file argument is useful for debugging a Nonmem
+model.</p></dd>
 
 
 <dt>covs</dt>
@@ -145,9 +146,9 @@ subjects.</p></dd>
 <dd><p>A list specifying columns that contain
 subject:occasion-level covariates. They are expected to be
 non-missing, numeric and not varying within combinations of
-subject and occasion. covs.occ=list(PERIOD=c("FED")) means
-that FED is the covariate, while PERIOD indicates the
-occasion.</p></dd>
+subject and occasion. <code>covs.occ=list(PERIOD=c("FED"))</code>
+means that <code>FED</code> is the covariate, while <code>PERIOD</code>
+indicates the occasion.</p></dd>
 
 
 <dt>cols.num</dt>
@@ -169,13 +170,14 @@ identifier. Default is "ID".</p></dd>
 
 <dt>col.dv</dt>
 <dd><p>The name of the column holding the dependent
-variable. For now, only one column can be specified, and MDV
-is assumed to match this column. Default is DV.</p></dd>
+variable. For now, only one column can be specified, and
+<code>MDV</code> is assumed to match this column. Default is
+<code>DV</code>.</p></dd>
 
 
 <dt>col.mdv</dt>
 <dd><p>The name of the column holding the binary indicator
-of the dependent variable missing. Default is MDV.</p></dd>
+of the dependent variable missing. Default is <code>MDV</code>.</p></dd>
 
 
 <dt>col.cmt</dt>
@@ -190,19 +192,20 @@ also used in checks for row duplicates.</p></dd>
 
 <dt>col.flagn</dt>
 <dd><p>Optionally, the name of the column holding
-numeric exclusion flags. Default value is FLAG and can be
-configured using NMdataConf. Even though FLAG is the default
-value, no finding will be returned if the column is missing
-unless explecitely defined as col.flagn="FLAG". This is
-because this way of using exclusion flags is only one of many
-ways you could choose to handle exclusions. Disable completely
-by using col.flagn=FALSE.</p></dd>
+numeric exclusion flags. Default value is <code>FLAG</code> and can
+be configured using <code>NMdataConf</code>. Even though <code>FLAG</code>
+is the default value, no finding will be returned if the
+column is missing unless explicitly defined as
+<code>col.flagn="FLAG"</code>. This is because this way of using
+exclusion flags is only one of many ways you could choose to
+handle exclusions. Disable completely by using
+<code>col.flagn=FALSE</code>.</p></dd>
 
 
 <dt>col.row</dt>
 <dd><p>A column with a unique value for each row. Such a
-column is recommended to use if possible. Default ("ROW") can
-be modified using NMdataConf.</p></dd>
+column is recommended to use if possible. Default
+(<code>"ROW"</code>) can be modified using <code>NMdataConf</code>.</p></dd>
 
 
 <dt>col.usubjid</dt>
@@ -229,8 +232,8 @@ this list if provided.</p></dd>
 <dd><p>"est" for estimation data (default), and "sim"
 for simulation data. Differences are that <code>col.row</code> is
 not expected for simulation data, and subjects will be checked
-to have EVID==0 rows for estimation data and EVID==2 rows for
-simulation data.</p></dd>
+to have <code>EVID==0</code> rows for estimation data and
+<code>EVID==2</code> rows for simulation data.</p></dd>
 
 
 <dt>na.strings</dt>
@@ -238,14 +241,14 @@ simulation data.</p></dd>
 characters to numerics. This will typically be a string that
 represents missing values. Default is ".". Notice, actual NA,
 i.e. not a string, is allowed independently of na.strings. See
-?NMisNumeric.</p></dd>
+<code><a href="NMisNumeric.html">?NMisNumeric</a></code>.</p></dd>
 
 
 <dt>return.summary</dt>
 <dd><p>If TRUE (not default), the table summary
-that is printed if quiet=FALSE is returned as well. In that
-case, a list is returned, and the findings are in an element
-called findings.</p></dd>
+that is printed if <code>quiet=FALSE</code> is returned as well. In
+that case, a list is returned, and the findings are in an
+element called findings.</p></dd>
 
 
 <dt>quiet</dt>
@@ -253,11 +256,12 @@ called findings.</p></dd>
 
 
 <dt>as.fun</dt>
-<dd><p>The default is to return data as a data.frame. Pass
-a function (say tibble::as_tibble) in as.fun to convert to
-something else. If data.tables are wanted, use
-as.fun="data.table". The default can be configured using
-NMdataConf.</p></dd>
+<dd><p>The default is to return data as a
+<code>data.frame</code>. Pass a function (say
+<code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">tibble::as_tibble</a></code>) in as.fun to convert to something
+else. If <code>data.tables</code> are wanted, use
+<code>as.fun="data.table"</code>. The default can be configured
+using <code>NMdataConf</code>.</p></dd>
 
 </dl></div>
     <div id="value">

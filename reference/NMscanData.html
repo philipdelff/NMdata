@@ -24,7 +24,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.2.902</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.2.911</span>
       </span>
     </div>
 
@@ -113,7 +113,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
 <span>  <span class="va">modelname</span>,</span>
 <span>  <span class="va">col.model</span>,</span>
 <span>  <span class="va">col.nmout</span>,</span>
-<span>  <span class="va">rep.count</span>,</span>
+<span>  <span class="va">col.nmrep</span>,</span>
 <span>  order.columns <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">check.time</span>,</span>
 <span>  <span class="va">tz.lst</span>,</span>
@@ -254,16 +254,17 @@ representing whether row was in output table or not. Default
 can be modified using NMdataConf.</p></dd>
 
 
-<dt>rep.count</dt>
-<dd><p>Nonmem includes a counter of tables in the
-written data files. This does not relate to the order of the
-$TABLE statements but to cases where a $TABLE statement is run
-repeatedly. E.g., in combination with the SUBPROBLEMS feature
-in Nonmem, it is useful to keep track of the table
-(repetition) number. If rep.count is TRUE, this will be
-carried forward and added as a column called NMREP. This is
-default behavior when more than one $TABLE repetition is found
-in data. The argument is passed to NMscanTables.</p></dd>
+<dt>col.nmrep</dt>
+<dd><p>If tables are repeated, include a counter? It
+does not relate to the order of the $TABLE statements but to
+cases where a $TABLE statement is run repeatedly. E.g., in
+combination with the SUBPROBLEMS feature in Nonmem, it is
+useful to keep track of the table (repetition) number. If
+col.nmrep is TRUE, this will be carried forward and added as a
+column called NMREP. This is default behavior when more than
+one $TABLE repetition is found in data. Set it to a different
+string to request the column with a different name. The
+argument is passed to NMscanTables.</p></dd>
 
 
 <dt>order.columns</dt>
@@ -303,7 +304,7 @@ Default is FALSE in which case an error is thrown.</p></dd>
 
 
 <dt>tab.count</dt>
-<dd><p>Deprecated. Use <code>rep.count</code>.</p></dd>
+<dd><p>Deprecated. Use <code>col.tableno</code>.</p></dd>
 
 
 <dt>use.rds</dt>
