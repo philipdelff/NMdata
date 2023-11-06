@@ -18,7 +18,7 @@
 ##' @return A list with a final parameter table and a table of the
 ##'     iterations
 ##' @import data.table
-##' @keywords export
+##' @export
 
 NMreadExt <- function(file.ext,return="pars",as.fun,modelname,col.model){
 
@@ -55,7 +55,7 @@ NMreadExt <- function(file.ext,return="pars",as.fun,modelname,col.model){
         this.model <- modelname(file)
         NMreadTab(file,as.fun="data.table",quiet=TRUE,col.table.name=TRUE)[,(col.model):=this.model]
     })
-    res.NMdat <- rbindlist(res.NMdat)
+    res.NMdat <- rbindlist(res.NMdat,fill=TRUE)
 
     ## NONMEM USERS GUIDE
     ## INTRODUCTION TO NONMEM 7.5.0
