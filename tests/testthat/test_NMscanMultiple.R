@@ -42,10 +42,15 @@ test_that("basic",{
     res <- NMscanMultiple(lsts, check.time = FALSE,quiet=TRUE)
     ## dim(res)
 
+    ## ref <- readRDS(fileRef)
+    ## as.data.table(res)[,.N,by=.(model)]
+    ## as.data.table(ref)[,.N,by=.(model)]
+    
+    
     ## res <- lapply(res,fix.time)
     res <- as.data.frame(res)
     unNMdata(res)
-    ## res[,.N,by=.(model)]
+
 
     expect_equal_to_reference(res,fileRef,version=2)
     ## without meta

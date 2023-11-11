@@ -48,7 +48,7 @@ containing a section. Names must be section names, contents of
 each element are the new section lines for each section.}
 
 \item{location}{In combination with `section`, this determines
-where the new section is inserter. Posible values are
+where the new section is inserter. Possible values are
 "replace" (default), "before", "after", "first", "last".}
 
 \item{newfile}{path and filename to new run. If missing, the

@@ -16,7 +16,7 @@ the appended number. This is useful if you are generating say
 more than 10 files, and your counter will be 01, 02,..,
 10,... and not 1, 2,...,10,...}
 
-\item{sep}{The separator between the exsting file name (until
+\item{sep}{The separator between the existing file name (until
 extension) and the addition.}
 }
 \value{

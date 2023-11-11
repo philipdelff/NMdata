@@ -32,6 +32,8 @@ NMreadExt <- function(file.ext,return="pars",as.fun,modelname,col.model){
     parameter <- NULL
     i <- NULL
     j <- NULL
+    TABLENO <- NULL
+    table.step <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
@@ -51,7 +53,7 @@ NMreadExt <- function(file.ext,return="pars",as.fun,modelname,col.model){
 
     res.NMdat <- lapply(file.ext,function(file){
         this.model <- modelname(file)
-        NMreadTab(file,as.fun="data.table",quiet=TRUE)[,(col.model):=this.model]
+        NMreadTab(file,as.fun="data.table",quiet=TRUE,col.table.name=TRUE)[,(col.model):=this.model]
     })
     res.NMdat <- rbindlist(res.NMdat,fill=TRUE)
 
@@ -78,11 +80,14 @@ NMreadExt <- function(file.ext,return="pars",as.fun,modelname,col.model){
     res.NMdat <- mergeCheck(res.NMdat,dt.codes,by=cc(ITERATION),all.x=T,quiet=TRUE)
     ## res.NMdat
 
-
+    
     
     pars <- res.NMdat[variable%in%dt.codes$variable,setdiff(colnames(res.NMdat),"OBJ"),with=FALSE]
-    pars <- melt(pars,id.vars=cc(model,ITERATION,variable,NMREP),variable.name="parameter")
-    pars <- dcast(pars,model+NMREP+parameter~variable,value.var="value")
+    
+    pars <- addTableStep(pars,keep.table.name=FALSE)
+    
+    pars <- melt(pars,id.vars=cc(model,TABLENO,NMREP,table.step,ITERATION,variable),variable.name="parameter")
+    pars <- dcast(pars,model+TABLENO+NMREP+table.step+parameter~variable,value.var="value")
 
     pars[,par.type:=NA_character_]
     pars[grepl("^THETA",parameter),par.type:="THETA"]
@@ -98,7 +103,8 @@ NMreadExt <- function(file.ext,return="pars",as.fun,modelname,col.model){
 
     ## what to do about OBJ? Disregard? And keep in a iteration table instead?
     iterations <- res.NMdat[as.numeric(ITERATION)>(-1e9),!("variable")] 
-    iterations <- melt(iterations,id.vars=cc(model,ITERATION,NMREP))
+    iterations <- addTableStep(iterations,keep.table.name=FALSE)
+    iterations <- melt(iterations,id.vars=cc(model,TABLENO,NMREP,table.step,ITERATION),variable.name="parameter")
 
     res <- list(pars=pars,iterations=iterations)
     res <- lapply(res,as.fun)

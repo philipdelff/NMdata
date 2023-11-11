@@ -8,12 +8,22 @@
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using
 ##'     NMdataConf.
-##' @param rep.count Nonmem includes a counter of tables in the
+##' @param col.tableno Nonmem includes a counter of tables in the
 ##'     written data files. These are often not useful. However, if
-##'     rep.count is TRUE (not default), this will be carried forward
+##'     col.tableno is TRUE (not default), this will be carried forward
 ##'     and added as a column called NMREP. Even if NMREP is generated
 ##'     by NMscanTables, it is treated like any other table column in
 ##'     meta (?NMinfo) data.
+##' @param col.nmrep col.nmrep If tables are repeated, include a
+##'     counter? It does not relate to the order of the $TABLE
+##'     statements but to cases where a $TABLE statement is run
+##'     repeatedly. E.g., in combination with the SUBPROBLEMS feature
+##'     in Nonmem, it is useful to keep track of the table
+##'     (repetition) number. If col.nmrep is TRUE, this will be
+##'     carried forward and added as a column called NMREP. This is
+##'     default behavior when more than one $TABLE repetition is found
+##'     in data. Set it to a different string to request the column
+##'     with a different name. The argument is passed to NMscanTables.
 ##' @param col.id name of the subject ID column. Used for calculation
 ##'     of the number of subjects in each table.
 ##' @param as.fun The default is to return data as a data.frame. Pass
@@ -39,7 +49,7 @@
 ##' @import data.table
 ##' @export
 
-NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,details,skip.absent=FALSE,meta.only=FALSE){
+NMscanTables <- function(file,as.fun,quiet,col.nmrep=TRUE,col.tableno=FALSE,col.id="ID",col.row,details,skip.absent=FALSE,meta.only=FALSE){
     
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
@@ -104,7 +114,7 @@ NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,d
                          ,lastonly=any(grepl("LASTONLY",x))
                          ,firstlastonly=any(grepl("FIRSTLASTONLY",x))
                          ,format=extract.info(x,"FORMAT",default=" ")
-                         ,noheader=any(grepl("NOHEADER",x)))
+                         ,noheader=any(grepl("(NOHEADER|NOLABEL)",x)))
         tab
     })
 
@@ -141,7 +151,7 @@ NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,d
             stop(paste0("NMscanTables: File not found: ",meta[I,file],". Did you copy the lst file but forgot table file?"))
         }
         
-        tables[[I]] <- NMreadTab(meta[I,file],quiet=TRUE,rep.count=rep.count,showProgress=FALSE,as.fun=identity,header=meta[I,!noheader])
+        tables[[I]] <- NMreadTab(meta[I,file],quiet=TRUE,col.nmrep=col.nmrep,col.tableno=col.tableno,showProgress=FALSE,as.fun=identity,header=meta[I,!noheader],col.table.name=FALSE)
 ### to not include NMREP when counting columns
         ## dim.tmp <- dim(tables[[I]][,!colnames(tables[[I]])=="NMREP",with=FALSE])
         dim.tmp <- dim(tables[[I]])
@@ -149,16 +159,28 @@ NMscanTables <- function(file,as.fun,quiet,rep.count=FALSE,col.id="ID",col.row,d
         meta[I,ncol:=dim.tmp[2]]
         
         if(meta[I,noheader]) {
-            messageWrap("Using NOHEADER option in $TABLE is only experimentally supported in NMdata. Please double check the resuling column names. NMdata functions can handle the recurring headers in Nonmem tables so the NOHEADER option should not be needed.",fun.msg=message)
-            cnames.text <- lines.table[[I]]
+            messageWrap("Using NOHEADER and NOLABEL options in $TABLE is only experimentally supported in NMdata. Please double check the resuling column names. NMdata functions can handle the recurring headers in Nonmem tables so these $TABLE options should not be needed.",fun.msg=message)
+            cnames.text <- paste(lines.table[[I]],collapse=" ")
             cnames.text <- gsub(","," ",cnames.text)
             cnames.text <- sub("^ *","",cnames.text)
             cnames.text <- sub(" +"," ",cnames.text)
-            cnames.all <- strsplit(cnames.text," ")[[1]]
+            
+            
+            ## this is experimental. The list isn't exhaustive, and could these be column names if mixed in earlier in the $TABLE statement? Or are they all reserved names?
+            cnames.notcols <- c("NOHEADER","FIRSTONLY","NOLABEL","ONEHEADER","LASTONLY","PRINT","NOPRINT","FILE *=")
+            cnames.text <- sub(paste0("(",cnames.notcols,collapse="|",").*"),"",cnames.text)
 
+            cnames.all <- strsplit(cnames.text," ")[[1]]
+                        
             cnames.extra <- cc(DV,PRED,RES,WRES)
             cnames.extra <- setdiff(cnames.extra,cnames.all)
             ncol.I <- ncol(tables[[I]])
+            ## if some were named by NMreadTable, we want to keep
+            ## those names - they are most likely NMREP etc
+            idx.named <- grep("V[1-9][0-9]*",colnames(tables[[I]]),invert=TRUE)
+            if(length(idx.named)){
+                ncol.I <- min(c(ncol.I,idx.named-1))
+            }
             nce <- length(cnames.extra)
             
             if(nce){

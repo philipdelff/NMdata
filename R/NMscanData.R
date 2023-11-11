@@ -74,7 +74,7 @@
 ##'     for and use if found. Default is c("rds","csv") which means
 ##'     \code{rds} will be used if found, and \code{csv} if
 ##'     not. \code{fst} is possible too. Default can be modified using
-##'     \code{NMdataConf()}. 
+##'     \code{NMdataConf()}.
 ##' @param quiet The default is to give some information along the way
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using
@@ -88,15 +88,16 @@
 ##'     something else. If data.tables are wanted, use
 ##'     as.fun="data.table". The default can be configured using
 ##'     NMdataConf.
-##' @param rep.count Nonmem includes a counter of tables in the
-##'     written data files. This does not relate to the order of the
-##'     $TABLE statements but to cases where a $TABLE statement is run
-##'     repeatedly. E.g., in combination with the SUBPROBLEMS feature
-##'     in Nonmem, it is useful to keep track of the table
-##'     (repetition) number. If rep.count is TRUE, this will be
-##'     carried forward and added as a column called NMREP. This is
-##'     default behavior when more than one $TABLE repetition is found
-##'     in data. The argument is passed to NMscanTables.
+##' @param col.nmrep If tables are repeated, include a counter? It
+##'     does not relate to the order of the $TABLE statements but to
+##'     cases where a $TABLE statement is run repeatedly. E.g., in
+##'     combination with the SUBPROBLEMS feature in Nonmem, it is
+##'     useful to keep track of the table (repetition) number. If
+##'     col.nmrep is TRUE, this will be carried forward and added as a
+##'     column called NMREP. This is default behavior when more than
+##'     one $TABLE repetition is found in data. Set it to a different
+##'     string to request the column with a different name. The
+##'     argument is passed to NMscanTables.
 ##' @param order.columns If TRUE (default), NMorderColumns is used to
 ##'     reorder the columns before returning the data. NMorderColumns
 ##'     will be called with alpha=FALSE, so columns are not sorted
@@ -121,11 +122,11 @@
 ##'     NMdataConf() too.
 ##' @param skip.absent Skip missing output table files with a warning?
 ##'     Default is FALSE in which case an error is thrown.
-##' @param tab.count Deprecated. Use \code{rep.count}.
+##' @param tab.count Deprecated. Use \code{col.tableno}.
 ##' @param use.rds Deprecated - use \code{formats.read} instead. If
 ##'     provided (though not recommended), this will overwrite
 ##'     \code{formats.read}, and only formats \code{rds} and
-##'     \code{csv} can be used. 
+##'     \code{csv} can be used.
 ##'
 ##' @details This function makes it very easy to collect the data from
 ##'     a Nonmem run.
@@ -165,7 +166,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                        recover.rows,file.mod,dir.data,file.data,
                        translate.input=TRUE, quiet, formats.read,
                        args.fread, as.fun, col.id="ID", modelname,
-                       col.model, col.nmout,rep.count,
+                       col.model, col.nmout, col.nmrep,
                        order.columns=TRUE, check.time, tz.lst,
                        skip.absent=FALSE,
                        ## Deprecated
@@ -180,7 +181,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     DV <- NULL
     ID.jump <- NULL
     N <- NULL
-    NMREP <- NULL
+     NMREP <- NULL
     ## firstlastonly <- NULL
     ## firstonly <- NULL
     ## lastonly <- NULL
@@ -234,7 +235,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     quiet <- NMdataDecideOption("quiet",quiet)
     formats.read <- NMdataDecideOption("formats.read",formats.read)
     args.fread <- NMdataDecideOption("args.fread",args.fread)
-    ## if null, rep.count will later be set to TRUE if NMREP varies
+    ## if null, col.tableno will later be set to TRUE if TABLENO varies
 
     ## deprecated 2023-06-20
     use.rds <- deprecatedArg(oldarg="use.rds",msg="Use `formats` instead. Overwriting `formats.read`.")
@@ -247,18 +248,31 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     
     
 ### deprecated before 2023-06-12
-    ## if(!missing(tab.count)) .Deprecated("rep.count",old="tab.count")
+    ## if(!missing(tab.count)) .Deprecated("col.tableno",old="tab.count")
 
-    if(!missing(tab.count)||!missing(rep.count)){
+### col.tableno makes no sense for NMscanData because we combine multiple tables.
+    col.tableno <- FALSE
+    ## if(!missing(tab.count)||!missing(col.tableno)){
+    ##     args <- getArgs()
+    ##     col.tableno <- deprecatedArg(oldarg="tab.count",newarg="col.tableno",args=args)
+    ## }
+    ## if(missing(col.tableno)) col.tableno <- NULL
+
+    if(!missing(tab.count)||!missing(col.nmrep)){
         args <- getArgs()
-        rep.count <- deprecatedArg(oldarg="tab.count",newarg="rep.count",args=args)
+        col.nmrep <- deprecatedArg(oldarg="tab.count",newarg="col.nmrep",args=args)
     }
-    if(missing(rep.count)) rep.count <- NULL
+    
+    if(missing(col.nmrep)) col.nmrep <- NULL
+    was.null.col.nmrep <- is.null(col.nmrep)
+    rm.col.nmrep <- is.null(col.nmrep) || isFALSE(col.nmrep)
+    if(is.null(col.nmrep) || isFALSE(col.nmrep)) col.nmrep <- "NMREP"
+
     
     ## if(!missing(tab.count)){
-    ##     if(!missing(rep.count)) stop("keepNames is deprecated. Use only keep.names.")
+    ##     if(!missing(col.tableno)) stop("keepNames is deprecated. Use only keep.names.")
     ##     message("keepNames is deprecated. Please use keep.names.")
-    ##     rep.count <- tab.count
+    ##     col.tableno <- tab.count
     ## }
 
     
@@ -306,10 +320,10 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 #### Section start: read all output tables and add to meta data ####
     
-    ## tables <- NMscanTables(file,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id,rep.count=rep.count)
-    tables <- NMscanTables(file,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id,rep.count=TRUE,skip.absent=skip.absent)
+    ## tables <- NMscanTables(file,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id,col.tableno=col.tableno)
+    tables <- NMscanTables(file,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id,col.tableno=col.tableno,col.nmrep=TRUE,skip.absent=skip.absent)
     meta.output <- copy(NMinfoDT(tables)$tables)
-
+    
     
 ### combine full tables into one
     col.row.in.output <- meta.output[level=="row",any(has.col.row)]
@@ -408,8 +422,9 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     dt.vars <- object.tables$dt.vars
     dt.vars.id <- object.tables$dt.vars.id
     
+
     
-    if(is.null(rep.count)&&!is.null(tab.row)) rep.count <- tab.row[,uniqueN(NMREP)>1]
+    if(was.null.col.nmrep&&!is.null(tab.row)) rm.col.nmrep <- !tab.row[,uniqueN(get(col.nmrep))>1]
     
     ## use.rows means if to use row-data from output tables
     use.rows <- TRUE
@@ -522,6 +537,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             
             col.row.merge <- tmpcol(names=unique(c(colnames(tab.row),colnames(data.input.full))),base="col.row")
             
+            
             data.input.full[,(col.row.merge):=.I]
 ### we need to know what input rows passed the filters. It's not enough to filter and end up with a subset of data. This should be done above where we for now filter the data. Add the row counter up there. Apply filter, then cbind the rows counter column to output. In case !recover.rows, only keep filtered input.
             data.input <- NMapplyFilters(data.input.full,file=file,as.fun="data.table",quiet=TRUE)
@@ -536,7 +552,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 #### This needs to be by NMREP. Would be good to have this info in tables metadata
             nrow.tab.row <- 0
             if(!is.null(tab.row)){
-                nrow.tab.row <- tab.row[,.N,by=(NMREP)][,unique(N)]
+                nrow.tab.row <- tab.row[,.N,by=col.nmrep][,unique(N)]
                 
                 if( nrow.data.input!=nrow.tab.row) {
 ### we have a tab.row and the number of rows doesn't match what's found in input.
@@ -545,7 +561,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                 }
 
                 
-                tab.row[,(col.row.merge):=data.input[,get(col.row.merge)],by=.(NMREP)]
+                tab.row[,(col.row.merge):=data.input[,get(col.row.merge)],by=col.nmrep]
                 ## if(!recover.rows) data.input <- data.input
 
             }
@@ -584,7 +600,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         }
 
         if(use.input&&any(meta.output$full.length)) {
-            if(recover.rows && tab.row[,uniqueN(NMREP)]>1) messageWrap("Output tables seem repeated (is this a simulation with multiple subproblems?). recover.rows=TRUE is not supported in this case.",fun.msg=stop)
+            if(recover.rows && tab.row[,uniqueN(get(col.nmrep))]>1) messageWrap("Output tables seem repeated (is this a simulation with multiple subproblems?). recover.rows=TRUE is not supported in this case.",fun.msg=stop)
             ## if(!quiet) messageWrap("Searching for input data.")
 
             ## if no method is specified, search for possible col.row to help the user
@@ -625,7 +641,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             if(col.row%in%colnames(tab.row)) {
                 
                 col.by <- NULL
-                if("NMREP"%in%colnames(tab.row)) col.by <- "NMREP"
+                if(col.nmrep%in%colnames(tab.row)) col.by <- col.nmrep
                 found.dups <- tab.row[,.(dup=duplicated(get(col.row))),by=col.by][,any(dup)]
                 if( found.dups ) {
                     messageWrap("merge.by.row is TRUE, but col.row has duplicate values (within NMREP) in _output_ data. col.row must be a unique row identifier. It is unique in input data, so how did rows get repeated in output data? Has input data been edited since the model was run?",fun.msg=stop)
@@ -784,7 +800,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
                 tab.idlevel.merge <- tab.idlevel[,cols.to.use,with=FALSE]
                 tab.row <- mergeCheck(tab.row,tab.idlevel.merge,by=col.id,as.fun="data.table",quiet=TRUE)
                 ## repeating in case there was no full-length tables
-                if(is.null(rep.count)&&!is.null(tab.row)) rep.count <- tab.row[,uniqueN(NMREP)>1]           
+                ## if(is.null(col.tableno)&&!is.null(tab.row)) col.tableno <- tab.row[,uniqueN(NMREP)>1]           
                 dt.vars.id[,included:=FALSE]
                 dt.vars.id[variable%in%setdiff(cols.to.use,id.cols.not.new),included:=TRUE]
                 dt.vars.id[included==TRUE,included:=!duplicated(variable)]
@@ -822,10 +838,20 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     }
     
 ### clean up NMREP if not wanted
-    if(!is.null(rep.count) && !rep.count){
-        tab.row[,NMREP:=NULL]
-        dt.vars <- dt.vars[variable!="NMREP"]
+    ## if(!is.null(col.tableno) && !col.tableno){
+    ##     tab.row[,NMREP:=NULL]
+    ##     dt.vars <- dt.vars[variable!="NMREP"]
+    ## }
+    
+    if(rm.col.nmrep && col.nmrep %in%colnames(tab.row)){
+        tab.row[,(col.nmrep):=NULL]
+        dt.vars <- dt.vars[variable!=col.nmrep]
     }
+    ### col.tableno should always be FALSE
+    ## if(rm.col.tableno && col.tableno%in%colnames(tab.tableno)){
+    ##     tab.row[,(col.tableno):=NULL]
+    ##     dt.vars <- dt.vars[variable!=col.tableno]
+    ## }
 
     
 #### Section start: Format output ####

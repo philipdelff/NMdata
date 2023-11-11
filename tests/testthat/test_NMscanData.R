@@ -643,6 +643,8 @@ test_that("merge.by.row=ifAvailable when not available",{
     dim(res1)
     res1[,table(nmout,DOSE)]
     fix.time(res1)
+
+    ## compareCols(readRDS(fileRef),res1)
     
     expect_equal_to_reference(
         res1,fileRef,version=2
@@ -863,17 +865,17 @@ test_that("Two firstonly, one full-length",{
     
 })
 
-test_that("Two firstonly, one full-length with rep.count",{
+test_that("Two firstonly, one full-length with col.nmrep",{
     NMdataConf(reset=TRUE)
-#### TABLENO is now added to the number of columns taken from the
-#### output table that has TABLENO. Is that what we want? Or +1? +1 is
-#### very complicated for user. Maybe better: if rep.count, it is treated like any other column, but in NMinfo(,"tables") there is a column, hasTABLENO
+#### NMREP is now added to the number of columns taken from the
+#### output table that has NMREP. Is that what we want? Or +1? +1 is
+#### very complicated for user. Maybe better: if col.nmrep, it is treated like any other column, but in NMinfo(,"tables") there is a column, hasTABLENO
     fileRef <- "testReference/NMscanData_28b.rds"
     file.lst <- "testData/nonmem/xgxr025.lst"
 
-    res <- NMscanData(file=file.lst,check.time=F,rep.count=T, quiet=T)
+    res <- NMscanData(file=file.lst,check.time=F,col.nmrep=T, quiet=T)
     res <- fix.time(res)
-    ## ref <- readRDS(fileRef)
+    ##  ref <- readRDS(fileRef)
     
     expect_equal_to_reference(res,fileRef,version=2)
     
