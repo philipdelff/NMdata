@@ -1,3 +1,9 @@
+# 0.1.3
+Better support for models with multiple estimation steps. Particularly
+reading output tables now better distinguishes between Nonmem table
+numbers and repetitions (like SUBPROBLEMS). Also, functions that read
+parameter estimates clearly separates Nonmem table numbers.
+
 # 0.1.2
 * Improved support for reading multiple models with NMreadExt and
 NMreadPhi. 
