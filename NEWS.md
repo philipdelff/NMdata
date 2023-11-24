@@ -1,3 +1,16 @@
+# 0.1.4
+
+## New features
+NMdata functions will now by default look for input control streams
+with file name extensions either `.mod` or `.ctl`. The user previously
+had to tell NMdata to look for `.ctl` using configuration options or
+function arguments but it will now work either way. An error will be
+thrown if both should be found.
+
+## Bugfixes
+* NMreadText would fail to disregard some comment lines when
+  `keep.comments=FALSE`. Fixed.
+
 # 0.1.3
 * Better support for models with multiple estimation
   steps. Particularly reading output tables now better distinguishes

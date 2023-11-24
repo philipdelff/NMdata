@@ -348,7 +348,17 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
         )
        ,
         file.mod=list(
-            default=function(file) fnExtension(file,ext=".mod")
+            ## default=function(file) fnExtension(file,ext=".mod")
+
+            default=function(file) {
+                mod <- fnExtension(file,ext=".mod")
+                ctl <- fnExtension(file,ext=".ctl")
+                if(file.exists(mod)) {
+                    if(file.exists(ctl)) stop("both .mod and .ctl found. Please define file.mod to choose one of them")
+                    return(mod)
+                }
+                ctl
+            }
             ## has to be length 1 character or function
            ,is.allowed=function(x) is.function(x) || (length(x)==1 && is.character(x))
            ,msg.not.allowed="file.mod must be a function or a character of length 1"

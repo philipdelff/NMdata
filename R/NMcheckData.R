@@ -304,7 +304,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
         }
     }
     
-
+    
     if(!(is.character(col.dv)&&length(col.dv)==1)){
         stop("col.dv must be a character and vector of length 1.")
     }

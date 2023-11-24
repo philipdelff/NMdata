@@ -21,7 +21,7 @@
 ##' @export
 
 NMreadExt <- function(file.ext,return="pars",as.fun,modelname,col.model){
-
+    
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     ITERATION <- NULL
@@ -49,7 +49,21 @@ NMreadExt <- function(file.ext,return="pars",as.fun,modelname,col.model){
         stop("Argument return has to be one of: ", paste(allowed.return,collapse =", "))
     }
 
-    
+
+    addPartype <- function(pars){
+        pars[,par.type:=NA_character_]
+        pars[grepl("^THETA",parameter),par.type:="THETA"]
+        pars[grepl("^OMEGA",parameter),par.type:="OMEGA"]
+        pars[grepl("^SIGMA",parameter),par.type:="SIGMA"]
+        pars[par.type=="THETA",i:=sub("THETA([0-9]+)","\\1",parameter)]
+        pars[par.type=="OMEGA",i:=sub("OMEGA\\(([0-9]+)\\,([0-9]+)\\)","\\1",parameter)]
+        pars[par.type=="OMEGA",j:=sub("OMEGA\\(([0-9]+)\\,([0-9]+)\\)","\\2",parameter)]
+        pars[par.type=="SIGMA",i:=sub("SIGMA\\(([0-9]+)\\,([0-9]+)\\)","\\1",parameter)]
+        pars[par.type=="SIGMA",j:=sub("SIGMA\\(([0-9]+)\\,([0-9]+)\\)","\\2",parameter)]
+        cols <- cc(i,j)
+        pars[,(cols):=lapply(.SD,as.integer),.SDcols=cols]
+        pars[]
+    }
 
     res.NMdat <- lapply(file.ext,function(file){
         this.model <- modelname(file)
@@ -80,31 +94,20 @@ NMreadExt <- function(file.ext,return="pars",as.fun,modelname,col.model){
     res.NMdat <- mergeCheck(res.NMdat,dt.codes,by=cc(ITERATION),all.x=T,quiet=TRUE)
     ## res.NMdat
 
-    
-    
     pars <- res.NMdat[variable%in%dt.codes$variable,setdiff(colnames(res.NMdat),"OBJ"),with=FALSE]
-    
     pars <- addTableStep(pars,keep.table.name=FALSE)
+    if(nrow(pars)){
+        pars <- melt(pars,id.vars=cc(model,TABLENO,NMREP,table.step,ITERATION,variable),variable.name="parameter")
+        pars <- dcast(pars,model+TABLENO+NMREP+table.step+parameter~variable,value.var="value")
+
+        pars <- addPartype(pars)
+    }
     
-    pars <- melt(pars,id.vars=cc(model,TABLENO,NMREP,table.step,ITERATION,variable),variable.name="parameter")
-    pars <- dcast(pars,model+TABLENO+NMREP+table.step+parameter~variable,value.var="value")
-
-    pars[,par.type:=NA_character_]
-    pars[grepl("^THETA",parameter),par.type:="THETA"]
-    pars[grepl("^OMEGA",parameter),par.type:="OMEGA"]
-    pars[grepl("^SIGMA",parameter),par.type:="SIGMA"]
-    pars[par.type=="THETA",i:=sub("THETA([0-9]+)","\\1",parameter)]
-    pars[par.type=="OMEGA",i:=sub("OMEGA\\(([0-9]+)\\,([0-9]+)\\)","\\1",parameter)]
-    pars[par.type=="OMEGA",j:=sub("OMEGA\\(([0-9]+)\\,([0-9]+)\\)","\\2",parameter)]
-    pars[par.type=="SIGMA",i:=sub("SIGMA\\(([0-9]+)\\,([0-9]+)\\)","\\1",parameter)]
-    pars[par.type=="SIGMA",j:=sub("SIGMA\\(([0-9]+)\\,([0-9]+)\\)","\\2",parameter)]
-    cols <- cc(i,j)
-    pars[,(cols):=lapply(.SD,as.integer),.SDcols=cols]
-
     ## what to do about OBJ? Disregard? And keep in a iteration table instead?
     iterations <- res.NMdat[as.numeric(ITERATION)>(-1e9),!("variable")] 
     iterations <- addTableStep(iterations,keep.table.name=FALSE)
     iterations <- melt(iterations,id.vars=cc(model,TABLENO,NMREP,table.step,ITERATION),variable.name="parameter")
+    iterations <- addPartype(iterations)
 
     res <- list(pars=pars,iterations=iterations)
     res <- lapply(res,as.fun)

@@ -17,12 +17,13 @@
 ##'     sensitive.
 ##' @param return If "text", plain text lines are returned. If "idx",
 ##'     matching line numbers are returned. "text" is default.
-##' @param keep.empty Keep empty lines in output? Default is FALSE.
+##' @param keep.comments Default is to keep comments. If FALSE, the
+##'     will be removed.
+##' @param keep.empty Keep empty lines in output? Default is
+##'     FALSE. Notice, comments are removed before empty lines are
+##'     handled if `keep.comments=TRUE`.
 ##' @param keep.name Keep the section name in output (say, "$PROBLEM")
 ##'     Default is FALSE. It can only be FALSE, if return="text".
-##' @param keep.comments Keep comment lines? This concerns lines that
-##'     consist of only white space and comments; comments after
-##'     actual contents are not concerned.
 ##' @param as.one If multiple hits, concatenate into one. This will
 ##'     most often be relevant with name="TABLE". If FALSE, a list
 ##'     will be returned, each element representing a table. Default
