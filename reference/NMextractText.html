@@ -19,7 +19,7 @@ extract eg result sections."><meta property="og:image" content="https://philipde
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.2.913</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.3.901</span>
       </span>
     </div>
 
@@ -155,7 +155,9 @@ matching line numbers are returned. "text" is default.</p></dd>
 
 
 <dt>keep.empty</dt>
-<dd><p>Keep empty lines in output? Default is FALSE.</p></dd>
+<dd><p>Keep empty lines in output? Default is
+FALSE. Notice, comments are removed before empty lines are
+handled if `keep.comments=TRUE`.</p></dd>
 
 
 <dt>keep.name</dt>
@@ -164,9 +166,8 @@ Default is TRUE. It can only be FALSE, if return="text".</p></dd>
 
 
 <dt>keep.comments</dt>
-<dd><p>Keep comment lines? This concerns lines that
-consist of only white space and comments; comments after
-actual contents are not concerned.</p></dd>
+<dd><p>Default is to keep comments. If FALSE, the
+will be removed.</p></dd>
 
 
 <dt>as.one</dt>
