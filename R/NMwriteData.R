@@ -376,7 +376,7 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
         file.fst <- fnExtension(file,".fst")
         ##     if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.fst),args.stamp))
         do.call(write_fst,append(list(x=data,path=file.fst),args.write_fst))
-        ##     files.written <- c(files.written,file.rds)
+        files.written <- c(files.written,file.fst)
     }
 
     ## write meta data for csv and fst

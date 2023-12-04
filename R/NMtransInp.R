@@ -25,7 +25,7 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
     INPUT <- NULL
 
 ### Section end: Dummy variables, only not to get NOTE's in package checks ####
-
+    
     stopifnot(is.data.table(data))
     
 #### this should be supported now

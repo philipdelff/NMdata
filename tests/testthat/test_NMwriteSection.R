@@ -128,13 +128,15 @@ test_that("update INPUT based on NMgenText",{
 
     text.nm <- NMgenText(NMreadCsv("testData/data/xgxr2.csv"),capitalize = T,width=95)
     res <- NMwriteSection("testData/nonmem/xgxr011.mod",
-                          list.section=text.nm["INPUT"],newfile=NULL
+                          list.section=text.nm["INPUT"],
+                          newfile=NULL
                           )
 
     ##input.new
     input.new <- NMreadSection(lines=res,section="input")
     
     expect_equal_to_reference(input.new,fileRef)
+    
 })
 
 
@@ -186,3 +188,4 @@ test_that("No newfile supplied",{
     expect_equal_to_reference(res,fileRef,version=2)
 
 })
+

@@ -81,21 +81,35 @@ NMextractText <- function(file, lines, text, section, char.section,
     
     args <- getArgs()
     
-    ### deprecated since 2023-06-14: keepEmpty, keepName, keepComments, asOne, cleanSpaces
+### deprecated since 2023-06-14: keepEmpty, keepName, keepComments, asOne, cleanSpaces
     keep.empty <- deprecatedArg("keepEmpty","keep.empty",args=args)
     keep.name <- deprecatedArg("keepName","keep.name",args=args)
     keep.comments <- deprecatedArg("keepComments","keep.comments",args=args)
     as.one <- deprecatedArg("asOne","as.one",args=args)
     clean.spaces <- deprecatedArg("cleanSpaces","clean.spaces",args=args)
 
-### Section end: Pre-process arguments
-
-
+    if(!return%in%c("idx","text")) stop("text must be one of text or idx.")
 
     if(sum(c(!missing(file)&&!is.null(file),
              !missing(lines)&&!is.null(lines),
              !missing(text)&&!is.null(text)
              ))!=1) stop("Exactly one of file, lines, or text must be supplied")
+
+
+    ## works with both .mod and .lst
+    if(length(type)>1) stop("type must be a single-element character.")
+    if(is.null(type)||is.na(type)||grepl("^ *$",type)){
+        type <- "all"
+    }
+    if(type=="lst") type <- "res"
+
+    if(!match.exactly){
+        section <- substring(section,1,3)
+    }
+
+    
+### Section end: Pre-process arguments
+
     if(!missing(file)&&!is.null(file)) {
         if(!file.exists(file)) stop("When using the file argument, file has to point to an existing file.")
         lines <- readLines(file,warn=FALSE)
@@ -103,18 +117,7 @@ NMextractText <- function(file, lines, text, section, char.section,
     if(!missing(text)&&!is.null(text)) {
         lines <- strsplit(text,split=linesep)[[1]]
     }
-
-    if(!match.exactly){
-        section <- substring(section,1,3)
-    }
     
-    if(!return%in%c("idx","text")) stop("text must be one of text or idx.")
-    
-    ## works with both .mod and .lst
-    if(length(type)>1) stop("type must be a single-element character.")
-    if(is.null(type)||is.na(type)||grepl("^ *$",type)){
-        type <- "all"
-    }
 
     ## This line can give problems because of possible special characters in company names or the registerred trademark character. We are not using it anyway.
     lines <- lines[!grepl("^ *License Registered to:",lines,useBytes=TRUE)]
@@ -144,49 +147,83 @@ NMextractText <- function(file, lines, text, section, char.section,
         }
         idx.section <- idx.st:idx.end
     })
-    result <- idx.sections
+    ## result <- idx.sections
+    
+    if(length(idx.sections)==0) return(NULL)
+    
+    secs.list <- lapply(1:length(idx.sections),
+                        function(I){data.table(nsection=I,idx=idx.sections[[I]],text=lines[idx.sections[[I]]])
+                        })
+    dt.res <- rbindlist(secs.list)
     
     
     if(!keep.comments){
+#### dont drop a line from idx if there is a comment in it
         ## result <- lapply(result,function(x)
-        ##     x[!grepl(" *;",lines[x])]
+        ##     x[!grepl(" *;.*$",lines[x])]
         ##     )
         lines <- sub(pattern=" *;.*$",replacement="",x=lines)
+        dt.res[,text:=sub(pattern=" *;.*$",replacement="",x=text)]
     }
 
     if(!keep.empty){
-        result <- lapply(result,function(x)
-            x[!grepl("^ *$",lines[x])]
-            )
+        ## result <- lapply(result,function(x)
+        ##     x[!grepl("^ *$",lines[x])]
+        ##     )
+        dt.res <- dt.res[!grepl("^ *$",text)]
     }
 
     
-    if(return=="text"){
-        result <- lapply(result,function(x)lines[x])
-    }
+    ## if(return=="text"){
+    ##     result <- lapply(result,function(x)lines[x])
+    ## }
     
     if(!keep.name){
         if(!return=="text") {
             stop("keepName can only be FALSE if return=='text'")
         }
-### todo test the addition of "[a-zA-Z]*"
-        result <- lapply(result, function(x)sub(paste0("^ *\\$",section,"[a-zA-Z]*"),"",x))
+
+        ## result <- lapply(result, function(x)sub(paste0("^ *\\$",section,"[a-zA-Z]*"),"",x))
+        ##  "[a-zA-Z]*" is needed for abbrev section names. Like for SIMULATION in case of SIM.
+        dt.res[,text:=sub(paste0("^ *\\$",section,"[a-zA-Z]*"),"",text)]
     }
+
 
     if(clean.spaces){
         if(!return=="text") {
             stop("cleanSpaces can only be TRUE if return=='text'")
         }
-        result <- lapply(result, function(x)sub(paste0("^ +"),"",x))
-        result <- lapply(result, function(x)sub(paste0(" +$"),"",x))
-        result <- lapply(result, function(x)sub(paste0(" +")," ",x))
+        cleanSpaces <- function(x,double=TRUE,lead=TRUE,trail=TRUE){
+            if(double) x <- gsub(paste0(" +")," ",x)
+            if(lead) x <- sub(paste0("^ +"),"",x)
+            if(trail) x <- sub(paste0(" +$"),"",x)
+            x
+        }
+        ## result <- lapply(result,cleanSpaces)
+        
+        dt.res[,text:=cleanSpaces(text)]
     }
-    
-    if(as.one) {result <- do.call(c,result)}
 
-    if(simplify && length(result)==1) result <- result[[1]]
+    if(!keep.empty){
+        dt.res <- dt.res[!grepl("^ *$",text)]
+    }
+
+    
+    
+    if(as.one) {
+        ## result <- do.call(c,result)
+        dt.res[,nsection:=1]
+    }
+
+    ## if(simplify && length(result)==1) result <- result[[1]]
+
+    if(return=="idx") res.from.dt <- lapply(split(dt.res,by="nsection"),function(x)x[,idx])
+    if(return=="text") res.from.dt <- lapply(split(dt.res,by="nsection"),function(x)x[,text])
+
+    if(simplify && dt.res[,uniqueN(nsection)==1]) res.from.dt <- res.from.dt[[1]]
     
 
-    return (result)
+    ## return (result)
+    return (res.from.dt)
     
 }
