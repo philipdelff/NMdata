@@ -75,12 +75,33 @@
 ##' \item{dir.psn} The directory in which to find psn executables like
 ##' `execute` and `update_inits`. Default is "" meaning that
 ##' executables must be in the system search path. Not used by NMdata.
-##' 
-##' \item{file.mod} A function that will derive the path to the input control
-##' stream based on the path to the output control stream. Technically, it can
-##' be a string too, but when using NMdataConf, this would make little sense
-##' because it would direct all output control streams to the same input control
+##'
+##' \item{file.cov} A function that will derive the path to the
+##' covariance (.cov) output file stream based on the path to the
+##' output control stream. Technically, it can be a string too, but
+##' when using NMdataConf, this would make little sense because it
+##' would direct all output control streams to the same input control
 ##' streams.
+##' 
+##' \item{file.ext} A function that will derive the path to the
+##' parameter (.ext) output file stream based on the path to the
+##' output control stream. Technically, it can be a string too, but
+##' when using NMdataConf, this would make little sense because it
+##' would direct all output control streams to the same input control
+##' streams.
+##' 
+##' \item{file.mod} A function that will derive the path to the input
+##' control stream based on the path to the output control
+##' stream. Technically, it can be a string too, but when using
+##' NMdataConf, this would make little sense because it would direct
+##' all output control streams to the same input control streams.
+##'
+##' \item{file.phi} A function that will derive the path to the Nonmem
+##' output (.phi) file containing individual ETA, ETC, and/or PHI
+##' values stream based on the path to the output control
+##' stream. Technically, it can be a string too, but when using
+##' NMdataConf, this would make little sense because it would direct
+##' all output control streams to the same input control streams.
 ##'
 ##' \item{file.data} A function that will derive the path to the input
 ##' data based on the path to the output control stream. Technically,
@@ -347,9 +368,47 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
            ,process=identity
         )
        ,
+        file.ext=list(
+            default=function(file) {
+                fnExtension(file,ext=".ext")
+            }
+            ## has to be length 1 character or function
+           ,is.allowed=function(x) is.function(x) || (length(x)==1 && is.character(x))
+           ,msg.not.allowed="file.ext must be a function or a character of length 1"
+           ,process=function(x) {
+               if(is.character(x)) return(function(file) x)
+               x
+           }
+        )
+       ,
+        file.cov=list(
+            default=function(file) {
+                fnExtension(file,ext=".cov")
+            }
+            ## has to be length 1 character or function
+           ,is.allowed=function(x) is.function(x) || (length(x)==1 && is.character(x))
+           ,msg.not.allowed="file.cov must be a function or a character of length 1"
+           ,process=function(x) {
+               if(is.character(x)) return(function(file) x)
+               x
+           }
+        )
+       ,
+        file.phi=list(
+            default=function(file) {
+                fnExtension(file,ext=".phi")
+            }
+            ## has to be length 1 character or function
+           ,is.allowed=function(x) is.function(x) || (length(x)==1 && is.character(x))
+           ,msg.not.allowed="file.phi must be a function or a character of length 1"
+           ,process=function(x) {
+               if(is.character(x)) return(function(file) x)
+               x
+           }
+        )
+       ,
         file.mod=list(
             ## default=function(file) fnExtension(file,ext=".mod")
-
             default=function(file) {
                 mod <- fnExtension(file,ext=".mod")
                 ctl <- fnExtension(file,ext=".ctl")

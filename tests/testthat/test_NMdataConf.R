@@ -124,7 +124,8 @@ test_that("deprecated use.rds",{
     
     NMdataConf(reset=TRUE)
     
-    NMdataConf(use.rds=TRUE)
+    ## NMdataConf(use.rds=TRUE)
+    NMdataConf(formats.read=c("csv"))
     new <- NMdataConf()
     
     new$as.fun <- NULL

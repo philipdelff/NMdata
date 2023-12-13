@@ -1,6 +1,6 @@
 ##' Read information from Nonmem ext files
 ##'
-##' @param file.ext Path to the ext file
+##' @param file Path to the ext file
 ##' @param return The .ext file contains both final parameter
 ##'     estimates and iterations of the estimates. If
 ##'     \code{return="pars"} (default) the final estimates are
@@ -15,12 +15,17 @@
 ##'     NMdataConf.
 ##' @param modelname See ?NMscanData
 ##' @param col.model See ?NMscanData
+##' @param auto.ext If TRUE (default) the extension will automatically
+##'     be modified using `NMdataConf()$file.ext`. This means `file`
+##'     can be the path to an input or output control stream, and
+##'     `NMreadExt` will still read the `.ext` file.
+##' @param file.ext Deprecated. Please use \code{file} instead.
 ##' @return A list with a final parameter table and a table of the
 ##'     iterations
 ##' @import data.table
 ##' @export
 
-NMreadExt <- function(file.ext,return="pars",as.fun,modelname,col.model){
+NMreadExt <- function(file,return="pars",as.fun,modelname,col.model,auto.ext,file.ext){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -43,10 +48,21 @@ NMreadExt <- function(file.ext,return="pars",as.fun,modelname,col.model){
     col.model <- NMdataDecideOption("col.model",col.model)
     if(missing(modelname)) modelname <- NULL
     modelname <- NMdataDecideOption("modelname",modelname)
+    if(missing(auto.ext) || is.null(auto.ext)) auto.ext <- TRUE
 
+    args <- getArgs()
+    if(missing(file.ext)) file.ext <- NULL
+    file <- deprecatedArg("file.ext","file",args=args)
+    
     allowed.return <- c("pars","iterations","all")
     if(!return %in% allowed.return){
         stop("Argument return has to be one of: ", paste(allowed.return,collapse =", "))
+    }
+
+    
+    fun.file.ext <- NMdata:::NMdataDecideOption("file.ext")
+    if(auto.ext){
+        file <- fun.file.ext(file)
     }
 
 
@@ -65,7 +81,7 @@ NMreadExt <- function(file.ext,return="pars",as.fun,modelname,col.model){
         pars[]
     }
 
-    res.NMdat <- lapply(file.ext,function(file){
+    res.NMdat <- lapply(file,function(file){
         this.model <- modelname(file)
         NMreadTab(file,as.fun="data.table",quiet=TRUE,col.table.name=TRUE)[,(col.model):=this.model]
     })

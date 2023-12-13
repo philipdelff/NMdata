@@ -15,7 +15,7 @@ getFindings <- function(finds,data,check1){
             ## finds[check=="Duplicated event"]
             finds.rel
            ,
-            dat[finds.rel[,row]]
+            data[finds.rel[,row]]
         )
     }
 }
