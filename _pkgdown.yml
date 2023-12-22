@@ -63,6 +63,7 @@ reference:
   - NMstamp
   - NMwriteSection
   - NMreplaceDataFile
+  - colLabels
 - title: Retrieve NONMEM data
   desc: Functions for retrieving NONMEM input and output data
   contents:
@@ -75,6 +76,7 @@ reference:
   - NMreadExt
   - NMreadPhi
   - NMreadTab
+  - NMreadParsText
   - NMinfo
 - title: Checking and Debugging
   desc: Functions for checking data and input control streams

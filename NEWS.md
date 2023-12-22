@@ -23,6 +23,10 @@ tables.
   options or function arguments but it will now work either way. An
   error will be thrown if both should be found.
 
+* `NMreadExt` will by default only return parameters and iterations
+  from the last table available. This can be controlled by the
+  `tableno` argument.
+
 * `fnAppend` will now throw an error in case the file name extension
   cannot be identified.
 

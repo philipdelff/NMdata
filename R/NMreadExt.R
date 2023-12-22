@@ -13,6 +13,21 @@
 ##'     something else. If data.tables are wanted, use
 ##'     as.fun="data.table". The default can be configured using
 ##'     NMdataConf.
+##' @param tableno In case the ext file contains multiple tables, this argument controls which one to choose. The options are
+##' \itemize{
+##' 
+##' \item "max" (default) Pick the table with the highest table
+##' number. This typically means the results from the last
+##' `$ESTIMATION` step are used.
+##' 
+##' \item "min" Pick results from the first table available.
+##'
+##' \item "all" Keep all results. The tables can be distinguished by
+##' the `tableno` column.
+##'
+##' \item an integer greater than 0, in which case the table with this
+##' table number will be picked.
+##' }
 ##' @param modelname See ?NMscanData
 ##' @param col.model See ?NMscanData
 ##' @param auto.ext If TRUE (default) the extension will automatically
@@ -25,7 +40,7 @@
 ##' @import data.table
 ##' @export
 
-NMreadExt <- function(file,return="pars",as.fun,modelname,col.model,auto.ext,file.ext){
+NMreadExt <- function(file,return="pars",as.fun,modelname,col.model,auto.ext,tableno="max",file.ext){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -50,6 +65,13 @@ NMreadExt <- function(file,return="pars",as.fun,modelname,col.model,auto.ext,fil
     modelname <- NMdataDecideOption("modelname",modelname)
     if(missing(auto.ext) || is.null(auto.ext)) auto.ext <- TRUE
 
+    if(is.null(tableno)) tableno <- "max"
+
+    if(! (is.character(tableno)&&tableno%in%c("min","max","all") ) ||
+       (is.numeric(tableno) && tableno>0 && tableno%%1==0) ){
+        stop("tableno must be either one of the character strings min, max, all or an integer greater than zero.")
+    }
+    
     args <- getArgs()
     if(missing(file.ext)) file.ext <- NULL
     file <- deprecatedArg("file.ext","file",args=args)
@@ -84,6 +106,19 @@ NMreadExt <- function(file,return="pars",as.fun,modelname,col.model,auto.ext,fil
         this.model <- modelname(file)
         NMreadTab(file,as.fun="data.table",quiet=TRUE,col.table.name=TRUE)[,(col.model):=this.model]
     })
+
+    if(tableno=="min"){
+        res.NMdat <- lapply(res.NMdat,function(x)x[TABLENO==min(TABLENO)])
+    }
+    if(tableno=="max"){
+        res.NMdat <- lapply(res.NMdat,function(x)x[TABLENO==max(TABLENO)])
+    }
+    if(is.numeric(tableno)){
+        res.NMdat <- lapply(res.NMdat,function(x)x[TABLENO==tableno])
+    }
+    
+
+
     res.NMdat <- rbindlist(res.NMdat,fill=TRUE)
 
     ## NONMEM USERS GUIDE

@@ -11,6 +11,7 @@ NMreadExt(
   modelname,
   col.model,
   auto.ext,
+  tableno = "max",
   file.ext
 )
 }
@@ -39,6 +40,22 @@ NMdataConf.}
 be modified using `NMdataConf()$file.ext`. This means `file`
 can be the path to an input or output control stream, and
 `NMreadExt` will still read the `.ext` file.}
+
+\item{tableno}{In case the ext file contains multiple tables, this argument controls which one to choose. The options are
+\itemize{
+
+\item "max" (default) Pick the table with the highest table
+number. This typically means the results from the last
+`$ESTIMATION` step are used.
+
+\item "min" Pick results from the first table available.
+
+\item "all" Keep all results. The tables can be distinguished by
+the `tableno` column.
+
+\item an integer greater than 0, in which case the table with this
+table number will be picked.
+}}
 
 \item{file.ext}{Deprecated. Please use \code{file} instead.}
 }
