@@ -4,10 +4,14 @@
 \alias{NMreadPhi}
 \title{Read information from Nonmem phi files}
 \usage{
-NMreadPhi(file.phi, as.fun, modelname, col.model)
+NMreadPhi(file, as.fun, modelname, col.model, auto.ext, file.phi)
 }
 \arguments{
-\item{file.phi}{Path to the phi file}
+\item{file}{Path to the phi file. If `auto.ext=TRUE`, the
+extension will automatically be changed using the setting in
+`NMdataConf()$file.fir` - this by default means that the
+`.phi` extension will be used no matter what extension the
+provided file name has.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
@@ -18,6 +22,13 @@ NMdataConf.}
 \item{modelname}{See ?NMscanData}
 
 \item{col.model}{See ?NMscanData}
+
+\item{auto.ext}{If TRUE (default) the extension will automatically
+be modified using `NMdataConf()$file.phi`. This means `file`
+can be the path to an input or output control stream, and
+`NMreadPhi` will still read the `.phi` file.}
+
+\item{file.phi}{Deprecated. Use `file`.}
 }
 \value{
 A list with a final parameter table and a table of the iterations

@@ -13,6 +13,9 @@ separate formats for `$THETA`, `$OMEGA` and `$SIGMA`. Together with
 `NMreadExt()` this is a very flexible basis for generating parameter
 tables.
 
+* `colLabels()` is a simple wrapper of `compareCols()` that extracts
+  the SAS column labels on data sets.
+
 ## New features
 * NMdata functions will now by default look for input control streams
   with file name extensions either `.mod` or `.ctl`. The user

@@ -1,4 +1,5 @@
-##' @inheritParams compareCols
+##' Extract column labels as defined in SAS
+##' @param ... See `?compareCols`
 ##' @export 
 
 colLabels <- function(...){

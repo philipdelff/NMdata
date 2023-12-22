@@ -4,10 +4,18 @@
 \alias{NMreadExt}
 \title{Read information from Nonmem ext files}
 \usage{
-NMreadExt(file.ext, return = "pars", as.fun, modelname, col.model)
+NMreadExt(
+  file,
+  return = "pars",
+  as.fun,
+  modelname,
+  col.model,
+  auto.ext,
+  file.ext
+)
 }
 \arguments{
-\item{file.ext}{Path to the ext file}
+\item{file}{Path to the ext file}
 
 \item{return}{The .ext file contains both final parameter
 estimates and iterations of the estimates. If
@@ -26,6 +34,13 @@ NMdataConf.}
 \item{modelname}{See ?NMscanData}
 
 \item{col.model}{See ?NMscanData}
+
+\item{auto.ext}{If TRUE (default) the extension will automatically
+be modified using `NMdataConf()$file.ext`. This means `file`
+can be the path to an input or output control stream, and
+`NMreadExt` will still read the `.ext` file.}
+
+\item{file.ext}{Deprecated. Please use \code{file} instead.}
 }
 \value{
 A list with a final parameter table and a table of the

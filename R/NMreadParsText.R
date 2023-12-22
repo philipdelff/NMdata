@@ -1,8 +1,16 @@
 ##' Read comments to parameter definitions in Nonmem control streams
-##' @param file Path to the control stream to read
+##'
+##' When interpreting parameter estimates, it is often needed to
+##' recover information about the meaning of the different parameters
+##' from control stream. `NMreadParsText` provides a flexible way to
+##' organize the comments in the parameter sections into a
+##' `data.frame`. This can subsequently easily be merged with parameter
+##' values as obtained with `NMreadExt`.
+##' 
+##' @param file Path to the control stream to read.
 ##' @param fields Defines naming and splitting of contents of lines in
 ##'     parameter sections. Default is
-##'     "%init;%symbol;%num;%label;%unit".
+##'     \code{"\%init;\%symbol;\%num;\%label;\%unit"}.
 ##' @param fields.omega Like `fields`, applied to `$OMEGA`
 ##'     section. Default is to reuse `fields`.
 ##' @param fields.sigma Like `fields`, applied to `$SIGMA`
@@ -15,12 +23,20 @@
 ##' @details Off-diagonal omega and sigma elements will only be
 ##'     correctly treated if their num field specifies say 1-2 to
 ##'     specify it is covariance between 1 and 2.
+##' @export
 
 
 NMreadParsText <- function(file,fields,fields.omega=fields,
                            fields.sigma=fields.omega,
                            use.theta.nums=FALSE,spaces.split=FALSE){
 
+    idx <- NULL
+    par.type <- NULL
+    i <- NULL
+    j <- NULL
+    num <- NULL
+    OMEGA <- NULL
+    SIGMA <- NULL
     
     if(missing(fields)){
         fields <- "%init;%symbol;%num;%label;%unit"

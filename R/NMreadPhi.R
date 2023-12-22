@@ -1,6 +1,10 @@
 ##' Read information from Nonmem phi files
 ##'
-##' @param file.phi Path to the phi file
+##' @param file Path to the phi file. If `auto.ext=TRUE`, the
+##'     extension will automatically be changed using the setting in
+##'     `NMdataConf()$file.fir` - this by default means that the
+##'     `.phi` extension will be used no matter what extension the
+##'     provided file name has.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
@@ -41,7 +45,7 @@ NMreadPhi <- function(file,as.fun,modelname,col.model,auto.ext,file.phi){
     if(missing(file.phi)) file.phi <- NULL
     file <- deprecatedArg("file.phi","file",args=args)
 
-    fun.file.phi <- NMdata:::NMdataDecideOption("file.phi")
+    fun.file.phi <- NMdataDecideOption("file.phi")
     if(auto.ext){
         file <- fun.file.phi(file)
     }

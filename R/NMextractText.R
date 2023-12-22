@@ -77,8 +77,11 @@ NMextractText <- function(file, lines, text, section, char.section,
                           cleanSpaces
                           ){
 
-#### Section start: Pre-process arguments ####
+    nsection <- NULL
+    idx <- NULL
     
+#### Section start: Pre-process arguments ####
+
     args <- getArgs()
     
 ### deprecated since 2023-06-14: keepEmpty, keepName, keepComments, asOne, cleanSpaces

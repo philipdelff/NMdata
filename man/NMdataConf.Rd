@@ -76,11 +76,32 @@ by NMorderColumns (row counter will be first column in data).
 `execute` and `update_inits`. Default is "" meaning that
 executables must be in the system search path. Not used by NMdata.
 
-\item{file.mod} A function that will derive the path to the input control
-stream based on the path to the output control stream. Technically, it can
-be a string too, but when using NMdataConf, this would make little sense
-because it would direct all output control streams to the same input control
+\item{file.cov} A function that will derive the path to the
+covariance (.cov) output file stream based on the path to the
+output control stream. Technically, it can be a string too, but
+when using NMdataConf, this would make little sense because it
+would direct all output control streams to the same input control
 streams.
+
+\item{file.ext} A function that will derive the path to the
+parameter (.ext) output file stream based on the path to the
+output control stream. Technically, it can be a string too, but
+when using NMdataConf, this would make little sense because it
+would direct all output control streams to the same input control
+streams.
+
+\item{file.mod} A function that will derive the path to the input
+control stream based on the path to the output control
+stream. Technically, it can be a string too, but when using
+NMdataConf, this would make little sense because it would direct
+all output control streams to the same input control streams.
+
+\item{file.phi} A function that will derive the path to the Nonmem
+output (.phi) file containing individual ETA, ETC, and/or PHI
+values stream based on the path to the output control
+stream. Technically, it can be a string too, but when using
+NMdataConf, this would make little sense because it would direct
+all output control streams to the same input control streams.
 
 \item{file.data} A function that will derive the path to the input
 data based on the path to the output control stream. Technically,
