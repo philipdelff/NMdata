@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.3.902</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.3.912</span>
       </span>
     </div>
 
@@ -84,13 +84,17 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMreadPhi</span><span class="op">(</span><span class="va">file.phi</span>, <span class="va">as.fun</span>, <span class="va">modelname</span>, <span class="va">col.model</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMreadPhi</span><span class="op">(</span><span class="va">file</span>, <span class="va">as.fun</span>, <span class="va">modelname</span>, <span class="va">col.model</span>, <span class="va">auto.ext</span>, <span class="va">file.phi</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>file.phi</dt>
-<dd><p>Path to the phi file</p></dd>
+    <dl><dt>file</dt>
+<dd><p>Path to the phi file. If `auto.ext=TRUE`, the
+extension will automatically be changed using the setting in
+`NMdataConf()$file.fir` - this by default means that the
+`.phi` extension will be used no matter what extension the
+provided file name has.</p></dd>
 
 
 <dt>as.fun</dt>
@@ -107,6 +111,17 @@ NMdataConf.</p></dd>
 
 <dt>col.model</dt>
 <dd><p>See ?NMscanData</p></dd>
+
+
+<dt>auto.ext</dt>
+<dd><p>If TRUE (default) the extension will automatically
+be modified using `NMdataConf()$file.phi`. This means `file`
+can be the path to an input or output control stream, and
+`NMreadPhi` will still read the `.phi` file.</p></dd>
+
+
+<dt>file.phi</dt>
+<dd><p>Deprecated. Use `file`.</p></dd>
 
 </dl></div>
     <div id="value">

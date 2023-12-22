@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.3.902</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.3.912</span>
       </span>
     </div>
 
@@ -84,12 +84,21 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMreadExt</span><span class="op">(</span><span class="va">file.ext</span>, return <span class="op">=</span> <span class="st">"pars"</span>, <span class="va">as.fun</span>, <span class="va">modelname</span>, <span class="va">col.model</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMreadExt</span><span class="op">(</span></span>
+<span>  <span class="va">file</span>,</span>
+<span>  return <span class="op">=</span> <span class="st">"pars"</span>,</span>
+<span>  <span class="va">as.fun</span>,</span>
+<span>  <span class="va">modelname</span>,</span>
+<span>  <span class="va">col.model</span>,</span>
+<span>  <span class="va">auto.ext</span>,</span>
+<span>  tableno <span class="op">=</span> <span class="st">"max"</span>,</span>
+<span>  <span class="va">file.ext</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>file.ext</dt>
+    <dl><dt>file</dt>
 <dd><p>Path to the ext file</p></dd>
 
 
@@ -117,6 +126,29 @@ NMdataConf.</p></dd>
 
 <dt>col.model</dt>
 <dd><p>See ?NMscanData</p></dd>
+
+
+<dt>auto.ext</dt>
+<dd><p>If TRUE (default) the extension will automatically
+be modified using `NMdataConf()$file.ext`. This means `file`
+can be the path to an input or output control stream, and
+`NMreadExt` will still read the `.ext` file.</p></dd>
+
+
+<dt>tableno</dt>
+<dd><p>In case the ext file contains multiple tables, this argument controls which one to choose. The options are</p><ul><li><p>"max" (default) Pick the table with the highest table
+number. This typically means the results from the last
+`$ESTIMATION` step are used.</p></li>
+<li><p>"min" Pick results from the first table available.</p></li>
+<li><p>"all" Keep all results. The tables can be distinguished by
+the `tableno` column.</p></li>
+<li><p>an integer greater than 0, in which case the table with this
+table number will be picked.</p></li>
+</ul></dd>
+
+
+<dt>file.ext</dt>
+<dd><p>Deprecated. Please use <code>file</code> instead.</p></dd>
 
 </dl></div>
     <div id="value">
