@@ -129,6 +129,7 @@ test_that("deprecated use.rds",{
     new <- NMdataConf()
     
     new$as.fun <- NULL
+    new$file.cov <- NULL
     new$file.mod <- NULL
     new$file.ext <- NULL
     new$file.phi <- NULL
