@@ -50,8 +50,8 @@ NMwriteSectionOne <- function(file0,lines,section,location="replace",
             newlines.fun <- newlines
             
             newlines <- NMreadSection(lines=lines,section=section,return="text",keep.empty=TRUE,
-                                    keep.name=TRUE,keep.comments=TRUE,as.one=TRUE,
-                                    clean.spaces=FALSE)
+                                      keep.name=TRUE,keep.comments=TRUE,as.one=TRUE,
+                                      clean.spaces=FALSE)
             newlines <- newlines.fun(newlines)
         }
         

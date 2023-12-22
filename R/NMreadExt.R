@@ -59,7 +59,6 @@ NMreadExt <- function(file,return="pars",as.fun,modelname,col.model,auto.ext,fil
         stop("Argument return has to be one of: ", paste(allowed.return,collapse =", "))
     }
 
-    
     fun.file.ext <- NMdata:::NMdataDecideOption("file.ext")
     if(auto.ext){
         file <- fun.file.ext(file)

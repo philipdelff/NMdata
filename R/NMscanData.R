@@ -181,7 +181,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     DV <- NULL
     ID.jump <- NULL
     N <- NULL
-     NMREP <- NULL
+    NMREP <- NULL
     ## firstlastonly <- NULL
     ## firstonly <- NULL
     ## lastonly <- NULL
@@ -220,7 +220,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(missing(check.time)) check.time <- NULL
     if(missing(tz.lst)) tz.lst <- NULL
     if(missing(as.fun)) as.fun <- NULL
-    ### why is this not needed?
+### why is this not needed?
     ## if(missing(modelname)) modelname <- NULL
     if(missing(quiet)) quiet <- NULL
     if(missing(formats.read)) formats.read <- NULL
@@ -493,12 +493,16 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
             
             if(testtime.inp > testtime.lst){
-                messageWrap(paste0("input data (",nminfo.input$tables$file,") is newer than output control stream (",file,") Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                ## messageWrap(paste0("input data (",nminfo.input$tables$file,") is newer than output control stream (",file,") Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                ##             fun.msg=warning)
+                messageWrap("Input data file newer than output control stream.",
                             fun.msg=warning)
                 time.ok <- c(time.ok,"input > lst")
             }
             if(testtime.inp > min(meta.output[,file.mtime])){
-                messageWrap(paste0("input data file (",nminfo.input$tables$file,") is newer than output tables. Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                ## messageWrap(paste0("input data file (",nminfo.input$tables$file,") is newer than output tables. Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                ##             fun.msg=warning)
+                messageWrap("Input data file newer than output tables.",
                             fun.msg=warning)
                 time.ok <- c(time.ok,"input > output")
             }
@@ -847,7 +851,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         tab.row[,(col.nmrep):=NULL]
         dt.vars <- dt.vars[variable!=col.nmrep]
     }
-    ### col.tableno should always be FALSE
+### col.tableno should always be FALSE
     ## if(rm.col.tableno && col.tableno%in%colnames(tab.tableno)){
     ##     tab.row[,(col.tableno):=NULL]
     ##     dt.vars <- dt.vars[variable!=col.tableno]

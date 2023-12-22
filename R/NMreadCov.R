@@ -4,7 +4,7 @@
 ##' @param ... Passed to fread
 ##'
 ##' @details This function is taken from nonmem2rx::nmcov which was
-##'     based on function from NMdata.
+##'     based on NMdata::NMreadTab.
 ##' 
 ##' @return A matrix with covariance step from NONMEM
 ##' 
@@ -19,8 +19,6 @@ NMreadCov <- function (file, ...) {
     TABLE <- NULL
     NMREP <- NULL
     NAME <- NULL
-
-    
     
     colnames <- readLines(file, n=2)[2]
     if (grepl(", *OMEGA\\( *1 *, *1\\)", colnames)) {
