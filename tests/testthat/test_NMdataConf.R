@@ -130,7 +130,10 @@ test_that("deprecated use.rds",{
     
     new$as.fun <- NULL
     new$file.mod <- NULL
+    new$file.ext <- NULL
+    new$file.phi <- NULL
     new$modelname <- NULL
+
     
     expect_equal_to_reference(new,fileRef)
 })
