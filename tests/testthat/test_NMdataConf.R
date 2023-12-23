@@ -1,5 +1,7 @@
 context("NMdataConf")
 
+NMdataConf(reset=TRUE)
+
 test_that("defaults",{
 
     fileRef <- "testReference/NMdataConf_01.rds"
@@ -8,6 +10,9 @@ test_that("defaults",{
     defaults <- NMdataConf()
     defaults$as.fun <- NULL
     defaults$file.mod <- NULL
+    defaults$file.cov <- NULL
+    defaults$file.ext <- NULL
+    defaults$file.phi <- NULL
     defaults$modelname <- NULL
 
     expect_equal_to_reference(defaults,fileRef)
@@ -22,9 +27,15 @@ test_that("reset",{
 
     defaults$as.fun <- NULL
     defaults$file.mod <- NULL
+    defaults$file.cov <- NULL
+    defaults$file.ext <- NULL
+    defaults$file.phi <- NULL
     defaults$modelname <- NULL
     defaults2$as.fun <- NULL
     defaults2$file.mod <- NULL
+    defaults2$file.cov <- NULL
+    defaults2$file.ext <- NULL
+    defaults2$file.phi <- NULL
     defaults2$modelname <- NULL
     
     
@@ -71,9 +82,15 @@ test_that("change fun in globalenv does not affect NMdataConf()",{
 
     defaults$as.fun <- NULL
     defaults$file.mod <- NULL
+    defaults$file.cov <- NULL
+    defaults$file.ext <- NULL
+    defaults$file.phi <- NULL
     defaults$modelname <- NULL
     defaults2$as.fun <- NULL
     defaults2$file.mod <- NULL
+    defaults2$file.cov <- NULL
+    defaults2$file.ext <- NULL
+    defaults2$file.phi <- NULL
     defaults2$modelname <- NULL
     
     
@@ -108,11 +125,17 @@ test_that("change fun in globalenv does not affect NMdataConf()",{
 
     defaults$as.fun <- NULL
     defaults$file.mod <- NULL
+    defaults$file.cov <- NULL
+    defaults$file.ext <- NULL
+    defaults$file.phi <- NULL
     defaults$modelname <- NULL
+
     defaults2$as.fun <- NULL
     defaults2$file.mod <- NULL
+    defaults2$file.cov <- NULL
+    defaults2$file.ext <- NULL
+    defaults2$file.phi <- NULL
     defaults2$modelname <- NULL
-    
     
     expect_equal(defaults,defaults2)
 })
