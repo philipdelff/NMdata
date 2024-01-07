@@ -244,6 +244,9 @@ I don't think I ever tried this. What will NMscanData do if input data
 has no headers, and there are no filters? I think NMapplyFilters may
 fail.
 *** NMcheckData
+**** TODO [#B] Improve handling of missing covs
+Right now, if covs="WT" is specified and WT is not a column, an error
+is thrown. That should be a finding instead.
 **** TODO [#B] Support for col.evid
 **** DONE Should not be a finding if col.flagn is not supplied and FLAG is not found
 **** DONE DV=0 in dosing records is OK
