@@ -72,6 +72,14 @@ time. This is only used for sorting columns by NMorderColumns.
 identifier. This is used by NMscanData when merge.by.row=TRUE, and
 by NMorderColumns (row counter will be first column in data).
 
+\item{col.id} The name of the column holding the numeric subject
+ID. As of `NMdata` 0.1.5 this is only used for sorting columns by
+NMorderColumns.
+
+\item{col.time} The name of the column holding actual time. As of
+`NMdata` 0.1.5 this is only used for sorting columns by
+NMorderColumns.
+
 \item{dir.psn} The directory in which to find psn executables like
 `execute` and `update_inits`. Default is "" meaning that
 executables must be in the system search path. Not used by NMdata.

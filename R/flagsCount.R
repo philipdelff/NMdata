@@ -121,7 +121,6 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     col.flagc <- NMdataDecideOption("col.flagc",col.flagc)
     
     stopifnot(is.data.frame(data))
-    stopifnot(is.data.frame(tab.flags))
 
     data.was.data.table <- TRUE
     if(is.data.table(data)) {
@@ -131,6 +130,12 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
         ##  data.was.data.frame <- TRUE
         data.was.data.table <- FALSE
     }
+
+    if(missing(tab.flags) || is.null(tab.flags)){
+        tab.flags <- unique(data[,c(col.flagn,col.flagc),with=FALSE])
+    }
+    stopifnot(is.data.frame(tab.flags))
+
     tab.flags.was.data.table <- TRUE
     if(is.data.table(tab.flags)) {
         tab.flags <- copy(tab.flags)
@@ -170,6 +175,8 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     tab.flags[,flag:=get(col.flagc)]
     data[,FLAG:=get(col.flagn)]
 
+### test that all flags are covered by tab.flag
+    if(any(!unique(data$FLAG)%in%c(0,tab.flags$FLAG))) stop("Not all values of col.flagn found in data are described in tab.flags. Don't know how to count those.")
 
 ### if 0 and Inf are not in tab.flags, insert them
     if(!0%in%tab.flags[,FLAG]){

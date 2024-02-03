@@ -1,3 +1,15 @@
+# 0.1.5
+## New features
+* `countFlags` no longer needs a table of flags. By default it will
+  summarize the ones found in data. If additional flags wanted in
+  summary table (with no findings), the flag table is still needed.
+  
+* If a flag table is provided, `countFlags` will throw an error if the
+  flags found in data are not covered by the provided flag table.
+
+* `NMorderColumns` now includes arguments `col.id` and
+  `col.time`. These can now also be controlled using `NMdataConf()`.
+
 # 0.1.4
 
 ## New functions

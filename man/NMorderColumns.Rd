@@ -11,8 +11,9 @@ NMorderColumns(
   lower.last = FALSE,
   chars.last = TRUE,
   alpha = TRUE,
+  col.id,
   col.nomtime,
-  col.time = "TIME",
+  col.time,
   col.row,
   col.flagn,
   col.dv = "DV",
@@ -51,23 +52,27 @@ last. NA's must be NA or ".".}
 \item{alpha}{Sort columns alphabetically. Notice, this is the last
 order priority applied.}
 
+\item{col.id}{Name of the (numeric) unique subject ID. Can be
+controlled with `NMdataConf()`.}
+
 \item{col.nomtime}{The name of the column containing nominal
 time. If given, it will put the column quite far left, just
-after row counter and ID. Default value is NOMTIME and can be
-configured with NMdataConf.}
+after row counter and `col.id`. Default value is NOMTIME and can be
+configured with `NMdataConf()`.}
 
 \item{col.time}{The name of the column containing actual time. If
 given, it will put the column quite far left, just after row
-counter, subject ID, and nominal time. Default value is TIME.}
+counter, subject ID, and nominal time. Default value is `TIME`. Can be
+controlled with `NMdataConf()`.}
 
 \item{col.row}{A row counter column. This will be the first column
 in the dataset. Technically, you can use it for whatever
-column you want first. Default value is ROW and can be
-configured with NMdataConf.}
+column you want first. Default value is `ROW` and can be
+configured with `NMdataConf()`.}
 
 \item{col.flagn}{The name of the column containing numerical flag
 values for data row omission. Default value is FLAG and can be
-configured with NMdataConf.}
+configured with `NMdataConf()`.}
 
 \item{col.dv}{a vector of column names to put early to represent
 dependent variable(s). Default is DV.}
@@ -75,8 +80,8 @@ dependent variable(s). Default is DV.}
 \item{as.fun}{The default is to return a data.table if data is a
 data.table and return a data.frame in all other cases. Pass a
 function in as.fun to convert to something else. The default
-can be configured using NMdataConf. However, if data is a
-data.table, settings via NMdataConf are ignored.}
+can be configured using `NMdataConf()`. However, if data is a
+data.table, settings via `NMdataConf()` are ignored.}
 
 \item{quiet}{If true, no warning will be given about missing
 standard Nonmem columns.}

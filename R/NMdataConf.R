@@ -72,6 +72,14 @@
 ##' identifier. This is used by NMscanData when merge.by.row=TRUE, and
 ##' by NMorderColumns (row counter will be first column in data).
 ##'
+##' \item{col.id} The name of the column holding the numeric subject
+##' ID. As of `NMdata` 0.1.5 this is only used for sorting columns by
+##' NMorderColumns.
+##'
+##' \item{col.time} The name of the column holding actual time. As of
+##' `NMdata` 0.1.5 this is only used for sorting columns by
+##' NMorderColumns.
+##'
 ##' \item{dir.psn} The directory in which to find psn executables like
 ##' `execute` and `update_inits`. Default is "" meaning that
 ##' executables must be in the system search path. Not used by NMdata.
@@ -313,6 +321,32 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
            ,process=identity
         )
        ,
+        col.flagc=list(
+            default="flag"
+           ,is.allowed=function(x) (is.character(x) && length(x)==1)
+           ,msg.not.allowed="col.flagc must be a character vector of length 1."
+           ,process=identity
+        )
+       ,
+        col.flagn=list(
+            default="FLAG"
+           ,is.allowed=function(x) length(x)==1 && ((is.logical(x) && x==FALSE) || is.character(x) )
+           ,msg.not.allowed="col.flagn must be a character vector of length 1."
+           ,process=function(x) {if(is.logical(x) && x==FALSE) {
+                                     return(NULL)
+                                 } else {
+                                     return(x)
+                                 }
+           }
+        )
+       ,
+        col.id=list(
+            default="ID"
+           ,is.allowed=function(x) (is.character(x) && length(x)==1)
+           ,msg.not.allowed="col.id must be a character vector of length 1."
+           ,process=identity
+        )
+       ,
         col.model=list(
             default="model"
            ,is.allowed=function(x) (is.character(x) && length(x)==1)
@@ -334,29 +368,17 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
            ,process=identity
         )
        ,
-        col.flagc=list(
-            default="flag"
-           ,is.allowed=function(x) (is.character(x) && length(x)==1)
-           ,msg.not.allowed="col.flagc must be a character vector of length 1."
-           ,process=identity
-        )
-       ,
-        col.flagn=list(
-            default="FLAG"
-           ,is.allowed=function(x) length(x)==1 && ((is.logical(x) && x==FALSE) || is.character(x) )
-           ,msg.not.allowed="col.flagn must be a character vector of length 1."
-           ,process=function(x) {if(is.logical(x) && x==FALSE) {
-                                     return(NULL)
-                                 } else {
-                                     return(x)
-                                 }
-           }
-        )
-       ,
         col.row=list(
             default="ROW"
            ,is.allowed=function(x) (is.character(x) && length(x)==1)
            ,msg.not.allowed="col.row must be a character vector of length 1."
+           ,process=identity
+        )
+               ,
+        col.time=list(
+            default="TIME"
+           ,is.allowed=function(x) (is.character(x) && length(x)==1)
+           ,msg.not.allowed="col.time must be a character vector of length 1."
            ,process=identity
         )
        ,
@@ -517,7 +539,7 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
             } else if(allow.unknown) {
                 return(NULL)
             } else {
-                messageWrap("Option not found",fun.msg=stop,track.msg=FALSE)
+                messageWrap(paste("NMdataConf option not found:",name),fun.msg=stop,track.msg=FALSE)
             }
         } else {
             messageWrap("if name is given, it must be a character of length 1",fun.msg=stop,track.msg=FALSE)
