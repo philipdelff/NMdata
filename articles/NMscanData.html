@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.3.912</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.4.901</span>
       </span>
     </div>
 
@@ -118,7 +118,7 @@ Input Data</h1>
 
     
     
-<p>Built 2024-01-07 using NMdata 0.1.3.912.</p>
+<p>Built 2024-02-03 using NMdata 0.1.4.901.</p>
 <p>Please make sure to see latest vignette version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
 <h2 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
@@ -195,7 +195,7 @@ well use base R or <code>dplyr</code> if you prefer. Then
 <code>ggplot2</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; NMdata 0.1.3.912. Browse NMdata documentation at</span></span>
+<span><span class="co">#&gt; NMdata 0.1.4.901. Browse NMdata documentation at</span></span>
 <span><span class="co">#&gt; https://philipdelff.github.io/NMdata/</span></span>
 <span><span class="co">## not necessary for NMdata to run, but we use thse in the examples</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
@@ -444,28 +444,29 @@ we are still getting a data.table because we used
 ten rows.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="../reference/NMinfo.html">NMinfo</a></span><span class="op">(</span><span class="va">res1</span>,info<span class="op">=</span><span class="st">"columns"</span><span class="op">)</span>,nrows<span class="op">=</span><span class="fl">20</span>,topn<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     variable                 file     source level COLNUM</span></span>
-<span><span class="co">#&gt;  1:       ID xgxr018_res_vols.txt     output   row      1</span></span>
-<span><span class="co">#&gt;  2:  NOMTIME            xgxr4.rds      input   row      2</span></span>
-<span><span class="co">#&gt;  3:     TIME            xgxr4.rds      input   row      3</span></span>
-<span><span class="co">#&gt;  4:     EVID            xgxr4.rds      input   row      4</span></span>
-<span><span class="co">#&gt;  5:      CMT            xgxr4.rds      input   row      5</span></span>
-<span><span class="co">#&gt;  6:      AMT            xgxr4.rds      input   row      6</span></span>
-<span><span class="co">#&gt;  7:       DV      xgxr018_res.txt     output   row      7</span></span>
-<span><span class="co">#&gt;  8:     FLAG            xgxr4.rds      input   row      8</span></span>
-<span><span class="co">#&gt;  9:    STUDY            xgxr4.rds      input   row      9</span></span>
-<span><span class="co">#&gt; 10:       KA      xgxr018_res.txt     output   row     10</span></span>
-<span><span class="co">#&gt; ---                                                      </span></span>
-<span><span class="co">#&gt; 31:   trtact            xgxr4.rds      input   row     31</span></span>
-<span><span class="co">#&gt; 32:    model                 &lt;NA&gt; NMscanData model     32</span></span>
-<span><span class="co">#&gt; 33:    nmout                 &lt;NA&gt; NMscanData   row     33</span></span>
-<span><span class="co">#&gt; 34:       DV xgxr018_res_vols.txt     output   row     NA</span></span>
-<span><span class="co">#&gt; 35:     PRED xgxr018_res_vols.txt     output   row     NA</span></span>
-<span><span class="co">#&gt; 36:      RES xgxr018_res_vols.txt     output   row     NA</span></span>
-<span><span class="co">#&gt; 37:     WRES xgxr018_res_vols.txt     output   row     NA</span></span>
-<span><span class="co">#&gt; 38:       ID            xgxr4.rds      input   row     NA</span></span>
-<span><span class="co">#&gt; 39:       DV            xgxr4.rds      input   row     NA</span></span>
-<span><span class="co">#&gt; 40:       ID   xgxr018_res_fo.txt     output    id     NA</span></span></code></pre></div>
+<span><span class="co">#&gt;     variable                 file     source  level COLNUM</span></span>
+<span><span class="co">#&gt;       &lt;char&gt;               &lt;char&gt;     &lt;char&gt; &lt;char&gt;  &lt;int&gt;</span></span>
+<span><span class="co">#&gt;  1:       ID xgxr018_res_vols.txt     output    row      1</span></span>
+<span><span class="co">#&gt;  2:  NOMTIME            xgxr4.rds      input    row      2</span></span>
+<span><span class="co">#&gt;  3:     TIME            xgxr4.rds      input    row      3</span></span>
+<span><span class="co">#&gt;  4:     EVID            xgxr4.rds      input    row      4</span></span>
+<span><span class="co">#&gt;  5:      CMT            xgxr4.rds      input    row      5</span></span>
+<span><span class="co">#&gt;  6:      AMT            xgxr4.rds      input    row      6</span></span>
+<span><span class="co">#&gt;  7:       DV      xgxr018_res.txt     output    row      7</span></span>
+<span><span class="co">#&gt;  8:     FLAG            xgxr4.rds      input    row      8</span></span>
+<span><span class="co">#&gt;  9:    STUDY            xgxr4.rds      input    row      9</span></span>
+<span><span class="co">#&gt; 10:       KA      xgxr018_res.txt     output    row     10</span></span>
+<span><span class="co">#&gt; ---                                                       </span></span>
+<span><span class="co">#&gt; 31:   trtact            xgxr4.rds      input    row     31</span></span>
+<span><span class="co">#&gt; 32:    model                 &lt;NA&gt; NMscanData  model     32</span></span>
+<span><span class="co">#&gt; 33:    nmout                 &lt;NA&gt; NMscanData    row     33</span></span>
+<span><span class="co">#&gt; 34:       DV xgxr018_res_vols.txt     output    row     NA</span></span>
+<span><span class="co">#&gt; 35:     PRED xgxr018_res_vols.txt     output    row     NA</span></span>
+<span><span class="co">#&gt; 36:      RES xgxr018_res_vols.txt     output    row     NA</span></span>
+<span><span class="co">#&gt; 37:     WRES xgxr018_res_vols.txt     output    row     NA</span></span>
+<span><span class="co">#&gt; 38:       ID            xgxr4.rds      input    row     NA</span></span>
+<span><span class="co">#&gt; 39:       DV            xgxr4.rds      input    row     NA</span></span>
+<span><span class="co">#&gt; 40:       ID   xgxr018_res_fo.txt     output     id     NA</span></span></code></pre></div>
 <p>The column names are sorted by the order in the resulting dataset,
 the order given by the <code>COLNUM</code> column. The variables in the
 bottom that have <code>COLNUM==NA</code> were redundant when combining
@@ -544,9 +545,10 @@ of rows from input only (597). Since we changed the default value of
 <code>data.table</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res2</span><span class="op">[</span>,<span class="va">.N</span>,by<span class="op">=</span><span class="va">nmout</span><span class="op">]</span></span>
-<span><span class="co">#&gt;    nmout   N</span></span>
-<span><span class="co">#&gt; 1:  TRUE 905</span></span>
-<span><span class="co">#&gt; 2: FALSE 597</span></span></code></pre></div>
+<span><span class="co">#&gt;     nmout     N</span></span>
+<span><span class="co">#&gt;    &lt;lgcl&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1:   TRUE   905</span></span>
+<span><span class="co">#&gt; 2:  FALSE   597</span></span></code></pre></div>
 <p>We make use of the <code>nmout</code> column to only calculate
 <code>gmPRED</code> for observations (<code>EVID==0</code>) processed by
 Nonmem.</p>
@@ -619,9 +621,10 @@ integer. We could pass use the <code>modelname</code> argument in
 <span><span class="co">## notice fill is an option to rbind with data.table (like bind_rows in dplyr)</span></span>
 <span><span class="va">res.mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">res1.m</span>,<span class="va">res2.m</span>,fill<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
 <span><span class="va">res.mult</span><span class="op">[</span>,<span class="va">.N</span>,by<span class="op">=</span><span class="va">model</span><span class="op">]</span></span>
-<span><span class="co">#&gt;    model   N</span></span>
-<span><span class="co">#&gt; 1:     1 905</span></span>
-<span><span class="co">#&gt; 2:    14 905</span></span>
+<span><span class="co">#&gt;     model     N</span></span>
+<span><span class="co">#&gt;    &lt;char&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1:      1   905</span></span>
+<span><span class="co">#&gt; 2:     14   905</span></span>
 <span><span class="co">## resetting default</span></span>
 <span><span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>modelname<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <p><code>NMdataConf</code> can be used to change a lot of the default

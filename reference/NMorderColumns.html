@@ -19,7 +19,7 @@ details."><meta property="og:image" content="https://philipdelff.github.io/NMdat
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.3.912</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.4.901</span>
       </span>
     </div>
 
@@ -95,8 +95,9 @@ details.</p>
 <span>  lower.last <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  chars.last <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">col.id</span>,</span>
 <span>  <span class="va">col.nomtime</span>,</span>
-<span>  col.time <span class="op">=</span> <span class="st">"TIME"</span>,</span>
+<span>  <span class="va">col.time</span>,</span>
 <span>  <span class="va">col.row</span>,</span>
 <span>  <span class="va">col.flagn</span>,</span>
 <span>  col.dv <span class="op">=</span> <span class="st">"DV"</span>,</span>
@@ -149,30 +150,36 @@ last. NA's must be NA or ".".</p></dd>
 order priority applied.</p></dd>
 
 
+<dt>col.id</dt>
+<dd><p>Name of the (numeric) unique subject ID. Can be
+controlled with `NMdataConf()`.</p></dd>
+
+
 <dt>col.nomtime</dt>
 <dd><p>The name of the column containing nominal
 time. If given, it will put the column quite far left, just
-after row counter and ID. Default value is NOMTIME and can be
-configured with NMdataConf.</p></dd>
+after row counter and `col.id`. Default value is NOMTIME and can be
+configured with `NMdataConf()`.</p></dd>
 
 
 <dt>col.time</dt>
 <dd><p>The name of the column containing actual time. If
 given, it will put the column quite far left, just after row
-counter, subject ID, and nominal time. Default value is TIME.</p></dd>
+counter, subject ID, and nominal time. Default value is `TIME`. Can be
+controlled with `NMdataConf()`.</p></dd>
 
 
 <dt>col.row</dt>
 <dd><p>A row counter column. This will be the first column
 in the dataset. Technically, you can use it for whatever
-column you want first. Default value is ROW and can be
-configured with NMdataConf.</p></dd>
+column you want first. Default value is `ROW` and can be
+configured with `NMdataConf()`.</p></dd>
 
 
 <dt>col.flagn</dt>
 <dd><p>The name of the column containing numerical flag
 values for data row omission. Default value is FLAG and can be
-configured with NMdataConf.</p></dd>
+configured with `NMdataConf()`.</p></dd>
 
 
 <dt>col.dv</dt>
@@ -184,8 +191,8 @@ dependent variable(s). Default is DV.</p></dd>
 <dd><p>The default is to return a data.table if data is a
 data.table and return a data.frame in all other cases. Pass a
 function in as.fun to convert to something else. The default
-can be configured using NMdataConf. However, if data is a
-data.table, settings via NMdataConf are ignored.</p></dd>
+can be configured using `NMdataConf()`. However, if data is a
+data.table, settings via `NMdataConf()` are ignored.</p></dd>
 
 
 <dt>quiet</dt>

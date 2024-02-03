@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.3.912</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.4.901</span>
       </span>
     </div>
 
@@ -117,7 +117,7 @@
 
     
     
-<p>Built 2024-01-07 using NMdata 0.1.3.912.</p>
+<p>Built 2024-02-03 using NMdata 0.1.4.901.</p>
 <p>This vignette is still under development. Please make sure to see
 latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
@@ -196,11 +196,13 @@ exactly these two differences:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/compareCols.html">compareCols</a></span><span class="op">(</span><span class="va">pk</span>, <span class="va">pk.reduced</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Dimensions:</span></span>
 <span><span class="co">#&gt;          data nrows ncols</span></span>
+<span><span class="co">#&gt;        &lt;char&gt; &lt;int&gt; &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:         pk  1502    24</span></span>
 <span><span class="co">#&gt; 2: pk.reduced   751    23</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Columns that differ:</span></span>
 <span><span class="co">#&gt;    column      pk pk.reduced</span></span>
+<span><span class="co">#&gt;    &lt;char&gt;  &lt;char&gt;     &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1:  CYCLE integer       &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 2:    AMT integer  character</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -221,11 +223,13 @@ create character vectors without quoting the elements.</p>
 <span><span class="fu"><a href="../reference/compareCols.html">compareCols</a></span><span class="op">(</span><span class="va">pk</span>, <span class="va">pk.reduced</span>, cols.wanted <span class="op">=</span> <span class="va">special.columns</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Dimensions:</span></span>
 <span><span class="co">#&gt;          data nrows ncols</span></span>
+<span><span class="co">#&gt;        &lt;char&gt; &lt;int&gt; &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:         pk  1502    24</span></span>
 <span><span class="co">#&gt; 2: pk.reduced   751    23</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Columns that differ:</span></span>
 <span><span class="co">#&gt;    column      pk pk.reduced</span></span>
+<span><span class="co">#&gt;    &lt;char&gt;  &lt;char&gt;     &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1:    *ID integer    integer</span></span>
 <span><span class="co">#&gt; 2:  *TIME numeric    numeric</span></span>
 <span><span class="co">#&gt; 3: *CYCLE integer       &lt;NA&gt;</span></span>
@@ -267,11 +271,13 @@ columns were renamed:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/compareCols.html">compareCols</a></span><span class="op">(</span><span class="va">pktmp</span>, <span class="va">pk.renamed</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Dimensions:</span></span>
 <span><span class="co">#&gt;          data nrows ncols</span></span>
+<span><span class="co">#&gt;        &lt;char&gt; &lt;int&gt; &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:      pktmp  1502    23</span></span>
 <span><span class="co">#&gt; 2: pk.renamed  1502    23</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Columns that differ:</span></span>
 <span><span class="co">#&gt;      column     pktmp pk.renamed</span></span>
+<span><span class="co">#&gt;      &lt;char&gt;    &lt;char&gt;     &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1:   EVENTU character       &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 2:     NAME character       &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 3: TIMEUNIT character       &lt;NA&gt;</span></span>
@@ -314,6 +320,7 @@ can compare multiple data sets - handy for interactive analysis.</p>
 <code class="sourceCode R"><span><span class="va">pk2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">pk</span>, <span class="va">dt.cov</span>, by <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/dims.html">dims</a></span><span class="op">(</span><span class="va">pk</span>, <span class="va">dt.cov</span>, <span class="va">pk2</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      data nrows ncols</span></span>
+<span><span class="co">#&gt;    &lt;char&gt; &lt;int&gt; &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:     pk  1502    24</span></span>
 <span><span class="co">#&gt; 2: dt.cov   150     2</span></span>
 <span><span class="co">#&gt; 3:    pk2  1502    25</span></span></code></pre></div>
@@ -333,13 +340,16 @@ out of the merge and not just the dimensions.</p>
 <span><span class="co">#&gt; Rows duplicated during merge.</span></span>
 <span><span class="co">#&gt; Overview of dimensions of input and output data:</span></span>
 <span><span class="co">#&gt;    nrows ncols</span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:  1502    24</span></span>
 <span><span class="co">#&gt; 2:   150     2</span></span>
 <span><span class="co">#&gt; 3:  1502    25</span></span>
 <span><span class="co">#&gt; Overview of values of by where number of rows in x changes:</span></span>
-<span><span class="co">#&gt;     ID N.x N.result</span></span>
-<span><span class="co">#&gt; 1:  31  10       20</span></span>
-<span><span class="co">#&gt; 2: 180  10        0</span></span>
+<span><span class="co">#&gt; Key: &lt;ID&gt;</span></span>
+<span><span class="co">#&gt;       ID   N.x N.result</span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1:    31    10       20</span></span>
+<span><span class="co">#&gt; 2:   180    10        0</span></span>
 <span><span class="co">#&gt; Error in mergeCheck(pk, dt.cov, by = "ID"): Merge added and/or removed rows.</span></span></code></pre></div>
 <p>Notice that <code>mergeCheck</code> tells us for which values of
 <code>ID</code> (the <code>by</code> argument which can be of length
@@ -484,11 +494,12 @@ missing time, missing value, and we exclude those below LLOQ. The
 <span><span class="st">                           10,    Below LLOQ,         BLQ==1"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dt.flags</span></span>
-<span><span class="co">#&gt;    FLAG            flag             condition</span></span>
-<span><span class="co">#&gt; 1:   40 Pre-dose sample !is.na(TIME) &amp; TIME&lt;0</span></span>
-<span><span class="co">#&gt; 2:   30    Missing time           is.na(TIME)</span></span>
-<span><span class="co">#&gt; 3:   20   Missing value             is.na(DV)</span></span>
-<span><span class="co">#&gt; 4:   10      Below LLOQ                BLQ==1</span></span></code></pre></div>
+<span><span class="co">#&gt;     FLAG            flag             condition</span></span>
+<span><span class="co">#&gt;    &lt;int&gt;          &lt;char&gt;                &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:    40 Pre-dose sample !is.na(TIME) &amp; TIME&lt;0</span></span>
+<span><span class="co">#&gt; 2:    30    Missing time           is.na(TIME)</span></span>
+<span><span class="co">#&gt; 3:    20   Missing value             is.na(DV)</span></span>
+<span><span class="co">#&gt; 4:    10      Below LLOQ                BLQ==1</span></span></code></pre></div>
 <p><code>fread</code> is used to create a data.table (like
 <code>read.csv</code> to create a data.frame) for readability, one line
 for each row in the data.table created. Notice how <code>FLAG</code> is
@@ -669,12 +680,13 @@ with subject or subject-occasion. We can also add other numeric
 variables to use in NONMEM to check for missing values.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">findings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMcheckData.html">NMcheckData</a></span><span class="op">(</span><span class="va">pk</span>, covs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DOSE"</span>, <span class="st">"WEIGHTB"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   column                     check  N Nid</span></span>
-<span><span class="co">#&gt;     EVID        Subject has no obs 19  19</span></span>
-<span><span class="co">#&gt;      MDV          Column not found  1   0</span></span>
-<span><span class="co">#&gt;  WEIGHTB  Cov not unique within ID  1   1</span></span>
-<span><span class="co">#&gt;      AMT Non-positive dose amounts  1   1</span></span>
-<span><span class="co">#&gt;     EVID           EVID not in 0:4  1   1</span></span></code></pre></div>
+<span><span class="co">#&gt;   column                     check     N   Nid</span></span>
+<span><span class="co">#&gt;   &lt;char&gt;                    &lt;char&gt; &lt;int&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt;     EVID        Subject has no obs    19    19</span></span>
+<span><span class="co">#&gt;      MDV          Column not found     1     0</span></span>
+<span><span class="co">#&gt;  WEIGHTB  Cov not unique within ID     1     1</span></span>
+<span><span class="co">#&gt;      AMT Non-positive dose amounts     1     1</span></span>
+<span><span class="co">#&gt;     EVID           EVID not in 0:4     1     1</span></span></code></pre></div>
 <p>Let’s look at these findings:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">findings</span></span>
@@ -766,7 +778,7 @@ automatically recognize if found. The metadata becomes accessible using
 <span><span class="co">#&gt; [1] "DataPrepare.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2024-01-07 01:37:41.035188"</span></span>
+<span><span class="co">#&gt; [1] "2024-02-03 16:08:35.017588"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$writtenTo</span></span>
 <span><span class="co">#&gt; [1] "derived/pkdata.rds derived/pkdata.csv"</span></span>
@@ -784,7 +796,7 @@ file is the filename:</p>
 <span><span class="co">#&gt; [1] "DataPrepare.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2024-01-07 01:37:41 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2024-02-03 16:08:35 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$writtenTo</span></span>
 <span><span class="co">#&gt; [1] "derived/pkdata.rds" "derived/pkdata.csv"</span></span>
@@ -848,7 +860,7 @@ does).</p>
 <span><span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2024-01-07 01:37:41 UTC"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "2024-02-03 16:08:35 UTC"</span></span></code></pre></div>
 <p>The <code>script</code> argument is recognized by
 <code>NMstamp</code>, but you can add anything to this. We want to keep
 descriptive note too. Another often useful piece of information is what
@@ -864,7 +876,7 @@ source data files were read in order to generate the saved data.
 <span><span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2024-01-07 01:37:41 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2024-02-03 16:08:35 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$Description</span></span>
 <span><span class="co">#&gt; [1] "A PK dataset used for examples."</span></span>
