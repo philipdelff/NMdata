@@ -84,6 +84,12 @@ NMorderColumns.
 `execute` and `update_inits`. Default is "" meaning that
 executables must be in the system search path. Not used by NMdata.
 
+\item{dir.res} Directory in which `NMsim` will store simulation
+results files. Not used by NMdata. See dir.sims too.
+
+\item{dir.sims} Directory in which `NMsim` will store Nonmem
+simulations. Not used by NMdata. See dir.res too.
+
 \item{file.cov} A function that will derive the path to the
 covariance (.cov) output file stream based on the path to the
 output control stream. Technically, it can be a string too, but

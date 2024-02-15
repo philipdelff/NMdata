@@ -13,6 +13,7 @@ addTableStep <- function(dt,keep.table.name=FALSE){
     dt[grepl("Stochastic Approximation Expectation-Maximization",table.name),table.step:="SAEM"]
 
     dt[grepl("Importance Sampling",table.name),table.step:="IMP"]
+    dt[grepl("Importance/MAP Sampling",table.name),table.step:="IMP"]
 
     if(!keep.table.name){
         dt[,table.name:=NULL]

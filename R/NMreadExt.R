@@ -67,8 +67,8 @@ NMreadExt <- function(file,return="pars",as.fun,modelname,col.model,auto.ext,tab
 
     if(is.null(tableno)) tableno <- "max"
 
-    if(! (is.character(tableno)&&tableno%in%c("min","max","all") ) ||
-       (is.numeric(tableno) && tableno>0 && tableno%%1==0) ){
+    if( (is.character(tableno)&& !tableno%in%c("min","max","all") ) ||
+       (is.numeric(tableno) && (tableno<=0 || tableno%%1!=0) )){
         stop("tableno must be either one of the character strings min, max, all or an integer greater than zero.")
     }
     

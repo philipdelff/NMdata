@@ -20,6 +20,9 @@
 ##' @param spaces.split Is a blank in `fields` to be treated as a
 ##'     field seperator? Default is not to (i.e. neglect spaces in
 ##'     `fields`).
+##' @param modelname See ?NMscanData
+##' @param col.model See ?NMscanData
+##' @param as.fun See ?NMscanData
 ##' @details Off-diagonal omega and sigma elements will only be
 ##'     correctly treated if their num field specifies say 1-2 to
 ##'     specify it is covariance between 1 and 2.
@@ -28,19 +31,31 @@
 
 NMreadParsText <- function(file,fields,fields.omega=fields,
                            fields.sigma=fields.omega,
-                           use.theta.nums=FALSE,spaces.split=FALSE){
+                           use.theta.nums=FALSE,spaces.split=FALSE,modelname,col.model,as.fun){
 
     idx <- NULL
     par.type <- NULL
     i <- NULL
     j <- NULL
     num <- NULL
+    parameter <- NULL
+    THETA <- NULL
     OMEGA <- NULL
     SIGMA <- NULL
+
+    if(missing(as.fun)) as.fun <- NULL
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    if(missing(col.model)) col.model <- NULL 
+    col.model <- NMdataDecideOption("col.model",col.model)
+    if(missing(modelname)) modelname <- NULL
+    modelname <- NMdataDecideOption("modelname",modelname)
     
     if(missing(fields)){
         fields <- "%init;%symbol;%num;%label;%unit"
     }
+    if(is.function(fields)) fields <- fields(file)
+    if(is.function(fields.omega)) fields.omega <- fields.omega(file)
+    if(is.function(fields.sigma)) fields.sigma <- fields.sigma(file)
 
     cleanSpaces <- function(x,double=TRUE,lead=TRUE,trail=TRUE){
         if(double) x <- gsub(paste0(" +")," ",x)
@@ -164,7 +179,8 @@ NMreadParsText <- function(file,fields,fields.omega=fields,
         lines.thetas <- gsub("BLOCK(.+)","",lines.thetas)
         lines.thetas <- lines.thetas[!grepl("^ *$",lines.thetas)]
 
-        thetas <- lapply(lines.thetas,fun.get.fields,res.fields) |> rbindlist(fill=TRUE)
+        thetas.list <- lapply(lines.thetas,fun.get.fields,res.fields)
+        thetas <- rbindlist(thetas.list,fill=TRUE)
         colnames(thetas) <- res.fields$fields[1:ncol(thetas)]
 
         thetas[,par.type:=toupper(section)]
@@ -191,6 +207,13 @@ NMreadParsText <- function(file,fields,fields.omega=fields,
         omegas[,par.type:=toupper(section)]
         omegas
     }
+
+    if(length(file)>1) return(rbindlist(lapply(file,NMreadParsText,
+                                               fields=fields,
+                                               fields.omega=fields.omega,
+                                               fields.sigma=fields.sigma,
+                                               use.theta.nums=use.theta.nums,
+                                               spaces.split=spaces.split)))
     
     
     thetas <- get.theta.comments(file=file,section="THETA",fields=fields,use.theta.nums=use.theta.nums)
@@ -204,6 +227,14 @@ NMreadParsText <- function(file,fields,fields.omega=fields,
     ## are specified by column, not by row.
     pt1[par.type%in%cc(OMEGA,SIGMA),`:=`(i=j,j=i)]
 
-    pt1[]
+    ### it is inconsistent, but this is how it is reported in NMreadExt
+    pt1[par.type%in%cc(THETA),parameter:=sprintf("THETA%d",i)]
+    pt1[par.type%in%cc(OMEGA,SIGMA),parameter:=sprintf("%s(%d,%d)",par.type,i,j)]
+   
+    
+    this.model <- modelname(file)
+    pt1[,(col.model):=this.model]
+    
+    as.fun(pt1)
 }
 

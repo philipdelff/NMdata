@@ -10,7 +10,10 @@ NMreadParsText(
   fields.omega = fields,
   fields.sigma = fields.omega,
   use.theta.nums = FALSE,
-  spaces.split = FALSE
+  spaces.split = FALSE,
+  modelname,
+  col.model,
+  as.fun
 )
 }
 \arguments{
@@ -32,6 +35,12 @@ thetas. I do not see where this is advantageous to do.}
 \item{spaces.split}{Is a blank in `fields` to be treated as a
 field seperator? Default is not to (i.e. neglect spaces in
 `fields`).}
+
+\item{modelname}{See ?NMscanData}
+
+\item{col.model}{See ?NMscanData}
+
+\item{as.fun}{See ?NMscanData}
 }
 \description{
 When interpreting parameter estimates, it is often needed to

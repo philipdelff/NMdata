@@ -7,7 +7,7 @@ test_that("basic - pars",{
     fileRef <- "testReference/NMreadExt_01.rds"
     file.ext <- "testData/nonmem/xgxr003.ext"
     if(readRef) ref <- readRDS(fileRef)
- 
+    
     res <- NMreadExt(file=file.ext,as.fun="data.table")
     expect_equal_to_reference(res,fileRef)
 })
@@ -47,4 +47,23 @@ test_that("muref SAEM - all",{
 
     res <- NMreadExt(file=file.ext,as.fun="data.table",return="all")
     expect_equal_to_reference(res,fileRef)
+})
+
+test_that("muref SAEM - tableno options",{
+
+    fileRef <- "testReference/NMreadExt_06.rds"
+    file.ext <- "testData/nonmem/xgxr032.ext"
+
+    NMdataConf(reset=T)
+    NMdataConf(as.fun="data.table")
+    
+    res <- list(
+        NMreadExt(file.ext,tableno=1)[parameter=="SAEMOBJ"]
+       ,NMreadExt(file.ext,tableno="min")[parameter=="SAEMOBJ"]
+       ,NMreadExt(file.ext,tableno=2)[parameter=="SAEMOBJ"]
+       ,NMreadExt(file.ext,tableno="max")[parameter=="SAEMOBJ"]
+    )
+
+    expect_equal_to_reference(res,fileRef)
+    
 })
