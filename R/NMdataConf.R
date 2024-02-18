@@ -397,7 +397,7 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
         )
        ,
         dir.res=list(
-            default=""
+            default=NULL
             ## has to be length 1 character 
            ,is.allowed=function(x) is.character(x) && length(x)==1 
            ,msg.not.allowed="dir.res must be a single text string."
