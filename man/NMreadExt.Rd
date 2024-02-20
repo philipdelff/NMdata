@@ -6,7 +6,7 @@
 \usage{
 NMreadExt(
   file,
-  return = "pars",
+  return,
   as.fun,
   modelname,
   col.model,
@@ -22,9 +22,10 @@ NMreadExt(
 estimates and iterations of the estimates. If
 \code{return="pars"} (default) the final estimates are
 returned in addition to what other parameter-level information
-is found. If \code{return="iterations"}, the iterations are
-returned. If \code{return="both"}, both er returned, though in
-separate data.frames compiled in a list.}
+is found, like FIX, sd etc. as columns. If
+\code{return="iterations"}, the iterations are returned. If
+\code{return="both"}, both er returned, though in separate
+data.frames compiled in a list.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
@@ -41,8 +42,9 @@ be modified using `NMdataConf()$file.ext`. This means `file`
 can be the path to an input or output control stream, and
 `NMreadExt` will still read the `.ext` file.}
 
-\item{tableno}{In case the ext file contains multiple tables, this argument controls which one to choose. The options are
-\itemize{
+\item{tableno}{In case the ext file contains multiple tables, this
+    argument controls which one to choose. The options are
+    \itemize{
 
 \item "max" (default) Pick the table with the highest table
 number. This typically means the results from the last
@@ -60,9 +62,40 @@ table number will be picked.
 \item{file.ext}{Deprecated. Please use \code{file} instead.}
 }
 \value{
-A list with a final parameter table and a table of the
-    iterations
+If \code{return="all"}, a list with a final parameter
+    table and a table of the iterations. If \code{return="pars"},
+    only the parameter table, and if \code{return="iterations"}
+    only the iterations table. If you need both, it may be more
+    efficient to only read the file once and use
+    \code{return="all"}. Often, only one of the two are needed,
+    and it more convenient to just extract one.
 }
 \description{
 Read information from Nonmem ext files
+}
+\details{
+The parameter table returned if \code{return="pars"} or \code{return="all"} will contain columns based on the Nonmem 7.5 manual. It defines codes for different parameter-level values. They are:
+
+-1e+09: se
+-1000000002: eigCor
+-1000000003: cond
+-1000000004: stdDevCor
+-1000000005: seStdDevCor
+-1000000006: FIX
+-1000000007: termStat
+-1000000008: partLik
+
+The parameter name is in the \code{parameter} column. The
+"parameter type", like "THETA", "OMEGA", "SIGMA" are available in
+the \code{par.type} column. Counters are available in \code{i} and
+\code{j} columns. \code{j} will be \code{NA} for
+\code{par.type=="THETA"}
+
+The objective function value is included as a parameter.
+
+Notice that in case multiple tables are available in the `ext`
+file, the column names are taken from the first table. E.g., in
+case of SAEM/IMP estimation, the objective function values will be
+in the `SAEMOBJ` column, even for the IMP step. This may change in
+the future.
 }
