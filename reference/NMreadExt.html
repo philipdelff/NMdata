@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.4.914</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.4.915</span>
       </span>
     </div>
 
@@ -86,7 +86,7 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMreadExt</span><span class="op">(</span></span>
 <span>  <span class="va">file</span>,</span>
-<span>  return <span class="op">=</span> <span class="st">"pars"</span>,</span>
+<span>  <span class="va">return</span>,</span>
 <span>  <span class="va">as.fun</span>,</span>
 <span>  <span class="va">modelname</span>,</span>
 <span>  <span class="va">col.model</span>,</span>
@@ -107,9 +107,10 @@
 estimates and iterations of the estimates. If
 <code>return="pars"</code> (default) the final estimates are
 returned in addition to what other parameter-level information
-is found. If <code>return="iterations"</code>, the iterations are
-returned. If <code>return="both"</code>, both er returned, though in
-separate data.frames compiled in a list.</p></dd>
+is found, like FIX, sd etc. as columns. If
+<code>return="iterations"</code>, the iterations are returned. If
+<code>return="both"</code>, both er returned, though in separate
+data.frames compiled in a list.</p></dd>
 
 
 <dt>as.fun</dt>
@@ -136,7 +137,8 @@ can be the path to an input or output control stream, and
 
 
 <dt>tableno</dt>
-<dd><p>In case the ext file contains multiple tables, this argument controls which one to choose. The options are</p><ul><li><p>"max" (default) Pick the table with the highest table
+<dd><p>In case the ext file contains multiple tables, this
+    argument controls which one to choose. The options are</p><ul><li><p>"max" (default) Pick the table with the highest table
 number. This typically means the results from the last
 `$ESTIMATION` step are used.</p></li>
 <li><p>"min" Pick results from the first table available.</p></li>
@@ -155,8 +157,39 @@ table number will be picked.</p></li>
     <h2>Value</h2>
     
 
-<p>A list with a final parameter table and a table of the
-    iterations</p>
+<p>If <code>return="all"</code>, a list with a final parameter
+    table and a table of the iterations. If <code>return="pars"</code>,
+    only the parameter table, and if <code>return="iterations"</code></p>
+
+
+<p>only the iterations table. If you need both, it may be more
+    efficient to only read the file once and use</p>
+<p></p>
+<p><code>return="all"</code>. Often, only one of the two are needed,
+    and it more convenient to just extract one.</p>
+    </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>The parameter table returned if <code>return="pars"</code> or <code>return="all"</code> will contain columns based on the Nonmem 7.5 manual. It defines codes for different parameter-level values. They are:</p>
+<p>-1e+09: se
+-1000000002: eigCor
+-1000000003: cond
+-1000000004: stdDevCor
+-1000000005: seStdDevCor
+-1000000006: FIX
+-1000000007: termStat
+-1000000008: partLik</p>
+<p>The parameter name is in the <code>parameter</code> column. The
+"parameter type", like "THETA", "OMEGA", "SIGMA" are available in
+the <code>par.type</code> column. Counters are available in <code>i</code> and
+<code>j</code> columns. <code>j</code> will be <code>NA</code> for
+<code>par.type=="THETA"</code></p>
+<p>The objective function value is included as a parameter.</p>
+<p>Notice that in case multiple tables are available in the `ext`
+file, the column names are taken from the first table. E.g., in
+case of SAEM/IMP estimation, the objective function values will be
+in the `SAEMOBJ` column, even for the IMP step. This may change in
+the future.</p>
     </div>
 
   </div>
