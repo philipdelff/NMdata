@@ -203,7 +203,7 @@ NMdataConf <- function(...,allow.unknown=FALSE){
         if(!is.logical(reset)) stop("reset must be logical")
         if(reset) {
             ## .NMdata <<- new.env(parent = emptyenv())
-            assign(".NMdata",new.env(parent = emptyenv()),inherits=TRUE)
+            ## assign(".NMdata",new.env(parent = emptyenv()),inherits=TRUE)
             ## .NMdata$options <- list()
             ## assign("options",list(),envir=.NMdata)
             .NMdata$options <- list()
