@@ -16,6 +16,8 @@ test_that("defaults",{
     defaults$modelname <- NULL
 
     expect_equal_to_reference(defaults,fileRef)
+
+##     compareCols(readRDS(fileRef),defaults)
 })
 
 test_that("reset",{
@@ -160,4 +162,20 @@ test_that("deprecated use.rds",{
 
     
     expect_equal_to_reference(new,fileRef)
+    ## compareCols(readRDS(fileRef),defaults)
+})
+
+test_that("reset removes unknown",{
+    NMdataConf(reset=T)
+
+    opts <- NMdataConf()
+    expect_false("unknown.option"%in%names(NMdataConf()))
+    
+    NMdataConf(unknown.option="test",allow.unknown = TRUE)
+    
+    expect_true(NMdataConf()$"unknown.option"=="test")
+    
+    NMdataConf(reset=TRUE)
+    expect_false("unknown.option"%in%names(NMdataConf()))
+
 })

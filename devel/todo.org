@@ -1,8 +1,6 @@
-* NMdata todo
+#+PROPERTY: LOGGING nil
 #+TODO: TODO(t) WAIT(w) DONE(d)
-# :PROPERTIES:
-:LOGGING: nil
-  :END:
+* NMdata todo
 ** Design
 *** DONE Add version to welcome message
 *** DONE All arguments should be arg.foo rather than argFoo
@@ -692,6 +690,7 @@ report here
 **** TODO [#B] The function could paste an explained overview to the terminal
 **** DONE Add save argument to align with other functions
 *** NMdataConf
+**** DONE reset=TRUE must also wipe unknown settings
 **** TODO [#B] Add col.id. Generally, support for custom col.id may be missing.
 **** TODO [#B] Add na.strings
      Used in NMisNumeric and NMcheckData

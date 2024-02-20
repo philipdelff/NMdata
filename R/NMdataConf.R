@@ -195,14 +195,29 @@ NMdataConf <- function(...,allow.unknown=FALSE){
     N.args <- length(dots)
     
 ### look for reset=TRUE. If so (and nothing else is given), set default values
+    do.reset <- FALSE
     if("reset"%in%names.args) {
+        do.reset <- TRUE
         reset <- dots$reset
         if(N.args>1) stop("reset cannot be combined with other arguments.")
         if(!is.logical(reset)) stop("reset must be logical")
         if(reset) {
+            ## .NMdata <<- new.env(parent = emptyenv())
+            assign(".NMdata",new.env(parent = emptyenv()),inherits=TRUE)
+            ## .NMdata$options <- list()
+            ## assign("options",list(),envir=.NMdata)
+            .NMdata$options <- list()
+            ## NMdataConf(reset=TRUE)
+            
+            
             allopts <- NMdataConfOptions()
             names.args <- names(allopts)
             args <- lapply(allopts,function(x)x$default)
+            
+            args.not.in.def <- setdiff(names(NMdataConf()),names.args)
+            if(length(args.not.in.def)){
+                args <- c(args,setNames(lapply(1:length(args.not.in.def),function(x)NULL),args.not.in.def))
+            }
             N.args <- length(args)
         } else {
             return(.NMdata$options)
@@ -244,6 +259,7 @@ NMdataConf <- function(...,allow.unknown=FALSE){
     ##     stop("not all option names recognized")
     ## }
 
+    
     for(I in 1:N.args){
         .NMdata$options[[names.args[I]]] <- args[[I]]
     }
@@ -380,7 +396,7 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
            ,msg.not.allowed="col.row must be a character vector of length 1."
            ,process=identity
         )
-               ,
+       ,
         col.time=list(
             default="TIME"
            ,is.allowed=function(x) (is.character(x) && length(x)==1)
@@ -405,7 +421,7 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
         )
        ,
         dir.sims=list(
-            default=""
+            default=NULL
             ## has to be length 1 character 
            ,is.allowed=function(x) is.character(x) && length(x)==1 
            ,msg.not.allowed="dir.sims must be a single text string."
