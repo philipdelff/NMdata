@@ -24,6 +24,13 @@
 * `NMdataConf()` is configured to handle `NMsim`'s `dir.sims` and
   `dir.res`.
 
+* `NMdataConf(reset=TRUE)` wipes all settings. In recent versions,
+  `NMdataConf` accepts the `allow.unknown` argument which means
+  settings that are unknown to `NMdata` can be stored. This is
+  relevant for other packages that want to make use of `NMdata`'s
+  configuration system (`NMsim` is an example of a package that does
+  so). Now `NMdataConf(reset=TRUE)` makes sure to wipe all such
+  configuration if exists.
 
 # 0.1.4
 
