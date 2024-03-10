@@ -1,3 +1,10 @@
+# 0.1.6
+
+## Bugfixes
+* `NMcheckData` now respects `NMdataConf()` setting of `col.time` and
+  `col.id`. When using the `file` argument `col.id` was not respected
+  at all. This is fixed.
+
 # 0.1.5
 ## New features
 * `countFlags` no longer needs a table of flags. By default it will

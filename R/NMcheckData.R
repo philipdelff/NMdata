@@ -213,10 +213,10 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     ADDL <- NULL
     AMT <- NULL
     CMT <- NULL
-    DV <- NULL
+    ## DV <- NULL
     EVID <- NULL
     ID.jump <- NULL
-    ID <- NULL
+    ## ID <- NULL
     II <- NULL
     MDVDV <- NULL
     MDV <- NULL
@@ -266,9 +266,16 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
+    if(missing(col.id)) col.id <- NULL
+    col.id <- NMdataDecideOption("col.id",col.id)
+    
     if(missing(col.flagn)) col.flagn <- NULL
     col.flagn.orig <- col.flagn
     col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
+
+    if(missing(col.time)) col.time <- NULL
+    col.time <- NMdataDecideOption("col.time",col.time)
+
     if(missing(file)) file <- NULL
 
     if(!is.null(covs) && !is.character(covs)) {
@@ -330,7 +337,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
 ### file mode
     if(!is.null(file)){
         if(!is.null(col.flagn.orig)){warning("col.flagn is not used when file is specified.")}
-        col.id <- "ID"
+        ## col.id <- "ID"
         ## use.rds <- FALSE
         formats.read="csv"
         file.mod <- NULL
