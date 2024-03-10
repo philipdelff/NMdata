@@ -242,6 +242,8 @@ I don't think I ever tried this. What will NMscanData do if input data
 has no headers, and there are no filters? I think NMapplyFilters may
 fail.
 *** NMcheckData
+**** DONE support for col.id with file arg
+Looks like col.id is being overwritten for no reason
 **** TODO [#B] Improve handling of missing covs
 Right now, if covs="WT" is specified and WT is not a column, an error
 is thrown. That should be a finding instead.

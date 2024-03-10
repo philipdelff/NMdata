@@ -1,5 +1,12 @@
 # 0.1.6
 
+## New features
+* Functions `mat2dt()` and `dt2mat()` included to convert between
+  matrices and data.frame format of matrix data.
+  
+* Function `addOmegaCorr` adds estimated correlation between ETAs to
+  parameter tables, as obtained using `NMreadExt()`.
+
 ## Bugfixes
 * `NMcheckData` now respects `NMdataConf()` setting of `col.time` and
   `col.id`. When using the `file` argument `col.id` was not respected
