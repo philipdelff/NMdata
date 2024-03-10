@@ -78,6 +78,7 @@ reference:
   - NMreadTab
   - NMreadParsText
   - NMinfo
+  - addOmegaCorr
 - title: Checking and Debugging
   desc: Functions for checking data and input control streams
   contents:
@@ -88,7 +89,7 @@ reference:
   contents:
   - cc
   - cl
-  - NMisNumeric
+  - dt2mat
   - egdt
   - dims
   - findCovs
@@ -97,6 +98,8 @@ reference:
   - fnExtension
   - is.NMdata
   - unNMdata
+  - mat2dt
+  - NMisNumeric
   - NMreadSection
   - NMextractDataFile
   - NMextractText
