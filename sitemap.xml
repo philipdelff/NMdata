@@ -133,6 +133,9 @@
     <loc>https://philipdelff.github.io/NMdata/reference/NMwriteSection.html</loc>
   </url>
   <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/addOmegaCorr.html</loc>
+  </url>
+  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/addTAPD.html</loc>
   </url>
   <url>
@@ -155,6 +158,9 @@
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/dims.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/dt2mat.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/editCharCols.html</loc>
@@ -200,6 +206,9 @@
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/lstExtractTime.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/mat2dt.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/mergeCheck.html</loc>
