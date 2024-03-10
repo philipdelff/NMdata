@@ -10,10 +10,10 @@
 ##'     \code{return="both"}, both er returned, though in separate
 ##'     data.frames compiled in a list.
 ##' @param as.fun The default is to return data as a data.frame. Pass
-##'     a function (say tibble::as_tibble) in as.fun to convert to
-##'     something else. If data.tables are wanted, use
-##'     as.fun="data.table". The default can be configured using
-##'     NMdataConf.
+##'     a function (say `tibble::as_tibble`) in as.fun to convert to
+##'     something else. If `data.table`s are wanted, use
+##'     `as.fun="data.table"`. The default can be configured using
+##'     `NMdataConf()`.
 ##' @param tableno In case the ext file contains multiple tables, this
 ##'     argument controls which one to choose. The options are
 ##'     \itemize{
@@ -30,9 +30,9 @@
 ##' \item an integer greater than 0, in which case the table with this
 ##' table number will be picked.
 ##' }
-##' @param modelname See ?NMscanData
-##' @param col.model See ?NMscanData
-##' @param auto.ext If TRUE (default) the extension will automatically
+##' @param modelname See `?NMscanData`
+##' @param col.model See `?NMscanData`
+##' @param auto.ext If `TRUE` (default) the extension will automatically
 ##'     be modified using `NMdataConf()$file.ext`. This means `file`
 ##'     can be the path to an input or output control stream, and
 ##'     `NMreadExt` will still read the `.ext` file.

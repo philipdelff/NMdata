@@ -27,28 +27,28 @@ edit. See file.pattern too.}
 
 \item{file.pattern}{Alternatively to files, you can supply a
 regular expression which will be passed to list.files as the
-pattern argument. If this is used, use dir argument as
+pattern argument. If this is used, use `dir` argument as
 well. Also see data.file to only process models that use a
 specific data file.}
 
-\item{dir}{If file.pattern is used, dir is the directory to search
+\item{dir}{If file.pattern is used, `dir` is the directory to search
 in.}
 
 \item{section}{The name of the section to update with or without
-"$". Example: section="EST" or section="$EST" to edit the
-sections starting by $EST. Section specification is not
-case-sensitive. See ?NMreadSection too.}
+"$". Example: `section="EST"` or `section="$EST"` to edit the
+sections starting by `$EST`. Section specification is not
+case-sensitive. See `?NMreadSection` too.}
 
 \item{newlines}{The new text (including "$SECTION"). Better be
 broken into lines in a character vector since this is simply
-past to writeLines.}
+past to \code{writeLines()}.}
 
 \item{list.sections}{Named list of new sections, each element
 containing a section. Names must be section names, contents of
 each element are the new section lines for each section.}
 
 \item{location}{In combination with `section`, this determines
-where the new section is inserter. Possible values are
+where the new section is inserted. Possible values are
 "replace" (default), "before", "after", "first", "last".}
 
 \item{newfile}{path and filename to new run. If missing, the
@@ -63,16 +63,16 @@ want to backup the file (to say, backup_run001.mod)?}
 
 \item{data.file}{Use this to limit the scope of models to those
 that use a specific input data data file. The string has to
-exactly match the one in $DATA or $INFILE in Nonmem.}
+exactly match the one in `$DATA` or `$INFILE` in Nonmem.}
 
 \item{write}{Default is to write to file. If write=FALSE,
-NMwriteSection returns the resulting input.txt without writing
-it.  to disk?  Default is FALSE.}
+`NMwriteSection()` returns the resulting input.txt without writing
+it to disk?  Default is `FALSE`.}
 
 \item{quiet}{The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
 non-interactive use. Default can be configured using
-NMdataConf.}
+`NMdataConf()`.}
 
 \item{simplify}{If TRUE (default) and only one file is edited, the
 resulting rows are returned directly. If more than one file is

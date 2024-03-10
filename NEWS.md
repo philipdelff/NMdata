@@ -300,7 +300,7 @@ chaned to ensure consistent test results once data.table 1.14.7 is
 
 ## New data
 * A new data set called mad is included. It is based on the
-  mad_missing_duplicates from the xgxr package. Doses are implemented
+  mad_missing_duplicates from the `xgxr` package. Doses are implemented
   using ADDL and II (so only one dosing row per subject). It is
   included for testing the new NMexpandDoses and addTAPD functions.
 
@@ -335,12 +335,12 @@ chaned to ensure consistent test results once data.table 1.14.7 is
   set using the tz.lst argument or using NMdataConf - at least for
   now.
   
-* Checks of unique subject identifier (usubjid) included in
+* Checks of unique subject identifier (`usubjid`) included in
   NMcheckData. This is mostly to detect the potential issue that the
   subject IDs generated for analysis are not unique across actual
-  subjects. If a usubjid (e.g. from clinical data sets) is included in
+  subjects. If a `usubjid` (e.g. from clinical data sets) is included in
   data, NMcheckData can check this for basic properties and check the
-  analysis subject ID and the usubjid against each other.
+  analysis subject ID and the `usubjid` against each other.
 
 * New function: cl - creates factors, ordered by the appearance of the
   elements when created. cl("b","a") results in a factor with levels

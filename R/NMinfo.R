@@ -3,15 +3,15 @@
 ##' Extract metadata such as info on tables, columns and further
 ##' details in your favorite class
 ##'
-##' @param data An object of class NMdata (a result of NMscanData)
+##' @param data An object of class NMdata (a result of `NMscanData()`)
 ##' @param info If not passed, all the metadata is returned. You can
 ##'     use "details", "tables", or "columns" to get only these
 ##'     subsets. If info is "tables" or "columns"
-##' @param as.fun The default is to return data as a data.frame. Pass
-##'     a function (say tibble::as_tibble) in as.fun to convert to
-##'     something else. If data.tables are wanted, use
-##'     as.fun="data.table". The default can be configured using
-##'     NMdataConf.
+##' @param as.fun The default is to return data as a `data.frame`. Pass
+##'     a function (say `tibble::as_tibble`) in as.fun to convert to
+##'     something else. If `data.table`s are wanted, use
+##'     `as.fun="data.table"`. The default can be configured using
+##'     `NMdataConf()`.
 ##' @return A table of class as defined by as.fun in case info is
 ##'     "columns" or "tables". A list if info missing or equal to
 ##'     "details".

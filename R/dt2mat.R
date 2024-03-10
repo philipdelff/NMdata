@@ -3,9 +3,13 @@
 ##' Often needed when using estimates of Omega or Sigma matrices in
 ##' further calculations.
 ##' @param pars A data.table with parameters like a subjset of the
-##'     parameter list returned by NMreadExt.
+##'     parameter list returned by NMreadExt. It MUST ONLY INCLUDE THE
+##'     UNIQUE VALUES, so a upper or lower triangle of the matrix, not
+##'     the full matrix.
 ##' @import data.table
-##' @keywords internal
+##' @return a matrix
+##' @export
+
 dt2mat <- function(pars){
 
     . <- NULL

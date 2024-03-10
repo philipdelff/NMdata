@@ -563,9 +563,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
                 }
 
-                
                 tab.row[,(col.row.merge):=data.input[,get(col.row.merge)],by=col.nmrep]
-                ## if(!recover.rows) data.input <- data.input
 
             }
 
@@ -625,16 +623,12 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
             ## checking for available value and for whether it's being modified in Nonmem
             checkColRow(col.row,file)
-
-
-            ##            col.row.in.input <- FALSE
             ## Has this check already been done?
             
             if(col.row.in.input) {
                 if(data.input[,any(duplicated(get(col.row)))]) {
                     messageWrap("use.input=TRUE and merge.by.row=TRUE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and merge.by.row=TRUE.",fun.msg=stop)
                 }
-                ##              col.row.in.input <- TRUE
             } else {
                 warning("merge.by.row is TRUE, but col.row not found in _input_ data. Only output data used.")
                 use.input <- FALSE
@@ -676,10 +670,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 ### if recover, mergeCheck(input,output,all.x=T)
 ### else, mergeCheck(output,input,all.x=T)
 
-#### before implementation of tableno
-    ## tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=TRUE,as.fun="data.table",quiet=TRUE)
-
-    ## after implementation of tableno
     if(use.input & any(meta.output$full.length)){
         cols.exist <- copy(colnames(tab.row))
         

@@ -28,16 +28,16 @@ is found, like FIX, sd etc. as columns. If
 data.frames compiled in a list.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass
-a function (say tibble::as_tibble) in as.fun to convert to
-something else. If data.tables are wanted, use
-as.fun="data.table". The default can be configured using
-NMdataConf.}
+a function (say `tibble::as_tibble`) in as.fun to convert to
+something else. If `data.table`s are wanted, use
+`as.fun="data.table"`. The default can be configured using
+`NMdataConf()`.}
 
-\item{modelname}{See ?NMscanData}
+\item{modelname}{See `?NMscanData`}
 
-\item{col.model}{See ?NMscanData}
+\item{col.model}{See `?NMscanData`}
 
-\item{auto.ext}{If TRUE (default) the extension will automatically
+\item{auto.ext}{If `TRUE` (default) the extension will automatically
 be modified using `NMdataConf()$file.ext`. This means `file`
 can be the path to an input or output control stream, and
 `NMreadExt` will still read the `.ext` file.}
