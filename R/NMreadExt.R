@@ -153,7 +153,7 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
 
 
     res.NMdat <- rbindlist(res.NMdat,fill=TRUE)
-
+    
     ## NONMEM USERS GUIDE
     ## INTRODUCTION TO NONMEM 7.5.0
     ## Robert J. Bauer
