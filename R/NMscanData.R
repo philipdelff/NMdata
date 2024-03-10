@@ -196,7 +196,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     nmout <- NULL
     nonmem <- NULL
     result <- NULL
-    scope <- NULL
     type <- NULL
     var <- NULL
     variable <- NULL
@@ -684,12 +683,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(use.input & any(meta.output$full.length)){
         cols.exist <- copy(colnames(tab.row))
         
-        ## if(recover.rows){
-        ##     cols.exist <- copy(colnames(tab.row))
-        
-        ##     tab.row <- mergeCheck(data.input[,c(col.row.merge,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],tab.row,by=col.row.merge,all.x=TRUE,as.fun="data.table",quiet=TRUE)
-        ##     setcolorder(tab.row,cols.exist)
-        ## } else {
         tab.row <- mergeCheck(tab.row,data.input[,c(col.row.merge,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row.merge,all.x=TRUE,as.fun="data.table",quiet=TRUE)
         ## }
         tab.row[is.na(get(col.nmout)),(col.nmout):=FALSE]
