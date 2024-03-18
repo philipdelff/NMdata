@@ -10,19 +10,26 @@
 ##' @return a matrix
 ##' @export
 
-dt2mat <- function(pars){
+dt2mat <- function(pars,fill=0){
 
     . <- NULL
     est <- NULL
     i <- NULL
     j <- NULL
 
-    pars.mat <- rbind(pars,
+    
+    
+    pars.mat <- rbind(pars[,.(i,j,est)],
                       pars[i!=j]
                       [,.(i=j,j=i,est)]
                      ,fill=T)
+    i.missing <- setdiff(min(pars$i):max(pars$i),pars$i)
+    pars.mat <- rbind(pars.mat,data.table(i=i.missing,j=i.missing),fill=TRUE)
+
     ## note, dcast returns a keyed data.table (keys are LHS vars) so it is always ordered by i.
     matrix.pars <- as.matrix(dcast(pars.mat,i~j,value.var="est")[,!("i")])
-
+    if(!isFALSE(fill)){
+        matrix.pars[is.na(matrix.pars)] <- fill
+    }
     matrix.pars
 }

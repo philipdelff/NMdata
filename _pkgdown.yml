@@ -90,6 +90,7 @@ reference:
   - cc
   - cl
   - dt2mat
+  - mat2dt
   - egdt
   - dims
   - findCovs
@@ -98,7 +99,6 @@ reference:
   - fnExtension
   - is.NMdata
   - unNMdata
-  - mat2dt
   - NMisNumeric
   - NMreadSection
   - NMextractDataFile

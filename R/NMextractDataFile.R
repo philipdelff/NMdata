@@ -49,6 +49,7 @@ NMextractDataFile <- function(file,dir.data=NULL,file.mod,file.data=NULL){
 ### containing the data. Since it is to be used in a FORTRAN OPEN statement,
 ### this name may not include embedded commas, semi-colons, parentheses, or
 ### spaces.
+        
         lines.data <- NMreadSection(file,section="DATA",keep.name=FALSE,keep.comments=FALSE,keep.empty=FALSE)
         if(is.null(lines.data)) {
             lines.data <- NMreadSection(file,section="INFILE",keep.name=FALSE,keep.comments=FALSE,keep.empty=FALSE)
