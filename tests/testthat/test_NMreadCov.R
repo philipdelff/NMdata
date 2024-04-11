@@ -1,12 +1,12 @@
-if(F){
-    context("NMreadCov")
 
-    test_that("basic",{
+context("NMreadCov")
 
-        fileRef <- "testReference/NMreadCov_01.rds"
-        file.cov <- "testData/nonmem/xgxr003.cov"
+test_that("basic",{
 
-        res.dt <- NMreadCov(file=file.cov)
-        expect_equal_to_reference(res.dt,fileRef)
-    })
-}
+    fileRef <- "testReference/NMreadCov_01.rds"
+    file.cov <- "testData/nonmem/estim_debug.cov"
+
+    res <- NMreadCov(file=file.cov)
+    expect_equal_to_reference(res,fileRef)
+})
+

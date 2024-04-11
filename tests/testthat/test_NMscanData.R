@@ -747,7 +747,8 @@ test_that("Including a redundant output table",{
 test_that("redundant output",{
     NMdataConf(reset=T)
     NMdataConf(as.fun="data.table")
-    NMdataConf(file.mod=function(x)sub("\\.lst$",".ctl",x))
+### ctl file naming is supported by default now
+    ## NMdataConf(file.mod=function(x)sub("\\.lst$",".ctl",x))
     NMdataConf(check.time=FALSE)
 
     fileRef <- "testReference/NMscanData_25.rds"

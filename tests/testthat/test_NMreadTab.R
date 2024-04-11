@@ -1,5 +1,6 @@
 ## NMreadTab("testData/nonmem/estim_debug.cov")
 context("NMreadTab")
+NMdataConf(reset=TRUE)
 
 ### test we get TABLE.NO and NMREP right
 

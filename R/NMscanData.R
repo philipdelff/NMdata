@@ -181,7 +181,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     DV <- NULL
     ID.jump <- NULL
     N <- NULL
-     NMREP <- NULL
+    NMREP <- NULL
     ## firstlastonly <- NULL
     ## firstonly <- NULL
     ## lastonly <- NULL
@@ -196,7 +196,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     nmout <- NULL
     nonmem <- NULL
     result <- NULL
-    scope <- NULL
     type <- NULL
     var <- NULL
     variable <- NULL
@@ -220,7 +219,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     if(missing(check.time)) check.time <- NULL
     if(missing(tz.lst)) tz.lst <- NULL
     if(missing(as.fun)) as.fun <- NULL
-    ### why is this not needed?
+### why is this not needed?
     ## if(missing(modelname)) modelname <- NULL
     if(missing(quiet)) quiet <- NULL
     if(missing(formats.read)) formats.read <- NULL
@@ -493,12 +492,16 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
             
             if(testtime.inp > testtime.lst){
-                messageWrap(paste0("input data (",nminfo.input$tables$file,") is newer than output control stream (",file,") Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                ## messageWrap(paste0("input data (",nminfo.input$tables$file,") is newer than output control stream (",file,") Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                ##             fun.msg=warning)
+                messageWrap("Input data file newer than output control stream.",
                             fun.msg=warning)
                 time.ok <- c(time.ok,"input > lst")
             }
             if(testtime.inp > min(meta.output[,file.mtime])){
-                messageWrap(paste0("input data file (",nminfo.input$tables$file,") is newer than output tables. Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                ## messageWrap(paste0("input data file (",nminfo.input$tables$file,") is newer than output tables. Seems like model has been edited since last run. This is likely to corrupt results. Please consider either not using input data or re-running model."),
+                ##             fun.msg=warning)
+                messageWrap("Input data file newer than output tables.",
                             fun.msg=warning)
                 time.ok <- c(time.ok,"input > output")
             }
@@ -560,9 +563,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
                 }
 
-                
                 tab.row[,(col.row.merge):=data.input[,get(col.row.merge)],by=col.nmrep]
-                ## if(!recover.rows) data.input <- data.input
 
             }
 
@@ -622,16 +623,12 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
             ## checking for available value and for whether it's being modified in Nonmem
             checkColRow(col.row,file)
-
-
-            ##            col.row.in.input <- FALSE
             ## Has this check already been done?
             
             if(col.row.in.input) {
                 if(data.input[,any(duplicated(get(col.row)))]) {
                     messageWrap("use.input=TRUE and merge.by.row=TRUE. Hence, input data and output data must be merged by a unique row identifier (col.row), but col.row has duplicate values in _input_ data. col.row must be a unique row identifier when use.input=TRUE and merge.by.row=TRUE.",fun.msg=stop)
                 }
-                ##              col.row.in.input <- TRUE
             } else {
                 warning("merge.by.row is TRUE, but col.row not found in _input_ data. Only output data used.")
                 use.input <- FALSE
@@ -673,19 +670,9 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 ### if recover, mergeCheck(input,output,all.x=T)
 ### else, mergeCheck(output,input,all.x=T)
 
-#### before implementation of tableno
-    ## tab.row <- mergeCheck(tab.row,data.input[,c(col.row,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row,all.x=TRUE,as.fun="data.table",quiet=TRUE)
-
-    ## after implementation of tableno
     if(use.input & any(meta.output$full.length)){
         cols.exist <- copy(colnames(tab.row))
         
-        ## if(recover.rows){
-        ##     cols.exist <- copy(colnames(tab.row))
-        
-        ##     tab.row <- mergeCheck(data.input[,c(col.row.merge,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],tab.row,by=col.row.merge,all.x=TRUE,as.fun="data.table",quiet=TRUE)
-        ##     setcolorder(tab.row,cols.exist)
-        ## } else {
         tab.row <- mergeCheck(tab.row,data.input[,c(col.row.merge,setdiff(colnames(data.input),colnames(tab.row))),with=FALSE],by=col.row.merge,all.x=TRUE,as.fun="data.table",quiet=TRUE)
         ## }
         tab.row[is.na(get(col.nmout)),(col.nmout):=FALSE]
@@ -847,7 +834,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         tab.row[,(col.nmrep):=NULL]
         dt.vars <- dt.vars[variable!=col.nmrep]
     }
-    ### col.tableno should always be FALSE
+### col.tableno should always be FALSE
     ## if(rm.col.tableno && col.tableno%in%colnames(tab.tableno)){
     ##     tab.row[,(col.tableno):=NULL]
     ##     dt.vars <- dt.vars[variable!=col.tableno]

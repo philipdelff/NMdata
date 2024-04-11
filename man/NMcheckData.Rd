@@ -221,10 +221,10 @@ when Nonmem read, then write the data.
     subject and occasion.
 
 \item Columns specified in cols.num must be present, numeric
-    and non-NA.
+    and non-`NA`.
 
-\item If a unique subject identifier column (col.usubjid) is
-provided, col.id must be unique within values of col.usubjid and
+\item If a unique subject identifier column (`col.usubjid`) is
+provided, `col.id` must be unique within values of `col.usubjid` and
 vice versa.
 
 \item Events should not be duplicated. For all rows, the

@@ -17,7 +17,7 @@
 ## don't export. An internal function used by NMscanInput. 
 
 NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
-
+    
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
     datafile <- NULL
     DATA <- NULL
@@ -25,9 +25,9 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
     INPUT <- NULL
 
 ### Section end: Dummy variables, only not to get NOTE's in package checks ####
-
+    
     stopifnot(is.data.table(data))
-
+    
 #### this should be supported now
     ##    if( !translate && !recover.cols ) {messageWrap("recover.rows=FALSE is only allowed when translate=TRUE.",fun.msg=stop)}
     
@@ -37,6 +37,8 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
         lines <- NMreadSection(file,section="INPT",keep.name=FALSE,keep.comments=FALSE,clean.spaces=TRUE)
     }
     if(is.null(lines)) {stop("Could not find $INPUT or $INPT section in control stream. Cannot interpret data. Is file really the path to a valid nonmem control stream?")}
+
+    ## drop comments
     
     ## names can be separated by , or " " or both. So one , between alphanumerics is replaced by a single space
     lines <- gsub("([[:alnum:]]) *, *([[:alnum:]])","\\1 \\2",lines)

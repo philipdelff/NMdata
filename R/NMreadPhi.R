@@ -1,6 +1,10 @@
 ##' Read information from Nonmem phi files
 ##'
-##' @param file.phi Path to the phi file
+##' @param file Path to the phi file. If `auto.ext=TRUE`, the
+##'     extension will automatically be changed using the setting in
+##'     `NMdataConf()$file.fir` - this by default means that the
+##'     `.phi` extension will be used no matter what extension the
+##'     provided file name has.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
@@ -8,11 +12,16 @@
 ##'     NMdataConf.
 ##' @param modelname See ?NMscanData
 ##' @param col.model See ?NMscanData
-##'
+##' @param auto.ext If TRUE (default) the extension will automatically
+##'     be modified using `NMdataConf()$file.phi`. This means `file`
+##'     can be the path to an input or output control stream, and
+##'     `NMreadPhi` will still read the `.phi` file.
+##' @param file.phi Deprecated. Use `file`.
+##' 
 ##' @return A list with a final parameter table and a table of the iterations
 ##' @export
 
-NMreadPhi <- function(file.phi,as.fun,modelname,col.model){
+NMreadPhi <- function(file,as.fun,modelname,col.model,auto.ext,file.phi){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -30,10 +39,19 @@ NMreadPhi <- function(file.phi,as.fun,modelname,col.model){
     col.model <- NMdataDecideOption("col.model",col.model)
     if(missing(modelname)) modelname <- NULL
     modelname <- NMdataDecideOption("modelname",modelname)
+    if(missing(auto.ext) || is.null(auto.ext)) auto.ext <- TRUE
 
+    args <- getArgs()
+    if(missing(file.phi)) file.phi <- NULL
+    file <- deprecatedArg("file.phi","file",args=args)
+
+    fun.file.phi <- NMdataDecideOption("file.phi")
+    if(auto.ext){
+        file <- fun.file.phi(file)
+    }
     
     ## res.NMdat <- NMreadTab(file.phi,as.fun="data.table",quiet=TRUE)
-    res.NMdat <- lapply(file.phi,function(file){
+    res.NMdat <- lapply(file,function(file){
         this.model <- modelname(file)
         NMreadTab(file,as.fun="data.table",col.table.name=TRUE,quiet=TRUE)[,(col.model):=this.model]
     })

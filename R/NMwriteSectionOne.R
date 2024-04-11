@@ -8,12 +8,12 @@ NMwriteSectionOne <- function(file0,lines,section,location="replace",
     after <- NULL 
     before <- NULL
     mad.dl <- NULL
-
+    
     if(!missing(file0)){
         file0 <- filePathSimple(file0)
         stopifnot(file.exists(file0))
         ## see below why we need to read the lines for now
-        lines <- readLines(file0)
+        lines <- readLines(file0,warn=FALSE)
         if(missing(newfile)) newfile <- file0
     }
     if(missing(write)) write <- !missing(file0)
@@ -36,7 +36,7 @@ NMwriteSectionOne <- function(file0,lines,section,location="replace",
     }
     
     ## put this part in a function to be sequentially applied for all elements in list.
-    replaceOnePart <- function(lines,section,newlines){
+    replaceOnePart <- function(lines,section,newlines,quiet=FALSE){
         if(!quiet) message(paste("Writing",newfile))
         
         ## make sure section is capital and does not start with $.
@@ -50,8 +50,8 @@ NMwriteSectionOne <- function(file0,lines,section,location="replace",
             newlines.fun <- newlines
             
             newlines <- NMreadSection(lines=lines,section=section,return="text",keep.empty=TRUE,
-                                    keep.name=TRUE,keep.comments=TRUE,as.one=TRUE,
-                                    clean.spaces=FALSE)
+                                      keep.name=TRUE,keep.comments=TRUE,as.one=TRUE,
+                                      clean.spaces=FALSE)
             newlines <- newlines.fun(newlines)
         }
         
@@ -125,7 +125,11 @@ NMwriteSectionOne <- function(file0,lines,section,location="replace",
     }
     
     newlines <- lines
-    for (I in 1:length(list.sections)) newlines <- replaceOnePart(lines=newlines,section=names(list.sections)[I],newlines=list.sections[[I]])
+    for (I in 1:length(list.sections)) {
+        newlines <- replaceOnePart(lines=newlines,section=names(list.sections)[I],
+                                   newlines=list.sections[[I]]
+                                   ,quiet=quiet)
+    }
     
     if(is.null(newfile)) return(newlines)
     

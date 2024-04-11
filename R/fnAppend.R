@@ -20,9 +20,12 @@ fnAppend <- function(fn,x,pad0=0,sep="_"){
     
     if((!is.numeric(x)&&!is.character(x)) ||length(x)!=1) stop("x must be numeric or character vector of length 1.")
 
-    fnroot <- sub("^(.+)\\..+$","\\1",fn)
-    fnext <- sub(".*\\.([^\\.]+)$","\\1",fn)
-    
+    has.ext <- grepl(".*[^\\.]\\.[a-zA-Z0-9]+",fn)
+    if(!all(has.ext)) stop("No file name extension found. Cannot append string.")
+    fnext <- sub(".*[^\\.]\\.([a-zA-Z0-9]+)$","\\1",fn)
+    ## fnroot <- sub(paste0("\\.",fnext,"$"),"",fn)
+    fnroot <- sub(paste0("\\.[a-zA-Z0-9]+$"),"",fn)
+        
     if(is.numeric(x)){
         string <- sprintf(fmt=paste("%0",pad0,"d",sep=""),x)
     } else {

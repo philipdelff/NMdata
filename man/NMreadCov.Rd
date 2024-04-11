@@ -19,7 +19,7 @@ Read in data file
 }
 \details{
 This function is taken from nonmem2rx::nmcov which was
-    based on function from NMdata.
+    based on NMdata::NMreadTab.
 }
 \author{
 Philip Delff and Matthew L. Fidler

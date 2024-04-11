@@ -1,5 +1,7 @@
 context("NMdataConf")
 
+NMdataConf(reset=TRUE)
+
 test_that("defaults",{
 
     fileRef <- "testReference/NMdataConf_01.rds"
@@ -8,9 +10,14 @@ test_that("defaults",{
     defaults <- NMdataConf()
     defaults$as.fun <- NULL
     defaults$file.mod <- NULL
+    defaults$file.cov <- NULL
+    defaults$file.ext <- NULL
+    defaults$file.phi <- NULL
     defaults$modelname <- NULL
 
     expect_equal_to_reference(defaults,fileRef)
+
+##     compareCols(readRDS(fileRef),defaults)
 })
 
 test_that("reset",{
@@ -22,9 +29,15 @@ test_that("reset",{
 
     defaults$as.fun <- NULL
     defaults$file.mod <- NULL
+    defaults$file.cov <- NULL
+    defaults$file.ext <- NULL
+    defaults$file.phi <- NULL
     defaults$modelname <- NULL
     defaults2$as.fun <- NULL
     defaults2$file.mod <- NULL
+    defaults2$file.cov <- NULL
+    defaults2$file.ext <- NULL
+    defaults2$file.phi <- NULL
     defaults2$modelname <- NULL
     
     
@@ -71,9 +84,15 @@ test_that("change fun in globalenv does not affect NMdataConf()",{
 
     defaults$as.fun <- NULL
     defaults$file.mod <- NULL
+    defaults$file.cov <- NULL
+    defaults$file.ext <- NULL
+    defaults$file.phi <- NULL
     defaults$modelname <- NULL
     defaults2$as.fun <- NULL
     defaults2$file.mod <- NULL
+    defaults2$file.cov <- NULL
+    defaults2$file.ext <- NULL
+    defaults2$file.phi <- NULL
     defaults2$modelname <- NULL
     
     
@@ -108,11 +127,17 @@ test_that("change fun in globalenv does not affect NMdataConf()",{
 
     defaults$as.fun <- NULL
     defaults$file.mod <- NULL
+    defaults$file.cov <- NULL
+    defaults$file.ext <- NULL
+    defaults$file.phi <- NULL
     defaults$modelname <- NULL
+
     defaults2$as.fun <- NULL
     defaults2$file.mod <- NULL
+    defaults2$file.cov <- NULL
+    defaults2$file.ext <- NULL
+    defaults2$file.phi <- NULL
     defaults2$modelname <- NULL
-    
     
     expect_equal(defaults,defaults2)
 })
@@ -124,12 +149,33 @@ test_that("deprecated use.rds",{
     
     NMdataConf(reset=TRUE)
     
-    NMdataConf(use.rds=TRUE)
+    ## NMdataConf(use.rds=TRUE)
+    NMdataConf(formats.read=c("csv"))
     new <- NMdataConf()
     
     new$as.fun <- NULL
+    new$file.cov <- NULL
     new$file.mod <- NULL
+    new$file.ext <- NULL
+    new$file.phi <- NULL
     new$modelname <- NULL
+
     
     expect_equal_to_reference(new,fileRef)
+    ## compareCols(readRDS(fileRef),defaults)
+})
+
+test_that("reset removes unknown",{
+    NMdataConf(reset=T)
+
+    opts <- NMdataConf()
+    expect_false("unknown.option"%in%names(NMdataConf()))
+    
+    NMdataConf(unknown.option="test",allow.unknown = TRUE)
+    
+    expect_true(NMdataConf()$"unknown.option"=="test")
+    
+    NMdataConf(reset=TRUE)
+    expect_false("unknown.option"%in%names(NMdataConf()))
+
 })

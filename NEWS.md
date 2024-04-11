@@ -1,8 +1,96 @@
-# 0.1.2
+# 0.1.6
+
+## New features
+* Functions `mat2dt()` and `dt2mat()` included to convert between
+  matrices and data.frame format of matrix data.
+  
+* Function `addOmegaCorr` adds estimated correlation between ETAs to
+  parameter tables, as obtained using `NMreadExt()`.
+
+## Bugfixes
+* `NMcheckData` now respects `NMdataConf()` setting of `col.time` and
+  `col.id`. When using the `file` argument `col.id` was not respected
+  at all. This is fixed.
+
+# 0.1.5
+## New features
+* `countFlags` no longer needs a table of flags. By default it will
+  summarize the ones found in data. If additional flags wanted in
+  summary table (with no findings), the flag table is still needed.
+  
+* If a flag table is provided, `countFlags` will throw an error if the
+  flags found in data are not covered by the provided flag table.
+
+* `NMorderColumns` now includes arguments `col.id` and
+  `col.time`. These can now also be controlled using `NMdataConf()`.
+
+* `NMreadParText` includes argument `modelname`, `col.model`, and
+  `as.fun` and defaults to what is defined in `NMdataConf()` like
+  other `NMdata` functions. It also includes a `parameter` column for
+  easier merge with data from e.g. `ext` files `NMreadExt()`.
+
+* `NMreadParText` accepts function (with the control stream path as
+  argument) to define how to read the parameter information. This is
+  useful if one defines the tabulated information in a comment in the
+  control stream. NMreadParText basically allows for a full automation
+  of flexible parameter table generation.
+
+* `NMdataConf()` is configured to handle `NMsim`'s `dir.sims` and
+  `dir.res`.
+
+* `NMdataConf(reset=TRUE)` wipes all settings. In recent versions,
+  `NMdataConf` accepts the `allow.unknown` argument which means
+  settings that are unknown to `NMdata` can be stored. This is
+  relevant for other packages that want to make use of `NMdata`'s
+  configuration system (`NMsim` is an example of a package that does
+  so). Now `NMdataConf(reset=TRUE)` makes sure to wipe all such
+  configuration if exists.
+
+# 0.1.4
+
+## New functions
+* `NMreadParsText()` is a new function to extract comments to
+  `$THETA`, `$OMEGA` and `$SIGMA` sections. As long as the comments
+  are structured in a table-like manner, `NMreadParsText()` should be
+  able to fetch them almost no matter what delimiters you used. Use
+  say `fields="%init;num)symbol/transform/label(unit)"` if you have
+  lines like
+`(0,1) ; 1) CL / log / This is clearance (L/h)`
+  All comment lines don't have to be completed, and you can specify
+separate formats for `$THETA`, `$OMEGA` and `$SIGMA`. Together with
+`NMreadExt()` this is a very flexible basis for generating parameter
+tables.
+
+* `colLabels()` is a simple wrapper of `compareCols()` that extracts
+  the SAS column labels on data sets.
+
+## New features
+* NMdata functions will now by default look for input control streams
+  with file name extensions either `.mod` or `.ctl`. The user
+  previously had to tell NMdata to look for `.ctl` using configuration
+  options or function arguments but it will now work either way. An
+  error will be thrown if both should be found.
+
+* `NMreadExt` will by default only return parameters and iterations
+  from the last table available. This can be controlled by the
+  `tableno` argument.
+
+* `fnAppend` will now throw an error in case the file name extension
+  cannot be identified.
+
+## Bugfixes
+* `NMreadText` would fail to disregard some comment lines when
+  `keep.comments=FALSE`. Fixed.
+
+# 0.1.3
+* Better support for models with multiple estimation
+  steps. Particularly reading output tables now better distinguishes
+  between Nonmem table numbers and repetitions (like
+  SUBPROBLEMS). Also, functions that read parameter estimates clearly
+  separates Nonmem table numbers.
+
 * Improved support for reading multiple models with NMreadExt and
 NMreadPhi. 
-
-
 
 # 0.1.2
 ## New features
@@ -212,7 +300,7 @@ chaned to ensure consistent test results once data.table 1.14.7 is
 
 ## New data
 * A new data set called mad is included. It is based on the
-  mad_missing_duplicates from the xgxr package. Doses are implemented
+  mad_missing_duplicates from the `xgxr` package. Doses are implemented
   using ADDL and II (so only one dosing row per subject). It is
   included for testing the new NMexpandDoses and addTAPD functions.
 
@@ -247,12 +335,12 @@ chaned to ensure consistent test results once data.table 1.14.7 is
   set using the tz.lst argument or using NMdataConf - at least for
   now.
   
-* Checks of unique subject identifier (usubjid) included in
+* Checks of unique subject identifier (`usubjid`) included in
   NMcheckData. This is mostly to detect the potential issue that the
   subject IDs generated for analysis are not unique across actual
-  subjects. If a usubjid (e.g. from clinical data sets) is included in
+  subjects. If a `usubjid` (e.g. from clinical data sets) is included in
   data, NMcheckData can check this for basic properties and check the
-  analysis subject ID and the usubjid against each other.
+  analysis subject ID and the `usubjid` against each other.
 
 * New function: cl - creates factors, ordered by the appearance of the
   elements when created. cl("b","a") results in a factor with levels

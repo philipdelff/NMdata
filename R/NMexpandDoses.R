@@ -107,6 +107,15 @@ NMexpandDoses <- function(data,col.time="TIME",col.id="ID",col.evid="EVID",track
     if(any(recs.folded[II==0|is.na(II)])) {
         warning("II values of zero found in events to be expanded. Is this an error?")
     }
+    if(any(recs.folded[II%%1]!=0)) {
+        warning("II seem to contain non-integers. Is this an error?")
+    }
+    if(any(recs.folded[ADDL%%1]!=0)) {
+        warning("II seem to contain non-integers. Is this an error?")
+    }
+    
+
+    
     
     newtimes <- data[get(rec.tmp)%in%recs.folded,
                      .(TIME=seq(get(col.time),by=II,length.out=ADDL+1)
