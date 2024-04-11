@@ -1,32 +1,56 @@
+##' Read Shrinkage data reported by Nonmem
+##'
+##' @param file A model file. Extension will be replaced by ".shk".
+##'
+##' @details 
+##' Type 1=etabar
+##' Type 2=Etabar SE
+##' Type 3=P val
+##' Type 4=%Eta shrinkage SD version
+##' Type 5=%EPS shrinkage SD version
+##' Type 6=%Eta shrinkage based on empirical Bayes Variance (SD version)
+##' Type 7=number of subjects used.
+##' Type 8=%Eta shrinkage variance version
+##' Type 9=%Eta shrinkage based on empirical Bayes Variance (variance version)
+##' Type 10=%EPS shrinkage variance version
+##' Type 11=%Relative information
+##'
+##' @import data.table
 
-## Type 1=etabar
-## Type 2=Etabar SE
-## Type 3=P val
-## Type 4=%Eta shrinkage SD version
-## Type 5=%EPS shrinkage SD version
-## Type 6=%Eta shrinkage based on empirical Bayes Variance (SD version)
-## Type 7=number of subjects used.
-## Type 8=%Eta shrinkage variance version
-## Type 9=%Eta shrinkage based on empirical Bayes Variance (variance version)
-## Type 10=%EPS shrinkage variance version
-## Type 11=%Relative information
+NMreadShk <- function(file){
 
+    dt.type.shk <- fread(text="TYPE,shk.type,shk.name
+1,etabar,etabar
+2,Etabar SE,etabarSE
+3,P val,Pval
+4,%Eta shrinkage SD version,EtaShkSD
+5,%EPS shrinkage SD version,EpsShkSD
+6,%Eta shrinkage based on empirical Bayes Variance (SD version),EtaShkEbvSD
+7,number of subjects used.,Nshk
+8,%Eta shrinkage variance version,EtaShkVar
+9,%Eta shrinkage based on empirical Bayes Variance (variance version),EtaShkEbvVar
+10,%EPS shrinkage variance version,EpsShkVar
+11,%Relative information,RelInfo")
 
+    
+    file.shk <- fnExtension(file,"shk")
+    list.shk <- NMreadTabSlow(file.shk)
+    
+    shk <- list.shk[[length(list.shk)]]
+    shk
 
-file.shk <- fnExtension(file.lst,"shk")
-lines.shk <- readLines(file.shk)
-idx.tabstart <- grep("^TABLE NO",lines.shk)
-idx.tabstart
-dt.ts2 <- data.table(idx=c(idx.tabstart,length(lines.shk)+1))
-dt.ts3 <- data.table(start=dt.ts2[-.N],end=dt.ts2[-1]-1)
-dt.ts3[,tableno:=sub(" *TABLE NO\\. +([1-9][0-9]*).*","\\1",lines.shk[start.idx])]
-dt.ts3
-## dt.ts3[,fread(text=lines.shk[(start.idx+1):end.idx]),by=tableno]
-list.shk <- lapply(
-    split(dt.ts3,by="tableno")
-      ,function(x)fread(text=x[,lines.shk[(start.idx+1):end.idx]]))
-lapply(names(list.shk),function(name)list.shk[[name]][,tableno:=name])
+    cols.etas <- colnames(shk)[grepl("^ETA",colnames(shk))]
+    dt.shk <- melt(shk,measure.vars=cols.etas)
+    dt.shk <- mergeCheck(dt.shk,dt.type.shk,by="TYPE")
 
-shk <- list.shk[[length(list.shk)]]
-shk
+    
+    dt.shk[,i:=as.integer(sub("^ETA\\(([1-9][0-9]*)\\)$","\\1",variable))]
+    dt.shk[,j:=i]
+    dt.shk[,par.type:="OMEGA"]
+    dt.shk[,parameter:=sprintf("OMEGA(%d,%d)",i,j)]
+    dt.shk.w <- dcast(dt.shk,variable+par.type+parameter+i+j~shk.name,value.var="value")
+
+    dt.shk.w
+}
+
 
