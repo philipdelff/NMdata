@@ -107,7 +107,7 @@ NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip
     
     ## arg checks
     if(!is.character(file)) stop("file should be a character string",call.=FALSE)
-    if(!file.exists(file)) stop("argument file is not a path to an existing file.",call.=FALSE)
+    if(!file.exists(file)) messageWrap(paste("Argument file is not a path to an existing file. Expected to find",file),fun.msg=stop,track.msg = TRUE)
 
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)

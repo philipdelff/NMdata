@@ -448,7 +448,7 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
             } else if(allow.unknown) {
                 return(NULL)
             } else {
-                messageWrap("Option not found",fun.msg=stop,track.msg=FALSE)
+                messageWrap(paste("Option not found:",name),fun.msg=stop,track.msg=FALSE)
             }
         } else {
             messageWrap("if name is given, it must be a character of length 1",fun.msg=stop,track.msg=FALSE)
