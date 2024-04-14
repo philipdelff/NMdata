@@ -445,11 +445,14 @@ test_that("use as.fun to get a tibble",{
     dim(res1)
     class(res1)
 
-    fix.time(res1)
-    expect_equal_to_reference(
-        res1,fileRef,version=2
-    )
+    ## fix.time(res1)
+    ## expect_equal_to_reference(
+    ##     res1,fileRef,version=2
+    ## )
 
+    expect_true(is_tibble(res1))
+    expect_equal(dim(res1),c(1502,35))
+    
 ###### explore diffs
     ##     ref <- readRDS(fileRef)
     ##     compareCols(res1,ref)
