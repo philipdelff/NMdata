@@ -12,3 +12,6 @@ colLabels(...)
 \description{
 Extract column labels as defined in SAS
 }
+\seealso{
+compareCols NMinfo
+}

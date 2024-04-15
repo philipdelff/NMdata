@@ -5,8 +5,25 @@
 ##' @param file A Nonmem table file. Can be output tables, or one of
 ##'     the several different results files from Nonmem.
 ##' @import data.table
+##' @details `NMreadTabSlow` reads parameter tables from Nonmem very
+##'     slowly, and most often `NMreadTab` is a better function to
+##'     use. However, `NMreadTabslow` also works for table files that
+##'     contain incompatible tables.
+
+### Polishing needed. Don't export.
 
 NMreadTabSlow <- function(file){
+
+
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+
+    tableno <- NULL
+    end.idx <- NULL
+    start.idx <- NULL
+
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+
+    
     lines <- readLines(file)
     idx.tabstart <- grep("^TABLE NO",lines)
     idx.tabstart
@@ -20,4 +37,5 @@ NMreadTabSlow <- function(file){
        ,function(x)fread(text=x[,lines[(start.idx+1):end.idx]]))
     lapply(names(list.res),function(name)list.res[[name]][,tableno:=name])
 
+    list.res
 }

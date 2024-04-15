@@ -1,6 +1,8 @@
 ##' Read Shrinkage data reported by Nonmem
 ##'
 ##' @param file A model file. Extension will be replaced by ".shk".
+##' @param as.fun See ?NMdataConf
+##' @return A `data.frame` with shrinkage values, indexes, and name of related parameter, like `OMEGA(1,1)`.
 ##'
 ##' @details 
 ##' Type 1=etabar
@@ -17,8 +19,22 @@
 ##'
 ##' @import data.table
 
-NMreadShk <- function(file){
+NMreadShk <- function(file,as.fun){
 
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+
+    i <- NULL
+    j <- NULL
+    variable <- NULL
+    par.type <- NULL
+    parameter <- NULL
+
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+
+    
+    if(missing(as.fun)) as.fun <- NULL
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    
     dt.type.shk <- fread(text="TYPE,shk.type,shk.name
 1,etabar,etabar
 2,Etabar SE,etabarSE
@@ -37,11 +53,10 @@ NMreadShk <- function(file){
     list.shk <- NMreadTabSlow(file.shk)
     
     shk <- list.shk[[length(list.shk)]]
-    shk
 
     cols.etas <- colnames(shk)[grepl("^ETA",colnames(shk))]
     dt.shk <- melt(shk,measure.vars=cols.etas)
-    dt.shk <- mergeCheck(dt.shk,dt.type.shk,by="TYPE")
+    dt.shk <- mergeCheck(dt.shk,dt.type.shk,by="TYPE",quiet=TRUE)
 
     
     dt.shk[,i:=as.integer(sub("^ETA\\(([1-9][0-9]*)\\)$","\\1",variable))]
@@ -50,7 +65,9 @@ NMreadShk <- function(file){
     dt.shk[,parameter:=sprintf("OMEGA(%d,%d)",i,j)]
     dt.shk.w <- dcast(dt.shk,variable+par.type+parameter+i+j~shk.name,value.var="value")
 
-    dt.shk.w
+    dt.shk.w <- as.fun(dt.shk.w)
+    
+    return(dt.shk.w)
 }
 
 

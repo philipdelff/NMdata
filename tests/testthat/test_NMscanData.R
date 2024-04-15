@@ -450,7 +450,7 @@ test_that("use as.fun to get a tibble",{
     ##     res1,fileRef,version=2
     ## )
 
-    expect_true(is_tibble(res1))
+    expect_true(tibble::is_tibble(res1))
     expect_equal(dim(res1),c(1502,35))
     
 ###### explore diffs

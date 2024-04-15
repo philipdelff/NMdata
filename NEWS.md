@@ -1,16 +1,19 @@
 # 0.1.6
 
 ## New features
+
+* Function `NMreadShk()` to read and format `.shk` (shrinkage) files.
+
 * Functions `mat2dt()` and `dt2mat()` included to convert between
   matrices and data.frame format of matrix data.
   
-* Function `addOmegaCorr` adds estimated correlation between ETAs to
+* Function `addOmegaCorr()` adds estimated correlation between ETAs to
   parameter tables, as obtained using `NMreadExt()`.
 
 ## Bugfixes
 * `NMcheckData` now respects `NMdataConf()` setting of `col.time` and
   `col.id`. When using the `file` argument `col.id` was not respected
-  at all. This is fixed.
+  at all. Fixed.
 
 # 0.1.5
 ## New features
@@ -198,26 +201,26 @@ This release provides a few bugfixes, nothing major.
 
 # 0.0.16
 ## New features
-* NMwriteSection includes argument `location`. In combination with
+* `NMwriteSection()` includes argument `location`. In combination with
   `section`, this determines where the new section is
   inserter. Possible values are "replace" (default), "before", "after",
   "first", "last".
   
-* NMreadSection adds support for partial matching of section
+* `NMreadSection()` adds support for partial matching of section
   names. Specifically, this means that the first three characters will
-  be matched only, i.e. allowing say "$SIMULATION" to match "$SIM" or
-  "$ESTIMATION" to match "$EST".
+  be matched only, i.e. allowing say `$SIMULATION` to match `$SIM` or
+  `$ESTIMATION` to match `$EST`.
 
 ## Bugfixes
-NMcheckData did not check columns listed in cols.num for NA
+`NMcheckData()` did not check columns listed in cols.num for NA
 elements. Now it does.
 
-NMcheckData now only checks col.dv to be non-NA for col.mdv==0 if
+NMcheckData now only checks `col.dv` to be non-NA for col.mdv==0 if
 col.mdv is present.
 
-NMscanInput would fail if there was no column called ID in the dataset
+`NMscanInput()` would fail if there was no column called `ID` in the dataset
 on file. This has been fixed to support cases where renaming or a
-pseudonym is being used to generate an ID column in $INPUT.
+pseudonym is being used to generate an `ID` column in `$INPUT`.
 
 
 # 0.0.15
@@ -226,60 +229,60 @@ chaned to ensure consistent test results once data.table 1.14.7 is
 
 # 0.0.14
 ## New features
-* fnExtension has been generalized. It now ignores leading spaces in
+* `fnExtension()` has been generalized. It now ignores leading spaces in
   new extension, and extensions with zero or one leading period are
-  treated identically (so asking for xml or .xml is the same). Also,
+  treated identically (so asking for `xml` or `.xml` is the same). Also,
   by providing "" as the new extension will now remove the extension,
   and if extension is not provided, fnExtension will retrieve the
   extension rather than replace it.
   
-* NMscanData now supports repeated output tables, like those created
-  using the SUBPROBLEM option.
+* `NMscanData()` now supports repeated output tables, like those created
+  using the `SUBPROBLEM` option.
   
-* NMwriteData has a new argument csv.trunc.as.nm. If TRUE, csv file
+* `NMwriteData()` has a new argument csv.trunc.as.nm. If `TRUE`, csv file
   will be truncated horizontally (columns will be dropped) to match
-  the $INPUT text generated for Nonmem (genText must be TRUE for this
+  the `$INPUT` text generated for Nonmem (`genText` must be `TRUE` for this
   option to be allowed). This can be a great advantage when dealing
   with large datasets that can create problems in
-  parallellization. Combined with write.rds=TRUE, the full data set
+  parallellization. Combined with `write.rds=TRUE`, the full data set
   will still be written to an rds file, so this can be used when
   combining output and input data when reading model results. This is
-  done by default by NMscanData. This means writing a lean (narrow)
+  done by default by `NMscanData()`. This means writing a lean (narrow)
   csv file for Nonmem while keeping columns of non-numeric class like
   character and factor for post-processing.
   
-* NMwriteData has got an arguement 'genText' to control whether text
+* `NMwriteData()` has got an arguement 'genText' to control whether text
   for Nonmem should be generated. Default is to do so. Also, support
-  is added for script=NULL which now means the same as not specifying
+  is added for `script=NULL` which now means the same as not specifying
   script.
   
-* addTAPD now includes SDOS, a scalar to be applied when computing
-  last dose amount and cumulative dose amount from AMT. Sometimes, AMT
+* `addTAPD()` now includes `SDOS`, a scalar to be applied when computing
+  last dose amount and cumulative dose amount from `AMT`. Sometimes, `AMT`
   is in one unit, and other variables related to doses is in
   another. Say that dose is in mg and concentrations are in ng/mL,
-  then AMT should be in mcg. But you may want everything else
-  related to doses to be in mg. Then use SDOS=1000.
+  then `AMT` should be in mcg. But you may want everything else
+  related to doses to be in mg. Then use `SDOS=1000`.
 
-* addTAPD includes convenient prefix.cols and suffix.cols arguments
+* `addTAPD()` includes convenient prefix.cols and suffix.cols arguments
   that will prepend or append strings to all created columns. This is
-  useful if dosing more than one drug, and you want to run addTAPD for
+  useful if dosing more than one drug, and you want to run `addTAPD()` for
   both (different suffixes?), or if you want to run for nominal and
   actual time (prefix A and N?).
 
-* flagsAssign now reports that data is empty and return the data
+* `flagsAssign()` now reports that data is empty and return the data
   if nothing is left after applying subset. It used to return an
   error.
   
-* NMgenText has a new argument, width, passed to strwrap to control
+* `NMgenText()` has a new argument, width, passed to strwrap to control
   the width of the $INPUT text for Nonmem.
 
 ## Bugfixes
 * NMapplyFilters (and then NMscanInput and NMscanData) gave an error
   when multiple filters were applied on the same column. Fixed.
 
-* addTAPD was not respecting subset.dos for all generated columns. 
+* `addTAPD()` was not respecting subset.dos for all generated columns. 
 
-* NMisNumeric would interpret a NA of class character or logical as
+* `NMisNumeric()` would interpret a NA of class character or logical as
   non-numeric. Fixed.
 
 ## Other improvements
@@ -290,12 +293,12 @@ chaned to ensure consistent test results once data.table 1.14.7 is
 # 0.0.13
 
 ## New functions
-* NMexpandDoses - Transform repeated dosing events (ADDL/II) to
-  individual dosing events
-* addTAPD - Add cumulative number of doses, time of last dose,
+* `NMexpandDoses()` - Transform repeated dosing events (`ADDL`/`II`)
+  to individual dosing events
+* `addTAPD()` - Add cumulative number of doses, time of last dose,
   previous dose amount, cumulative dose amount, and time since
   previous dose to data
-* tmpcol provides column names not already used in data sets. tmpcol
+* `tmpcol()` provides column names not already used in data sets. tmpcol
   has long been part of NMdata but has not been exported until now.
 
 ## New data
@@ -316,9 +319,9 @@ chaned to ensure consistent test results once data.table 1.14.7 is
   maintained, and the exclusion from the package releases is only due
   to CRAN's restrictive requirements to the package size.
 
-* New function, NMscanMultiple, to read multiple models and stack
+* New function, `NMscanMultiple()`, to read multiple models and stack
   results in one data set. This is very useful for meta
-  analysis. NMscanMultiple is a wrapper of NMscanData. It keeps track
+  analysis. `NMscanMultiple()` is a wrapper of `NMscanData()`. It keeps track
   of warnings and errors for reading of individual models rather than
   getting stuck. You can either specify a vector of model paths or a
   directory plus a regular expression (just like for NMwriteSection).

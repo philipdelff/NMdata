@@ -1,5 +1,6 @@
 ##' Extract column labels as defined in SAS
 ##' @param ... See `?compareCols`
+##' @seealso compareCols NMinfo 
 ##' @export 
 
 colLabels <- function(...){

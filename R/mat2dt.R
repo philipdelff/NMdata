@@ -1,16 +1,21 @@
-##' upper or lower triangle of a matrix as long-format
+##' upper or lower triangle or all values of a matrix as long-format
 ##' @param x A matrix
-##' @param triangle Either `"lower"` (default) or `"upper"`, or all
-##'     for which triangle to return. The two are equivalent for
-##'     covariance or correlation matrices but the returned indexes
-##'     will differ. "all" will return the full matrix which mostly
-##'     makes sense if matrix is not a covariance or correlation
-##'     matrix.
+##' @param triangle Either `"lower"` (default) or `"upper"`, or
+##'     `"all"` for which triangle to return. `"lower"` and `"upper"`
+##'     are equivalent for covariance or correlation matrices but the
+##'     returned indexes will differ. `"all"` will return the full
+##'     matrix which mostly makes sense if matrix is not a covariance
+##'     or correlation matrix.
 ##' @param as.fun See `?NMdataConf`
 ##' @return A `data.frame`-like object with indexes `i` and `j` for
 ##'     position and matrix element value in `value` column.
+##' @details The matrix is assumed ordered and the index numbers for
+##'     rows and columns will be returned in `i` and `j` columns. Row
+##'     names and column names will be returned in columns
+##'     `parameter.i` and `parameter.j`.
 ##' @import data.table
 ##' @export
+##' @seealso dt2mat
 
 mat2dt <- function(x,triangle="lower",as.fun){
     

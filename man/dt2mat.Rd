@@ -4,13 +4,26 @@
 \alias{dt2mat}
 \title{Convert a data.table of parameter estimates to a matrix}
 \usage{
-dt2mat(pars)
+dt2mat(pars, dt.subset = "unique", max.i, fill = 0)
 }
 \arguments{
-\item{pars}{A data.table with parameters like a subjset of the
-parameter list returned by NMreadExt. It MUST ONLY INCLUDE THE
-UNIQUE VALUES, so a upper or lower triangle of the matrix, not
-the full matrix.}
+\item{pars}{A data.table with parameters. Must contain columns `i`
+and `j` with row and column indexes and `est` with parameter
+(matrix) values.}
+
+\item{dt.subset}{Specifies whether pars contains only a lower or
+upper triangle of an assumed symmetric matrix (most often the
+case for variance-covariance matrices), or it contains the
+full matrix.}
+
+\item{max.i}{By default, the maximum row number is derived as he
+maximum value in the `i` column. If more (empty ones) are
+needed, specify the maximum row number with `max.i`. This can
+be necessary in cases where only estimated elements are
+available but a full matrix including elements related to
+fixed parameters is needed.}
+
+\item{fill}{Value to insert for missing elements}
 }
 \value{
 a matrix
@@ -18,4 +31,11 @@ a matrix
 \description{
 Often needed when using estimates of Omega or Sigma matrices in
 further calculations.
+}
+\details{
+If pars does not contain all `i` values, they will be
+    imputed with zeros. The desired matrix dimension is inferred
+    from `min(i)` and `max(i)`.  In case `dt.subset=="unique"`
+    missing `j` elements will also give imputations of missing
+    elements.
 }
