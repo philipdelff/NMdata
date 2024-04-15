@@ -9,7 +9,8 @@
 ##'     slowly, and most often `NMreadTab` is a better function to
 ##'     use. However, `NMreadTabslow` also works for table files that
 ##'     contain incompatible tables.
-
+##' @keywords internal
+##' 
 ### Polishing needed. Don't export.
 
 NMreadTabSlow <- function(file){

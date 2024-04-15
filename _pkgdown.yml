@@ -48,6 +48,7 @@ reference:
   - NMorderColumns
   - compareCols
   - listMissings
+  - uniquePresent
   - mergeCheck
   - renameByContents
   - flagsAssign
@@ -75,6 +76,7 @@ reference:
   - NMreadCsv
   - NMreadExt
   - NMreadPhi
+  - NMreadShk
   - NMreadTab
   - NMreadParsText
   - NMinfo

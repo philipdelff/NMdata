@@ -655,6 +655,7 @@ Not warning. Warning if standard variable?
 *** flagsAssign
 **** TODO [#A] flag.n should be factor
 And flagsCount should retain them
+Was this supposed to be flag.c?
 **** DONE flagsCount should not require a flag table
 **** DONE flagsCount should throw an error if not all flags are covered by provided flag table
 **** CANCELLED flagsAssign and flagsCount should not offer increasing option.
