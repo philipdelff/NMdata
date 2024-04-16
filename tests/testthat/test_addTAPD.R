@@ -56,8 +56,8 @@ if(F){
 ### this example shows most key features. Reduce number of rows and build examples and tests on it.
     
 ## library(devtools)
-    ## load_all("~/wdirs/NMexec")
-    ## NMdataConf(as.fun="data.table")
+    load_all("~/wdirs/NMsim")
+     NMdataConf(as.fun="data.table")
     
     doses.1 <- NMcreateDoses(TIME=c(0,3,12,24),CMT=1,AMT=400e3)
     doses.2 <- NMcreateDoses(TIME=0,addl=list(ADDL=4,II=6),CMT=2,AMT=20)
