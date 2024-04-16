@@ -19,7 +19,7 @@ but because they are typical dataset issues."><meta property="og:image" content=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.5.902</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.5.903</span>
       </span>
     </div>
 
@@ -115,8 +115,9 @@ but because they are typical dataset issues.</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
-<dd><p>The data to check. data.frame, data.table, tibble,
-anything that can be converted to data.table.</p></dd>
+<dd><p>The data to check. <code>data.frame</code>,
+<code>data.table</code>, <code>tibble</code>, anything that can be
+converted to <code>data.table</code>.</p></dd>
 
 
 <dt>file</dt>
@@ -220,13 +221,13 @@ is less likely).</p></dd>
 
 <dt>cols.dup</dt>
 <dd><p>Additional column names to consider in search of
-duplicate events. col.id, col.cmt, col.evid, and col.time are
-always considered if found in data, and cols.dup is added to
-this list if provided.</p></dd>
+duplicate events. <code>col.id</code>, <code>col.cmt</code>,
+<code>col.evid</code>, and <code>col.time</code> are always considered if
+found in data, and <code>cols.dup</code> is added to this list if provided.</p></dd>
 
 
 <dt>type.data</dt>
-<dd><p>"est" for estimation data (default), and "sim"
+<dd><p><code>"est"</code> for estimation data (default), and <code>"sim"</code>
 for simulation data. Differences are that <code>col.row</code> is
 not expected for simulation data, and subjects will be checked
 to have <code>EVID==0</code> rows for estimation data and
@@ -236,9 +237,9 @@ to have <code>EVID==0</code> rows for estimation data and
 <dt>na.strings</dt>
 <dd><p>Strings to be accepted when trying to convert
 characters to numerics. This will typically be a string that
-represents missing values. Default is ".". Notice, actual NA,
-i.e. not a string, is allowed independently of na.strings. See
-<code><a href="NMisNumeric.html">?NMisNumeric</a></code>.</p></dd>
+represents missing values. Default is ".". Notice, actual
+<code>NA</code>, i.e. not a string, is allowed independently of
+<code>na.strings</code>. See <code><a href="NMisNumeric.html">?NMisNumeric</a></code>.</p></dd>
 
 
 <dt>return.summary</dt>
@@ -281,17 +282,17 @@ using <code>NMdataConf</code>.</p></dd>
 <li><p>If a unique row identifier is found, it has to be
 non-missing, increasing integers.</p></li>
 <li><p>col.time (TIME),
-    EVID, col.id (ID), col.cmt (CMT), and col.mdv (MDV): If present, elements must be non-missing
+    <code>EVID</code>, col.id (<code>ID</code>), col.cmt (<code>CMT</code>), and <code>col.mdv</code> (<code>MDV</code>): If present, elements must be non-missing
     and numeric.</p></li>
 <li><p>col.time (TIME) must be non-negative</p></li>
-<li><p>EVID must be in {0,1,2,3,4}.</p></li>
-<li><p>CMT must be positive integers. However, can be missing or zero for EVID==3.</p></li>
-<li><p>MDV must be the binary (1/0) representation of is.na(DV) for
-dosing records (EVID==0).</p></li>
-<li><p>AMT must be 0 or NA for EVID 0 and 2</p></li>
-<li><p>AMT must be positive for EVID 1 and 4</p></li>
+<li><p><code>EVID</code> must be in {0,1,2,3,4}.</p></li>
+<li><p>CMT must be positive integers. However, can be missing or zero for <code>EVID==3</code>.</p></li>
+<li><p>MDV must be the binary (1/0) representation of <code>is.na(DV)</code> for
+dosing records (<code>EVID==0</code>).</p></li>
+<li><p>AMT must be 0 or <code>NA</code> for <code>EVID</code> 0 and 2</p></li>
+<li><p>AMT must be positive for <code>EVID</code> 1 and 4</p></li>
 <li><p>DV must be numeric</p></li>
-<li><p>DV must be missing for EVID in {1,4}.</p></li>
+<li><p>DV must be missing for <code>EVID</code> in {1,4}.</p></li>
 <li><p>If found, RATE must be a numeric, equaling -2 or non-negative for dosing events.</p></li>
 <li><p>If found, SS must be a numeric, equaling 0 or 1 for dosing records.</p></li>
 <li><p>If found, <code>ADDL</code> must be a non-negative integer for dosing
@@ -303,9 +304,9 @@ records. <code>ADDL</code> must be present.</p></li>
     technically not a requirement in Nonmem but most often an
     error. Use a second ID column if you deliberately want to
     soften this check)</p></li>
-<li><p>TIME cannot be decreasing within ID, unless EVID in {3,4}.</p></li>
-<li><p>all ID's must have doses (EVID in {1,4})</p></li>
-<li><p>all ID's must have observations (EVID==0)</p></li>
+<li><p>TIME cannot be decreasing within ID, unless <code>EVID</code> in {3,4}.</p></li>
+<li><p>all ID's must have doses (<code>EVID</code> in {1,4})</p></li>
+<li><p>all ID's must have observations (<code>EVID</code>==0)</p></li>
 <li><p>ID's should not have leading zeros since these will be lost
 when Nonmem read, then write the data.</p></li>
 <li><p>If a unique row identifier is used, this must be
@@ -314,20 +315,20 @@ when Nonmem read, then write the data.</p></li>
     writing/reading csv)</p></li>
 <li><p>Columns specified in covs argument must be non-missing,
     numeric and not varying within subjects.</p></li>
-<li><p>Columns specified in covs.occ must be
+<li><p>Columns specified in <code>covs.occ</code> must be
     non-missing, numeric and not varying within combinations of
     subject and occasion.</p></li>
-<li><p>Columns specified in cols.num must be present, numeric
-    and non-`NA`.</p></li>
-<li><p>If a unique subject identifier column (`col.usubjid`) is
-provided, `col.id` must be unique within values of `col.usubjid` and
+<li><p>Columns specified in <code>cols.num</code> must be present, numeric
+    and non-<code>NA</code>.</p></li>
+<li><p>If a unique subject identifier column (<code>col.usubjid</code>) is
+provided, `col.id` must be unique within values of <code>col.usubjid</code> and
 vice versa.</p></li>
 <li><p>Events should not be duplicated. For all rows, the
-combination of col.id, col.cmt ,col.evid, col.time plus the
-optional columns specified in cols.dup must be unique. In other
-words, if a subject (col.id) that has say observations (col.evid)
+combination of <code>col.id</code>, <code>col.cmt</code>, <code>col.evid</code>, <code>col.time</code> plus the
+optional columns specified in <code>cols.dup</code> must be unique. In other
+words, if a subject (<code>col.id</code>) that has say observations (<code>col.evid</code>)
 at the same time (col.time), this is considered a duplicate. The
-exception is if there is a reset event (col.evid is 3 or 4) in
+exception is if there is a reset event (<code>col.evid</code> is 3 or 4) in
 between the two rows. cols.dup can be used to add columns to this
 analysis. This is useful for different assays run on the same
 compartment (say a DVID column) or maybe stacked datasets. If

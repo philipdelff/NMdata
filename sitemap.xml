@@ -103,7 +103,13 @@
     <loc>https://philipdelff.github.io/NMdata/reference/NMreadSection.html</loc>
   </url>
   <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMreadShk.html</loc>
+  </url>
+  <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMreadTab.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/NMreadTabSlow.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/NMreplaceDataFile.html</loc>
@@ -236,6 +242,9 @@
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/unNMdata.html</loc>
+  </url>
+  <url>
+    <loc>https://philipdelff.github.io/NMdata/reference/uniquePresent.html</loc>
   </url>
   <url>
     <loc>https://philipdelff.github.io/NMdata/reference/writeNMinfo.html</loc>

@@ -18,7 +18,7 @@ further calculations."><meta property="og:image" content="https://philipdelff.gi
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.5.902</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.5.903</span>
       </span>
     </div>
 
@@ -86,16 +86,35 @@ further calculations.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dt2mat</span><span class="op">(</span><span class="va">pars</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dt2mat</span><span class="op">(</span><span class="va">pars</span>, dt.subset <span class="op">=</span> <span class="st">"unique"</span>, <span class="va">max.i</span>, fill <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>pars</dt>
-<dd><p>A data.table with parameters like a subjset of the
-parameter list returned by NMreadExt. It MUST ONLY INCLUDE THE
-UNIQUE VALUES, so a upper or lower triangle of the matrix, not
-the full matrix.</p></dd>
+<dd><p>A data.table with parameters. Must contain columns `i`
+and `j` with row and column indexes and `est` with parameter
+(matrix) values.</p></dd>
+
+
+<dt>dt.subset</dt>
+<dd><p>Specifies whether pars contains only a lower or
+upper triangle of an assumed symmetric matrix (most often the
+case for variance-covariance matrices), or it contains the
+full matrix.</p></dd>
+
+
+<dt>max.i</dt>
+<dd><p>By default, the maximum row number is derived as he
+maximum value in the `i` column. If more (empty ones) are
+needed, specify the maximum row number with `max.i`. This can
+be necessary in cases where only estimated elements are
+available but a full matrix including elements related to
+fixed parameters is needed.</p></dd>
+
+
+<dt>fill</dt>
+<dd><p>Value to insert for missing elements</p></dd>
 
 </dl></div>
     <div id="value">
@@ -103,6 +122,14 @@ the full matrix.</p></dd>
     
 
 <p>a matrix</p>
+    </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>If pars does not contain all `i` values, they will be
+    imputed with zeros. The desired matrix dimension is inferred
+    from `min(i)` and `max(i)`.  In case `dt.subset=="unique"`
+    missing `j` elements will also give imputations of missing
+    elements.</p>
     </div>
 
   </div>
