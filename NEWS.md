@@ -20,7 +20,8 @@
   
 * `addTAPD` would get cumulative counting of number of doses and
   cumulative dose amount wrong in case of repeated dosing (using
-  `ADDL` and `II`) followed by other doses. Fixed.
+  `ADDL` and `II`) followed by other doses. Fixed. Thanks to Simone
+  Cassani for catching it.
 
 # 0.1.5
 ## New features
