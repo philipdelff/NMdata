@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.5.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.5.904</span>
       </span>
     </div>
 
@@ -93,7 +93,20 @@
 <dd><p>A vector, either numeric or character.</p></dd>
 
 
-<dt>req.n1</dt>
+</dl><p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<dl><dt>na.pattern</dt>
+<dd><p>In addition to NA-elements, what text strings
+should be considered missing? Default is empty strings and
+strings only containing white spaces (`na.pattern="^ *$"`).</p></dd>
+
+
+<dt>reg.n1</dt>
+<dd><p>Require one unique value? If `TRUE` (default), an
+error is thrown if non-unique values found. If `FALSE`, all
+the unique values are returned.</p></dd>
+
+</dl><p>=======</p>
+<dl><dt>req.n1</dt>
 <dd><p>Require one unique value? If `TRUE` (default), an
 error is thrown if non-unique values found. If `FALSE`, all
 the unique values are returned.</p></dd>
@@ -104,12 +117,17 @@ the unique values are returned.</p></dd>
 should be considered missing? Default is empty strings and
 strings only containing white spaces (`na.pattern="^ *$"`).</p></dd>
 
-</dl></div>
+</dl><p>&gt;&gt;&gt;&gt;&gt;&gt;&gt; 4b0847a60b9eead9051e48950e31ee1449a99978</p>
+    </div>
     <div id="details">
     <h2>Details</h2>
     <p>This function is particularly useful when combining data
     sets of which only some contain certain
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+    variables. `uniquePresent` with `req.n1=TRUE` makes sure the
+=======
     variables. <code>uniquePresent</code> with `req.n1=TRUE` makes sure the
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 4b0847a60b9eead9051e48950e31ee1449a99978
     result is a single unique value (e.g., within subjects). A
     typical use is carrying subject-level covariates from one data
     set to another in a longitudinal analysis.</p>
@@ -127,7 +145,7 @@ strings only containing white spaces (`na.pattern="^ *$"`).</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer></div>
