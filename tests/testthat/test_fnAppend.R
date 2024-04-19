@@ -5,7 +5,7 @@ test_that("basic",{
     fileRef <- "testReference/fnAppend_1.rds"
     
     res1 <- list(
-## numeric
+        ## numeric
         fnAppend("feww.csv",1)
        ,
         ## character
@@ -35,4 +35,16 @@ test_that("empty string does notning",{
     str2 <- fnAppend(str1,"")
     expect_identical(str1,str2)
 
+})
+
+test_that("multiple strings to append",{
+
+    fileRef <- "testReference/fnAppend_02.rds"
+    
+    res1 <- c(fnAppend("NMsim.rds",c("simname","sim2"))
+            ,fnAppend(c("NMsim.rds","NMsim2.rds"),c("simname","sim2"))    
+             )
+
+    expect_equal_to_reference(res1,fileRef)
+    
 })

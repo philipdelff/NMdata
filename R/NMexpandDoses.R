@@ -17,7 +17,7 @@
 ##'     including a column called nmexpand? nmexpand will be TRUE if
 ##'     the row is "generated" by NMexpandDoses.
 ##' @param subset.dos A string that will be evaluated as a custom
-##'     expression to identify relevant events. 
+##'     expression to identify relevant events.
 ##' @param quiet Suppress messages back to user (default is FALSE)
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
@@ -30,7 +30,6 @@
 ##' @export
 
 NMexpandDoses <- function(data,col.time="TIME",col.id="ID",col.evid="EVID",track.expand=FALSE,subset.dos,quiet=FALSE,as.fun){
-
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     . <- NULL
@@ -116,13 +115,23 @@ NMexpandDoses <- function(data,col.time="TIME",col.id="ID",col.evid="EVID",track
     
 
     
-    
+    ## if(keep.orig){
+    ##     newtimes <- data[get(rec.tmp)%in%recs.folded,
+    ##                      .(TIME=seq(get(col.time),by=II,length.out=ADDL+1)
+    ##                       ,ADDLORIG=ADDL
+    ##                       ,IIORIG=II
+    ##                       ,ADDL=0
+    ##                       ,II=0
+    ##                       ,nmexpand=c(FALSE,rep(TRUE,ADDL)))
+    ##                     ,by=rec.tmp]
+    ## } else {
     newtimes <- data[get(rec.tmp)%in%recs.folded,
                      .(TIME=seq(get(col.time),by=II,length.out=ADDL+1)
                       ,ADDL=0
                       ,II=0
                       ,nmexpand=c(FALSE,rep(TRUE,ADDL)))
                     ,by=rec.tmp]
+    ## }
     setnames(newtimes,"TIME",col.time)
     data.merge <- copy(data)
 
@@ -133,14 +142,14 @@ NMexpandDoses <- function(data,col.time="TIME",col.id="ID",col.evid="EVID",track
        ,II:=NULL]
     newdoses <- mergeCheck(newtimes,data.merge,by=rec.tmp,quiet=TRUE)
     if(track.expand) { 
-    ##     newdoses[,nmexpand:=TRUE]
+        ##     newdoses[,nmexpand:=TRUE]
         data[,nmexpand:=FALSE]
     } else {
         newdoses[,nmexpand:=NULL]
     }
     
-    ## rbind
-    newdat <- rbind(data[!get(rec.tmp)%in%recs.folded],newdoses)
+    ## rbind - fill is needed in case keep.orig=TRUE
+    newdat <- rbind(data[!get(rec.tmp)%in%recs.folded],newdoses,fill=TRUE)
 
     ## setorder - remember ID and groups
     setorderv(newdat,c(col.id,col.time,rec.tmp))

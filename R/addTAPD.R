@@ -196,13 +196,26 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
 ### this should not be based on col.event. 
     
 ### If doses were expanded, we need to revert that
-    doses <- data[get(col.event)==TRUE]
+    ## doses <- data[get(col.event)==TRUE]
     ## doses <- addVars(doses)
-    addVars(doses)
+    ## addVars(doses)
 
+    
+    doses <- data2[get(col.event)==TRUE&nmexpand==FALSE]
+    cols.retrieve <- intersect(colnames(doses),cc(II,ADDL))
+    if(length(cols.retrieve)){
+        doses <- mergeCheck(doses[,!(cols.retrieve),with=FALSE],data[,c(col.row.tmp,cols.retrieve),with=FALSE],by=col.row.tmp )
+    }
+    ## if("IIORIG"%in%colnames(doses)){
+    ##     doses[,II:=IIORIG]
+    ## }
+    ## if("ADDLORIG"%in%colnames(doses)){
+    ##     doses[,ADDL:=ADDLORIG]
+    ## }
     
     data3 <- rbind(
         doses
+        ##data2[get(col.event)==TRUE&nmexpand==FALSE]
        ,
         ## data2[get(col.event)!=TRUE&nmexpand==FALSE]
         data2[get(col.event)!=TRUE&nmexpand==FALSE]
@@ -214,8 +227,16 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
     data3[,(col.row.tmp):=NULL]
     data3[,(col.evidorder):=NULL]
     data3[,nmexpand:=NULL]
+    ## if("IIORIG"%in%colnames(data3)){
+    ##     data3[,IIORIG:=NULL]
+    ## }
+    ## if("ADDLORIG"%in%colnames(data3)){
+    ##     data3[,ADDLORIG:=NULL]
+    ## }
 
-
+    ## preserve column order from user-provided data set
+    setcolorder(data3,intersect(colnames(data),colnames(data3)))
+    
     data3 <- as.fun(data3)
 
     return(data3)

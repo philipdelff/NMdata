@@ -10,10 +10,17 @@
 * Function `addOmegaCorr()` adds estimated correlation between ETAs to
   parameter tables, as obtained using `NMreadExt()`.
 
+* `fnAppend()` can now handle multiple strings to append. Allows for
+  more easily readable code.
+
 ## Bugfixes
 * `NMcheckData` now respects `NMdataConf()` setting of `col.time` and
   `col.id`. When using the `file` argument `col.id` was not respected
   at all. Fixed.
+  
+* `addTAPD` would get cumulative counting of number of doses and
+  cumulative dose amount wrong in case of repeated dosing (using
+  `ADDL` and `II`) followed by other doses. Fixed.
 
 # 0.1.5
 ## New features

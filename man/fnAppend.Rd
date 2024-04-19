@@ -7,7 +7,7 @@
 fnAppend(fn, x, pad0 = 0, sep = "_")
 }
 \arguments{
-\item{fn}{The file name to modify}
+\item{fn}{The file name or file names to modify.}
 
 \item{x}{A character string or a numeric to add to the file name}
 

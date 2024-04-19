@@ -21,3 +21,4 @@ contain
     use. However, `NMreadTabslow` also works for table files that
     contain incompatible tables.
 }
+\keyword{internal}
