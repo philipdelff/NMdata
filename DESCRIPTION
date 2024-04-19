@@ -15,6 +15,7 @@ Imports:
 Suggests:
     testthat,
     knitr,
+    NMsim,
     formatR,
     mime,
     rmarkdown,

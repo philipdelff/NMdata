@@ -5,16 +5,16 @@
 ##'
 ##' For now, doses have to be in data as EVID=1 and/or EVID=4
 ##' records. They can be in the format of one row per dose or repeated
-##' dosing notation using ADDL and II.
+##' dosing notation using \code{ADDL} and \code{II}.
 ##' @param data The data set to add the variables to.
-##' @param col.time Name of time column (created by addTAPD). Default
-##'     it TIME.
+##' @param col.time Name of time column (created by
+##'     \code{addTAPD()}). Default it \code{"TIME"}.
 ##' @param col.tpdos Name of the time of previous dose column (created
-##'     by addTAPD). Default is TPDOS. Set to NULL to not create this
-##'     column.
+##'     by \code{addTAPD()}). Default is \code{"TPDOS"}. Set to
+##'     \code{NULL} to not create this column.
 ##' @param col.tapd Name of the time of previous dose column (created
-##'     by addTAPD). Default is TAPD. Set to NULL to not create this
-##'     column.
+##'     by \code{addTAPD()}). Default is \code{"TAPD"}. Set to
+##'     \code{NULL} to not create this column.
 ##' @param col.evid The name of the event ID column. This must exist
 ##'     in data. Default is EVID.
 ##' @param col.amt col.evid The name of the dose amount column. This
@@ -25,8 +25,8 @@
 ##' @param col.doscuma The name of the column to be created holding
 ##'     the cumulative dose amount. Set to NULL to not create this
 ##'     column.
-##' @param col.doscumn The name of the column (created by addTAPD) that
-##'     holds the cumulative number of doses administered to the
+##' @param col.doscumn The name of the column (created by addTAPD)
+##'     that holds the cumulative number of doses administered to the
 ##'     subject. Set to NULL to not create this column.
 ##' @param prefix.cols String to be prepended to all generated column
 ##'     names, that is each of col.tpdos, col.tapd, col.ndoses,
@@ -39,12 +39,12 @@
 ##'     as well.
 ##' @param subset.is.complete Only used in combination with
 ##'     non-missing subset.dos. By default, subset.dos is used in
-##'     addition to the impact of col.evid (must be 1 or 4) and col.amt (greater than zero). If
-##'     subset.is.complete=TRUE, subset.dos is used alone, and
-##'     col.evid and col.amt are completely ignored. This is typically
-##'     useful if the events are not doses but other events that are
-##'     not expressed as a typical dose combination of EVID and AMT
-##'     columns.
+##'     addition to the impact of col.evid (must be 1 or 4) and
+##'     col.amt (greater than zero). If subset.is.complete=TRUE,
+##'     subset.dos is used alone, and col.evid and col.amt are
+##'     completely ignored. This is typically useful if the events are
+##'     not doses but other events that are not expressed as a typical
+##'     dose combination of EVID and AMT columns.
 ##' @param order.evid Order of events. This will only matter if there
 ##'     are simultaneous events of different event types within
 ##'     subjects. Typically if using nominal time, it may be important
@@ -204,20 +204,12 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
     doses <- data2[get(col.event)==TRUE&nmexpand==FALSE]
     cols.retrieve <- intersect(colnames(doses),cc(II,ADDL))
     if(length(cols.retrieve)){
-        doses <- mergeCheck(doses[,!(cols.retrieve),with=FALSE],data[,c(col.row.tmp,cols.retrieve),with=FALSE],by=col.row.tmp )
+        doses <- mergeCheck(doses[,!(cols.retrieve),with=FALSE],data[,c(col.row.tmp,cols.retrieve),with=FALSE],by=col.row.tmp ,quiet=TRUE)
     }
-    ## if("IIORIG"%in%colnames(doses)){
-    ##     doses[,II:=IIORIG]
-    ## }
-    ## if("ADDLORIG"%in%colnames(doses)){
-    ##     doses[,ADDL:=ADDLORIG]
-    ## }
     
     data3 <- rbind(
         doses
-        ##data2[get(col.event)==TRUE&nmexpand==FALSE]
        ,
-        ## data2[get(col.event)!=TRUE&nmexpand==FALSE]
         data2[get(col.event)!=TRUE&nmexpand==FALSE]
        ,fill=T)
     setorderv(data3,col.row.tmp)
@@ -227,12 +219,6 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
     data3[,(col.row.tmp):=NULL]
     data3[,(col.evidorder):=NULL]
     data3[,nmexpand:=NULL]
-    ## if("IIORIG"%in%colnames(data3)){
-    ##     data3[,IIORIG:=NULL]
-    ## }
-    ## if("ADDLORIG"%in%colnames(data3)){
-    ##     data3[,ADDLORIG:=NULL]
-    ## }
 
     ## preserve column order from user-provided data set
     setcolorder(data3,intersect(colnames(data),colnames(data3)))
