@@ -29,8 +29,9 @@ NMcheckData(
 )
 }
 \arguments{
-\item{data}{The data to check. data.frame, data.table, tibble,
-anything that can be converted to data.table.}
+\item{data}{The data to check. \code{data.frame},
+\code{data.table}, \code{tibble}, anything that can be
+converted to \code{data.table}.}
 
 \item{file}{Alternatively to checking a data object, you can use
 file to specify a control stream to check. This can either be
@@ -106,11 +107,11 @@ unique within the unique subject ID (a violation of the latter
 is less likely).}
 
 \item{cols.dup}{Additional column names to consider in search of
-duplicate events. col.id, col.cmt, col.evid, and col.time are
-always considered if found in data, and cols.dup is added to
-this list if provided.}
+duplicate events. \code{col.id}, \code{col.cmt},
+\code{col.evid}, and \code{col.time} are always considered if
+found in data, and \code{cols.dup} is added to this list if provided.}
 
-\item{type.data}{"est" for estimation data (default), and "sim"
+\item{type.data}{\code{"est"} for estimation data (default), and \code{"sim"}
 for simulation data. Differences are that \code{col.row} is
 not expected for simulation data, and subjects will be checked
 to have \code{EVID==0} rows for estimation data and
@@ -118,9 +119,9 @@ to have \code{EVID==0} rows for estimation data and
 
 \item{na.strings}{Strings to be accepted when trying to convert
 characters to numerics. This will typically be a string that
-represents missing values. Default is ".". Notice, actual NA,
-i.e. not a string, is allowed independently of na.strings. See
-\code{?NMisNumeric}.}
+represents missing values. Default is ".". Notice, actual
+\code{NA}, i.e. not a string, is allowed independently of
+\code{na.strings}. See \code{?NMisNumeric}.}
 
 \item{return.summary}{If TRUE (not default), the table summary
 that is printed if \code{quiet=FALSE} is returned as well. In
@@ -162,25 +163,25 @@ The following checks are performed. The term "numeric"
 non-missing, increasing integers. 
 
 \item col.time (TIME),
-    EVID, col.id (ID), col.cmt (CMT), and col.mdv (MDV): If present, elements must be non-missing
+    \code{EVID}, col.id (\code{ID}), col.cmt (\code{CMT}), and \code{col.mdv} (\code{MDV}): If present, elements must be non-missing
     and numeric.
 
 \item col.time (TIME) must be non-negative
 
-\item EVID must be in \{0,1,2,3,4\}.
+\item \code{EVID} must be in \{0,1,2,3,4\}.
 
-\item CMT must be positive integers. However, can be missing or zero for EVID==3.
+\item CMT must be positive integers. However, can be missing or zero for \code{EVID==3}.
 
-\item MDV must be the binary (1/0) representation of is.na(DV) for
-dosing records (EVID==0).
+\item MDV must be the binary (1/0) representation of \code{is.na(DV)} for
+dosing records (\code{EVID==0}).
 
-\item AMT must be 0 or NA for EVID 0 and 2
+\item AMT must be 0 or \code{NA} for \code{EVID} 0 and 2
 
-\item AMT must be positive for EVID 1 and 4
+\item AMT must be positive for \code{EVID} 1 and 4
 
 \item DV must be numeric
 
-\item DV must be missing for EVID in \{1,4\}.
+\item DV must be missing for \code{EVID} in \{1,4\}.
 
 \item If found, RATE must be a numeric, equaling -2 or non-negative for dosing events.
 
@@ -198,11 +199,11 @@ records. \code{ADDL} must be present.
     error. Use a second ID column if you deliberately want to
     soften this check)
 
-\item TIME cannot be decreasing within ID, unless EVID in \{3,4\}.
+\item TIME cannot be decreasing within ID, unless \code{EVID} in \{3,4\}.
 
-\item all ID's must have doses (EVID in \{1,4\})
+\item all ID's must have doses (\code{EVID} in \{1,4\})
 
-\item all ID's must have observations (EVID==0)
+\item all ID's must have observations (\code{EVID}==0)
 
 \item ID's should not have leading zeros since these will be lost
 when Nonmem read, then write the data.
@@ -216,23 +217,23 @@ when Nonmem read, then write the data.
 \item Columns specified in covs argument must be non-missing,
     numeric and not varying within subjects.
 
-\item Columns specified in covs.occ must be
+\item Columns specified in \code{covs.occ} must be
     non-missing, numeric and not varying within combinations of
     subject and occasion.
 
-\item Columns specified in cols.num must be present, numeric
-    and non-`NA`.
+\item Columns specified in \code{cols.num} must be present, numeric
+    and non-\code{NA}.
 
-\item If a unique subject identifier column (`col.usubjid`) is
-provided, `col.id` must be unique within values of `col.usubjid` and
+\item If a unique subject identifier column (\code{col.usubjid}) is
+provided, `col.id` must be unique within values of \code{col.usubjid} and
 vice versa.
 
 \item Events should not be duplicated. For all rows, the
-combination of col.id, col.cmt ,col.evid, col.time plus the
-optional columns specified in cols.dup must be unique. In other
-words, if a subject (col.id) that has say observations (col.evid)
+combination of \code{col.id}, \code{col.cmt}, \code{col.evid}, \code{col.time} plus the
+optional columns specified in \code{cols.dup} must be unique. In other
+words, if a subject (\code{col.id}) that has say observations (\code{col.evid})
 at the same time (col.time), this is considered a duplicate. The
-exception is if there is a reset event (col.evid is 3 or 4) in
+exception is if there is a reset event (\code{col.evid} is 3 or 4) in
 between the two rows. cols.dup can be used to add columns to this
 analysis. This is useful for different assays run on the same
 compartment (say a DVID column) or maybe stacked datasets. If

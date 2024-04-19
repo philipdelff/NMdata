@@ -79,7 +79,11 @@ if(F){
 ### this example shows most key features. Reduce number of rows and build examples and tests on it.
     
 ## library(devtools)
+<<<<<<< HEAD
     ## load_all("~/wdirs/NMexec")
+=======
+    load_all("~/wdirs/NMsim")
+>>>>>>> 4b0847a60b9eead9051e48950e31ee1449a99978
      NMdataConf(as.fun="data.table")
     
     doses.1 <- NMcreateDoses(TIME=c(0,3,12,24),CMT=1,AMT=400e3)

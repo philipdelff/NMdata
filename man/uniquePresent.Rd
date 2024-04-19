@@ -9,6 +9,7 @@ uniquePresent(x, req.n1 = TRUE, na.pattern)
 \arguments{
 \item{x}{A vector, either numeric or character.}
 
+<<<<<<< HEAD
 \item{na.pattern}{In addition to NA-elements, what text strings
 should be considered missing? Default is empty strings and
 strings only containing white spaces (`na.pattern="^ *$"`).}
@@ -16,6 +17,15 @@ strings only containing white spaces (`na.pattern="^ *$"`).}
 \item{reg.n1}{Require one unique value? If `TRUE` (default), an
 error is thrown if non-unique values found. If `FALSE`, all
 the unique values are returned.}
+=======
+\item{req.n1}{Require one unique value? If `TRUE` (default), an
+error is thrown if non-unique values found. If `FALSE`, all
+the unique values are returned.}
+
+\item{na.pattern}{In addition to NA-elements, what text strings
+should be considered missing? Default is empty strings and
+strings only containing white spaces (`na.pattern="^ *$"`).}
+>>>>>>> 4b0847a60b9eead9051e48950e31ee1449a99978
 }
 \description{
 Extract unique non-missing value from vector
@@ -23,7 +33,11 @@ Extract unique non-missing value from vector
 \details{
 This function is particularly useful when combining data
     sets of which only some contain certain
+<<<<<<< HEAD
     variables. `uniquePresent` with `req.n1=TRUE` makes sure the
+=======
+    variables. \code{uniquePresent} with `req.n1=TRUE` makes sure the
+>>>>>>> 4b0847a60b9eead9051e48950e31ee1449a99978
     result is a single unique value (e.g., within subjects). A
     typical use is carrying subject-level covariates from one data
     set to another in a longitudinal analysis.
