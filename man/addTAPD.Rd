@@ -30,8 +30,8 @@ addTAPD(
 \arguments{
 \item{data}{The data set to add the variables to.}
 
-\item{col.time}{Name of time column (created by addTAPD). Default
-it TIME.}
+\item{col.time}{Name of time column (created by
+\code{addTAPD()}). Default it \code{"TIME"}.}
 
 \item{col.evid}{The name of the event ID column. This must exist
 in data. Default is EVID.}
@@ -40,12 +40,12 @@ in data. Default is EVID.}
 must exist in data. Default is AMT.}
 
 \item{col.tpdos}{Name of the time of previous dose column (created
-by addTAPD). Default is TPDOS. Set to NULL to not create this
-column.}
+by \code{addTAPD()}). Default is \code{"TPDOS"}. Set to
+\code{NULL} to not create this column.}
 
 \item{col.tapd}{Name of the time of previous dose column (created
-by addTAPD). Default is TAPD. Set to NULL to not create this
-column.}
+by \code{addTAPD()}). Default is \code{"TAPD"}. Set to
+\code{NULL} to not create this column.}
 
 \item{col.pdosamt}{The name of the column to be created holding
 the previous dose amount. Set to NULL to not create this
@@ -55,8 +55,8 @@ column.}
 the cumulative dose amount. Set to NULL to not create this
 column.}
 
-\item{col.doscumn}{The name of the column (created by addTAPD) that
-holds the cumulative number of doses administered to the
+\item{col.doscumn}{The name of the column (created by addTAPD)
+that holds the cumulative number of doses administered to the
 subject. Set to NULL to not create this column.}
 
 \item{prefix.cols}{String to be prepended to all generated column
@@ -73,12 +73,12 @@ as well.}
 
 \item{subset.is.complete}{Only used in combination with
 non-missing subset.dos. By default, subset.dos is used in
-addition to the impact of col.evid (must be 1 or 4) and col.amt (greater than zero). If
-subset.is.complete=TRUE, subset.dos is used alone, and
-col.evid and col.amt are completely ignored. This is typically
-useful if the events are not doses but other events that are
-not expressed as a typical dose combination of EVID and AMT
-columns.}
+addition to the impact of col.evid (must be 1 or 4) and
+col.amt (greater than zero). If subset.is.complete=TRUE,
+subset.dos is used alone, and col.evid and col.amt are
+completely ignored. This is typically useful if the events are
+not doses but other events that are not expressed as a typical
+dose combination of EVID and AMT columns.}
 
 \item{order.evid}{Order of events. This will only matter if there
 are simultaneous events of different event types within
@@ -107,7 +107,7 @@ A data.frame with additional columns
 \description{
 For now, doses have to be in data as EVID=1 and/or EVID=4
 records. They can be in the format of one row per dose or repeated
-dosing notation using ADDL and II.
+dosing notation using \code{ADDL} and \code{II}.
 }
 \details{
 addTAPD does not require the data to be ordered, and it

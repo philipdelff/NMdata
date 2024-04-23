@@ -202,7 +202,7 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
 
     
     doses <- data2[get(col.event)==TRUE&nmexpand==FALSE]
-    cols.retrieve <- intersect(colnames(doses),cc(II,ADDL))
+    cols.retrieve <- intersect(colnames(doses),c("II","ADDL"))
     if(length(cols.retrieve)){
         doses <- mergeCheck(doses[,!(cols.retrieve),with=FALSE],data[,c(col.row.tmp,cols.retrieve),with=FALSE],by=col.row.tmp ,quiet=TRUE)
     }

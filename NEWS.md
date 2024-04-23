@@ -5,7 +5,8 @@
 * Function `NMreadShk()` to read and format `.shk` (shrinkage) files.
 
 * Functions `mat2dt()` and `dt2mat()` included to convert between
-  matrices and data.frame format of matrix data.
+  matrices and data.frame format of matrix data - especially for
+  symmetric matrices.
   
 * Function `addOmegaCorr()` adds estimated correlation between ETAs to
   parameter tables, as obtained using `NMreadExt()`.
