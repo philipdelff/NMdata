@@ -19,7 +19,7 @@ dosing notation using ADDL and II."><meta property="og:image" content="https://p
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.5.911</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
       </span>
     </div>
 
@@ -84,7 +84,7 @@ dosing notation using ADDL and II."><meta property="og:image" content="https://p
     <div class="ref-description">
     <p>For now, doses have to be in data as EVID=1 and/or EVID=4
 records. They can be in the format of one row per dose or repeated
-dosing notation using ADDL and II.</p>
+dosing notation using <code>ADDL</code> and <code>II</code>.</p>
     </div>
 
     <div id="ref-usage">
@@ -117,8 +117,8 @@ dosing notation using ADDL and II.</p>
 
 
 <dt>col.time</dt>
-<dd><p>Name of time column (created by addTAPD). Default
-it TIME.</p></dd>
+<dd><p>Name of time column (created by
+<code>addTAPD()</code>). Default it <code>"TIME"</code>.</p></dd>
 
 
 <dt>col.evid</dt>
@@ -133,14 +133,14 @@ must exist in data. Default is AMT.</p></dd>
 
 <dt>col.tpdos</dt>
 <dd><p>Name of the time of previous dose column (created
-by addTAPD). Default is TPDOS. Set to NULL to not create this
-column.</p></dd>
+by <code>addTAPD()</code>). Default is <code>"TPDOS"</code>. Set to
+<code>NULL</code> to not create this column.</p></dd>
 
 
 <dt>col.tapd</dt>
 <dd><p>Name of the time of previous dose column (created
-by addTAPD). Default is TAPD. Set to NULL to not create this
-column.</p></dd>
+by <code>addTAPD()</code>). Default is <code>"TAPD"</code>. Set to
+<code>NULL</code> to not create this column.</p></dd>
 
 
 <dt>col.pdosamt</dt>
@@ -156,8 +156,8 @@ column.</p></dd>
 
 
 <dt>col.doscumn</dt>
-<dd><p>The name of the column (created by addTAPD) that
-holds the cumulative number of doses administered to the
+<dd><p>The name of the column (created by addTAPD)
+that holds the cumulative number of doses administered to the
 subject. Set to NULL to not create this column.</p></dd>
 
 
@@ -182,12 +182,12 @@ as well.</p></dd>
 <dt>subset.is.complete</dt>
 <dd><p>Only used in combination with
 non-missing subset.dos. By default, subset.dos is used in
-addition to the impact of col.evid (must be 1 or 4) and col.amt (greater than zero). If
-subset.is.complete=TRUE, subset.dos is used alone, and
-col.evid and col.amt are completely ignored. This is typically
-useful if the events are not doses but other events that are
-not expressed as a typical dose combination of EVID and AMT
-columns.</p></dd>
+addition to the impact of col.evid (must be 1 or 4) and
+col.amt (greater than zero). If subset.is.complete=TRUE,
+subset.dos is used alone, and col.evid and col.amt are
+completely ignored. This is typically useful if the events are
+not doses but other events that are not expressed as a typical
+dose combination of EVID and AMT columns.</p></dd>
 
 
 <dt>order.evid</dt>
