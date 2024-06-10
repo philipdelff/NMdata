@@ -117,7 +117,7 @@
 
     
     
-<p>Built 2024-04-23 using NMdata 0.1.6.</p>
+<p>Built 2024-06-10 using NMdata 0.1.6.</p>
 <p>This vignette is still under development. Please make sure to see
 latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
@@ -355,14 +355,14 @@ Example if the input is called `input.txt` and the output
 is called `output.txt`:
 
 
-```r
+``` r
 out2in <- function(file) file.path(dirname(file), "input.txt")
 res <- NMscanData("path/to/output.txt", file.mod = out2in)
 ```
 
 You can use `NMdataConf` to configure the default behaviour to match your setup:
 
-```r
+``` r
 NMdataConf(file.mod = out2in)
 ```
 -->
