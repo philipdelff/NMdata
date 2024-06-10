@@ -26,7 +26,7 @@ NMscanData <- function(x,...)NMdata::NMscanData(file.path(system.file(paste0("ex
 [![R-CMD-check](https://github.com/philipdelff/NMdata/workflows/R-CMD-check/badge.svg)](https://github.com/philipdelff/NMdata/actions)
 [![Codecov test coverage](https://codecov.io/gh/philipdelff/NMdata/branch/master/graph/badge.svg)](https://app.codecov.io/gh/philipdelff/NMdata?branch=master)
 [![CRAN status](https://www.r-pkg.org/badges/version/NMdata)](https://CRAN.R-project.org/package=NMdata)
-[![CRAN downloads](https://cranlogs.r-pkg.org/badges/NMsim)](https://cran.r-project.org/package=NMsim)
+[![CRAN downloads](https://cranlogs.r-pkg.org/badges/NMdata)](https://cran.r-project.org/package=NMdata)
 <!-- badges: end -->
 
 ##  A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
