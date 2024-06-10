@@ -30,32 +30,63 @@
 ##' @seealso NMwriteData
 ##' @export
 
-NMreadCsv <- function(file,args.fread,as.fun=NULL,format=fnExtension(file),args.fst){
+NMreadCsv <- function(file,args.fread,as.fun=NULL,format,args.fst){
+
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+
+    ext.found <- NULL
+    file.found <- NULL
+    ext.interpret <- NULL
+    priority <- NULL
+
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+
+
 
     
+    if(missing(format)) format <- NULL
+### If format is not provided
+    if(is.null(format)) format <- fnExtension(file)
+
     if( !is.character(format) ){
         stop("format must be character strings.")
     }
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
-### this requires format to be only one of text, rds or fst
-    ## if( !is.character(format) && length(format) == 1 ){
-    ##     stop("format must be a single character string.")
-    ## }
-    ## if(!format%in%c("rds","fst")) format <- "text"
-
+    
+    
 ### we take the first file available. format is file name
 ### extension. If not fst or rds, it is expected to be a delimited
 ### text file.
-    format <- unique(format)
-    exts <- format
-    files <- fnExtension(file,exts)
-    exists <- file.exists(files)
-    exts <- exts[exists][1]
-    format[!format%in%c("rds","fst")] <- "text"
-    format <- format[exists][1]
-    file <- files[exists][1]
 
+    fn.root <- basename(file)
+    fn.root <- fnExtension(fn.root,"")
+    dt.files <- data.table(
+        file.found=list.files(dirname(file),pattern=paste0(fn.root,".*"))
+    ) [ ,ext.found:=fnExtension(file.found)]
+    dt.files[,ext.interpret:=ext.found]
+    dt.files[ext.interpret %in% c("rds","fst"),ext.interpret:="text"]
+
+    format <- unique(format)
+    format[!format%in%c("rds","fst")] <- "text"
+    dt.files[,priority:=match(ext.interpret,format)]
+    setorder(dt.files,priority)
+    file.read <- dt.files[1,file.found]
+    format.read <- dt.files[1,ext.interpret]
+    
+    if(FALSE){
+### we take the first file available. format is file name
+### extension. If not fst or rds, it is expected to be a delimited
+### text file.
+        format <- unique(format)
+        exts <- format
+        files <- fnExtension(file,exts)
+        exists <- file.exists(files)
+        exts <- exts[exists][1]
+        format[!format%in%c("rds","fst")] <- "text"
+        format <- format[exists][1]
+        file <- files[exists][1]
+    }
 
 
     dt <- switch(format,

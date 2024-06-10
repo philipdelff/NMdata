@@ -1,3 +1,9 @@
+
+# 0.1.7
+## Bugfixes
+* `NMscanInput()` and `NMreadCsv()` could fail if file names had no
+  extensions. Fixed.
+
 # 0.1.6
 
 ## New features

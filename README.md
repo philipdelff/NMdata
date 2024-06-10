@@ -12,6 +12,8 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 coverage](https://codecov.io/gh/philipdelff/NMdata/branch/master/graph/badge.svg)](https://app.codecov.io/gh/philipdelff/NMdata?branch=master)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/NMdata)](https://CRAN.R-project.org/package=NMdata)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/NMsim)](https://cran.r-project.org/package=NMsim)
 <!-- badges: end -->
 
 ## A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
@@ -155,23 +157,20 @@ read multiple models and compare their predictions.
 ``` r
 res <- NMscanMultiple(dir=system.file("examples/nonmem", package="NMdata"),
 file.pattern="xgxr.*\\.lst",as.fun="data.table",quiet=TRUE)
-#> Input and output data were searched for candidate unique row identifiers. None
-#> found. To skip this check, please use merge.by.row=TRUE or merge.by.row=FALSE.
-#> 
 #> 
 #> Overview of model scanning results:
-#>                                                                            lst
-#> 1: /tmp/Rtmp82nZom/temp_libpath1370126d22f6/NMdata/examples/nonmem/xgxr001.lst
-#> 2: /tmp/Rtmp82nZom/temp_libpath1370126d22f6/NMdata/examples/nonmem/xgxr002.lst
-#> 3: /tmp/Rtmp82nZom/temp_libpath1370126d22f6/NMdata/examples/nonmem/xgxr003.lst
-#> 4: /tmp/Rtmp82nZom/temp_libpath1370126d22f6/NMdata/examples/nonmem/xgxr014.lst
-#> 5: /tmp/Rtmp82nZom/temp_libpath1370126d22f6/NMdata/examples/nonmem/xgxr018.lst
-#>    nrows ncols success warning
-#> 1:   905    40    TRUE   FALSE
-#> 2:   905    34    TRUE   FALSE
-#> 3:   905    34    TRUE   FALSE
-#> 4:   905    36    TRUE   FALSE
-#> 5:   905    33    TRUE   FALSE
+#>                                                                  lst nrows
+#> 1: /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr001.lst   905
+#> 2: /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr002.lst   905
+#> 3: /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr003.lst   905
+#> 4: /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr014.lst   905
+#> 5: /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr018.lst   905
+#>    ncols success warning
+#> 1:    40    TRUE   FALSE
+#> 2:    34    TRUE   FALSE
+#> 3:    34    TRUE   FALSE
+#> 4:    36    TRUE   FALSE
+#> 5:    33    TRUE   FALSE
 gmean <- function(x)exp(mean(log(x)))
 res.mean <- res[,.(gmeanPRED=gmean(PRED)),by=.(model,NOMTIME)]
 obs.all <- unique(res[,.(ID,NOMTIME,TIME,DV)])
@@ -180,7 +179,8 @@ ggplot(res.mean,aes(NOMTIME,gmeanPRED,colour=model))+geom_line()+
     scale_y_log10()+
     labs(x="Time",y="Concentration",subtitle="Comparison of population predictions")
 #> Warning: Transformation introduced infinite values in continuous y-axis
-#> Transformation introduced infinite values in continuous y-axis
+
+#> Warning: Transformation introduced infinite values in continuous y-axis
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />

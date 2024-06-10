@@ -4,13 +4,7 @@
 \alias{NMreadCsv}
 \title{Read input data formatted for Nonmem}
 \usage{
-NMreadCsv(
-  file,
-  args.fread,
-  as.fun = NULL,
-  format = fnExtension(file),
-  args.fst
-)
+NMreadCsv(file, args.fread, as.fun = NULL, format, args.fst)
 }
 \arguments{
 \item{file}{The file to read. Must be pure text.}

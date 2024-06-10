@@ -154,6 +154,7 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
     col.tpdos.tmp <- tmpcol(data2,base="tpdos.tmp")
 
     addVars <- function(data){
+        
         ## NDOSPERIOD
         if(!is.null(col.doscumn)){
             data[!is.na(get(col.time)),(col.doscumn):=cumsum(get(col.event)==TRUE),by=by]
@@ -169,8 +170,8 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
         if(!is.null(col.pdosamt)){
             col.pdosamt.tmp <- tmpcol(data,base="tmpcol.pdosamt")
             data[,(col.pdosamt.tmp):=NA_real_]
-            ## data[!is.na(get(col.amt))&get(col.amt)>0,(col.pdosamt.tmp):=get(col.amt)]
-            data[get(col.event)==TRUE,(col.pdosamt.tmp):=get(col.amt)]
+            
+            data[get(col.event)==TRUE,(col.pdosamt.tmp):=as.numeric(get(col.amt))]
             data[,(col.pdosamt):=nafill(get(col.pdosamt.tmp),type="locf")/SDOS,by=by]
             data[,(col.pdosamt.tmp):=NULL]
         }

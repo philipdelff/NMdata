@@ -191,7 +191,7 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
     
 ### cnames.input is the names of columns as in input data file
     data.input <- NMtransInp(data.input,file,translate=translate,recover.cols=recover.cols)
-    data.input.0.trans <- NMtransInp(data.input.0,file,translate=translate,recover.cols=recover.cols)
+    data.input.0.trans <- NMtransInp(data.input.0,file,translate=translate,recover.cols=recover.cols,quiet=TRUE)
     
     col.id.inp <- col.id
     if(translate){
