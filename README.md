@@ -13,7 +13,7 @@ coverage](https://codecov.io/gh/philipdelff/NMdata/branch/master/graph/badge.svg
 [![CRAN
 status](https://www.r-pkg.org/badges/version/NMdata)](https://CRAN.R-project.org/package=NMdata)
 [![CRAN
-downloads](https://cranlogs.r-pkg.org/badges/NMsim)](https://cran.r-project.org/package=NMsim)
+downloads](https://cranlogs.r-pkg.org/badges/NMdata)](https://cran.r-project.org/package=NMdata)
 <!-- badges: end -->
 
 ## A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling
