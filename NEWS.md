@@ -4,6 +4,9 @@
 * `NMscanInput()` and `NMreadCsv()` could fail if file names had no
   extensions. Fixed.
 
+* `NMreplaceDataFile()` now works on directories and regular
+  expressions to find models to update.
+
 # 0.1.6
 
 ## New features

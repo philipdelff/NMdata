@@ -369,6 +369,7 @@ extension is .rds?
 **** TODO [#B] return="text"/"idx" should be return.idx=TRUE/FALSE instead
 It would be easier to remember
 *** NMreplaceDataFile
+**** TODO [#A] Fails on dir+file.pattern
 **** DONE Implement function
 **** DONE Tests
 *** NMwriteSection
@@ -409,6 +410,12 @@ arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMisNumeric
 **** DONE NA_character is not recognized as numeric
+*** NMreadParsText
+**** TODO [#A] Multi-char delimters do not work
+like ; 1; CL ; [mL/h]
+in which case "; [" is a delimiter
+**** TODO [#A] Empty fields makes it break
+Like ;1;CL;;;mL/h
 *** NMscanInput
 **** DONE applyFilters -> apply.filters
 **** DONE Bug: Error when ID not in data but var=ID in $INPUT
@@ -486,6 +493,8 @@ A way to limit rows read into nonmem
 ***** diff
 ***** off
 *** NMreadExt
+**** TODO Support Laplacian
+Laplacian Conditional Estimation
 **** DONE Include model column same way as NMscanData
 **** DONE Support multiple files
 **** DONE Intro arg return

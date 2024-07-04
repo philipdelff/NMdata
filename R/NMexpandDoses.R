@@ -30,6 +30,7 @@
 ##' @export
 
 NMexpandDoses <- function(data,col.time="TIME",col.id="ID",col.evid="EVID",track.expand=FALSE,subset.dos,quiet=FALSE,as.fun){
+
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     . <- NULL
