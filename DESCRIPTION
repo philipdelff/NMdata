@@ -1,8 +1,11 @@
 Package: NMdata
 Type: Package
 Title: Preparation, Checking and Post-Processing Data for PK/PD Modeling
-Version: 0.1.5.903
-Authors@R: c(person("Philip", "Delff", email = "philip@delff.dk", role = c("aut", "cre")))
+Version: 0.1.6.901
+Authors@R: c(person("Philip", "Delff", email = "philip@delff.dk", role = c("aut", "cre")),
+  person("Eric", "Anderson", email = "andersone@metrumrg.com",role = c("ctb")),
+  person("Matthew","Fidler", role = c("ctb"), email = "matt.fidler@novartis.com")
+)
 Maintainer: Philip Delff <philip@delff.dk>
 Description: Efficient tools for preparation, checking and post-processing of data in PK/PD (pharmacokinetics/pharmacodynamics) modeling, with focus on use of Nonmem. Attention is paid to ensure consistency, traceability, and Nonmem compatibility of Data. Rigorously checks final Nonmem datasets. Implemented in 'data.table', but easily integrated with 'base' and 'tidyverse'.
 License: MIT + file LICENSE
@@ -15,6 +18,7 @@ Imports:
 Suggests:
     testthat,
     knitr,
+    NMsim,
     formatR,
     mime,
     rmarkdown,

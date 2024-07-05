@@ -52,20 +52,52 @@ test_that("SDOSE",{
 })
 
 
+test_that("Repeated doses without samples",{
+    library(NMsim)
+
+    fileRef <- "testReference/addTAPD_04.rds"
+    
+    NMdataConf(as.fun="data.table")
+
+    doses.1 <- NMcreateDoses(TIME=c(0,3,12,24),CMT=1,AMT=400e3)
+    doses.2 <- NMcreateDoses(TIME=0,addl=list(ADDL=4,II=6),CMT=2,AMT=20)
+    doses.all <- rbind(doses.1,doses.2,fill=TRUE)
+    doses.all <- egdt(doses.all[,!("ID")],data.table(ID=1:2),quiet=TRUE)
+    ## dat.all <- addEVID2(doses.all,time.sim=seq(0,26,by=2),CMT=3)
+    dat.all <- doses.all
+    dat.all <- NMorderColumns(dat.all)
+    dat.all[,ROW:=.I]
+
+    #setorder(dat.all,ID,TIME)
+    
+    res <- addTAPD(dat.all[EVID==1])
+    ## addTAPD(
+    ##     NMexpandDoses(dat.all[EVID==1])
+    ## )
+
+    expect_equal_to_reference(res,fileRef)
+    
+})
+
 if(F){
 ### this example shows most key features. Reduce number of rows and build examples and tests on it.
     
-## library(devtools)
+    ## library(devtools)
+    ## load_all("~/wdirs/NMexec")
     load_all("~/wdirs/NMsim")
-     NMdataConf(as.fun="data.table")
+    NMdataConf(as.fun="data.table")
     
     doses.1 <- NMcreateDoses(TIME=c(0,3,12,24),CMT=1,AMT=400e3)
     doses.2 <- NMcreateDoses(TIME=0,addl=list(ADDL=4,II=6),CMT=2,AMT=20)
     doses.all <- rbind(doses.1,doses.2,fill=TRUE)
-    doses.all <- egdt(doses.all[,!("ID")],data.table(ID=1:2))
+    doses.all <- egdt(doses.all[,!("ID")],data.table(ID=1:2),quiet=TRUE)
     dat.all <- addEVID2(doses.all,time.sim=seq(0,26,by=2),CMT=3)
     dat.all <- NMorderColumns(dat.all)
     dat.all[,ROW:=.I]
+
+
+
+    
     dat.all2 <- addTAPD(dat.all,subset.dos = "CMT==1",suffix.cols="1")
 
     compareCols(dat.all,dat.all2)
@@ -81,4 +113,6 @@ if(F){
     dat.all3 <- addTAPD(dat.all2,subset.dos = "CMT==2",order.evid=c(4,1,0,2),suffix.cols="2b")
     dat.all3
 
+
+    
 }

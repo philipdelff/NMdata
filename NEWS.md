@@ -1,3 +1,12 @@
+
+# 0.1.7
+## Bugfixes
+* `NMscanInput()` and `NMreadCsv()` could fail if file names had no
+  extensions. Fixed.
+
+* `NMreplaceDataFile()` now works on directories and regular
+  expressions to find models to update.
+
 # 0.1.6
 
 ## New features
@@ -5,15 +14,24 @@
 * Function `NMreadShk()` to read and format `.shk` (shrinkage) files.
 
 * Functions `mat2dt()` and `dt2mat()` included to convert between
-  matrices and data.frame format of matrix data.
+  matrices and data.frame format of matrix data - especially for
+  symmetric matrices.
   
 * Function `addOmegaCorr()` adds estimated correlation between ETAs to
   parameter tables, as obtained using `NMreadExt()`.
+
+* `fnAppend()` can now handle multiple strings to append. Allows for
+  more easily readable code.
 
 ## Bugfixes
 * `NMcheckData` now respects `NMdataConf()` setting of `col.time` and
   `col.id`. When using the `file` argument `col.id` was not respected
   at all. Fixed.
+  
+* `addTAPD` would get cumulative counting of number of doses and
+  cumulative dose amount wrong in case of repeated dosing (using
+  `ADDL` and `II`) followed by other doses. Fixed. Thanks to Simone
+  Cassani for catching it.
 
 # 0.1.5
 ## New features

@@ -224,7 +224,7 @@ mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expec
     nas.in.by.y <- y[,sapply(.SD,function(x)any(is.na(x))),.SDcols=by.y]
     
     if(any(nas.in.by.x & nas.in.by.y)){
-        messageWrap("NA\'s found in mathed by.x and in by.y column(s). This loosely speaking means, you are trying to merge on NA values. Double-check the columns you are merging by. If this is expected, you can use \'fun.na.by=NULL\' to allow it.",fun.msg=fun.na.by)
+        messageWrap("NA\'s found in matched by.x and in by.y column(s). This loosely speaking means, you are trying to merge on NA values. Double-check the columns you are merging by. If this is expected, you can use \'fun.na.by=NULL\' to allow it.",fun.msg=fun.na.by)
     }
 
     if(missing(as.fun)) as.fun <- NULL

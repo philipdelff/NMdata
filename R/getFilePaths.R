@@ -1,13 +1,19 @@
 ##' Internal interpretation of file specification options
 ##' @param files character vector of full file paths. Specify either
 ##'     files or both file.pattern and dir.
-##' @param file.pattern A regular expression to look for in dir. If used, dir must also be supplied.
+##' @param file.pattern A regular expression to look for in dir. If
+##'     used, dir must also be supplied.
 ##' @param dir The directory i which to look for file.pattern. dir is
-##'     passed to list.files as pattern. If supplied, file.pattern must also be supplied.
+##'     passed to list.files as pattern. If supplied, file.pattern
+##'     must also be supplied.
+##' @param quiet The default is not to be quiet.
 ##' @return A character vector of full paths to files
 ##' @keywords internal
 
-getFilePaths <- function(files=NULL,file.pattern=NULL,dir=NULL,quiet=FALSE){
+getFilePaths <- function(files=NULL,file.pattern=NULL,dir=NULL,quiet){
+    
+    if(missing(quiet)) quiet <- NULL
+    if(is.null(quiet)) quiet <- FALSE
     
     ## supply either file or file.pattern. dir only allowed if file.pattern
     if( is.null(files) && is.null(file.pattern) ){

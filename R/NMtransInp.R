@@ -8,6 +8,7 @@
 ##' @param recover.cols recover columns that were not used in the
 ##'     NONMEM control stream? Default is TRUE. Can only be negative
 ##'     when translate=FALSE.
+##' @param Suppress warnings about data columns?
 ##' @return data with column names translated as specified by nonmem
 ##'     control stream. Class same as for 'data' argument. Class
 ##'     data.table.
@@ -16,7 +17,7 @@
 
 ## don't export. An internal function used by NMscanInput. 
 
-NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
+NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE,quiet=FALSE){
     
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
     datafile <- NULL
@@ -79,7 +80,9 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
     if(translate){
         if(length(nms)>length(cnames.input)){
             nms <- nms[1:length(cnames.input)]
-            messageWrap("More column names specified in Nonmem $INPUT than found in data file. The additional names have been disregarded.",fun.msg=warning)
+            if(!quiet){
+                messageWrap("More column names specified in Nonmem $INPUT than found in data file. The additional names have been disregarded.",fun.msg=warning)
+            }
         }
         
         cnames.input[1:length(nms)] <- nms
@@ -99,14 +102,14 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE){
         ## check for unique column names
         if(any(duplicated(cnames.input))) {
             nms2 <- cnames.input[-(1:length(nms))]
-            if(any(duplicated(nms))){
+            if(!quiet && any(duplicated(nms))){
                 messageWrap(paste("Duplicated variable names declared in nonmem $INPUT section. Only first of the columns will be used:",paste(nms[duplicated(nms)],collapse=", ")),fun.msg=warning)
             } 
-            if(length(nms2)&&any(duplicated(nms2))){
+            if(!quiet && length(nms2)&&any(duplicated(nms2))){
                 messageWrap(paste("Duplicated variable names detected in input data not processed by Nonmem. Only first of the columns will be used:",paste(nms2[duplicated(nms2)],collapse=", ")),fun.msg=warning)
             }
             nms.cross <- c(unique(nms),unique(nms2))
-            if(any(duplicated(nms.cross))){
+            if(!quiet && any(duplicated(nms.cross))){
                 
                 messageWrap(paste("The same variable names are found in input variables as read by nonmem and the rest of input data file. Please look at column names in input data and the $INPUT section in nonmem control stream. Only the first occurrence of the columns will be used:",paste(unique(nms.cross[duplicated(nms.cross)]),collapse=", ")),fun.msg=warning)
             }

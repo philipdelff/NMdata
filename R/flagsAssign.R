@@ -158,7 +158,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
         messageWrap(sprintf("Duplicate values not allowed in tab.flags columns %s, %s, and condition.",col.flagn,col.flagc),stop)
     }
 
-    
+    ####### END Check tab.flags ####
     
 ##### check subset
 ### TODO check for " *" which should work like " " but will give
@@ -176,9 +176,6 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
         subsetAND <- paste(subset.data,"&")
     }
     
-####### END Check tab.flags ####
-    
-
     if(subset.data=="") {
         data.sub <- data
     } else {

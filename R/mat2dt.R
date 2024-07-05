@@ -46,8 +46,8 @@ mat2dt <- function(x,triangle="lower",as.fun){
 
     dt <- mergeCheck(dt,
                      data.table(i=1:length(names.i),parameter.i=names.i) ,
-                     by="i")
-    dt <- mergeCheck(dt,data.table(j=1:length(names.j),parameter.j=names.j),by="j")
+                     by="i",quiet=TRUE)
+    dt <- mergeCheck(dt,data.table(j=1:length(names.j),parameter.j=names.j),by="j",quiet=TRUE)
 
     dt <- switch(triangle,
                  upper=dt[j<=i]

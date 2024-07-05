@@ -33,7 +33,7 @@ With load_all():
 > dt1
    a newcol
 1: 1      1
-*** DONE [#B] messageWrap internal/external
+*** DONE messageWrap internal/external
     This is called track.msg
     
     The mentioning of where a message comes from is only useful if a
@@ -111,6 +111,8 @@ pdosamt, doscuma
 *** dims
 **** DONE Check if objects are data.frames
 *** fnAppend
+**** TODO [#B] If x is a list
+Apply elementwise to fn. Must be same length as fn then.
 *** fnExtention
 **** DONE Support strings without extensions
  Example: fnExtension("run",".lst")
@@ -367,6 +369,7 @@ extension is .rds?
 **** TODO [#B] return="text"/"idx" should be return.idx=TRUE/FALSE instead
 It would be easier to remember
 *** NMreplaceDataFile
+**** TODO [#A] Fails on dir+file.pattern
 **** DONE Implement function
 **** DONE Tests
 *** NMwriteSection
@@ -407,6 +410,12 @@ arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMisNumeric
 **** DONE NA_character is not recognized as numeric
+*** NMreadParsText
+**** TODO [#A] Multi-char delimters do not work
+like ; 1; CL ; [mL/h]
+in which case "; [" is a delimiter
+**** TODO [#A] Empty fields makes it break
+Like ;1;CL;;;mL/h
 *** NMscanInput
 **** DONE applyFilters -> apply.filters
 **** DONE Bug: Error when ID not in data but var=ID in $INPUT
@@ -484,6 +493,8 @@ A way to limit rows read into nonmem
 ***** diff
 ***** off
 *** NMreadExt
+**** TODO Support Laplacian
+Laplacian Conditional Estimation
 **** DONE Include model column same way as NMscanData
 **** DONE Support multiple files
 **** DONE Intro arg return
@@ -723,7 +734,7 @@ arguments. NMdata calls this "writtenTo".
 ***** DONE Add result row
 ****** Number of columns has 0-2 extra columns
 *** uniquePresent
-**** TODO [#A] Document and export
+**** DONE Document and export
 ** Tests and documentation
 *** Cheat sheet
 **** Outline

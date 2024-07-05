@@ -10,7 +10,8 @@
 ##' @param file Path to the control stream to read.
 ##' @param fields Defines naming and splitting of contents of lines in
 ##'     parameter sections. Default is
-##'     \code{"\%init;\%symbol;\%num;\%label;\%unit"}.
+##'     \code{"\%init;\%symbol;\%num;\%label;\%unit"}. Be careful to
+##'     remember percentage symbols in front of any variable names.
 ##' @param fields.omega Like `fields`, applied to `$OMEGA`
 ##'     section. Default is to reuse `fields`.
 ##' @param fields.sigma Like `fields`, applied to `$SIGMA`
@@ -26,6 +27,8 @@
 ##' @details Off-diagonal omega and sigma elements will only be
 ##'     correctly treated if their num field specifies say 1-2 to
 ##'     specify it is covariance between 1 and 2.
+##'
+##' \code{SAME} elements in \code{$OMEGA} will be skipped altogether.
 ##' @export
 
 
