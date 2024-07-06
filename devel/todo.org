@@ -69,8 +69,10 @@ if(any(nmdat[,sapply(.SD,function(x)any(grepl(",",x))),.SDcols=cnames.fac])) sto
 
 *** TODO [#B] function to add variables to $TABLE               :newFunction:
 **** Which $TABLE to add to?
-*** TODO [#C] NMfreezeModels                                    :newFunction:
+*** CANCELLED NMfreezeModels                                    :newFunction:
     Remember to add chmod and describe that only a flat dir structure is supported so far
+
+    Since NMexec archives input data, this is no longer necessary
 *** DONE function to replace file name extension - fnExtension
 *** DONE summary.NMdata
 *** DONE Summary of the columns - NMinfo
@@ -119,6 +121,8 @@ Apply elementwise to fn. Must be same length as fn then.
 **** DONE fnExtension("run.lst","") should return run
 **** DONE fnExtension("run.lst") should return lst
 **** DONE Make internal in tracee
+*** getArgs
+**** TODO [#A] Make sure functions that use it can work with lapply
 *** NMcheckColNames
 **** return input column names and Nonmem interpretation for user to spot errors
 **** Bad name, what could we call it?
@@ -414,8 +418,9 @@ issued. Once done, NMgetSection must be updated as well.
 **** TODO [#A] Multi-char delimters do not work
 like ; 1; CL ; [mL/h]
 in which case "; [" is a delimiter
-**** TODO [#A] Empty fields makes it break
+**** TODO [#A] Empty fields make it break
 Like ;1;CL;;;mL/h
+**** TODO [#B] Handle SAME
 *** NMscanInput
 **** DONE applyFilters -> apply.filters
 **** DONE Bug: Error when ID not in data but var=ID in $INPUT
@@ -516,6 +521,9 @@ xgxr028.mod created and it works
 **** TODO [#B] Integrate the reduction into one table from NMscanData
 **** DONE Lastonly does the same as firstonly
 *** NMscanData
+**** TODO [#A] prioritize input by default
+prefer.output option. TRUE is generally prefer output (current
+behviour), variable.names when being specefic.
 **** TODO [#A] EXCLUDE_BY option is not suported in $TABLE if using merge_by_row=FALSE
 **** DONE Rename TABLENO to NMREP
 **** DONE Deprecate tab.count

@@ -129,6 +129,9 @@ NMreadParsText <- function(file,fields,fields.omega=fields,
     
     
     split.fields <- function(fields){
+## split.fields splits the fields format string into the splitters and the variable names 
+
+        
         ## number of fields defined in fields
         
         ## paste0(".*",paste(chars.to.extract,collapse=").*("),".*")
@@ -211,6 +214,9 @@ NMreadParsText <- function(file,fields,fields.omega=fields,
         omegas
     }
 
+
+
+    
     if(length(file)>1) return(rbindlist(lapply(file,NMreadParsText,
                                                fields=fields,
                                                fields.omega=fields.omega,
