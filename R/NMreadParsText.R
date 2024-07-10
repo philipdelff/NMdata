@@ -8,43 +8,108 @@
 ##' values as obtained with `NMreadExt`.
 ##' 
 ##' @param file Path to the control stream to read.
-##' @param fields Defines naming and splitting of contents of lines in
+##' @param lines As an alternative to `file`, the control stream or
+##'     selected lines of the control stream can be provided as a
+##'     vector of lines.
+##' @param format Defines naming and splitting of contents of lines in
 ##'     parameter sections. Default is
-##'     \code{"\%init;\%symbol;\%num;\%label;\%unit"}. Be careful to
+##'     \code{"\%init;\%idx;\%symbol;\%label;\%unit"}. Be careful to
 ##'     remember percentage symbols in front of any variable names.
-##' @param fields.omega Like `fields`, applied to `$OMEGA`
+##' @param format.omega Like `fields`, applied to `$OMEGA`
 ##'     section. Default is to reuse `fields`.
-##' @param fields.sigma Like `fields`, applied to `$SIGMA`
+##' @param format.sigma Like `fields`, applied to `$SIGMA`
 ##'     section. Default is to reuse `fields.omega`.
-##' @param use.theta.nums If the num field should be used to number
-##'     thetas. I do not see where this is advantageous to do.
+##' @param use.theta.idx If an index field in comments should be used
+##'     to number thetas. The index field is used to organize
+##'     `$OMEGA`s and `$SIGMA`s because they are matrices but I do not
+##'     see where this is advantageous to do for `$THETA`s. Default
+##'     `use.theta.idx=FALSE` which means `$THETA`s are simply
+##'     counted.
 ##' @param spaces.split Is a blank in `fields` to be treated as a
 ##'     field seperator? Default is not to (i.e. neglect spaces in
 ##'     `fields`).
+##' @param field.idx If an index field is manually provided in the
+##'     control stream comments, define the name of that field in
+##'     `format` and tell `NMreadParsTab()` to use this idx to
+##'     organize especially OMEGA and SIGMA elements by pointing to it
+##'     with `field.idx`. The default is to look for a varible called
+##'     `idx`. If the index has values like 1-2 on an OMEGA or SIGMA
+##'     row, the row is interpreted as the covariance between
+##'     OMEGA/SIGMA 1 and 2.
 ##' @param modelname See ?NMscanData
 ##' @param col.model See ?NMscanData
 ##' @param as.fun See ?NMscanData
+##' @param fields Deprecated. Use `format`.
+##' @param fields.omega Deprecated. Use `format.omega`.
+##' @param fields.sigma Deprecated. Use `format.sigma`.
 ##' @details Off-diagonal omega and sigma elements will only be
 ##'     correctly treated if their num field specifies say 1-2 to
 ##'     specify it is covariance between 1 and 2.
 ##'
 ##' \code{SAME} elements in \code{$OMEGA} will be skipped altogether.
+##' @examples
+##'
+##' 
+##' ## notice, examples on explicitly stated lines. Most often in
+##' ## practice, one would use the file argument to automatically
+##' ## extract the $THETA, $OMEGA and $SIGMA sections from a control
+##' ## stream.
+##'
+##' text <- c("
+##'
+##' $THETA  (.1)             ;[1]; LTVKA (mL/h)
+##' $OMEGA  BLOCK(3)
+##' 0.126303  ;    IIV.CL  ; 1   ;IIV     ;Between-subject variability on CL;-
+##' 0.024  ; IIV.CL.V2.cov  ; 1-2 ;IIV     ;Covariance of BSV on CL and V2;-
+##' 0.127  ;    IIV.V2  ; 2   ;IIV     ;Between-subject variability on V2;-
+##' 0.2  ; IIV.CL.V3.cov  ; 1-3 ;IIV     ;Covariance of BSV on CL and V3;-
+##' 0.2  ; IIV.V2.V3.cov  ; 2-3 ;IIV     ;Covariance of BSV on V2 and V3;-
+##' 0.38  ;    IIV.V3  ; 3   ;IIV     ;Between-subject variability on V3;-
+##' $OMEGA 0 FIX ; IIV.KA ; 4  ;IIV     ;Between-subject variability on KA;-
+##' $SIGMA 1
+##' ")
+##'    lines <- strsplit(text,split="\n")[[1]]
+##'
+##' res <- NMreadParsText(lines=lines,
+##' format="%init;[%num];%symbol",
+##' format.omega="%init %symbol ; %num ; %type   ; %label ; %unit",
+##' field.idx="num")
+##'
+##' ## BLOCK() SAME are skipped
+##' text <- c("
+##' $THETA
+##' (0,0.1) ; THE1      - 1) 1st theta
+##' (0,4.2) ; THE2        - 2) 2nd theta
+##' $OMEGA  0.08   ;    IIV.TH1  ; 1  ;IIV
+##' $OMEGA  BLOCK(1)
+##' 0.547465  ; IOV.TH1  ; 2 ;IOV
+##' $OMEGA  BLOCK(1) SAME
+##' $OMEGA  BLOCK(1) SAME")
+##' lines <- strsplit(text,split="\n")[[1]]
+##' res <- NMreadParsText(lines=lines,
+##'                          format="%init;%symbol - %idx) %label",
+##'                          format.omega="%init; %symbol  ; %idx  ; %label "
+##'                          )
 ##' @export
 
 
-NMreadParsText <- function(file,lines,format,format.omega=format,format.sigma=format.omega,
+NMreadParsText <- function(file,lines,format,
+                           format.omega=format,format.sigma=format.omega,
+                           spaces.split=FALSE,
+                           field.idx="idx",
+                           use.theta.idx=FALSE,
+                           modelname,col.model,as.fun,
                            fields,fields.omega=fields,
-                           fields.sigma=fields.omega,
-                           use.theta.nums=FALSE,spaces.split=FALSE,
-                           modelname,col.model,as.fun){
+                           fields.sigma=fields.omega
+                           ){
 
     idx <- NULL
     par.type <- NULL
     i <- NULL
     j <- NULL
-    num <- NULL
     parameter <- NULL
     THETA <- NULL
+    theta <- NULL
     OMEGA <- NULL
     SIGMA <- NULL
 
@@ -60,7 +125,7 @@ NMreadParsText <- function(file,lines,format,format.omega=format,format.sigma=fo
                                     fields=fields,
                                     fields.omega=fields.omega,
                                     fields.sigma=fields.sigma,
-                                    use.theta.nums=use.theta.nums,
+                                    use.theta.idx=use.theta.idx,
                                     spaces.split=spaces.split)))
         } else {
             lines <- readLines(file)
@@ -78,9 +143,6 @@ NMreadParsText <- function(file,lines,format,format.omega=format,format.sigma=fo
     args <- getArgs()
 
     ## deprecated since 2024-07-09 - v0.1.7
-    ## format <- deprecatedArg(newarg="format","fields",args=args)
-    ## format.omega <- deprecatedArg(newarg="format.omega","fields.omega",args=args)
-    ## format.sigma <- deprecatedArg(newarg="format.sigma","fields.sigma",args=args)
     if(!missing(fields)) {
         .Deprecated(new="format",old="fields")
     }
@@ -96,7 +158,7 @@ NMreadParsText <- function(file,lines,format,format.omega=format,format.sigma=fo
         format <- NULL
     }
     if(is.null(format)){
-        format <- "%init;%symbol;%num;%label;%unit"
+        format <- "%init;%idx;%symbol;%label;%unit"
     }
     if(is.function(format)) format <- format(lines)
     if(is.function(format.omega)) format.omega <- format.omega(lines)
@@ -180,14 +242,14 @@ NMreadParsText <- function(file,lines,format,format.omega=format,format.sigma=fo
 
 
 
-    get.theta.comments <- function(lines,section,format,use.theta.nums=FALSE){
+    get.theta.comments <- function(lines,section,format,use.theta.idx=FALSE){
 
         res.fields.theta <- splitFields(format,spaces.split=spaces.split)
-        get.comments(lines,section,res.fields=res.fields.theta,use.theta.nums=FALSE)
+        get.comments(lines,section,res.fields=res.fields.theta,use.theta.idx=FALSE)
     }
 
 ### applies processed fields on control stream sections. It does so by calling fun.get.fields
-    get.comments <- function(lines,section,res.fields,use.theta.nums=FALSE){
+    get.comments <- function(lines,section,res.fields,use.theta.idx=FALSE){
         
         ## get theta comments
 ### due to a bug in NMreadSection in NMdata 0.1.3 we need to run this in two steps with keep.comments=TRUE and then remove comments lines
@@ -204,33 +266,40 @@ NMreadParsText <- function(file,lines,format,format.omega=format,format.sigma=fo
         colnames(thetas) <- res.fields$fields[1:ncol(thetas)]
 
         thetas[,par.type:=toupper(section)]
-        if(use.theta.nums){
-            thetas[,i:=num]
+
+        if(use.theta.idx && field.idx%in%colnames(theta)){
+            thetas[,i:=get(field.idx)]
+            rm.idx <<- FALSE
         } else {
             thetas[,i:=.I]
         }
     }
 
+### notice, get.omega.comments uses omega as a placeholder for OMEGA or SIGMA
     get.omega.comments <- function(lines,section,format){
         
         res.fields <- splitFields(format,spaces.split=spaces.split)
         omegas <- get.comments(lines=lines,section=section,res.fields=res.fields)
         if(is.null(omegas)) return(NULL)
-        if(!"num"%in%colnames(omegas)) omegas[,num:=.I]
+        if(field.idx%in%colnames(omegas)) {
+            rm.idx <<- FALSE
+        } else {
+            omegas[,(field.idx):=.I]
+        }
         omegas[,i:=NA_integer_]
         omegas[,j:=NA_integer_]
         
-        omegas[grepl("^ *[0-9]+ *$",num),i:=as.integer(num)]
-        omegas[grepl("^ *[0-9]+ *$",num),j:=as.integer(num)]
-        omegas[grepl("-",num),i:=as.integer(sub(" *([0-9])+ *-.*","\\1",num))]
-        omegas[grepl("-",num),j:=as.integer(sub(".*- *([0-9])","\\1",num))]
+        omegas[grepl("^ *[0-9]+ *$",get(field.idx)),i:=as.integer(get(field.idx))]
+        omegas[grepl("^ *[0-9]+ *$",get(field.idx)),j:=as.integer(get(field.idx))]
+        omegas[grepl("-",get(field.idx)),i:=as.integer(sub(" *([0-9])+ *-.*","\\1",get(field.idx)))]
+        omegas[grepl("-",get(field.idx)),j:=as.integer(sub(".*- *([0-9])","\\1",get(field.idx)))]
         omegas[,par.type:=toupper(section)]
         omegas
     }
 
-    
+    rm.idx <- TRUE    
     thetas <- get.theta.comments(lines=lines,section="THETA",format=format,
-                                 use.theta.nums=use.theta.nums)
+                                 use.theta.idx=use.theta.idx)
     omegas <- get.omega.comments(lines=lines,section="omega",format=format.omega)
     sigmas <- get.omega.comments(lines=lines,section="sigma",format=format.sigma)
 
@@ -245,6 +314,10 @@ NMreadParsText <- function(file,lines,format,format.omega=format,format.sigma=fo
     pt1[par.type%in%cc(THETA),parameter:=sprintf("THETA%d",i)]
     pt1[par.type%in%cc(OMEGA,SIGMA),parameter:=sprintf("%s(%d,%d)",par.type,i,j)]
     
+    if(rm.idx) pt1[,(field.idx):=NULL]
+
+    cols.last <- intersect(c("par.type","i","j","col.idx","parameter","model"),colnames(pt1))
+    setcolorder(pt1,c(setdiff(colnames(pt1),cols.last),cols.last))
     
     if(!is.null(file)){
         this.model <- modelname(file)
@@ -257,7 +330,6 @@ NMreadParsText <- function(file,lines,format,format.omega=format,format.sigma=fo
 
 ##' @keywords internal
 escape.charclass <- function(x) {
-    ##gsub("([][\\\\^-])", "\\\\\\1", x)
     gsub("([][\\\\^(\\\\^-])", "\\\\\\1", x)
 }
 
@@ -271,11 +343,6 @@ splitFields <- function(format,spaces.split=FALSE){
 
     
     ## number of fields defined in format
-    
-    ## paste0(".*",paste(chars.to.extract,collapse=").*("),".*")
-    ## regex <- paste0(".* [^", escape.charclass(chars.to.extract), "]")
-    ## nfields.string <- nchars( gsub(regex, "", strings.to.search, perl=TRUE))
-    
     nfields.string <- nchar(gsub("[^%]","",format))
     ## number of fields provided in string
     if(!spaces.split){
@@ -297,22 +364,5 @@ splitFields <- function(format,spaces.split=FALSE){
     string.vars <- gsub("[^[:alnum:]]+",";",format)
     vars <- strsplit(string.vars,";")[[1]][-1]
 
-    ## string.left <- fields
-    ## fields.res <- c()
-    ## ## adding an extra splitter for the last regex to find match
-    ##
-    ## splitters.tmp <- escape.charclass(splitters.tmp)
-    
-
-    ## for(I in 1:nfields.string){
-    ##     ## cat(I,"\n")
-    ##     fields.res <- c(fields.res,
-    ##                     sub(
-    ##                         paste0(" *%*([^",splitters.tmp[I],"]*)",splitters.tmp[I],"*.*")
-    ##                        ,"\\1",string.left)
-    ##                     )
-    ##     string.left <- sub(sprintf("[^%s]*%s",splitters.tmp[I],splitters.tmp[I]),"",string.left)
-    ## }
-    
     list(fields=vars,splitters=splitters,splitters.raw=splitters.raw)
 }

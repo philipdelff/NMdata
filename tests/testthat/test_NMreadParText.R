@@ -4,9 +4,14 @@ test_that("basic",{
 
     fileRef <- "testReference/splitFields_01.rds"
 
-    res <- split.fields("%init;[%num2];%symbol")
+    res <- splitFields("%init;[%num2];%symbol")
     expect_equal_to_reference(res,fileRef)
 
+    if(F){
+        res
+        readRDS(fileRef)
+    }
+    
 })
 
 
@@ -24,10 +29,15 @@ test_that("muref SAEM",{
     NMdataConf(reset=T)
     NMdataConf(as.fun="data.table")
     
-    res <- NMreadParsText(file.mod)
+    res <- NMreadParsText(file.mod,format="%init;%symbol")
     
     expect_equal_to_reference(res,fileRef)
-
+    
+    if(F){
+        res
+        readRDS(fileRef)
+    }
+    
 })
 
 
@@ -39,7 +49,7 @@ test_that("merge with NMreadExt output",{
     NMdataConf(reset=T)
     NMdataConf(as.fun="data.table")
     
-    res <- NMreadParsText(file.mod)
+    res <- NMreadParsText(file.mod,format="%init;%symbol")
     
     res <- mergeCheck(
         res,
@@ -47,6 +57,12 @@ test_that("merge with NMreadExt output",{
         by="parameter")
 
     expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        res
+        readRDS(fileRef)
+    }
+
     
 })
 
@@ -78,11 +94,15 @@ $SIGMA 0 FIX
     lines <- strsplit(text,split="\n")[[1]]
 
     res <- NMreadParsText(lines=lines,format="%init;[%num2];%symbol")
-res
 
     expect_equal_to_reference(res,fileRef)
 
+    if(F){
+        res
+        readRDS(fileRef)
+    }
 
+    
 })
 
 
@@ -105,8 +125,12 @@ $OMEGA 0 FIX
 
     res <- NMreadParsText(lines=lines,format="%init;[%num2];%symbol")
 
-
     expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        res
+        readRDS(fileRef)
+    }
 
 
 })
@@ -121,29 +145,65 @@ test_that("Complex OMEGA",{
 
     text <- c("
 ; matches format
-$THETA  (.1)             ;[1]; LTVKA
-
-$OMEGA 0 FIX ; fake
-$OMEGA  BLOCK(4)
-0.126303  ;    IIV.CLP  ; lognormalOm ;1   ;IIV     ;Between-subject variability on CLP;-
-  0.024  ; IIV.CLP.V2P.cov  ; lognormalOm ;1-2 ;IIV     ;Covariance of BSV on CLP and V2P;-
-  0.127  ;    IIV.V2P  ; lognormalOm ;2   ;IIV     ;Between-subject variability on V2P;-
-  0.2  ; IIV.CLP.V3P.cov  ; lognormalOm ;1-3 ;IIV     ;Covariance of BSV on CLP and V3P;-
-  0.2  ; IIV.V2P.V3P.cov  ; lognormalOm ;2-3 ;IIV     ;Covariance of BSV on V2P and V3P;-
-  0.38  ;    IIV.V3P  ; lognormalOm ;3   ;IIV     ;Between-subject variability on V3P;-
-  0.3  ; IIV.CLP.V3M.cov  ; lognormalOm ;1-4 ;IIV     ;Covariance of BSV on CLP and V3M;-
-  0.2  ; IIV.V2P.V3M.cov  ; lognormalOm ;2-4 ;IIV     ;Covariance of BSV on V2P and V3M;-
-  0.59  ; IIV.V3P.V3M.cov  ; lognormalOm ;3-4 ;IIV     ;Covariance of BSV on V3P and V3M;-
-  0.4  ;    IIV.V3M  ; lognormalOm ;4   ;IIV     ;Between-subject variability on V3M;-
-
+$THETA  (.1)             ;[1]; LTVKA (mL/h)
+$OMEGA  BLOCK(3)
+0.126303  ;    IIV.CL  ; 1   ;IIV     ;Between-subject variability on CL;-
+  0.024  ; IIV.CL.V2.cov  ; 1-2 ;IIV     ;Covariance of BSV on CL and V2;-
+  0.127  ;    IIV.V2  ; 2   ;IIV     ;Between-subject variability on V2;-
+  0.2  ; IIV.CL.V3.cov  ; 1-3 ;IIV     ;Covariance of BSV on CL and V3;-
+  0.2  ; IIV.V2.V3.cov  ; 2-3 ;IIV     ;Covariance of BSV on V2 and V3;-
+  0.38  ;    IIV.V3  ; 3   ;IIV     ;Between-subject variability on V3;-
+$OMEGA 0 FIX ; IIV.KA ; 4  ;IIV     ;Between-subject variability on KA;-
 $SIGMA 1
 ")
     lines <- strsplit(text,split="\n")[[1]]
 
-    res <- NMreadParsText(lines=lines,format="%init;[%num2];%symbol",format.omega="%init            ; %symbol            ; %trans       ; %num ; %panel   ; %label ; %unit")
+    res <- NMreadParsText(lines=lines,format="%init;[%num];%symbol (%unit)",
+                          format.omega="%init            ; %symbol                ; %num ; %type   ; %label ; %unit",field.idx="num")
 
-res
+
     expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        res
+        readRDS(fileRef)
+    }
+
+})
+
+
+test_that("OMEGA SAME",{
+
+### BLOCK SAME are being skipped
+    
+    fileRef <- "testReference/NMreadParText_07.rds"
+
+    NMdataConf(reset=T)
+    NMdataConf(as.fun="data.table")
+
+    text <- c("
+$THETA
+(0,0.1) ; THE1      - 30) 1st theta
+ (0,4.2) ; THE2        - 31) 2nd theta
+$OMEGA  0.08   ;    IIV.TH1  ; 1  ;IIV
+ $OMEGA  BLOCK(1)
+ 0.547465  ; IOV.TH1  ; 2 ;IOV
+$OMEGA  BLOCK(1) SAME
+$OMEGA  BLOCK(1) SAME")
+
+    lines <- strsplit(text,split="\n")[[1]]
+
+    res <- NMreadParsText(lines=lines,
+                          format="%init;%symbol - %idx) %label",
+                          format.omega="%init; %symbol  ; %idx  ; %label "
+                          )
+
+    expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        res
+        readRDS(fileRef)
+    }
 
 
 })

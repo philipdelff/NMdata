@@ -43,7 +43,7 @@
 ##'     something else. If data.tables are wanted, use
 ##'     as.fun="data.table". The default can be configured using
 ##'     NMdataConf.
-##' @param ... Arguments passed to fread.
+##' @param ... Arguments passed to \code{data.table::fread()}.
 ##' @return The Nonmem table data.
 ##' @details The actual reading of data is based on
 ##'     data.table::fread. Generally, the function is fast thanks to
