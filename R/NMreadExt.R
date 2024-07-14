@@ -139,6 +139,7 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
         this.model <- modelname(file)
         NMreadTab(file,as.fun="data.table",quiet=TRUE,col.table.name=TRUE)[,(col.model):=this.model]
     })
+    
 
     if(tableno=="min"){
         res.NMdat <- lapply(res.NMdat,function(x)x[TABLENO==min(TABLENO)])

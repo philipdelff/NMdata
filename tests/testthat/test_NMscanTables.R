@@ -19,6 +19,11 @@ test_that("Multiple output table formats",{
     writeNMinfo(res.dt,meta)
     expect_equal_to_reference(res.dt,fileRef,version=2)
 
+    if(F){
+        res.dt
+        readRDS(fileRef)
+        }
+    
     ## test that we have data.tables from using as.fun=none
     expect_true(all(unlist(lapply(res.dt,is.data.table))))
 

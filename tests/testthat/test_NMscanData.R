@@ -980,3 +980,18 @@ test_that("csv vs rds vs fst",{
     expect_equal_to_reference(res,fileRef,version=2)
     
 })
+
+test_that("inside lappy",{
+### there are issues running NMdata functions in lapply - probably due to getArgs
+
+    lsts <- c(    "testData/nonmem/xgxr013.lst",    "testData/nonmem/xgxr014.lst")
+
+    res1 <- NMscanData(lsts[1])
+    res1 <- NMscanData(lsts[2])
+
+    res.all <- lapply(lsts,NMscanData)
+
+
+
+
+})

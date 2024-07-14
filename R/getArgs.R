@@ -29,3 +29,15 @@ getArgs <- function(which = 1) {
     eval(cl, parent.frame(which+1))
 }
 
+
+getArgs2 <- function(call,env) {
+    ##cl <- sys.call(-which)
+    
+    f1 <- eval(call[[1]], env)
+    ##  cl <- match.call(definition = f1, call = cl)
+    cl <- match.call(definition=f1, call=call,envir=env)
+    cl[[1]] <- quote(list)
+    ##eval(cl, parent.frame(which))
+    eval(cl, env)
+}
+

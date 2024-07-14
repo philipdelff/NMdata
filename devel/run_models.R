@@ -7,6 +7,9 @@ load_all("~/wdirs/NMsim",export_all = FALSE)
 
 NMdataConf(path.nonmem="/opt/nonmem/nm751/run/nmfe75")
 NMdataConf(dir.psn="/opt/psn")
+NMdataConf(path.nonmem="/opt/NONMEM/nm75/run/nmfe75")
+NMdataConf(as.fun="data.table")
+
 
 NMexec("../tests/testthat/testData/nonmem/xgxr004.mod",sge=FALSE)
 NMexec("../tests/testthat/testData/nonmem/xgxr014.mod",sge=FALSE)
@@ -15,6 +18,7 @@ NMexec("../tests/testthat/testData/nonmem/xgxr033.mod",sge=FALSE)
 
 NMexec("../inst/examples/nonmem/xgxr031.mod",sge=FALSE)
 NMexec("../inst/examples/nonmem/xgxr032.mod",sge=FALSE)
+NMexec("../inst/examples/nonmem/xgxr132.mod",sge=FALSE)
 
 
 
@@ -33,3 +37,8 @@ simres <- NMsim(file.mod="../tests/testthat/testData/nonmem/xgxr014.mod",
       name.sim="subprobs",
       path.nonmem="/opt/nonmem/nm751/run/nmfe75")
 
+
+file.mod <- "../inst/examples/nonmem/xgxr132.mod"
+NMexec(file.mod,sge=FALSE)
+
+NMreadExt(file.mod)

@@ -73,8 +73,7 @@ NMextractText <- function(file, lines, text, section, char.section,
                           type="mod", linesep="\n",
                           ## deprecated arguments
                           keepEmpty, keepName,
-                          keepComments, asOne,
-                          cleanSpaces
+                          keepComments, asOne
                           ){
 
     nsection <- NULL
@@ -89,7 +88,7 @@ NMextractText <- function(file, lines, text, section, char.section,
     keep.name <- deprecatedArg("keepName","keep.name",args=args)
     keep.comments <- deprecatedArg("keepComments","keep.comments",args=args)
     as.one <- deprecatedArg("asOne","as.one",args=args)
-    clean.spaces <- deprecatedArg("cleanSpaces","clean.spaces",args=args)
+    ## clean.spaces <- deprecatedArg("cleanSpaces","clean.spaces",args=args)
 
     if(!return%in%c("idx","text")) stop("text must be one of text or idx.")
 
@@ -194,13 +193,7 @@ NMextractText <- function(file, lines, text, section, char.section,
 
     if(clean.spaces){
         if(!return=="text") {
-            stop("cleanSpaces can only be TRUE if return=='text'")
-        }
-        cleanSpaces <- function(x,double=TRUE,lead=TRUE,trail=TRUE){
-            if(double) x <- gsub(paste0(" +")," ",x)
-            if(lead) x <- sub(paste0("^ +"),"",x)
-            if(trail) x <- sub(paste0(" +$"),"",x)
-            x
+            stop("clean.spaces can only be TRUE if return=='text'")
         }
         ## result <- lapply(result,cleanSpaces)
         

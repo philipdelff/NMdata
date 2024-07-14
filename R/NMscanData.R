@@ -237,7 +237,11 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     ## if null, col.tableno will later be set to TRUE if TABLENO varies
 
     ## deprecated 2023-06-20
-    use.rds <- deprecatedArg(oldarg="use.rds",msg="Use `formats` instead. Overwriting `formats.read`.")
+    args <- getArgs2(sys.call(),parent.frame())
+    ##:ess-bp-start::conditional@:##
+browser(expr={TRUE})##:ess-bp-end:##
+    
+    use.rds <- deprecatedArg(oldarg="use.rds",msg="Use `formats` instead. Overwriting `formats.read`.",args=args)
     if(!is.null(use.rds)&&use.rds){
         formats.read <- c("rds","csv")
     }
@@ -258,7 +262,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     ## if(missing(col.tableno)) col.tableno <- NULL
 
     if(!missing(tab.count)||!missing(col.nmrep)){
-        args <- getArgs()
+        ## args <- getArgs()
         col.nmrep <- deprecatedArg(oldarg="tab.count",newarg="col.nmrep",args=args)
     }
     

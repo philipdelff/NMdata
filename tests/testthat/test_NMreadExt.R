@@ -10,6 +10,12 @@ test_that("basic - pars",{
     
     res <- NMreadExt(file=file.ext,as.fun="data.table")
     expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        res[1:4]
+        readRDS(fileRef)[1:4]
+    }
+    
 })
 
 test_that("basic - all",{

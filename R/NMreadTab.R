@@ -96,14 +96,6 @@ NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip
         rm.col.tableno <- TRUE
     }
 
-
-    ## function to strip strings from leading, trailing and duplicate spaces
-    cleanSpaces <- function(x){
-        x <- sub("^ +","",x)
-        x <- sub(" +$","",x)
-        x <- gsub(" +"," ",x)
-        x
-    }
     
     ## arg checks
     if(!is.character(file)) stop("file should be a character string",call.=FALSE)
@@ -120,6 +112,7 @@ NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip
         if(!header) skip <- 0
     }
     dt1 <- fread(file,fill=TRUE,header=header,skip=skip,...)
+    ## dt1 <- fread(file,fill=TRUE,...)
     
     cnames <- copy(colnames(dt1))
     if(!quiet){

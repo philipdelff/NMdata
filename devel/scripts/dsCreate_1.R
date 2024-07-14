@@ -7,7 +7,7 @@ library(ggplot2)
 
 ### pmxtricks is only used for individual plotting, so it's not necessary. 
 ## we need to ensure a specific version of pmxtricks is used. 0.0.7 is a candidate
-library(remotes)
+## library(remotes)
 ## install_github("philipdelff/pmxtricks")
 ## library(pmxtricks)
 
