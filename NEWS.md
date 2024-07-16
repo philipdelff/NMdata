@@ -1,11 +1,29 @@
 
 # 0.1.7
+## New features
+* NMreadPartab has been generalized to support comment formats very
+  generally. `NMreadPartab()` reads te comments in `$THETA`, `$OMEGA`
+  and `$SIGMA` sections, splits them into variables, and organizes
+  those variables in a parameter table. With this upgrade, pretty much
+  any structure should be supported as long as delimitors are not
+  alphabetic or numeric (so any special characters should
+  work). Notice, delimitors can change between fields . Example:
+  "$THETA 1.4 ; 3 - CL (Clearance) [L/h]" would be matched by
+  `NMreadPartab(...,format="%init ;%idx-%symbol(%label)[%unit]")`
+  which would then return a table including columns init, idx, symbol,
+  label, and unit. The comments must be systematic within say `$THETA`
+  but the format can be different for `$OMEGA` and `$SIGMA`. See
+  examples in `?NMreadParTab`.
+
 ## Bugfixes
 * `NMscanInput()` and `NMreadCsv()` could fail if file names had no
   extensions. Fixed.
 
 * `NMreplaceDataFile()` now works on directories and regular
   expressions to find models to update.
+  
+* Some internal functions would make some functions including
+  `NMscanData()` fail if used within `lapply()`. Fixed.
 
 # 0.1.6
 

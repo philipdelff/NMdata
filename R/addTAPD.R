@@ -85,7 +85,8 @@ addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
-    args <- getArgs()
+    ## args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
     deprecatedArg("col.ndoses","col.doscumn",args=args)
     
     if(missing(as.fun)) as.fun <- NULL

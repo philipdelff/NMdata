@@ -232,7 +232,8 @@ NMdataConf <- function(...,allow.unknown=FALSE){
             val <- NMdataDecideOption("use.rds",val,allow.unknown=allow.unknown)
             if(!is.null(val)){
                 
-                args1 <- getArgs()
+                ##args1 <- getArgs()
+                args1 <- getArgs(sys.call(),parent.frame())
                 deprecatedArg(oldarg="use.rds",args=args1)
                 message("overwriting `formats.read`")
                 dots[["formats.read"]] <- c("csv")

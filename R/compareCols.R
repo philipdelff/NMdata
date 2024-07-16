@@ -83,7 +83,7 @@ compareCols <- function(...,list.data,keep.names=TRUE,test.equal=FALSE,diff.only
 
 
     
-    args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
 
     
     ## deprecated since 2023-06-10

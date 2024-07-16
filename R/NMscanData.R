@@ -237,9 +237,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     ## if null, col.tableno will later be set to TRUE if TABLENO varies
 
     ## deprecated 2023-06-20
-    args <- getArgs2(sys.call(),parent.frame())
-    ##:ess-bp-start::conditional@:##
-browser(expr={TRUE})##:ess-bp-end:##
+    args <- getArgs(sys.call(),parent.frame())
     
     use.rds <- deprecatedArg(oldarg="use.rds",msg="Use `formats` instead. Overwriting `formats.read`.",args=args)
     if(!is.null(use.rds)&&use.rds){

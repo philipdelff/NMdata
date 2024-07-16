@@ -140,7 +140,8 @@ NMreadParsText <- function(file,lines,format,
     if(missing(modelname)) modelname <- NULL
     modelname <- NMdataDecideOption("modelname",modelname)
 
-    args <- getArgs()
+    ## args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
 
     ## deprecated since 2024-07-09 - v0.1.7
     if(!missing(fields)) {

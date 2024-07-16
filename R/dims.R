@@ -20,7 +20,8 @@
 dims <- function(...,list.data,keep.names=TRUE,as.fun=NULL,keepNames){
     
     ## Was deprecated way before 2023-06-10. keepNames was deprecated in compareCols on that date.
-    args <- getArgs()
+    ## args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
     keep.names <- deprecatedArg("keepNames","keep.names",args=args)
 
     ## if(!missing(keepNames)){

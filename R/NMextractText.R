@@ -55,7 +55,6 @@
 ##' @param keepEmpty Deprecated. See keep.empty.
 ##' @param keepName Deprecated. See keep.name.
 ##' @param asOne Deprecated. See as.one.
-##' @param cleanSpaces Deprecated. See clean.spaces.
 ##' @return character vector with extracted lines.
 ##' @details This function is planned to get a more general name and
 ##'     then be called by NMreadSection.
@@ -81,7 +80,8 @@ NMextractText <- function(file, lines, text, section, char.section,
     
 #### Section start: Pre-process arguments ####
 
-    args <- getArgs()
+    ## args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
     
 ### deprecated since 2023-06-14: keepEmpty, keepName, keepComments, asOne, cleanSpaces
     keep.empty <- deprecatedArg("keepEmpty","keep.empty",args=args)

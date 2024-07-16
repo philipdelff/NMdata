@@ -4,7 +4,7 @@
 \alias{getArgs}
 \title{Get provided arguments as a named list}
 \usage{
-getArgs(which = 1)
+getArgs(call, env)
 }
 \arguments{
 \item{which}{How many environment levels to go up to look for

@@ -104,7 +104,8 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
         stop("tableno must be either one of the character strings min, max, all or an integer greater than zero.")
     }
     
-    args <- getArgs()
+    ## args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
     if(missing(file.ext)) file.ext <- NULL
     file <- deprecatedArg("file.ext","file",args=args)
 

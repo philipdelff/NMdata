@@ -134,7 +134,8 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
         write.RData=FALSE
         write.rds=FALSE
     }
-    args <- getArgs()
+    ## args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
     
     args.write.depr <- c("write.rds","write.csv","write.RData")
     if(any(args.write.depr %in% names(args))) {
@@ -192,7 +193,7 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
     ## if args.NMgenText is used, the deprecated ags are not allowed
     ## all.args <- as.list(match.call(expand.dots=FALSE))
     ## These were deprecated way before 2023-06-13
-    all.args <- getArgs()
+    ## all.args <- getArgs()
     if(missing(args.NMgenText)) {
         args.NMgenText <- NULL
     } else {
@@ -201,7 +202,7 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
                        ,fun.msg=stop)
         }
     }
-    used.args.depr <- all.args[names(all.args)%in%args.text.depr]
+    used.args.depr <- args[names(args)%in%args.text.depr]
     if(length(used.args.depr)>0){
         names.used.ad <- names(used.args.depr)
         names.used.ad[names.used.ad=="nm.drop"] <- "drop"

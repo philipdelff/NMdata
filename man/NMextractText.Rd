@@ -24,8 +24,7 @@ NMextractText(
   keepEmpty,
   keepName,
   keepComments,
-  asOne,
-  cleanSpaces
+  asOne
 )
 }
 \arguments{
@@ -99,8 +98,6 @@ how lines should be separated.}
 \item{keepComments}{Deprecated. See keep.comments.}
 
 \item{asOne}{Deprecated. See as.one.}
-
-\item{cleanSpaces}{Deprecated. See clean.spaces.}
 }
 \value{
 character vector with extracted lines.

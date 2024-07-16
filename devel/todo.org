@@ -124,7 +124,8 @@ Apply elementwise to fn. Must be same length as fn then.
 **** DONE fnExtension("run.lst") should return lst
 **** DONE Make internal in tracee
 *** getArgs
-**** TODO [#A] Make sure functions that use it can work with lapply
+**** DONE Make sure functions that use it can work with lapply
+Solved by alway passing call and environment
 *** NMcheckColNames
 **** return input column names and Nonmem interpretation for user to spot errors
 **** Bad name, what could we call it?
@@ -446,7 +447,7 @@ Like ;1;CL;;;mL/h
 It would be easier to remember
 *** TODO [#A] NMrelate
 *** NMreplaceDataFile
-**** TODO [#A] Fails on dir+file.pattern
+**** DONE Fails on dir+file.pattern
 **** DONE Implement function
 **** DONE Tests
 *** NMscanInput
@@ -686,7 +687,7 @@ Not warning. Warning if standard variable?
 **** DONE Don't warn about missing SS, ADDL, II
 **** DONE Polish
 *** flagsAssign
-**** TODO [#A] flag.n should be factor
+**** TODO [#A] flag.c should be factor
 And flagsCount should retain them
 Was this supposed to be flag.c?
 **** DONE flagsCount should not require a flag table

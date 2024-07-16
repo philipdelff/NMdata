@@ -50,7 +50,8 @@ NMcheckDataFile <- function(file,col.row,col.id="ID",formats.read="csv",quiet=FA
         messageWrap("use.input=FALSE not allowed",track.msg = TRUE,fun.msg=stop)
     }
 
-    use.rds <- deprecatedArg(oldarg="use.rds",msg="Use `formats.read` instead. Overwriting `formats.read`.")
+    args <- getArgs(sys.call(),parent.frame())
+    use.rds <- deprecatedArg(oldarg="use.rds",msg="Use `formats.read` instead. Overwriting `formats.read`.",args=args)
     if(!is.null(use.rds)&&use.rds){
         formats.read <- c("rds","csv")
     }
