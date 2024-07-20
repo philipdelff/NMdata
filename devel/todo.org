@@ -199,6 +199,8 @@ Error if not convertible and not NA or ""? "b" should be an error right?
 *** TODO [#B] Function for complex dosing regimens              :newFunction:
 *** DONE [#B] Function to unfold ADDL/II doses to multiple rows :newFunction:
 *** mergeCheck
+**** TODO [#A] Change name to addCols
+Do not deprecate mergeCheck() - too much depends on it.
 **** TODO [#B] Implement a faster method?
 What if we just check for matches in by columns?
 **** TODO [#B] accept common columns not being merged by if suffixes are provided
@@ -251,10 +253,17 @@ I don't think I ever tried this. What will NMscanData do if input data
 has no headers, and there are no filters? I think NMapplyFilters may
 fail.
 *** NMcheckData
+**** TODO [#A] Classify findings
+NOTE, WARN, ERR -> just in table, warning(), stop()?
+**** TODO [#A] Argument to disable warnings and stop?
+**** TODO [#A] arg to disable looking for some columns
+like CMT, AMT etc. Maybe cols.disable where only some can be chosen?
+**** TODO [#A] subset argument
+Remember row numbers must be true to full data set
 **** TODO [#A] RATE=-1 is OK :v0_1_7:
 **** TODO [#A] CMT can be any non-zero integer :v0_1_7:
 But more than say 20 compartments seems unlikely
-**** TODO [#A] Support for a table of accepted findings
+**** CANCELLED Support for a table of accepted findings
 **** DONE support for col.id with file arg
 Looks like col.id is being overwritten for no reason
 **** TODO [#B] Improve handling of missing covs
@@ -414,7 +423,7 @@ issued. Once done, NMgetSection must be updated as well.
 *** NMisNumeric
 **** DONE NA_character is not recognized as numeric
 *** NMreadExt
-**** TODO Support Laplacian
+**** TODO [#A] Support Laplacian
 Laplacian Conditional Estimation
 **** DONE Include model column same way as NMscanData
 **** DONE Support multiple files
@@ -445,7 +454,14 @@ Like ;1;CL;;;mL/h
 **** DONE error returned when return="idx" and no section specified     :Bug: 
 **** TODO [#B] return="text"/"idx" should be return.idx=TRUE/FALSE instead
 It would be easier to remember
-*** TODO [#A] NMrelate
+*** NMrelate
+**** DONE Include model column
+**** TODO [#A] would be better if NMrelateOne added par.type
+**** TODO [#A] Count how many times the combination of par.type,i,j is matched on the RHS
+**** DONE NMrelateOne must recognize ERR, EPS
+**** DONE test merging with NMreadExt output
+**** DONE NMrelate should support file.mod vector or lines as a list
+**** DONE as.fun
 *** NMreplaceDataFile
 **** DONE Fails on dir+file.pattern
 **** DONE Implement function

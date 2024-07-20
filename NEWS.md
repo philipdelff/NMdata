@@ -1,8 +1,8 @@
 
 # 0.1.7
 ## New features
-* NMreadPartab has been generalized to support comment formats very
-  generally. `NMreadPartab()` reads te comments in `$THETA`, `$OMEGA`
+* `NMreadPartab()` has been generalized to support comment formats very
+  generally. `NMreadPartab()` reads the comments in `$THETA`, `$OMEGA`
   and `$SIGMA` sections, splits them into variables, and organizes
   those variables in a parameter table. With this upgrade, pretty much
   any structure should be supported as long as delimitors are not
@@ -14,6 +14,12 @@
   label, and unit. The comments must be systematic within say `$THETA`
   but the format can be different for `$OMEGA` and `$SIGMA`. See
   examples in `?NMreadParTab`.
+  
+* `NMrelate()` is a new automated approach to label parameters. It
+  interprets Nonmem code and provides labels used in the control
+  stream. If the line `TVCL=THETA(1)` is the only line in the code
+  that references THETA(1), `NMrelate()` will return a label
+  `TVCL`.
 
 ## Bugfixes
 * `NMscanInput()` and `NMreadCsv()` could fail if file names had no
@@ -24,6 +30,11 @@
   
 * Some internal functions would make some functions including
   `NMscanData()` fail if used within `lapply()`. Fixed.
+
+* `NMexpandDoses()` would give a warning if `length(cols.id)>1`. Fixed.
+
+* `NMreadExt()` would mess up iterations and parameter estimates if
+  `as.fun` was set to returning something else than `data.table`s. Fixed.
 
 # 0.1.6
 

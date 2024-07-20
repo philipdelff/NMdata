@@ -121,21 +121,6 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     }
 
 
-    addPartype <- function(pars){
-        pars[,par.type:=NA_character_]
-        pars[grepl("^THETA",parameter),par.type:="THETA"]
-        pars[grepl("^OMEGA",parameter),par.type:="OMEGA"]
-        pars[grepl("^SIGMA",parameter),par.type:="SIGMA"]
-        pars[par.type=="THETA",i:=sub("THETA([0-9]+)","\\1",parameter)]
-        pars[par.type=="OMEGA",i:=sub("OMEGA\\(([0-9]+)\\,([0-9]+)\\)","\\1",parameter)]
-        pars[par.type=="OMEGA",j:=sub("OMEGA\\(([0-9]+)\\,([0-9]+)\\)","\\2",parameter)]
-        pars[par.type=="SIGMA",i:=sub("SIGMA\\(([0-9]+)\\,([0-9]+)\\)","\\1",parameter)]
-        pars[par.type=="SIGMA",j:=sub("SIGMA\\(([0-9]+)\\,([0-9]+)\\)","\\2",parameter)]
-        cols <- cc(i,j)
-        pars[,(cols):=lapply(.SD,as.integer),.SDcols=cols]
-        pars[]
-    }
-
     res.NMdat <- lapply(file,function(file){
         this.model <- modelname(file)
         NMreadTab(file,as.fun="data.table",quiet=TRUE,col.table.name=TRUE)[,(col.model):=this.model]
@@ -186,14 +171,14 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
         pars <- melt(pars,id.vars=cc(model,TABLENO,NMREP,table.step,ITERATION,variable),variable.name="parameter")
         pars <- dcast(pars,model+TABLENO+NMREP+table.step+parameter~variable,value.var="value")
 
-        pars <- addPartype(pars)
+        pars <- addParType(pars)
     }
     
     ## what to do about OBJ? Disregard? And keep in a iteration table instead?
     iterations <- res.NMdat[as.numeric(ITERATION)>(-1e9),!("variable")] 
     iterations <- addTableStep(iterations,keep.table.name=FALSE)
     iterations <- melt(iterations,id.vars=cc(model,TABLENO,NMREP,table.step,ITERATION),variable.name="parameter")
-    iterations <- addPartype(iterations)
+    iterations <- addParType(iterations)
 
     res <- list(pars=pars,iterations=iterations)
     res <- lapply(res,as.fun)
@@ -201,5 +186,7 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     if(return=="pars") return(res$pars)
     if(return=="iterations") return(res$iterations)
 
-    as.fun(res)
+    
+    ## as.fun already applied
+    res
 }

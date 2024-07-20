@@ -79,8 +79,8 @@ NMexpandDoses <- function(data,col.time="TIME",col.id="ID",col.evid="EVID",track
         return(data)
     }
 
-    if(!col.id%in%colnames(data)){
-        stop("col.id must refer to a name of an existing column in data.")
+    if(!all(col.id%in%colnames(data))){
+        stop("col.id must refer to names of existing columns in data (most often just one column).")
     }
     if(!col.time%in%colnames(data)){
         stop("col.time must refer to a name of an existing column in data.")
