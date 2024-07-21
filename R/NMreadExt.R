@@ -172,6 +172,11 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
         pars <- dcast(pars,model+TABLENO+NMREP+table.step+parameter~variable,value.var="value")
 
         pars <- addParType(pars)
+        
+        ## setorder(pars,match(par.type,c("THETA","OMEGA","SIGMA")),i,j)
+        ## pars <- pars[
+        ##     frank(pars,match(par.type,c("THETA","OMEGA","SIGMA")))
+        ##          ,i,j)]
     }
     
     ## what to do about OBJ? Disregard? And keep in a iteration table instead?

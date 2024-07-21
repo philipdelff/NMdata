@@ -14,7 +14,16 @@
 
 
 
-NMreadCov <- function (file, ...) {
+NMreadCov <- function (file,auto.ext, ...) {
+
+
+    if(missing(auto.ext) || is.null(auto.ext)) auto.ext <- TRUE
+    fun.file.cov <- NMdataDecideOption("file.cov")
+    if(auto.ext){
+        file <- fun.file.cov(file)
+    }
+
+
     if(!file.exists(file)){stop("file does not exist.")}
     TABLE <- NULL
     NMREP <- NULL
