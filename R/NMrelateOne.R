@@ -16,6 +16,7 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",by.par=TRUE,as.fun){
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
+    if(!by.par){stop("")}
     
     lines <- getLines(file=file,lines=lines)
     
@@ -37,13 +38,13 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",by.par=TRUE,as.fun){
                )
     
     
-    dt.code <- data.table(line.eta = lines[grepl(str.regex.find,lines)])
+    dt.code <- data.table(line.var = lines[grepl(str.regex.find,lines)])
     ## remove spaces
-    dt.code[,line2:=gsub(" ","",line.eta)]
+    dt.code[,line2:=gsub(" ","",line.var)]
 
     ## determine found variable type?
     
-    dt.code <- dt.code[,.(varname=regmatches(line2, gregexpr(paste0(str.regex.find,"\\(([0-9]+(,[0-9]+)*)\\)"),line2)) |> unlist()),by=.(line.eta,line2)]
+    dt.code <- dt.code[,.(varname=regmatches(line2, gregexpr(paste0(str.regex.find,"\\(([0-9]+(,[0-9]+)*)\\)"),line2)) |> unlist()),by=.(line.var,line2)]
     dt.code[,varname:=sub("^[^[:alnum:]]","",varname)]
     dt.code[,var.type:=sub(sprintf("(%s).*",str.regex),"\\1",varname)][,lineno:=.I]
 
@@ -62,9 +63,9 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",by.par=TRUE,as.fun){
 
 
 
-    dt.code[,parname:=varname]
-    dt.code[var.type=="ETA",parname:=sprintf("%s(%s,%s)","OMEGA",i,j)]
-    dt.code[var.type%in%cc(EPS,ERR),parname:=sprintf("%s(%s,%s)","SIGMA",i,j)]
+    dt.code[,par.name:=varname]
+    dt.code[var.type=="ETA",par.name:=sprintf("%s(%s,%s)","OMEGA",i,j)]
+    dt.code[var.type%in%cc(EPS,ERR),par.name:=sprintf("%s(%s,%s)","SIGMA",i,j)]
     dt.code[,LHS:=sub("(.*)=.*","\\1",line2)]
     dt.code[,par.type:=..par.type]
 
@@ -73,25 +74,24 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",by.par=TRUE,as.fun){
     ## if a LHS is affected by multiple ETAs we number them
     dt.code[,nrep.LHS:=.N,by=.(LHS)]
     dt.code[,nrep.par:=.N,by=.(par.type,i,j)]
-    dt.code[,label.LHS:=LHS]
-    dt.code[nrep.LHS>1,label.LHS:=paste0(label.LHS," - ",par.type,"(",i,")")]
+    dt.code[,label:=LHS]
+    dt.code[nrep.LHS>1,label:=paste0(label," - ",par.type,"(",i,")")]
     
     if(by.par){
-        dt.code.eta <- dt.code[,.(LHS=paste(unique(LHS),collapse=", "),
+        dt.code <- dt.code[,.(LHS=paste(unique(LHS),collapse=", "),
                                   label=paste(unique(LHS),collapse=", "),
                                   code=paste(line2,collapse=", ")
-                                  ),by=.(parname,par.type,i,j,nrep.LHS,nrep.par)]
+                                  ),by=.(par.name,par.type,i,j,nrep.LHS,nrep.par)]
 
-        dt.code.eta[nrep.LHS>1,
-                    label:=paste(paste(unique(LHS),collapse=", "),parname,sep=" - ")]
+        dt.code[nrep.LHS>1,
+                    label:=paste(paste(unique(LHS),collapse=", "),par.name,sep=" - ")]
         
     }
 
     
     
-    setorder(dt.code.eta,i,j)
-    ## dt.code.eta
+    setorder(dt.code,i,j)
 
-    as.fun(dt.code.eta)
+    as.fun(dt.code)
 
 }

@@ -63,5 +63,5 @@ test_that("2 models",{
 
     expect_equal_to_reference(res,fileRef)
 
-    NMrelateOne(file.mod[2])
+    ##    NMrelateOne(file.mod[2])
 })

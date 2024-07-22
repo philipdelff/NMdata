@@ -12,8 +12,10 @@ test_that("basic - pars",{
     expect_equal_to_reference(res,fileRef)
 
     if(F){
+        ref <- readRDS(fileRef)
+        compareCols(ref,res)
         res[1:4]
-        readRDS(fileRef)[1:4]
+        res[1:4]
     }
     
 })
@@ -25,6 +27,12 @@ test_that("basic - all",{
 
     res <- NMreadExt(file=file.ext,as.fun="data.table",return="all")
     expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        compareCols(ref,res)
+    }
+
 })
 
 test_that("basic - all from multiple models",{
@@ -34,6 +42,12 @@ test_that("basic - all from multiple models",{
 
     res <- NMreadExt(file=file.ext,as.fun="data.table",return="all")
     expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        compareCols(ref,res)
+    }
+
 })
 
 
@@ -44,6 +58,15 @@ test_that("muref - all",{
 
     res <- NMreadExt(file=file.ext,as.fun="data.table",return="all")
     expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        res
+        ref
+        
+    }
+
+
 })
 
 test_that("muref SAEM - all",{
@@ -72,4 +95,11 @@ test_that("muref SAEM - tableno options",{
 
     expect_equal_to_reference(res,fileRef)
     
+    if(F){
+        ref <- readRDS(fileRef)
+        res
+        ref
+    }
+
+
 })
