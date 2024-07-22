@@ -22,6 +22,7 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",by.par=TRUE,as.fun){
     par.type <- toupper(cleanSpaces(par.type))
     if(par.type=="ETA") par.type <- "OMEGA"
     if(par.type%in%c("ERR","EPS")) par.type <- "SIGMA"
+
     str.regex <- switch(par.type,
                         OMEGA="ETA"
                        ,THETA="THETA"
@@ -30,37 +31,10 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",by.par=TRUE,as.fun){
                         )
     str.regex.find <- paste0("[^[:alnum:]]",str.regex)
 
-    ##if(type%in%cc(ETA,THETA)){
     lines <- c(NMreadSection(lines=lines,section="PRED",keep.comments=FALSE),
                NMreadSection(lines=lines,section="PK",keep.comments=FALSE),
                NMreadSection(lines=lines,section="ERROR",keep.comments=FALSE)
                )
-    ## }
-    ## if(type=="SIGMA"){
-    ##    lines <- NMreadSection(lines=lines,section="ERROR",keep.comments=FALSE)
-    ## }
-
-    ## function(line,var.type){
-    ##     ## eta, theta
-    ##     if(var.type%in%cc(ETA,THETA,ERR,EPS)){
-    ##         dt.code <- dt.code[,.(text.eta=regmatches(line2, gregexpr(paste0(str.regex,"\\(([0-9]+)\\)"),line2)) |> unlist()),by=.(line.eta,line2)]
-
-    ##         dt.code[,i:=as.numeric(sub(paste0(".*",str.regex,"\\(([1-9][0-9]*)\\)"),"\\1",text.eta))]
-    ##         if(type%in%c("ETA","ERR","EPS")){
-    ##             dt.code[,j:=i]
-    ##         } else {
-    ##             dt.code[,j:=NA_integer_]
-    ##         }
-    ##     }
-    ##     ## sigma
-    ##     if(var.type=="SIGMA"){
-    ##         dt.code <- dt.code[,.(text.eta=regmatches(line2, gregexpr(paste0(str.regex,"\\([0-9]+,[0-9]+\\)"),line2)) |> unlist()),by=.(line.eta,line2)]
-    
-    ##         dt.code[,i:=as.numeric(sub(paste0(".*",str.regex,"\\(([1-9][0-9]*),([1-9][0-9]*)\\)"),"\\1",text.eta))]
-    ##         dt.code[,j:=as.numeric(sub(paste0(".*",str.regex,"\\(([1-9][0-9]*),([1-9][0-9]*)\\)"),"\\2",text.eta))]
-    ##     }
-    ## }
-    
     
     
     dt.code <- data.table(line.eta = lines[grepl(str.regex.find,lines)])
@@ -69,15 +43,10 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",by.par=TRUE,as.fun){
 
     ## determine found variable type?
     
-    dt.code <- dt.code[,.(varname=regmatches(line2, gregexpr(paste0(str.regex,"\\(([0-9]+(,[0-9]+)*)\\)"),line2)) |> unlist()),by=.(line.eta,line2)]
+    dt.code <- dt.code[,.(varname=regmatches(line2, gregexpr(paste0(str.regex.find,"\\(([0-9]+(,[0-9]+)*)\\)"),line2)) |> unlist()),by=.(line.eta,line2)]
+    dt.code[,varname:=sub("^[^[:alnum:]]","",varname)]
     dt.code[,var.type:=sub(sprintf("(%s).*",str.regex),"\\1",varname)][,lineno:=.I]
 
-###### instead, create a function that will be run on each line of dt.code
-    ## eta, theta
-    ##if(var.type%in%cc(ETA,THETA,ERR,EPS)){
-                                        #dt.code <- dt.code[,.(parname=regmatches(line2, gregexpr(paste0(str.regex,"\\(([0-9]+)\\)"),line2)) |> unlist()),by=.(line.eta,line2)]
-    
-    ## dt.code[var.type%in%cc(ETA,THETA,ERR,EPS),i:=as.numeric(sub(paste0(".*",str.regex,"\\(([1-9][0-9]*)\\)"),"\\1",parname))]
 
     dt.code[var.type%in%cc(ETA,THETA,ERR,EPS),
             i:=as.numeric(sub(paste0(".*",var.type,"\\(([1-9][0-9]*)\\)"),"\\1",varname)),
@@ -86,19 +55,11 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",by.par=TRUE,as.fun){
     dt.code[,j:=NA_integer_]
     dt.code[var.type%in%c("ETA","ERR","EPS"),j:=i]
 
-    ##}
-    ##    }
-    ## sigma
-    
-    dt.code[var.type=="SIGMA",
-            ##dt.code <- dt.code[,.(parname=regmatches(line2, gregexpr(paste0(str.regex,"\\([0-9]+,[0-9]+\\)"),line2)) |> unlist()),by=.(line.eta,line2)]
-            
-            ##dt.code[,i:=as.numeric(sub(paste0(".*",str.regex,"\\(([1-9][0-9]*),([1-9][0-9]*)\\)"),"\\1",parname))]
-            
+    dt.code[var.type=="SIGMA",            
             i:=as.integer(sub(".*\\(([1-9][0-9]*),([1-9][0-9]*)\\)","\\1",varname))]
     dt.code[var.type=="SIGMA",
             j:=as.integer(sub(".*\\(([1-9][0-9]*),([1-9][0-9]*)\\)","\\2",varname))]
-    ##}
+
 
 
     dt.code[,parname:=varname]
@@ -117,22 +78,14 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",by.par=TRUE,as.fun){
     
     if(by.par){
         dt.code.eta <- dt.code[,.(LHS=paste(unique(LHS),collapse=", "),
-                                  label.LHS=paste(unique(LHS),collapse=", "),
+                                  label=paste(unique(LHS),collapse=", "),
                                   code=paste(line2,collapse=", ")
-                                  ),by=.(parname,par.type,i,j,nrep.LHS)]
+                                  ),by=.(parname,par.type,i,j,nrep.LHS,nrep.par)]
 
         dt.code.eta[nrep.LHS>1,
-                    label.LHS:=paste(paste(unique(LHS),collapse=", "),parname,sep=" - ")]
+                    label:=paste(paste(unique(LHS),collapse=", "),parname,sep=" - ")]
         
     }
-
-
-    
-    ## dt.code.eta[,par.type:=switch(type,
-    ##                               THETA="THETA",
-    ##                               ETA="OMEGA",
-    ##                               SIGMA="SIGMA",
-    ##                               ERR="SIGMA")]
 
     
     
