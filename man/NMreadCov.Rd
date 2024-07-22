@@ -4,7 +4,7 @@
 \alias{NMreadCov}
 \title{Read in data file}
 \usage{
-NMreadCov(file, ...)
+NMreadCov(file, auto.ext, ...)
 }
 \arguments{
 \item{file}{The .cov covariance Nonmem matrix file to read}
