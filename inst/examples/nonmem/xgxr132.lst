@@ -1,4 +1,4 @@
-Sat Jul 13 10:00:24 EDT 2024
+Wed Jul 24 01:08:49 EDT 2024
 $PROBLEM    031 SAEM
 ;; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY
 
@@ -58,13 +58,13 @@ $SIGMA  0  FIX
 ;;            PRINT=10 NOABORT MSFO=xgxr032.msf
 $ESTIMATION METHOD=SAEM INTERACTION NOABORT NBURN=1000 NITER=1000
             CTYPE=3 MAX=99999 NSIG=3 SEED=3442 PRINT=10 RANMETHOD=P
-            MSFO=xgxr032.msf
+            MSFO=xgxr132.msf
 $ESTIMATION METHOD=IMP INTERACTION EONLY=1 NITER=20 PRINT=1
             ISAMPLE=5000 RANMETHOD=P
 $COVARIANCE PRINT=E
 $TABLE      ROW KA V2 V3 CL Q PRED IPRED Y NOPRINT
-            FILE=xgxr032_res.txt
-$TABLE      ETAS(1:LAST) NOAPPEND NOPRINT FILE=xgxr032_etas.txt
+            FILE=xgxr132_res.txt
+$TABLE      ETAS(1:LAST) NOAPPEND NOPRINT FILE=xgxr132_etas.txt
 
 
 NM-TRAN MESSAGES
@@ -86,8 +86,8 @@ NM-TRAN MESSAGES
 
 License Registered to: Vertex Pharmaceuticals Inc
 Expiration Date:    14 JAN 2025
-Current Date:       13 JUL 2024
-Days until program expires : 186
+Current Date:       24 JUL 2024
+Days until program expires : 175
 1NONLINEAR MIXED EFFECTS MODEL PROGRAM (NONMEM) VERSION 7.5.0
  ORIGINALLY DEVELOPED BY STUART BEAL, LEWIS SHEINER, AND ALISON BOECKMANN
  CURRENT DEVELOPERS ARE ROBERT BAUER, ICON DEVELOPMENT SOLUTIONS,
@@ -479,7 +479,7 @@ Days until program expires : 186
  REPORTED OBJECTIVE FUNCTION DOES NOT CONTAIN CONSTANT
   
  #TERE:
- Elapsed estimation  time in seconds:    28.80
+ Elapsed estimation  time in seconds:    29.66
  Elapsed covariance  time in seconds:     0.01
 1
  
@@ -1164,8 +1164,8 @@ Days until program expires : 186
  TOTAL EFFECTIVE ETAS (NIND*NETA):                           180
   
  #TERE:
- Elapsed estimation  time in seconds:    39.61
- Elapsed covariance  time in seconds:   167.04
+ Elapsed estimation  time in seconds:    40.09
+ Elapsed covariance  time in seconds:   170.01
 1
  
  
@@ -1719,7 +1719,7 @@ Days until program expires : 186
          8.30E-02  2.79E-01  3.96E-01  4.85E-01  7.56E-01  8.93E-01  1.09E+00  1.26E+00  3.76E+00
  
  Elapsed postprocess time in seconds:     0.04
- Elapsed finaloutput time in seconds:     0.03
- #CPUT: Total CPU Time in Seconds,      235.670
+ Elapsed finaloutput time in seconds:     0.04
+ #CPUT: Total CPU Time in Seconds,      239.987
 Stop Time:
-Sat Jul 13 10:04:24 EDT 2024
+Wed Jul 24 01:12:54 EDT 2024
