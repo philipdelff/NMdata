@@ -1,0 +1,4 @@
+"parameter","value"
+"DataCreateScript","NMdata/devel/scripts/dsCreate_4_simCovs.R"
+"CreationTime","2024-07-15 08:30:22 EDT"
+"writtenTo","~/wdirs/NMdata/inst/examples/data/xgxr2covs.rds ~/wdirs/NMdata/inst/examples/data/xgxr2covs.csv"
