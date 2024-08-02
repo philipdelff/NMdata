@@ -21,6 +21,9 @@
   that references THETA(1), `NMrelate()` will return a label
   `TVCL`.
 
+* `mergeCheck()` has additional features available in the common.cols
+  argument.
+
 ## Bugfixes
 * `NMscanInput()` and `NMreadCsv()` could fail if file names had no
   extensions. Fixed.

@@ -456,8 +456,8 @@ Like ;1;CL;;;mL/h
 It would be easier to remember
 *** NMrelate
 **** DONE Include model column
-**** TODO [#A] would be better if NMrelateOne added par.type
-**** TODO [#A] Count how many times the combination of par.type,i,j is matched on the RHS
+**** DONE would be better if NMrelateOne added par.type
+**** DONE Count how many times the combination of par.type,i,j is matched on the RHS
 **** DONE NMrelateOne must recognize ERR, EPS
 **** DONE test merging with NMreadExt output
 **** DONE NMrelate should support file.mod vector or lines as a list

@@ -468,6 +468,19 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
            }
         )
        ,
+        file.shk=list(
+            default=function(file) {
+                fnExtension(file,ext=".shk")
+            }
+            ## has to be length 1 character or function
+           ,is.allowed=function(x) is.function(x) || (length(x)==1 && is.character(x))
+           ,msg.not.allowed="file.shk must be a function or a character of length 1"
+           ,process=function(x) {
+               if(is.character(x)) return(function(file) x)
+               x
+           }
+        )
+       ,
         file.mod=list(
             ## default=function(file) fnExtension(file,ext=".mod")
             default=function(file) {

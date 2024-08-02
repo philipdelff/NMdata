@@ -5,7 +5,7 @@
 ##'     as `NMreadExt()` and `NMreadParText()`.
 
 NMrelate <- function(file,lines,pars,modelname,col.model,as.fun){
-
+    
 
     if(missing(file)) file <- NULL
     if(missing(lines)) lines <- NULL

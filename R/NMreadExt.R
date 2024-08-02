@@ -7,7 +7,7 @@
 ##'     returned in addition to what other parameter-level information
 ##'     is found, like FIX, sd etc. as columns. If
 ##'     \code{return="iterations"}, the iterations are returned. If
-##'     \code{return="both"}, both er returned, though in separate
+##'     \code{return="all"}, all er returned, though in separate
 ##'     data.frames compiled in a list.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say `tibble::as_tibble`) in as.fun to convert to
@@ -110,7 +110,7 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     file <- deprecatedArg("file.ext","file",args=args)
 
     if(missing(return)||is.null(return)) return <- "pars"
-    allowed.return <- c("pars","iterations","all")
+    allowed.return <- c("pars","iterations","objv","all")
     if(!return %in% allowed.return){
         stop("Argument return has to be one of: ", paste(allowed.return,collapse =", "))
     }
@@ -149,7 +149,7 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     ## February 23, 2021
 
     dt.codes <- fread(text="ITERATION,variable
-    -1e+09,est
+    -1e+09,value
     -1000000001,se
     -1000000002,eigCor
     -1000000003,cond
@@ -160,23 +160,33 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     -1000000008,partLik")
 
     ## dt.codes
-
+    
     res.NMdat <- mergeCheck(res.NMdat,dt.codes,by=cc(ITERATION),all.x=T,quiet=TRUE)
     ## res.NMdat
 
     ## pars <- res.NMdat[variable%in%dt.codes$variable,setdiff(colnames(res.NMdat),"OBJ"),with=FALSE]
     pars <- res.NMdat[variable%in%dt.codes$variable]
     pars <- addTableStep(pars,keep.table.name=FALSE)
+    objv <- NULL
     if(nrow(pars)){
+        
         pars <- melt(pars,id.vars=cc(model,TABLENO,NMREP,table.step,ITERATION,variable),variable.name="parameter")
         pars <- dcast(pars,model+TABLENO+NMREP+table.step+parameter~variable,value.var="value")
 
         pars <- addParType(pars)
 
+        setcolorder(pars,intersect(c("model","TABLENO","NMREP","table.step","par.type","parameter","par.name","i","j","FIX","value", "cond","eigCor",   "partLik",   "se", "seStdDevCor", "stdDevCor", "termStat"),colnames(pars)))
+        
+        objv <- pars[parameter%in%c("SAEMOBJ","OBJ"),  .(model, TABLENO, NMREP, table.step, parameter,value)]
+        objv[,par.type:= "OBJV"]
+        pars <- pars[!parameter%in%c("SAEMOBJ","OBJ")]
         
         ### this setorder call doesnt work - unsure why
         ## setorder(pars,match(par.type,c("THETA","OMEGA","SIGMA")),i,j)
         pars <- pars[order(match(par.type,c("THETA","OMEGA","SIGMA")),i,j)]
+        ## est is just a copy of value for backward compatibility
+        pars[,est:=value]
+
     }
     
     ## what to do about OBJ? Disregard? And keep in a iteration table instead?
@@ -185,11 +195,12 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     iterations <- melt(iterations,id.vars=cc(model,TABLENO,NMREP,table.step,ITERATION),variable.name="parameter")
     iterations <- addParType(iterations)
 
-    res <- list(pars=pars,iterations=iterations)
+    res <- list(pars=pars,iterations=iterations,objv=objv)
     res <- lapply(res,as.fun)
 
     if(return=="pars") return(res$pars)
     if(return=="iterations") return(res$iterations)
+    if(return=="objv") return(res$objv)
 
     
     ## as.fun already applied

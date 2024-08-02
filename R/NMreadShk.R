@@ -19,7 +19,7 @@
 ##'
 ##' @import data.table
 
-NMreadShk <- function(file,as.fun){
+NMreadShk <- function(file,auto.ext,as.fun){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -31,6 +31,11 @@ NMreadShk <- function(file,as.fun){
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
+    if(missing(auto.ext) || is.null(auto.ext)) auto.ext <- TRUE
+    fun.file.shk <- NMdataDecideOption("file.shk")
+    if(auto.ext){
+        file <- fun.file.shk(file)
+    }
     
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
@@ -49,8 +54,7 @@ NMreadShk <- function(file,as.fun){
 11,%Relative information,RelInfo")
 
     
-    file.shk <- fnExtension(file,"shk")
-    list.shk <- NMreadTabSlow(file.shk)
+    list.shk <- NMreadTabSlow(file)
     
     shk <- list.shk[[length(list.shk)]]
 
@@ -61,9 +65,10 @@ NMreadShk <- function(file,as.fun){
     
     dt.shk[,i:=as.integer(sub("^ETA\\(([1-9][0-9]*)\\)$","\\1",variable))]
     dt.shk[,j:=i]
-    dt.shk[,par.type:="OMEGA"]
+    ##dt.shk[,par.type:="OMEGA"]
     dt.shk[,parameter:=sprintf("OMEGA(%d,%d)",i,j)]
-    dt.shk.w <- dcast(dt.shk,variable+par.type+parameter+i+j~shk.name,value.var="value")
+    dt.shk <- addParType(dt.shk)
+    dt.shk.w <- dcast(dt.shk,variable+par.type+parameter+par.name+i+j~shk.name,value.var="value")
 
     dt.shk.w <- as.fun(dt.shk.w)
     

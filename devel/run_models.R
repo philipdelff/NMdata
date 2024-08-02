@@ -1,9 +1,12 @@
 library(NMdata)
 library(devtools)
-load_all()
+library(NMsim)
+
+## load_all()
+load_all("~/wdirs/NMdata")
+NMdataConf(as.fun="data.table")
 load_all("~/wdirs/NMsim",export_all = FALSE)
 
-## library(NMsim)
 
 NMdataConf(path.nonmem="/opt/nonmem/nm751/run/nmfe75")
 NMdataConf(dir.psn="/opt/psn")
@@ -13,12 +16,19 @@ NMdataConf(as.fun="data.table")
 
 NMexec("../tests/testthat/testData/nonmem/xgxr004.mod",sge=FALSE)
 NMexec("../tests/testthat/testData/nonmem/xgxr014.mod",sge=FALSE)
+NMexec("../tests/testthat/testData/nonmem/xgxr018.mod",sge=FALSE,method.exec="nmsim")
 NMexec("../tests/testthat/testData/nonmem/xgxr028.mod",sge=FALSE)
 NMexec("../tests/testthat/testData/nonmem/xgxr033.mod",sge=FALSE)
 
+NMexec(files="../inst/examples/nonmem/xgxr018.mod",sge=FALSE,method.exec="nmsim")
 NMexec("../inst/examples/nonmem/xgxr031.mod",sge=FALSE)
-NMexec("../inst/examples/nonmem/xgxr032.mod",sge=FALSE)
-NMexec("../inst/examples/nonmem/xgxr132.mod",sge=FALSE)
+NMexec(files="../inst/examples/nonmem/xgxr032.mod",sge=FALSE,method.exec="nmsim")
+NMexec(files="../inst/examples/nonmem/xgxr132.mod",sge=FALSE,method.exec="nmsim")
+## NMexec(files="../inst/examples/nonmem/xgxr133.mod",sge=FALSE)
+NMexec(files="../inst/examples/nonmem/xgxr133.mod",sge=FALSE,method.exec="nmsim")
+NMreadSection("../inst/examples/nonmem/xgxr133.mod",section="OMEGA")
+NMreadExt("../inst/examples/nonmem/xgxr133.mod")
+##/home/philip/wdirs/NMdata/inst/examples/nonmem/xgxr133.mod
 
 
 

@@ -1,0 +1,209 @@
+---
+title: "Parameter Tables"
+output:
+rmarkdown::html_vignette:
+    toc: true
+Suggests: markdown
+VignetteBuilder: knitr
+vignette: >
+  %\VignetteIndexEntry{02ParameterTables}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+header-includes:
+- \usepackage{ae}
+---
+
+```{r,include = FALSE}
+## library(tidyvpc)
+library(NMdata)
+load_all("~/wdirs/NMdata")
+NMdataConf(as.fun="data.table")
+
+##knitr::opts_chunk$set(dev = "cairo_pdf")
+knitr::opts_chunk$set(
+                      collapse = TRUE
+                     ,comment = "#>"
+                     ,fig.width=7
+                     ,cache=FALSE
+                  )
+
+## NMdataConf(dir.psn="/opt/psn")
+
+library(data.table)
+library(knitr)
+library(scales)
+library(NMcalc)
+```
+
+Parameter tables are a basic and essential look into a model estimate. Due to Nonmem's flexible model definition approach, getting an informative parameter table can however be an involved process. 
+
+* Nonmem parameters like THETA(1), OMEGA(2,2), SIGMA(1,1) etc. must be connected with physiologically interpretable parameters such as "Clearance" or "Between-subject variability on central volume" to be informative. 
+
+* Physiologically interpretable parameters may be transformations of Nonmem parameters.
+
+A manual or even semi-automated approach to establishing these relationships are manually involved to quality check. 
+
+`NMdata` offers two distinct approaches to connecting Nonmem parameters to physiologially interpretable ones.
+
+* Flexible, user-defined interpretation of delimited comments in the parameter sections ($THETA, $OMEGA, and $SIGMA) (`NMreadParText()`). This means, if you added comments in whatever consistent way in these sections, `NMreadParText()` is likely to be able to get it into a formatted `data.frame`.
+
+* Automatic translation of Nonmem code related to direct use of the parameters (`NMrelate()`). This may be a pretty good approach trying to report a Nonmem model without structured labeling in the parameter sections. If you keep a  coding standard, it may allow you to skip manual parameter translation altogether. And lastly, it may be a powerful QC tool in any case.
+
+## Reading Nonmem parameter estimates
+Before getting into how to translate the Nonmem parameters, it is worth mentioning how to even just read the parameter estimates with `NMdata`. A lot of the relevant information is stored in the `.ext` file and can be read using `NMreadExt()`.
+
+```{r}
+## file.mod <- system.file("examples/nonmem/xgxr001.mod",package="NMdata")
+## file.mod <- system.file("examples/nonmem/xgxr132.mod",package="NMdata")
+file.mod <- system.file("examples/nonmem/xgxr133.mod",package="NMdata")
+
+##NMreadExt(file.mod,return="objv")
+pars.ext <- NMreadExt(file.mod)
+
+```
+
+This does provide a basic parameter table.
+
+```{r}
+
+pars.ext[,.(par.name,FIX,value,se)]
+
+```
+
+`NMreadExt()` does return more than that. These are all the columns available:
+
+```{r}
+colnames(pars.ext)
+```
+where `est` is a deprecated copy of the `value` column.
+
+NMreadExt can return other information than the parameter estimates. This vignette is about creating parameter tables so for now, let this be a teaser for what else `NMreadExt()` provides (which is all the info in `.ext` files):
+
+```{r}
+names(NMreadExt(file.mod,return="all"))
+```
+
+## Adding physiologically interpretable labels
+
+The above parameter table is not useful to many, maybe not even to the person who wrote the model. Let
+
+```{r}
+NMreadSection(file.mod,section=c("THETA"))
+NMreadSection(file.mod,section=c("OMEGA"))
+NMreadSection(file.mod,section=c("SIGMA"))
+
+```
+
+```{r}
+partab <- NMreadParsText(file.mod,format="%init;%idx:%symbol;%label[%unit];%trans",
+                         format.sigma="%init;%symbol-%label")
+partab
+```
+And we can format a parameter table with labels merging with the ext file:
+
+```{r}
+partab2 <- mergeCheck(pars.ext,
+           partab,
+           by="parameter",
+           all.x=TRUE,
+           fun.commoncols="drop.y",
+           quiet=TRUE
+           )
+partab2[,value.trans:=value]
+partab2[trans=="log",value.trans:=exp(value)]
+kable(partab2[,.(par.name,symbol,FIX,label,unit,Estimate=value.trans,RSE=se/value)])
+
+```
+
+The left join we did with `mergeCheck` includes all parameters from the ext file. In this case we want to skip all the off-diagonals in $OMEGA and $SIGMA because they are not estimated. Let's just look at the onese that were estimated. In many cases some fixed parameters can be relevant to include in a parameter table, and then you need to modify this step. 
+
+```{r}
+partab2[FIX==0,.(par.name,symbol,FIX,label,unit,Estimate=NMcalc::signif2(value.trans,3),RSE=scales::percent(se/value,accuracy=.1))] |>
+    kable()
+```
+
+We need to explain that RSE's were calculated on the log scale for the
+transformed parameters. We could also want to add confidence intervals
+based on the estimated standard error on the log scale. But we are
+getting close.
+
+### Add shrinkage
+```{r}
+shk <- NMreadShk(file.mod)
+
+partab3 <- mergeCheck(partab2,shk[,.(par.name,Pval=signif2(Pval,2),etabar,EtaShkSD=percent(EtaShkSD/100))],by="par.name",all.x=TRUE)
+partab3[FIX==0,.(par.name,symbol,FIX,label,unit,Estimate=NMcalc::signif2(value.trans,3),RSE=scales::percent(se/value,accuracy=.1),Pval,etabar,EtaShkSD)] |>
+    kable()
+```
+
+### Correlation estimates
+
+```{r}
+
+Partab4 <- NMdata::addOmegaCorr(partab2)
+kable(Partab4)
+```
+
+### Editing information in the parameter table
+The problem with the otherwise nicely looking table generated above is
+that we spotted a typo in one label. A "t" is missing in
+"Intercompartmental". How are we going to fix that? The model was
+finalized so we don't want to edit the control stream. For this
+specific problem we could fix it with a simple text replacement. But
+such patchwork can become messy with a large model. While the method
+of providing all the details in control stream may look like a great
+solution at first, it has problems
+
+A practical issue is the tedious process keeping all the candidate
+models up to date as the information for the parameter tables
+improves. The parameter table work is often part of a model reporting
+step following model development. Since the control streams are
+created in the model development step, the parameter table fine tuning
+is difficult to integrate. Briefly, we need a way to update the
+parameter tables after finalizing the control stream.
+
+```{r,include=FALSE,eval=FALSE}
+### dont do this - csv has been edited
+tab.csv <- partab[,.(symbol,label,unit)]
+fwrite(tab.csv,file="derived/partab_offline.csv")
+```
+
+```{r}
+tab.offline <- read.csv("derived/partab_offline.csv")
+mergeCheck(partab2[FIX==0],tab.offline,by="symbol",fun.commoncols="drop.x")
+```
+
+
+### Identifying the parameter names from code
+In the last example, all we used from the control stream was the `symbol`, i.e. an abbreviated parameter name. The rest was merged in from a table maintained in a csv file.
+
+
+<!-- off-diags missing. Merge info from ext? -->
+```{r}
+load_all("~/wdirs/NMdata")
+NMdataConf(as.fun="data.table")
+
+labs.auto <- NMrelate(file.mod)
+labs.auto[,symbol:=label]
+labs.auto[par.type=="OMEGA",symbol:=paste0("BSV.",symbol)]
+kable(labs.auto)
+
+mergeCheck(labs.auto[,.(par.name,symbol)],tab.offline,by="symbol",all.x=T)
+```
+
+## More models
+Any of the code above can be run on multiple models at once. `NMdata` functions generally return tables including a `model` column for this purpose. Let's get a quick overview of a few models.
+
+```{r}
+files <- system.file(file.path("examples/nonmem",c("xgxr132.mod","xgxr133.mod")),package="NMdata")
+labs.auto <- NMrelate(files)
+labs.auto[,symbol:=label]
+labs.auto[par.type=="OMEGA",symbol:=paste0("BSV.",symbol)]
+
+NMreadExt(files,return="pars")[FIX==0]|>
+    mergeCheck(labs.auto[,.(model,par.name,symbol)],by=c("model","par.name"),all.x=T) |> 
+    mergeCheck(tab.offline,by="symbol",all.x=T) |>
+    dcast(par.name+symbol+label+unit~model,value.var="value")
+
+
+```

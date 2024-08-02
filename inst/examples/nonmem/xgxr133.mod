@@ -51,8 +51,10 @@ $THETA  (-1)             ; 5 : LTVQ ; Intercomparmental clearance [L/h] ; log
 $THETA .1              ; 6 : AGEEFF ; Age effect on clearance []; log
 
 $OMEGA 0 FIX ; 1 : BSV.KA ; KA Between-subject variability
-$OMEGA 0.1   ; 2 : BSV.V2 ; V2 Between-subject variability
-$OMEGA 0.1   ; 3 : BSV.CL ; CL Between-subject variability
+$OMEGA BLOCK(2)
+0.1   ; 2 : BSV.V2 ; V2 Between-subject variability
+ 0.01   ; 2-3 : Cov.BSV.V2-CL ; V2 Between-subject variability
+ 0.1   ; 3 : BSV.CL ; CL Between-subject variability
 $OMEGA 0 FIX ; 4 : BSV.V3 ; V3 Between-subject variability
 $OMEGA 0 FIX ; 5 : BSV.Q  ; Q Between-subject variability
 
@@ -60,11 +62,11 @@ $SIGMA 0.1    ; SigP - Prop err
 $SIGMA 0 FIX  ; SigA - Add err 
 
 
-$ESTIMATION METHOD=SAEM INTERACTION NOABORT NBURN=1000 NITER=1000 CTYPE=3 MAX=99999 NSIG=3 SEED=3442 PRINT=10 RANMETHOD=P MSFO=xgxr132.msf
+$ESTIMATION METHOD=SAEM INTERACTION NOABORT NBURN=1000 NITER=1000 CTYPE=3 MAX=99999 NSIG=3 SEED=3442 PRINT=10 RANMETHOD=P MSFO=xgxr133.msf
 
 $ESTIMATION METHOD=IMP INTERACTION EONLY=1 NITER=20 PRINT=1 ISAMPLE=5000 RANMETHOD=P
 																	    
 $COV PRINT=E
 
-$TABLE ROW KA V2 V3 CL Q PRED IPRED Y NOPRINT FILE=xgxr132_res.txt
-$TABLE ETAS(1:LAST) NOAPPEND NOPRINT FILE=xgxr132_etas.txt
+$TABLE ROW KA V2 V3 CL Q PRED IPRED Y NOPRINT FILE=xgxr133_res.txt
+$TABLE ETAS(1:LAST) NOAPPEND NOPRINT FILE=xgxr133_etas.txt

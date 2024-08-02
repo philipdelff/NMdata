@@ -125,7 +125,7 @@
 ##' }
 ##' @export
 
-mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expect,track.msg=FALSE,quiet,df1,df2,fun.na.by=base::stop,as.fun,...){
+mergeCheck <- function(x,y,by,by.x,by.y,common.cols=base::warning,ncols.expect,track.msg=FALSE,quiet,df1,df2,fun.na.by=base::stop,as.fun,fun.commoncols,...){
     
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -144,9 +144,13 @@ mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expec
     ## name.x <- deparse(substitute(x))
     ## name.y <- deparse(substitute(y))
 
-    
     if(!xor(missing(x),missing(df1))){stop("You must supply x. Don't use the deprecated df1.")}
     if(!xor(missing(y),missing(df2))){stop("You must supply y. Don't use the deprecated df2.")}
+
+    if(!missing(fun.commoncols)) {
+        message("\"fun.commoncols\" argument deprecated. Use \"common.cols\" instead.")
+        common.cols <- fun.commoncols
+    }
 
     if(!missing(df1)) {
         message("\"df1\" argument deprecated. Use \"x\" instead.")
@@ -232,13 +236,37 @@ mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expec
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
     
+#### Section start: Handle common columns not merged by ####
+
     cols.common.notby <- intersect(setdiff(colnames(x),by.x),setdiff(colnames(y),by.y))
+
+    if(is.character(fun.commoncols)){
+        fun.commoncols <- cleanSpaces(fun.commoncols)
+    }
+    if(length(cols.common.notby) && is.character(fun.commoncols) && fun.commoncols=="drop.x") {
+
+        x <- x[,setdiff(colnames(x),cols.common.notby),with=FALSE]
+        cols.common.notby <- intersect(setdiff(colnames(x),by.x),setdiff(colnames(y),by.y))
+    }
+    if(length(cols.common.notby)&& is.character(fun.commoncols) && fun.commoncols=="drop.y") {
+        y <- y[,setdiff(colnames(y),cols.common.notby),with=FALSE]
+        cols.common.notby <- intersect(setdiff(colnames(x),by.x),setdiff(colnames(y),by.y))
+    }
+    if(length(cols.common.notby)&& is.character(fun.commoncols) && fun.commoncols=="merge.by") {
+        by.x <- c(by.x,cols.common.notby)
+        by.y <- c(by.y,cols.common.notby)
+        cols.common.notby <- c()
+    }
+    
     commoncols.found <- FALSE
+    
     if(length(cols.common.notby)) {
         messageWrap(paste0("x and y have common column names not being merged by. This will create new column names in output. Common but not merged by: ",paste(cols.common.notby,collapse=", "),"."),
                     fun.msg=fun.commoncols,track.msg=track.msg)
         commoncols.found <- TRUE
     }
+
+###  Section end: Handle common columns not merged by
     
     rowcol <- tmpcol(names=c(colnames(x),colnames(y)))
 

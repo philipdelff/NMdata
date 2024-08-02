@@ -8,7 +8,7 @@
 ## that new function should also be called by NMreadShk
 
 
-NMrelateOne <- function(file,lines,par.type="OMEGA",by.par=TRUE,as.fun){
+NMrelateOne <- function(file,lines,par.type="OMEGA",sections=c("PRED","PK","ERROR"),by.par=TRUE,as.fun){
 
     if(missing(file)) file <- NULL
     if(missing(lines)) lines <- NULL
@@ -28,14 +28,21 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",by.par=TRUE,as.fun){
                         OMEGA="ETA"
                        ,THETA="THETA"
                        ,SIGMA="(SIGMA|ERR|EPS)"
-                        ##,ERR="(ERR|EPS)"
                         )
     str.regex.find <- paste0("[^[:alnum:]]",str.regex)
 
-    lines <- c(NMreadSection(lines=lines,section="PRED",keep.comments=FALSE),
-               NMreadSection(lines=lines,section="PK",keep.comments=FALSE),
-               NMreadSection(lines=lines,section="ERROR",keep.comments=FALSE)
-               )
+    
+    lines.list <- NMreadSection(lines=lines,keep.comments=FALSE)
+     lines.list <- lines.list[names(lines.list)%in%sections]
+    ## lines <- do.call(c,lines.list)
+    lines <- unlist(lines.list)
+   
+    ## lines <- rbindlist(lines.list)
+    
+    ## lines <- c(NMreadSection(lines=lines,section="PRED",keep.comments=FALSE),
+    ##            NMreadSection(lines=lines,section="PK",keep.comments=FALSE),
+    ##            NMreadSection(lines=lines,section="ERROR",keep.comments=FALSE)
+    ##            )
     
     
     dt.code <- data.table(line.var = lines[grepl(str.regex.find,lines)])
