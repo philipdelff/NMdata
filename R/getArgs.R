@@ -4,7 +4,7 @@
 ##' @return A named list of arguments and their values
 ##' @examples
 ##' afun <- function(){
-##' getArgs(sys.call(),parent.frame())
+##' NMdata:::getArgs(sys.call(),parent.frame())
 ##' }
 ##' afun()
 ##' @family arguments
