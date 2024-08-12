@@ -79,6 +79,7 @@ reference:
   - NMreadShk
   - NMreadTab
   - NMreadParsText
+  - NMrelate
   - NMinfo
   - addOmegaCorr
 - title: Checking and Debugging
