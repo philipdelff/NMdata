@@ -19,7 +19,7 @@ Get provided arguments as a named list
 }
 \examples{
 afun <- function(){
-getArgs(sys.call(),parent.frame())
+NMdata:::getArgs(sys.call(),parent.frame())
 }
 afun()
 }
