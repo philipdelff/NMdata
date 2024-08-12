@@ -24,6 +24,9 @@ possible which is \code{c("THETA","OMEGA","SIGMA")}.}
 
 \item{col.model}{Name of the column containing the model name.}
 
+\item{sections}{Sections of the control stream to
+consider. Default is all of \code{c("PRED","PK","ERROR")}.}
+
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use

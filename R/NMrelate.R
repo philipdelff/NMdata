@@ -11,6 +11,8 @@
 ##'     path. The default is dropping the file name extension on the
 ##'     control stream file name.
 ##' @param col.model Name of the column containing the model name.
+##' @param sections Sections of the control stream to
+##'     consider. Default is all of \code{c("PRED","PK","ERROR")}.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
