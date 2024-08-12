@@ -24,6 +24,10 @@ available but a full matrix including elements related to
 fixed parameters is needed.}
 
 \item{fill}{Value to insert for missing elements}
+
+\item{col.value}{The name of the column from which to take the
+`OMEGA` values. Default is "value" in alignment with the
+output from `NMreadExt()`.}
 }
 \value{
 a matrix

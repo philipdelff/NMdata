@@ -1,15 +1,29 @@
-### the structure is a little off. argument should be par.type and take one of the values THETA, OMEGA, SIGMA. Then for par.type=SIGMA, look for SIGMA, EPS, ERR (var.type) and process depending on var.type is found
+### I don't think this needs to be exported. Use NMrelate().
 
-## if var.type is SIGMA look for i, j, if not look for i only. var.type OMEGA not supported.
-
-## if par.type is SIGMA, var.type is EPS, ERR, set j:=i
-
-###### Take all the naming based on varname and put in new function, some of it is covered by addParType already.
-## that new function should also be called by NMreadShk
-
+##' @keywords internal 
 
 NMrelateOne <- function(file,lines,par.type="OMEGA",sections=c("PRED","PK","ERROR"),by.par=TRUE,as.fun){
 
+    line2 <- NULL
+    line.var <- NULL
+    . <- NULL
+    varname <- NULL
+    var.type <- NULL
+    lineno <- NULL
+    ETA <- NULL
+    THETA <- NULL
+    ERR <- NULL
+    EPS <- NULL
+    i <- NULL
+    j <- NULL
+    par.name <- NULL
+    LHS <- NULL
+    ..par.type <- NULL
+    nrep.LHS <- NULL
+    nrep.par <- NULL
+    label <- NULL
+
+    
     if(missing(file)) file <- NULL
     if(missing(lines)) lines <- NULL
 
@@ -33,10 +47,10 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",sections=c("PRED","PK","ERRO
 
     
     lines.list <- NMreadSection(lines=lines,keep.comments=FALSE)
-     lines.list <- lines.list[names(lines.list)%in%sections]
+    lines.list <- lines.list[names(lines.list)%in%sections]
     ## lines <- do.call(c,lines.list)
     lines <- unlist(lines.list)
-   
+    
     ## lines <- rbindlist(lines.list)
     
     ## lines <- c(NMreadSection(lines=lines,section="PRED",keep.comments=FALSE),
@@ -86,12 +100,12 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",sections=c("PRED","PK","ERRO
     
     if(by.par){
         dt.code <- dt.code[,.(LHS=paste(unique(LHS),collapse=", "),
-                                  label=paste(unique(LHS),collapse=", "),
-                                  code=paste(line2,collapse=", ")
-                                  ),by=.(par.name,par.type,i,j,nrep.LHS,nrep.par)]
+                              label=paste(unique(LHS),collapse=", "),
+                              code=paste(line2,collapse=", ")
+                              ),by=.(par.name,par.type,i,j,nrep.LHS,nrep.par)]
 
         dt.code[nrep.LHS>1,
-                    label:=paste(paste(unique(LHS),collapse=", "),par.name,sep=" - ")]
+                label:=paste(paste(unique(LHS),collapse=", "),par.name,sep=" - ")]
         
     }
 

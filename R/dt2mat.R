@@ -16,6 +16,9 @@
 ##'     available but a full matrix including elements related to
 ##'     fixed parameters is needed.
 ##' @param fill Value to insert for missing elements
+##' @param col.value The name of the column from which to take the
+##'     `OMEGA` values. Default is "value" in alignment with the
+##'     output from `NMreadExt()`.
 ##' @details If pars does not contain all `i` values, they will be
 ##'     imputed with zeros. The desired matrix dimension is inferred
 ##'     from `min(i)` and `max(i)`.  In case `dt.subset=="unique"`

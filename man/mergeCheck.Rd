@@ -39,6 +39,20 @@ differently. by or by.x and by.y must be supplied.}
 \item{by.y}{If the columns to merge by in x and y are named
 differently. by or by.x and by.y must be supplied.}
 
+\item{common.cols}{If common columns are found in x and y, and
+they are not used in `by`, this will by default create columns
+named like col.x and col.y in result (see ?merge). Often, this
+is a mistake, and the default is to throw a warning if this
+happens. If using mergeCheck in programming, you may want to
+make sure this is not happening and use
+fun.commoncols=stop. If you want nothing to happen, you can do
+fun.commoncols=NULL. You can also use `common.cols="drop.x"`
+to drop "non-by" columns in `x` with identical column names in
+`y`. Use "drop.y" to drop them in `y` and avoid the
+conflicts. The last option is to use `common.cols="merge.by"`
+which means `by` will automatically be extended to include all
+common column names.}
+
 \item{ncols.expect}{If you want to include a check of the number
 of columns being added to the dimensions of x. So if
 ncols.expect=1, the resulting data must have exactly one
@@ -67,14 +81,7 @@ ahead regardless.}
 data.table and return a data.frame in all other cases. Pass a
 function in as.fun to convert to something else.}
 
-\item{fun.commoncols}{If common columns are found in x and y, and
-they are not used in by, this will create columns named like
-col.x and col.y in result (see ?merge). Often, this is a
-mistake, and the default is to throw a warning if this
-happens. If using mergeCheck in a function, you may want to
-make sure this is not happening and use
-fun.commoncols=stop. If you want nothing to happen, you can do
-fun.commoncols=NULL.}
+\item{fun.commoncols}{Deprecated. Please use `common.cols`.}
 
 \item{...}{additional arguments passed to data.table::merge. If
 all is among them, an error will be returned.}

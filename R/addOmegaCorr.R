@@ -5,6 +5,9 @@
 ##'     correlations within a grouping variable?  This will often be a
 ##'     column containing the model name.
 ##' @param as.fun See `?NMdataConf`
+##' @param col.value The name of the column from which to take the
+##'     `OMEGA` values. Default is "value" in alignment with the
+##'     output from `NMreadExt()`.
 ##' @return The parameter table with a `corr` column added.
 ##' @import data.table
 ##' @importFrom stats cov2cor

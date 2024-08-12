@@ -9,6 +9,11 @@ NMreadCov(file, auto.ext, ...)
 \arguments{
 \item{file}{The .cov covariance Nonmem matrix file to read}
 
+\item{auto.ext}{If `TRUE` (default) the extension will automatically
+be modified using `NMdataConf()$file.cov`. This means `file`
+can be the path to an input or output control stream, and
+`NMreadCov()` will still read the `.cov` file.}
+
 \item{...}{Passed to fread}
 }
 \value{

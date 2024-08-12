@@ -1,6 +1,10 @@
 ##' Read Shrinkage data reported by Nonmem
 ##'
 ##' @param file A model file. Extension will be replaced by ".shk".
+##' @param auto.ext If `TRUE` (default) the extension will automatically
+##'     be modified using `NMdataConf()$file.shk`. This means `file`
+##'     can be the path to an input or output control stream, and
+##'     `NMreadShk` will still read the `.shk` file.
 ##' @param as.fun See ?NMdataConf
 ##' @return A `data.frame` with shrinkage values, indexes, and name of related parameter, like `OMEGA(1,1)`.
 ##'

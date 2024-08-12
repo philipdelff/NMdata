@@ -3,7 +3,14 @@
 
 ## should also add parname or par.name which is the concistent
 ## THETA(1), OMEGA(1,1), SIGMA(1,1) labeling.
+
+##' @keywords internal
 addParType <- function(pars,suffix,add.idx){
+
+    i <- NULL
+    j <- NULL
+    par.name <- NULL
+    parameter <- NULL
     
     col.parameter <- "parameter"
     col.par.type <- "par.type"

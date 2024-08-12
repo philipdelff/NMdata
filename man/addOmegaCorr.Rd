@@ -14,6 +14,10 @@ correlations within a grouping variable?  This will often be a
 column containing the model name.}
 
 \item{as.fun}{See `?NMdataConf`}
+
+\item{col.value}{The name of the column from which to take the
+`OMEGA` values. Default is "value" in alignment with the
+output from `NMreadExt()`.}
 }
 \value{
 The parameter table with a `corr` column added.
