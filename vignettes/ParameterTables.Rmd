@@ -14,9 +14,9 @@ header-includes:
 ---
 
 ```{r,include = FALSE}
-## library(NMdata)
-library(devtools)
-load_all("~/wdirs/NMdata")
+library(NMdata)
+## library(devtools)
+## load_all("~/wdirs/NMdata")
 NMdataConf(as.fun="data.table")
 
 ##knitr::opts_chunk$set(dev = "cairo_pdf")
@@ -228,8 +228,6 @@ mergeCheck(labs.auto[,.(par.name,symbol)],tab.offline,by="symbol",all.x=T)
 
 <!-- off-diags missing. Merge info from ext? -->
 ```{r}
-load_all("~/wdirs/NMdata") 
-NMdataConf(as.fun="data.table")
 
 file2.mod <- system.file("examples/nonmem/xgxr133.mod",package="NMdata")
 

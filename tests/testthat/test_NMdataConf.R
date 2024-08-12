@@ -153,17 +153,19 @@ test_that("deprecated use.rds",{
     ## NMdataConf(use.rds=TRUE)
     NMdataConf(formats.read=c("csv"))
     new <- NMdataConf()
-    
+
+    ## can't compare functions
     new$as.fun <- NULL
     new$file.cov <- NULL
-    new$file.mod <- NULL
     new$file.ext <- NULL
+    new$file.mod <- NULL
     new$file.phi <- NULL
+    new$file.shk <- NULL
     new$modelname <- NULL
 
     
     expect_equal_to_reference(new,fileRef)
-    ## compareCols(readRDS(fileRef),defaults)
+    compareCols(readRDS(fileRef),new)
 })
 
 test_that("reset removes unknown",{
