@@ -22,6 +22,7 @@
 ##' Type 11=%Relative information
 ##'
 ##' @import data.table
+##' @export
 
 NMreadShk <- function(file,auto.ext,as.fun){
 

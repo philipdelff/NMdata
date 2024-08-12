@@ -1,7 +1,12 @@
 ##' Get provided arguments as a named list
-##' @param which How many environment levels to go up to look for
-##'     arguments.
-##' @return A named list
+##' @param call Function call as provided by \code{sys.call()}.
+##' @param env Environment in which to evaluate the arguments.
+##' @return A named list of arguments and their values
+##' @examples
+##' afun <- function(){
+##' getArgs(sys.call(),parent.frame())
+##' }
+##' afun()
 ##' @family arguments
 ##' @keywords internal
 
