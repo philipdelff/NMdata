@@ -4,7 +4,7 @@
 \alias{dt2mat}
 \title{Convert a data.table of parameter estimates to a matrix}
 \usage{
-dt2mat(pars, dt.subset = "unique", max.i, fill = 0)
+dt2mat(pars, dt.subset = "unique", max.i, fill = 0, col.value)
 }
 \arguments{
 \item{pars}{A data.table with parameters. Must contain columns `i`

@@ -135,6 +135,7 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
         write.rds=FALSE
     }
     ## args <- getArgs()
+    
     args <- getArgs(sys.call(),parent.frame())
     
     args.write.depr <- c("write.rds","write.csv","write.RData")

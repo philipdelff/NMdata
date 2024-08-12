@@ -17,7 +17,8 @@ test_that("defaults",{
 
     expect_equal_to_reference(defaults,fileRef)
 
-##     compareCols(readRDS(fileRef),defaults)
+    ## compareCols(readRDS(fileRef),defaults)
+
 })
 
 test_that("reset",{

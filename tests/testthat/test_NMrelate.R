@@ -1,6 +1,8 @@
 
 context("NMrelate")
 
+NMdataConf(reset=TRUE)
+
 ### sigma doesn't quite work
 test_that("basic",{
     file.mod <- "testData/nonmem/xgxr032.mod"
@@ -38,11 +40,11 @@ test_that("merge with NMreadExt results",{
     res.ext <- NMreadExt(file=file.mod,as.fun="data.table")
 
     res <- list(
-        ext.all=mergeCheck(res.ext[!is.na(par.type)],res.rel,by=cc(model,par.type,i,j),fun.na.by=NULL,all.x=T)
+        ext.all=mergeCheck(res.ext[!is.na(par.type)],res.rel,by=cc(model,par.type,i,j),fun.na.by=NULL,all.x=T,common.cols="drop.y")
        ,
-        ext.nofix=mergeCheck(res.ext[!is.na(par.type)&FIX==0],res.rel,by=cc(model,par.type,i,j),fun.na.by=NULL)
+        ext.nofix=mergeCheck(res.ext[!is.na(par.type)&FIX==0],res.rel,by=cc(model,par.type,i,j),fun.na.by=NULL,common.cols="drop.y")
        ,
-        labs.all=mergeCheck(res.rel,res.ext[!is.na(par.type)],by=cc(model,par.type,i,j),fun.na.by=NULL,all.x=T)
+        labs.all=mergeCheck(res.rel,res.ext[!is.na(par.type)],by=cc(model,par.type,i,j),fun.na.by=NULL,all.x=T,common.cols="drop.y")
     )
 
     expect_equal_to_reference(res,fileRef)

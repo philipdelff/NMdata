@@ -4,7 +4,7 @@
 \alias{NMreadShk}
 \title{Read Shrinkage data reported by Nonmem}
 \usage{
-NMreadShk(file, as.fun)
+NMreadShk(file, auto.ext, as.fun)
 }
 \arguments{
 \item{file}{A model file. Extension will be replaced by ".shk".}

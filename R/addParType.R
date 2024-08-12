@@ -22,6 +22,7 @@ addParType <- function(pars,suffix,add.idx){
     pars[grepl("^THETA",get(col.parameter)),(col.par.type):="THETA"]
     pars[grepl("^OMEGA",get(col.parameter)),(col.par.type):="OMEGA"]
     pars[grepl("^SIGMA",get(col.parameter)),(col.par.type):="SIGMA"]
+    pars[get(col.parameter)%in%cc("OBJ","SAEMOBJ"),(col.par.type):="OBJ"]
     if(add.idx){
         pars[get(col.par.type)=="THETA",i:=as.integer(sub("THETA([0-9]+)","\\1",get(col.parameter)))]
         pars[get(col.par.type)=="OMEGA",i:=as.integer(sub("OMEGA\\(([0-9]+)\\,([0-9]+)\\)","\\1",get(col.parameter)))]

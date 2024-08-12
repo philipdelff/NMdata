@@ -10,14 +10,16 @@ mergeCheck(
   by,
   by.x,
   by.y,
-  fun.commoncols = base::warning,
+  common.cols = base::warning,
   ncols.expect,
   track.msg = FALSE,
   quiet,
   df1,
   df2,
+  subset.x,
   fun.na.by = base::stop,
   as.fun,
+  fun.commoncols,
   ...
 )
 }
@@ -37,15 +39,6 @@ differently. by or by.x and by.y must be supplied.}
 \item{by.y}{If the columns to merge by in x and y are named
 differently. by or by.x and by.y must be supplied.}
 
-\item{fun.commoncols}{If common columns are found in x and y, and
-they are not used in by, this will create columns named like
-col.x and col.y in result (see ?merge). Often, this is a
-mistake, and the default is to throw a warning if this
-happens. If using mergeCheck in a function, you may want to
-make sure this is not happening and use
-fun.commoncols=stop. If you want nothing to happen, you can do
-fun.commoncols=NULL.}
-
 \item{ncols.expect}{If you want to include a check of the number
 of columns being added to the dimensions of x. So if
 ncols.expect=1, the resulting data must have exactly one
@@ -62,6 +55,8 @@ reported. Default value controlled by NMdataConf.}
 
 \item{df2}{Deprecated. Use y.}
 
+\item{subset.x}{Not implemented.}
+
 \item{fun.na.by}{If NA's are found in (matched) by columns in both
 x and why, what should we do? This could be OK, but in many
 cases, it's because something unexpected is happening. Use
@@ -71,6 +66,15 @@ ahead regardless.}
 \item{as.fun}{The default is to return a data.table if x is a
 data.table and return a data.frame in all other cases. Pass a
 function in as.fun to convert to something else.}
+
+\item{fun.commoncols}{If common columns are found in x and y, and
+they are not used in by, this will create columns named like
+col.x and col.y in result (see ?merge). Often, this is a
+mistake, and the default is to throw a warning if this
+happens. If using mergeCheck in a function, you may want to
+make sure this is not happening and use
+fun.commoncols=stop. If you want nothing to happen, you can do
+fun.commoncols=NULL.}
 
 \item{...}{additional arguments passed to data.table::merge. If
 all is among them, an error will be returned.}

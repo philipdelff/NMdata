@@ -14,8 +14,8 @@ header-includes:
 ---
 
 ```{r,include = FALSE}
-## library(tidyvpc)
-library(NMdata)
+## library(NMdata)
+library(devtools)
 load_all("~/wdirs/NMdata")
 NMdataConf(as.fun="data.table")
 
@@ -66,7 +66,7 @@ This does provide a basic parameter table.
 
 ```{r}
 
-pars.ext[,.(par.name,FIX,value,se)]
+pars.ext[,.(par.name,FIX,value,se)] |> kable()
 
 ```
 
@@ -77,28 +77,65 @@ colnames(pars.ext)
 ```
 where `est` is a deprecated copy of the `value` column.
 
-NMreadExt can return other information than the parameter estimates. This vignette is about creating parameter tables so for now, let this be a teaser for what else `NMreadExt()` provides (which is all the info in `.ext` files):
+`NMreadExt()` can return other information than the parameter estimates. This vignette is about creating parameter tables so for now, let this be a teaser for what else `NMreadExt()` provides (which is all the info in `.ext` files):
 
 ```{r}
 names(NMreadExt(file.mod,return="all"))
 ```
 
-## Adding physiologically interpretable labels
+## Retrieve physiologically interpretable labels using parameter section annotations
 
-The above parameter table is not useful to many, maybe not even to the person who wrote the model. Let
+The above parameter table is not useful to many, maybe not even to the person who wrote the model. The parameter sections of the control stream contain consistently formatted information we can use.
 
-```{r}
-NMreadSection(file.mod,section=c("THETA"))
-NMreadSection(file.mod,section=c("OMEGA"))
-NMreadSection(file.mod,section=c("SIGMA"))
+
+```{r,eval=FALSE}
+NMreadSection(file.mod)[c("THETA","OMEGA","SIGMA")]
+```
+
+```{r,echo=FALSE}
+quiet <- NMreadSection(file.mod)[c("THETA","OMEGA","SIGMA")] |> lapply(function(x)cat(paste(paste(x,collapse="\n"),"\n\n")))
 
 ```
+
+`NMdata::NMreadParsText()` provides a very flexible way to read this information into R. One has to provide the format used in the control stream in a simple way. Take a look at the annotations shown above. Following an optional `$THETA`/`$OMEGA`/`$SIGMA`, each line contains the initial value specification used by Nonmem, and then comments containing a counter, a variable name (symbol), and  a label string. `$THETA` also includes units and transformation coding (`log` means the physiological parameter is the exponentail of the `$THETA`). `SIGMA` is coded simpler, only holding a symbol and a label separated by a dash. We mimick that in the `format` arguments to `NMreadParsText()`. 
 
 ```{r}
 partab <- NMreadParsText(file.mod,format="%init;%idx:%symbol;%label[%unit];%trans",
                          format.sigma="%init;%symbol-%label")
-partab
+kable(partab)
 ```
+
+Notice a couple of things here. 
+
+* A variable must be defined in the format by using a `%` followed by alphanumeric characters. 
+
+Non-alphanumeric characters can be used as delimiters. In this case `;` is used as the delimiter most of the time, but not concistently. After the counter a `:` was used. And in fact, the brackets around the units (`[1/h]`) are delimiters too. In this case `[` is a delimiter on its own, and `]` form a multi-charater delimitor together with the following `;`.
+
+* Spaces around delimitors are ignored
+
+We did not specfiy any spaces, and spaces around delimitors are ignored altogeter by default. You musst use the `spaces.split` argument if you want to respect spaces as delimitors.
+
+* Not all fields need be available in all lines
+
+In fact, we did not specify two distinct formats for `$THETA` and
+`$OMEGA` even though `$OMEGA` lines do no include units and
+transformations. `NA`'s are filled in where information is
+missing. However, you cannot skip delimitors in a line. You can skip
+contents, but the structure must be consistent. As an example, see how
+the unit is skipped on `THETA(A) - AGEEFF`.
+
+* Distinct formats are allowed for `$THETA`, `$OMEGA` and `$SIGMA`
+
+`format` always applies to `$THETA` and is inherited to use for `$OMEGA` if `format.omega` is not supplied. The format used for `$OMEGA` is inherited for `$SIGMA` if `format.sigma` is not provided.
+
+* An index variable is only needed when off-diagonal elements are included
+
+In this example, the correlation between two `$OMEGA` elements is estimated. `NMreadParsText()` cannot figure out on its own how to connect comments to those off-diagonal elements in `$OMEGA` and/or `$SIGMA`. Currently, an index variable must be included with the `i-j` format for these to be read correctly. The name of the column to be used as the index variable can be controlled using the `field.idx` argument.
+
+See more examples in `?NMreadParsText()` to better understand how you can tweak the formats to match your needs.
+
+## Merge parameter estimates and parameter labels
+
 And we can format a parameter table with labels merging with the ext file:
 
 ```{r}
@@ -118,7 +155,7 @@ kable(partab2[,.(par.name,symbol,FIX,label,unit,Estimate=value.trans,RSE=se/valu
 The left join we did with `mergeCheck` includes all parameters from the ext file. In this case we want to skip all the off-diagonals in $OMEGA and $SIGMA because they are not estimated. Let's just look at the onese that were estimated. In many cases some fixed parameters can be relevant to include in a parameter table, and then you need to modify this step. 
 
 ```{r}
-partab2[FIX==0,.(par.name,symbol,FIX,label,unit,Estimate=NMcalc::signif2(value.trans,3),RSE=scales::percent(se/value,accuracy=.1))] |>
+partab2[FIX==0,.(par.name,symbol,label,unit,Estimate=NMcalc::signif2(value.trans,3),RSE=scales::percent(se/value,accuracy=.1))] |>
     kable()
 ```
 
@@ -132,7 +169,7 @@ getting close.
 shk <- NMreadShk(file.mod)
 
 partab3 <- mergeCheck(partab2,shk[,.(par.name,Pval=signif2(Pval,2),etabar,EtaShkSD=percent(EtaShkSD/100))],by="par.name",all.x=TRUE)
-partab3[FIX==0,.(par.name,symbol,FIX,label,unit,Estimate=NMcalc::signif2(value.trans,3),RSE=scales::percent(se/value,accuracy=.1),Pval,etabar,EtaShkSD)] |>
+partab3[FIX==0,.(par.name,symbol,label,unit,Estimate=NMcalc::signif2(value.trans,3),RSE=scales::percent(se/value,accuracy=.1),Pval,etabar,EtaShkSD)] |>
     kable()
 ```
 
@@ -170,7 +207,7 @@ fwrite(tab.csv,file="derived/partab_offline.csv")
 
 ```{r}
 tab.offline <- read.csv("derived/partab_offline.csv")
-mergeCheck(partab2[FIX==0],tab.offline,by="symbol",fun.commoncols="drop.x")
+mergeCheck(partab2[FIX==0],tab.offline,by="symbol",fun.commoncols="drop.x",all.x=T)
 ```
 
 
@@ -178,10 +215,8 @@ mergeCheck(partab2[FIX==0],tab.offline,by="symbol",fun.commoncols="drop.x")
 In the last example, all we used from the control stream was the `symbol`, i.e. an abbreviated parameter name. The rest was merged in from a table maintained in a csv file.
 
 
-<!-- off-diags missing. Merge info from ext? -->
+
 ```{r}
-load_all("~/wdirs/NMdata")
-NMdataConf(as.fun="data.table")
 
 labs.auto <- NMrelate(file.mod)
 labs.auto[,symbol:=label]
@@ -191,6 +226,67 @@ kable(labs.auto)
 mergeCheck(labs.auto[,.(par.name,symbol)],tab.offline,by="symbol",all.x=T)
 ```
 
+<!-- off-diags missing. Merge info from ext? -->
+```{r}
+load_all("~/wdirs/NMdata") 
+NMdataConf(as.fun="data.table")
+
+file2.mod <- system.file("examples/nonmem/xgxr133.mod",package="NMdata")
+
+pars.ext <- NMreadExt(file2.mod)
+
+labs.auto <- NMrelate(file2.mod)
+labs.auto[,symbol:=label]
+labs.j <- labs.auto[par.type%in%c("OMEGA","SIGMA"),.(par.type.j=par.type,j,symbol.j=symbol)]
+labs.ij <- labs.j[,labs.auto[par.type%in%c("OMEGA","SIGMA"),.(i,par.type.i=par.type,symbol.i=symbol)],by=labs.j]
+labs.ij <- labs.ij[par.type.i==par.type.j & (i!=j)]
+labs.ij[par.type.i==par.type.j,par.type:=par.type.i]
+labs.ij[,symbol:=sprintf("Cov.%s-%s",symbol.i,symbol.j)]
+labs.ij[,par.name:=sprintf("%s(%d,%d)",par.type.i,i,j)]
+labs.ij[,label:=symbol]
+cols.drop <- cc(par.type.j, symbol.j, par.type.i, symbol.i)
+labs.ij[,(cols.drop):=NULL]
+
+labs.auto[par.type=="OMEGA"&i==j,symbol:=paste0("BSV.",symbol)]
+labs.auto2 <- rbind(labs.auto,labs.ij,fill=T)
+
+
+### overwrite auto-gen labels with hard-coded ones
+tab.labs.diag <- mergeCheck(
+    ## labs.auto[par.type=="THETA",!("label")]
+    labs.auto2[,!("label")]
+    ## labs.auto[par.type=="THETA"|(i==j),!("label")]
+   ,
+    tab.offline
+   ,by="symbol"
+   ,all.x=T)
+
+tab.labs.offdiag <- labs.auto2[par.type!="THETA"&i!=j]
+
+tab.all.labs <- rbind(
+    tab.labs.diag
+                      ## ,tab.labs.offdiag
+                     ,fill=T)
+
+## mege onto estimates (ext)
+pars.aug <- mergeCheck(pars.ext[FIX==0],
+                       tab.all.labs[!grepl("SIGMA",symbol)]
+                      ,
+                       by="par.name",all.x=TRUE,common.cols="drop.y")
+
+### back transformations
+pars.aug[,value.trans:=value]
+pars.aug[grepl("LTV",symbol),value.trans:=exp(value)]
+## pars.aug
+
+
+kable(pars.aug[,.(par.name,symbol,FIX,label,unit,Estimate=value.trans,RSE=se/value)])
+
+
+```
+
+
+
 ## More models
 Any of the code above can be run on multiple models at once. `NMdata` functions generally return tables including a `model` column for this purpose. Let's get a quick overview of a few models.
 
@@ -199,6 +295,7 @@ files <- system.file(file.path("examples/nonmem",c("xgxr132.mod","xgxr133.mod"))
 labs.auto <- NMrelate(files)
 labs.auto[,symbol:=label]
 labs.auto[par.type=="OMEGA",symbol:=paste0("BSV.",symbol)]
+labs.auto <- labs.auto[!grepl("SIGMA",symbol)]
 
 NMreadExt(files,return="pars")[FIX==0]|>
     mergeCheck(labs.auto[,.(model,par.name,symbol)],by=c("model","par.name"),all.x=T) |> 

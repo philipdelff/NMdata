@@ -15,7 +15,7 @@ test_that("basic - pars",{
         ref <- readRDS(fileRef)
         compareCols(ref,res)
         res[1:4]
-        res[1:4]
+        ref[1:4]
     }
     
 })
@@ -87,10 +87,10 @@ test_that("muref SAEM - tableno options",{
     NMdataConf(as.fun="data.table")
     
     res <- list(
-        NMreadExt(file.ext,tableno=1)[parameter=="SAEMOBJ"]
-       ,NMreadExt(file.ext,tableno="min")[parameter=="SAEMOBJ"]
-       ,NMreadExt(file.ext,tableno=2)[parameter=="SAEMOBJ"]
-       ,NMreadExt(file.ext,tableno="max")[parameter=="SAEMOBJ"]
+        NMreadExt(file.ext,tableno=1,return="obj")
+       ,NMreadExt(file.ext,tableno="min",return="obj")
+       ,NMreadExt(file.ext,tableno=2,return="obj")
+       ,NMreadExt(file.ext,tableno="max",return="obj")
     )
 
     expect_equal_to_reference(res,fileRef)

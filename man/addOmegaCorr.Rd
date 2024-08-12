@@ -4,7 +4,7 @@
 \alias{addOmegaCorr}
 \title{add Omega correlations to a parameter table}
 \usage{
-addOmegaCorr(pars, by = NULL, as.fun)
+addOmegaCorr(pars, by = NULL, as.fun, col.value = "value")
 }
 \arguments{
 \item{pars}{A parameter table, like returned by `NMreadExt()`.}

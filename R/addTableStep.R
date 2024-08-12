@@ -15,9 +15,11 @@ addTableStep <- function(dt,keep.table.name=FALSE){
     dt[grepl("Importance Sampling",table.name),table.step:="IMP"]
     dt[grepl("Importance/MAP Sampling",table.name),table.step:="IMP"]
 
+    dt[grepl("Laplacian Conditional Estimation",table.name),table.step:="LAPLACECE"]
+    
     if(!keep.table.name){
         dt[,table.name:=NULL]
     }
 
-    dt
+    dt[]
 }

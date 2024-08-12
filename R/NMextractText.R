@@ -91,7 +91,7 @@ NMextractText <- function(file, lines, text, section, char.section,
     ## clean.spaces <- deprecatedArg("cleanSpaces","clean.spaces",args=args)
 
     if(!return%in%c("idx","text")) stop("text must be one of text or idx.")
-
+    
     if(sum(c(!missing(file)&&!is.null(file),
              !missing(lines)&&!is.null(lines),
              !missing(text)&&!is.null(text)

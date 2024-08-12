@@ -93,6 +93,7 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     if(missing(col.model)) col.model <- NULL 
     col.model <- NMdataDecideOption("col.model",col.model)
+    if(col.model!="model") stop("NMreadExt() currently only supports col.model=\"model\".")
     if(missing(modelname)) modelname <- NULL
     modelname <- NMdataDecideOption("modelname",modelname)
     if(missing(auto.ext) || is.null(auto.ext)) auto.ext <- TRUE
@@ -110,7 +111,9 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     file <- deprecatedArg("file.ext","file",args=args)
 
     if(missing(return)||is.null(return)) return <- "pars"
-    allowed.return <- c("pars","iterations","objv","all")
+    return <- tolower(return)
+   
+    allowed.return <- c("pars","iterations","obj","all")
     if(!return %in% allowed.return){
         stop("Argument return has to be one of: ", paste(allowed.return,collapse =", "))
     }
@@ -167,23 +170,25 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     ## pars <- res.NMdat[variable%in%dt.codes$variable,setdiff(colnames(res.NMdat),"OBJ"),with=FALSE]
     pars <- res.NMdat[variable%in%dt.codes$variable]
     pars <- addTableStep(pars,keep.table.name=FALSE)
-    objv <- NULL
+    obj <- NULL
     if(nrow(pars)){
         
-        pars <- melt(pars,id.vars=cc(model,TABLENO,NMREP,table.step,ITERATION,variable),variable.name="parameter")
+        pars <- melt(pars,id.vars=c(col.model,cc(TABLENO,NMREP,table.step,ITERATION,variable)),variable.name="parameter")
         pars <- dcast(pars,model+TABLENO+NMREP+table.step+parameter~variable,value.var="value")
 
         pars <- addParType(pars)
 
-        setcolorder(pars,intersect(c("model","TABLENO","NMREP","table.step","par.type","parameter","par.name","i","j","FIX","value", "cond","eigCor",   "partLik",   "se", "seStdDevCor", "stdDevCor", "termStat"),colnames(pars)))
+        setcolorder(pars,intersect(c(col.model,"TABLENO","NMREP","table.step","par.type","parameter","par.name","i","j","FIX","value", "cond","eigCor",   "partLik",   "se", "seStdDevCor", "stdDevCor", "termStat"),colnames(pars)))
         
-        objv <- pars[parameter%in%c("SAEMOBJ","OBJ"),  .(model, TABLENO, NMREP, table.step, parameter,value)]
-        objv[,par.type:= "OBJV"]
+        ## obj <- pars[parameter%in%c("SAEMOBJ","OBJ"),  .(model, TABLENO, NMREP, table.step, par.type,parameter,value)]
+        obj <- pars[parameter%in%c("SAEMOBJ","OBJ")]
+        cols.drop <- intersect(colnames(pars),cc(i,j,FIX,est,cond,eigCor ,partLik ,se ,seStdDevCor, stdDevCor ))
+        obj[,(cols.drop):=NULL]
         pars <- pars[!parameter%in%c("SAEMOBJ","OBJ")]
         
         ### this setorder call doesnt work - unsure why
         ## setorder(pars,match(par.type,c("THETA","OMEGA","SIGMA")),i,j)
-        pars <- pars[order(match(par.type,c("THETA","OMEGA","SIGMA")),i,j)]
+        pars <- pars[order(model,match(par.type,c("THETA","OMEGA","SIGMA")),i,j)]
         ## est is just a copy of value for backward compatibility
         pars[,est:=value]
 
@@ -195,12 +200,12 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     iterations <- melt(iterations,id.vars=cc(model,TABLENO,NMREP,table.step,ITERATION),variable.name="parameter")
     iterations <- addParType(iterations)
 
-    res <- list(pars=pars,iterations=iterations,objv=objv)
+    res <- list(pars=pars,iterations=iterations,obj=obj)
     res <- lapply(res,as.fun)
 
     if(return=="pars") return(res$pars)
     if(return=="iterations") return(res$iterations)
-    if(return=="objv") return(res$objv)
+    if(return=="obj") return(res$obj)
 
     
     ## as.fun already applied
