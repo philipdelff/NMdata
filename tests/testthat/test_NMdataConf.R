@@ -2,18 +2,24 @@ context("NMdataConf")
 
 NMdataConf(reset=TRUE)
 
+dropFuns <- function(x){
+    x$as.fun <- NULL
+    x$file.mod <- NULL
+    x$file.cov <- NULL
+    x$file.ext <- NULL
+    x$file.phi <- NULL
+    x$file.shk <- NULL
+    x$modelname <- NULL
+    x
+}
+
 test_that("defaults",{
 
     fileRef <- "testReference/NMdataConf_01.rds"
     ## ref <- readRDS(fileRef)
 
     defaults <- NMdataConf()
-    defaults$as.fun <- NULL
-    defaults$file.mod <- NULL
-    defaults$file.cov <- NULL
-    defaults$file.ext <- NULL
-    defaults$file.phi <- NULL
-    defaults$modelname <- NULL
+    defaults <- dropFuns(defaults)
 
     expect_equal_to_reference(defaults,fileRef)
 
@@ -28,18 +34,22 @@ test_that("reset",{
     NMdataConf(reset=TRUE)
     defaults2 <- NMdataConf()
 
-    defaults$as.fun <- NULL
-    defaults$file.mod <- NULL
-    defaults$file.cov <- NULL
-    defaults$file.ext <- NULL
-    defaults$file.phi <- NULL
-    defaults$modelname <- NULL
-    defaults2$as.fun <- NULL
-    defaults2$file.mod <- NULL
-    defaults2$file.cov <- NULL
-    defaults2$file.ext <- NULL
-    defaults2$file.phi <- NULL
-    defaults2$modelname <- NULL
+    defaults <- dropFuns(defaults)
+    defaults2 <- dropFuns(defaults2)
+    ## defaults$as.fun <- NULL
+    ## defaults$file.mod <- NULL
+    ## defaults$file.cov <- NULL
+    ## defaults$file.ext <- NULL
+    ## defaults$file.phi <- NULL
+    ## defaults$file.shk <- NULL
+    ## defaults$modelname <- NULL
+    ## defaults2$as.fun <- NULL
+    ## defaults2$file.mod <- NULL
+    ## defaults2$file.cov <- NULL
+    ## defaults2$file.ext <- NULL
+    ## defaults2$file.phi <- NULL
+    ## defaults2$file.shk <- NULL
+    ## defaults2$modelname <- NULL
     
     
     expect_equal(defaults,defaults2)
@@ -83,19 +93,23 @@ test_that("change fun in globalenv does not affect NMdataConf()",{
     afun <- class
     defaults2 <- NMdataConf()
 
-    defaults$as.fun <- NULL
-    defaults$file.mod <- NULL
-    defaults$file.cov <- NULL
-    defaults$file.ext <- NULL
-    defaults$file.phi <- NULL
-    defaults$modelname <- NULL
-    defaults2$as.fun <- NULL
-    defaults2$file.mod <- NULL
-    defaults2$file.cov <- NULL
-    defaults2$file.ext <- NULL
-    defaults2$file.phi <- NULL
-    defaults2$modelname <- NULL
+    defaults <- dropFuns(defaults)
+    defaults2 <- dropFuns(defaults2)
     
+    ## defaults$as.fun <- NULL
+    ## defaults$file.mod <- NULL
+    ## defaults$file.cov <- NULL
+    ## defaults$file.ext <- NULL
+    ## defaults$file.phi <- NULL
+    ## defaults$file.shk <- NULL
+    ## defaults$modelname <- NULL
+    ## defaults2$as.fun <- NULL
+    ## defaults2$file.mod <- NULL
+    ## defaults2$file.cov <- NULL
+    ## defaults2$file.ext <- NULL
+    ## defaults2$file.phi <- NULL
+    ## defaults2$file.shk <- NULL
+    ## defaults2$modelname <- NULL
     
     expect_equal(defaults,defaults2)
 })
@@ -126,19 +140,24 @@ test_that("change fun in globalenv does not affect NMdataConf()",{
     afun <- class
     defaults2 <- NMdataConf()
 
-    defaults$as.fun <- NULL
-    defaults$file.mod <- NULL
-    defaults$file.cov <- NULL
-    defaults$file.ext <- NULL
-    defaults$file.phi <- NULL
-    defaults$modelname <- NULL
+    defaults <- dropFuns(defaults)
+    defaults2 <- dropFuns(defaults2)
+    
+    ## defaults$as.fun <- NULL
+    ## defaults$file.mod <- NULL
+    ## defaults$file.cov <- NULL
+    ## defaults$file.ext <- NULL
+    ## defaults$file.phi <- NULL
+    ## defaults$file.shk <- NULL
+    ## defaults$modelname <- NULL
 
-    defaults2$as.fun <- NULL
-    defaults2$file.mod <- NULL
-    defaults2$file.cov <- NULL
-    defaults2$file.ext <- NULL
-    defaults2$file.phi <- NULL
-    defaults2$modelname <- NULL
+    ## defaults2$as.fun <- NULL
+    ## defaults2$file.mod <- NULL
+    ## defaults2$file.cov <- NULL
+    ## defaults2$file.ext <- NULL
+    ## defaults2$file.phi <- NULL
+    ## defaults2$file.shk <- NULL
+    ## defaults2$modelname <- NULL
     
     expect_equal(defaults,defaults2)
 })
@@ -162,7 +181,6 @@ test_that("deprecated use.rds",{
     new$file.phi <- NULL
     new$file.shk <- NULL
     new$modelname <- NULL
-
     
     expect_equal_to_reference(new,fileRef)
     compareCols(readRDS(fileRef),new)
