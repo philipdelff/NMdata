@@ -4,16 +4,20 @@
 \alias{getFilePaths}
 \title{Internal interpretation of file specification options}
 \usage{
-getFilePaths(files = NULL, file.pattern = NULL, dir = NULL, quiet = FALSE)
+getFilePaths(files = NULL, file.pattern = NULL, dir = NULL, quiet)
 }
 \arguments{
 \item{files}{character vector of full file paths. Specify either
 files or both file.pattern and dir.}
 
-\item{file.pattern}{A regular expression to look for in dir. If used, dir must also be supplied.}
+\item{file.pattern}{A regular expression to look for in dir. If
+used, dir must also be supplied.}
 
 \item{dir}{The directory i which to look for file.pattern. dir is
-passed to list.files as pattern. If supplied, file.pattern must also be supplied.}
+passed to list.files as pattern. If supplied, file.pattern
+must also be supplied.}
+
+\item{quiet}{The default is not to be quiet.}
 }
 \value{
 A character vector of full paths to files

@@ -128,7 +128,8 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
     } 
     col.row <- NMdataDecideOption("col.row",col.row)
 
-    args <- getArgs()
+    ## args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
     apply.filters <- deprecatedArg(oldarg="applyFilters",newarg="apply.filters",args=args)
     
     if(missing(quiet)) quiet <- NULL
@@ -141,7 +142,7 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
     args.fread <- NMdataDecideOption("args.fread",args.fread)
     args.fst <- list(as.data.table=TRUE)
 
-    use.rds <- deprecatedArg(oldarg="use.rds",msg="Use `formats.read` instead. Overwriting `formats.read`.")
+    use.rds <- deprecatedArg(oldarg="use.rds",msg="Use `formats.read` instead. Overwriting `formats.read`.",args=args)
     if(!is.null(use.rds)&&use.rds){
         formats.read <- c("rds","csv")
     }

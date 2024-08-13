@@ -84,7 +84,8 @@ NMscanTables <- function(file,as.fun,quiet,col.nmrep=TRUE,col.tableno=FALSE,col.
     col.row <- NMdataDecideOption("col.row",col.row)
 
     ## if(!missing(details)) message("NMscanTables: argument details is deprecated.")
-    args <- getArgs()
+    ## args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
     deprecatedArg(oldarg="details",args=args)
     
     dir <- dirname(file)

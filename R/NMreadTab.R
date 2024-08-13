@@ -43,7 +43,7 @@
 ##'     something else. If data.tables are wanted, use
 ##'     as.fun="data.table". The default can be configured using
 ##'     NMdataConf.
-##' @param ... Arguments passed to fread.
+##' @param ... Arguments passed to \code{data.table::fread()}.
 ##' @return The Nonmem table data.
 ##' @details The actual reading of data is based on
 ##'     data.table::fread. Generally, the function is fast thanks to
@@ -96,14 +96,6 @@ NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip
         rm.col.tableno <- TRUE
     }
 
-
-    ## function to strip strings from leading, trailing and duplicate spaces
-    cleanSpaces <- function(x){
-        x <- sub("^ +","",x)
-        x <- sub(" +$","",x)
-        x <- gsub(" +"," ",x)
-        x
-    }
     
     ## arg checks
     if(!is.character(file)) stop("file should be a character string",call.=FALSE)
@@ -120,6 +112,7 @@ NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip
         if(!header) skip <- 0
     }
     dt1 <- fread(file,fill=TRUE,header=header,skip=skip,...)
+    ## dt1 <- fread(file,fill=TRUE,...)
     
     cnames <- copy(colnames(dt1))
     if(!quiet){

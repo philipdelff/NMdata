@@ -980,3 +980,25 @@ test_that("csv vs rds vs fst",{
     expect_equal_to_reference(res,fileRef,version=2)
     
 })
+
+test_that("inside lappy",{
+### there are issues running NMdata functions in lapply - probably due to getArgs
+
+    lsts <- c(    "testData/nonmem/xgxr014.lst",    "testData/nonmem/xgxr032.lst")
+
+    res1 <- NMscanData(lsts[1],as.fun="data.table")
+    res2 <- NMscanData(lsts[2],as.fun="data.table")
+
+    res.all <- rbindlist(lapply(lsts,NMscanData,as.fun="data.table"),fill=T )
+    
+    
+    dims1 <- dims(
+        rbind(res1,res2,fill=T)
+       ,
+        res.all
+    )
+
+    expect_equal(dims1[,uniqueN(nrows)],1)
+    expect_equal(dims1[,uniqueN(ncols)],1)
+
+})

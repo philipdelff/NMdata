@@ -6,7 +6,7 @@ test_that("basic",{
     
     fun1 <- function(a=1,b=2,c){
         ## browser()            
-        getArgs()
+        getArgs(sys.call(),parent.frame())
     }
 
     
@@ -65,3 +65,4 @@ if(F){
     fun2.bar(a=1,b=2)
 
 }
+

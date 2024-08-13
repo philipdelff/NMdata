@@ -19,7 +19,7 @@ Nonmem code is still returned with the data.}
 NONMEM control stream? Default is TRUE. Can only be negative
 when translate=FALSE.}
 
-\item{Suppress}{warnings about data columns?}
+\item{quiet}{Suppress warnings about data columns?}
 }
 \value{
 data with column names translated as specified by nonmem

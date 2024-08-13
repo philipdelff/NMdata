@@ -384,6 +384,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     }
     NMisMissing <- function(x) is.na(x) | (is.character(x) & x %in% na.strings)
 
+
     ## listEvents is for row-level findings
     ## @param col is the actual column to be used for the condition
     ## @param name The name of the check. Will end up in the check column in the resulting table.
@@ -430,6 +431,8 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
         rbind(events,res,fill=TRUE)
     }
 
+
+    
     reportFindings <- function(findings,data,col.id,col.row,c.row,col.row.orig,col.id.orig,quiet,as.fun,return.summary){
         
 ### Add ID's to row-level findings
@@ -609,8 +612,10 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     
 ######## Default numeric columns. Will be checked for presence, NA, non-numeric (col-level)
 ### Others that: If column present, must be numeric, and values must be non-NA. Remember eg DV, CMT and AMT can be NA.
-    
-    cols.num.all <- c( col.time,"EVID",col.id,col.mdv,
+
+    cols.num.all <- c( col.time,col.evid,col.id)
+    if(type.data=="est") cols.num.all <- c(cols.num.all,col.mdv)
+    cols.num.all <- c(cols.num.all,
                       covs,names(covs.occ),as.character(unlist(covs.occ))
                       )
     if(!is.null(col.flagn.orig)) cols.num.all <- c(cols.num.all,col.flagn)
@@ -675,7 +680,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     findings <- listEvents(col.time,"Negative time",fun=function(x)x>=0,events=findings,debug=F)
 
 ### EVID must be in c(0,1,2,3,4)
-    findings <- listEvents("EVID","EVID not in 0:4",function(x) x%in%c(0:4),events=findings)
+    findings <- listEvents(col.evid,"EVID not in 0:4",function(x) x%in%c(0:4),events=findings)
     
 ### ID must be a positive integer
     findings <- listEvents(col.id,paste(col.id,"not a positive integer"),
@@ -685,16 +690,26 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     
 ### MDV should perfectly reflect is.na(DV)
     if(col.mdv%in%colnames(data)){
-        
-        data[,MDVDV:=!is.na(get(col.mdv))&get(col.mdv)==as.numeric(is.na(get(col.dv)))]
-        findings <- listEvents("MDVDV","MDV does not match DV",colname=col.mdv,fun=function(x)x==TRUE,dat=data[get(col.evid)==0],events=findings)
+        if(col.dv%in%colnames(data)){
+            data[,MDVDV:=!is.na(get(col.mdv))&get(col.mdv)==as.numeric(is.na(get(col.dv)))]
+            findings <- listEvents("MDVDV","MDV does not match DV",colname=col.mdv,fun=function(x)x==TRUE,dat=data[get(col.evid)==0],events=findings)
+        } else {
+            findings <- listEvents("MDVDV","MDV found, DV not"
+                                  ,colname=col.mdv
+                                  ,fun=function(x)x==TRUE
+                                  ,col.required=FALSE
+                                  ,dat=data[get(col.evid)==0]
+                                  ,events=findings
+                                   )
+        }
     }
 
 ###  columns that are required for all rows done
 
 #### all other required columns (NA elements OK). Run NMisNumeric for each element, then translate using NMasNumeric
     
-    cols.req <- c(col.cmt,col.dv,col.amt)
+    cols.req <- c(col.cmt,col.amt)
+    if(type.data=="est") cols.req <- c(cols.req,col.dv)
     for(col in cols.req){
         
         findings <- listEvents(col,name="Not numeric",fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
@@ -729,13 +744,22 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
 ### DV must be present
 ### DV must be numeric for EVID==0
     if(col.mdv%in%colnames(data)){
-        findings <- listEvents(col.dv,"DV not numeric",fun=is.na,events=findings,invert=TRUE,dat=data[EVID%in%c(0)&get(col.mdv)==0])
+        findings <- listEvents(col.dv,"DV not numeric",fun=is.na,events=findings,invert=TRUE
+                              ,col.required=type.data=="est"
+                              ,dat=data[EVID%in%c(0)&get(col.mdv)==0])
     } else {
-        findings <- listEvents(col.dv,"DV not numeric",fun=is.na,events=findings,invert=TRUE,dat=data[EVID%in%c(0)])
+        findings <- listEvents(col.dv,"DV not numeric",
+                               fun=is.na,events=findings,
+                               invert=TRUE
+                              ,col.required=type.data=="est"
+                               ,dat=data[EVID%in%c(0)]
+                               )
     }
 
 ### DV should be NA or 0 for dosing records
-    findings <- listEvents(col.dv,"DV not NA or 0 in dosing recs",fun=function(x)is.na(x)|as.numeric(x)==0,events=findings,dat=data[EVID%in%c(1,4)])
+    if(type.data=="est"){
+        findings <- listEvents(col.dv,"DV not NA or 0 in dosing recs",fun=function(x)is.na(x)|as.numeric(x)==0,events=findings,dat=data[EVID%in%c(1,4)])
+    }
 
 
 #### AMT

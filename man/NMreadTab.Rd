@@ -61,7 +61,7 @@ something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.}
 
-\item{...}{Arguments passed to fread.}
+\item{...}{Arguments passed to \code{data.table::fread()}.}
 }
 \value{
 The Nonmem table data.

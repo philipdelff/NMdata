@@ -1,6 +1,10 @@
 ##' Read in data file
 ##'
-##' @param file The .cov covariance Nonmem matrix file to read 
+##' @param file The .cov covariance Nonmem matrix file to read
+##' @param auto.ext If `TRUE` (default) the extension will automatically
+##'     be modified using `NMdataConf()$file.cov`. This means `file`
+##'     can be the path to an input or output control stream, and
+##'     `NMreadCov()` will still read the `.cov` file.
 ##' @param ... Passed to fread
 ##'
 ##' @details This function is taken from nonmem2rx::nmcov which was
@@ -14,7 +18,16 @@
 
 
 
-NMreadCov <- function (file, ...) {
+NMreadCov <- function (file,auto.ext, ...) {
+
+
+    if(missing(auto.ext) || is.null(auto.ext)) auto.ext <- TRUE
+    fun.file.cov <- NMdataDecideOption("file.cov")
+    if(auto.ext){
+        file <- fun.file.cov(file)
+    }
+
+
     if(!file.exists(file)){stop("file does not exist.")}
     TABLE <- NULL
     NMREP <- NULL

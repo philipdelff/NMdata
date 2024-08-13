@@ -16,6 +16,9 @@
 ##'     available but a full matrix including elements related to
 ##'     fixed parameters is needed.
 ##' @param fill Value to insert for missing elements
+##' @param col.value The name of the column from which to take the
+##'     `OMEGA` values. Default is "value" in alignment with the
+##'     output from `NMreadExt()`.
 ##' @details If pars does not contain all `i` values, they will be
 ##'     imputed with zeros. The desired matrix dimension is inferred
 ##'     from `min(i)` and `max(i)`.  In case `dt.subset=="unique"`
@@ -25,22 +28,32 @@
 ##' @return a matrix
 ##' @export
 
-dt2mat <- function(pars,dt.subset="unique",max.i,fill=0){
+dt2mat <- function(pars,dt.subset="unique",max.i,fill=0,col.value) {
 
     . <- NULL
     est <- NULL
     i <- NULL
     j <- NULL
+    if(missing(col.value)) col.value <- NULL
+    if(is.null(col.value)) {
+        if("value"%in%colnames(pars)) {
+            col.value <- "value"
+        } else if("est"%in%colnames(pars)) {
+            col.value <- "est"
+        } else{
+            stop("col.value needed")
+        }
+    }
 
     if(!dt.subset%in%cc(unique,all)) {
         stop("`dt.subset` must be either `unique` or `all`.")
     }
     
-    pars.mat <- pars[,.(i,j,est)]
+    pars.mat <- pars[,.(i,j,value=get(col.value))]
 
-    if(dt.subset=="unique"){
+    if(dt.subset=="unique") {
         pars.mat <- rbind(pars.mat,
-                          pars[i!=j][,.(i=j,j=i,est)]
+                          pars[i!=j][,.(i=j,j=i,value=get(col.value))]
                          ,fill=T)
     }
 
@@ -50,7 +63,7 @@ dt2mat <- function(pars,dt.subset="unique",max.i,fill=0){
     pars.mat <- rbind(pars.mat,data.table(i=i.missing,j=i.missing),fill=TRUE)
 
     ## note, dcast returns a keyed data.table (keys are LHS vars) so it is always ordered by i.
-    matrix.pars <- as.matrix(dcast(pars.mat,i~j,value.var="est")[,!("i")])
+    matrix.pars <- as.matrix(dcast(pars.mat,i~j,value.var="value")[,!("i")])
     if(!isFALSE(fill)){
         matrix.pars[is.na(matrix.pars)] <- fill
     }

@@ -1,31 +1,23 @@
 ##' Get provided arguments as a named list
-##' @param which How many environment levels to go up to look for
-##'     arguments.
-##' @return A named list
+##' @param call Function call as provided by \code{sys.call()}.
+##' @param env Environment in which to evaluate the arguments.
+##' @return A named list of arguments and their values
+##' @examples
+##' afun <- function(){
+##' NMdata:::getArgs(sys.call(),parent.frame())
+##' }
+##' afun()
 ##' @family arguments
 ##' @keywords internal
 
-## getArgs <- function(which=1){
-
-##     cl <- sys.call(-which)
-##     ## f1 <- get(as.character(cl[[1]]), mode="function", sys.frame(-which-1))
-##     ## accordng to Hadley, this is "better"
-##     ls.par <- ls(pos=parent.frame(n=1))
-
-##     f1 <- eval(cl[[1]], parent.frame(which))
-##     cl <- match.call(definition=f1, call=cl,envir=parent.frame(which+1))
-##     as.list(cl)[-1]
-## }
-
-
-getArgs <- function(which = 1) {
-    cl <- sys.call(-which)
+getArgs <- function(call,env) {
+    ##cl <- sys.call(-which)
     
-    f1 <- eval(cl[[1]], parent.frame(which))
+    f1 <- eval(call[[1]], env)
     ##  cl <- match.call(definition = f1, call = cl)
-    cl <- match.call(definition=f1, call=cl,envir=parent.frame(which+1))
+    cl <- match.call(definition=f1, call=call,envir=env)
     cl[[1]] <- quote(list)
     ##eval(cl, parent.frame(which))
-    eval(cl, parent.frame(which+1))
+    eval(cl, env)
 }
 

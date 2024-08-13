@@ -27,7 +27,6 @@ NMreadTabSlow <- function(file){
     
     lines <- readLines(file)
     idx.tabstart <- grep("^TABLE NO",lines)
-    idx.tabstart
     dt.ts2 <- data.table(idx=c(idx.tabstart,length(lines)+1))
     dt.ts3 <- data.table(start=dt.ts2[-.N],end=dt.ts2[-1]-1)
     dt.ts3[,tableno:=sub(" *TABLE NO\\. +([1-9][0-9]*).*","\\1",lines[start.idx])]

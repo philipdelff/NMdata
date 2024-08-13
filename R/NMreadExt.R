@@ -7,7 +7,7 @@
 ##'     returned in addition to what other parameter-level information
 ##'     is found, like FIX, sd etc. as columns. If
 ##'     \code{return="iterations"}, the iterations are returned. If
-##'     \code{return="both"}, both er returned, though in separate
+##'     \code{return="all"}, all er returned, though in separate
 ##'     data.frames compiled in a list.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say `tibble::as_tibble`) in as.fun to convert to
@@ -86,6 +86,15 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     j <- NULL
     TABLENO <- NULL
     table.step <- NULL
+    FIX <- NULL
+    est <- NULL
+    cond <- NULL
+    eigCor <- NULL
+    partLik <- NULL
+    se <- NULL
+    seStdDevCor <- NULL
+    stdDevCor <- NULL
+    value <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
@@ -93,6 +102,7 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     if(missing(col.model)) col.model <- NULL 
     col.model <- NMdataDecideOption("col.model",col.model)
+    if(col.model!="model") stop("NMreadExt() currently only supports col.model=\"model\".")
     if(missing(modelname)) modelname <- NULL
     modelname <- NMdataDecideOption("modelname",modelname)
     if(missing(auto.ext) || is.null(auto.ext)) auto.ext <- TRUE
@@ -104,12 +114,15 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
         stop("tableno must be either one of the character strings min, max, all or an integer greater than zero.")
     }
     
-    args <- getArgs()
+    ## args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
     if(missing(file.ext)) file.ext <- NULL
     file <- deprecatedArg("file.ext","file",args=args)
 
     if(missing(return)||is.null(return)) return <- "pars"
-    allowed.return <- c("pars","iterations","all")
+    return <- tolower(return)
+   
+    allowed.return <- c("pars","iterations","obj","all")
     if(!return %in% allowed.return){
         stop("Argument return has to be one of: ", paste(allowed.return,collapse =", "))
     }
@@ -120,25 +133,11 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     }
 
 
-    addPartype <- function(pars){
-        pars[,par.type:=NA_character_]
-        pars[grepl("^THETA",parameter),par.type:="THETA"]
-        pars[grepl("^OMEGA",parameter),par.type:="OMEGA"]
-        pars[grepl("^SIGMA",parameter),par.type:="SIGMA"]
-        pars[par.type=="THETA",i:=sub("THETA([0-9]+)","\\1",parameter)]
-        pars[par.type=="OMEGA",i:=sub("OMEGA\\(([0-9]+)\\,([0-9]+)\\)","\\1",parameter)]
-        pars[par.type=="OMEGA",j:=sub("OMEGA\\(([0-9]+)\\,([0-9]+)\\)","\\2",parameter)]
-        pars[par.type=="SIGMA",i:=sub("SIGMA\\(([0-9]+)\\,([0-9]+)\\)","\\1",parameter)]
-        pars[par.type=="SIGMA",j:=sub("SIGMA\\(([0-9]+)\\,([0-9]+)\\)","\\2",parameter)]
-        cols <- cc(i,j)
-        pars[,(cols):=lapply(.SD,as.integer),.SDcols=cols]
-        pars[]
-    }
-
     res.NMdat <- lapply(file,function(file){
         this.model <- modelname(file)
         NMreadTab(file,as.fun="data.table",quiet=TRUE,col.table.name=TRUE)[,(col.model):=this.model]
     })
+    
 
     if(tableno=="min"){
         res.NMdat <- lapply(res.NMdat,function(x)x[TABLENO==min(TABLENO)])
@@ -162,7 +161,7 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     ## February 23, 2021
 
     dt.codes <- fread(text="ITERATION,variable
-    -1e+09,est
+    -1e+09,value
     -1000000001,se
     -1000000002,eigCor
     -1000000003,cond
@@ -173,31 +172,51 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     -1000000008,partLik")
 
     ## dt.codes
-
+    
     res.NMdat <- mergeCheck(res.NMdat,dt.codes,by=cc(ITERATION),all.x=T,quiet=TRUE)
     ## res.NMdat
 
     ## pars <- res.NMdat[variable%in%dt.codes$variable,setdiff(colnames(res.NMdat),"OBJ"),with=FALSE]
     pars <- res.NMdat[variable%in%dt.codes$variable]
     pars <- addTableStep(pars,keep.table.name=FALSE)
+    obj <- NULL
     if(nrow(pars)){
-        pars <- melt(pars,id.vars=cc(model,TABLENO,NMREP,table.step,ITERATION,variable),variable.name="parameter")
+        
+        pars <- melt(pars,id.vars=c(col.model,cc(TABLENO,NMREP,table.step,ITERATION,variable)),variable.name="parameter")
         pars <- dcast(pars,model+TABLENO+NMREP+table.step+parameter~variable,value.var="value")
 
-        pars <- addPartype(pars)
+        pars <- addParType(pars)
+
+        setcolorder(pars,intersect(c(col.model,"TABLENO","NMREP","table.step","par.type","parameter","par.name","i","j","FIX","value", "cond","eigCor",   "partLik",   "se", "seStdDevCor", "stdDevCor", "termStat"),colnames(pars)))
+        
+        ## obj <- pars[parameter%in%c("SAEMOBJ","OBJ"),  .(model, TABLENO, NMREP, table.step, par.type,parameter,value)]
+        obj <- pars[parameter%in%c("SAEMOBJ","OBJ")]
+        cols.drop <- intersect(colnames(pars),cc(i,j,FIX,est,cond,eigCor ,partLik ,se ,seStdDevCor, stdDevCor ))
+        obj[,(cols.drop):=NULL]
+        pars <- pars[!parameter%in%c("SAEMOBJ","OBJ")]
+        
+        ### this setorder call doesnt work - unsure why
+        ## setorder(pars,match(par.type,c("THETA","OMEGA","SIGMA")),i,j)
+        pars <- pars[order(model,match(par.type,c("THETA","OMEGA","SIGMA")),i,j)]
+        ## est is just a copy of value for backward compatibility
+        pars[,est:=value]
+
     }
     
     ## what to do about OBJ? Disregard? And keep in a iteration table instead?
     iterations <- res.NMdat[as.numeric(ITERATION)>(-1e9),!("variable")] 
     iterations <- addTableStep(iterations,keep.table.name=FALSE)
     iterations <- melt(iterations,id.vars=cc(model,TABLENO,NMREP,table.step,ITERATION),variable.name="parameter")
-    iterations <- addPartype(iterations)
+    iterations <- addParType(iterations)
 
-    res <- list(pars=pars,iterations=iterations)
+    res <- list(pars=pars,iterations=iterations,obj=obj)
     res <- lapply(res,as.fun)
 
     if(return=="pars") return(res$pars)
     if(return=="iterations") return(res$iterations)
+    if(return=="obj") return(res$obj)
 
-    as.fun(res)
+    
+    ## as.fun already applied
+    res
 }

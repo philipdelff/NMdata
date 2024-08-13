@@ -59,7 +59,8 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
                           keepComments, asOne,
                           cleanSpaces, ...){
 
-    args <- getArgs()
+    ## args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
     as.one <- deprecatedArg("asOne","as.one",args=args)
     clean.spaces <- deprecatedArg("cleanSpaces","clean.spaces",args=args)
     keep.empty <- deprecatedArg("keepEmpty","keep.empty",args=args)

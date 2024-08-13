@@ -5,6 +5,9 @@
 ##'     correlations within a grouping variable?  This will often be a
 ##'     column containing the model name.
 ##' @param as.fun See `?NMdataConf`
+##' @param col.value The name of the column from which to take the
+##'     `OMEGA` values. Default is "value" in alignment with the
+##'     output from `NMreadExt()`.
 ##' @return The parameter table with a `corr` column added.
 ##' @import data.table
 ##' @importFrom stats cov2cor
@@ -12,7 +15,7 @@
 ##' 
 ## Can be exported but needs as.fun and return
 
-addOmegaCorr <- function(pars,by=NULL,as.fun){
+addOmegaCorr <- function(pars,by=NULL,as.fun,col.value="value"){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -39,10 +42,11 @@ addOmegaCorr <- function(pars,by=NULL,as.fun){
     res.list <- lapply(
         pars.list,
         function(x){
-            Sigma <- dt2mat(x[par.type=="OMEGA"])
-            mat.cor <- cov2cor(Sigma)
-            dt.cor <- mat2dt(mat.cor)
-            x <- mergeCheck(x,dt.cor[,.(par.type="OMEGA",i,j,corr=value)],by=cc(par.type,i,j),all.x=TRUE)
+            Sigma <- dt2mat(x[par.type=="OMEGA"],col.value=col.value)
+            mat.cor <- suppressWarnings(cov2cor(Sigma))
+            dt.cor <- mat2dt(mat.cor,triangle="all")
+            
+            x <- mergeCheck(x,dt.cor[,.(par.type="OMEGA",i,j,corr=get(col.value))],by=cc(par.type,i,j),all.x=TRUE)
             x
         })
     

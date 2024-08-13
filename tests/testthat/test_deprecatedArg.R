@@ -5,7 +5,8 @@ test_that("basic",{
 
     fun1 <- function(a=1,b=2){
         ## b is deprecated
-        a <- deprecatedArg("b","a")
+        args <- getArgs(sys.call(),parent.frame())
+        a <- deprecatedArg("b","a",args=args)
         a
     }
 

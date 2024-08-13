@@ -8,7 +8,7 @@
 ##' @param recover.cols recover columns that were not used in the
 ##'     NONMEM control stream? Default is TRUE. Can only be negative
 ##'     when translate=FALSE.
-##' @param Suppress warnings about data columns?
+##' @param quiet Suppress warnings about data columns?
 ##' @return data with column names translated as specified by nonmem
 ##'     control stream. Class same as for 'data' argument. Class
 ##'     data.table.
