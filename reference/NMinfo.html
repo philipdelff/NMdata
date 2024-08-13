@@ -4,7 +4,7 @@ details in your favorite class"><meta property="og:image" content="https://phili
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -18,7 +18,7 @@ details in your favorite class"><meta property="og:image" content="https://phili
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.915</span>
       </span>
     </div>
 
@@ -26,13 +26,13 @@ details in your favorite class"><meta property="og:image" content="https://phili
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -57,26 +57,26 @@ details in your favorite class"><meta property="og:image" content="https://phili
 <li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get metadata from an NMdata object</h1>
-    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/R/NMinfo.R" class="external-link"><code>R/NMinfo.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/master/R/NMinfo.R" class="external-link"><code>R/NMinfo.R</code></a></small>
     <div class="hidden name"><code>NMinfo.Rd</code></div>
     </div>
 
@@ -91,17 +91,19 @@ details in your favorite class</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>An object of class NMdata (a result of `NMscanData()`)</p></dd>
 
 
-<dt>info</dt>
+<dt id="arg-info">info<a class="anchor" aria-label="anchor" href="#arg-info"></a></dt>
 <dd><p>If not passed, all the metadata is returned. You can
 use "details", "tables", or "columns" to get only these
 subsets. If info is "tables" or "columns"</p></dd>
 
 
-<dt>as.fun</dt>
+<dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
 <dd><p>The default is to return data as a `data.frame`. Pass
 a function (say `tibble::as_tibble`) in as.fun to convert to
 something else. If `data.table`s are wanted, use
@@ -111,9 +113,7 @@ something else. If `data.table`s are wanted, use
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>A table of class as defined by as.fun in case info is
+    <p>A table of class as defined by as.fun in case info is
     "columns" or "tables". A list if info missing or equal to
     "details".</p>
     </div>
@@ -130,12 +130,12 @@ something else. If `data.table`s are wanted, use
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 
 
   <script data-goatcounter="https://nmdata.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>

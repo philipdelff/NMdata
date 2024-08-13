@@ -4,7 +4,7 @@ pre-specified table of flags, assign the flags automatically."><meta property="o
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -18,7 +18,7 @@ pre-specified table of flags, assign the flags automatically."><meta property="o
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.915</span>
       </span>
     </div>
 
@@ -26,13 +26,13 @@ pre-specified table of flags, assign the flags automatically."><meta property="o
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -57,26 +57,26 @@ pre-specified table of flags, assign the flags automatically."><meta property="o
 <li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Assign exclusion flags to a dataset based on specified table</h1>
-    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/R/flagsAssign.R" class="external-link"><code>R/flagsAssign.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/master/R/flagsAssign.R" class="external-link"><code>R/flagsAssign.R</code></a></small>
     <div class="hidden name"><code>flagsAssign.Rd</code></div>
     </div>
 
@@ -101,18 +101,20 @@ pre-specified table of flags, assign the flags automatically.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>The dataset to assign flags to.</p></dd>
 
 
-<dt>tab.flags</dt>
+<dt id="arg-tab-flags">tab.flags<a class="anchor" aria-label="anchor" href="#arg-tab-flags"></a></dt>
 <dd><p>A data.frame containing at least these named
 columns: FLAG, flag, condition. Condition is disregarded for
 FLAG==0. FLAG must be numeric and non-negative, flag and
 condition are characters.</p></dd>
 
 
-<dt>subset.data</dt>
+<dt id="arg-subset-data">subset.data<a class="anchor" aria-label="anchor" href="#arg-subset-data"></a></dt>
 <dd><p>An optional string that provides a subset of
 data to assign flags to. A common example is
 subset=\"EVID==0\" to only assign to observations. Numerical
@@ -120,19 +122,19 @@ and character flags will be missing in rows that are not
 matched by this subset.</p></dd>
 
 
-<dt>col.flagn</dt>
+<dt id="arg-col-flagn">col.flagn<a class="anchor" aria-label="anchor" href="#arg-col-flagn"></a></dt>
 <dd><p>The name of the column containing the numerical
 flag values in tab.flags. This will be added to data. Default
 value is FLAG and can be configured using NMdataConf.</p></dd>
 
 
-<dt>col.flagc</dt>
+<dt id="arg-col-flagc">col.flagc<a class="anchor" aria-label="anchor" href="#arg-col-flagc"></a></dt>
 <dd><p>The name of the column containing the character
 flag values in tab.flags. This will be added to data. Default
 value is flag and can be configured using NMdataConf.</p></dd>
 
 
-<dt>flags.increasing</dt>
+<dt id="arg-flags-increasing">flags.increasing<a class="anchor" aria-label="anchor" href="#arg-flags-increasing"></a></dt>
 <dd><p>The flags are applied by either decreasing
 (default) or increasing value of col.flagn. Decreasing order
 means that conditions associated with higher values of
@@ -142,7 +144,7 @@ IGNORE(FLAG.NE.0) to say IGNORE(FLAG.GT.10) if BLQ's have
 FLAG=10, and you decide to include these in the analysis.</p></dd>
 
 
-<dt>grp.incomp</dt>
+<dt id="arg-grp-incomp">grp.incomp<a class="anchor" aria-label="anchor" href="#arg-grp-incomp"></a></dt>
 <dd><p>Column(s) that distinct incompatible subsets of
 data. Default is "EVID" meaning that if different values of
 EVID are found in data, the function will return an
@@ -150,12 +152,12 @@ error. This is a safeguard not to mix data unintentionally
 when counting flags.</p></dd>
 
 
-<dt>flagc.0</dt>
+<dt id="arg-flagc-">flagc.0<a class="anchor" aria-label="anchor" href="#arg-flagc-"></a></dt>
 <dd><p>The character flag to assign to rows that are not
 matched by exclusion conditions (numerical flag 0).</p></dd>
 
 
-<dt>as.fun</dt>
+<dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
 <dd><p>The default is to return data.tables if input data
 is a data.table, and return a data.frame for all other input
 classes. Pass a function in as.fun to convert to something
@@ -165,9 +167,7 @@ tab.flags independently.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>The dataset with flags added. Class as defined by
+    <p>The dataset with flags added. Class as defined by
     as.fun. See parameter flags.return as well.</p>
     </div>
     <div id="details">
@@ -180,7 +180,7 @@ tab.flags independently.</p></dd>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p>Other DataCreate: 
+    <div class="dont-index"><p>Other DataCreate:
 <code><a href="NMorderColumns.html">NMorderColumns</a>()</code>,
 <code><a href="NMstamp.html">NMstamp</a>()</code>,
 <code><a href="NMwriteData.html">NMwriteData</a>()</code>,
@@ -194,7 +194,7 @@ tab.flags independently.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span>file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>       flagn<span class="op">=</span><span class="fl">10</span>,</span></span>
@@ -206,7 +206,7 @@ tab.flags independently.</p></dd>
 <span class="r-in"><span>        col.flagn<span class="op">=</span><span class="st">"flagn"</span>,col.flagc<span class="op">=</span><span class="st">"flagc"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">pk</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"EVID"</span>,<span class="st">"flagn"</span>,<span class="st">"flagc"</span>,<span class="st">"BLQ"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="flagsCount.html">flagsCount</a></span><span class="op">(</span><span class="va">pk</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">]</span>,<span class="va">dt.flags</span>,col.flagn<span class="op">=</span><span class="st">"flagn"</span>,col.flagc<span class="op">=</span><span class="st">"flagc"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -221,12 +221,12 @@ tab.flags independently.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 
 
   <script data-goatcounter="https://nmdata.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>

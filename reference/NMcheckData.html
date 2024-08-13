@@ -5,7 +5,7 @@ but because they are typical dataset issues."><meta property="og:image" content=
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -19,7 +19,7 @@ but because they are typical dataset issues."><meta property="og:image" content=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.915</span>
       </span>
     </div>
 
@@ -27,13 +27,13 @@ but because they are typical dataset issues."><meta property="og:image" content=
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -58,26 +58,26 @@ but because they are typical dataset issues."><meta property="og:image" content=
 <li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Check data for Nonmem compatibility or check control stream for data compatibility</h1>
-    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/R/NMcheckData.R" class="external-link"><code>R/NMcheckData.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/master/R/NMcheckData.R" class="external-link"><code>R/NMcheckData.R</code></a></small>
     <div class="hidden name"><code>NMcheckData.Rd</code></div>
     </div>
 
@@ -114,13 +114,15 @@ but because they are typical dataset issues.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>The data to check. <code>data.frame</code>,
 <code>data.table</code>, <code>tibble</code>, anything that can be
 converted to <code>data.table</code>.</p></dd>
 
 
-<dt>file</dt>
+<dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
 <dd><p>Alternatively to checking a data object, you can use
 file to specify a control stream to check. This can either be
 a (working or non-working) input control stream or an output
@@ -134,13 +136,13 @@ applied. The file argument is useful for debugging a Nonmem
 model.</p></dd>
 
 
-<dt>covs</dt>
+<dt id="arg-covs">covs<a class="anchor" aria-label="anchor" href="#arg-covs"></a></dt>
 <dd><p>columns that contain subject-level covariates. They
 are expected to be non-missing, numeric and not varying within
 subjects.</p></dd>
 
 
-<dt>covs.occ</dt>
+<dt id="arg-covs-occ">covs.occ<a class="anchor" aria-label="anchor" href="#arg-covs-occ"></a></dt>
 <dd><p>A list specifying columns that contain
 subject:occasion-level covariates. They are expected to be
 non-missing, numeric and not varying within combinations of
@@ -149,7 +151,7 @@ means that <code>FED</code> is the covariate, while <code>PERIOD</code>
 indicates the occasion.</p></dd>
 
 
-<dt>cols.num</dt>
+<dt id="arg-cols-num">cols.num<a class="anchor" aria-label="anchor" href="#arg-cols-num"></a></dt>
 <dd><p>Columns that are expected to be present, numeric
 and non-NA. If a character vector is given, the columns are
 expected to be used in all rows. If a column is only used for
@@ -157,38 +159,38 @@ a subset of rows, use a list and name the elements by
 subsetting strings. See examples.</p></dd>
 
 
-<dt>col.id</dt>
+<dt id="arg-col-id">col.id<a class="anchor" aria-label="anchor" href="#arg-col-id"></a></dt>
 <dd><p>The name of the column that holds the subject
 identifier. Default is "ID".</p></dd>
 
 
-<dt>col.time</dt>
+<dt id="arg-col-time">col.time<a class="anchor" aria-label="anchor" href="#arg-col-time"></a></dt>
 <dd><p>The name of the column holding actual time.</p></dd>
 
 
-<dt>col.dv</dt>
+<dt id="arg-col-dv">col.dv<a class="anchor" aria-label="anchor" href="#arg-col-dv"></a></dt>
 <dd><p>The name of the column holding the dependent
 variable. For now, only one column can be specified, and
 <code>MDV</code> is assumed to match this column. Default is
 <code>DV</code>.</p></dd>
 
 
-<dt>col.mdv</dt>
+<dt id="arg-col-mdv">col.mdv<a class="anchor" aria-label="anchor" href="#arg-col-mdv"></a></dt>
 <dd><p>The name of the column holding the binary indicator
 of the dependent variable missing. Default is <code>MDV</code>.</p></dd>
 
 
-<dt>col.cmt</dt>
+<dt id="arg-col-cmt">col.cmt<a class="anchor" aria-label="anchor" href="#arg-col-cmt"></a></dt>
 <dd><p>The name(s) of the compartment column(s). These
 will be checked to be positive integers for all rows. They are
 also used in checks for row duplicates.</p></dd>
 
 
-<dt>col.amt</dt>
+<dt id="arg-col-amt">col.amt<a class="anchor" aria-label="anchor" href="#arg-col-amt"></a></dt>
 <dd><p>The name of the dose amount column.</p></dd>
 
 
-<dt>col.flagn</dt>
+<dt id="arg-col-flagn">col.flagn<a class="anchor" aria-label="anchor" href="#arg-col-flagn"></a></dt>
 <dd><p>Optionally, the name of the column holding
 numeric exclusion flags. Default value is <code>FLAG</code> and can
 be configured using <code>NMdataConf</code>. Even though <code>FLAG</code>
@@ -200,13 +202,13 @@ handle exclusions. Disable completely by using
 <code>col.flagn=FALSE</code>.</p></dd>
 
 
-<dt>col.row</dt>
+<dt id="arg-col-row">col.row<a class="anchor" aria-label="anchor" href="#arg-col-row"></a></dt>
 <dd><p>A column with a unique value for each row. Such a
 column is recommended to use if possible. Default
 (<code>"ROW"</code>) can be modified using <code>NMdataConf</code>.</p></dd>
 
 
-<dt>col.usubjid</dt>
+<dt id="arg-col-usubjid">col.usubjid<a class="anchor" aria-label="anchor" href="#arg-col-usubjid"></a></dt>
 <dd><p>Optional unique subject identifier. It is
 recommended to keep a unique subject identifier (typically a
 character string including an abbreviated study name and the
@@ -219,14 +221,14 @@ unique within the unique subject ID (a violation of the latter
 is less likely).</p></dd>
 
 
-<dt>cols.dup</dt>
+<dt id="arg-cols-dup">cols.dup<a class="anchor" aria-label="anchor" href="#arg-cols-dup"></a></dt>
 <dd><p>Additional column names to consider in search of
 duplicate events. <code>col.id</code>, <code>col.cmt</code>,
 <code>col.evid</code>, and <code>col.time</code> are always considered if
 found in data, and <code>cols.dup</code> is added to this list if provided.</p></dd>
 
 
-<dt>type.data</dt>
+<dt id="arg-type-data">type.data<a class="anchor" aria-label="anchor" href="#arg-type-data"></a></dt>
 <dd><p><code>"est"</code> for estimation data (default), and <code>"sim"</code>
 for simulation data. Differences are that <code>col.row</code> is
 not expected for simulation data, and subjects will be checked
@@ -234,7 +236,7 @@ to have <code>EVID==0</code> rows for estimation data and
 <code>EVID==2</code> rows for simulation data.</p></dd>
 
 
-<dt>na.strings</dt>
+<dt id="arg-na-strings">na.strings<a class="anchor" aria-label="anchor" href="#arg-na-strings"></a></dt>
 <dd><p>Strings to be accepted when trying to convert
 characters to numerics. This will typically be a string that
 represents missing values. Default is ".". Notice, actual
@@ -242,18 +244,18 @@ represents missing values. Default is ".". Notice, actual
 <code>na.strings</code>. See <code><a href="NMisNumeric.html">?NMisNumeric</a></code>.</p></dd>
 
 
-<dt>return.summary</dt>
+<dt id="arg-return-summary">return.summary<a class="anchor" aria-label="anchor" href="#arg-return-summary"></a></dt>
 <dd><p>If TRUE (not default), the table summary
 that is printed if <code>quiet=FALSE</code> is returned as well. In
 that case, a list is returned, and the findings are in an
 element called findings.</p></dd>
 
 
-<dt>quiet</dt>
+<dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
 <dd><p>Keep quiet? Default is not to.</p></dd>
 
 
-<dt>as.fun</dt>
+<dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
 <dd><p>The default is to return data as a
 <code>data.frame</code>. Pass a function (say
 <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">tibble::as_tibble</a></code>) in as.fun to convert to something
@@ -264,9 +266,7 @@ using <code>NMdataConf</code>.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>A table with findings</p>
+    <p>A table with findings</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -338,13 +338,13 @@ column.</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">NMcheckData</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dat</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span>,<span class="va">LLOQ</span><span class="op">:=</span><span class="fl">3.5</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="co">## expecting LLOQ only for samples</span></span></span>
 <span class="r-in"><span><span class="fu">NMcheckData</span><span class="op">(</span><span class="va">dat</span>,cols.num<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDY"</span><span class="op">)</span>,<span class="st">"EVID==0"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LLOQ"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -359,12 +359,12 @@ column.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 
 
   <script data-goatcounter="https://nmdata.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>

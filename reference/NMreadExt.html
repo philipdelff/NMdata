@@ -3,7 +3,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.915</span>
       </span>
     </div>
 
@@ -25,13 +25,13 @@
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -56,26 +56,26 @@
 <li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Read information from Nonmem ext files</h1>
-    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/R/NMreadExt.R" class="external-link"><code>R/NMreadExt.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/master/R/NMreadExt.R" class="external-link"><code>R/NMreadExt.R</code></a></small>
     <div class="hidden name"><code>NMreadExt.Rd</code></div>
     </div>
 
@@ -98,22 +98,24 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>file</dt>
+
+
+<dl><dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
 <dd><p>Path to the ext file</p></dd>
 
 
-<dt>return</dt>
+<dt id="arg-return">return<a class="anchor" aria-label="anchor" href="#arg-return"></a></dt>
 <dd><p>The .ext file contains both final parameter
 estimates and iterations of the estimates. If
 <code>return="pars"</code> (default) the final estimates are
 returned in addition to what other parameter-level information
 is found, like FIX, sd etc. as columns. If
 <code>return="iterations"</code>, the iterations are returned. If
-<code>return="both"</code>, both er returned, though in separate
+<code>return="all"</code>, all er returned, though in separate
 data.frames compiled in a list.</p></dd>
 
 
-<dt>as.fun</dt>
+<dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
 <dd><p>The default is to return data as a data.frame. Pass
 a function (say `tibble::as_tibble`) in as.fun to convert to
 something else. If `data.table`s are wanted, use
@@ -121,22 +123,22 @@ something else. If `data.table`s are wanted, use
 `NMdataConf()`.</p></dd>
 
 
-<dt>modelname</dt>
+<dt id="arg-modelname">modelname<a class="anchor" aria-label="anchor" href="#arg-modelname"></a></dt>
 <dd><p>See `?NMscanData`</p></dd>
 
 
-<dt>col.model</dt>
+<dt id="arg-col-model">col.model<a class="anchor" aria-label="anchor" href="#arg-col-model"></a></dt>
 <dd><p>See `?NMscanData`</p></dd>
 
 
-<dt>auto.ext</dt>
+<dt id="arg-auto-ext">auto.ext<a class="anchor" aria-label="anchor" href="#arg-auto-ext"></a></dt>
 <dd><p>If `TRUE` (default) the extension will automatically
 be modified using `NMdataConf()$file.ext`. This means `file`
 can be the path to an input or output control stream, and
 `NMreadExt` will still read the `.ext` file.</p></dd>
 
 
-<dt>tableno</dt>
+<dt id="arg-tableno">tableno<a class="anchor" aria-label="anchor" href="#arg-tableno"></a></dt>
 <dd><p>In case the ext file contains multiple tables, this
     argument controls which one to choose. The options are</p><ul><li><p>"max" (default) Pick the table with the highest table
 number. This typically means the results from the last
@@ -149,23 +151,18 @@ table number will be picked.</p></li>
 </ul></dd>
 
 
-<dt>file.ext</dt>
+<dt id="arg-file-ext">file.ext<a class="anchor" aria-label="anchor" href="#arg-file-ext"></a></dt>
 <dd><p>Deprecated. Please use <code>file</code> instead.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>If <code>return="all"</code>, a list with a final parameter
+    <p>If <code>return="all"</code>, a list with a final parameter
     table and a table of the iterations. If <code>return="pars"</code>,
-    only the parameter table, and if <code>return="iterations"</code></p>
-
-
-<p>only the iterations table. If you need both, it may be more
-    efficient to only read the file once and use</p>
-<p></p>
-<p><code>return="all"</code>. Often, only one of the two are needed,
+    only the parameter table, and if <code>return="iterations"</code>
+    only the iterations table. If you need both, it may be more
+    efficient to only read the file once and use
+    <code>return="all"</code>. Often, only one of the two are needed,
     and it more convenient to just extract one.</p>
     </div>
     <div id="details">
@@ -204,12 +201,12 @@ the future.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 
 
   <script data-goatcounter="https://nmdata.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>

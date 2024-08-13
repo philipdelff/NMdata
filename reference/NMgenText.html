@@ -9,7 +9,7 @@ tested for whether character or not."><meta property="og:image" content="https:/
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -23,7 +23,7 @@ tested for whether character or not."><meta property="og:image" content="https:/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.915</span>
       </span>
     </div>
 
@@ -31,13 +31,13 @@ tested for whether character or not."><meta property="og:image" content="https:/
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -62,26 +62,26 @@ tested for whether character or not."><meta property="og:image" content="https:/
 <li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Generate text for INPUT and possibly DATA sections of NONMEM control streams.</h1>
-    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/R/NMgenText.R" class="external-link"><code>R/NMgenText.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/master/R/NMgenText.R" class="external-link"><code>R/NMgenText.R</code></a></small>
     <div class="hidden name"><code>NMgenText.Rd</code></div>
     </div>
 
@@ -114,11 +114,13 @@ tested for whether character or not.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>The data that NONMEM will read.</p></dd>
 
 
-<dt>drop</dt>
+<dt id="arg-drop">drop<a class="anchor" aria-label="anchor" href="#arg-drop"></a></dt>
 <dd><p>Only used for generation of proposed text for INPUT
 section. Columns to drop in Nonmem $INPUT. This has two
 implications. One is that the proposed $INPUT indicates =DROP
@@ -127,7 +129,7 @@ non-numeric column, succeeding columns will still be included
 in $INPUT and can be read by NONMEM.</p></dd>
 
 
-<dt>col.flagn</dt>
+<dt id="arg-col-flagn">col.flagn<a class="anchor" aria-label="anchor" href="#arg-col-flagn"></a></dt>
 <dd><p>Name of a numeric column with zero value for rows
 to include in Nonmem run, non-zero for rows to skip. The
 argument is only used for generating the proposed $DATA text
@@ -135,7 +137,7 @@ to paste into the Nonmem control stream. To skip this feature,
 use col.flagn=NULL. Default is defined by NMdataConf.</p></dd>
 
 
-<dt>rename</dt>
+<dt id="arg-rename">rename<a class="anchor" aria-label="anchor" href="#arg-rename"></a></dt>
 <dd><p>For the $INPUT text proposal only. If you want to
 rename columns in NONMEM $DATA, NMwriteData can adjust the
 suggested $DATA text. If you plan to use BBW instead of BWBASE
@@ -143,7 +145,7 @@ in Nonmem, consider rename=c(BBW="BWBASE"). The result will
 include BBW and not BWBASE.</p></dd>
 
 
-<dt>copy</dt>
+<dt id="arg-copy">copy<a class="anchor" aria-label="anchor" href="#arg-copy"></a></dt>
 <dd><p>For the $INPUT text proposal only. If you plan to use
 additional names for columns in Nonmem $INPUT, NMwriteData can
 adjust the suggested $INPUT text. Say you plan to use CONC as
@@ -152,12 +154,12 @@ i.e. copy=c(newname="existing"). INPUT suggestion will in this
 case contain DV=CONC.</p></dd>
 
 
-<dt>file</dt>
+<dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
 <dd><p>The file name NONMEM will read the data from (for the
 $DATA section). It can be a full path.</p></dd>
 
 
-<dt>dir.data</dt>
+<dt id="arg-dir-data">dir.data<a class="anchor" aria-label="anchor" href="#arg-dir-data"></a></dt>
 <dd><p>For the $DATA text proposal only. The path to the
 input datafile to be used in the Nonmem $DATA section. Often,
 a relative path to the actual Nonmem run is wanted here. If
@@ -165,13 +167,13 @@ this is used, only the file name and not the path from the
 file argument is used.</p></dd>
 
 
-<dt>capitalize</dt>
+<dt id="arg-capitalize">capitalize<a class="anchor" aria-label="anchor" href="#arg-capitalize"></a></dt>
 <dd><p>For the $INPUT text proposal only. If TRUE, all
 column names in $INPUT text will be converted to capital
 letters.</p></dd>
 
 
-<dt>until</dt>
+<dt id="arg-until">until<a class="anchor" aria-label="anchor" href="#arg-until"></a></dt>
 <dd><p>Use this to truncate the columns in $INPUT. until can
 either be a character (column name) or a numeric (column
 number). If a character is given, it is matched against the
@@ -182,33 +184,31 @@ used (probably only interesting if character values are
 supplied).</p></dd>
 
 
-<dt>allow.char.TIME</dt>
+<dt id="arg-allow-char-time">allow.char.TIME<a class="anchor" aria-label="anchor" href="#arg-allow-char-time"></a></dt>
 <dd><p>For the $INPUT text proposal only. Assume
 Nonmem can read TIME even if it can't be translated to
 numeric. This is necessary if using the 00:00 format. Default
 is TRUE.</p></dd>
 
 
-<dt>width</dt>
+<dt id="arg-width">width<a class="anchor" aria-label="anchor" href="#arg-width"></a></dt>
 <dd><p>If positive, will be passed to strwrap for the $INPUT
 text. If missing or NULL, strwrap will be called with default
 value. If negative or zero, strwrap will not be called.</p></dd>
 
 
-<dt>quiet</dt>
+<dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
 <dd><p>Hold messages back? Default is defined by NMdataConf.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>Text for inclusion in Nonmem control stream, invisibly. A
+    <p>Text for inclusion in Nonmem control stream, invisibly. A
     list with elements `DATA` and `INPUT`.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p>Other Nonmem: 
+    <div class="dont-index"><p>Other Nonmem:
 <code><a href="NMapplyFilters.html">NMapplyFilters</a>()</code>,
 <code><a href="NMextractText.html">NMextractText</a>()</code>,
 <code><a href="NMreadSection.html">NMreadSection</a>()</code>,
@@ -228,12 +228,12 @@ value. If negative or zero, strwrap will not be called.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 
 
   <script data-goatcounter="https://nmdata.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>

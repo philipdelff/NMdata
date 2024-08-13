@@ -5,7 +5,7 @@ details."><meta property="og:image" content="https://philipdelff.github.io/NMdat
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -19,7 +19,7 @@ details."><meta property="og:image" content="https://philipdelff.github.io/NMdat
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.915</span>
       </span>
     </div>
 
@@ -27,13 +27,13 @@ details."><meta property="og:image" content="https://philipdelff.github.io/NMdat
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -58,26 +58,26 @@ details."><meta property="og:image" content="https://philipdelff.github.io/NMdat
 <li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Standardize column order in Nonmem input data</h1>
-    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/R/NMorderColumns.R" class="external-link"><code>R/NMorderColumns.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/master/R/NMorderColumns.R" class="external-link"><code>R/NMorderColumns.R</code></a></small>
     <div class="hidden name"><code>NMorderColumns.Rd</code></div>
     </div>
 
@@ -108,21 +108,23 @@ details.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>The dataset which columns to reorder.</p></dd>
 
 
-<dt>first</dt>
+<dt id="arg-first">first<a class="anchor" aria-label="anchor" href="#arg-first"></a></dt>
 <dd><p>Columns that should come almost first. See details.</p></dd>
 
 
-<dt>last</dt>
+<dt id="arg-last">last<a class="anchor" aria-label="anchor" href="#arg-last"></a></dt>
 <dd><p>Columns to move to back of dataset. If you work with a
 large dataset, and some columns are irrelevant for the Nonmem
 runs, you can use this argument.</p></dd>
 
 
-<dt>lower.last</dt>
+<dt id="arg-lower-last">lower.last<a class="anchor" aria-label="anchor" href="#arg-lower-last"></a></dt>
 <dd><p>Should columns which names contain lowercase
 characters be moved towards the back? Some people use a
 standard of lowercase variables (say "race") being character
@@ -131,7 +133,7 @@ uppercase (1,2,...) being the numeric representation for
 Nonmem.</p></dd>
 
 
-<dt>chars.last</dt>
+<dt id="arg-chars-last">chars.last<a class="anchor" aria-label="anchor" href="#arg-chars-last"></a></dt>
 <dd><p>Should columns which cannot be converted to
 numeric be put towards the end? A column can be a character or
 a factor in R, but still be valid in Nonmem (often the case
@@ -145,49 +147,49 @@ values will be edited. If TRUE, logicals will always be put
 last. NA's must be NA or ".".</p></dd>
 
 
-<dt>alpha</dt>
+<dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
 <dd><p>Sort columns alphabetically. Notice, this is the last
 order priority applied.</p></dd>
 
 
-<dt>col.id</dt>
+<dt id="arg-col-id">col.id<a class="anchor" aria-label="anchor" href="#arg-col-id"></a></dt>
 <dd><p>Name of the (numeric) unique subject ID. Can be
 controlled with `NMdataConf()`.</p></dd>
 
 
-<dt>col.nomtime</dt>
+<dt id="arg-col-nomtime">col.nomtime<a class="anchor" aria-label="anchor" href="#arg-col-nomtime"></a></dt>
 <dd><p>The name of the column containing nominal
 time. If given, it will put the column quite far left, just
 after row counter and `col.id`. Default value is NOMTIME and can be
 configured with `NMdataConf()`.</p></dd>
 
 
-<dt>col.time</dt>
+<dt id="arg-col-time">col.time<a class="anchor" aria-label="anchor" href="#arg-col-time"></a></dt>
 <dd><p>The name of the column containing actual time. If
 given, it will put the column quite far left, just after row
 counter, subject ID, and nominal time. Default value is `TIME`. Can be
 controlled with `NMdataConf()`.</p></dd>
 
 
-<dt>col.row</dt>
+<dt id="arg-col-row">col.row<a class="anchor" aria-label="anchor" href="#arg-col-row"></a></dt>
 <dd><p>A row counter column. This will be the first column
 in the dataset. Technically, you can use it for whatever
 column you want first. Default value is `ROW` and can be
 configured with `NMdataConf()`.</p></dd>
 
 
-<dt>col.flagn</dt>
+<dt id="arg-col-flagn">col.flagn<a class="anchor" aria-label="anchor" href="#arg-col-flagn"></a></dt>
 <dd><p>The name of the column containing numerical flag
 values for data row omission. Default value is FLAG and can be
 configured with `NMdataConf()`.</p></dd>
 
 
-<dt>col.dv</dt>
+<dt id="arg-col-dv">col.dv<a class="anchor" aria-label="anchor" href="#arg-col-dv"></a></dt>
 <dd><p>a vector of column names to put early to represent
 dependent variable(s). Default is DV.</p></dd>
 
 
-<dt>as.fun</dt>
+<dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
 <dd><p>The default is to return a data.table if data is a
 data.table and return a data.frame in all other cases. Pass a
 function in as.fun to convert to something else. The default
@@ -195,16 +197,14 @@ can be configured using `NMdataConf()`. However, if data is a
 data.table, settings via `NMdataConf()` are ignored.</p></dd>
 
 
-<dt>quiet</dt>
+<dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
 <dd><p>If true, no warning will be given about missing
 standard Nonmem columns.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>data with modified column order.</p>
+    <p>data with modified column order.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -249,7 +249,7 @@ standard Nonmem columns.</p></dd>
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p>Other DataCreate: 
+    <div class="dont-index"><p>Other DataCreate:
 <code><a href="NMstamp.html">NMstamp</a>()</code>,
 <code><a href="NMwriteData.html">NMwriteData</a>()</code>,
 <code><a href="addTAPD.html">addTAPD</a>()</code>,
@@ -273,12 +273,12 @@ standard Nonmem columns.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 
 
   <script data-goatcounter="https://nmdata.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>

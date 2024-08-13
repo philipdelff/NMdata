@@ -10,7 +10,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -24,7 +24,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.915</span>
       </span>
     </div>
 
@@ -32,13 +32,13 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -63,26 +63,26 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)
 <li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Automatically find Nonmem input and output tables and organize data</h1>
-    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/R/NMscanData.R" class="external-link"><code>R/NMscanData.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/master/R/NMscanData.R" class="external-link"><code>R/NMscanData.R</code></a></small>
     <div class="hidden name"><code>NMscanData.Rd</code></div>
     </div>
 
@@ -125,26 +125,28 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)</p></li
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>file</dt>
+
+
+<dl><dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
 <dd><p>Path to a Nonmem control stream or output file from
 Nonmem (.mod or .lst)</p></dd>
 
 
-<dt>col.row</dt>
+<dt id="arg-col-row">col.row<a class="anchor" aria-label="anchor" href="#arg-col-row"></a></dt>
 <dd><p>A column with a unique value for each row. Such a
 column is recommended to use if possible. See merge.by.row and
 details as well. Default ("ROW") can be modified using
 NMdataConf.</p></dd>
 
 
-<dt>use.input</dt>
+<dt id="arg-use-input">use.input<a class="anchor" aria-label="anchor" href="#arg-use-input"></a></dt>
 <dd><p>Should the input data be added to the output
 data. Only column names that are not found in output data will
 be retrieved from the input data. Default is TRUE which can be
 modified using NMdataConf. See merge.by.row too.</p></dd>
 
 
-<dt>merge.by.row</dt>
+<dt id="arg-merge-by-row">merge.by.row<a class="anchor" aria-label="anchor" href="#arg-merge-by-row"></a></dt>
 <dd><p>If use.input=TRUE, this argument determines
 the method by which the input data is added to output
 data. The default method (merge.by.row=FALSE) is to interpret
@@ -156,7 +158,7 @@ input and at least one full length output data table. See
 argument col.row too.</p></dd>
 
 
-<dt>recover.rows</dt>
+<dt id="arg-recover-rows">recover.rows<a class="anchor" aria-label="anchor" href="#arg-recover-rows"></a></dt>
 <dd><p>Include rows from input data files that do not
 exist in output tables? This will be added to the $row dataset
 only, and $run, $id, and $occ datasets are created before this
@@ -165,7 +167,7 @@ the row was found in output tables, and FALSE when
 not. Default is FALSE and can be configured using NMdataConf.</p></dd>
 
 
-<dt>file.mod</dt>
+<dt id="arg-file-mod">file.mod<a class="anchor" aria-label="anchor" href="#arg-file-mod"></a></dt>
 <dd><p>The input control stream file path. Default is to
 look for \"file\" with extension changed to .mod (PSN
 style). You can also supply the path to the file, or you can
@@ -174,7 +176,7 @@ input file path. The default behavior can be configured using
 NMdataConf. See dir.data too.</p></dd>
 
 
-<dt>dir.data</dt>
+<dt id="arg-dir-data">dir.data<a class="anchor" aria-label="anchor" href="#arg-dir-data"></a></dt>
 <dd><p>The data directory can only be read from the
 control stream (.mod) and not from the output file (.lst). So
 if you only have the output control stream, use dir.data to
@@ -182,25 +184,25 @@ tell in which directory to find the data file. If dir.data is
 provided, the .mod file is not used at all.</p></dd>
 
 
-<dt>file.data</dt>
+<dt id="arg-file-data">file.data<a class="anchor" aria-label="anchor" href="#arg-file-data"></a></dt>
 <dd><p>Specification of the data file path. When this is
 used, the control streams are not used at all.</p></dd>
 
 
-<dt>translate.input</dt>
+<dt id="arg-translate-input">translate.input<a class="anchor" aria-label="anchor" href="#arg-translate-input"></a></dt>
 <dd><p>Default is TRUE, meaning that input data
 column names are translated according to $INPUT section in
 Nonmem listing file.</p></dd>
 
 
-<dt>quiet</dt>
+<dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
 <dd><p>The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
 non-interactive use. Default can be configured using
 NMdataConf.</p></dd>
 
 
-<dt>formats.read</dt>
+<dt id="arg-formats-read">formats.read<a class="anchor" aria-label="anchor" href="#arg-formats-read"></a></dt>
 <dd><p>Prioritized input data file formats to look
 for and use if found. Default is c("rds","csv") which means
 <code>rds</code> will be used if found, and <code>csv</code> if
@@ -208,14 +210,14 @@ not. <code>fst</code> is possible too. Default can be modified using
 <code><a href="NMdataConf.html">NMdataConf()</a></code>.</p></dd>
 
 
-<dt>args.fread</dt>
+<dt id="arg-args-fread">args.fread<a class="anchor" aria-label="anchor" href="#arg-args-fread"></a></dt>
 <dd><p>List of arguments passed to when reading _input_
 data. Notice that except for "input" and "file", you need to
 supply all arguments to fread if you use this
 argument. Default values can be configured using NMdataConf.</p></dd>
 
 
-<dt>as.fun</dt>
+<dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
 <dd><p>The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
@@ -223,12 +225,12 @@ as.fun="data.table". The default can be configured using
 NMdataConf.</p></dd>
 
 
-<dt>col.id</dt>
+<dt id="arg-col-id">col.id<a class="anchor" aria-label="anchor" href="#arg-col-id"></a></dt>
 <dd><p>The name of the subject ID variable, default is
 "ID".</p></dd>
 
 
-<dt>modelname</dt>
+<dt id="arg-modelname">modelname<a class="anchor" aria-label="anchor" href="#arg-modelname"></a></dt>
 <dd><p>The model name to be stored if col.model is not
 NULL. If not supplied, the name will be taken from the control
 stream file name by omitting the directory/path and deleting
@@ -240,7 +242,7 @@ character string. As example, see NMdataConf()$modelname. The
 default can be configured using NMdataConf.</p></dd>
 
 
-<dt>col.model</dt>
+<dt id="arg-col-model">col.model<a class="anchor" aria-label="anchor" href="#arg-col-model"></a></dt>
 <dd><p>A column of this name containing the model name
 will be included in the returned data. The default is to store
 this in a column called "model". See argument "modelname" as
@@ -248,13 +250,13 @@ well. Set to NULL if not wanted. Default can be configured
 using NMdataConf.</p></dd>
 
 
-<dt>col.nmout</dt>
+<dt id="arg-col-nmout">col.nmout<a class="anchor" aria-label="anchor" href="#arg-col-nmout"></a></dt>
 <dd><p>A column of this name will be a logical
 representing whether row was in output table or not. Default
 can be modified using NMdataConf.</p></dd>
 
 
-<dt>col.nmrep</dt>
+<dt id="arg-col-nmrep">col.nmrep<a class="anchor" aria-label="anchor" href="#arg-col-nmrep"></a></dt>
 <dd><p>If tables are repeated, include a counter? It
 does not relate to the order of the $TABLE statements but to
 cases where a $TABLE statement is run repeatedly. E.g., in
@@ -267,7 +269,7 @@ string to request the column with a different name. The
 argument is passed to NMscanTables.</p></dd>
 
 
-<dt>order.columns</dt>
+<dt id="arg-order-columns">order.columns<a class="anchor" aria-label="anchor" href="#arg-order-columns"></a></dt>
 <dd><p>If TRUE (default), NMorderColumns is used to
 reorder the columns before returning the data. NMorderColumns
 will be called with alpha=FALSE, so columns are not sorted
@@ -276,7 +278,7 @@ other will be first. If col.row is used, this will be passed
 to NMorderColumns too.</p></dd>
 
 
-<dt>check.time</dt>
+<dt id="arg-check-time">check.time<a class="anchor" aria-label="anchor" href="#arg-check-time"></a></dt>
 <dd><p>If TRUE (default) and if input data is used,
 input control stream and input data are checked to be newer
 than output control stream and output tables. These are
@@ -291,23 +293,23 @@ creation time is used if possible. If not, and for all other
 files, the file modification times are used.</p></dd>
 
 
-<dt>tz.lst</dt>
+<dt id="arg-tz-lst">tz.lst<a class="anchor" aria-label="anchor" href="#arg-tz-lst"></a></dt>
 <dd><p>If supplied, the timezone to be used when reading
 the time stamp in the output control stream. Please supply
 something listed in OlsonNames(). Can be configured using
 NMdataConf() too.</p></dd>
 
 
-<dt>skip.absent</dt>
+<dt id="arg-skip-absent">skip.absent<a class="anchor" aria-label="anchor" href="#arg-skip-absent"></a></dt>
 <dd><p>Skip missing output table files with a warning?
 Default is FALSE in which case an error is thrown.</p></dd>
 
 
-<dt>tab.count</dt>
+<dt id="arg-tab-count">tab.count<a class="anchor" aria-label="anchor" href="#arg-tab-count"></a></dt>
 <dd><p>Deprecated. Use <code>col.tableno</code>.</p></dd>
 
 
-<dt>use.rds</dt>
+<dt id="arg-use-rds">use.rds<a class="anchor" aria-label="anchor" href="#arg-use-rds"></a></dt>
 <dd><p>Deprecated - use <code>formats.read</code> instead. If
 provided (though not recommended), this will overwrite
 <code>formats.read</code>, and only formats <code>rds</code> and
@@ -316,9 +318,7 @@ provided (though not recommended), this will overwrite
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>A data set of class 'NMdata'.</p>
+    <p>A data set of class 'NMdata'.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -351,7 +351,7 @@ list of known limitations:</p>
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p>Other DataRead: 
+    <div class="dont-index"><p>Other DataRead:
 <code><a href="NMreadCsv.html">NMreadCsv</a>()</code>,
 <code><a href="NMreadTab.html">NMreadTab</a>()</code>,
 <code><a href="NMscanInput.html">NMscanInput</a>()</code>,
@@ -360,9 +360,9 @@ list of known limitations:</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu">NMscanData</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr001.lst"</span>, package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -377,12 +377,12 @@ list of known limitations:</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 
 
   <script data-goatcounter="https://nmdata.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>

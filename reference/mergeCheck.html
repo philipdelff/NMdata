@@ -9,7 +9,7 @@ the results are consistent with the simple merge described above."><meta propert
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -23,7 +23,7 @@ the results are consistent with the simple merge described above."><meta propert
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.915</span>
       </span>
     </div>
 
@@ -31,13 +31,13 @@ the results are consistent with the simple merge described above."><meta propert
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -62,26 +62,26 @@ the results are consistent with the simple merge described above."><meta propert
 <li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Merge, order, and check resulting rows and columns.</h1>
-    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/R/mergeCheck.R" class="external-link"><code>R/mergeCheck.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/master/R/mergeCheck.R" class="external-link"><code>R/mergeCheck.R</code></a></small>
     <div class="hidden name"><code>mergeCheck.Rd</code></div>
     </div>
 
@@ -102,83 +102,96 @@ the results are consistent with the simple merge described above.</p>
 <span>  <span class="va">by</span>,</span>
 <span>  <span class="va">by.x</span>,</span>
 <span>  <span class="va">by.y</span>,</span>
-<span>  fun.commoncols <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span>,</span>
+<span>  common.cols <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span>,</span>
 <span>  <span class="va">ncols.expect</span>,</span>
 <span>  track.msg <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">quiet</span>,</span>
 <span>  <span class="va">df1</span>,</span>
 <span>  <span class="va">df2</span>,</span>
+<span>  <span class="va">subset.x</span>,</span>
 <span>  fun.na.by <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span>,</span>
 <span>  <span class="va">as.fun</span>,</span>
+<span>  <span class="va">fun.commoncols</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>x</dt>
+
+
+<dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>A data.frame with the number of rows must should be
 obtained from the merge. The resulting data.frame will be
 ordered like x.</p></dd>
 
 
-<dt>y</dt>
+<dt id="arg-y">y<a class="anchor" aria-label="anchor" href="#arg-y"></a></dt>
 <dd><p>A data.frame that will be merged onto x.</p></dd>
 
 
-<dt>by</dt>
+<dt id="arg-by">by<a class="anchor" aria-label="anchor" href="#arg-by"></a></dt>
 <dd><p>The column(s) to merge by. Character string (vector). by
 or by.x and by.y must be supplied.</p></dd>
 
 
-<dt>by.x</dt>
+<dt id="arg-by-x">by.x<a class="anchor" aria-label="anchor" href="#arg-by-x"></a></dt>
 <dd><p>If the columns to merge by in x and y are named
 differently. by or by.x and by.y must be supplied.</p></dd>
 
 
-<dt>by.y</dt>
+<dt id="arg-by-y">by.y<a class="anchor" aria-label="anchor" href="#arg-by-y"></a></dt>
 <dd><p>If the columns to merge by in x and y are named
 differently. by or by.x and by.y must be supplied.</p></dd>
 
 
-<dt>fun.commoncols</dt>
+<dt id="arg-common-cols">common.cols<a class="anchor" aria-label="anchor" href="#arg-common-cols"></a></dt>
 <dd><p>If common columns are found in x and y, and
-they are not used in by, this will create columns named like
-col.x and col.y in result (see ?merge). Often, this is a
-mistake, and the default is to throw a warning if this
-happens. If using mergeCheck in a function, you may want to
+they are not used in `by`, this will by default create columns
+named like col.x and col.y in result (see ?merge). Often, this
+is a mistake, and the default is to throw a warning if this
+happens. If using mergeCheck in programming, you may want to
 make sure this is not happening and use
 fun.commoncols=stop. If you want nothing to happen, you can do
-fun.commoncols=NULL.</p></dd>
+fun.commoncols=NULL. You can also use `common.cols="drop.x"`
+to drop "non-by" columns in `x` with identical column names in
+`y`. Use "drop.y" to drop them in `y` and avoid the
+conflicts. The last option is to use `common.cols="merge.by"`
+which means `by` will automatically be extended to include all
+common column names.</p></dd>
 
 
-<dt>ncols.expect</dt>
+<dt id="arg-ncols-expect">ncols.expect<a class="anchor" aria-label="anchor" href="#arg-ncols-expect"></a></dt>
 <dd><p>If you want to include a check of the number
 of columns being added to the dimensions of x. So if
 ncols.expect=1, the resulting data must have exactly one
 column more than x - if not, an error will be returned.</p></dd>
 
 
-<dt>track.msg</dt>
+<dt id="arg-track-msg">track.msg<a class="anchor" aria-label="anchor" href="#arg-track-msg"></a></dt>
 <dd><p>If using mergeCheck inside other functions, it
 can be useful to use track.msg=TRUE. This will add information
 to messages/warnings/errors that they came from mergCheck.</p></dd>
 
 
-<dt>quiet</dt>
+<dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
 <dd><p>If FALSE, the names of the added columns are
 reported. Default value controlled by NMdataConf.</p></dd>
 
 
-<dt>df1</dt>
+<dt id="arg-df-">df1<a class="anchor" aria-label="anchor" href="#arg-df-"></a></dt>
 <dd><p>Deprecated. Use x.</p></dd>
 
 
-<dt>df2</dt>
+<dt id="arg-df-">df2<a class="anchor" aria-label="anchor" href="#arg-df-"></a></dt>
 <dd><p>Deprecated. Use y.</p></dd>
 
 
-<dt>fun.na.by</dt>
+<dt id="arg-subset-x">subset.x<a class="anchor" aria-label="anchor" href="#arg-subset-x"></a></dt>
+<dd><p>Not implemented.</p></dd>
+
+
+<dt id="arg-fun-na-by">fun.na.by<a class="anchor" aria-label="anchor" href="#arg-fun-na-by"></a></dt>
 <dd><p>If NA's are found in (matched) by columns in both
 x and why, what should we do? This could be OK, but in many
 cases, it's because something unexpected is happening. Use
@@ -186,22 +199,24 @@ fun.na.by=NULL if you don't want to be notified and want to go
 ahead regardless.</p></dd>
 
 
-<dt>as.fun</dt>
+<dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
 <dd><p>The default is to return a data.table if x is a
 data.table and return a data.frame in all other cases. Pass a
 function in as.fun to convert to something else.</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg-fun-commoncols">fun.commoncols<a class="anchor" aria-label="anchor" href="#arg-fun-commoncols"></a></dt>
+<dd><p>Deprecated. Please use `common.cols`.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>additional arguments passed to data.table::merge. If
 all is among them, an error will be returned.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>a data.frame resulting from merging x and y. Class as
+    <p>a data.frame resulting from merging x and y. Class as
     defined by as.fun.</p>
     </div>
     <div id="details">
@@ -241,7 +256,7 @@ values of the row counter in x.</p></li>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p>Other DataCreate: 
+    <div class="dont-index"><p>Other DataCreate:
 <code><a href="NMorderColumns.html">NMorderColumns</a>()</code>,
 <code><a href="NMstamp.html">NMstamp</a>()</code>,
 <code><a href="NMwriteData.html">NMwriteData</a>()</code>,
@@ -285,7 +300,7 @@ values of the row counter in x.</p></li>
 <span class="r-in"><span><span class="co">## Here we get a duplicate of a df1 row in the result. If we only</span></span></span>
 <span class="r-in"><span><span class="co">## check dimensions, we make a mistake. mergeCheck captures the</span></span></span>
 <span class="r-in"><span><span class="co">## error - and tell us where to find the problem (ID 31 and 180):</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span>file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dt.cov</span> <span class="op">&lt;-</span> <span class="va">pk</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span>ID<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">ID</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">dt.cov</span><span class="op">[</span>,<span class="va">COV</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,size<span class="op">=</span><span class="va">.N</span>,replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span></span></span>
@@ -294,7 +309,7 @@ values of the row counter in x.</p></li>
 <span class="r-in"><span><span class="va">res.merge</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">res.merge</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">mergeCheck</span><span class="op">(</span><span class="va">pk</span>,<span class="va">dt.cov</span>,by<span class="op">=</span><span class="st">"ID"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -309,12 +324,12 @@ values of the row counter in x.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 
 
   <script data-goatcounter="https://nmdata.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>

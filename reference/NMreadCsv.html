@@ -4,7 +4,7 @@ using NMwriteData."><meta property="og:image" content="https://philipdelff.githu
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -18,7 +18,7 @@ using NMwriteData."><meta property="og:image" content="https://philipdelff.githu
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.915</span>
       </span>
     </div>
 
@@ -26,13 +26,13 @@ using NMwriteData."><meta property="og:image" content="https://philipdelff.githu
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -57,26 +57,26 @@ using NMwriteData."><meta property="og:image" content="https://philipdelff.githu
 <li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Read input data formatted for Nonmem</h1>
-    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/R/NMreadCsv.R" class="external-link"><code>R/NMreadCsv.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/master/R/NMreadCsv.R" class="external-link"><code>R/NMreadCsv.R</code></a></small>
     <div class="hidden name"><code>NMreadCsv.Rd</code></div>
     </div>
 
@@ -91,18 +91,20 @@ using NMwriteData.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>file</dt>
+
+
+<dl><dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
 <dd><p>The file to read. Must be pure text.</p></dd>
 
 
-<dt>args.fread</dt>
+<dt id="arg-args-fread">args.fread<a class="anchor" aria-label="anchor" href="#arg-args-fread"></a></dt>
 <dd><p>List of arguments passed to fread. Notice that
 except for "file", you need to supply all arguments to fread
 if you use this argument. Default values can be configured
 using NMdataConf.</p></dd>
 
 
-<dt>as.fun</dt>
+<dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
 <dd><p>The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
@@ -110,7 +112,7 @@ as.fun="data.table". The default can be configured using
 NMdataConf.</p></dd>
 
 
-<dt>format</dt>
+<dt id="arg-format">format<a class="anchor" aria-label="anchor" href="#arg-format"></a></dt>
 <dd><p>Format of file to read. Can be of length&gt;1 in which
 case the first format found will be used (i.e. format is a
 prioritized vector). If not one of "rds" or "fst", it is
@@ -121,15 +123,13 @@ format is used, the extension can very well be different from
 "input.tab")". This will work for any delimited format supported by fread.</p></dd>
 
 
-<dt>args.fst</dt>
+<dt id="arg-args-fst">args.fst<a class="anchor" aria-label="anchor" href="#arg-args-fst"></a></dt>
 <dd><p>Optional arguments to pass to <code>read_fst</code> if <code>format="fst"</code> is used.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>A data set of class as defined by as.fun.</p>
+    <p>A data set of class as defined by as.fun.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -138,7 +138,7 @@ format is used, the extension can very well be different from
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>NMwriteData</p>
-<p>Other DataRead: 
+<p>Other DataRead:
 <code><a href="NMreadTab.html">NMreadTab</a>()</code>,
 <code><a href="NMscanData.html">NMscanData</a>()</code>,
 <code><a href="NMscanInput.html">NMscanInput</a>()</code>,
@@ -157,12 +157,12 @@ format is used, the extension can very well be different from
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 
 
   <script data-goatcounter="https://nmdata.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>

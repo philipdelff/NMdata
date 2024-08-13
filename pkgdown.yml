@@ -1,13 +1,13 @@
 pandoc: 3.1.11
-pkgdown: 2.0.9
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   DataPrepare: DataPrepare.html
   NMdata-cheat: NMdata-cheat.html
   NMdata-FAQ: NMdata-FAQ.html
   NMscanData: NMscanData.html
-last_built: 2024-06-10T14:50Z
+  ParameterTables: ParameterTables.html
+last_built: 2024-08-13T00:29Z
 urls:
   reference: https://philipdelff.github.io/NMdata/reference
   article: https://philipdelff.github.io/NMdata/articles
-

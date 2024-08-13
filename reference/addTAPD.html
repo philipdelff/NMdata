@@ -5,7 +5,7 @@ dosing notation using ADDL and II."><meta property="og:image" content="https://p
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -19,7 +19,7 @@ dosing notation using ADDL and II."><meta property="og:image" content="https://p
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.915</span>
       </span>
     </div>
 
@@ -27,13 +27,13 @@ dosing notation using ADDL and II."><meta property="og:image" content="https://p
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -58,26 +58,26 @@ dosing notation using ADDL and II."><meta property="og:image" content="https://p
 <li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Add time since previous dose to data, time of previous dose, most recent dose amount, cumulative number of doses, and cumulative dose amount.</h1>
-    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/R/addTAPD.R" class="external-link"><code>R/addTAPD.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/master/R/addTAPD.R" class="external-link"><code>R/addTAPD.R</code></a></small>
     <div class="hidden name"><code>addTAPD.Rd</code></div>
     </div>
 
@@ -112,74 +112,76 @@ dosing notation using <code>ADDL</code> and <code>II</code>.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>The data set to add the variables to.</p></dd>
 
 
-<dt>col.time</dt>
+<dt id="arg-col-time">col.time<a class="anchor" aria-label="anchor" href="#arg-col-time"></a></dt>
 <dd><p>Name of time column (created by
 <code>addTAPD()</code>). Default it <code>"TIME"</code>.</p></dd>
 
 
-<dt>col.evid</dt>
+<dt id="arg-col-evid">col.evid<a class="anchor" aria-label="anchor" href="#arg-col-evid"></a></dt>
 <dd><p>The name of the event ID column. This must exist
 in data. Default is EVID.</p></dd>
 
 
-<dt>col.amt</dt>
+<dt id="arg-col-amt">col.amt<a class="anchor" aria-label="anchor" href="#arg-col-amt"></a></dt>
 <dd><p>col.evid The name of the dose amount column. This
 must exist in data. Default is AMT.</p></dd>
 
 
-<dt>col.tpdos</dt>
+<dt id="arg-col-tpdos">col.tpdos<a class="anchor" aria-label="anchor" href="#arg-col-tpdos"></a></dt>
 <dd><p>Name of the time of previous dose column (created
 by <code>addTAPD()</code>). Default is <code>"TPDOS"</code>. Set to
 <code>NULL</code> to not create this column.</p></dd>
 
 
-<dt>col.tapd</dt>
+<dt id="arg-col-tapd">col.tapd<a class="anchor" aria-label="anchor" href="#arg-col-tapd"></a></dt>
 <dd><p>Name of the time of previous dose column (created
 by <code>addTAPD()</code>). Default is <code>"TAPD"</code>. Set to
 <code>NULL</code> to not create this column.</p></dd>
 
 
-<dt>col.pdosamt</dt>
+<dt id="arg-col-pdosamt">col.pdosamt<a class="anchor" aria-label="anchor" href="#arg-col-pdosamt"></a></dt>
 <dd><p>The name of the column to be created holding
 the previous dose amount. Set to NULL to not create this
 column.</p></dd>
 
 
-<dt>col.doscuma</dt>
+<dt id="arg-col-doscuma">col.doscuma<a class="anchor" aria-label="anchor" href="#arg-col-doscuma"></a></dt>
 <dd><p>The name of the column to be created holding
 the cumulative dose amount. Set to NULL to not create this
 column.</p></dd>
 
 
-<dt>col.doscumn</dt>
+<dt id="arg-col-doscumn">col.doscumn<a class="anchor" aria-label="anchor" href="#arg-col-doscumn"></a></dt>
 <dd><p>The name of the column (created by addTAPD)
 that holds the cumulative number of doses administered to the
 subject. Set to NULL to not create this column.</p></dd>
 
 
-<dt>prefix.cols</dt>
+<dt id="arg-prefix-cols">prefix.cols<a class="anchor" aria-label="anchor" href="#arg-prefix-cols"></a></dt>
 <dd><p>String to be prepended to all generated column
 names, that is each of col.tpdos, col.tapd, col.ndoses,
 col.pdosamt, col.doscuma that are not NULL.</p></dd>
 
 
-<dt>suffix.cols</dt>
+<dt id="arg-suffix-cols">suffix.cols<a class="anchor" aria-label="anchor" href="#arg-suffix-cols"></a></dt>
 <dd><p>String to be appended to all generated column
 names, that is each of col.tpdos, col.tapd, col.ndoses,
 col.pdosamt, col.doscuma that are not NULL.</p></dd>
 
 
-<dt>subset.dos</dt>
+<dt id="arg-subset-dos">subset.dos<a class="anchor" aria-label="anchor" href="#arg-subset-dos"></a></dt>
 <dd><p>A string that will be evaluated as a custom
 expression to identify relevant events. See subset.is.complete
 as well.</p></dd>
 
 
-<dt>subset.is.complete</dt>
+<dt id="arg-subset-is-complete">subset.is.complete<a class="anchor" aria-label="anchor" href="#arg-subset-is-complete"></a></dt>
 <dd><p>Only used in combination with
 non-missing subset.dos. By default, subset.dos is used in
 addition to the impact of col.evid (must be 1 or 4) and
@@ -190,7 +192,7 @@ not doses but other events that are not expressed as a typical
 dose combination of EVID and AMT columns.</p></dd>
 
 
-<dt>order.evid</dt>
+<dt id="arg-order-evid">order.evid<a class="anchor" aria-label="anchor" href="#arg-order-evid"></a></dt>
 <dd><p>Order of events. This will only matter if there
 are simultaneous events of different event types within
 subjects. Typically if using nominal time, it may be important
@@ -199,17 +201,17 @@ samples. The default is c(3,0,4,1,2) - i.e. samples and
 simulations are pre-dose. See details.</p></dd>
 
 
-<dt>by</dt>
+<dt id="arg-by">by<a class="anchor" aria-label="anchor" href="#arg-by"></a></dt>
 <dd><p>Columns to do calculations within. Default is ID.</p></dd>
 
 
-<dt>SDOS</dt>
+<dt id="arg-sdos">SDOS<a class="anchor" aria-label="anchor" href="#arg-sdos"></a></dt>
 <dd><p>Scaling value for columns related to dose amount,
 relative to AMT values. col.pdosamt and col.doscuma are
 affected and will be derived as AMT/SDOSE.</p></dd>
 
 
-<dt>as.fun</dt>
+<dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
 <dd><p>The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
@@ -217,15 +219,13 @@ as.fun="data.table". The default can be configured using
 NMdataConf.</p></dd>
 
 
-<dt>col.ndoses</dt>
+<dt id="arg-col-ndoses">col.ndoses<a class="anchor" aria-label="anchor" href="#arg-col-ndoses"></a></dt>
 <dd><p>Deprecated. Use col.doscumn instead.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>A data.frame with additional columns</p>
+    <p>A data.frame with additional columns</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -242,7 +242,7 @@ NMdataConf.</p></dd>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p>Other DataCreate: 
+    <div class="dont-index"><p>Other DataCreate:
 <code><a href="NMorderColumns.html">NMorderColumns</a>()</code>,
 <code><a href="NMstamp.html">NMstamp</a>()</code>,
 <code><a href="NMwriteData.html">NMwriteData</a>()</code>,
@@ -266,12 +266,12 @@ NMdataConf.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 
 
   <script data-goatcounter="https://nmdata.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>

@@ -6,7 +6,7 @@ to check the compatibility of the data."><meta property="og:image" content="http
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -20,7 +20,7 @@ to check the compatibility of the data."><meta property="og:image" content="http
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.915</span>
       </span>
     </div>
 
@@ -28,13 +28,13 @@ to check the compatibility of the data."><meta property="og:image" content="http
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -59,26 +59,26 @@ to check the compatibility of the data."><meta property="og:image" content="http
 <li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Compare elements in lists with aim of combining</h1>
-    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/R/compareCols.R" class="external-link"><code>R/compareCols.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/master/R/compareCols.R" class="external-link"><code>R/compareCols.R</code></a></small>
     <div class="hidden name"><code>compareCols.Rd</code></div>
     </div>
 
@@ -107,22 +107,24 @@ to check the compatibility of the data.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>...</dt>
+
+
+<dl><dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>objects which element names to compare</p></dd>
 
 
-<dt>list.data</dt>
+<dt id="arg-list-data">list.data<a class="anchor" aria-label="anchor" href="#arg-list-data"></a></dt>
 <dd><p>As alternative to ..., you can supply the data
 sets in a list here.</p></dd>
 
 
-<dt>keep.names</dt>
+<dt id="arg-keep-names">keep.names<a class="anchor" aria-label="anchor" href="#arg-keep-names"></a></dt>
 <dd><p>If TRUE, the original dataset names are used in
 reported table. If not, generic x1, x2,... are used. The
 latter may be preferred for readability.</p></dd>
 
 
-<dt>test.equal</dt>
+<dt id="arg-test-equal">test.equal<a class="anchor" aria-label="anchor" href="#arg-test-equal"></a></dt>
 <dd><p>Do you just want a TRUE/FALSE to whether the
 names of the two objects are the same? Default is FALSE which
 means to return an overview for interactive use. You might
@@ -132,14 +134,14 @@ enough (say numeric and integer), and compareCols doesn't take
 this into account.</p></dd>
 
 
-<dt>diff.only</dt>
+<dt id="arg-diff-only">diff.only<a class="anchor" aria-label="anchor" href="#arg-diff-only"></a></dt>
 <dd><p>If TRUE, don't report columns where no difference
 found. Default is TRUE if number of data sets supplied is
 greater than one. If only one data set is supplied, the full
 list of columns is shown by default.</p></dd>
 
 
-<dt>cols.wanted</dt>
+<dt id="arg-cols-wanted">cols.wanted<a class="anchor" aria-label="anchor" href="#arg-cols-wanted"></a></dt>
 <dd><p>Columns of special interest. These will always
 be included in overview and indicated by a prepended * to the
 column names. This argument is often useful when you start by
@@ -147,7 +149,7 @@ defining a set of columns that you want to end up with by
 combining a number of data sets.</p></dd>
 
 
-<dt>fun.class</dt>
+<dt id="arg-fun-class">fun.class<a class="anchor" aria-label="anchor" href="#arg-fun-class"></a></dt>
 <dd><p>the function that will be run on each column to
 check for differences. base::class is default. Notice that the
 alternative base::typeof is different in certain ways. For
@@ -156,14 +158,14 @@ difftime. You could basically submit any function that takes a
 vector and returns a single value.</p></dd>
 
 
-<dt>quiet</dt>
+<dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
 <dd><p>The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
 non-interactive use. Default can be configured using
 NMdataConf.</p></dd>
 
 
-<dt>as.fun</dt>
+<dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
 <dd><p>A function that will be run on the result before
 returning. If first input data set is a data.table, the
 default is to return a data.table, if not the default is to
@@ -171,19 +173,17 @@ return a data.frame. Use whatever to get what fits in with
 your workflow. Default can be configured with NMdataConf.</p></dd>
 
 
-<dt>keepNames</dt>
+<dt id="arg-keepnames">keepNames<a class="anchor" aria-label="anchor" href="#arg-keepnames"></a></dt>
 <dd><p>Deprecated. Use keep.names instead.</p></dd>
 
 
-<dt>testEqual</dt>
+<dt id="arg-testequal">testEqual<a class="anchor" aria-label="anchor" href="#arg-testequal"></a></dt>
 <dd><p>Deprecated. Use test.equal instead.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>A data.frame with an overview of elements and their
+    <p>A data.frame with an overview of elements and their
     classes of objects in ... Class as defined by as.fun.</p>
     </div>
     <div id="details">
@@ -198,7 +198,7 @@ extract SAS labels on an object read with `read_sas` from the
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p>Other DataWrangling: 
+    <div class="dont-index"><p>Other DataWrangling:
 <code><a href="dims.html">dims</a>()</code>,
 <code><a href="listMissings.html">listMissings</a>()</code></p></div>
     </div>
@@ -206,9 +206,9 @@ extract SAS labels on an object read with `read_sas` from the
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## get SAS labels from objects read with haven::read_sas</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="fu">compareCols</span><span class="op">(</span><span class="va">...</span>,fun.class<span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">label</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
@@ -225,12 +225,12 @@ extract SAS labels on an object read with `read_sas` from the
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 
 
   <script data-goatcounter="https://nmdata.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>

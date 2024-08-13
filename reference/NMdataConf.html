@@ -8,7 +8,7 @@ data.frames)."><meta property="og:image" content="https://philipdelff.github.io/
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -22,7 +22,7 @@ data.frames)."><meta property="og:image" content="https://philipdelff.github.io/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.915</span>
       </span>
     </div>
 
@@ -30,13 +30,13 @@ data.frames)."><meta property="og:image" content="https://philipdelff.github.io/
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -61,26 +61,26 @@ data.frames)."><meta property="og:image" content="https://philipdelff.github.io/
 <li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Configure default behavior of NMdata functions</h1>
-    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/R/NMdataConf.R" class="external-link"><code>R/NMdataConf.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/master/R/NMdataConf.R" class="external-link"><code>R/NMdataConf.R</code></a></small>
     <div class="hidden name"><code>NMdataConf.Rd</code></div>
     </div>
 
@@ -99,7 +99,9 @@ data.frames).</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>...</dt>
+
+
+<dl><dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>NMdata options to modify. These are named arguments,
 like for base::options. Normally, multiple arguments can be
 used. The exception is if reset=TRUE is used which means all
@@ -108,7 +110,7 @@ an argument, the argument is reset to default.  is See
 examples for how to use.</p></dd>
 
 
-<dt>allow.unknown</dt>
+<dt id="arg-allow-unknown">allow.unknown<a class="anchor" aria-label="anchor" href="#arg-allow-unknown"></a></dt>
 <dd><p>Allow to store configuration of variables
     that are not pre-defined in NMdata. This should only be needed
     in cases where say another package wants to use the NMdata
@@ -221,16 +223,14 @@ chatty behavior once and for all using this setting.</p></li>
 Using this, you don't have to worry about remembering including
 all relevant variables in the output tables. Default is TRUE.</p></li>
 <li><p>use.rds Deprecated, use <code>formats.read</code> and
-<code>formats.write</code> instead. Affects <code><a href="NMscanData.html">NMscanData()</a></code>, 
+<code>formats.write</code> instead. Affects <code><a href="NMscanData.html">NMscanData()</a></code>,
 <code><a href="NMscanInput.html">NMscanInput()</a></code>, <code><a href="NMwriteData.html">NMwriteData()</a></code>.</p></li>
 </ul></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>If no arguments given, a list of active settings. If
+    <p>If no arguments given, a list of active settings. If
     arguments given and no issues found, TRUE invisibly.</p>
     </div>
     <div id="details">
@@ -273,7 +273,7 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(as.data.frame(list()))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     UseMethod("as.data.frame")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55cfc62954e0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x557c18d16940&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:base&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $check.time</span>
@@ -311,24 +311,32 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     fnExtension(file, ext = ".ext")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55cfc62b6068&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55cfc62989e0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x557c16e25920&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x557c18d16010&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file.cov</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     fnExtension(file, ext = ".cov")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55cfc62b59a0&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55cfc62989e0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x557c16e25258&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x557c18d16010&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file.phi</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     fnExtension(file, ext = ".phi")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55cfc62b52d8&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55cfc62989e0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x557c16e24b90&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x557c18d16010&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $file.shk</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     fnExtension(file, ext = ".shk")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x557c16e244c8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x557c18d16010&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file.mod</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
@@ -342,8 +350,8 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ctl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55cfc62b4c10&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55cfc62989e0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x557c1758e590&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x557c18d16010&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file.data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "extract"</span>
@@ -354,8 +362,8 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $modelname</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fnExtension(basename(file), "")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55cfc62b7bd0&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55cfc62989e0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x557c1758d720&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x557c18d16010&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $quiet</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
@@ -392,12 +400,12 @@ hidden from other users.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 
 
   <script data-goatcounter="https://nmdata.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>

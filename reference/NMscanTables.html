@@ -3,7 +3,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.915</span>
       </span>
     </div>
 
@@ -25,13 +25,13 @@
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -56,26 +56,26 @@
 <li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/philipdelff/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Find and read all output data tables in Nonmem run</h1>
-    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/HEAD/R/NMscanTables.R" class="external-link"><code>R/NMscanTables.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/master/R/NMscanTables.R" class="external-link"><code>R/NMscanTables.R</code></a></small>
     <div class="hidden name"><code>NMscanTables.Rd</code></div>
     </div>
 
@@ -100,11 +100,13 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>file</dt>
+
+
+<dl><dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
 <dd><p>the Nonmem file to read (normally .mod or .lst)</p></dd>
 
 
-<dt>as.fun</dt>
+<dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
 <dd><p>The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
 something else. If data.tables are wanted, use
@@ -112,14 +114,14 @@ as.fun="data.table". The default can be configured using
 NMdataConf.</p></dd>
 
 
-<dt>quiet</dt>
+<dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
 <dd><p>The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
 non-interactive use. Default can be configured using
 NMdataConf.</p></dd>
 
 
-<dt>col.nmrep</dt>
+<dt id="arg-col-nmrep">col.nmrep<a class="anchor" aria-label="anchor" href="#arg-col-nmrep"></a></dt>
 <dd><p>col.nmrep If tables are repeated, include a
 counter? It does not relate to the order of the $TABLE
 statements but to cases where a $TABLE statement is run
@@ -132,7 +134,7 @@ in data. Set it to a different string to request the column
 with a different name. The argument is passed to NMscanTables.</p></dd>
 
 
-<dt>col.tableno</dt>
+<dt id="arg-col-tableno">col.tableno<a class="anchor" aria-label="anchor" href="#arg-col-tableno"></a></dt>
 <dd><p>Nonmem includes a counter of tables in the
 written data files. These are often not useful. However, if
 col.tableno is TRUE (not default), this will be carried forward
@@ -141,29 +143,29 @@ by NMscanTables, it is treated like any other table column in
 meta (?NMinfo) data.</p></dd>
 
 
-<dt>col.id</dt>
+<dt id="arg-col-id">col.id<a class="anchor" aria-label="anchor" href="#arg-col-id"></a></dt>
 <dd><p>name of the subject ID column. Used for calculation
 of the number of subjects in each table.</p></dd>
 
 
-<dt>col.row</dt>
+<dt id="arg-col-row">col.row<a class="anchor" aria-label="anchor" href="#arg-col-row"></a></dt>
 <dd><p>The name of the row counter column. Optional and
 only used to check whether the row counter is in the data.</p></dd>
 
 
-<dt>details</dt>
+<dt id="arg-details">details<a class="anchor" aria-label="anchor" href="#arg-details"></a></dt>
 <dd><p>If TRUE, metadata is added to output. In this case,
 you get a list. Typically, this is mostly useful if
 programming up functions which behavior must depend on
 properties of the output.</p></dd>
 
 
-<dt>skip.absent</dt>
+<dt id="arg-skip-absent">skip.absent<a class="anchor" aria-label="anchor" href="#arg-skip-absent"></a></dt>
 <dd><p>Skip missing output table files with a warning?
 Default is FALSE in which case an error is thrown.</p></dd>
 
 
-<dt>meta.only</dt>
+<dt id="arg-meta-only">meta.only<a class="anchor" aria-label="anchor" href="#arg-meta-only"></a></dt>
 <dd><p>If TRUE, tables are not read, only a table is
 returned showing what tables were found and some available
 meta information. Notice, not all meta information (e.g.,
@@ -173,15 +175,13 @@ to derive that.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>A list of all the tables as data.frames. If details=TRUE,
+    <p>A list of all the tables as data.frames. If details=TRUE,
     this is in one element, called data, and meta is another
     element. If not, only the data is returned.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p>Other DataRead: 
+    <div class="dont-index"><p>Other DataRead:
 <code><a href="NMreadCsv.html">NMreadCsv</a>()</code>,
 <code><a href="NMreadTab.html">NMreadTab</a>()</code>,
 <code><a href="NMscanData.html">NMscanData</a>()</code>,
@@ -206,12 +206,12 @@ to derive that.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 
 
   <script data-goatcounter="https://nmdata.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>
