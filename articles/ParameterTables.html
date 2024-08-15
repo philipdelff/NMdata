@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.915</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.921</span>
       </span>
     </div>
 
@@ -157,7 +157,8 @@ worth mentioning how to even just read the parameter estimates with
 <span><span class="va">file.mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr133.mod"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">##NMreadExt(file.mod,return="objv")</span></span>
-<span><span class="va">pars.ext</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMreadExt.html">NMreadExt</a></span><span class="op">(</span><span class="va">file.mod</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">pars.ext</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMreadExt.html">NMreadExt</a></span><span class="op">(</span><span class="va">file.mod</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Column(s) added: iblock, blocksize</span></span></code></pre></div>
 <p>This does provide a basic parameter table.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -323,7 +324,8 @@ the columns available:</p>
 <span><span class="co">#&gt;  [1] "model"       "TABLENO"     "NMREP"       "table.step"  "par.type"   </span></span>
 <span><span class="co">#&gt;  [6] "parameter"   "par.name"    "i"           "j"           "FIX"        </span></span>
 <span><span class="co">#&gt; [11] "value"       "cond"        "eigCor"      "partLik"     "se"         </span></span>
-<span><span class="co">#&gt; [16] "seStdDevCor" "stdDevCor"   "termStat"    "est"</span></span></code></pre></div>
+<span><span class="co">#&gt; [16] "seStdDevCor" "stdDevCor"   "termStat"    "est"         "iblock"     </span></span>
+<span><span class="co">#&gt; [21] "blocksize"</span></span></code></pre></div>
 <p>where <code>est</code> is a deprecated copy of the <code>value</code>
 column.</p>
 <p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> can return other information than the
@@ -332,6 +334,7 @@ for now, let this be a teaser for what else <code><a href="../reference/NMreadEx
 provides (which is all the info in <code>.ext</code> files):</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/NMreadExt.html">NMreadExt</a></span><span class="op">(</span><span class="va">file.mod</span>,return<span class="op">=</span><span class="st">"all"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Column(s) added: iblock, blocksize</span></span>
 <span><span class="co">#&gt; [1] "pars"       "iterations" "obj"</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -1165,10 +1168,10 @@ are getting close.</p>
 <span><span class="va">Partab4</span> <span class="op">&lt;-</span> <span class="fu">NMdata</span><span class="fu">::</span><span class="fu"><a href="../reference/addOmegaCorr.html">addOmegaCorr</a></span><span class="op">(</span><span class="va">partab2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Column(s) added: corr</span></span>
 <span><span class="fu">kable</span><span class="op">(</span><span class="va">Partab4</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="3%">
-<col width="3%">
+<col width="2%">
+<col width="2%">
 <col width="2%">
 <col width="4%">
 <col width="3%">
@@ -1186,10 +1189,12 @@ are getting close.</p>
 <col width="3%">
 <col width="3%">
 <col width="4%">
+<col width="2%">
+<col width="3%">
 <col width="2%">
 <col width="1%">
 <col width="5%">
-<col width="12%">
+<col width="11%">
 <col width="1%">
 <col width="2%">
 <col width="4%">
@@ -1215,6 +1220,8 @@ are getting close.</p>
 <th align="right">stdDevCor</th>
 <th align="right">termStat</th>
 <th align="right">est</th>
+<th align="right">iblock</th>
+<th align="right">blocksize</th>
 <th align="left">init</th>
 <th align="left">idx</th>
 <th align="left">symbol</th>
@@ -1245,6 +1252,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">0.8028730</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">(.1)</td>
 <td align="left">1</td>
 <td align="left">LTVKA</td>
@@ -1274,6 +1283,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">4.3165400</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">(3)</td>
 <td align="left">2</td>
 <td align="left">LTVV2</td>
@@ -1303,6 +1314,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">2.5524100</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">(1)</td>
 <td align="left">3</td>
 <td align="left">LTVCL</td>
@@ -1332,6 +1345,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">5.1554800</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">(4)</td>
 <td align="left">4</td>
 <td align="left">LTVV3</td>
@@ -1361,6 +1376,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">2.1515900</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">(-1)</td>
 <td align="left">5</td>
 <td align="left">LTVQ</td>
@@ -1390,6 +1407,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">0.4427680</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">.1</td>
 <td align="left">6</td>
 <td align="left">AGEEFF</td>
@@ -1419,6 +1438,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">0.0000000</td>
+<td align="right">1</td>
+<td align="right">1</td>
 <td align="left">0 FIX</td>
 <td align="left">1</td>
 <td align="left">BSV.KA</td>
@@ -1448,6 +1469,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">0.0000000</td>
+<td align="right">2</td>
+<td align="right">2</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1477,6 +1500,8 @@ are getting close.</p>
 <td align="right">0.416864</td>
 <td align="right">0</td>
 <td align="right">0.1737760</td>
+<td align="right">2</td>
+<td align="right">1</td>
 <td align="left">0.1</td>
 <td align="left">2</td>
 <td align="left">BSV.V2</td>
@@ -1506,6 +1531,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">0.0000000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1535,6 +1562,8 @@ are getting close.</p>
 <td align="right">-0.227702</td>
 <td align="right">0</td>
 <td align="right">-0.0478580</td>
+<td align="right">2</td>
+<td align="right">2</td>
 <td align="left">0.01</td>
 <td align="left">2-3</td>
 <td align="left">Cov.BSV.V2-CL</td>
@@ -1564,6 +1593,8 @@ are getting close.</p>
 <td align="right">0.504188</td>
 <td align="right">0</td>
 <td align="right">0.2542050</td>
+<td align="right">2</td>
+<td align="right">2</td>
 <td align="left">0.1</td>
 <td align="left">3</td>
 <td align="left">BSV.CL</td>
@@ -1593,6 +1624,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">0.0000000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1622,6 +1655,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">0.0000000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1651,6 +1686,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">0.0000000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1680,6 +1717,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">0.0000000</td>
+<td align="right">4</td>
+<td align="right">1</td>
 <td align="left">0 FIX</td>
 <td align="left">4</td>
 <td align="left">BSV.V3</td>
@@ -1709,6 +1748,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">0.0000000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1738,6 +1779,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">0.0000000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1767,6 +1810,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">0.0000000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1796,6 +1841,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">0.0000000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1825,6 +1872,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">0.0000000</td>
+<td align="right">5</td>
+<td align="right">1</td>
 <td align="left">0 FIX</td>
 <td align="left">5</td>
 <td align="left">BSV.Q</td>
@@ -1854,6 +1903,8 @@ are getting close.</p>
 <td align="right">0.285130</td>
 <td align="right">0</td>
 <td align="right">0.0812994</td>
+<td align="right">1</td>
+<td align="right">1</td>
 <td align="left">0.1</td>
 <td align="left">1</td>
 <td align="left">SigP</td>
@@ -1883,6 +1934,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">0.0000000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1912,6 +1965,8 @@ are getting close.</p>
 <td align="right">0.000000</td>
 <td align="right">0</td>
 <td align="right">0.0000000</td>
+<td align="right">2</td>
+<td align="right">1</td>
 <td align="left">0 FIX</td>
 <td align="left">2</td>
 <td align="left">SigA</td>
@@ -1971,30 +2026,30 @@ after finalizing the control stream.</p>
 <span><span class="co">#&gt;  8:     0 -0.0478580  0.00000 0.000000  1.2065900 0.02543730  0.11353100</span></span>
 <span><span class="co">#&gt;  9:     0  0.2542050  0.00000 0.000000  0.7464250 0.04339480  0.04303430</span></span>
 <span><span class="co">#&gt; 10:     0  0.0812994  0.00000 1.107170 16.4170000 0.00543208  0.00952561</span></span>
-<span><span class="co">#&gt;     stdDevCor termStat        est   init    idx        symbol  trans</span></span>
-<span><span class="co">#&gt;         &lt;num&gt;    &lt;num&gt;      &lt;num&gt; &lt;char&gt; &lt;char&gt;        &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1:  0.000000        0  0.8028730   (.1)      1         LTVKA    log</span></span>
-<span><span class="co">#&gt;  2:  0.000000        0  4.3165400    (3)      2         LTVV2    log</span></span>
-<span><span class="co">#&gt;  3:  0.000000        0  2.5524100    (1)      3         LTVCL    log</span></span>
-<span><span class="co">#&gt;  4:  0.000000        0  5.1554800    (4)      4         LTVV3    log</span></span>
-<span><span class="co">#&gt;  5:  0.000000        0  2.1515900   (-1)      5          LTVQ    log</span></span>
-<span><span class="co">#&gt;  6:  0.000000        0  0.4427680     .1      6        AGEEFF    log</span></span>
-<span><span class="co">#&gt;  7:  0.416864        0  0.1737760    0.1      2        BSV.V2   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  8: -0.227702        0 -0.0478580   0.01    2-3 Cov.BSV.V2-CL   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  9:  0.504188        0  0.2542050    0.1      3        BSV.CL   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 10:  0.285130        0  0.0812994    0.1      1          SigP   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;     value.trans                                        label   unit</span></span>
-<span><span class="co">#&gt;           &lt;num&gt;                                       &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1:   2.2319441                              Absorption rate    1/h</span></span>
-<span><span class="co">#&gt;  2:  74.9289252                               Central volume      L</span></span>
-<span><span class="co">#&gt;  3:  12.8380061                                    Clearance    L/h</span></span>
-<span><span class="co">#&gt;  4: 173.3790087                            Peripheral volume      L</span></span>
-<span><span class="co">#&gt;  5:   8.5985192                 Intercompartmental clearance    L/h</span></span>
-<span><span class="co">#&gt;  6:   1.5570111                      Age effect on clearance       </span></span>
-<span><span class="co">#&gt;  7:   0.1737760 Between-subject variability - Central volume       </span></span>
-<span><span class="co">#&gt;  8:  -0.0478580                                         &lt;NA&gt;   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  9:   0.2542050      Between-subject variability - Clearance       </span></span>
-<span><span class="co">#&gt; 10:   0.0812994                                         &lt;NA&gt;   &lt;NA&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt;     stdDevCor termStat        est iblock blocksize   init    idx        symbol</span></span>
+<span><span class="co">#&gt;         &lt;num&gt;    &lt;num&gt;      &lt;num&gt;  &lt;int&gt;     &lt;num&gt; &lt;char&gt; &lt;char&gt;        &lt;char&gt;</span></span>
+<span><span class="co">#&gt;  1:  0.000000        0  0.8028730     NA        NA   (.1)      1         LTVKA</span></span>
+<span><span class="co">#&gt;  2:  0.000000        0  4.3165400     NA        NA    (3)      2         LTVV2</span></span>
+<span><span class="co">#&gt;  3:  0.000000        0  2.5524100     NA        NA    (1)      3         LTVCL</span></span>
+<span><span class="co">#&gt;  4:  0.000000        0  5.1554800     NA        NA    (4)      4         LTVV3</span></span>
+<span><span class="co">#&gt;  5:  0.000000        0  2.1515900     NA        NA   (-1)      5          LTVQ</span></span>
+<span><span class="co">#&gt;  6:  0.000000        0  0.4427680     NA        NA     .1      6        AGEEFF</span></span>
+<span><span class="co">#&gt;  7:  0.416864        0  0.1737760      2         1    0.1      2        BSV.V2</span></span>
+<span><span class="co">#&gt;  8: -0.227702        0 -0.0478580      2         2   0.01    2-3 Cov.BSV.V2-CL</span></span>
+<span><span class="co">#&gt;  9:  0.504188        0  0.2542050      2         2    0.1      3        BSV.CL</span></span>
+<span><span class="co">#&gt; 10:  0.285130        0  0.0812994      1         1    0.1      1          SigP</span></span>
+<span><span class="co">#&gt;      trans value.trans                                        label   unit</span></span>
+<span><span class="co">#&gt;     &lt;char&gt;       &lt;num&gt;                                       &lt;char&gt; &lt;char&gt;</span></span>
+<span><span class="co">#&gt;  1:    log   2.2319441                              Absorption rate    1/h</span></span>
+<span><span class="co">#&gt;  2:    log  74.9289252                               Central volume      L</span></span>
+<span><span class="co">#&gt;  3:    log  12.8380061                                    Clearance    L/h</span></span>
+<span><span class="co">#&gt;  4:    log 173.3790087                            Peripheral volume      L</span></span>
+<span><span class="co">#&gt;  5:    log   8.5985192                 Intercompartmental clearance    L/h</span></span>
+<span><span class="co">#&gt;  6:    log   1.5570111                      Age effect on clearance       </span></span>
+<span><span class="co">#&gt;  7:   &lt;NA&gt;   0.1737760 Between-subject variability - Central volume       </span></span>
+<span><span class="co">#&gt;  8:   &lt;NA&gt;  -0.0478580                                         &lt;NA&gt;   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt;  9:   &lt;NA&gt;   0.2542050      Between-subject variability - Clearance       </span></span>
+<span><span class="co">#&gt; 10:   &lt;NA&gt;   0.0812994                                         &lt;NA&gt;   &lt;NA&gt;</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="identifying-the-parameter-names-from-code">Identifying the parameter names from code<a class="anchor" aria-label="anchor" href="#identifying-the-parameter-names-from-code"></a>
@@ -2277,6 +2332,7 @@ merged in from a table maintained in a csv file.</p>
 <span><span class="va">file2.mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr133.mod"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">pars.ext</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMreadExt.html">NMreadExt</a></span><span class="op">(</span><span class="va">file2.mod</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Column(s) added: iblock, blocksize</span></span>
 <span></span>
 <span><span class="va">labs.auto</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMrelate.html">NMrelate</a></span><span class="op">(</span><span class="va">file2.mod</span><span class="op">)</span></span>
 <span><span class="va">labs.auto</span><span class="op">[</span>,<span class="va">symbol</span><span class="op">:=</span><span class="va">label</span><span class="op">]</span></span>
@@ -2458,6 +2514,7 @@ of a few models.</p>
 <span>    <span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">labs.auto</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span><span class="va">model</span>,<span class="va">par.name</span>,<span class="va">symbol</span><span class="op">)</span><span class="op">]</span>,by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"model"</span>,<span class="st">"par.name"</span><span class="op">)</span>,all.x<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">tab.offline</span>,by<span class="op">=</span><span class="st">"symbol"</span>,all.x<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/dcast.data.table.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">par.name</span><span class="op">+</span><span class="va">symbol</span><span class="op">+</span><span class="va">label</span><span class="op">+</span><span class="va">unit</span><span class="op">~</span><span class="va">model</span>,value.var<span class="op">=</span><span class="st">"value"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Column(s) added: iblock, blocksize</span></span>
 <span><span class="co">#&gt; Column(s) added: symbol</span></span>
 <span><span class="co">#&gt; Column(s) added: label, unit</span></span>
 <span><span class="co">#&gt; Key: &lt;par.name, symbol, label, unit&gt;</span></span>
