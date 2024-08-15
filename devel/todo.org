@@ -423,7 +423,7 @@ issued. Once done, NMgetSection must be updated as well.
 *** NMisNumeric
 **** DONE NA_character is not recognized as numeric
 *** NMreadExt
-**** TODO [#A] Support Laplacian
+**** DONE Support Laplacian
 Laplacian Conditional Estimation
 **** DONE Include model column same way as NMscanData
 **** DONE Support multiple files

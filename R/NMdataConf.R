@@ -531,6 +531,14 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
            }
         )
        ,
+        nc=list(
+            default=64
+            ## has to be length 1 character or function
+           ,is.allowed=function(x) is.numeric(x) && length(x)==1 && x%%1==0
+           ,msg.not.allowed="nc must be a single integer."
+           ,process=identity
+        )
+       ,
         path.nonmem=list(
             default=NULL
             ## has to be length 1 character 
