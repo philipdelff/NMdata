@@ -143,21 +143,24 @@ NMreadParsText <- function(file,lines,format,
     ## args <- getArgs()
     args <- getArgs(sys.call(),parent.frame())
 
-    ## deprecated since 2024-07-09 - v0.1.7
-    if(!missing(fields)) {
-        .Deprecated(new="format",old="fields")
-    }
-    if(!missing(fields.omega)) {
-        .Deprecated(new="format.omega",old="fields.omega")
-    }
-    if(!missing(fields.sigma)) {
-        .Deprecated(new="format.sigma",old="fields.sigma")
-    }
-
-    
     if(missing(format)){
         format <- NULL
     }
+    
+    ## deprecated since 2024-07-09 - v0.1.7
+    if(!missing(fields)) {
+        .Deprecated(new="format",old="fields")
+        format <- fields
+    }
+    if(!missing(fields.omega)) {
+        .Deprecated(new="format.omega",old="fields.omega")
+        format.omega <- fields.omega
+    }
+    if(!missing(fields.sigma)) {
+        .Deprecated(new="format.sigma",old="fields.sigma")
+        format.sigma <- fields.sigma
+    }
+
     if(is.null(format)){
         format <- "%init;%idx;%symbol;%label;%unit"
     }
