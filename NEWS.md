@@ -1,5 +1,6 @@
 
 # 0.1.7
+
 ## New features
 * `NMreadPartab()` has been generalized to support comment formats very
   generally. `NMreadPartab()` reads the comments in `$THETA`, `$OMEGA`
@@ -23,6 +24,27 @@
 
 * `mergeCheck()` has additional features available in the common.cols
   argument.
+
+* `NMreadExt()` separates objective function values into a separate list
+  element. The `return` argument is used to control what data to
+  retrieve. Use one of "pars" (default, parameter estimates),
+  "iterations" (parameter estimates for each iteration), "obj" for
+  objective funtion value, or "all" for a list with all of those.
+  
+* `NMreadExt()` adds block information to `OMEGA` and `SIGMA` elements
+  based on off-diagonal values.
+  
+* `NMreadExt()` adds a `par.name` column which is provides consistent
+  parameter naming. Instead of Nonmem's `THETA1` which is found in the
+  `parameter` column, the `par.name` column will contain `THETA(1)`
+  consistent with the `OMEGA` and `SIGMA` naming like `OMEGA(1,1)`
+
+* `NMreadExt()` recognizes Laplacian estimation steps in addition to
+  the already supported FO, FOCE(i), SAEM, and IMP.
+
+* A new option `nc` can be controlled with NMdataConf(). This is to
+  serve `NMsim`. Please see `NMsim::NMexec`. `NMsim::NMsim()` does not
+  adhere to this setting because it does not parallellize by default.
 
 ## Bugfixes
 * `NMscanInput()` and `NMreadCsv()` could fail if file names had no

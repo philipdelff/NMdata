@@ -6,7 +6,9 @@
 ##'     \code{return="pars"} (default) the final estimates are
 ##'     returned in addition to what other parameter-level information
 ##'     is found, like FIX, sd etc. as columns. If
-##'     \code{return="iterations"}, the iterations are returned. If
+##'     \code{return="iterations"}, the iterations are returned
+##'     (including objective function value). If \code{return="obj"}
+##'     objective function value at final estimate is returned. If
 ##'     \code{return="all"}, all er returned, though in separate
 ##'     data.frames compiled in a list.
 ##' @param as.fun The default is to return data as a data.frame. Pass
@@ -121,7 +123,7 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
 
     if(missing(return)||is.null(return)) return <- "pars"
     return <- tolower(return)
-   
+    
     allowed.return <- c("pars","iterations","obj","all")
     if(!return %in% allowed.return){
         stop("Argument return has to be one of: ", paste(allowed.return,collapse =", "))
@@ -195,12 +197,26 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
         obj[,(cols.drop):=NULL]
         pars <- pars[!parameter%in%c("SAEMOBJ","OBJ")]
         
-        ### this setorder call doesnt work - unsure why
+### this setorder call doesnt work - unsure why
         ## setorder(pars,match(par.type,c("THETA","OMEGA","SIGMA")),i,j)
         pars <- pars[order(model,match(par.type,c("THETA","OMEGA","SIGMA")),i,j)]
         ## est is just a copy of value for backward compatibility
         pars[,est:=value]
 
+### add OMEGA block information based on off diagonal values
+        tab.blocks <- rbind(pars[par.type%in%c("OMEGA","SIGMA"),.(par.type,i=i,j=j,value)],
+                            pars[par.type%in%c("OMEGA","SIGMA"),.(par.type,i=j,j=i,value)])[
+            abs(value)>1e-9,.(iblock=min(i,j),blocksize=max(abs(j-i))+1),by=.(par.type,i)]
+        
+        tab.blocks
+
+        pars <- mergeCheck(pars,tab.blocks,by=cc(par.type,i),all.x=T)
+        pars[abs(i-j)>(blocksize-1),(c("iblock","blocksize")):=list(NA,NA)]
+
+        pars[par.type%in%c("OMEGA","SIGMA")&i==j&is.na(iblock),iblock:=i]
+        pars[par.type%in%c("OMEGA","SIGMA")&i==j&iblock==i,blocksize:=1]
+### done add OMEGA/SIGMA blocks
+        
     }
     
     ## what to do about OBJ? Disregard? And keep in a iteration table instead?
