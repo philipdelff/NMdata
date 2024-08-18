@@ -210,7 +210,7 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
         
         tab.blocks
 
-        pars <- mergeCheck(pars,tab.blocks,by=cc(par.type,i),all.x=T)
+        pars <- mergeCheck(pars,tab.blocks,by=cc(par.type,i),all.x=T,quiet=TRUE)
         pars[abs(i-j)>(blocksize-1),(c("iblock","blocksize")):=list(NA,NA)]
 
         pars[par.type%in%c("OMEGA","SIGMA")&i==j&is.na(iblock),iblock:=i]

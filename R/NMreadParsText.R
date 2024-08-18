@@ -72,7 +72,7 @@
 ##'
 ##' res <- NMreadParsText(lines=lines,
 ##' format="%init;[%num];%symbol",
-##' format.omega="%init %symbol ; %num ; %type   ; %label ; %unit",
+##' format.omega="%init; %symbol ; %num ; %type   ; %label ; %unit",
 ##' field.idx="num")
 ##'
 ##' ## BLOCK() SAME are skipped
