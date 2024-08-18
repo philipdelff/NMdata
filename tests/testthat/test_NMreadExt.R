@@ -10,6 +10,14 @@ test_that("basic - pars",{
     
     res <- NMreadExt(file=file.ext,as.fun="data.table")
     expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        compareCols(ref,res)
+        res[1:4]
+        ref[1:4]
+    }
+    
 })
 
 test_that("basic - all",{
@@ -19,6 +27,12 @@ test_that("basic - all",{
 
     res <- NMreadExt(file=file.ext,as.fun="data.table",return="all")
     expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        compareCols(ref,res)
+    }
+
 })
 
 test_that("basic - all from multiple models",{
@@ -28,6 +42,12 @@ test_that("basic - all from multiple models",{
 
     res <- NMreadExt(file=file.ext,as.fun="data.table",return="all")
     expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        compareCols(ref,res)
+    }
+
 })
 
 
@@ -38,6 +58,15 @@ test_that("muref - all",{
 
     res <- NMreadExt(file=file.ext,as.fun="data.table",return="all")
     expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        res
+        ref
+        
+    }
+
+
 })
 
 test_that("muref SAEM - all",{
@@ -58,12 +87,19 @@ test_that("muref SAEM - tableno options",{
     NMdataConf(as.fun="data.table")
     
     res <- list(
-        NMreadExt(file.ext,tableno=1)[parameter=="SAEMOBJ"]
-       ,NMreadExt(file.ext,tableno="min")[parameter=="SAEMOBJ"]
-       ,NMreadExt(file.ext,tableno=2)[parameter=="SAEMOBJ"]
-       ,NMreadExt(file.ext,tableno="max")[parameter=="SAEMOBJ"]
+        NMreadExt(file.ext,tableno=1,return="obj")
+       ,NMreadExt(file.ext,tableno="min",return="obj")
+       ,NMreadExt(file.ext,tableno=2,return="obj")
+       ,NMreadExt(file.ext,tableno="max",return="obj")
     )
 
     expect_equal_to_reference(res,fileRef)
     
+    if(F){
+        ref <- readRDS(fileRef)
+        res
+        ref
+    }
+
+
 })

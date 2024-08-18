@@ -1,0 +1,15 @@
+symbol,label,unit
+LTVKA,Absorption rate,1/h
+LTVV2,Central volume,L
+LTVCL,Clearance,L/h
+LTVV3,Peripheral volume,L
+LTVQ,Intercompartmental clearance,L/h
+AGEEFF,Age effect on clearance,""
+BSV.KA,Between-subject variability - Absorption rate
+BSV.V2,Between-subject variability - Central volume
+Cov.CL-V2,Covariance - Clearance and central volume
+BSV.CL,Between-subject variability - Clearance,
+BSV.V3,Between-subject variability - Peripheral volume,
+BSV.Q,Between-subject variability - Intercompartmental clearance
+SIGP,Proportional residual error
+SIGA,Additive residual error, ng/mL

@@ -42,6 +42,7 @@ input.grd
 input.shk
 INTER
 LINK.LNK
+README.html
 tests/testthat/testOutput/simulations/nonmem
 tests/testthat/testOutput/simulations/NMsimData_xgxr.+\.rds
 tests/testthat/testData/simulations/xgxr..._subprobs/NMsim_xgxr..._subprobs_dir.+

@@ -4,7 +4,7 @@
 \alias{dt2mat}
 \title{Convert a data.table of parameter estimates to a matrix}
 \usage{
-dt2mat(pars, dt.subset = "unique", max.i, fill = 0)
+dt2mat(pars, dt.subset = "unique", max.i, fill = 0, col.value)
 }
 \arguments{
 \item{pars}{A data.table with parameters. Must contain columns `i`
@@ -24,6 +24,10 @@ available but a full matrix including elements related to
 fixed parameters is needed.}
 
 \item{fill}{Value to insert for missing elements}
+
+\item{col.value}{The name of the column from which to take the
+`OMEGA` values. Default is "value" in alignment with the
+output from `NMreadExt()`.}
 }
 \value{
 a matrix

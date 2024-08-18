@@ -55,7 +55,6 @@
 ##' @param keepEmpty Deprecated. See keep.empty.
 ##' @param keepName Deprecated. See keep.name.
 ##' @param asOne Deprecated. See as.one.
-##' @param cleanSpaces Deprecated. See clean.spaces.
 ##' @return character vector with extracted lines.
 ##' @details This function is planned to get a more general name and
 ##'     then be called by NMreadSection.
@@ -73,8 +72,7 @@ NMextractText <- function(file, lines, text, section, char.section,
                           type="mod", linesep="\n",
                           ## deprecated arguments
                           keepEmpty, keepName,
-                          keepComments, asOne,
-                          cleanSpaces
+                          keepComments, asOne
                           ){
 
     nsection <- NULL
@@ -82,17 +80,18 @@ NMextractText <- function(file, lines, text, section, char.section,
     
 #### Section start: Pre-process arguments ####
 
-    args <- getArgs()
+    ## args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
     
 ### deprecated since 2023-06-14: keepEmpty, keepName, keepComments, asOne, cleanSpaces
     keep.empty <- deprecatedArg("keepEmpty","keep.empty",args=args)
     keep.name <- deprecatedArg("keepName","keep.name",args=args)
     keep.comments <- deprecatedArg("keepComments","keep.comments",args=args)
     as.one <- deprecatedArg("asOne","as.one",args=args)
-    clean.spaces <- deprecatedArg("cleanSpaces","clean.spaces",args=args)
+    ## clean.spaces <- deprecatedArg("cleanSpaces","clean.spaces",args=args)
 
     if(!return%in%c("idx","text")) stop("text must be one of text or idx.")
-
+    
     if(sum(c(!missing(file)&&!is.null(file),
              !missing(lines)&&!is.null(lines),
              !missing(text)&&!is.null(text)
@@ -194,13 +193,7 @@ NMextractText <- function(file, lines, text, section, char.section,
 
     if(clean.spaces){
         if(!return=="text") {
-            stop("cleanSpaces can only be TRUE if return=='text'")
-        }
-        cleanSpaces <- function(x,double=TRUE,lead=TRUE,trail=TRUE){
-            if(double) x <- gsub(paste0(" +")," ",x)
-            if(lead) x <- sub(paste0("^ +"),"",x)
-            if(trail) x <- sub(paste0(" +$"),"",x)
-            x
+            stop("clean.spaces can only be TRUE if return=='text'")
         }
         ## result <- lapply(result,cleanSpaces)
         

@@ -24,7 +24,7 @@ estimates and iterations of the estimates. If
 returned in addition to what other parameter-level information
 is found, like FIX, sd etc. as columns. If
 \code{return="iterations"}, the iterations are returned. If
-\code{return="both"}, both er returned, though in separate
+\code{return="all"}, all er returned, though in separate
 data.frames compiled in a list.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass

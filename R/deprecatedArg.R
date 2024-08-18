@@ -34,7 +34,8 @@ deprecatedArg <- function(oldarg,newarg,args,msg=NULL,which=2){
     
     ## args <- callArgs(-2,env)
     if(missing(args) || is.null(args)){
-        args <- getArgs(which=which)
+        stop("calling deprecatedArg without args is deprecated.")
+        ##args <- getArgs(which=which)
     }
     names.args <- names(args)
 
@@ -66,4 +67,5 @@ deprecatedArg <- function(oldarg,newarg,args,msg=NULL,which=2){
     parent.frame()[[newarg]]
 
 }
+
 

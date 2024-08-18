@@ -10,4 +10,7 @@ test_that("Basic",{
 
     expect_equal_to_reference(res,fileRef)
 
+    ref <- readRDS(fileRef)
+    ref
+    res
 })

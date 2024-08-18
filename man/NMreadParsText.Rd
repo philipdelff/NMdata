@@ -6,41 +6,70 @@
 \usage{
 NMreadParsText(
   file,
-  fields,
-  fields.omega = fields,
-  fields.sigma = fields.omega,
-  use.theta.nums = FALSE,
+  lines,
+  format,
+  format.omega = format,
+  format.sigma = format.omega,
   spaces.split = FALSE,
+  field.idx = "idx",
+  use.theta.idx = FALSE,
   modelname,
   col.model,
-  as.fun
+  as.fun,
+  fields,
+  fields.omega = fields,
+  fields.sigma = fields.omega
 )
 }
 \arguments{
 \item{file}{Path to the control stream to read.}
 
-\item{fields}{Defines naming and splitting of contents of lines in
-parameter sections. Default is
-\code{"\%init;\%symbol;\%num;\%label;\%unit"}.}
+\item{lines}{As an alternative to `file`, the control stream or
+selected lines of the control stream can be provided as a
+vector of lines.}
 
-\item{fields.omega}{Like `fields`, applied to `$OMEGA`
+\item{format}{Defines naming and splitting of contents of lines in
+parameter sections. Default is
+\code{"\%init;\%idx;\%symbol;\%label;\%unit"}. Be careful to
+remember percentage symbols in front of any variable names.}
+
+\item{format.omega}{Like `fields`, applied to `$OMEGA`
 section. Default is to reuse `fields`.}
 
-\item{fields.sigma}{Like `fields`, applied to `$SIGMA`
+\item{format.sigma}{Like `fields`, applied to `$SIGMA`
 section. Default is to reuse `fields.omega`.}
-
-\item{use.theta.nums}{If the num field should be used to number
-thetas. I do not see where this is advantageous to do.}
 
 \item{spaces.split}{Is a blank in `fields` to be treated as a
 field seperator? Default is not to (i.e. neglect spaces in
 `fields`).}
+
+\item{field.idx}{If an index field is manually provided in the
+control stream comments, define the name of that field in
+`format` and tell `NMreadParsTab()` to use this idx to
+organize especially OMEGA and SIGMA elements by pointing to it
+with `field.idx`. The default is to look for a varible called
+`idx`. If the index has values like 1-2 on an OMEGA or SIGMA
+row, the row is interpreted as the covariance between
+OMEGA/SIGMA 1 and 2.}
+
+\item{use.theta.idx}{If an index field in comments should be used
+to number thetas. The index field is used to organize
+`$OMEGA`s and `$SIGMA`s because they are matrices but I do not
+see where this is advantageous to do for `$THETA`s. Default
+`use.theta.idx=FALSE` which means `$THETA`s are simply
+counted.}
 
 \item{modelname}{See ?NMscanData}
 
 \item{col.model}{See ?NMscanData}
 
 \item{as.fun}{See ?NMscanData}
+
+\item{fields}{Deprecated. Use `format`.}
+
+\item{fields.omega}{Deprecated. Use `format.omega`.}
+
+\item{fields.sigma}{Deprecated. Use `format.sigma`.}
 }
 \description{
 When interpreting parameter estimates, it is often needed to
@@ -54,4 +83,50 @@ values as obtained with `NMreadExt`.
 Off-diagonal omega and sigma elements will only be
     correctly treated if their num field specifies say 1-2 to
     specify it is covariance between 1 and 2.
+
+\code{SAME} elements in \code{$OMEGA} will be skipped altogether.
+}
+\examples{
+
+
+## notice, examples on explicitly stated lines. Most often in
+## practice, one would use the file argument to automatically
+## extract the $THETA, $OMEGA and $SIGMA sections from a control
+## stream.
+
+text <- c("
+
+$THETA  (.1)             ;[1]; LTVKA (mL/h)
+$OMEGA  BLOCK(3)
+0.126303  ;    IIV.CL  ; 1   ;IIV     ;Between-subject variability on CL;-
+0.024  ; IIV.CL.V2.cov  ; 1-2 ;IIV     ;Covariance of BSV on CL and V2;-
+0.127  ;    IIV.V2  ; 2   ;IIV     ;Between-subject variability on V2;-
+0.2  ; IIV.CL.V3.cov  ; 1-3 ;IIV     ;Covariance of BSV on CL and V3;-
+0.2  ; IIV.V2.V3.cov  ; 2-3 ;IIV     ;Covariance of BSV on V2 and V3;-
+0.38  ;    IIV.V3  ; 3   ;IIV     ;Between-subject variability on V3;-
+$OMEGA 0 FIX ; IIV.KA ; 4  ;IIV     ;Between-subject variability on KA;-
+$SIGMA 1
+")
+   lines <- strsplit(text,split="\n")[[1]]
+
+res <- NMreadParsText(lines=lines,
+format="\%init;[\%num];\%symbol",
+format.omega="\%init \%symbol ; \%num ; \%type   ; \%label ; \%unit",
+field.idx="num")
+
+## BLOCK() SAME are skipped
+text <- c("
+$THETA
+(0,0.1) ; THE1      - 1) 1st theta
+(0,4.2) ; THE2        - 2) 2nd theta
+$OMEGA  0.08   ;    IIV.TH1  ; 1  ;IIV
+$OMEGA  BLOCK(1)
+0.547465  ; IOV.TH1  ; 2 ;IOV
+$OMEGA  BLOCK(1) SAME
+$OMEGA  BLOCK(1) SAME")
+lines <- strsplit(text,split="\n")[[1]]
+res <- NMreadParsText(lines=lines,
+                         format="\%init;\%symbol - \%idx) \%label",
+                         format.omega="\%init; \%symbol  ; \%idx  ; \%label "
+                         )
 }

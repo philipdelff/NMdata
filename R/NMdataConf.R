@@ -232,7 +232,8 @@ NMdataConf <- function(...,allow.unknown=FALSE){
             val <- NMdataDecideOption("use.rds",val,allow.unknown=allow.unknown)
             if(!is.null(val)){
                 
-                args1 <- getArgs()
+                ##args1 <- getArgs()
+                args1 <- getArgs(sys.call(),parent.frame())
                 deprecatedArg(oldarg="use.rds",args=args1)
                 message("overwriting `formats.read`")
                 dots[["formats.read"]] <- c("csv")
@@ -467,6 +468,19 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
            }
         )
        ,
+        file.shk=list(
+            default=function(file) {
+                fnExtension(file,ext=".shk")
+            }
+            ## has to be length 1 character or function
+           ,is.allowed=function(x) is.function(x) || (length(x)==1 && is.character(x))
+           ,msg.not.allowed="file.shk must be a function or a character of length 1"
+           ,process=function(x) {
+               if(is.character(x)) return(function(file) x)
+               x
+           }
+        )
+       ,
         file.mod=list(
             ## default=function(file) fnExtension(file,ext=".mod")
             default=function(file) {
@@ -515,6 +529,14 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
                if(is.character(x)) return(function(file) x)
                x
            }
+        )
+       ,
+        nc=list(
+            default=64
+            ## has to be length 1 character or function
+           ,is.allowed=function(x) is.numeric(x) && length(x)==1 && x%%1==0
+           ,msg.not.allowed="nc must be a single integer."
+           ,process=identity
         )
        ,
         path.nonmem=list(

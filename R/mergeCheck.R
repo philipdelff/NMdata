@@ -18,18 +18,24 @@
 ##'     differently. by or by.x and by.y must be supplied.
 ##' @param by.y If the columns to merge by in x and y are named
 ##'     differently. by or by.x and by.y must be supplied.
-##' @param fun.commoncols If common columns are found in x and y, and
-##'     they are not used in by, this will create columns named like
-##'     col.x and col.y in result (see ?merge). Often, this is a
-##'     mistake, and the default is to throw a warning if this
-##'     happens. If using mergeCheck in a function, you may want to
+##' @param common.cols If common columns are found in x and y, and
+##'     they are not used in `by`, this will by default create columns
+##'     named like col.x and col.y in result (see ?merge). Often, this
+##'     is a mistake, and the default is to throw a warning if this
+##'     happens. If using mergeCheck in programming, you may want to
 ##'     make sure this is not happening and use
 ##'     fun.commoncols=stop. If you want nothing to happen, you can do
-##'     fun.commoncols=NULL.
+##'     fun.commoncols=NULL. You can also use `common.cols="drop.x"`
+##'     to drop "non-by" columns in `x` with identical column names in
+##'     `y`. Use "drop.y" to drop them in `y` and avoid the
+##'     conflicts. The last option is to use `common.cols="merge.by"`
+##'     which means `by` will automatically be extended to include all
+##'     common column names.
 ##' @param ncols.expect If you want to include a check of the number
 ##'     of columns being added to the dimensions of x. So if
 ##'     ncols.expect=1, the resulting data must have exactly one
 ##'     column more than x - if not, an error will be returned.
+##' @param subset.x Not implemented.
 ##' @param track.msg If using mergeCheck inside other functions, it
 ##'     can be useful to use track.msg=TRUE. This will add information
 ##'     to messages/warnings/errors that they came from mergCheck.
@@ -45,6 +51,7 @@
 ##'     function in as.fun to convert to something else.
 ##' @param df1 Deprecated. Use x.
 ##' @param df2 Deprecated. Use y.
+##' @param fun.commoncols Deprecated. Please use `common.cols`.
 ##' @param ... additional arguments passed to data.table::merge. If
 ##'     all is among them, an error will be returned.
 ##' @details Besides merging and checking rows, mergeCheck makes sure
@@ -125,7 +132,7 @@
 ##' }
 ##' @export
 
-mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expect,track.msg=FALSE,quiet,df1,df2,fun.na.by=base::stop,as.fun,...){
+mergeCheck <- function(x,y,by,by.x,by.y,common.cols=base::warning,ncols.expect,track.msg=FALSE,quiet,df1,df2,subset.x,fun.na.by=base::stop,as.fun,fun.commoncols,...){
     
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -144,9 +151,13 @@ mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expec
     ## name.x <- deparse(substitute(x))
     ## name.y <- deparse(substitute(y))
 
-    
     if(!xor(missing(x),missing(df1))){stop("You must supply x. Don't use the deprecated df1.")}
     if(!xor(missing(y),missing(df2))){stop("You must supply y. Don't use the deprecated df2.")}
+
+    if(!missing(fun.commoncols)) {
+        message("\"fun.commoncols\" argument deprecated. Use \"common.cols\" instead.")
+        common.cols <- fun.commoncols
+    }
 
     if(!missing(df1)) {
         message("\"df1\" argument deprecated. Use \"x\" instead.")
@@ -182,7 +193,7 @@ mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expec
         by.x <- by
         by.y <- by
     }
-    
+
     name.df3 <- "result"
     if("all"%in%names.dots) {
         messageWrap("option all not supported. mergeCheck is intended for merges that result in column additions to x, that's all.",
@@ -227,18 +238,52 @@ mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expec
         messageWrap("NA\'s found in matched by.x and in by.y column(s). This loosely speaking means, you are trying to merge on NA values. Double-check the columns you are merging by. If this is expected, you can use \'fun.na.by=NULL\' to allow it.",fun.msg=fun.na.by)
     }
 
+    if(missing(subset.x)) subset.x <- NULL
+    x.subsetx <- NULL
+    if(!is.null(subset.x)){
+        stop("subset.x argument not supported.")
+        x.subsetx <- x[eval(parse(text=sprintf("!(%s)",subset.x)))]
+        x <- x[eval(parse(text=subset.x))]
+    }
+    
     if(missing(as.fun)) as.fun <- NULL
     if(x.was.dt && is.null(as.fun)) as.fun <- "data.table"
     as.fun <- NMdataDecideOption("as.fun",as.fun)
-
     
+    
+#### Section start: Handle common columns not merged by ####
+
     cols.common.notby <- intersect(setdiff(colnames(x),by.x),setdiff(colnames(y),by.y))
+
+    if(is.character(common.cols)){
+        common.cols <- cleanSpaces(common.cols)
+    }
+    if(length(cols.common.notby) && is.character(common.cols) && common.cols=="drop.x") {
+
+        x <- x[,setdiff(colnames(x),cols.common.notby),with=FALSE]
+        cols.common.notby <- intersect(setdiff(colnames(x),by.x),setdiff(colnames(y),by.y))
+    }
+    if(length(cols.common.notby)&& is.character(common.cols) && common.cols=="drop.y") {
+        y <- y[,setdiff(colnames(y),cols.common.notby),with=FALSE]
+        cols.common.notby <- intersect(setdiff(colnames(x),by.x),setdiff(colnames(y),by.y))
+    }
+    if(length(cols.common.notby)&& is.character(common.cols) && common.cols=="merge.by") {
+        by.x <- c(by.x,cols.common.notby)
+        by.y <- c(by.y,cols.common.notby)
+        cols.common.notby <- c()
+    }
+    
     commoncols.found <- FALSE
+    fun.commoncols <- common.cols
+    if(is.character(fun.commoncols)) fun.commoncols <- stop
+    
     if(length(cols.common.notby)) {
         messageWrap(paste0("x and y have common column names not being merged by. This will create new column names in output. Common but not merged by: ",paste(cols.common.notby,collapse=", "),"."),
                     fun.msg=fun.commoncols,track.msg=track.msg)
         commoncols.found <- TRUE
     }
+
+###  Section end: Handle common columns not merged by
     
     rowcol <- tmpcol(names=c(colnames(x),colnames(y)))
 
@@ -312,6 +357,10 @@ mergeCheck <- function(x,y,by,by.x,by.y,fun.commoncols=base::warning,ncols.expec
         }
     }
 
+    #### todo: Move reorder after this. Make sure row identifier is added before splitting.
+    if(!is.null(x.subsetx)){
+        df3 <- rbind(x.subsetx,df3)
+    }
     df3 <- as.fun(df3)
 
     if(!quiet){

@@ -20,7 +20,8 @@
 dims <- function(...,list.data,keep.names=TRUE,as.fun=NULL,keepNames){
     
     ## Was deprecated way before 2023-06-10. keepNames was deprecated in compareCols on that date.
-    args <- getArgs()
+    ## args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
     keep.names <- deprecatedArg("keepNames","keep.names",args=args)
 
     ## if(!missing(keepNames)){
@@ -48,7 +49,6 @@ dims <- function(...,list.data,keep.names=TRUE,as.fun=NULL,keepNames){
 
     if(is.data.table(dots[[1]]) && is.null(as.fun)) as.fun <- "data.table"
     as.fun <- NMdataDecideOption("as.fun",as.fun)
-    
 
 
     dt.dims <- rbindlist(lapply(1:ndots,function(n) data.table(data=names.dots[n],nrows=nrow(dots[[n]]),ncols=ncol(dots[[n]]))))

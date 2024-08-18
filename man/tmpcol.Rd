@@ -4,7 +4,14 @@
 \alias{tmpcol}
 \title{generate a name for a new data column that is not already in use.}
 \usage{
-tmpcol(data, names = NULL, base = "tmpcol", max.it = 100, prefer.plain = TRUE)
+tmpcol(
+  data,
+  names = NULL,
+  base = "tmpcol",
+  i1 = 1,
+  max.it = 100,
+  prefer.plain = TRUE
+)
 }
 \arguments{
 \item{data}{The dataset to find a new element name for}
@@ -15,6 +22,9 @@ matched. Only one of data and names can be supplied.}
 \item{base}{The base name of the new element. A number will
 appended to this string that will ensure that the new element
 name is not already in use.}
+
+\item{i1}{Where to start the search for a smallest available index
+number to add to `base` if necessary.}
 
 \item{max.it}{Maximum number of iterations on element name.}
 

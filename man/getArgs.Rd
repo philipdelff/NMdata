@@ -4,17 +4,24 @@
 \alias{getArgs}
 \title{Get provided arguments as a named list}
 \usage{
-getArgs(which = 1)
+getArgs(call, env)
 }
 \arguments{
-\item{which}{How many environment levels to go up to look for
-arguments.}
+\item{call}{Function call as provided by \code{sys.call()}.}
+
+\item{env}{Environment in which to evaluate the arguments.}
 }
 \value{
-A named list
+A named list of arguments and their values
 }
 \description{
 Get provided arguments as a named list
+}
+\examples{
+afun <- function(){
+NMdata:::getArgs(sys.call(),parent.frame())
+}
+afun()
 }
 \seealso{
 Other arguments: 

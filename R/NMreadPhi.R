@@ -41,7 +41,8 @@ NMreadPhi <- function(file,as.fun,modelname,col.model,auto.ext,file.phi){
     modelname <- NMdataDecideOption("modelname",modelname)
     if(missing(auto.ext) || is.null(auto.ext)) auto.ext <- TRUE
 
-    args <- getArgs()
+    ## args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
     if(missing(file.phi)) file.phi <- NULL
     file <- deprecatedArg("file.phi","file",args=args)
 

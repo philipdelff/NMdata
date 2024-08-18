@@ -43,7 +43,8 @@ findVars <- function(data,by=NULL,cols.id,as.fun=NULL){
 
     ## check arguments
 
-    args <- getArgs()
+    ## args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
     by <- deprecatedArg("cols.id",newarg="by",args=args)
 
     if(!is.data.frame(data)){
