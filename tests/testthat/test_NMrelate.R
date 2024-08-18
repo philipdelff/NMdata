@@ -48,6 +48,12 @@ test_that("merge with NMreadExt results",{
     )
 
     expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        compareCols(ref$ext.nofix,   res$ext.nofix)
+
+}
     
 })
 

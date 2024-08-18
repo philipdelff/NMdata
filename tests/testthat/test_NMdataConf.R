@@ -2,6 +2,7 @@ context("NMdataConf")
 
 NMdataConf(reset=TRUE)
 
+    ## can't compare functions
 dropFuns <- function(x){
     x$as.fun <- NULL
     x$file.mod <- NULL
@@ -24,7 +25,7 @@ test_that("defaults",{
     expect_equal_to_reference(defaults,fileRef)
 
     ## compareCols(readRDS(fileRef),defaults)
-
+    
 })
 
 test_that("reset",{
@@ -36,20 +37,6 @@ test_that("reset",{
 
     defaults <- dropFuns(defaults)
     defaults2 <- dropFuns(defaults2)
-    ## defaults$as.fun <- NULL
-    ## defaults$file.mod <- NULL
-    ## defaults$file.cov <- NULL
-    ## defaults$file.ext <- NULL
-    ## defaults$file.phi <- NULL
-    ## defaults$file.shk <- NULL
-    ## defaults$modelname <- NULL
-    ## defaults2$as.fun <- NULL
-    ## defaults2$file.mod <- NULL
-    ## defaults2$file.cov <- NULL
-    ## defaults2$file.ext <- NULL
-    ## defaults2$file.phi <- NULL
-    ## defaults2$file.shk <- NULL
-    ## defaults2$modelname <- NULL
     
     
     expect_equal(defaults,defaults2)
@@ -96,21 +83,6 @@ test_that("change fun in globalenv does not affect NMdataConf()",{
     defaults <- dropFuns(defaults)
     defaults2 <- dropFuns(defaults2)
     
-    ## defaults$as.fun <- NULL
-    ## defaults$file.mod <- NULL
-    ## defaults$file.cov <- NULL
-    ## defaults$file.ext <- NULL
-    ## defaults$file.phi <- NULL
-    ## defaults$file.shk <- NULL
-    ## defaults$modelname <- NULL
-    ## defaults2$as.fun <- NULL
-    ## defaults2$file.mod <- NULL
-    ## defaults2$file.cov <- NULL
-    ## defaults2$file.ext <- NULL
-    ## defaults2$file.phi <- NULL
-    ## defaults2$file.shk <- NULL
-    ## defaults2$modelname <- NULL
-    
     expect_equal(defaults,defaults2)
 })
 
@@ -143,22 +115,6 @@ test_that("change fun in globalenv does not affect NMdataConf()",{
     defaults <- dropFuns(defaults)
     defaults2 <- dropFuns(defaults2)
     
-    ## defaults$as.fun <- NULL
-    ## defaults$file.mod <- NULL
-    ## defaults$file.cov <- NULL
-    ## defaults$file.ext <- NULL
-    ## defaults$file.phi <- NULL
-    ## defaults$file.shk <- NULL
-    ## defaults$modelname <- NULL
-
-    ## defaults2$as.fun <- NULL
-    ## defaults2$file.mod <- NULL
-    ## defaults2$file.cov <- NULL
-    ## defaults2$file.ext <- NULL
-    ## defaults2$file.phi <- NULL
-    ## defaults2$file.shk <- NULL
-    ## defaults2$modelname <- NULL
-    
     expect_equal(defaults,defaults2)
 })
 
@@ -173,17 +129,10 @@ test_that("deprecated use.rds",{
     NMdataConf(formats.read=c("csv"))
     new <- NMdataConf()
 
-    ## can't compare functions
-    new$as.fun <- NULL
-    new$file.cov <- NULL
-    new$file.ext <- NULL
-    new$file.mod <- NULL
-    new$file.phi <- NULL
-    new$file.shk <- NULL
-    new$modelname <- NULL
+    new <- dropFuns(new)
     
     expect_equal_to_reference(new,fileRef)
-    compareCols(readRDS(fileRef),new)
+    ## compareCols(readRDS(fileRef),new)
 })
 
 test_that("reset removes unknown",{
