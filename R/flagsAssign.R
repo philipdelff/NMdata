@@ -324,14 +324,14 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     
     
     dim0 <- dim(data.flags)
-    data.flags <- mergeCheck(data.flags,unique(tab.flags[,c("FLAG","flag")]),all.x=TRUE,by="FLAG",ncols.expect=1,fun.commoncols=base::stop,quiet=TRUE)
+    data.flags <- mergeCheck(data.flags,unique(tab.flags[,c("FLAG","flag")]),all.x=TRUE,by="FLAG",ncols.expect=1,common.cols=base::stop,quiet=TRUE)
     ##    stopifnot(all(dim(data.flags)==(dim0+c(0,1))))
 
 ### rename FLAG and flag, and add back backed up columns if relevant
     setnames(data.flags,c("FLAG","flag"),c(col.flagn,col.flagc))
     ## setnames(tab.flags,c("FLAG","flag"),c(col.flagn,col.flagc))
     if(backed.up.old.flags){
-        data.flags <- mergeCheck(data.flags,flags.orig.data,by=col.row,fun.commoncols=base::stop,quiet=TRUE)
+        data.flags <- mergeCheck(data.flags,flags.orig.data,by=col.row,common.cols=base::stop,quiet=TRUE)
     }
 
     ## add the data where flags have not been assigned

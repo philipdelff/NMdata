@@ -440,7 +440,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
         if(!is.null(col.id)&&nrow(findings.row)>0){
             if(col.id%in%colnames(findings.row)) findings.row[,(col.id):=NULL]
             
-            findings.row <- mergeCheck(findings.row,data[,c(c.row,col.id.orig),with=F],by.x="row",by.y=c.row,all.x=T,fun.commoncols=stop,quiet=TRUE)
+            findings.row <- mergeCheck(findings.row,data[,c(c.row,col.id.orig),with=F],by.x="row",by.y=c.row,all.x=T,common.cols=stop,quiet=TRUE)
             setnames(findings.row,col.id.orig,col.id)        
             findings <- rbind(findings[level!="row"],findings.row,fill=T)
             
@@ -457,7 +457,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
                 findings <- mergeCheck(findings,
                                        data[,c(c.row,col.row.orig),with=F],
                                        by.x="row",by.y=c.row,all.x=T,
-                                       fun.commoncols=stop,quiet=TRUE)
+                                       common.cols=stop,quiet=TRUE)
                 setnames(findings,col.row.orig,col.row)
             }
             if(!col.id%in%colnames(findings)) findings[,(col.id):=NA_real_]
