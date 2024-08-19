@@ -49,6 +49,16 @@ A manual or even semi-automated approach to establishing these relationships are
 
 * Automatic translation of Nonmem code related to direct use of the parameters (`NMrelate()`). This may be a pretty good approach trying to report a Nonmem model without structured labeling in the parameter sections. If you keep a  coding standard, it may allow you to skip manual parameter translation altogether. And lastly, it may be a powerful QC tool in any case.
 
+Notice, this vignette zooms in on how to read, label and format "parameter estimates". It does not deal with reading input and output data (see the [NMscanData()](https://philipdelff.github.io/NMdata/articles/NMscanData.html) vignette). `NMdata` contains the following functions to read estimates from Nonmem:
+
+* `NMreadExt()` A feature-rich processor of ext files. Provides final parameter estimates with uncertainties and everything else provided in the ext file, iterations, objective function value and termination status
+* `NMreadPhi()` Reads individual posthoc estimates into a `data.frame`
+* `NMreadCov()` Reads an estimated variance-covariance matrix and formats as a matrix
+* `NMreadShk()` to read shrinkage tables
+
+`NMreadExt()` is central to the topic of this vignette, and `NMreadShk()` is also used. Another interesting function is `NMrelate()` which processes the control stream code to automatically identify parameter names and relate them to parameters (such as `CL` to `$THETA(1)` and `$OMEGA(1,1)`). Read on, if interested.
+
+
 ## Reading Nonmem parameter estimates
 Before getting into how to translate the Nonmem parameters, it is worth mentioning how to even just read the parameter estimates with `NMdata`. A lot of the relevant information is stored in the `.ext` file and can be read using `NMreadExt()`.
 
