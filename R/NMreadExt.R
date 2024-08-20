@@ -207,14 +207,22 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
         tab.blocks <- rbind(pars[par.type%in%c("OMEGA","SIGMA"),.(par.type,i=i,j=j,value)],
                             pars[par.type%in%c("OMEGA","SIGMA"),.(par.type,i=j,j=i,value)])[
             abs(value)>1e-9,.(iblock=min(i,j),blocksize=max(abs(j-i))+1),by=.(par.type,i)]
-        
-        tab.blocks
 
+        ## pars0 <- copy(pars)
+        ## tab.blocks
         pars <- mergeCheck(pars,tab.blocks,by=cc(par.type,i),all.x=T,quiet=TRUE)
-        pars[abs(i-j)>(blocksize-1),(c("iblock","blocksize")):=list(NA,NA)]
 
+        ## pars[par.type%in%c("OMEGA","SIGMA"),.(i,j,iblock,blocksize,value)]
+
+        ### this is insufficient. if 1-2 and 3-4 are blocks, (3,2) must not be part of any block.
+        pars[abs(i-j)>(blocksize-1),(c("iblock","blocksize")):=list(NA,NA)]
+        pars[!is.na(iblock),imin:=min(i),by=.(iblock)]
+        pars[j<imin,(c("iblock","blocksize")):=list(NA,NA)]
+
+        ## pars[par.type%in%c("OMEGA","SIGMA"),.(i,j,iblock,blocksize,imin,value)]
+        
         pars[par.type%in%c("OMEGA","SIGMA")&i==j&is.na(iblock),iblock:=i]
-        pars[par.type%in%c("OMEGA","SIGMA")&i==j&iblock==i,blocksize:=1]
+        pars[par.type%in%c("OMEGA","SIGMA")&i==j&iblock==i&is.na(blocksize),blocksize:=1]
 ### done add OMEGA/SIGMA blocks
         
     }
