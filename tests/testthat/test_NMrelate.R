@@ -53,7 +53,7 @@ test_that("merge with NMreadExt results",{
         ref <- readRDS(fileRef)
         compareCols(ref$ext.nofix,   res$ext.nofix)
 
-}
+    }
     
 })
 
