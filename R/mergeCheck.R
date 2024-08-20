@@ -133,7 +133,6 @@
 ##' @export
 
 mergeCheck <- function(x,y,by,by.x,by.y,common.cols=base::warning,ncols.expect,track.msg=FALSE,quiet,df1,df2,subset.x,fun.na.by=base::stop,as.fun,fun.commoncols,...){
-    
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 

@@ -40,7 +40,7 @@ addParType <- function(pars,suffix,add.idx){
         ## pars[,(cols):=lapply(.SD,as.integer),.SDcols=cols]
     }
 ## par.name
-    pars[,par.name:=parameter]
+    pars[,par.name:=get(col.parameter)]
     pars[get(col.par.type)=="THETA",par.name:=sprintf("THETA(%s)",i)]
     
     
