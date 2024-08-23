@@ -40,7 +40,6 @@
 ##' @param keepEmpty Deprecated. See keep.empty.
 ##' @param keepName Deprecated. See keep.name.
 ##' @param asOne Deprecated. See as.one.
-##' @param cleanSpaces Deprecated. See clean.spaces.
 ##' @return character vector with extracted lines.
 ##' @param ... Additional arguments passed to NMextractText
 ##' @return character vector with extracted lines.
@@ -57,12 +56,13 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
                           ## deprecated arguments
                           keepEmpty, keepName,
                           keepComments, asOne,
-                          cleanSpaces, ...){
+                          ...){
 
     ## args <- getArgs()
     args <- getArgs(sys.call(),parent.frame())
     as.one <- deprecatedArg("asOne","as.one",args=args)
-    clean.spaces <- deprecatedArg("cleanSpaces","clean.spaces",args=args)
+    ## clean.spaces <- deprecatedArg("cleanSpaces","clean.spaces",args=args)
+    ## if(!missing(cleanSpaces)) rm(cleanSpaces)
     keep.empty <- deprecatedArg("keepEmpty","keep.empty",args=args)
     keep.name <- deprecatedArg("keepName","keep.name",args=args)
     keep.comments <- deprecatedArg("keepComments","keep.comments",args=args)
@@ -78,6 +78,13 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
         section <- toupper(section)
     }
     
+    match.exactly <- FALSE
+    if(section!="."){
+        
+        string.start <- substring(sub("^\\$","",cleanSpaces(section)),1,3)
+        match.exactly <- !string.start%in%c("COV","EST","SIM")
+    }
+    
     res <- NMextractText(file=file, lines=lines, text=text, section=section,
                          ## this wrapper is especially made for "$" sections
                          char.section="\\$",
@@ -90,7 +97,8 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
                          clean.spaces=clean.spaces,
                          ## we only consider the model definition, not results.
                          type="mod",
-                         match.exactly=FALSE,
+                         ## match.exactly=FALSE,
+                         match.exactly=match.exactly,
                          ## deprecated args
                          ## keepEmpty=keepEmpty,
                          ## keepName=keepName,

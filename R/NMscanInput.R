@@ -101,6 +101,7 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     datafile <- NULL
+    info <- NULL
     nid <- NULL
     input <- NULL
     result <- NULL
@@ -167,8 +168,12 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
             break
         }
     }
-    if(is.null(type.file)) stop("None of the allowed file formats found.")
-    path.data.input <- info.datafile[[paste0("path.",type.file)]]
+    if(is.null(type.file)){
+        message(paste0("$DATA section extracted\n",info$datafile$DATA))
+        message("Based on that, data files related to this file were expected:\n",info$datafile$string)
+        stop("None of the allowed file formats found.")
+    }
+        path.data.input <- info.datafile[[paste0("path.",type.file)]]
     
     data.input <- NMreadCsv(path.data.input,as.fun="data.table",args.fread=args.fread,args.fst=args.fst,format=type.file)
     

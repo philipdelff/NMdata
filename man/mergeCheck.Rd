@@ -45,8 +45,8 @@ named like col.x and col.y in result (see ?merge). Often, this
 is a mistake, and the default is to throw a warning if this
 happens. If using mergeCheck in programming, you may want to
 make sure this is not happening and use
-fun.commoncols=stop. If you want nothing to happen, you can do
-fun.commoncols=NULL. You can also use `common.cols="drop.x"`
+common.cols=stop. If you want nothing to happen, you can do
+common.cols=NULL. You can also use `common.cols="drop.x"`
 to drop "non-by" columns in `x` with identical column names in
 `y`. Use "drop.y" to drop them in `y` and avoid the
 conflicts. The last option is to use `common.cols="merge.by"`

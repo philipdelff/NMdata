@@ -63,7 +63,7 @@ NMwriteSectionOne <- function(file0,lines,section,location="replace",
                                     keep.name=TRUE,keep.comments=TRUE,as.one=TRUE,
                                     clean.spaces=FALSE)
 
-        if(length(idx.dlines)==0&location%in%cc(replace,before,after)) {
+        if(length(idx.dlines)==0 && location%in%cc(replace,before,after)) {
             if(!quiet) message("Section not found. Nothing to be done.")
             return(lines)
         }

@@ -104,9 +104,10 @@ NMextractText <- function(file, lines, text, section, char.section,
         type <- "all"
     }
     if(type=="lst") type <- "res"
-
-    if(!match.exactly){
-        section <- substring(section,1,3)
+    
+    
+    if(!match.exactly && section!="."){
+        section <- paste0(substring(section,1,min(nchar(section),3)),"[A-Z]*")
     }
 
     
@@ -136,7 +137,7 @@ NMextractText <- function(file, lines, text, section, char.section,
                     )
     
     ## Find all the lines that start with the $section
-    idx.starts <- grep(paste0("^ *",char.section,section),lines)
+    idx.starts <- grep(paste0("^ *",char.section,section," *"),lines)
     idx.ends <- grep(paste0("^ *",char.end),lines)
 
     ## get the sections
