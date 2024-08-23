@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.923</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.931</span>
       </span>
     </div>
 
@@ -110,7 +110,9 @@ estimates and iterations of the estimates. If
 <code>return="pars"</code> (default) the final estimates are
 returned in addition to what other parameter-level information
 is found, like FIX, sd etc. as columns. If
-<code>return="iterations"</code>, the iterations are returned. If
+<code>return="iterations"</code>, the iterations are returned
+(including objective function value). If <code>return="obj"</code>
+objective function value at final estimate is returned. If
 <code>return="all"</code>, all er returned, though in separate
 data.frames compiled in a list.</p></dd>
 
