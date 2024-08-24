@@ -4,7 +4,7 @@ NMwriteSectionOne <- function(file0,lines,section,location="replace",
                               newlines,list.sections,newfile,
                               backup=TRUE,blank.append=TRUE,write,
                               quiet=FALSE){
-
+    
     after <- NULL 
     before <- NULL
     mad.dl <- NULL
@@ -108,11 +108,13 @@ NMwriteSectionOne <- function(file0,lines,section,location="replace",
             } 
         }
         if(location=="after"){
+            
             all.lines <- c(lines,newlines)
             if(min.dl>1){
                 all.lines <- c(lines[1:(max.dl)],
                                newlines,
-                               lines[(max.dl+1):length(lines)]
+                               lines[-(1:(max.dl))]
+                               ## lines[max((max.dl+1),length(lines)):length(lines)]
                                )
             } else {
                 all.lines <- lines

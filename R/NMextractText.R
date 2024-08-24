@@ -74,7 +74,6 @@ NMextractText <- function(file, lines, text, section, char.section,
                           keepEmpty, keepName,
                           keepComments, asOne
                           ){
-
     nsection <- NULL
     idx <- NULL
     
@@ -104,11 +103,14 @@ NMextractText <- function(file, lines, text, section, char.section,
         type <- "all"
     }
     if(type=="lst") type <- "res"
-    
+
     
     if(!match.exactly && section!="."){
         section <- paste0(substring(section,1,min(nchar(section),3)),"[A-Z]*")
     }
+    ## if(match.exactly && section!="."){
+    ##     section <- paste0(section,"[^[A-Z]]*")
+    ## }
 
     
 ### Section end: Pre-process arguments
@@ -135,9 +137,18 @@ NMextractText <- function(file, lines, text, section, char.section,
                     },
                     all={lines}
                     )
-    
+    if(F){
+        ##:ess-bp-start::conditional@grepl("omega",section,ignore.case=T):##
+        browser(expr={grepl("omega",section,ignore.case=T)})##:ess-bp-end:##
+    }
     ## Find all the lines that start with the $section
-    idx.starts <- grep(paste0("^ *",char.section,section," *"),lines)
+    ## idx.starts <- grep(paste0("^ *",char.section,section," *"),lines)
+    if(match.exactly){
+        idx.starts <- (1:length(lines))[grepl(paste0("^ *",char.section,section,"[^A-Z]*"),lines) &
+                                        !grepl(paste0("^ *",char.section,section,"[A-Z]+"),lines) ]
+    } else {
+        idx.starts <- (1:length(lines))[grepl(paste0("^ *",char.section,section,"[^A-Z]*"),lines)]
+    }
     idx.ends <- grep(paste0("^ *",char.end),lines)
 
     ## get the sections
@@ -188,7 +199,7 @@ NMextractText <- function(file, lines, text, section, char.section,
 
         ## result <- lapply(result, function(x)sub(paste0("^ *\\$",section,"[a-zA-Z]*"),"",x))
         ##  "[a-zA-Z]*" is needed for abbrev section names. Like for SIMULATION in case of SIM.
-        dt.res[,text:=sub(paste0("^ *\\$",section,"[a-zA-Z]*"),"",text)]
+        dt.res[,text:=sub(paste0("^ *\\$",section),"",text)]
     }
 
 
