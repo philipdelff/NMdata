@@ -78,14 +78,16 @@ NMgenText <- function(data,
                       ){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####    
-    occ.cum <- NULL
-    TIME <- NULL
+
+    DATE <- NULL
     name.nm <- NULL
     drop.nm <- NULL
+    include <- NULL
     name.pseudo <- NULL
     name.rename <- NULL
-    include <- NULL
     numeric.ok <- NULL
+    occ.cum <- NULL
+    TIME <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 

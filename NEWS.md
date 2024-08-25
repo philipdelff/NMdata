@@ -22,19 +22,39 @@
   that references THETA(1), `NMrelate()` will return a label
   `TVCL`.
 
-* `mergeCheck(x,y)` has new options for handling common columns in data sets. The `common.cols` argument replaces `fun.commoncols` with added functionality. 
+* Improved support for character-coded `TIME` and `DATE`
+  arguments. The default behavior is to allow (not require) `TIME` and
+  `DATE` columns to be non-numeric. This is to support the Nonmem
+  character format of DATE and TIME. It affects sorting of columns
+  (`NMorderColumn()`) and the auto-generated `$INPUT` section
+  suggestions. Where applicable, the `allow.char.TIME` argument
+  controls this behavior. Set to `allow.char.TIME=FALSE` to require
+  `TIME` and `DATE` columns be numeric.
+
+* `mergeCheck(x,y)` has new options for handling common columns in
+  data sets. The `common.cols` argument replaces `fun.commoncols` with
+  added functionality.
 
 
-\itemize{
-\item `common.cols="merge.by"` to include them in by, even if they are not provided in the `by` argument. 
+\itemize{ 
 
-\item `common.cols="drop.x"` to drop the columns on the `x` and overwrite with columns in y
+\item `common.cols="merge.by"` to include them in by, even
+if they are not provided in the `by` argument.
+
+\item `common.cols="drop.x"` to drop the columns on the `x` and
+overwrite with columns in y
+
 \item `common.cols="drop.y"` to preserve in `x`
 
 
-\item `base::stop` The default value. Throw an error if common.columns are not included in merge `by` options.
+\item `base::stop` The default value. Throw an error if common.columns
+are not included in merge `by` options.
 
-\item `common.cols=NULL` disabled handling and return columns as ".x" and ".y".
+\item `common.cols=NULL` disabled handling and return columns as ".x"
+and ".y".
+
+\item Any function. `common.cols=warning` will issue a warning instead
+of throwing an error.
 
 }
 
@@ -45,7 +65,9 @@
   objective funtion value, or "all" for a list with all of those.
   
 * `NMreadExt()` adds block information to `OMEGA` and `SIGMA` elements
-  based on off-diagonal values.
+  based on off-diagonal values. `iblock` identifies which block the
+  element is in. `blocksize` is the size of the block the element is
+  in. Thank you Brian Reilly for contributing to this.
   
 * `NMreadExt()` adds a `par.name` column which is provides consistent
   parameter naming. Instead of Nonmem's `THETA1` which is found in the
