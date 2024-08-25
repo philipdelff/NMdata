@@ -307,7 +307,7 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
 
         if(any(!comma.ok)){
 
-            messageWrap(paste("When writing csv, You must avoid commas in data values. They will corrupt the csv file. Either 1) avoid csv using `formats.write="rds"` or 2) drop columns containing commas or 3) remove or replace commas in data values before saving data. For 3) see `?editCharCols`.\nComma found in column(s):",paste(colnames(data.dt)[comma.ok==FALSE],sep=", ")),
+            messageWrap(paste("When writing csv, You must avoid commas in data values. They will corrupt the csv file. Either 1) avoid csv using `formats.write=\"rds\"` or 2) drop columns containing commas or 3) remove or replace commas in data values before saving data. For 3) see `?editCharCols`.\nComma found in column(s):",paste(colnames(data.dt)[comma.ok==FALSE],sep=", ")),
                         fun.msg=stop)
         }
         

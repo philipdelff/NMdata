@@ -72,7 +72,7 @@ used (probably only interesting if character values are
 supplied).}
 
 \item{allow.char.TIME}{For the $INPUT text proposal only. Assume
-Nonmem can read TIME even if it can't be translated to
+Nonmem can read TIME and DATE even if it can't be translated to
 numeric. This is necessary if using the 00:00 format. Default
 is TRUE.}
 

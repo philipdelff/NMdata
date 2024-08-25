@@ -22,8 +22,21 @@
   that references THETA(1), `NMrelate()` will return a label
   `TVCL`.
 
-* `mergeCheck()` has additional features available in the common.cols
-  argument.
+* `mergeCheck(x,y)` has new options for handling common columns in data sets. The `common.cols` argument replaces `fun.commoncols` with added functionality. 
+
+
+\itemize{
+\item `common.cols="merge.by"` to include them in by, even if they are not provided in the `by` argument. 
+
+\item `common.cols="drop.x"` to drop the columns on the `x` and overwrite with columns in y
+\item `common.cols="drop.y"` to preserve in `x`
+
+
+\item `base::stop` The default value. Throw an error if common.columns are not included in merge `by` options.
+
+\item `common.cols=NULL` disabled handling and return columns as ".x" and ".y".
+
+}
 
 * `NMreadExt()` separates objective function values into a separate list
   element. The `return` argument is used to control what data to

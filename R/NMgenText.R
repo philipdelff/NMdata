@@ -51,7 +51,7 @@
 ##'     used (probably only interesting if character values are
 ##'     supplied).
 ##' @param allow.char.TIME For the $INPUT text proposal only. Assume
-##'     Nonmem can read TIME even if it can't be translated to
+##'     Nonmem can read TIME and DATE even if it can't be translated to
 ##'     numeric. This is necessary if using the 00:00 format. Default
 ##'     is TRUE.
 ##' @param width If positive, will be passed to strwrap for the $INPUT
@@ -138,6 +138,13 @@ NMgenText <- function(data,
         if("TIME"%in%colnames(data) &&
            as.num.ok[,TIME==FALSE]) {
             as.num.ok[,TIME:=TRUE]
+        }
+    }
+
+        if(allow.char.TIME){
+        if("DATE"%in%colnames(data) &&
+           as.num.ok[,DATE==FALSE]) {
+            as.num.ok[,DATE:=TRUE]
         }
     }
 
