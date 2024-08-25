@@ -19,7 +19,7 @@ details."><meta property="og:image" content="https://philipdelff.github.io/NMdat
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.933</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.941</span>
       </span>
     </div>
 
@@ -101,6 +101,7 @@ details.</p>
 <span>  <span class="va">col.row</span>,</span>
 <span>  <span class="va">col.flagn</span>,</span>
 <span>  col.dv <span class="op">=</span> <span class="st">"DV"</span>,</span>
+<span>  allow.char.TIME <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  as.fun <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">quiet</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -187,6 +188,13 @@ configured with `NMdataConf()`.</p></dd>
 <dt id="arg-col-dv">col.dv<a class="anchor" aria-label="anchor" href="#arg-col-dv"></a></dt>
 <dd><p>a vector of column names to put early to represent
 dependent variable(s). Default is DV.</p></dd>
+
+
+<dt id="arg-allow-char-time">allow.char.TIME<a class="anchor" aria-label="anchor" href="#arg-allow-char-time"></a></dt>
+<dd><p>For the $INPUT text proposal only. Assume
+Nonmem can read TIME and DATE even if it can't be translated to
+numeric. This is necessary if using the 00:00 format. Default
+is TRUE.</p></dd>
 
 
 <dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
