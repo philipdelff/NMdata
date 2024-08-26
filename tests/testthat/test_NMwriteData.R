@@ -79,7 +79,8 @@ test_that("Dropping a column in Nonmem",{
 
 test_that("A comma in a character",{
 
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    ## pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds") |> setDT()
     ## dropping a character column
     pk[,CYCLE:=paste0(as.character(CYCLE),",0")]
 
@@ -96,7 +97,7 @@ test_that("A comma in a character",{
 
 test_that("Identical column names",{
 
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds") |> setDT()
     pk <- cbind(pk[,.(CYCLE)],pk)
     expect_warning(NMwriteData(pk,file="testOutput/NMwriteDataTmp.csv"
                               ,write.rds=F,write.csv=F
@@ -309,7 +310,7 @@ test_that("Non-numeric DATE and TIME",{
     fileRef <- "testReference/NMwriteData_13.rds"
     outfile <- "testOutput/NMwriteData_13.csv"
     
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds") |> setDT()
 
     pk[,time.tz:=as.POSIXct("2000/01/01")+TIME*3600]
     pk[,DATE:=as.character(as.Date(time.tz),format="%y/%m/%d")]

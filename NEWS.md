@@ -29,7 +29,9 @@
   (`NMorderColumn()`) and the auto-generated `$INPUT` section
   suggestions. Where applicable, the `allow.char.TIME` argument
   controls this behavior. Set to `allow.char.TIME=FALSE` to require
-  `TIME` and `DATE` columns be numeric.
+  `TIME` and `DATE` columns be numeric. Thanks to Sanaya Shroff for
+  the request, enabling `NMsim` to simulate using data sets with one
+  or more of these columns coded as character.
 
 * `mergeCheck(x,y)` has new options for handling common columns in
   data sets. The `common.cols` argument replaces `fun.commoncols` with
