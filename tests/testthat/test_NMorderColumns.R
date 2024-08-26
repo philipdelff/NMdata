@@ -44,5 +44,5 @@ test_that("Non-numeric DATE and TIME",{
     expect_equal_to_reference(
         dtres
        ,fileRef)
-
+readRDS(fileRef)
 })

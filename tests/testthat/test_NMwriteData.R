@@ -313,7 +313,7 @@ test_that("Non-numeric DATE and TIME",{
 
     ## pk <- fix.input(pk)
     
-    pk[,time.tz:=as.POSIXct("2000/01/01")+TIME*3600]
+    pk[,time.tz:=as.POSIXct("2000/01/01",tz="UTC")+TIME*3600]
     ## pk[,DATE:=as.character(as.Date(time.tz),format="%y/%m/%d")]
     pk[,DATE:=format(as.Date(time.tz),format="%y/%m/%d")]
     ## pk[,TIME:=as.character(time.tz,format="%H:%M:%S")]
