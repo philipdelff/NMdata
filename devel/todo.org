@@ -40,7 +40,7 @@ With load_all():
     function is called from other functions. Possible to distinguish
     somehow?
 ** High level features
-*** TODO [#A] Support for DATE type columns
+*** DONE Support for DATE type columns
 ** New functions
 *** document columns
 **** TODO Check for existence of char column in values
@@ -439,7 +439,7 @@ if return="iterations" only return iterations
 *** NMreadTabSlow
 **** TODO [#A] Only handle Table numbers if "TABLE..." strings found
 *** NMreadParsText
-**** DONE [#A] order columns - created ones to the right
+**** DONE order columns - created ones to the right
 **** DONE change num to idx
 and include a field.idx so user can specify what to use. If idx is not
 taken from fields, it should not come out in the results.
@@ -449,7 +449,7 @@ in which case "; [" is a delimiter
 **** DONE Empty fields make it break
 Like ;1;CL;;;mL/h
 **** TODO [#B] Handle SAME
-***** DONE [#A] Include test so we at least know what happens
+***** DONE Include test so we at least know what happens
 *** NMreadSection
 **** DONE error returned when return="idx" and no section specified     :Bug: 
 **** TODO [#B] return="text"/"idx" should be return.idx=TRUE/FALSE instead

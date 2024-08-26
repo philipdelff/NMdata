@@ -157,20 +157,6 @@ read multiple models and compare their predictions.
 ``` r
 res <- NMscanMultiple(dir=system.file("examples/nonmem", package="NMdata"),
 file.pattern="xgxr.*\\.lst",as.fun="data.table",quiet=TRUE)
-#> 
-#> Overview of model scanning results:
-#>                                                                  lst nrows
-#> 1: /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr001.lst   905
-#> 2: /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr002.lst   905
-#> 3: /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr003.lst   905
-#> 4: /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr014.lst   905
-#> 5: /data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr018.lst   905
-#>    ncols success warning
-#> 1:    40    TRUE   FALSE
-#> 2:    34    TRUE   FALSE
-#> 3:    34    TRUE   FALSE
-#> 4:    36    TRUE   FALSE
-#> 5:    33    TRUE   FALSE
 gmean <- function(x)exp(mean(log(x)))
 res.mean <- res[,.(gmeanPRED=gmean(PRED)),by=.(model,NOMTIME)]
 obs.all <- unique(res[,.(ID,NOMTIME,TIME,DV)])
