@@ -305,13 +305,14 @@ test_that("save csv and fst",{
 
 test_that("Non-numeric DATE and TIME",{
 
-
     
     fileRef <- "testReference/NMwriteData_13.rds"
     outfile <- "testOutput/NMwriteData_13.csv"
     
     pk <- readRDS(file="testData/data/xgxr2.rds") |> setDT()
 
+    ## pk <- fix.input(pk)
+    
     pk[,time.tz:=as.POSIXct("2000/01/01")+TIME*3600]
     ## pk[,DATE:=as.character(as.Date(time.tz),format="%y/%m/%d")]
     pk[,DATE:=format(as.Date(time.tz),format="%y/%m/%d")]
@@ -324,12 +325,17 @@ test_that("Non-numeric DATE and TIME",{
     nmcode <- NMwriteData(pk,file=outfile
                          ,script="DATE and TIME as char",formats=cc(csv),
                           args.stamp=list(time="2021-11-21 11:00:00"))
-    res1 <- NMreadCsv(fnExtension(outfile,"csv"),as.fun="data.table")
+
+    res <- NMreadCsv(fnExtension(outfile,"csv"),as.fun="data.table")
     
 
     expect_equal_to_reference(
-        res1
+        res
        ,fileRef,version=2)
 
+    if(F){
+        ref <- readRDS(fileRef)
+        compareCols(res,ref)
+}
 
 })

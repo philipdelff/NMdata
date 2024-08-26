@@ -26,14 +26,15 @@ test_that("Non-numeric DATE and TIME",{
 
     fileRef <- "testReference/NMorderColumns_02.rds"
 
-    pk <- readRDS(file="testData/data/xgxr2.rds") |> setDT()
+    pk <- readRDS(file="testData/data/xgxr2.rds")
+    setDT(pk)
 
     pk[,time.tz:=as.POSIXct("2000/01/01",tz="UTC")+TIME*3600]
 ## pk[,DATE:=as.character(as.Date(time.tz),format="%y/%m/%d")]
  ##   pk[,TIME:=as.character(time.tz,format="%H:%M:%S")]
 
-    pk[,DATE:=print.Date(time.tz,format="%y/%m/%d")]
-    pk[,TIME:=print.POSIXct(time.tz,format="%H:%M:%S")]
+    pk[,DATE:=format(as.Date(time.tz),format="%y/%m/%d")]
+    pk[,TIME:=format(time.tz,format="%H:%M:%S")]
     
 
     pk1 <- NMorderColumns(pk)
