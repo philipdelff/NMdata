@@ -313,8 +313,10 @@ test_that("Non-numeric DATE and TIME",{
     pk <- readRDS(file="testData/data/xgxr2.rds") |> setDT()
 
     pk[,time.tz:=as.POSIXct("2000/01/01")+TIME*3600]
-    pk[,DATE:=as.character(as.Date(time.tz),format="%y/%m/%d")]
-    pk[,TIME:=as.character(time.tz,format="%H:%M:%S")]
+    ## pk[,DATE:=as.character(as.Date(time.tz),format="%y/%m/%d")]
+    pk[,DATE:=format(as.Date(time.tz),format="%y/%m/%d")]
+    ## pk[,TIME:=as.character(time.tz,format="%H:%M:%S")]
+    pk[,TIME:=format(time.tz,format="%H:%M:%S")]
     
 
     pk <- NMorderColumns(pk)
