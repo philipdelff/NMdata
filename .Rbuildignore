@@ -46,7 +46,8 @@ README.html
 inst/examples/nonmem/*.msf
 inst/examples/nonmem/*.xml
 inst/examples/nonmem/xgxr002.*
-inst/examples/nonmem/xgxr014.*
+;;; used in vignettes/NMscanData.Rmd
+;; inst/examples/nonmem/xgxr014.*
 tests/testthat/testOutput/simulations/nonmem
 tests/testthat/testOutput/simulations/NMsimData_xgxr.+\.rds
 tests/testthat/testData/simulations/xgxr..._subprobs/NMsim_xgxr..._subprobs_dir.+
