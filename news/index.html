@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.961</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.7</span>
       </span>
     </div>
 
@@ -78,6 +78,195 @@
       <small>Source: <a href="https://github.com/philipdelff/NMdata/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.7" id="nmdata-017">NMdata 0.1.7<a class="anchor" aria-label="anchor" href="#nmdata-017"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-1-7">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-7"></a></h3>
+<ul><li><p><code>NMreadPartab()</code> has been generalized to support comment formats very generally. <code>NMreadPartab()</code> reads the comments in <code>$THETA</code>, <code>$OMEGA</code> and <code>$SIGMA</code> sections, splits them into variables, and organizes those variables in a parameter table. With this upgrade, pretty much any structure should be supported as long as delimitors are not alphabetic or numeric (so any special characters should work). Notice, delimitors can change between fields . Example: <code>"$THETA 1.4 ; 3 - CL (Clearance) [L/h]"</code> would be matched by <code>NMreadPartab(...,format="%init ;%idx-%symbol(%label)[%unit]")</code> which would then return a table including columns init, idx, symbol, label, and unit. The comments must be systematic within say <code>$THETA</code> but the format can be different for <code>$OMEGA</code> and <code>$SIGMA</code>. See examples in <code>?NMreadParTab</code>.</p></li>
+<li><p><code><a href="../reference/NMrelate.html">NMrelate()</a></code> is a new automated approach to label parameters. It interprets Nonmem code and provides labels used in the control stream. If the line <code>TVCL=THETA(1)</code> is the only line in the code that references THETA(1), <code><a href="../reference/NMrelate.html">NMrelate()</a></code> will return a label <code>TVCL</code>.</p></li>
+<li><p>Improved support for character-coded <code>TIME</code> and <code>DATE</code> arguments. The default behavior is to allow (not require) <code>TIME</code> and <code>DATE</code> columns to be non-numeric. This is to support the Nonmem character format of DATE and TIME. It affects sorting of columns (<code>NMorderColumn()</code>) and the auto-generated <code>$INPUT</code> section suggestions. Where applicable, the <code>allow.char.TIME</code> argument controls this behavior. Set to <code>allow.char.TIME=FALSE</code> to require <code>TIME</code> and <code>DATE</code> columns be numeric. Thanks to Sanaya Shroff for the request, enabling <code>NMsim</code> to simulate using data sets with one or more of these columns coded as character.</p></li>
+<li>
+<p><code>mergeCheck(x,y)</code> has new options for handling common columns in data sets. The <code>common.cols</code> argument replaces <code>fun.commoncols</code> with added functionality.</p>
+<ul><li><p><code>common.cols="merge.by"</code> to include them in by, even if they are not provided in the <code>by</code> argument.</p></li>
+<li><p><code>common.cols="drop.x"</code> to drop the columns on the <code>x</code> and overwrite with columns in y</p></li>
+<li><p><code>common.cols="drop.y"</code> to preserve in <code>x</code></p></li>
+<li><p><code><a href="https://rdrr.io/r/base/stop.html" class="external-link">base::stop</a></code> The default value. Throw an error if common.columns are not included in merge <code>by</code> options.</p></li>
+<li><p><code>common.cols=NULL</code> disabled handling and return columns as “.x” and “.y”.</p></li>
+<li><p>Any function. <code>common.cols=warning</code> will issue a warning instead of throwing an error.</p></li>
+</ul></li>
+<li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> separates objective function values into a separate list element. The <code>return</code> argument is used to control what data to retrieve. Use one of “pars” (default, parameter estimates), “iterations” (parameter estimates for each iteration), “obj” for objective funtion value, or “all” for a list with all of those.</p></li>
+<li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> adds block information to <code>OMEGA</code> and <code>SIGMA</code> elements based on off-diagonal values. <code>iblock</code> identifies which block the element is in. <code>blocksize</code> is the size of the block the element is in. Thank you Brian Reilly for contributing to this.</p></li>
+<li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> adds a <code>par.name</code> column which is provides consistent parameter naming. Instead of Nonmem’s <code>THETA1</code> which is found in the <code>parameter</code> column, the <code>par.name</code> column will contain <code>THETA(1)</code> consistent with the <code>OMEGA</code> and <code>SIGMA</code> naming like <code>OMEGA(1,1)</code></p></li>
+<li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> recognizes Laplacian estimation steps in addition to the already supported FO, FOCE(i), SAEM, and IMP.</p></li>
+<li><p>A new option <code>nc</code> can be controlled with NMdataConf(). This is to serve <code>NMsim</code>. Please see <code><a href="https://philipdelff.github.io/NMsim/reference/NMexec.html" class="external-link">NMsim::NMexec</a></code>. <code><a href="https://philipdelff.github.io/NMsim/reference/NMsim.html" class="external-link">NMsim::NMsim()</a></code> does not adhere to this setting because it does not parallellize by default.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="bugfixes-0-1-7">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-1-7"></a></h3>
+<ul><li><p><code><a href="../reference/NMscanInput.html">NMscanInput()</a></code> and <code><a href="../reference/NMreadCsv.html">NMreadCsv()</a></code> could fail if file names had no extensions. Fixed.</p></li>
+<li><p><code><a href="../reference/NMreplaceDataFile.html">NMreplaceDataFile()</a></code> now works on directories and regular expressions to find models to update.</p></li>
+<li><p>Some internal functions would make some functions including <code><a href="../reference/NMscanData.html">NMscanData()</a></code> fail if used within <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>. Fixed.</p></li>
+<li><p><code><a href="../reference/NMexpandDoses.html">NMexpandDoses()</a></code> would give a warning if <code>length(cols.id)&gt;1</code>. Fixed.</p></li>
+<li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> would mess up iterations and parameter estimates if <code>as.fun</code> was set to returning something else than <code>data.table</code>s. Fixed.</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.6" id="nmdata-016">NMdata 0.1.6<small>2024-04-23</small><a class="anchor" aria-label="anchor" href="#nmdata-016"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-1-6">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-6"></a></h3>
+<ul><li><p>Function <code><a href="../reference/NMreadShk.html">NMreadShk()</a></code> to read and format <code>.shk</code> (shrinkage) files.</p></li>
+<li><p>Functions <code><a href="../reference/mat2dt.html">mat2dt()</a></code> and <code><a href="../reference/dt2mat.html">dt2mat()</a></code> included to convert between matrices and data.frame format of matrix data - especially for symmetric matrices.</p></li>
+<li><p>Function <code><a href="../reference/addOmegaCorr.html">addOmegaCorr()</a></code> adds estimated correlation between ETAs to parameter tables, as obtained using <code><a href="../reference/NMreadExt.html">NMreadExt()</a></code>.</p></li>
+<li><p><code><a href="../reference/fnAppend.html">fnAppend()</a></code> can now handle multiple strings to append. Allows for more easily readable code.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="bugfixes-0-1-6">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-1-6"></a></h3>
+<ul><li><p><code>NMcheckData</code> now respects <code><a href="../reference/NMdataConf.html">NMdataConf()</a></code> setting of <code>col.time</code> and <code>col.id</code>. When using the <code>file</code> argument <code>col.id</code> was not respected at all. Fixed.</p></li>
+<li><p><code>addTAPD</code> would get cumulative counting of number of doses and cumulative dose amount wrong in case of repeated dosing (using <code>ADDL</code> and <code>II</code>) followed by other doses. Fixed. Thanks to Simone Cassani for catching it.</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.5" id="nmdata-015">NMdata 0.1.5<small>2024-02-21</small><a class="anchor" aria-label="anchor" href="#nmdata-015"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-1-5">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-5"></a></h3>
+<ul><li><p><code>countFlags</code> no longer needs a table of flags. By default it will summarize the ones found in data. If additional flags wanted in summary table (with no findings), the flag table is still needed.</p></li>
+<li><p>If a flag table is provided, <code>countFlags</code> will throw an error if the flags found in data are not covered by the provided flag table.</p></li>
+<li><p><code>NMorderColumns</code> now includes arguments <code>col.id</code> and <code>col.time</code>. These can now also be controlled using <code><a href="../reference/NMdataConf.html">NMdataConf()</a></code>.</p></li>
+<li><p><code>NMreadParText</code> includes argument <code>modelname</code>, <code>col.model</code>, and <code>as.fun</code> and defaults to what is defined in <code><a href="../reference/NMdataConf.html">NMdataConf()</a></code> like other <code>NMdata</code> functions. It also includes a <code>parameter</code> column for easier merge with data from e.g. <code>ext</code> files <code><a href="../reference/NMreadExt.html">NMreadExt()</a></code>.</p></li>
+<li><p><code>NMreadParText</code> accepts function (with the control stream path as argument) to define how to read the parameter information. This is useful if one defines the tabulated information in a comment in the control stream. NMreadParText basically allows for a full automation of flexible parameter table generation.</p></li>
+<li><p><code><a href="../reference/NMdataConf.html">NMdataConf()</a></code> is configured to handle <code>NMsim</code>’s <code>dir.sims</code> and <code>dir.res</code>.</p></li>
+<li><p><code>NMdataConf(reset=TRUE)</code> wipes all settings. In recent versions, <code>NMdataConf</code> accepts the <code>allow.unknown</code> argument which means settings that are unknown to <code>NMdata</code> can be stored. This is relevant for other packages that want to make use of <code>NMdata</code>’s configuration system (<code>NMsim</code> is an example of a package that does so). Now <code>NMdataConf(reset=TRUE)</code> makes sure to wipe all such configuration if exists.</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.4" id="nmdata-014">NMdata 0.1.4<small>2024-01-09</small><a class="anchor" aria-label="anchor" href="#nmdata-014"></a></h2>
+<div class="section level3">
+<h3 id="new-functions-0-1-4">New functions<a class="anchor" aria-label="anchor" href="#new-functions-0-1-4"></a></h3>
+<ul><li><p><code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> is a new function to extract comments to <code>$THETA</code>, <code>$OMEGA</code> and <code>$SIGMA</code> sections. As long as the comments are structured in a table-like manner, <code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> should be able to fetch them almost no matter what delimiters you used. Use say <code>fields="%init;num)symbol/transform/label(unit)"</code> if you have lines like <code>(0,1) ; 1) CL / log / This is clearance (L/h)</code> All comment lines don’t have to be completed, and you can specify separate formats for <code>$THETA</code>, <code>$OMEGA</code> and <code>$SIGMA</code>. Together with <code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> this is a very flexible basis for generating parameter tables.</p></li>
+<li><p><code><a href="../reference/colLabels.html">colLabels()</a></code> is a simple wrapper of <code><a href="../reference/compareCols.html">compareCols()</a></code> that extracts the SAS column labels on data sets.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-features-0-1-4">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-4"></a></h3>
+<ul><li><p>NMdata functions will now by default look for input control streams with file name extensions either <code>.mod</code> or <code>.ctl</code>. The user previously had to tell NMdata to look for <code>.ctl</code> using configuration options or function arguments but it will now work either way. An error will be thrown if both should be found.</p></li>
+<li><p><code>NMreadExt</code> will by default only return parameters and iterations from the last table available. This can be controlled by the <code>tableno</code> argument.</p></li>
+<li><p><code>fnAppend</code> will now throw an error in case the file name extension cannot be identified.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="bugfixes-0-1-4">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-1-4"></a></h3>
+<ul><li>
+<code>NMreadText</code> would fail to disregard some comment lines when <code>keep.comments=FALSE</code>. Fixed.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.3" id="nmdata-013">NMdata 0.1.3<small>2023-11-11</small><a class="anchor" aria-label="anchor" href="#nmdata-013"></a></h2>
+<ul><li><p>Better support for models with multiple estimation steps. Particularly reading output tables now better distinguishes between Nonmem table numbers and repetitions (like SUBPROBLEMS). Also, functions that read parameter estimates clearly separates Nonmem table numbers.</p></li>
+<li><p>Improved support for reading multiple models with NMreadExt and NMreadPhi.</p></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.2" id="nmdata-012">NMdata 0.1.2<small>2023-10-19</small><a class="anchor" aria-label="anchor" href="#nmdata-012"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-1-2">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-2"></a></h3>
+<ul><li>NMreadExt is a new function that reads parameter estimates, uncertainties if available, estimation iterations and other information from .ext files.</li>
+<li>NMreadPhi is a new function that reads contents of Nonmem phi files.</li>
+<li>NMreadCov is a “new” function that reads Nonmem .cov files (parameter uncertainty as estimated by a covariance step). The function is not really new. It was developed by Matt Fidler for nonmem2rx based on NMdata’s NMreadTab. It has been only slightly modified since. Thanks Matt!</li>
+<li>NMscanInput supports all combinations of <code>translate</code> and <code>recover.cols</code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="other-improvements-0-1-2">Other improvements<a class="anchor" aria-label="anchor" href="#other-improvements-0-1-2"></a></h3>
+<ul><li>NMreadCsv supports multiple prioritized formats in the <code>format</code> arguments.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.1" id="nmdata-011">NMdata 0.1.1<small>2023-09-07</small><a class="anchor" aria-label="anchor" href="#nmdata-011"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-1-1">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-1"></a></h3>
+<ul><li>NMwriteSection can now handle functions to perform control stream editing. NMwriteSection provides methods to edit control streams. Until now by inserting, removing and replacing sections by user-provided text. This new feature allows the user to specify a function for editing the text, i.e. making it more suitable for doing changes to sections like <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>K</mi><mi>/</mi></mrow><annotation encoding="application/x-tex">PK/</annotation></semantics></math>PRED or <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mi>H</mi><mi>E</mi><mi>T</mi><mi>A</mi><mi>/</mi></mrow><annotation encoding="application/x-tex">THETA/</annotation></semantics></math>OMEGA/$SIGMA.</li>
+<li>NMcheckData has a new argument <code>type.data</code> which allows switching between estimation and simulation type data.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="other-improvements-0-1-1">Other improvements<a class="anchor" aria-label="anchor" href="#other-improvements-0-1-1"></a></h3>
+<ul><li>NMscanMultiple now by default looks for all .lst files if provided with a directory (<code>dir</code>) only.</li>
+<li>Minor bugfix in compareCols in case input is an unnamed list</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.0" id="nmdata-010">NMdata 0.1.0<small>2023-07-07</small><a class="anchor" aria-label="anchor" href="#nmdata-010"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-1-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-0"></a></h3>
+<ul><li><p>The super fast <code>fst</code> format is now supported. Data sets can be written to this format, and NMscanData() and related functions can read it. It can be used instead of <code>rds</code> which is the default full-featured data format used in the package.</p></li>
+<li><p>New function NMreplaceDataFile to replace the input data file in a control stream. A simple wrapper of NMwriteSection but useful for this specific purpose.</p></li>
+<li><p>New function editCharCols that allows for editing character columns in a dataset based on regular expressions or strings. This allows for instance for removal of special characters that are not allowed in the selected data format (like a comma can make trouble in a csv file).</p></li>
+<li><p>NMcheckData has a new argument, <code>cols.dup</code>, to include additional columns (to col.id, col.cmt, col.evid, and col.time) in search for duplicated events. This is useful for different assays run on the same compartment (say a DVID column) or maybe stacked datasets. If col.cmt is of length&gt;1, this search is repeated for each cmt column. Thanks to Eric Anderson for suggesting and testing this.</p></li>
+<li><p>NMcheckData has improved checks of II and ADDL columns.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="other-improvements-0-1-0">Other improvements<a class="anchor" aria-label="anchor" href="#other-improvements-0-1-0"></a></h3>
+<ul><li><p><code>NMwriteData</code> now uses the <code>formats</code> argument to specify the requested file formats. This replaces arguments like <code>write.csv</code> and <code>write.rds</code>. To get those two, do <code>formats=c("csv","rds")</code> (which is default). The argument <code>save</code> is used to control whether outputs are written altogether.</p></li>
+<li><p>Argument name format has been cleaned and aligned to follow the an.arg format rather than camel toe which was also used in some functions before. All deprecated arguments have been soft deprecated meaning they still work.</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.0.16" id="nmdata-0016">NMdata 0.0.16<small>2023-03-26</small><a class="anchor" aria-label="anchor" href="#nmdata-0016"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-0-16">New features<a class="anchor" aria-label="anchor" href="#new-features-0-0-16"></a></h3>
+<ul><li><p><code><a href="../reference/NMwriteSection.html">NMwriteSection()</a></code> includes argument <code>location</code>. In combination with <code>section</code>, this determines where the new section is inserter. Possible values are “replace” (default), “before”, “after”, “first”, “last”.</p></li>
+<li><p><code><a href="../reference/NMreadSection.html">NMreadSection()</a></code> adds support for partial matching of section names. Specifically, this means that the first three characters will be matched only, i.e. allowing say <code>$SIMULATION</code> to match <code>$SIM</code> or <code>$ESTIMATION</code> to match <code>$EST</code>.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="bugfixes-0-0-16">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-0-16"></a></h3>
+<p><code><a href="../reference/NMcheckData.html">NMcheckData()</a></code> did not check columns listed in cols.num for NA elements. Now it does.</p>
+<p>NMcheckData now only checks <code>col.dv</code> to be non-NA for col.mdv==0 if col.mdv is present.</p>
+<p><code><a href="../reference/NMscanInput.html">NMscanInput()</a></code> would fail if there was no column called <code>ID</code> in the dataset on file. This has been fixed to support cases where renaming or a pseudonym is being used to generate an <code>ID</code> column in <code>$INPUT</code>.</p>
+</div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.0.15" id="nmdata-0015">NMdata 0.0.15<small>2022-12-01</small><a class="anchor" aria-label="anchor" href="#nmdata-0015"></a></h2>
+<p>This update is of no difference to users. A technicality has been chaned to ensure consistent test results once data.table 1.14.7 is</p>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.0.14" id="nmdata-0014">NMdata 0.0.14<small>2022-11-16</small><a class="anchor" aria-label="anchor" href="#nmdata-0014"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-0-14">New features<a class="anchor" aria-label="anchor" href="#new-features-0-0-14"></a></h3>
+<ul><li><p><code><a href="../reference/fnExtension.html">fnExtension()</a></code> has been generalized. It now ignores leading spaces in new extension, and extensions with zero or one leading period are treated identically (so asking for <code>xml</code> or <code>.xml</code> is the same). Also, by providing “” as the new extension will now remove the extension, and if extension is not provided, fnExtension will retrieve the extension rather than replace it.</p></li>
+<li><p><code><a href="../reference/NMscanData.html">NMscanData()</a></code> now supports repeated output tables, like those created using the <code>SUBPROBLEM</code> option.</p></li>
+<li><p><code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> has a new argument csv.trunc.as.nm. If <code>TRUE</code>, csv file will be truncated horizontally (columns will be dropped) to match the <code>$INPUT</code> text generated for Nonmem (<code>genText</code> must be <code>TRUE</code> for this option to be allowed). This can be a great advantage when dealing with large datasets that can create problems in parallellization. Combined with <code>write.rds=TRUE</code>, the full data set will still be written to an rds file, so this can be used when combining output and input data when reading model results. This is done by default by <code><a href="../reference/NMscanData.html">NMscanData()</a></code>. This means writing a lean (narrow) csv file for Nonmem while keeping columns of non-numeric class like character and factor for post-processing.</p></li>
+<li><p><code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> has got an arguement ‘genText’ to control whether text for Nonmem should be generated. Default is to do so. Also, support is added for <code>script=NULL</code> which now means the same as not specifying script.</p></li>
+<li><p><code><a href="../reference/addTAPD.html">addTAPD()</a></code> now includes <code>SDOS</code>, a scalar to be applied when computing last dose amount and cumulative dose amount from <code>AMT</code>. Sometimes, <code>AMT</code> is in one unit, and other variables related to doses is in another. Say that dose is in mg and concentrations are in ng/mL, then <code>AMT</code> should be in mcg. But you may want everything else related to doses to be in mg. Then use <code>SDOS=1000</code>.</p></li>
+<li><p><code><a href="../reference/addTAPD.html">addTAPD()</a></code> includes convenient prefix.cols and suffix.cols arguments that will prepend or append strings to all created columns. This is useful if dosing more than one drug, and you want to run <code><a href="../reference/addTAPD.html">addTAPD()</a></code> for both (different suffixes?), or if you want to run for nominal and actual time (prefix A and N?).</p></li>
+<li><p><code><a href="../reference/flagsAssign.html">flagsAssign()</a></code> now reports that data is empty and return the data if nothing is left after applying subset. It used to return an error.</p></li>
+<li><p><code><a href="../reference/NMgenText.html">NMgenText()</a></code> has a new argument, width, passed to strwrap to control the width of the $INPUT text for Nonmem.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="bugfixes-0-0-14">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-0-14"></a></h3>
+<ul><li><p>NMapplyFilters (and then NMscanInput and NMscanData) gave an error when multiple filters were applied on the same column. Fixed.</p></li>
+<li><p><code><a href="../reference/addTAPD.html">addTAPD()</a></code> was not respecting subset.dos for all generated columns.</p></li>
+<li><p><code><a href="../reference/NMisNumeric.html">NMisNumeric()</a></code> would interpret a NA of class character or logical as non-numeric. Fixed.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="other-improvements-0-0-14">Other improvements<a class="anchor" aria-label="anchor" href="#other-improvements-0-0-14"></a></h3>
+<ul><li><p>Internally, combination of input and output data without a row identifier is simplified.</p></li>
+<li><p>NMdata version added to welcome message.</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.0.13" id="nmdata-0013">NMdata 0.0.13<small>2022-09-08</small><a class="anchor" aria-label="anchor" href="#nmdata-0013"></a></h2>
+<div class="section level3">
+<h3 id="new-functions-0-0-13">New functions<a class="anchor" aria-label="anchor" href="#new-functions-0-0-13"></a></h3>
+<ul><li>
+<code><a href="../reference/NMexpandDoses.html">NMexpandDoses()</a></code> - Transform repeated dosing events (<code>ADDL</code>/<code>II</code>) to individual dosing events</li>
+<li>
+<code><a href="../reference/addTAPD.html">addTAPD()</a></code> - Add cumulative number of doses, time of last dose, previous dose amount, cumulative dose amount, and time since previous dose to data</li>
+<li>
+<code><a href="../reference/tmpcol.html">tmpcol()</a></code> provides column names not already used in data sets. tmpcol has long been part of NMdata but has not been exported until now.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-data-0-0-13">New data<a class="anchor" aria-label="anchor" href="#new-data-0-0-13"></a></h3>
+<ul><li>A new data set called mad is included. It is based on the mad_missing_duplicates from the <code>xgxr</code> package. Doses are implemented using ADDL and II (so only one dosing row per subject). It is included for testing the new NMexpandDoses and addTAPD functions.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bugfixes-0-0-13">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-0-13"></a></h3>
+<ul><li>Non-critical bugfix in mergeCheck dimensions overview printed to console. One column too many was reported in input and result data. No implications on results from mergeCheck.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.12" id="nmdata-0012">NMdata 0.0.12<small>2022-06-06</small><a class="anchor" aria-label="anchor" href="#nmdata-0012"></a></h2>
 <ul><li><p>Vignettes are no longer included in R package and can only be read online at <a href="https://philipdelff.github.io/NMdata/" class="uri">https://philipdelff.github.io/NMdata/</a> They are still being maintained, and the exclusion from the package releases is only due to CRAN’s restrictive requirements to the package size.</p></li>
