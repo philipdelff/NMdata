@@ -28,10 +28,14 @@ test_that("Non-numeric DATE and TIME",{
 
     pk <- readRDS(file="testData/data/xgxr2.rds") |> setDT()
 
-    pk[,time.tz:=as.POSIXct("2000/01/01")+TIME*3600]
-    pk[,DATE:=as.character(as.Date(time.tz),format="%y/%m/%d")]
-    pk[,TIME:=as.character(time.tz,format="%H:%M:%S")]
+    pk[,time.tz:=as.POSIXct("2000/01/01",tz="UTC")+TIME*3600]
+## pk[,DATE:=as.character(as.Date(time.tz),format="%y/%m/%d")]
+ ##   pk[,TIME:=as.character(time.tz,format="%H:%M:%S")]
+
+    pk[,DATE:=print.Date(time.tz,format="%y/%m/%d")]
+    pk[,TIME:=print.POSIXct(time.tz,format="%H:%M:%S")]
     
+
     pk1 <- NMorderColumns(pk)
     
     dtres <- data.table(colnames(pk),colnames(pk1))
