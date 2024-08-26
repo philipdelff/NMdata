@@ -89,7 +89,7 @@ test_that("A comma in a character",{
     expect_error(
         NMwriteData(pk,file="testOutput/NMwriteDataTmp.csv",
                    ,formats=NULL
-                    ,nm.drop="CYCLE")
+                   ,nm.drop="CYCLE")
     )
 
 })
@@ -320,8 +320,8 @@ test_that("Non-numeric DATE and TIME",{
     
 
     pk <- NMorderColumns(pk)
-     
-     nmcode <- NMwriteData(pk,file=outfile
+    
+    nmcode <- NMwriteData(pk,file=outfile
                          ,script="DATE and TIME as char",formats=cc(csv),
                           args.stamp=list(time="2021-11-21 11:00:00"))
     res1 <- NMreadCsv(fnExtension(outfile,"csv"),as.fun="data.table")
