@@ -4,7 +4,8 @@ test_that("last NULL",{
 
     fileRef <- "testReference/NMorderColumns_01.rds"
 
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    ## pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds")
 
     pk1 <- NMorderColumns(pk)
     pk2 <- NMorderColumns(pk,last=c("FLAG",NULL))
@@ -25,7 +26,8 @@ test_that("Non-numeric DATE and TIME",{
 
     fileRef <- "testReference/NMorderColumns_02.rds"
 
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+##    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds")
 
     pk[,time.tz:=as.POSIXct("2000/01/01")+TIME*3600]
     pk[,DATE:=as.character(as.Date(time.tz),format="%y/%m/%d")]
