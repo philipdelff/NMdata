@@ -45,6 +45,10 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
+    
+    quiet <- list(...)$quiet
+    quiet <- NMdataDecideOption("quiet",quiet)
+    
 #### Section start: Define ad-hoc functions ####
 
     catchAnything <- function(fun){
@@ -84,7 +88,7 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
     all.files <- getFilePaths(files=files,file.pattern=file.pattern,dir=dir)
     
     if(length(all.files)==0) {
-        cat("No files matched path/pattern criteria\n")
+        message("No files matched path/pattern criteria")
         return(NULL)
     }
     
@@ -123,12 +127,13 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
     res.all <- rbindlist(res.all.list[dt.lst[,which(success)]],fill=TRUE)
     writeNMinfo(res.all,info.list)
     
-### quiet would have to be looked for in ...
-    ## if(!quiet){
-        setcolorder(dt.lst,cc(lst,nrows,ncols,success,warning))
-        cat("\nOverview of model scanning results:\n")
-        print(dt.lst)
-   ## }
+
+    setcolorder(dt.lst,cc(lst,nrows,ncols,success,warning))
+
+    if(!quiet){
+        message("\nOverview of model scanning results:\n")
+        message(print(dt.lst))
+    }
     
     ## run as.fun
     res.all <- as.fun(res.all)

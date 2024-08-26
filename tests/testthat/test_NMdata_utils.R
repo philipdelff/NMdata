@@ -1,19 +1,20 @@
 context("NMdata Utils")
 NMdataConf(reset=TRUE)
 
-NMdata_filepath <- function(...) {
-    system.file(..., package = "NMdata")
-}
+## NMdata_filepath <- function(...) {
+##     ## system.file(..., package = "NMdata")
+##     file.path("testData/nonmem/",..., package = "NMdata")
+## }
 
 
 test_that("basic",{
     NMdataConf(reset=T)
     
-    file.lst.1 <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
+    file.lst.1 <- "testData/nonmem/xgxr001.lst"
 
     res1 <- NMscanData(file=file.lst.1, quiet=T, order.columns = F, merge.by.row=FALSE, check.time = FALSE)
 
-    file.lst.2 <- NMdata_filepath("examples/nonmem/xgxr002.lst")
+    file.lst.2 <- "testData/nonmem/xgxr002.lst"
 
     res2 <- NMscanData(file=file.lst.2, check.time = FALSE, merge.by.row=FALSE,quiet=TRUE)
 

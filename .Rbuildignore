@@ -43,9 +43,19 @@ input.shk
 INTER
 LINK.LNK
 README.html
+inst/examples/nonmem/*.msf
+inst/examples/nonmem/*.xml
+inst/examples/nonmem/xgxr002.*
+inst/examples/nonmem/xgxr014.*
 tests/testthat/testOutput/simulations/nonmem
 tests/testthat/testOutput/simulations/NMsimData_xgxr.+\.rds
 tests/testthat/testData/simulations/xgxr..._subprobs/NMsim_xgxr..._subprobs_dir.+
+;; tests/testthat/testData/nonmem/xgxr005.*
+;; tests/testthat/testData/nonmem/xgxr017.*
+;; tests/testthat/testData/nonmem/xgxr018.*
+;; tests/testthat/testData/nonmem/xgxr020.*
+;; tests/testthat/testData/nonmem/xgxr021.*
 tests/testthat/testData/simulations/xgxr.*/.*.rds
 tests/testthat/testData/simulations/xgxr.*/.*.csv
+
 .*_input.rds
