@@ -75,11 +75,11 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href="https://github.com/philipdelff/NMdata/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/philipdelff/NMdata/blob/v0.1.7/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.1.7" id="nmdata-017">NMdata 0.1.7<a class="anchor" aria-label="anchor" href="#nmdata-017"></a></h2>
+<h2 class="page-header" data-toc-text="0.1.7" id="nmdata-017">NMdata 0.1.7<small>2024-08-26</small><a class="anchor" aria-label="anchor" href="#nmdata-017"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-1-7">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-7"></a></h3>
 <ul><li><p><code>NMreadPartab()</code> has been generalized to support comment formats very generally. <code>NMreadPartab()</code> reads the comments in <code>$THETA</code>, <code>$OMEGA</code> and <code>$SIGMA</code> sections, splits them into variables, and organizes those variables in a parameter table. With this upgrade, pretty much any structure should be supported as long as delimitors are not alphabetic or numeric (so any special characters should work). Notice, delimitors can change between fields . Example: <code>"$THETA 1.4 ; 3 - CL (Clearance) [L/h]"</code> would be matched by <code>NMreadPartab(...,format="%init ;%idx-%symbol(%label)[%unit]")</code> which would then return a table including columns init, idx, symbol, label, and unit. The comments must be systematic within say <code>$THETA</code> but the format can be different for <code>$OMEGA</code> and <code>$SIGMA</code>. See examples in <code>?NMreadParTab</code>.</p></li>
