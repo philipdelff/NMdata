@@ -143,7 +143,7 @@ NMgenText <- function(data,
         }
     }
 
-        if(allow.char.TIME){
+    if(allow.char.TIME){
         if("DATE"%in%colnames(data) &&
            as.num.ok[,DATE==FALSE]) {
             as.num.ok[,DATE:=TRUE]
@@ -169,15 +169,22 @@ NMgenText <- function(data,
     
     ## apply "until"
     if(!missing(until) && !is.null(until)){
+        
         if(!is.numeric(until)&&!is.character(until)){
             messageWrap("until must be either numeric or character.")
         }
         if(is.character(until)){
             ## convert to numeric
+            
             until <- match(until,dt.num.ok[,name.nm])
         }
-        until <- max(until)
-        dt.num.ok <- dt.num.ok[1:until]
+        until <- until[!is.na(until)]
+        if(length(until)){
+            until <- max(until)
+            dt.num.ok <- dt.num.ok[1:until]
+        } else {
+            message("No recognized variables in \'until\'. Ignoring.")
+        }
     }
 
     ## apply DROP
@@ -234,7 +241,7 @@ NMgenText <- function(data,
         text.nm.input <- strwrap(
             text.nm.input
         )
-        } else if(width>0){
+    } else if(width>0){
         text.nm.input <- strwrap(
             text.nm.input
            ,width=width

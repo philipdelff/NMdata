@@ -2,6 +2,7 @@ remotes::install_github("thinkr-open/checkhelper")
 library(checkhelper)
 path.pkg <- "~/wdirs/NMdata"
 finds <- find_missing_tags(path.pkg)
+as.data.table(finds)
 file.csv <- tempfile()
 fwrite(finds,file=file.csv)
 as.data.table(finds)

@@ -125,9 +125,8 @@
 ##' dt.cov <- pk[,.(ID=unique(ID))]
 ##' dt.cov[,COV:=sample(1:5,size=.N,replace=TRUE)]
 ##' dt.cov <- dt.cov[c(1,1:(.N-1))]
-##' dim(pk)
 ##' res.merge <- merge(pk,dt.cov,by="ID")
-##' dim(res.merge)
+##' dims(pk,dt.cov,res.merge)
 ##' mergeCheck(pk,dt.cov,by="ID")
 ##' }
 ##' @export
