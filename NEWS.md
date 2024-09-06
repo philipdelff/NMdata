@@ -1,3 +1,11 @@
+# NMdata 0.1.8
+
+## Bugfixes
+
+Support for data file names including substrings "ACCEPT" and "IGN" is
+added. Before, such data set file names could lead to failure if
+interpreting data subsetting filters (ACCEPT and IGN(ORE)) in Nonmem
+control streams. 
 
 # NMdata 0.1.7
 
@@ -104,7 +112,7 @@ of throwing an error.
 * Function `NMreadShk()` to read and format `.shk` (shrinkage) files.
 
 * Functions `mat2dt()` and `dt2mat()` included to convert between
-  matrices and data.frame format of matrix data - especially for
+  matrices and `data.frame` format of matrix data - especially for
   symmetric matrices.
   
 * Function `addOmegaCorr()` adds estimated correlation between ETAs to
