@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.7.901</span>
       </span>
     </div>
 
@@ -75,9 +75,16 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href="https://github.com/philipdelff/NMdata/blob/v0.1.7/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/philipdelff/NMdata/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.8" id="nmdata-018">NMdata 0.1.8<a class="anchor" aria-label="anchor" href="#nmdata-018"></a></h2>
+<div class="section level3">
+<h3 id="bugfixes-0-1-8">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-1-8"></a></h3>
+<p>Support for data file names including substrings “ACCEPT” and “IGN” is added. Before, such data set file names could lead to failure if interpreting data subsetting filters (ACCEPT and IGN(ORE)) in Nonmem control streams.</p>
+</div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.7" id="nmdata-017">NMdata 0.1.7<small>2024-08-26</small><a class="anchor" aria-label="anchor" href="#nmdata-017"></a></h2>
 <div class="section level3">
@@ -114,7 +121,7 @@
 <div class="section level3">
 <h3 id="new-features-0-1-6">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-6"></a></h3>
 <ul><li><p>Function <code><a href="../reference/NMreadShk.html">NMreadShk()</a></code> to read and format <code>.shk</code> (shrinkage) files.</p></li>
-<li><p>Functions <code><a href="../reference/mat2dt.html">mat2dt()</a></code> and <code><a href="../reference/dt2mat.html">dt2mat()</a></code> included to convert between matrices and data.frame format of matrix data - especially for symmetric matrices.</p></li>
+<li><p>Functions <code><a href="../reference/mat2dt.html">mat2dt()</a></code> and <code><a href="../reference/dt2mat.html">dt2mat()</a></code> included to convert between matrices and <code>data.frame</code> format of matrix data - especially for symmetric matrices.</p></li>
 <li><p>Function <code><a href="../reference/addOmegaCorr.html">addOmegaCorr()</a></code> adds estimated correlation between ETAs to parameter tables, as obtained using <code><a href="../reference/NMreadExt.html">NMreadExt()</a></code>.</p></li>
 <li><p><code><a href="../reference/fnAppend.html">fnAppend()</a></code> can now handle multiple strings to append. Allows for more easily readable code.</p></li>
 </ul></div>
