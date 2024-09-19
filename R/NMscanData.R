@@ -247,6 +247,13 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
         formats.read <- setdiff(formats.read,c("rds"))
     }
     
+    if(missing(col.model)||!is.null(col.model)) {
+        if(missing(col.model)) {
+            col.model <- NULL
+        } 
+        col.model <- NMdataDecideOption("col.model",col.model)
+    }
+
     
 ### deprecated before 2023-06-12
     ## if(!missing(tab.count)) .Deprecated("col.tableno",old="tab.count")
@@ -322,7 +329,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 #### Section start: read all output tables and add to meta data ####
     
     ## tables <- NMscanTables(file,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id,col.tableno=col.tableno)
-    tables <- NMscanTables(file,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id,col.tableno=col.tableno,col.nmrep=TRUE,skip.absent=skip.absent)
+    tables <- NMscanTables(file,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id,col.tableno=col.tableno,col.nmrep=TRUE,skip.absent=skip.absent,modelname=modelname,col.model=col.model)
     meta.output <- copy(NMinfoDT(tables)$tables)
     
     
@@ -380,13 +387,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     cnames.input.result <- nminfo.input$colnames[,result]
     outnames  <- unlist(lapply(tables,colnames))
     allnames <- c(outnames,cnames.input.result)
-
-    if(missing(col.model)||!is.null(col.model)) {
-        if(missing(col.model)) {
-            col.model <- NULL
-        } 
-        col.model <- NMdataDecideOption("col.model",col.model)
-    }
     
     
     if(!is.null(col.model) && col.model%in%allnames){

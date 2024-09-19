@@ -22,7 +22,8 @@ test_that("Multiple output table formats",{
     if(F){
         res.dt
         readRDS(fileRef)
-        }
+        NMinfo(readRDS(fileRef),"tables")
+    }
     
     ## test that we have data.tables from using as.fun=none
     expect_true(all(unlist(lapply(res.dt,is.data.table))))

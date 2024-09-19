@@ -1,5 +1,13 @@
 # NMdata 0.1.8
 
+## New features
+
+If truncating columns in the csv file `NMwriteData()` accepts data
+with commas in values, even when writing to csv files.
+
+`NMscanTables()` includes model name in meta data table. Useful for
+generation of overviews of output tables from multiple models.
+
 ## Bugfixes
 
 Support for data file names including substrings "ACCEPT" and "IGN" is

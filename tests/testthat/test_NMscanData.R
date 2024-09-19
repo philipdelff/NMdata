@@ -552,7 +552,9 @@ test_that("input.txt/output.txt - unset modelname",{
     res1[,(cols.differ):=NULL]
     res1dir[,(cols.differ):=NULL]
 
-    expect_equal(res1[,!("model")],res1dir[,!("model")])
+    expect_equal(unNMdata(res1[,!("model")]),unNMdata(res1dir[,!("model")]))
+    ## NMinfo(res1,"tables")
+    ## NMinfo(res1dir,"tables")
 
     NMdataConf(as.fun=NULL)
 })
