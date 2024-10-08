@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.7.902</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.7.903</span>
       </span>
     </div>
 
@@ -82,13 +82,17 @@
 <h2 class="page-header" data-toc-text="0.1.8" id="nmdata-018">NMdata 0.1.8<a class="anchor" aria-label="anchor" href="#nmdata-018"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-1-8">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-8"></a></h3>
-<p>If truncating columns in the csv file <code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> accepts data with commas in values, even when writing to csv files.</p>
-<p><code><a href="../reference/NMscanTables.html">NMscanTables()</a></code> includes model name in meta data table. Useful for generation of overviews of output tables from multiple models.</p>
-</div>
+<ul><li><p>If truncating columns in the csv file <code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> accepts data with commas in values, even when writing to csv files.</p></li>
+<li><p><code><a href="../reference/NMscanTables.html">NMscanTables()</a></code> includes model name in meta data table. Useful for generation of overviews of output tables from multiple models.</p></li>
+</ul></div>
 <div class="section level3">
 <h3 id="bugfixes-0-1-8">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-1-8"></a></h3>
-<p>Support for data file names including substrings “ACCEPT” and “IGN” is added. Before, such data set file names could lead to failure if interpreting data subsetting filters (ACCEPT and IGN(ORE)) in Nonmem control streams.</p>
-</div>
+<ul><li>Support for data file names including substrings “ACCEPT” and “IGN” is added. Before, such data set file names could lead to failure if interpreting data subsetting filters (ACCEPT and IGN(ORE)) in Nonmem control streams.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="other-improvements-0-1-8">Other improvements<a class="anchor" aria-label="anchor" href="#other-improvements-0-1-8"></a></h3>
+<ul><li>NMscanMultiple would sometimes print a bit of a messy overview of the results. That has been fixed without implications on the results returned.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.7" id="nmdata-017">NMdata 0.1.7<small>2024-08-26</small><a class="anchor" aria-label="anchor" href="#nmdata-017"></a></h2>
