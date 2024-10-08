@@ -118,7 +118,7 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
     }
     dims.res <- dims(list.data=res.all.list[dt.lst[,which(success)]])
     dt.lst <- mergeCheck(dt.lst,dims.res,by.x="lst",by.y="data",all.x=T,quiet=TRUE)
-
+    
     
     info.list <- lapply(res.all.list,NMinfo)
     names(info.list) <- all.files
@@ -132,7 +132,8 @@ NMscanMultiple <- function(files,dir,file.pattern,as.fun,...){
 
     if(!quiet){
         message("\nOverview of model scanning results:\n")
-        message(print(dt.lst))
+        message(paste0(capture.output(dt.lst), collapse = "\n"))
+        #message(print(dt.lst))
     }
     
     ## run as.fun

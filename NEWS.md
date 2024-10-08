@@ -2,18 +2,24 @@
 
 ## New features
 
-If truncating columns in the csv file `NMwriteData()` accepts data
-with commas in values, even when writing to csv files.
+* If truncating columns in the csv file `NMwriteData()` accepts data
+  with commas in values, even when writing to csv files.
 
-`NMscanTables()` includes model name in meta data table. Useful for
-generation of overviews of output tables from multiple models.
+* `NMscanTables()` includes model name in meta data table. Useful for
+  generation of overviews of output tables from multiple models.
 
 ## Bugfixes
 
-Support for data file names including substrings "ACCEPT" and "IGN" is
-added. Before, such data set file names could lead to failure if
-interpreting data subsetting filters (ACCEPT and IGN(ORE)) in Nonmem
-control streams. 
+* Support for data file names including substrings "ACCEPT" and "IGN"
+  is added. Before, such data set file names could lead to failure if
+  interpreting data subsetting filters (ACCEPT and IGN(ORE)) in Nonmem
+  control streams.
+
+## Other improvements
+
+* NMscanMultiple would sometimes print a bit of a messy overview of
+  the results. That has been fixed without implications on the results
+  returned.
 
 # NMdata 0.1.7
 
