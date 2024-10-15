@@ -18,7 +18,7 @@ further calculations."><meta property="og:image" content="https://philipdelff.gi
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.7.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.7.904</span>
       </span>
     </div>
 
@@ -103,7 +103,10 @@ and `j` with row and column indexes and `est` with parameter
 <dd><p>Specifies whether pars contains only a lower or
 upper triangle of an assumed symmetric matrix (most often the
 case for variance-covariance matrices), or it contains the
-full matrix.</p></dd>
+full matrix. `dt.subset="unique"` (default) means that `pars` only
+contains either upper or lower diagonal matrix (including
+diagonal), `dt.subset="all"` means `pars` contains both upper
+and lower triangles. See details.</p></dd>
 
 
 <dt id="arg-max-i">max.i<a class="anchor" aria-label="anchor" href="#arg-max-i"></a></dt>
@@ -133,7 +136,7 @@ output from `NMreadExt()`.</p></dd>
     <h2>Details</h2>
     <p>If pars does not contain all `i` values, they will be
     imputed with zeros. The desired matrix dimension is inferred
-    from `min(i)` and `max(i)`.  In case `dt.subset=="unique"`
+    from `min(i)` and `max(i)`. In case `dt.subset=="unique"`
     missing `j` elements will also give imputations of missing
     elements.</p>
     </div>
