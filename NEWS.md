@@ -20,6 +20,9 @@
 * NMscanMultiple would sometimes print a bit of a messy overview of
   the results. That has been fixed without implications on the results
   returned.
+  
+* dt2mat() now returns actual matrix objects. This provides
+  compatibility with the simpar package.
 
 # NMdata 0.1.7
 

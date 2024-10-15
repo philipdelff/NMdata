@@ -14,7 +14,10 @@ and `j` with row and column indexes and `est` with parameter
 \item{dt.subset}{Specifies whether pars contains only a lower or
 upper triangle of an assumed symmetric matrix (most often the
 case for variance-covariance matrices), or it contains the
-full matrix.}
+full matrix. `dt.subset="unique"` (default) means that `pars` only
+contains either upper or lower diagonal matrix (including
+diagonal), `dt.subset="all"` means `pars` contains both upper
+and lower triangles. See details.}
 
 \item{max.i}{By default, the maximum row number is derived as he
 maximum value in the `i` column. If more (empty ones) are
@@ -39,7 +42,7 @@ further calculations.
 \details{
 If pars does not contain all `i` values, they will be
     imputed with zeros. The desired matrix dimension is inferred
-    from `min(i)` and `max(i)`.  In case `dt.subset=="unique"`
+    from `min(i)` and `max(i)`. In case `dt.subset=="unique"`
     missing `j` elements will also give imputations of missing
     elements.
 }
