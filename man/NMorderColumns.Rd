@@ -17,6 +17,7 @@ NMorderColumns(
   col.row,
   col.flagn,
   col.dv = "DV",
+  allow.char.TIME = TRUE,
   as.fun = NULL,
   quiet
 )
@@ -76,6 +77,11 @@ configured with `NMdataConf()`.}
 
 \item{col.dv}{a vector of column names to put early to represent
 dependent variable(s). Default is DV.}
+
+\item{allow.char.TIME}{For the $INPUT text proposal only. Assume
+Nonmem can read TIME and DATE even if it can't be translated to
+numeric. This is necessary if using the 00:00 format. Default
+is TRUE.}
 
 \item{as.fun}{The default is to return a data.table if data is a
 data.table and return a data.frame in all other cases. Pass a

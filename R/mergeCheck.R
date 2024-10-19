@@ -125,9 +125,8 @@
 ##' dt.cov <- pk[,.(ID=unique(ID))]
 ##' dt.cov[,COV:=sample(1:5,size=.N,replace=TRUE)]
 ##' dt.cov <- dt.cov[c(1,1:(.N-1))]
-##' dim(pk)
 ##' res.merge <- merge(pk,dt.cov,by="ID")
-##' dim(res.merge)
+##' dims(pk,dt.cov,res.merge)
 ##' mergeCheck(pk,dt.cov,by="ID")
 ##' }
 ##' @export
@@ -274,7 +273,8 @@ mergeCheck <- function(x,y,by,by.x,by.y,common.cols=base::warning,ncols.expect,t
     
     commoncols.found <- FALSE
     fun.commoncols <- common.cols
-    if(is.character(fun.commoncols)) fun.commoncols <- stop
+    ## if common.cols was one of drop.x etc, that handling must be sufficient to avoid findings
+if(is.character(fun.commoncols)) fun.commoncols <- stop
     
     if(length(cols.common.notby)) {
         messageWrap(paste0("x and y have common column names not being merged by. This will create new column names in output. Common but not merged by: ",paste(cols.common.notby,collapse=", "),"."),

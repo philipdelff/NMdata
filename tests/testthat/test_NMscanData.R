@@ -552,7 +552,9 @@ test_that("input.txt/output.txt - unset modelname",{
     res1[,(cols.differ):=NULL]
     res1dir[,(cols.differ):=NULL]
 
-    expect_equal(res1[,!("model")],res1dir[,!("model")])
+    expect_equal(unNMdata(res1[,!("model")]),unNMdata(res1dir[,!("model")]))
+    ## NMinfo(res1,"tables")
+    ## NMinfo(res1dir,"tables")
 
     NMdataConf(as.fun=NULL)
 })
@@ -983,13 +985,12 @@ test_that("csv vs rds vs fst",{
 
 test_that("inside lappy",{
 ### there are issues running NMdata functions in lapply - probably due to getArgs
-
     lsts <- c(    "testData/nonmem/xgxr014.lst",    "testData/nonmem/xgxr032.lst")
 
-    res1 <- NMscanData(lsts[1],as.fun="data.table")
-    res2 <- NMscanData(lsts[2],as.fun="data.table")
+    res1 <- NMscanData(lsts[1],as.fun="data.table",check.time=FALSE,quiet=TRUE)
+    res2 <- NMscanData(lsts[2],as.fun="data.table",check.time=FALSE,quiet=TRUE)
 
-    res.all <- rbindlist(lapply(lsts,NMscanData,as.fun="data.table"),fill=T )
+    res.all <- rbindlist(lapply(lsts,NMscanData,as.fun="data.table",check.time=FALSE,quiet=TRUE),fill=T )
     
     
     dims1 <- dims(

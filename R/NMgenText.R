@@ -51,7 +51,7 @@
 ##'     used (probably only interesting if character values are
 ##'     supplied).
 ##' @param allow.char.TIME For the $INPUT text proposal only. Assume
-##'     Nonmem can read TIME even if it can't be translated to
+##'     Nonmem can read TIME and DATE even if it can't be translated to
 ##'     numeric. This is necessary if using the 00:00 format. Default
 ##'     is TRUE.
 ##' @param width If positive, will be passed to strwrap for the $INPUT
@@ -78,14 +78,16 @@ NMgenText <- function(data,
                       ){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####    
-    occ.cum <- NULL
-    TIME <- NULL
+
+    DATE <- NULL
     name.nm <- NULL
     drop.nm <- NULL
+    include <- NULL
     name.pseudo <- NULL
     name.rename <- NULL
-    include <- NULL
     numeric.ok <- NULL
+    occ.cum <- NULL
+    TIME <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
@@ -141,6 +143,13 @@ NMgenText <- function(data,
         }
     }
 
+    if(allow.char.TIME){
+        if("DATE"%in%colnames(data) &&
+           as.num.ok[,DATE==FALSE]) {
+            as.num.ok[,DATE:=TRUE]
+        }
+    }
+
 
     dt.num.ok <- data.table(
         col=colnames(as.num.ok)
@@ -160,15 +169,22 @@ NMgenText <- function(data,
     
     ## apply "until"
     if(!missing(until) && !is.null(until)){
+        
         if(!is.numeric(until)&&!is.character(until)){
             messageWrap("until must be either numeric or character.")
         }
         if(is.character(until)){
             ## convert to numeric
+            
             until <- match(until,dt.num.ok[,name.nm])
         }
-        until <- max(until)
-        dt.num.ok <- dt.num.ok[1:until]
+        until <- until[!is.na(until)]
+        if(length(until)){
+            until <- max(until)
+            dt.num.ok <- dt.num.ok[1:until]
+        } else {
+            message("No recognized variables in \'until\'. Ignoring.")
+        }
     }
 
     ## apply DROP
@@ -225,7 +241,7 @@ NMgenText <- function(data,
         text.nm.input <- strwrap(
             text.nm.input
         )
-        } else if(width>0){
+    } else if(width>0){
         text.nm.input <- strwrap(
             text.nm.input
            ,width=width

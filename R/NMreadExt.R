@@ -78,25 +78,29 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
+    . <- NULL
+    blocksize <- NULL
+    cond <- NULL
+    eigCor <- NULL
+    est <- NULL
+    FIX <- NULL
+    i <- NULL
+    iblock <- NULL
+    imin <- NULL
+    j <- NULL
     ITERATION <- NULL
-    variable <- NULL
     NMREP <- NULL
     model <- NULL
     par.type <- NULL
     parameter <- NULL
-    i <- NULL
-    j <- NULL
     TABLENO <- NULL
     table.step <- NULL
-    FIX <- NULL
-    est <- NULL
-    cond <- NULL
-    eigCor <- NULL
     partLik <- NULL
     se <- NULL
     seStdDevCor <- NULL
     stdDevCor <- NULL
     value <- NULL
+    variable <- NULL    
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     

@@ -79,7 +79,8 @@ test_that("Dropping a column in Nonmem",{
 
 test_that("A comma in a character",{
 
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    ## pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds") |> setDT()
     ## dropping a character column
     pk[,CYCLE:=paste0(as.character(CYCLE),",0")]
 
@@ -88,7 +89,7 @@ test_that("A comma in a character",{
     expect_error(
         NMwriteData(pk,file="testOutput/NMwriteDataTmp.csv",
                    ,formats=NULL
-                    ,nm.drop="CYCLE")
+                   ,nm.drop="CYCLE")
     )
 
 })
@@ -96,7 +97,7 @@ test_that("A comma in a character",{
 
 test_that("Identical column names",{
 
-    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds") |> setDT()
     pk <- cbind(pk[,.(CYCLE)],pk)
     expect_warning(NMwriteData(pk,file="testOutput/NMwriteDataTmp.csv"
                               ,write.rds=F,write.csv=F
@@ -300,3 +301,41 @@ test_that("save csv and fst",{
 
 }
 )
+
+
+test_that("Non-numeric DATE and TIME",{
+
+    
+    fileRef <- "testReference/NMwriteData_13.rds"
+    outfile <- "testOutput/NMwriteData_13.csv"
+    
+    pk <- readRDS(file="testData/data/xgxr2.rds") |> setDT()
+
+    ## pk <- fix.input(pk)
+    
+    pk[,time.tz:=as.POSIXct("2000/01/01",tz="UTC")+TIME*3600]
+    ## pk[,DATE:=as.character(as.Date(time.tz),format="%y/%m/%d")]
+    pk[,DATE:=format(as.Date(time.tz),format="%y/%m/%d")]
+    ## pk[,TIME:=as.character(time.tz,format="%H:%M:%S")]
+    pk[,TIME:=format(time.tz,format="%H:%M:%S")]
+    
+
+    pk <- NMorderColumns(pk)
+    
+    nmcode <- NMwriteData(pk,file=outfile
+                         ,script="DATE and TIME as char",formats=cc(csv),
+                          args.stamp=list(time="2021-11-21 11:00:00"))
+
+    res <- NMreadCsv(fnExtension(outfile,"csv"),as.fun="data.table")
+    
+
+    expect_equal_to_reference(
+        res
+       ,fileRef,version=2)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        compareCols(res,ref)
+}
+
+})

@@ -44,7 +44,7 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",sections=c("PRED","PK","ERRO
                        ,SIGMA="(SIGMA|ERR|EPS)"
                         )
     str.regex.find <- paste0("[^[:alnum:]]",str.regex)
-
+    
     
     lines.list <- NMreadSection(lines=lines,keep.comments=FALSE)
     lines.list <- lines.list[names(lines.list)%in%sections]
@@ -65,7 +65,11 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",sections=c("PRED","PK","ERRO
 
     ## determine found variable type?
     
-    dt.code <- dt.code[,.(varname=regmatches(line2, gregexpr(paste0(str.regex.find,"\\(([0-9]+(,[0-9]+)*)\\)"),line2)) |> unlist()),by=.(line.var,line2)]
+    dt.code <- dt.code[,.(varname=unlist(
+                              regmatches(line2,
+                                         gregexpr(paste0(str.regex.find,"\\(([0-9]+(,[0-9]+)*)\\)"),line2))
+                          )),
+                       by=.(line.var,line2)]
     dt.code[,varname:=sub("^[^[:alnum:]]","",varname)]
     dt.code[,var.type:=sub(sprintf("(%s).*",str.regex),"\\1",varname)][,lineno:=.I]
 

@@ -47,6 +47,10 @@
 ##'     configured with `NMdataConf()`.
 ##' @param col.dv a vector of column names to put early to represent
 ##'     dependent variable(s). Default is DV.
+##' @param allow.char.TIME For the $INPUT text proposal only. Assume
+##'     Nonmem can read TIME and DATE even if it can't be translated to
+##'     numeric. This is necessary if using the 00:00 format. Default
+##'     is TRUE.
 ##' @param as.fun The default is to return a data.table if data is a
 ##'     data.table and return a data.frame in all other cases. Pass a
 ##'     function in as.fun to convert to something else. The default
@@ -91,6 +95,7 @@ NMorderColumns <- function(data,
                            col.row,
                            col.flagn,
                            col.dv="DV",
+                           allow.char.TIME=TRUE,
                            as.fun=NULL,
                            quiet){
 
@@ -129,7 +134,7 @@ NMorderColumns <- function(data,
     if(missing(first)) first <- NULL
     if(missing(last)) last <- NULL
     
-    first1 <- c(col.row,col.id,col.nomtime,col.time,"EVID","CMT","AMT","II","ADDL","RATE",
+    first1 <- c(col.row,col.id,col.nomtime,"DATE",col.time,"EVID","CMT","AMT","II","ADDL","RATE",
                 "SS",col.dv,"MDV")
     first2 <- c(col.flagn,"OCC","GRP","TRIAL","STUDY","DRUG","ROUTE")
 
@@ -137,20 +142,25 @@ NMorderColumns <- function(data,
     nms <- names(data)
     nms.dup <- nms[duplicated(nms)]
     if(!quiet && length(nms.dup)) messageWrap(paste0("Duplicated column names:\n",paste(nms.dup,collapse=", ")),fun.msg=warning)
-### these checks are now done in NMcheckData
-    ## missing <- setdiff(setdiff(first1,c("II","ADDL","RATE","SS")),nms)
-    ## if(!quiet && length(missing)) messageWrap(paste0("These standard Nonmem columns were not found in data:\n",paste(missing,collapse="\n")),fun.msg=message)
 
     first <- c(first1,first)
 
     dt.names <- data.table(name=colnames(data))
     if(chars.last){
+### Accept TIME and DATE even if not numeric
+        
         ## chars.last: If columns cannot be converted to numerics
         dt.num.w <- data[,lapply(.SD,NMisNumeric)]
+
         dt.names[,isnum:=as.logical(dt.num.w[1,])]
+        if(allow.char.TIME){
+            dt.names[,isnum:=name%in%c("DATE","TIME")|as.logical(dt.num.w[1,])]
+        }
     } else {
         dt.names[,isnum:=TRUE]
     }
+
+
     dt.names[,nfirst:=match(name,first)]
     dt.names[,nfirst2:=match(name,first2)]
     dt.names[,nlast:=match(name,last)]

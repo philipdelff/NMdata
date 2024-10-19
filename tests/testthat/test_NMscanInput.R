@@ -141,12 +141,13 @@ test_that("Including meta data",{
 test_that("CYCLE=DROP",{
 
     fileRef <- "testReference/NMscanInput_07.rds"
-    file.lst <- system.file("examples/nonmem/xgxr002.lst",package="NMdata")
+    ### file.lst <- system.file("examples/nonmem/xgxr002.lst",package="NMdata")
+    file.lst <- "testData/nonmem/xgxr002.lst"
 
     ## res <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")
 ### using as.data.table for as.fun is not recommended but still allowed
     res <-
-        NMscanInput(file=file.lst,applyFilters = T,as.fun="data.table")
+        NMscanInput(file=file.lst,apply.filters = T,as.fun="data.table")
 
     fix.time(res)
     nm1 <- NMinfo(res)
@@ -201,7 +202,8 @@ test_that("Missing control stream",{
 test_that("apply.filters=F and recover.rows=FALSE",{
 
     fileRef <- "testReference/NMscanInput_11.rds"
-    file.lst <- system.file("examples/nonmem/xgxr002.lst",package="NMdata")
+    ##file.lst <- system.file("examples/nonmem/xgxr002.lst",package="NMdata")
+file.lst <- "testData/nonmem/xgxr002.lst"
 
     ## res <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")
 ### using as.data.table for as.fun is not recommended but still allowed

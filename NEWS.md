@@ -1,5 +1,30 @@
+# NMdata 0.1.8
 
-# 0.1.7
+## New features
+
+* If truncating columns in the csv file `NMwriteData()` accepts data
+  with commas in values, even when writing to csv files.
+
+* `NMscanTables()` includes model name in meta data table. Useful for
+  generation of overviews of output tables from multiple models.
+
+## Bugfixes
+
+* Support for data file names including substrings "ACCEPT" and "IGN"
+  is added. Before, such data set file names could lead to failure if
+  interpreting data subsetting filters (ACCEPT and IGN(ORE)) in Nonmem
+  control streams.
+
+## Other improvements
+
+* NMscanMultiple would sometimes print a bit of a messy overview of
+  the results. That has been fixed without implications on the results
+  returned.
+  
+* dt2mat() now returns actual matrix objects. This provides
+  compatibility with the simpar package.
+
+# NMdata 0.1.7
 
 ## New features
 * `NMreadPartab()` has been generalized to support comment formats very
@@ -9,7 +34,7 @@
   any structure should be supported as long as delimitors are not
   alphabetic or numeric (so any special characters should
   work). Notice, delimitors can change between fields . Example:
-  "$THETA 1.4 ; 3 - CL (Clearance) [L/h]" would be matched by
+  `"$THETA 1.4 ; 3 - CL (Clearance) [L/h]"` would be matched by
   `NMreadPartab(...,format="%init ;%idx-%symbol(%label)[%unit]")`
   which would then return a table including columns init, idx, symbol,
   label, and unit. The comments must be systematic within say `$THETA`
@@ -22,8 +47,40 @@
   that references THETA(1), `NMrelate()` will return a label
   `TVCL`.
 
-* `mergeCheck()` has additional features available in the common.cols
-  argument.
+* Improved support for character-coded `TIME` and `DATE`
+  arguments. The default behavior is to allow (not require) `TIME` and
+  `DATE` columns to be non-numeric. This is to support the Nonmem
+  character format of DATE and TIME. It affects sorting of columns
+  (`NMorderColumn()`) and the auto-generated `$INPUT` section
+  suggestions. Where applicable, the `allow.char.TIME` argument
+  controls this behavior. Set to `allow.char.TIME=FALSE` to require
+  `TIME` and `DATE` columns be numeric. Thanks to Sanaya Shroff for
+  the request, enabling `NMsim` to simulate using data sets with one
+  or more of these columns coded as character.
+
+* `mergeCheck(x,y)` has new options for handling common columns in
+  data sets. The `common.cols` argument replaces `fun.commoncols` with
+  added functionality.
+
+  - `common.cols="merge.by"` to include them in by, even
+if they are not provided in the `by` argument.
+
+  - `common.cols="drop.x"` to drop the columns on the `x` and
+overwrite with columns in y
+
+  - `common.cols="drop.y"` to preserve in `x`
+
+
+  - `base::stop` The default value. Throw an error if common.columns
+are not included in merge `by` options.
+
+  - `common.cols=NULL` disabled handling and return columns as ".x"
+and ".y".
+
+  - Any function. `common.cols=warning` will issue a warning instead
+of throwing an error.
+
+
 
 * `NMreadExt()` separates objective function values into a separate list
   element. The `return` argument is used to control what data to
@@ -32,7 +89,9 @@
   objective funtion value, or "all" for a list with all of those.
   
 * `NMreadExt()` adds block information to `OMEGA` and `SIGMA` elements
-  based on off-diagonal values.
+  based on off-diagonal values. `iblock` identifies which block the
+  element is in. `blocksize` is the size of the block the element is
+  in. Thank you Brian Reilly for contributing to this.
   
 * `NMreadExt()` adds a `par.name` column which is provides consistent
   parameter naming. Instead of Nonmem's `THETA1` which is found in the
@@ -61,14 +120,16 @@
 * `NMreadExt()` would mess up iterations and parameter estimates if
   `as.fun` was set to returning something else than `data.table`s. Fixed.
 
-# 0.1.6
+
+
+# NMdata 0.1.6
 
 ## New features
 
 * Function `NMreadShk()` to read and format `.shk` (shrinkage) files.
 
 * Functions `mat2dt()` and `dt2mat()` included to convert between
-  matrices and data.frame format of matrix data - especially for
+  matrices and `data.frame` format of matrix data - especially for
   symmetric matrices.
   
 * Function `addOmegaCorr()` adds estimated correlation between ETAs to
@@ -87,7 +148,7 @@
   `ADDL` and `II`) followed by other doses. Fixed. Thanks to Simone
   Cassani for catching it.
 
-# 0.1.5
+# NMdata 0.1.5
 ## New features
 * `countFlags` no longer needs a table of flags. By default it will
   summarize the ones found in data. If additional flags wanted in
@@ -121,7 +182,9 @@
   so). Now `NMdataConf(reset=TRUE)` makes sure to wipe all such
   configuration if exists.
 
-# 0.1.4
+
+
+# NMdata 0.1.4
 
 ## New functions
 * `NMreadParsText()` is a new function to extract comments to
@@ -157,7 +220,7 @@ tables.
 * `NMreadText` would fail to disregard some comment lines when
   `keep.comments=FALSE`. Fixed.
 
-# 0.1.3
+# NMdata 0.1.3
 * Better support for models with multiple estimation
   steps. Particularly reading output tables now better distinguishes
   between Nonmem table numbers and repetitions (like
@@ -167,7 +230,7 @@ tables.
 * Improved support for reading multiple models with NMreadExt and
 NMreadPhi. 
 
-# 0.1.2
+# NMdata 0.1.2
 ## New features
 * NMreadExt is a new function that reads parameter estimates,
   uncertainties if available, estimation iterations and other
@@ -186,7 +249,7 @@ NMreadPhi.
   arguments.
 
 
-# 0.1.1
+# NMdata 0.1.1
 ## New features
 * NMwriteSection can now handle functions to perform control stream
   editing. NMwriteSection provides methods to edit control
@@ -202,7 +265,7 @@ NMreadPhi.
   with a directory (`dir`) only.
 * Minor bugfix in compareCols in case input is an unnamed list
 
-# 0.1.0
+# NMdata 0.1.0
 
 ## New features
 * The super fast `fst` format is now supported. Data sets can be
@@ -271,7 +334,7 @@ This release provides a few bugfixes, nothing major.
   cumulative number and it aligns with col.doscuma which is the
   cumulative amount.
 
-# 0.0.16
+# NMdata 0.0.16
 ## New features
 * `NMwriteSection()` includes argument `location`. In combination with
   `section`, this determines where the new section is
@@ -295,11 +358,11 @@ on file. This has been fixed to support cases where renaming or a
 pseudonym is being used to generate an `ID` column in `$INPUT`.
 
 
-# 0.0.15
+# NMdata 0.0.15
 This update is of no difference to users. A technicality has been
 chaned to ensure consistent test results once data.table 1.14.7 is
 
-# 0.0.14
+# NMdata 0.0.14
 ## New features
 * `fnExtension()` has been generalized. It now ignores leading spaces in
   new extension, and extensions with zero or one leading period are
@@ -362,9 +425,13 @@ chaned to ensure consistent test results once data.table 1.14.7 is
   identifier is simplified.
   
 * NMdata version added to welcome message.
-# 0.0.13
+
+
+
+# NMdata 0.0.13
 
 ## New functions
+
 * `NMexpandDoses()` - Transform repeated dosing events (`ADDL`/`II`)
   to individual dosing events
 * `addTAPD()` - Add cumulative number of doses, time of last dose,
@@ -374,12 +441,14 @@ chaned to ensure consistent test results once data.table 1.14.7 is
   has long been part of NMdata but has not been exported until now.
 
 ## New data
+
 * A new data set called mad is included. It is based on the
   mad_missing_duplicates from the `xgxr` package. Doses are implemented
   using ADDL and II (so only one dosing row per subject). It is
   included for testing the new NMexpandDoses and addTAPD functions.
 
 ## Bugfixes
+
 * Non-critical bugfix in mergeCheck dimensions overview printed to
   console. One column too many was reported in input and result
   data. No implications on results from mergeCheck.

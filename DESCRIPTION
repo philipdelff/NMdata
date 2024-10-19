@@ -1,7 +1,7 @@
 Package: NMdata
 Type: Package
 Title: Preparation, Checking and Post-Processing Data for PK/PD Modeling
-Version: 0.1.6.923
+Version: 0.1.7.905
 Authors@R:
   c(person(given="Philip", family="Delff",
      email = "philip@delff.dk",
@@ -33,6 +33,6 @@ Suggests:
   htmltools,
   spelling
 Encoding: UTF-8
-URL: https://philipdelff.github.io/NMdata/
 BugReports: https://github.com/philipdelff/NMdata/issues
 Language: en-US
+URL: https://philipdelff.github.io/NMdata/

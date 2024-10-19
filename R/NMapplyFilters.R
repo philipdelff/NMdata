@@ -31,7 +31,7 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     value <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
-
+    
     
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
@@ -71,11 +71,19 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     ## simplifying so IGNORE/IGN is always IGN
     text3 <- gsub("IGNORE","IGN",text3)
 
-    conds.sc <- regmatches(text3, gregexpr("(?:IGN) *=* *[^ (+=]",text3))
+    
+    ## ^(.* )* : if anything before IGN, there must be a space in between
+    ## conds.sc <- regmatches(text3, gregexpr("^(.* )*(?:IGN) *=* *[^ (+=]",text3))
+    conds.sc <- regmatches(text3, gregexpr("(?<![[:alnum:]])IGN *=* *[^ (+=]",text3,perl=T))
+    conds.sc
     conds.sc <- do.call(c,conds.sc)
 ### getting rid of single char conditions
-    text3 <- gsub(paste0("IGN"," *=* *[^ (+=]"),"",text3)
-
+    
+    ## text3 <- gsub(paste0("^(\\(.* \\)*)IGN"," *=* *[^ (+=]"),"\\1",text3)
+    ## gsub("^((.* )*)IGN *=* *[^ (+=](.*)","\\1\\2",text3)
+    ## gsub("((.* )*)IGN *=* *[^ (+=](.*)","\\1\\2",text3)
+    text3 <- gsub("(?<![[:alnum:]])IGN *=* *[^ (+=]","",perl=TRUE,text3)
+    
     ## check if IGNORE or ACCEPT are found. If both found, it is an error. 
     any.accepts <- any(grepl("ACCEPT",text3))
     any.ignores <- any(grepl("IGN",text3))
@@ -89,7 +97,7 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
         type.condition <- "ACCEPT"
     }
     
-
+    
 ### expression-style ones
     ## this is not entirely correct.
 ### 1. A comma-separated list of expressions can be inside the ()s.
@@ -99,6 +107,7 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
         regmatches(text3, gregexpr(paste0(type.condition," *=* *\\([^)]*\\)"),text3))
     conds.expr <- do.call(c,conds.expr)
 
+    
     
     
     ## translating single-charaters
@@ -165,8 +174,11 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     
     cond.combine <- "|"
     ## remember to negate everything if the type is ignore
+    
     if(type.condition=="IGN") {
-        expressions.list <- paste0("!",expressions.list)
+        if(length(expressions.list)){
+            expressions.list <- paste0("!",expressions.list)
+        }
         cond.combine <- "&"
     }
     
@@ -175,11 +187,13 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     } else {
         conditions.all.sc <- "TRUE"
     }
+
     
     expressions.all <- NULL
     if(length(expressions.list)) {
         expressions.all <- paste0("(",paste(expressions.list,collapse=cond.combine),")")
     }
+
     
     if(invert) {
         

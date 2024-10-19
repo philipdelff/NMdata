@@ -21,7 +21,6 @@ NMreadSection(
   keepName,
   keepComments,
   asOne,
-  cleanSpaces,
   ...
 )
 
@@ -78,8 +77,6 @@ probably want FALSE.}
 \item{keepComments}{Deprecated. See keep.comments.}
 
 \item{asOne}{Deprecated. See as.one.}
-
-\item{cleanSpaces}{Deprecated. See clean.spaces.}
 
 \item{...}{Additional arguments passed to NMextractText}
 }

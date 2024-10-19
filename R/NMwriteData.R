@@ -299,17 +299,6 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
     
     data.dt <- copy(as.data.table(data))
 
-    ## Check if character variables contain commas
-    ## This would cause trouble when writing csv
-    
-    has.no.comma <- data.dt[,lapply(.SD,function(x){is.numeric(x)||!any(grepl(",",as.character(x)))})]
-    comma.ok <- as.logical(has.no.comma[1])
-
-    if(any(!comma.ok)){
-        messageWrap(paste("You must avoid commas in data values. They will corrupt the csv file, so get rid of them before saving data. Comma found in column(s):",paste(colnames(data.dt)[comma.ok==FALSE],sep=", ")),
-                    fun.msg=stop)
-    }
-
     
     ## if any repetetions, give warning, and add numbers
     
@@ -348,6 +337,27 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
             n.cols.trunc <- length(strsplit(string.trunc,split=" ")[[1]])
             data.csv <- data[,1:n.cols.trunc]
         }
+
+        ## Check if character variables contain commas
+        ## This would cause trouble when writing csv
+        has.no.comma <- data.csv[,lapply(.SD,function(x){is.numeric(x)||!any(grepl(",",as.character(x)))})]
+        comma.ok <- as.logical(has.no.comma[1])
+
+        if(any(!comma.ok)){
+
+            messageWrap(
+                "When writing csv, You must avoid commas in data values. They will corrupt the csv file. You can
+
+1) avoid csv using formats.write=\"rds\" or
+2) drop columns containing commas or
+3) remove or replace commas in data values before saving data. ?editCharCols can help with option 3.",
+paste("
+
+Comma found in column(s):",paste(colnames(data.csv)[comma.ok==FALSE],collapse=", ")),
+fun.msg=stop)
+        }
+### Check for commas done
+        
         
         do.call(fwrite,append(list(x=data.csv,file=file.csv),args.fwrite))
 
