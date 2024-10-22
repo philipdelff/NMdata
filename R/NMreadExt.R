@@ -218,7 +218,7 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
 
         ## pars[par.type%in%c("OMEGA","SIGMA"),.(i,j,iblock,blocksize,value)]
 
-        ### this is insufficient. if 1-2 and 3-4 are blocks, (3,2) must not be part of any block.
+        ### 
         pars[abs(i-j)>(blocksize-1),(c("iblock","blocksize")):=list(NA,NA)]
         pars[!is.na(iblock),imin:=min(i),by=.(iblock)]
         pars[j<imin,(c("iblock","blocksize")):=list(NA,NA)]
