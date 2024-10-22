@@ -82,7 +82,7 @@
 <h2 class="page-header" data-toc-text="0.1.8" id="nmdata-018">NMdata 0.1.8<a class="anchor" aria-label="anchor" href="#nmdata-018"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-1-8">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-8"></a></h3>
-<ul><li><p>If truncating columns in the csv file <code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> accepts data with commas in values, even when writing to csv files.</p></li>
+<ul><li><p>If truncating/dropping columns in the csv file, <code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> accepts data with commas in values, even when writing to csv files. The way <code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> writes csv files, commas in character columns are a problem. But the <code>trunc.csv.as.nm=TRUE</code> argument means that columns not used by Nonmem (i.e. including most character columns) are not written to csv. Instead of rejecting these data sets right away, <code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> will now only return an error ifcharacter variables with commas in values are attempted written to csv file.</p></li>
 <li><p><code><a href="../reference/NMscanTables.html">NMscanTables()</a></code> includes model name in meta data table. Useful for generation of overviews of output tables from multiple models.</p></li>
 </ul></div>
 <div class="section level3">
