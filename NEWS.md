@@ -2,8 +2,15 @@
 
 ## New features
 
-* If truncating columns in the csv file `NMwriteData()` accepts data
-  with commas in values, even when writing to csv files.
+* If truncating/dropping columns in the csv file, `NMwriteData()`
+  accepts data with commas in values, even when writing to csv
+  files. The way `NMwriteData()` writes csv files, commas in character
+  columns are a problem. But the `trunc.csv.as.nm=TRUE` argument means
+  that columns not used by Nonmem (i.e. including most character
+  columns) are not written to csv. Instead of rejecting these data
+  sets right away, `NMwriteData()` will now only return an error
+  ifcharacter variables with commas in values are attempted written to
+  csv file.
 
 * `NMscanTables()` includes model name in meta data table. Useful for
   generation of overviews of output tables from multiple models.
@@ -70,7 +77,6 @@ overwrite with columns in y
 
   - `common.cols="drop.y"` to preserve in `x`
 
-
   - `base::stop` The default value. Throw an error if common.columns
 are not included in merge `by` options.
 
@@ -79,7 +85,6 @@ and ".y".
 
   - Any function. `common.cols=warning` will issue a warning instead
 of throwing an error.
-
 
 
 * `NMreadExt()` separates objective function values into a separate list
@@ -119,7 +124,6 @@ of throwing an error.
 
 * `NMreadExt()` would mess up iterations and parameter estimates if
   `as.fun` was set to returning something else than `data.table`s. Fixed.
-
 
 
 # NMdata 0.1.6

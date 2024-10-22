@@ -119,14 +119,25 @@ NMreadParsText <- function(file,lines,format,
     if(!xor(is.null(file),is.null(lines))){
         stop("Exactly one of file and lines must be provided.")
     }
+
+    ## args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
+
     if(!is.null(file)){
         if(length(file)>1) {
-            return(rbindlist(lapply(file,NMreadParsText,
-                                    fields=fields,
-                                    fields.omega=fields.omega,
-                                    fields.sigma=fields.sigma,
-                                    use.theta.idx=use.theta.idx,
-                                    spaces.split=spaces.split)))
+            
+            ## return(rbindlist(lapply(file,NMreadParsText,
+            ##                         fields=fields,
+            ##                         fields.omega=fields.omega,
+            ##                         fields.sigma=fields.sigma,
+            ##                         use.theta.idx=use.theta.idx,
+            ##                         spaces.split=spaces.split)))
+            res <- lapply(file,function(f){
+                args2 <- args
+                args2$file <- f
+                do.call(NMreadParsText,args2)
+            })
+            return(res)
         } else {
             lines <- readLines(file)
         }
@@ -140,8 +151,6 @@ NMreadParsText <- function(file,lines,format,
     if(missing(modelname)) modelname <- NULL
     modelname <- NMdataDecideOption("modelname",modelname)
 
-    ## args <- getArgs()
-    args <- getArgs(sys.call(),parent.frame())
 
     if(missing(format)){
         format <- NULL
@@ -256,11 +265,10 @@ NMreadParsText <- function(file,lines,format,
     get.comments <- function(lines,section,res.fields,use.theta.idx=FALSE){
         
         ## get theta comments
-### due to a bug in NMreadSection in NMdata 0.1.3 we need to run this in two steps with keep.comments=TRUE and then remove comments lines
         lines.thetas <- NMreadSection(lines=lines,section=section,keep.name=FALSE,keep.empty=FALSE,keep.comments=TRUE)
         if(length(lines.thetas)==0) return(NULL)
         ## this should be the same as switching keep.comments to FALSE in NMreadSection()
-        lines.thetas <- sub(pattern="^ *;.*$",replacement="",x=lines.thetas)
+        ## lines.thetas <- sub(pattern="^ *;.*$",replacement="",x=lines.thetas)
         ## these will confuse in omega/sigma sections with the current method. For those, numbering has to be done if off-diag elements are defined.
         lines.thetas <- gsub("BLOCK(.+)","",lines.thetas)
         lines.thetas <- lines.thetas[!grepl("^ *$",lines.thetas)]
@@ -300,6 +308,8 @@ NMreadParsText <- function(file,lines,format,
         omegas[,par.type:=toupper(section)]
         omegas
     }
+
+    
 
     rm.idx <- TRUE    
     thetas <- get.theta.comments(lines=lines,section="THETA",format=format,

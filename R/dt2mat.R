@@ -71,15 +71,6 @@ dt2mat <- function(pars,dt.subset="unique",max.i,fill=0,col.value) {
     pars.matshape <- dcast(pars.mat,i~j,value.var="value")[,!("i")]
     matrix.pars <- matrix(unlist(pars.matshape),ncol=nrow(pars.matshape))
     
-    if(F){
-        if(nrow(pars.matshape)==1){
-            ## matrix.pars <- matrix(pars.matshape)
-            matrix.pars <- matrix(as.numeric(unlist(pars.matshape)))
-        } else {
-            matrix.pars <- as.matrix(pars.matshape)
-        }
-    }
-    
     if(!isFALSE(fill)){
         matrix.pars[is.na(matrix.pars)] <- fill
     }
