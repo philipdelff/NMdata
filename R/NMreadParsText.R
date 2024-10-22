@@ -267,8 +267,8 @@ NMreadParsText <- function(file,lines,format,
         ## get theta comments
         lines.thetas <- NMreadSection(lines=lines,section=section,keep.name=FALSE,keep.empty=FALSE,keep.comments=TRUE)
         if(length(lines.thetas)==0) return(NULL)
-        ## this should be the same as switching keep.comments to FALSE in NMreadSection()
-        ## lines.thetas <- sub(pattern="^ *;.*$",replacement="",x=lines.thetas)
+        ## Remove empty lines and lines that are comments only. NMreadSection() does not have a way to do this.
+        lines.thetas <- sub(pattern="^ *;.*$",replacement="",x=lines.thetas)
         ## these will confuse in omega/sigma sections with the current method. For those, numbering has to be done if off-diag elements are defined.
         lines.thetas <- gsub("BLOCK(.+)","",lines.thetas)
         lines.thetas <- lines.thetas[!grepl("^ *$",lines.thetas)]
@@ -310,7 +310,7 @@ NMreadParsText <- function(file,lines,format,
     }
 
     
-
+    
     rm.idx <- TRUE    
     thetas <- get.theta.comments(lines=lines,section="THETA",format=format,
                                  use.theta.idx=use.theta.idx)

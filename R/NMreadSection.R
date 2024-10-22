@@ -18,7 +18,9 @@
 ##' @param return If "text", plain text lines are returned. If "idx",
 ##'     matching line numbers are returned. "text" is default.
 ##' @param keep.comments Default is to keep comments. If FALSE, the
-##'     will be removed.
+##'     will be removed. See keep.empty too. Notice, there is no way
+##'     for NMreadSection to keep comments and also drop lines that
+##'     only contain comments.
 ##' @param keep.empty Keep empty lines in output? Default is
 ##'     FALSE. Notice, comments are removed before empty lines are
 ##'     handled if `keep.comments=TRUE`.
