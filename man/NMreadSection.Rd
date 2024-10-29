@@ -53,7 +53,9 @@ handled if `keep.comments=TRUE`.}
 Default is FALSE. It can only be FALSE, if return="text".}
 
 \item{keep.comments}{Default is to keep comments. If FALSE, the
-will be removed.}
+will be removed. See keep.empty too. Notice, there is no way
+for NMreadSection to keep comments and also drop lines that
+only contain comments.}
 
 \item{as.one}{If multiple hits, concatenate into one. This will
 most often be relevant with name="TABLE". If FALSE, a list

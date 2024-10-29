@@ -22,6 +22,7 @@ NMcheckData(
   col.usubjid,
   cols.dup,
   type.data = "est",
+  cols.disable,
   na.strings,
   return.summary = FALSE,
   quiet = FALSE,
@@ -109,13 +110,19 @@ is less likely).}
 \item{cols.dup}{Additional column names to consider in search of
 duplicate events. \code{col.id}, \code{col.cmt},
 \code{col.evid}, and \code{col.time} are always considered if
-found in data, and \code{cols.dup} is added to this list if provided.}
+found in data, and \code{cols.dup} is added to this list if
+provided.}
 
-\item{type.data}{\code{"est"} for estimation data (default), and \code{"sim"}
-for simulation data. Differences are that \code{col.row} is
-not expected for simulation data, and subjects will be checked
-to have \code{EVID==0} rows for estimation data and
-\code{EVID==2} rows for simulation data.}
+\item{type.data}{\code{"est"} for estimation data (default), and
+\code{"sim"} for simulation data. Differences are that
+\code{col.row} is not expected for simulation data, and
+subjects will be checked to have \code{EVID==0} rows for
+estimation data and \code{EVID==2} rows for simulation data.}
+
+\item{cols.disable}{Columns to not check. This is particularly
+useful when checking data sets that do not include i.e. `CMT`,
+`EVID`, and others. To skip checking specific columns, provide
+their names like `cols.disable=c("CMT","EVID")`.}
 
 \item{na.strings}{Strings to be accepted when trying to convert
 characters to numerics. This will typically be a string that

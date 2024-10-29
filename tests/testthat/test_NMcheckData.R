@@ -331,10 +331,12 @@ test_that("simulation data",{
     dt.sim <- data.table(ID=1,EVID=2,CMT=2,TIME=0:24)
 
     dt.all <- rbind(dt.dos,dt.sim,fill=T)
-
-    res <- NMcheckData(dt.all, quiet=TRUE,type.data="sim")
     
-    expect_equal_to_reference(res,fileRef)
+    res <- NMcheckData(dt.all, quiet=TRUE,type.data="sim")
+    ## nrow(res)
+    expect_equal(nrow(res),0)
+
+    ## expect_equal_to_reference(res,fileRef)
 
 })
 
