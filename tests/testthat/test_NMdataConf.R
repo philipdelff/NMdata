@@ -149,3 +149,19 @@ test_that("reset removes unknown",{
     expect_false("unknown.option"%in%names(NMdataConf()))
 
 })
+
+
+test_that("use.rds - deprecated",{
+
+    fileRef <- "testReference/NMdataConf_03.rds"
+    ## ref <- readRDS(fileRef)
+
+    NMdataConf(reset=TRUE)
+    NMdataConf(use.rds=F)
+    res <- NMdataConf()
+    
+    expect_equal_to_reference(res,fileRef)
+
+    ## compareCols(readRDS(fileRef),defaults)
+    
+})

@@ -256,12 +256,15 @@ fail.
 **** TODO [#A] Classify findings
 NOTE, WARN, ERR -> just in table, warning(), stop()?
 **** TODO [#A] Argument to disable warnings and stop?
-**** TODO [#A] arg to disable looking for some columns
+**** DONE arg to disable looking for some columns
 like CMT, AMT etc. Maybe cols.disable where only some can be chosen?
 **** TODO [#A] subset argument
 Remember row numbers must be true to full data set
-**** TODO [#A] RATE=-1 is OK :v0_1_7:
-**** TODO [#A] CMT can be any non-zero integer :v0_1_7:
+**** TODO [#B] SS testes separately for doses and non-doses?
+SS is tested to be in c(0,1) for all rows. Maybe split in two checks,
+like done for RATE?
+**** DONE RATE=-1 is OK
+**** DONE CMT can be any non-zero integer
 But more than say 20 compartments seems unlikely
 **** CANCELLED Support for a table of accepted findings
 **** DONE support for col.id with file arg

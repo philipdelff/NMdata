@@ -71,12 +71,17 @@
 ##' @param cols.dup Additional column names to consider in search of
 ##'     duplicate events. \code{col.id}, \code{col.cmt},
 ##'     \code{col.evid}, and \code{col.time} are always considered if
-##'     found in data, and \code{cols.dup} is added to this list if provided.
-##' @param type.data \code{"est"} for estimation data (default), and \code{"sim"}
-##'     for simulation data. Differences are that \code{col.row} is
-##'     not expected for simulation data, and subjects will be checked
-##'     to have \code{EVID==0} rows for estimation data and
-##'     \code{EVID==2} rows for simulation data.
+##'     found in data, and \code{cols.dup} is added to this list if
+##'     provided.
+##' @param type.data \code{"est"} for estimation data (default), and
+##'     \code{"sim"} for simulation data. Differences are that
+##'     \code{col.row} is not expected for simulation data, and
+##'     subjects will be checked to have \code{EVID==0} rows for
+##'     estimation data and \code{EVID==2} rows for simulation data.
+##' @param cols.disable Columns to not check. This is particularly
+##'     useful when checking data sets that do not include i.e. `CMT`,
+##'     `EVID`, and others. To skip checking specific columns, provide
+##'     their names like `cols.disable=c("CMT","EVID")`.
 ##' @param na.strings Strings to be accepted when trying to convert
 ##'     characters to numerics. This will typically be a string that
 ##'     represents missing values. Default is ".". Notice, actual
@@ -205,8 +210,8 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
                         col.time="TIME",col.dv="DV",col.mdv="MDV",
                         col.cmt="CMT",col.amt="AMT",col.flagn,col.row,
                         col.usubjid,cols.dup,type.data="est",
-                        na.strings,return.summary=FALSE, quiet=FALSE,
-                        as.fun){
+                        cols.disable, na.strings,return.summary=FALSE,
+                        quiet=FALSE, as.fun){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -287,6 +292,8 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     }
     if(missing(cols.dup)) cols.dup <- NULL
 
+    if(missing(cols.disable)) cols.disable <- NULL
+    
     names.cols.num <- names(cols.num)
     
     if(length(cols.num)>0){
@@ -722,18 +729,18 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     }
     
     for(cmt in col.cmt){
-### CMT must be a positive integer. It can be missing for CMT=3
+### CMT must be a positive integer. It can be missing for EVID=3
         findings <- listEvents(cmt,"Missing for EVID!=3",
                                fun=is.na,invert=TRUE,events=findings,
                                dat=data[EVID%in%c(1,2,4)])
         ## For EVID!=3, must be a positive integer 
-        findings <- listEvents(cmt,"CMT not a positive integer",
-                               fun=function(x)x>0&x%%1==0,events=findings,
+        findings <- listEvents(cmt,"CMT not a non-zero integer",
+                               fun=function(x)x!=0&x%%1==0,events=findings,
                                dat=data[EVID%in%c(1,2,4)],
                                new.rows.only=T)
-        ## For EVID==3, if CMT not missing, must be 0 or a positive integer
-        findings <- listEvents(cmt,"CMT not a positive integer",
-                               fun=function(x)x>=0&x%%1==0,events=findings,
+        ## For EVID==3, if CMT not missing, must be a non-zero integer
+        findings <- listEvents(cmt,"CMT not a non-zero integer",
+                               fun=function(x)x!=0&x%%1==0,events=findings,
                                dat=data[EVID%in%c(3)&!is.na(CMT)]
                                )
     }
@@ -793,9 +800,9 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
         data[,(cols.opt.found):=lapply(.SD,NMasNumeric),.SDcols=cols.opt.found]
     }
     
-    ## RATE -2 or positive for EVID%in%c(1,4)
-    findings <- listEvents("RATE","Must be -2 or non-negative",
-                           fun=function(x)x==-2|x>=0,events=findings,
+    ## RATE -2, -1 or positive for EVID%in%c(1,4)
+    findings <- listEvents("RATE","Must be -2, -1 or non-negative",
+                           fun=function(x)x%in%c(-2,-1)|x>=0,events=findings,
                            col.required=FALSE,
                            dat=data[EVID%in%c(1,4)])
     
@@ -1019,10 +1026,14 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     
 ### Section end: usubjid
 
+    if(nrow(findings) && !is.null(cols.disable)){
+        
+        findings <- findings[!column%in%cols.disable]
+    }
 
-    
-
-    return(reportFindings(findings=findings,data=data,col.id=col.id,c.row=c.row,col.row=col.row,col.row.orig=col.row.orig,col.id.orig=col.id.orig,return.summary=return.summary,as.fun=as.fun,quiet=quiet))
+    return(
+        reportFindings(findings=findings,data=data,col.id=col.id,c.row=c.row,col.row=col.row,col.row.orig=col.row.orig,col.id.orig=col.id.orig,return.summary=return.summary,as.fun=as.fun,quiet=quiet)
+    )
 
 }
 

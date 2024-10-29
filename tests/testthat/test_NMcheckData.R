@@ -39,7 +39,7 @@ test_that("basic",{
     pk <- readRDS(file="testData/data/xgxr2.rds")
     res <- NMcheckData(pk, quiet=TRUE)
 
-   expect_equal_to_reference(res,fileRef,version=2)
+    expect_equal_to_reference(res,fileRef,version=2)
 })
 
 test_that("No col.flagn",{
@@ -303,24 +303,24 @@ test_that("no col.flagn",{
 })
 
 dups_data <- data.frame(
-  ID = c(1, 1, 1),
-  TIME = c(1, 2, 2),
-  DV = c(NA, 20, 50),
-  AMT = c(100, 0, 0),
-  EVID = c(1, 0, 0),
-  DVID = c(1, 2, 3),
-  ROW = 1:3,
-  CMT = 1,
-  MDV = c(0, 0, 0)
+    ID = c(1, 1, 1),
+    TIME = c(1, 2, 2),
+    DV = c(NA, 20, 50),
+    AMT = c(100, 0, 0),
+    EVID = c(1, 0, 0),
+    DVID = c(1, 2, 3),
+    ROW = 1:3,
+    CMT = 1,
+    MDV = c(0, 0, 0)
 )
 
 
 test_that("check data files without cols.dup, but passed with it",{
-  no_dup_specified <- NMcheckData(dups_data, quiet=TRUE)
-  dup_specified <- NMcheckData(dups_data, cols.dup = "DVID", quiet=TRUE)
-  
-  expect_equal(nrow(no_dup_specified), 2)
-  expect_equal(nrow(dup_specified), 0)
+    no_dup_specified <- NMcheckData(dups_data, quiet=TRUE)
+    dup_specified <- NMcheckData(dups_data, cols.dup = "DVID", quiet=TRUE)
+    
+    expect_equal(nrow(no_dup_specified), 2)
+    expect_equal(nrow(dup_specified), 0)
 })
 
 test_that("simulation data",{
@@ -332,7 +332,7 @@ test_that("simulation data",{
 
     dt.all <- rbind(dt.dos,dt.sim,fill=T)
 
-    res <- NMcheckData(dt.all, quiet=TRUE)
+    res <- NMcheckData(dt.all, quiet=TRUE,type.data="sim")
     
     expect_equal_to_reference(res,fileRef)
 
@@ -352,3 +352,14 @@ test_that("empty data set",{
     expect_equal_to_reference(res,fileRef)
 })
 
+
+test_that("basic",{
+    fileRef <- "testReference/NMcheckData_21.rds"
+    
+    pk <- readRDS(file="testData/data/xgxr2.rds")
+    pk$CMT <- NULL
+    res <- NMcheckData(pk, quiet=TRUE,cols.disable="CMT")
+
+    res
+    expect_equal_to_reference(res,fileRef,version=2)
+})

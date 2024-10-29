@@ -197,20 +197,6 @@ NMreadParsText <- function(file,lines,format,
         nfields.x <- 0
         xleft <- x
 
-        if(F){
-            for(spl in splitters){
-                
-                ## if(!spaces.split) spl <- paste(paste0(strsplit(spl, "")[[1]]," *"),collapse="")
-                ## spl <- escape.charclass(spl)
-                found <- grepl(spl,xleft)
-                ## if(!found) break
-                nfields.x <- nfields.x+as.numeric(found)
-### not working
-                ##xleft <- sub(paste0("^[^",spl,"]*",spl),"",xleft,fixed=F)
-                xleft <- sub(sprintf(".*%s(.*)",spl),"\\1",xleft)
-            }
-            nfields.x <- nfields.x+1
-        }
         ## nsplitters.x <- length(fields$splitters)
         nsplitters.x <- length(format$splitters)
         
