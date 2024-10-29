@@ -157,6 +157,8 @@ read multiple models and compare their predictions.
 ``` r
 res <- NMscanMultiple(dir=system.file("examples/nonmem", package="NMdata"),
 file.pattern="xgxr.*\\.lst",as.fun="data.table",quiet=TRUE)
+#> $DATA section extracted
+#> Based on that, data files related to this file were expected:
 gmean <- function(x)exp(mean(log(x)))
 res.mean <- res[,.(gmeanPRED=gmean(PRED)),by=.(model,NOMTIME)]
 obs.all <- unique(res[,.(ID,NOMTIME,TIME,DV)])
