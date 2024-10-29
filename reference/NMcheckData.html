@@ -105,6 +105,7 @@ but because they are typical dataset issues.</p>
 <span>  <span class="va">col.usubjid</span>,</span>
 <span>  <span class="va">cols.dup</span>,</span>
 <span>  type.data <span class="op">=</span> <span class="st">"est"</span>,</span>
+<span>  <span class="va">cols.disable</span>,</span>
 <span>  <span class="va">na.strings</span>,</span>
 <span>  return.summary <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -225,15 +226,23 @@ is less likely).</p></dd>
 <dd><p>Additional column names to consider in search of
 duplicate events. <code>col.id</code>, <code>col.cmt</code>,
 <code>col.evid</code>, and <code>col.time</code> are always considered if
-found in data, and <code>cols.dup</code> is added to this list if provided.</p></dd>
+found in data, and <code>cols.dup</code> is added to this list if
+provided.</p></dd>
 
 
 <dt id="arg-type-data">type.data<a class="anchor" aria-label="anchor" href="#arg-type-data"></a></dt>
-<dd><p><code>"est"</code> for estimation data (default), and <code>"sim"</code>
-for simulation data. Differences are that <code>col.row</code> is
-not expected for simulation data, and subjects will be checked
-to have <code>EVID==0</code> rows for estimation data and
-<code>EVID==2</code> rows for simulation data.</p></dd>
+<dd><p><code>"est"</code> for estimation data (default), and
+<code>"sim"</code> for simulation data. Differences are that
+<code>col.row</code> is not expected for simulation data, and
+subjects will be checked to have <code>EVID==0</code> rows for
+estimation data and <code>EVID==2</code> rows for simulation data.</p></dd>
+
+
+<dt id="arg-cols-disable">cols.disable<a class="anchor" aria-label="anchor" href="#arg-cols-disable"></a></dt>
+<dd><p>Columns to not check. This is particularly
+useful when checking data sets that do not include i.e. `CMT`,
+`EVID`, and others. To skip checking specific columns, provide
+their names like `cols.disable=c("CMT","EVID")`.</p></dd>
 
 
 <dt id="arg-na-strings">na.strings<a class="anchor" aria-label="anchor" href="#arg-na-strings"></a></dt>
