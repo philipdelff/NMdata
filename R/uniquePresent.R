@@ -12,7 +12,8 @@
 ##'     variables. \code{uniquePresent} with `req.n1=TRUE` makes sure the
 ##'     result is a single unique value (e.g., within subjects). A
 ##'     typical use is carrying subject-level covariates from one data
-##'     set to another in a longitudinal analysis. 
+##'     set to another in a longitudinal analysis.
+##' @param a vector of same class as `x`
 ##' @export
 uniquePresent <- function(x,req.n1=TRUE,na.pattern){
     if(missing(na.pattern)) na.pattern <- "^ *$"

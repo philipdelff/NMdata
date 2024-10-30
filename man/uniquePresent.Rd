@@ -16,6 +16,8 @@ the unique values are returned.}
 \item{na.pattern}{In addition to NA-elements, what text strings
 should be considered missing? Default is empty strings and
 strings only containing white spaces (`na.pattern="^ *$"`).}
+
+\item{a}{vector of same class as `x`}
 }
 \description{
 Extract unique non-missing value from vector

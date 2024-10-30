@@ -27,6 +27,9 @@ NMdataConf.}
 notice fixed=TRUE will disable interpretation of `pattern` and
 `replace` as regular expressions.}
 }
+\value{
+a data.frame
+}
 \description{
 Replace strings in character character columns of a data set
 }

@@ -316,7 +316,11 @@ NMwriteSection(file.nm("xgxr001dir/input.txt"),section="DATA",newlines=sec.data.
 ### xgxgr002: CYCLE=DROP, BBW for WEIGHTB
 pk2 <- copy(pk)
 pk2[,AMT:=AMT*1000]
-nmcode <- NMwriteData(pk2,file=file.data.test("xgxr12.csv"),script=script.1,args.stamp = list(description="AMT in micrograms"))
+nmcode <- NMwriteData(pk2,
+                      file=file.data.test("xgxr12.csv"),
+                      script=script.1,
+                      args.stamp = list(description="AMT in micrograms"),
+                      args.rds=list(version=2))
 
 
 ### Section end: Version with AMT in microgram

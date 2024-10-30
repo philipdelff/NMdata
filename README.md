@@ -185,14 +185,17 @@ that case you have two other options. You can explicitly select CRAN for
 the installation. Or if you should want a version that has not yet
 reached CRAN, installing from Github is easy too.
 
-    ## Option 2: Install explicitly from CRAN
-    install.packages("NMdata",repos="https://cloud.r-project.org")
-    library(NMdata)
+``` r
+## Option 1: Install from your default repository
+install.packages("NMdata")
 
-    ## Option 3: Install from github
-    library(remotes)
-    install_github("nmautoverse/NMdata")
-    library(NMdata)
+## Option 2: Install explicitly from CRAN
+install.packages("NMdata",repos="https://cloud.r-project.org")
+
+## Option 3: Install from github
+library(remotes)
+install_github("nmautoverse/NMdata")
+```
 
 If you use the Github version, you may want to see the
 [FAQ](https://nmautoverse.github.io/NMdata/articles/NMdata-FAQ.html) for

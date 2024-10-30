@@ -33,6 +33,9 @@ something else. If data.tables are wanted, use
 as.fun="data.table". The default can be configured using
 NMdataConf.}
 }
+\value{
+data.frame relating parameters to variable names
+}
 \description{
 Relate parameter names and variables based on control stream code
 sections.

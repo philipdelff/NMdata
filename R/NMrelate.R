@@ -23,6 +23,7 @@
 ##'     gain information but only extracts what it can from the model
 ##'     code. You can then merge with information from functions such
 ##'     as `NMreadExt()` and `NMreadParText()`.
+##' @return data.frame relating parameters to variable names
 ##' @export
 
 NMrelate <- function(file,lines,modelname,par.type,col.model,sections,as.fun){

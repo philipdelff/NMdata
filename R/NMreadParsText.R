@@ -42,6 +42,7 @@
 ##' @param fields Deprecated. Use `format`.
 ##' @param fields.omega Deprecated. Use `format.omega`.
 ##' @param fields.sigma Deprecated. Use `format.sigma`.
+##' @return data.frame with parameter names and fields read from comments
 ##' @details Off-diagonal omega and sigma elements will only be
 ##'     correctly treated if their num field specifies say 1-2 to
 ##'     specify it is covariance between 1 and 2.

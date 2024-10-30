@@ -71,6 +71,9 @@ counted.}
 
 \item{fields.sigma}{Deprecated. Use `format.sigma`.}
 }
+\value{
+data.frame with parameter names and fields read from comments
+}
 \description{
 When interpreting parameter estimates, it is often needed to
 recover information about the meaning of the different parameters

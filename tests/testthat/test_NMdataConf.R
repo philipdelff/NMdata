@@ -159,6 +159,7 @@ test_that("use.rds - deprecated",{
     NMdataConf(reset=TRUE)
     NMdataConf(use.rds=F)
     res <- NMdataConf()
+    res <- dropFuns(res)
     
     expect_equal_to_reference(res,fileRef)
 

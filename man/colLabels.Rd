@@ -9,6 +9,9 @@ colLabels(...)
 \arguments{
 \item{...}{See `?compareCols`}
 }
+\value{
+A data.frame with variable and their labels
+}
 \description{
 Extract column labels as defined in SAS
 }
