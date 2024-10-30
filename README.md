@@ -158,22 +158,24 @@ read multiple models and compare their predictions.
 
 ``` r
 res <- NMscanMultiple(dir=system.file("examples/nonmem", package="NMdata"),
-file.pattern="xgxr.*\\.lst",as.fun="data.table",quiet=TRUE)
+                      file.pattern="xgxr.*\\.lst",as.fun="data.table",quiet=TRUE)
 #> $DATA section extracted
 #> Based on that, data files related to this file were expected:
 gmean <- function(x)exp(mean(log(x)))
 res.mean <- res[,.(gmeanPRED=gmean(PRED)),by=.(model,NOMTIME)]
 obs.all <- unique(res[,.(ID,NOMTIME,TIME,DV)])
 ggplot(res.mean,aes(NOMTIME,gmeanPRED,colour=model))+geom_line()+
-    geom_point(aes(TIME,DV),data=obs.all,inherit.aes=FALSE)+
+    geom_point(aes(TIME,DV),data=obs.all[!is.na(DV)],inherit.aes=FALSE)+
     scale_y_log10()+
-    labs(x="Time",y="Concentration",subtitle="Comparison of population predictions")
+    labs(x="Time",y="Concentration",subtitle="Comparison of population predictions")+
+    theme_bw()+
+    theme(legend.position="bottom")
 #> Warning: Transformation introduced infinite values in continuous y-axis
 
 #> Warning: Transformation introduced infinite values in continuous y-axis
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+<img src="man/figures/README-NMscanMultiple-plot-1.png" width="100%" />
 
 ## Get the most recent version
 
