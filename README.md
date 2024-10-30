@@ -1,15 +1,15 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# NMdata<a href='https://philipdelff.github.io/NMdata/'><img src='man/figures/logo.png' align="right" height="120" /></a>
+# NMdata<a href='https://nmautoverse.github.io/NMdata/'><img src='man/figures/logo.png' align="right" height="120" /></a>
 
 <!-- badges: start -->
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
-[![R-CMD-check](https://github.com/philipdelff/NMdata/workflows/R-CMD-check/badge.svg)](https://github.com/philipdelff/NMdata/actions)
+[![R-CMD-check](https://github.com/nmautoverse/NMdata/workflows/R-CMD-check/badge.svg)](https://github.com/nmautoverse/NMdata/actions)
 [![Codecov test
-coverage](https://codecov.io/gh/philipdelff/NMdata/branch/master/graph/badge.svg)](https://app.codecov.io/gh/philipdelff/NMdata?branch=master)
+coverage](https://codecov.io/gh/NMautoverse/NMdata/branch/master/graph/badge.svg)](https://app.codecov.io/gh/nmautoverse/NMdata?branch=master)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/NMdata)](https://CRAN.R-project.org/package=NMdata)
 [![CRAN
@@ -43,14 +43,14 @@ use.
 ### More information
 
 The best place to browse information about the package is
-[here](https://philipdelff.github.io/NMdata/). The quickest way in is
+[here](https://nmautoverse.github.io/NMdata/). The quickest way in is
 the
-[Cheatsheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html).
+[Cheatsheet](https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMdata-cheat.html).
 
 <!-- ![Cheatsheet](man/figures/cheatsheet_icon_0010.png){width="15%"} -->
-<!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html) -->
+<!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/devel/NMdata-cheat.html) -->
 
-<a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html"><img src="man/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"/></a>
+<a href="https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMdata-cheat.html"><img src="man/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"/></a>
 
 ### How to install
 
@@ -58,8 +58,10 @@ the
 [MPN](https://mpn.metworx.com/docs/packages/NMdata). To install from the
 package archive you are already using, do:
 
-    install.packages("NMdata")
-    library(NMdata)
+``` r
+install.packages("NMdata")
+library(NMdata)
+```
 
 See further below for instructions on how to install from other sources
 than your default archive, if need be.
@@ -68,7 +70,7 @@ than your default archive, if need be.
 
 On the data-generation side, functionality is provided for documentation
 of the datasets while generating them. Check out [this
-vignette](https://philipdelff.github.io/NMdata/articles/DataPrepare.html)
+vignette](https://nmautoverse.github.io/NMdata/articles/DataPrepare.html)
 on the topic. There are functions for automatic checks of (some) data
 merges, handling and counting of exclusions flags, final preparations
 for ensuring readability in NONMEM, and ensuring traceability of
@@ -142,7 +144,7 @@ res.dt <- NMscanData("xgxr001.lst",quiet=TRUE)
 
 `NMscanData` is very general, and should work with all kinds of models,
 and all kinds of other software and configurations. Take a look at [this
-vignette](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
+vignette](https://nmautoverse.github.io/NMdata/articles/NMscanData.html)
 for more info on the NONMEM data reader. Then you will learn how to
 access the meta data that will allow you to trace every step that was
 taken combining the data and the many checks that were done along the
@@ -171,7 +173,7 @@ ggplot(res.mean,aes(NOMTIME,gmeanPRED,colour=model))+geom_line()+
 #> Warning: Transformation introduced infinite values in continuous y-axis
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 ## Get the most recent version
 
@@ -187,27 +189,27 @@ reached CRAN, installing from Github is easy too.
 
     ## Option 3: Install from github
     library(remotes)
-    install_github("philipdelff/NMdata")
+    install_github("nmautoverse/NMdata")
     library(NMdata)
 
 If you use the Github version, you may want to see the
-[FAQ](https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html) for
+[FAQ](https://nmautoverse.github.io/NMdata/articles/NMdata-FAQ.html) for
 how to install specific releases from Github (ensuring reproducibility).
 
 ## Questions?
 
 Check the
-[FAQ](https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html), or
-ask on [github](https://github.com/philipdelff/NMdata/)
+[FAQ](https://nmautoverse.github.io/NMdata/articles/NMdata-FAQ.html), or
+ask on [github](https://github.com/nmautoverse/NMdata/)
 
 ## Issues?
 
 The best way to report a bug or to request features is on
-[github](https://github.com/philipdelff/NMdata/).
+[github](https://github.com/nmautoverse/NMdata/).
 
 ## Code of Conduct
 
 Please note that the patchwork project is released with a [Contributor
 Code of
-Conduct](https://philipdelff.github.io/NMdata/CODE_OF_CONDUCT.html). By
+Conduct](https://nmautoverse.github.io/NMdata/CODE_OF_CONDUCT.html). By
 contributing to this project, you agree to abide by its terms.

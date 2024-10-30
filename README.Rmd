@@ -64,7 +64,7 @@ the
 ### How to install
 `NMdata` is on [CRAN](https://cran.r-project.org/package=NMdata) and [MPN](https://mpn.metworx.com/docs/packages/NMdata). To install from the package archive you are already using, do:
 
-```
+```{r,eval=FALSE}
 install.packages("NMdata")
 library(NMdata)
 ```
