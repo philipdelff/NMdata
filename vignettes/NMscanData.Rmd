@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 
 Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
-Please make sure to see latest vignette version available [here](https://philipdelff.github.io/NMdata/).
+Please make sure to see latest vignette version available [here](https://nmautoverse.github.io/NMdata/).
 
 ## Objectives
 This vignettes aims at enabling you at 
@@ -139,7 +139,7 @@ your control streams and list files differently than this
 vignette. Here, we use the `NMdata` default which is `.mod` and
 `.lst`. You can easily configure `NMdata` to match your
 preferences. See the
-[FAQ](https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html)
+[FAQ](https://nmautoverse.github.io/NMdata/articles/NMdata-FAQ.html)
 for how. So for now, rest assured that this is easy to adjust and read
 on.
 
@@ -495,7 +495,7 @@ so file/network access (I/O) is likely to be the main bottleneck.
 If you write Nonmem datasets with the `NMdata::NMwriteData`, you can
 get an `rds` file automatically, exactly where `NMscanData` will look
 for it. Preparing datasets using `NMdata` is described in [this
-vignette](https://philipdelff.github.io/NMdata/articles/DataPrepare.html).
+vignette](https://nmautoverse.github.io/NMdata/articles/DataPrepare.html).
 
 You probably want to use `NMdataConf` to change the default behavior
 if you don't want to use `rds` files.

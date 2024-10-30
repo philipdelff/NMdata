@@ -21,7 +21,7 @@ Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
 This vignette is still under development. Please make sure to see
 latest version available
-[here](https://philipdelff.github.io/NMdata/).
+[here](https://nmautoverse.github.io/NMdata/).
 
 ## General NMdata questions
 
@@ -57,23 +57,23 @@ within R:
 
 ```{r,eval=FALSE}
 library(remotes)
-install_github("philipdelff/NMdata")
+install_github("nmautoverse/NMdata")
 library(NMdata)
 ```
 
 In a production environment, use a [github
-release](https://github.com/philipdelff/NMdata/releases) To install
+release](https://github.com/nmautoverse/NMdata/releases) To install
 `NMdata X.Y.Z` release, do (notice "@v":)
 
 ```{r,eval=FALSE}
 library(remotes)
-install_github("philipdelff/NMdata@vX.Y.Z")
+install_github("nmautoverse/NMdata@vX.Y.Z")
 library(NMdata)
 ```
 
 This example is not automatically updated to latest available
 release. Please make sure to check for latest version on
-(https://github.com/philipdelff/NMdata/releases)
+(https://github.com/nmautoverse/NMdata/releases)
 
 If you need to archive a script that is dependent on a feature or bug
 fix which is only in the master branch, you can request a release. 
@@ -188,7 +188,7 @@ technically inherit from the data.frame class).
 
 
 ### Can I request a feature?
-Please open an issue on [github](https://github.com/philipdelff/NMdata/issues).
+Please open an issue on [github](https://github.com/nmautoverse/NMdata/issues).
 
 ### Any plans on including some plotting functions?
 No. See the question above about dependencies. If NMdata were extended

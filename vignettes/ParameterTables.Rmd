@@ -49,7 +49,7 @@ A manual or even semi-automated approach to establishing these relationships are
 
 * Automatic translation of Nonmem code related to direct use of the parameters (`NMrelate()`). This may be a pretty good approach trying to report a Nonmem model without structured labeling in the parameter sections. If you keep a  coding standard, it may allow you to skip manual parameter translation altogether. And lastly, it may be a powerful QC tool in any case.
 
-Notice, this vignette zooms in on how to read, label and format "parameter estimates". It does not deal with reading input and output data (see the [NMscanData()](https://philipdelff.github.io/NMdata/articles/NMscanData.html) vignette). `NMdata` contains the following functions to read estimates from Nonmem:
+Notice, this vignette zooms in on how to read, label and format "parameter estimates". It does not deal with reading input and output data (see the [NMscanData()](https://nmautoverse.github.io/NMdata/articles/NMscanData.html) vignette). `NMdata` contains the following functions to read estimates from Nonmem:
 
 * `NMreadExt()` A feature-rich processor of ext files. Provides final parameter estimates with uncertainties and everything else provided in the ext file, iterations, objective function value and termination status
 * `NMreadPhi()` Reads individual posthoc estimates into a `data.frame`

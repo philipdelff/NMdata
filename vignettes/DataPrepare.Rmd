@@ -38,7 +38,7 @@ Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
 This vignette is still under development. Please make sure to see
 latest version available
-[here](https://philipdelff.github.io/NMdata/).
+[here](https://nmautoverse.github.io/NMdata/).
 
 ## Objectives
 This vignettes aims at enabling you at 
