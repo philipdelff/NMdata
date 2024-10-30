@@ -107,7 +107,7 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="nmdata">NMdata<a href="https://philipdelff.github.io/NMdata/" class="external-link"><img src="reference/figures/logo.png" align="right" height="120"></a>
+<div class="page-header"><h1 id="nmdata">NMdata<a href="https://nmautoverse.github.io/NMdata/"><img src="reference/figures/logo.png" align="right" height="120"></a>
 <a class="anchor" aria-label="anchor" href="#nmdata"></a>
 </h1></div>
 <!-- badges: start -->
@@ -129,24 +129,25 @@
 <div class="section level3">
 <h3 id="more-information">More information<a class="anchor" aria-label="anchor" href="#more-information"></a>
 </h3>
-<p>The best place to browse information about the package is <a href="https://philipdelff.github.io/NMdata/" class="external-link">here</a>. The quickest way in is the <a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html" class="external-link">Cheatsheet</a>.</p>
+<p>The best place to browse information about the package is <a href="https://nmautoverse.github.io/NMdata/">here</a>. The quickest way in is the <a href="https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMdata-cheat.html" class="external-link">Cheatsheet</a>.</p>
 <!-- ![Cheatsheet](man/figures/cheatsheet_icon_0010.png){width="15%"} -->
-<!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/devel/NMdata-cheat.html) -->
-<p><a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html" class="external-link"><img src="reference/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"></a></p>
+<!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/devel/NMdata-cheat.html) -->
+<p><a href="https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMdata-cheat.html" class="external-link"><img src="reference/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"></a></p>
 </div>
 <div class="section level3">
 <h3 id="how-to-install">How to install<a class="anchor" aria-label="anchor" href="#how-to-install"></a>
 </h3>
 <p><code>NMdata</code> is on <a href="https://cran.r-project.org/package=NMdata" class="external-link">CRAN</a> and <a href="https://mpn.metworx.com/docs/packages/NMdata" class="external-link">MPN</a>. To install from the package archive you are already using, do:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"NMdata"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(NMdata)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"NMdata"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nmautoverse.github.io/NMdata/">NMdata</a></span><span class="op">)</span></span></code></pre></div>
 <p>See further below for instructions on how to install from other sources than your default archive, if need be.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="prepare-check-and-export-pkpd-data">Prepare, check, and export PK/PD data<a class="anchor" aria-label="anchor" href="#prepare-check-and-export-pkpd-data"></a>
 </h2>
-<p>On the data-generation side, functionality is provided for documentation of the datasets while generating them. Check out <a href="https://philipdelff.github.io/NMdata/articles/DataPrepare.html" class="external-link">this vignette</a> on the topic. There are functions for automatic checks of (some) data merges, handling and counting of exclusions flags, final preparations for ensuring readability in NONMEM, and ensuring traceability of datasets back to data generation scripts.</p>
+<p>On the data-generation side, functionality is provided for documentation of the datasets while generating them. Check out <a href="https://nmautoverse.github.io/NMdata/articles/DataPrepare.html">this vignette</a> on the topic. There are functions for automatic checks of (some) data merges, handling and counting of exclusions flags, final preparations for ensuring readability in NONMEM, and ensuring traceability of datasets back to data generation scripts.</p>
 </div>
 <div class="section level2">
 <h2 id="check-data-as-read-by-nonmem">Check data as read by NONMEM<a class="anchor" aria-label="anchor" href="#check-data-as-read-by-nonmem"></a>
@@ -195,7 +196,7 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>as.fun<span class="op">=</span><span class="st">"data.table"</span><span class="op">)</span></span>
 <span><span class="va">res.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="st">"xgxr001.lst"</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><code>NMscanData</code> is very general, and should work with all kinds of models, and all kinds of other software and configurations. Take a look at <a href="https://philipdelff.github.io/NMdata/articles/NMscanData.html" class="external-link">this vignette</a> for more info on the NONMEM data reader. Then you will learn how to access the meta data that will allow you to trace every step that was taken combining the data and the many checks that were done along the way too.</p>
+<p><code>NMscanData</code> is very general, and should work with all kinds of models, and all kinds of other software and configurations. Take a look at <a href="https://nmautoverse.github.io/NMdata/articles/NMscanData.html">this vignette</a> for more info on the NONMEM data reader. Then you will learn how to access the meta data that will allow you to trace every step that was taken combining the data and the many checks that were done along the way too.</p>
 </div>
 <div class="section level2">
 <h2 id="meta-analysis-made-really-easy">Meta analysis made really easy<a class="anchor" aria-label="anchor" href="#meta-analysis-made-really-easy"></a>
@@ -216,7 +217,7 @@
 <span><span class="co">#&gt; Warning: Transformation introduced infinite values in continuous y-axis</span></span>
 <span></span>
 <span><span class="co">#&gt; Warning: Transformation introduced infinite values in continuous y-axis</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="get-the-most-recent-version">Get the most recent version<a class="anchor" aria-label="anchor" href="#get-the-most-recent-version"></a>
@@ -228,24 +229,24 @@
 <span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a></span>
 <span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="do">## Option 3: Install from github</span></span>
 <span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="fu">library</span>(remotes)</span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="fu">install_github</span>(<span class="st">"philipdelff/NMdata"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="fu">install_github</span>(<span class="st">"nmautoverse/NMdata"</span>)</span>
 <span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="fu">library</span>(NMdata)</span></code></pre></div>
-<p>If you use the Github version, you may want to see the <a href="https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html" class="external-link">FAQ</a> for how to install specific releases from Github (ensuring reproducibility).</p>
+<p>If you use the Github version, you may want to see the <a href="https://nmautoverse.github.io/NMdata/articles/NMdata-FAQ.html">FAQ</a> for how to install specific releases from Github (ensuring reproducibility).</p>
 </div>
 <div class="section level2">
 <h2 id="questions">Questions?<a class="anchor" aria-label="anchor" href="#questions"></a>
 </h2>
-<p>Check the <a href="https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html" class="external-link">FAQ</a>, or ask on <a href="https://github.com/philipdelff/NMdata/" class="external-link">github</a></p>
+<p>Check the <a href="https://nmautoverse.github.io/NMdata/articles/NMdata-FAQ.html">FAQ</a>, or ask on <a href="https://github.com/nmautoverse/NMdata/" class="external-link">github</a></p>
 </div>
 <div class="section level2">
 <h2 id="issues">Issues?<a class="anchor" aria-label="anchor" href="#issues"></a>
 </h2>
-<p>The best way to report a bug or to request features is on <a href="https://github.com/philipdelff/NMdata/" class="external-link">github</a>.</p>
+<p>The best way to report a bug or to request features is on <a href="https://github.com/nmautoverse/NMdata/" class="external-link">github</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
 </h2>
-<p>Please note that the patchwork project is released with a <a href="https://philipdelff.github.io/NMdata/CODE_OF_CONDUCT.html" class="external-link">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+<p>Please note that the patchwork project is released with a <a href="https://nmautoverse.github.io/NMdata/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>
   </div>
@@ -295,8 +296,8 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
-<li><a href="https://github.com/philipdelff/NMdata/actions" class="external-link"><img src="https://github.com/philipdelff/NMdata/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://app.codecov.io/gh/philipdelff/NMdata?branch=master" class="external-link"><img src="https://codecov.io/gh/philipdelff/NMdata/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/nmautoverse/NMdata/actions" class="external-link"><img src="https://github.com/nmautoverse/NMdata/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://app.codecov.io/gh/nmautoverse/NMdata?branch=master" class="external-link"><img src="https://codecov.io/gh/NMautoverse/NMdata/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://CRAN.R-project.org/package=NMdata" class="external-link"><img src="https://www.r-pkg.org/badges/version/NMdata" alt="CRAN status"></a></li>
 <li><a href="https://cran.r-project.org/package=NMdata" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/NMdata" alt="CRAN downloads"></a></li>
 </ul>
