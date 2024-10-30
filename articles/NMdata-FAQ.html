@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.7.910</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.7.911</span>
       </span>
     </div>
 
@@ -58,7 +58,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html" class="external-link">Cheat Sheet</a>
+      <a href="https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMdata-cheat.html" class="external-link">Cheat Sheet</a>
     </li>
     <li>
       <a href="../articles/NMscanData.html">NMscanData: find and combine all output and input data</a>
@@ -78,7 +78,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
 <li>
-  <a href="https://github.com/philipdelff/NMdata/" class="external-link">
+  <a href="https://github.com/nmautoverse/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
 
   </a>
@@ -86,7 +86,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/philipdelff/NMdata/" class="external-link">
+  <a href="https://github.com/nmautoverse/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
 
   </a>
@@ -107,16 +107,16 @@
       <h1 data-toc-skip>NMdata FAQ</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-FAQ.Rmd" class="external-link"><code>vignettes/NMdata-FAQ.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMdata-FAQ.Rmd" class="external-link"><code>vignettes/NMdata-FAQ.Rmd</code></a></small>
       <div class="hidden name"><code>NMdata-FAQ.Rmd</code></div>
 
     </div>
 
     
     
-<p>Built 2024-10-29 using NMdata 0.1.7.910.</p>
+<p>Built 2024-10-30 using NMdata 0.1.7.911.</p>
 <p>This vignette is still under development. Please make sure to see
-latest version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
+latest version available <a href="https://nmautoverse.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
 <h2 id="general-nmdata-questions">General NMdata questions<a class="anchor" aria-label="anchor" href="#general-nmdata-questions"></a>
 </h2>
@@ -160,21 +160,21 @@ preferences.</p>
 <p>For most users, taking <code>NMdata</code> from the package archive
 you are already using is the preferred way:</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"NMdata"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span></span></code></pre>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nmautoverse.github.io/NMdata/">NMdata</a></span><span class="op">)</span></span></code></pre>
 <p>To get the development version of NMdata, do the following from
 within R:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span>
-<span><span class="fu">install_github</span><span class="op">(</span><span class="st">"philipdelff/NMdata"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span></span></code></pre></div>
-<p>In a production environment, use a <a href="https://github.com/philipdelff/NMdata/releases" class="external-link">github release</a>
+<span><span class="fu">install_github</span><span class="op">(</span><span class="st">"nmautoverse/NMdata"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nmautoverse.github.io/NMdata/">NMdata</a></span><span class="op">)</span></span></code></pre></div>
+<p>In a production environment, use a <a href="https://github.com/nmautoverse/NMdata/releases" class="external-link">github release</a>
 To install <code>NMdata X.Y.Z</code> release, do (notice “<span class="citation">@v</span>”:)</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span>
-<span><span class="fu">install_github</span><span class="op">(</span><span class="st">"philipdelff/NMdata@vX.Y.Z"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">install_github</span><span class="op">(</span><span class="st">"nmautoverse/NMdata@vX.Y.Z"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nmautoverse.github.io/NMdata/">NMdata</a></span><span class="op">)</span></span></code></pre></div>
 <p>This example is not automatically updated to latest available
-release. Please make sure to check for latest version on (<a href="https://github.com/philipdelff/NMdata/releases" class="external-link uri">https://github.com/philipdelff/NMdata/releases</a>)</p>
+release. Please make sure to check for latest version on (<a href="https://github.com/nmautoverse/NMdata/releases" class="external-link uri">https://github.com/nmautoverse/NMdata/releases</a>)</p>
 <p>If you need to archive a script that is dependent on a feature or bug
 fix which is only in the master branch, you can request a release.</p>
 </div>
@@ -303,7 +303,7 @@ inherit from the data.frame class).</p>
 <div class="section level3">
 <h3 id="can-i-request-a-feature">Can I request a feature?<a class="anchor" aria-label="anchor" href="#can-i-request-a-feature"></a>
 </h3>
-<p>Please open an issue on <a href="https://github.com/philipdelff/NMdata/issues" class="external-link">github</a>.</p>
+<p>Please open an issue on <a href="https://github.com/nmautoverse/NMdata/issues" class="external-link">github</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="any-plans-on-including-some-plotting-functions">Any plans on including some plotting functions?<a class="anchor" aria-label="anchor" href="#any-plans-on-including-some-plotting-functions"></a>

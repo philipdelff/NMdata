@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.7.910</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.7.911</span>
       </span>
     </div>
 
@@ -58,7 +58,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html" class="external-link">Cheat Sheet</a>
+      <a href="https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMdata-cheat.html" class="external-link">Cheat Sheet</a>
     </li>
     <li>
       <a href="../articles/NMscanData.html">NMscanData: find and combine all output and input data</a>
@@ -78,7 +78,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
 <li>
-  <a href="https://github.com/philipdelff/NMdata/" class="external-link">
+  <a href="https://github.com/nmautoverse/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
 
   </a>
@@ -86,7 +86,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/philipdelff/NMdata/" class="external-link">
+  <a href="https://github.com/nmautoverse/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
 
   </a>
@@ -108,15 +108,15 @@
 Input Data</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/philipdelff/NMdata/blob/master/vignettes/NMscanData.Rmd" class="external-link"><code>vignettes/NMscanData.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMscanData.Rmd" class="external-link"><code>vignettes/NMscanData.Rmd</code></a></small>
       <div class="hidden name"><code>NMscanData.Rmd</code></div>
 
     </div>
 
     
     
-<p>Built 2024-10-29 using NMdata 0.1.7.910.</p>
-<p>Please make sure to see latest vignette version available <a href="https://philipdelff.github.io/NMdata/">here</a>.</p>
+<p>Built 2024-10-30 using NMdata 0.1.7.911.</p>
+<p>Please make sure to see latest vignette version available <a href="https://nmautoverse.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
 <h2 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
 </h2>
@@ -191,9 +191,9 @@ box in the vast majority of cases.</p>
 well use base R or <code>dplyr</code> if you prefer. Then
 <code>ggplot2</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://philipdelff.github.io/NMdata/">NMdata</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; NMdata 0.1.7.910. Browse NMdata documentation at</span></span>
-<span><span class="co">#&gt; https://philipdelff.github.io/NMdata/</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nmautoverse.github.io/NMdata/">NMdata</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; NMdata 0.1.7.911. Browse NMdata documentation at</span></span>
+<span><span class="co">#&gt; https://nmautoverse.github.io/NMdata/</span></span>
 <span><span class="co">## not necessary for NMdata to run, but we use thse in the examples</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -214,7 +214,7 @@ function:</p>
 your control streams and list files differently than this vignette.
 Here, we use the <code>NMdata</code> default which is <code>.mod</code>
 and <code>.lst</code>. You can easily configure <code>NMdata</code> to
-match your preferences. See the <a href="https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html">FAQ</a>
+match your preferences. See the <a href="https://nmautoverse.github.io/NMdata/articles/NMdata-FAQ.html">FAQ</a>
 for how. So for now, rest assured that this is easy to adjust and read
 on.</p>
 </div>
@@ -666,7 +666,7 @@ the main bottleneck.</li>
 <p>If you write Nonmem datasets with the
 <code><a href="../reference/NMwriteData.html">NMdata::NMwriteData</a></code>, you can get an <code>rds</code> file
 automatically, exactly where <code>NMscanData</code> will look for it.
-Preparing datasets using <code>NMdata</code> is described in <a href="https://philipdelff.github.io/NMdata/articles/DataPrepare.html">this
+Preparing datasets using <code>NMdata</code> is described in <a href="https://nmautoverse.github.io/NMdata/articles/DataPrepare.html">this
 vignette</a>.</p>
 <p>You probably want to use <code>NMdataConf</code> to change the
 default behavior if you don’t want to use <code>rds</code> files.</p>
