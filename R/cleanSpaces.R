@@ -6,6 +6,7 @@
 ##'     is TRUE.
 ##' @param trail Drop spaces after last non-empty character. Default
 ##'     is TRUE.
+##' @return A vector of class character
 ##' @keywords internal
 ##' 
 cleanSpaces <- function(x,double=TRUE,lead=TRUE,trail=TRUE){

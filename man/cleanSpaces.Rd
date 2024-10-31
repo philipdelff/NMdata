@@ -18,6 +18,9 @@ is TRUE.}
 \item{trail}{Drop spaces after last non-empty character. Default
 is TRUE.}
 }
+\value{
+A vector of class character
+}
 \description{
 Drop leading, trailing and repeated spaces in character strings
 }
