@@ -228,7 +228,8 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
     
 ### stamp arguments
     doStamp <- TRUE
-    if(missing(args.stamp)) {
+    if(missing(args.stamp)) args.stamp <- NULL
+    if(is.null(args.stamp)){
         args.stamp <- list()
     } else {
         if(!is.list(args.stamp)){
@@ -236,12 +237,12 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
         }
     }
 
-    
-    if(missing(script)||is.null(script)){
-        doStamp <- FALSE
-    } else {
+    missing(script) script <- NULL
+    if(!is.null(script)){
         args.stamp$script <- script
     }
+    doStamp <- length(args.stamp)>0
+    
     if(!doStamp&&!is.null(NMinfo(data))){
         ## we are not stamping new info to data, but data may already have
         ## some. We don't want to inherit when and where it was saved from

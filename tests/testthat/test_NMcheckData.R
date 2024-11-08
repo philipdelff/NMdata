@@ -355,7 +355,7 @@ test_that("empty data set",{
 })
 
 
-test_that("basic",{
+test_that("disable column",{
     fileRef <- "testReference/NMcheckData_21.rds"
     
     pk <- readRDS(file="testData/data/xgxr2.rds")

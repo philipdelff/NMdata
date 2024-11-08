@@ -127,12 +127,6 @@ NMreadParsText <- function(file,lines,format,
     if(!is.null(file)){
         if(length(file)>1) {
             
-            ## return(rbindlist(lapply(file,NMreadParsText,
-            ##                         fields=fields,
-            ##                         fields.omega=fields.omega,
-            ##                         fields.sigma=fields.sigma,
-            ##                         use.theta.idx=use.theta.idx,
-            ##                         spaces.split=spaces.split)))
             res <- lapply(file,function(f){
                 args2 <- args
                 args2$file <- f
@@ -140,7 +134,7 @@ NMreadParsText <- function(file,lines,format,
             })
             return(res)
         } else {
-            lines <- readLines(file)
+            lines <- readLines(file,warn=FALSE)
         }
         
     }
