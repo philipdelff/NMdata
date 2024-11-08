@@ -19,15 +19,6 @@ test_that("basic",{
     
 })
 
-## library(devtools)
-## load_all("~/wdirs/NMdata")
-test_that("skip directory double dots",{
-    ## todo. This should return an error. There is no extension to
-    ## append in front of.
-    expect_error(fnAppend("fe/../egef","hmm"))
-    ## should also return error:
-    expect_error(fnAppend("egef","hmm"))
-})
 
 test_that("empty string does notning",{
 
@@ -41,10 +32,34 @@ test_that("multiple strings to append",{
 
     fileRef <- "testReference/fnAppend_02.rds"
     
-    res1 <- c(fnAppend("NMsim.rds",c("simname","sim2"))
-            ,fnAppend(c("NMsim.rds","NMsim2.rds"),c("simname","sim2"))    
-             )
+    res1 <- c(
+        fnAppend("NMsim.rds",c("simname","sim2"))
+       ,
+        ## the strings must both be appended to both fn's.
+        fnAppend(c("NMsim.rds","NMsim2.rds"),c("simname","sim2"))    
+    )
 
     expect_equal_to_reference(res1,fileRef)
     
+})
+
+
+
+test_that("skip directory double dots",{
+    
+    fileRef <- "testReference/fnAppend_03.rds"
+    
+    expect_error(
+        fnAppend("fe/../egef","hmm")
+    )
+    ## should also return error:
+    expect_error(
+        fnAppend("egef","hmm")
+    )
+
+    res <- c(fnAppend("fe/../egef","hmm",allow.noext = TRUE),
+             fnAppend("egef","hmm",allow.noext = TRUE))
+
+    expect_equal_to_reference(res,fileRef)
+             
 })

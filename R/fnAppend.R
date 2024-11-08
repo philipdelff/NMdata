@@ -16,29 +16,34 @@
 ##' @export
 
 
-fnAppend <- function(fn,x,pad0=0,sep="_"){
-        
+fnAppend <- function(fn,x,pad0=0,sep="_",allow.noext=FALSE){
+    
     if((!is.numeric(x)&&!is.character(x))) stop("x must be numeric or character vector.")
 
-    has.ext <- grepl(".*[^\\.]\\.[a-zA-Z0-9]+",fn)
-    if(!all(has.ext)) stop("No file name extension found. Cannot append string.")
 
-    
-    fnext <- sub(".*[^\\.]\\.([a-zA-Z0-9]+)$","\\1",fn)
-    ## fnroot <- sub(paste0("\\.",fnext,"$"),"",fn)
-    fnroot <- sub(paste0("\\.[a-zA-Z0-9]+$"),"",fn)
-    
     if(is.numeric(x)){
         string <- sprintf(fmt=paste("%0",pad0,"d",sep=""),x)
     } else {
         string <- x
     }
     string <- paste(string,collapse=sep)
+
+    if(nchar(string)==0) return(fn)
     
-    if(nchar(string)>0){
-        paste0(fnroot,sep,string,".",fnext)
-    } else {
-        fn
+    has.ext <- grepl(".*[^\\.]\\.[a-zA-Z0-9]+",fn)
+    if( !all(has.ext) && !allow.noext){
+        stop("Elements in fn have no extension and allow.noext=FALSE")
     }
+
+        
+    allext <- rep("",length(fn))
+    allext[has.ext] <- sub(".*[^\\.]\\.([a-zA-Z0-9]+)$","\\1",fn[has.ext])
+    allext[has.ext] <- paste0(".",allext[has.ext])
+
+    fnroot <- sub(paste0("\\.[a-zA-Z0-9]+$"),"",fn)
     
+   
+    
+        paste0(fnroot,sep,string,allext)
+        
 }
