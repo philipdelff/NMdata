@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8.901</span>
       </span>
     </div>
 
@@ -107,7 +107,7 @@
       <h1 data-toc-skip>Parameter Tables</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/v0.1.8/vignettes/ParameterTables.Rmd" class="external-link"><code>vignettes/ParameterTables.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/master/vignettes/ParameterTables.Rmd" class="external-link"><code>vignettes/ParameterTables.Rmd</code></a></small>
       <div class="hidden name"><code>ParameterTables.Rmd</code></div>
 
     </div>
@@ -2537,7 +2537,7 @@ of a few models.</p>
 <span><span class="fu"><a href="../reference/NMreadExt.html">NMreadExt</a></span><span class="op">(</span><span class="va">files</span>,return<span class="op">=</span><span class="st">"pars"</span><span class="op">)</span><span class="op">[</span><span class="va">FIX</span><span class="op">==</span><span class="fl">0</span><span class="op">]</span><span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">labs.auto</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span><span class="va">model</span>,<span class="va">par.name</span>,<span class="va">symbol</span><span class="op">)</span><span class="op">]</span>,by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"model"</span>,<span class="st">"par.name"</span><span class="op">)</span>,all.x<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">tab.offline</span>,by<span class="op">=</span><span class="st">"symbol"</span>,all.x<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/dcast.data.table.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">par.name</span><span class="op">+</span><span class="va">symbol</span><span class="op">+</span><span class="va">label</span><span class="op">+</span><span class="va">unit</span><span class="op">~</span><span class="va">model</span>,value.var<span class="op">=</span><span class="st">"value"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/dcast.data.table.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">par.name</span><span class="op">+</span><span class="va">symbol</span><span class="op">+</span><span class="va">label</span><span class="op">+</span><span class="va">unit</span><span class="op">~</span><span class="va">model</span>,value.var<span class="op">=</span><span class="st">"value"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Column(s) added: symbol</span></span>
 <span><span class="co">#&gt; Column(s) added: label, unit</span></span>
 <span><span class="co">#&gt; Key: &lt;par.name, symbol, label, unit&gt;</span></span>

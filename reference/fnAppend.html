@@ -19,7 +19,7 @@ it's a number, we can pad some zeros if wanted. The separator
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8.901</span>
       </span>
     </div>
 
@@ -77,7 +77,7 @@ it's a number, we can pad some zeros if wanted. The separator
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>paste something before file name extension.</h1>
-    <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/v0.1.8/R/fnAppend.R" class="external-link"><code>R/fnAppend.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/master/R/fnAppend.R" class="external-link"><code>R/fnAppend.R</code></a></small>
     <div class="hidden name"><code>fnAppend.Rd</code></div>
     </div>
 
@@ -88,7 +88,7 @@ it's a number, we can pad some zeros if wanted. The separator
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fnAppend</span><span class="op">(</span><span class="va">fn</span>, <span class="va">x</span>, pad0 <span class="op">=</span> <span class="fl">0</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fnAppend</span><span class="op">(</span><span class="va">fn</span>, <span class="va">x</span>, pad0 <span class="op">=</span> <span class="fl">0</span>, sep <span class="op">=</span> <span class="st">"_"</span>, allow.noext <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -114,12 +114,31 @@ more than 10 files, and your counter will be 01, 02,..,
 <dd><p>The separator between the existing file name (until
 extension) and the addition.</p></dd>
 
+
+<dt id="arg-allow-noext">allow.noext<a class="anchor" aria-label="anchor" href="#arg-allow-noext"></a></dt>
+<dd><p>Allow `fn` to be string(s) witout extensions?
+Default is `FALSE` in wich case an error will be thrown if
+`fn` contains strings without extensions. If `TRUE`, `x` will
+be appended to fn in these cases.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>A character (vector)</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">fnAppend</span><span class="op">(</span><span class="st">"plot.png"</span>,<span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "plot_1.png"</span>
+<span class="r-in"><span><span class="fu">fnAppend</span><span class="op">(</span><span class="st">"plot.png"</span>,<span class="fl">1</span>,pad0<span class="op">=</span><span class="fl">2</span>,sep<span class="op">=</span><span class="st">"-"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "plot-01.png"</span>
+<span class="r-in"><span><span class="fu">fnAppend</span><span class="op">(</span><span class="st">"plot.png"</span>,<span class="st">"one"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "plot_one.png"</span>
+<span class="r-in"><span><span class="fu">fnAppend</span><span class="op">(</span><span class="st">"plot"</span>,<span class="st">"one"</span>,allow.noext<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "plot_one"</span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

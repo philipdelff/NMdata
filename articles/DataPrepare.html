@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8.901</span>
       </span>
     </div>
 
@@ -107,14 +107,14 @@
       <h1 data-toc-skip>Data Preparation Tools</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/v0.1.8/vignettes/DataPrepare.Rmd" class="external-link"><code>vignettes/DataPrepare.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/master/vignettes/DataPrepare.Rmd" class="external-link"><code>vignettes/DataPrepare.Rmd</code></a></small>
       <div class="hidden name"><code>DataPrepare.Rmd</code></div>
 
     </div>
 
     
     
-<p>Built 2024-11-01 using NMdata 0.1.8.</p>
+<p>Built 2024-11-14 using NMdata 0.1.8.901.</p>
 <p>This vignette is still under development. Please make sure to see
 latest version available <a href="https://nmautoverse.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
@@ -366,10 +366,10 @@ check are necessary). This is not needed if you use
 <code>mergeCheck</code>.</p>
 <p><code>mergeCheck</code> does not try to reimplement merging. Under
 the hood, the merge is performed by
-<code><a href="https://rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">data.table::merge.data.table</a></code> to which most arguments are
+<code><a href="https://rdrr.io/pkg/data.table/man/merge.html" class="external-link">data.table::merge.data.table</a></code> to which most arguments are
 passed. What <code>mergeCheck</code> does is to add the checks that the
 results are consistent with the criteria outlined above.
-<code><a href="https://rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">data.table::merge.data.table</a></code> is generally very fast, and
+<code><a href="https://rdrr.io/pkg/data.table/man/merge.html" class="external-link">data.table::merge.data.table</a></code> is generally very fast, and
 even if there is a bit of extra calculations in <code>mergeCheck</code>,
 it should never be slow.</p>
 <p>In summary, <code>mergeCheck</code> verifies that the rows that
@@ -484,7 +484,7 @@ analysis). We exclude all pre-dose samples. We also exclude samples with
 missing time, missing value, and we exclude those below LLOQ. The
 <code>data.frame</code> with these rules looks like this</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"FLAG,  flag,               condition</span></span>
+<code class="sourceCode R"><span><span class="va">dt.flags</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"FLAG,  flag,               condition</span></span>
 <span><span class="st">                           40,    Pre-dose sample,    !is.na(TIME) &amp; TIME&lt;0</span></span>
 <span><span class="st">                           30,    Missing time,       is.na(TIME)</span></span>
 <span><span class="st">                           20,    Missing value,      is.na(DV)</span></span>
@@ -720,7 +720,7 @@ to even run, <code>EVID</code> must be in <code>0:4</code>. So those
 have to be fixed. For the rest of the vignette, assume we fixed those
 issues.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/copy.html" class="external-link">copy</a></span><span class="op">(</span><span class="va">pk.copy</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/copy.html" class="external-link">copy</a></span><span class="op">(</span><span class="va">pk.copy</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="writing-data-to-files">Writing data to files<a class="anchor" aria-label="anchor" href="#writing-data-to-files"></a>
 </h3>
@@ -776,7 +776,7 @@ automatically recognize if found. The metadata becomes accessible using
 <span><span class="co">#&gt; [1] "DataPrepare.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2024-11-01 10:47:11.616912"</span></span>
+<span><span class="co">#&gt; [1] "2024-11-14 15:37:37.911081"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$writtenTo</span></span>
 <span><span class="co">#&gt; [1] "derived/pkdata.rds derived/pkdata.csv"</span></span>
@@ -794,7 +794,7 @@ file is the filename:</p>
 <span><span class="co">#&gt; [1] "DataPrepare.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2024-11-01 10:47:11 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2024-11-14 15:37:37 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$writtenTo</span></span>
 <span><span class="co">#&gt; [1] "derived/pkdata.rds" "derived/pkdata.csv"</span></span>
@@ -858,7 +858,7 @@ does).</p>
 <span><span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2024-11-01 10:47:11 UTC"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "2024-11-14 15:37:38 UTC"</span></span></code></pre></div>
 <p>The <code>script</code> argument is recognized by
 <code>NMstamp</code>, but you can add anything to this. We want to keep
 descriptive note too. Another often useful piece of information is what
@@ -874,7 +874,7 @@ source data files were read in order to generate the saved data.
 <span><span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2024-11-01 10:47:12 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2024-11-14 15:37:38 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$Description</span></span>
 <span><span class="co">#&gt; [1] "A PK dataset used for examples."</span></span>

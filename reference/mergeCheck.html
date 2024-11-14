@@ -23,7 +23,7 @@ the results are consistent with the simple merge described above."><meta propert
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8.901</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@ the results are consistent with the simple merge described above."><meta propert
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Merge, order, and check resulting rows and columns.</h1>
-    <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/v0.1.8/R/mergeCheck.R" class="external-link"><code>R/mergeCheck.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/master/R/mergeCheck.R" class="external-link"><code>R/mergeCheck.R</code></a></small>
     <div class="hidden name"><code>mergeCheck.Rd</code></div>
     </div>
 
@@ -283,7 +283,7 @@ values of the row counter in x.</p></li>
 <span class="r-in"><span><span class="co">## Notice as opposed to most merge/join algorithms, mergeCheck by</span></span></span>
 <span class="r-in"><span><span class="co">#default retains both row and column order from x</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span>,<span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Key: &lt;y&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          y     x    x2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;int&gt; &lt;int&gt;</span>

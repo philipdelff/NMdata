@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8.901</span>
       </span>
     </div>
 
@@ -75,7 +75,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href="https://github.com/nmautoverse/NMdata/blob/v0.1.8/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/nmautoverse/NMdata/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
@@ -115,7 +115,7 @@
 <li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> adds block information to <code>OMEGA</code> and <code>SIGMA</code> elements based on off-diagonal values. <code>iblock</code> identifies which block the element is in. <code>blocksize</code> is the size of the block the element is in. Thank you Brian Reilly for contributing to this.</p></li>
 <li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> adds a <code>par.name</code> column which is provides consistent parameter naming. Instead of Nonmem’s <code>THETA1</code> which is found in the <code>parameter</code> column, the <code>par.name</code> column will contain <code>THETA(1)</code> consistent with the <code>OMEGA</code> and <code>SIGMA</code> naming like <code>OMEGA(1,1)</code></p></li>
 <li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> recognizes Laplacian estimation steps in addition to the already supported FO, FOCE(i), SAEM, and IMP.</p></li>
-<li><p>A new option <code>nc</code> can be controlled with NMdataConf(). This is to serve <code>NMsim</code>. Please see <code><a href="https://rdrr.io/pkg/NMsim/man/NMexec.html" class="external-link">NMsim::NMexec</a></code>. <code><a href="https://rdrr.io/pkg/NMsim/man/NMsim.html" class="external-link">NMsim::NMsim()</a></code> does not adhere to this setting because it does not parallellize by default.</p></li>
+<li><p>A new option <code>nc</code> can be controlled with NMdataConf(). This is to serve <code>NMsim</code>. Please see <code><a href="https://NMautoverse.github.io/NMsim/reference/NMexec.html" class="external-link">NMsim::NMexec</a></code>. <code><a href="https://NMautoverse.github.io/NMsim/reference/NMsim.html" class="external-link">NMsim::NMsim()</a></code> does not adhere to this setting because it does not parallellize by default.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bugfixes-0-1-7">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-1-7"></a></h3>
