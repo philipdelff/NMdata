@@ -237,7 +237,7 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
         }
     }
 
-    missing(script) script <- NULL
+    if(missing(script)) script <- NULL
     if(!is.null(script)){
         args.stamp$script <- script
     }

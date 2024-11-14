@@ -11,8 +11,17 @@
 ##'     10,... and not 1, 2,...,10,...
 ##' @param sep The separator between the existing file name (until
 ##'     extension) and the addition.
+##' @param allow.noext Allow `fn` to be string(s) witout extensions?
+##'     Default is `FALSE` in wich case an error will be thrown if
+##'     `fn` contains strings without extensions. If `TRUE`, `x` will
+##'     be appended to fn in these cases.
 ##' @return A character (vector)
 ##'
+##' @examples
+##' fnAppend("plot.png",1)
+##' fnAppend("plot.png",1,pad0=2,sep="-")
+##' fnAppend("plot.png","one")
+##' fnAppend("plot","one",allow.noext=TRUE)
 ##' @export
 
 
