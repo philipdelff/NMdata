@@ -77,9 +77,6 @@ NMwriteSectionOne <- function(file0,lines,section,location="replace",
             min.dl <- min(idx.dlines)
             max.dl <- max(idx.dlines)
 
-### these two cases need to be handled slightly differently so not supported for now
-            
-            stopifnot(min.dl>1)
         }
         nlines <- length(lines)
         
@@ -109,16 +106,20 @@ NMwriteSectionOne <- function(file0,lines,section,location="replace",
         }
         if(location=="after"){
             
-            all.lines <- c(lines,newlines)
-            if(min.dl>1){
+            ## 
+            ## if(min.dl>1){
+            if(max.dl<nlines){
                 all.lines <- c(lines[1:(max.dl)],
                                newlines,
                                lines[-(1:(max.dl))]
                                ## lines[max((max.dl+1),length(lines)):length(lines)]
                                )
             } else {
-                all.lines <- lines
+                all.lines <- c(lines,newlines)
             }
+        }
+        if(location=="first"){
+            all.lines <- c(newlines,lines)
         }
         if(location=="last"){
             all.lines <- c(lines,newlines)
@@ -130,7 +131,7 @@ NMwriteSectionOne <- function(file0,lines,section,location="replace",
     for (I in 1:length(list.sections)) {
         newlines <- replaceOnePart(lines=newlines,section=names(list.sections)[I],
                                    newlines=list.sections[[I]]
-                                   ,quiet=quiet)
+                                  ,quiet=quiet)
     }
     
     if(is.null(newfile)) return(newlines)

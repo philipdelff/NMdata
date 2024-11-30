@@ -69,7 +69,7 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,
                            list.sections,location="replace",newfile,
                            backup=TRUE,blank.append=TRUE,data.file,
                            write=TRUE,quiet,simplify=TRUE){
-
+    
     
     
 #### Section start: handle arguments ####
