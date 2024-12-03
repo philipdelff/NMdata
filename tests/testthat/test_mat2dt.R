@@ -6,7 +6,7 @@ test_that("basic",{
 
     cov <- NMreadCov("testData/nonmem/xgxr032.cov")
 
-    res <- mat2dt(cov)
+    res <- mat2dt(cov,triangle="upper")
 
     
     expect_equal_to_reference(res,fileRef)
