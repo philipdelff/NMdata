@@ -1,3 +1,17 @@
+# NMdata 0.1.9
+
+## New features
+* `NMwriteSection` gains two new options for the `location` argument:
+  "first" and "last".
+
+## Bugfixes
+* `mat2dt()` was doing the opposite to what was specified by the
+  `triangle` argument and returned the upper triangle when
+  `triangle=lower` and vice versa.
+  
+* `NMwriteSection()` would fail if the first section in a control
+  stream was modified.
+
 # NMdata 0.1.8
 
 ## New features
