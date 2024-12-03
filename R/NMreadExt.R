@@ -207,10 +207,13 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
         ## est is just a copy of value for backward compatibility
         pars[,est:=value]
 
-### add OMEGA block information based on off diagonal values
+        ### add OMEGA block information based on off diagonal values
         tab.blocks <- rbind(pars[par.type%in%c("OMEGA","SIGMA"),.(par.type,i=i,j=j,value)],
                             pars[par.type%in%c("OMEGA","SIGMA"),.(par.type,i=j,j=i,value)])[
-            abs(value)>1e-9,.(iblock=min(i,j),blocksize=max(abs(j-i))+1),by=.(par.type,i)]
+                                abs(value)>1e-9,.(iblock=min(i,j)
+                                                  # ,blocksize=max(abs(j-i))+1
+                                ),by=.(par.type,i)]
+        tab.blocks[,blocksize:=length(i),by=.(par.type,iblock)]
 
         ## pars0 <- copy(pars)
         ## tab.blocks
