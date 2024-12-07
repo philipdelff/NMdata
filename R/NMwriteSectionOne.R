@@ -1,14 +1,18 @@
 ##' @keywords internal
 
-NMwriteSectionOne <- function(file0,lines,section,location="replace",
+NMwriteSectionOne <- function(file0,lines,section,location=c("replace","before","after","first","last"),
                               newlines,list.sections,newfile,
                               backup=TRUE,blank.append=TRUE,write,
                               quiet=FALSE){
-    
+
     after <- NULL 
     before <- NULL
     mad.dl <- NULL
+
     
+    
+    location <- match.arg(location)
+
     if(!missing(file0)){
         file0 <- filePathSimple(file0)
         stopifnot(file.exists(file0))
@@ -37,6 +41,7 @@ NMwriteSectionOne <- function(file0,lines,section,location="replace",
     
     ## put this part in a function to be sequentially applied for all elements in list.
     replaceOnePart <- function(lines,section,newlines,quiet=FALSE){
+        
         if(!quiet && !is.null(newfile)) message(paste("Writing",newfile))
         
         ## make sure section is capital and does not start with $.
@@ -85,7 +90,7 @@ NMwriteSectionOne <- function(file0,lines,section,location="replace",
             if(min.dl==1&&max.dl==nlines){
                 all.lines <- newlines
             } else if(min.dl==1){
-                all.lines <- c(newlines,lines[(mad.dl+1),nlines])
+                all.lines <- c(newlines,lines[(max.dl+1):nlines])
             } else if(max.dl==nlines){
                 all.lines <- c(lines[1:(min.dl-1)],newlines)
             } else {

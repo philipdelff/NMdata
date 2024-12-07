@@ -214,8 +214,6 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
                                 i==j|abs(value)>1e-9,.(iblock=min(i,j)),by=.(par.type,i)]
         tab.i[,blocksize:=.N,by=.(par.type,iblock)]
 
-        ## pars0 <- copy(pars)
-        ## tab.blocks
         pars <- mergeCheck(pars,tab.i,by=cc(par.type,i),all.x=T,quiet=TRUE)
 
         ## pars[par.type%in%c("OMEGA","SIGMA"),.(i,j,iblock,blocksize,value)]
