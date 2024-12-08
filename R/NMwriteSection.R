@@ -37,7 +37,7 @@
 ##'     exactly match the one in `$DATA` or `$INFILE` in Nonmem.
 ##' @param write Default is to write to file. If write=FALSE,
 ##'     `NMwriteSection()` returns the resulting input.txt without writing
-##'     it to disk?  Default is `FALSE`.
+##'     it to disk.  Default is `TRUE`.
 ##' @param quiet The default is to give some information along the way
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using

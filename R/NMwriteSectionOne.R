@@ -141,7 +141,7 @@ NMwriteSectionOne <- function(file0,lines,section,location=c("replace","before",
     
     if(is.null(newfile)) return(newlines)
     
-    if(file0==newfile && backup ) {
+    if(write && file0==newfile && backup ) {
         dir.backup <- file.path(dirname(file0),"NMdata_backup")
         ## make sure backup dir exists
         if(file.exists(dir.backup)&&!dir.exists(dir.backup)) messageWrap("Something called NMdata_backup is found and it is not a directory. Please remove or use backup=FALSE.",fun.msg=stop)
