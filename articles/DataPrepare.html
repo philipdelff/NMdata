@@ -114,7 +114,7 @@
 
     
     
-<p>Built 2024-12-08 using NMdata 0.1.8.905.</p>
+<p>Built 2024-12-12 using NMdata 0.1.8.905.</p>
 <p>This vignette is still under development. Please make sure to see
 latest version available <a href="https://nmautoverse.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
@@ -745,8 +745,7 @@ where <code>writeOutput</code> is a switching variable we set to
 the script.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">text.nm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMwriteData.html">NMwriteData</a></span><span class="op">(</span><span class="va">pk</span>, file <span class="op">=</span> <span class="st">"derived/pkdata.csv"</span>, script <span class="op">=</span> <span class="st">"DataPrepare.Rmd"</span>,</span>
-<span>    write.csv <span class="op">=</span> <span class="cn">TRUE</span>, args.stamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Description <span class="op">=</span> <span class="st">"PK data for the Data Preparation vignette."</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; arguments in the format write.xxx are deprecated. Use the `formats.write` argument instead. Example: formats.write=c("csv","rds")</span></span>
+<span>    formats.write <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"csv"</span>, <span class="st">"rds"</span><span class="op">)</span>, args.stamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Description <span class="op">=</span> <span class="st">"PK data for the Data Preparation vignette."</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; For NONMEM:</span></span>
 <span><span class="co">#&gt; $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV FLAG STUDY BLQ CYCLE DOSE</span></span>
 <span><span class="co">#&gt; PART PROFDAY PROFTIME WEIGHTB eff0</span></span>
@@ -762,9 +761,8 @@ detected the exclusion flag and suggests to include it in
 <code>$DATA</code>.</p>
 <p>Let’s take a look at what was saved:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="st">"derived"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "partab_offline.csv" "pkdata_meta.txt"    "pkdata.csv"        </span></span>
-<span><span class="co">#&gt; [4] "pkdata.rds"</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="st">"derived"</span>, pattern <span class="op">=</span> <span class="st">"pkdata.*"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "pkdata_meta.txt" "pkdata.csv"      "pkdata.rds"</span></span></code></pre></div>
 <p>There is a metadata file which <code>NMreadCsv</code> will
 automatically recognize if found. The metadata becomes accessible using
 <code>NMinfo</code>:</p>
@@ -776,10 +774,10 @@ automatically recognize if found. The metadata becomes accessible using
 <span><span class="co">#&gt; [1] "DataPrepare.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2024-12-08 22:30:55.749652"</span></span>
+<span><span class="co">#&gt; [1] "2024-12-12 04:11:37.302956"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$writtenTo</span></span>
-<span><span class="co">#&gt; [1] "derived/pkdata.rds derived/pkdata.csv"</span></span>
+<span><span class="co">#&gt; [1] "derived/pkdata.csv derived/pkdata.rds"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$Description</span></span>
 <span><span class="co">#&gt; [1] "PK data for the Data Preparation vignette."</span></span></code></pre></div>
@@ -794,10 +792,10 @@ file is the filename:</p>
 <span><span class="co">#&gt; [1] "DataPrepare.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2024-12-08 22:30:55 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2024-12-12 04:11:37 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$writtenTo</span></span>
-<span><span class="co">#&gt; [1] "derived/pkdata.rds" "derived/pkdata.csv"</span></span>
+<span><span class="co">#&gt; [1] "derived/pkdata.csv" "derived/pkdata.rds"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$Description</span></span>
 <span><span class="co">#&gt; [1] "PK data for the Data Preparation vignette."</span></span></code></pre></div>
@@ -858,7 +856,7 @@ does).</p>
 <span><span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2024-12-08 22:30:56 UTC"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "2024-12-12 04:11:37 UTC"</span></span></code></pre></div>
 <p>The <code>script</code> argument is recognized by
 <code>NMstamp</code>, but you can add anything to this. We want to keep
 descriptive note too. Another often useful piece of information is what
@@ -874,7 +872,7 @@ source data files were read in order to generate the saved data.
 <span><span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2024-12-08 22:30:56 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2024-12-12 04:11:37 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$Description</span></span>
 <span><span class="co">#&gt; [1] "A PK dataset used for examples."</span></span>
