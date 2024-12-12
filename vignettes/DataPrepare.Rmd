@@ -501,14 +501,14 @@ the proposed text for the NONMEM run, see `?NMwriteData` and especially `?NMgenT
 Let's include the origin script of the data as meta data. `write.csv=TRUE` is default but included here because we often want to use something like `write.csv=writeOutput` where `writeOutput` is a switching variable we set to `TRUE` or `FALSE` in the initialization section of the script.
 
 ```{r}
-text.nm <- NMwriteData(pk,file="derived/pkdata.csv",script="DataPrepare.Rmd",write.csv=TRUE,args.stamp=list(Description="PK data for the Data Preparation vignette."))
+text.nm <- NMwriteData(pk,file="derived/pkdata.csv",script="DataPrepare.Rmd",formats.write=c("csv","rds"),args.stamp=list(Description="PK data for the Data Preparation vignette."))
 ```
 
 We are being told that two files were saved, and then we get some text to use in the NONMEM control streams. `NMwriteData` detected the exclusion flag and suggests to include it in `$DATA`.
 
 Let's take a look at what was saved:
 ```{r}
-list.files("derived")
+list.files("derived",pattern="pkdata.*")
 ```
 There is a metadata file which `NMreadCsv` will automatically recognize if found. The metadata becomes accessible using `NMinfo`:
 ```{r}
