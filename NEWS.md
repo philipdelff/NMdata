@@ -12,6 +12,8 @@
 * `NMwriteSection()` would fail if the first section in a control
   stream was modified.
 
+* `NMrelate()` was ignoring the `par.type` argument.
+
 # NMdata 0.1.8
 
 ## New features

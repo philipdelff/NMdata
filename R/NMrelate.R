@@ -29,7 +29,6 @@
 NMrelate <- function(file,lines,modelname,par.type,col.model,sections,as.fun){
     
     text <- NULL
-    par.type <- NULL
     
     if(missing(file)) file <- NULL
     if(missing(lines)) lines <- NULL
@@ -46,7 +45,7 @@ NMrelate <- function(file,lines,modelname,par.type,col.model,sections,as.fun){
 
 
     lines <- getLines(file=file,lines=lines,col.model=col.model,modelname=modelname,as.one=TRUE)
-
+    
     list.relate <- lapply(par.type,function(tp) {
         lines[,NMrelateOne(lines=text,par.type=tp,as.fun="data.table"),by=col.model]
     })
