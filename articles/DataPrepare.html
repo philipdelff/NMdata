@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8.906</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8.907</span>
       </span>
     </div>
 
@@ -114,7 +114,7 @@
 
     
     
-<p>Built 2024-12-14 using NMdata 0.1.8.906.</p>
+<p>Built 2024-12-19 using NMdata 0.1.8.907.</p>
 <p>This vignette is still under development. Please make sure to see
 latest version available <a href="https://nmautoverse.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
@@ -677,40 +677,40 @@ with subject or subject-occasion. We can also add other numeric
 variables to use in NONMEM to check for missing values.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">findings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMcheckData.html">NMcheckData</a></span><span class="op">(</span><span class="va">pk</span>, covs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DOSE"</span>, <span class="st">"WEIGHTB"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   column                     check     N   Nid</span></span>
-<span><span class="co">#&gt;   &lt;char&gt;                    &lt;char&gt; &lt;int&gt; &lt;int&gt;</span></span>
-<span><span class="co">#&gt;     EVID        Subject has no obs    19    19</span></span>
-<span><span class="co">#&gt;      MDV          Column not found     1     0</span></span>
-<span><span class="co">#&gt;  WEIGHTB  Cov not unique within ID     1     1</span></span>
-<span><span class="co">#&gt;      AMT Non-positive dose amounts     1     1</span></span>
-<span><span class="co">#&gt;     EVID           EVID not in 0:4     1     1</span></span></code></pre></div>
+<span><span class="co">#&gt;   column                           check     N   Nid</span></span>
+<span><span class="co">#&gt;   &lt;char&gt;                          &lt;char&gt; &lt;int&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt;     EVID              Subject has no obs    19    19</span></span>
+<span><span class="co">#&gt;      MDV                Column not found     1     0</span></span>
+<span><span class="co">#&gt;  WEIGHTB        Cov not unique within ID     1     1</span></span>
+<span><span class="co">#&gt;      AMT Non-positive or NA dose amounts     1     1</span></span>
+<span><span class="co">#&gt;     EVID                 EVID not in 0:4     1     1</span></span></code></pre></div>
 <p>Let’s look at these findings:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">findings</span></span>
-<span><span class="co">#&gt;     row  ID  column                     check  level  ROW</span></span>
-<span><span class="co">#&gt; 1    NA  31    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 2    NA  32    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 3    NA  33    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 4    NA  34    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 5    NA  36    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 6    NA  37    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 7    NA  38    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 8    NA  39    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 9    NA  42    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 10   NA  44    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 11   NA  45    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 12   NA  46    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 13   NA  49    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 14   NA  52    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 15   NA  53    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 16   NA  56    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 17   NA  57    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 18   NA  58    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 19   NA  60    EVID        Subject has no obs     ID   NA</span></span>
-<span><span class="co">#&gt; 20   NA  NA     MDV          Column not found column   NA</span></span>
-<span><span class="co">#&gt; 21   NA 180 WEIGHTB  Cov not unique within ID     ID   NA</span></span>
-<span><span class="co">#&gt; 22 1403 171     AMT Non-positive dose amounts    row 1403</span></span>
-<span><span class="co">#&gt; 23 1480 178    EVID           EVID not in 0:4    row 1480</span></span></code></pre></div>
+<span><span class="co">#&gt;     row  ID  column                           check  level  ROW</span></span>
+<span><span class="co">#&gt; 1    NA  31    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 2    NA  32    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 3    NA  33    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 4    NA  34    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 5    NA  36    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 6    NA  37    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 7    NA  38    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 8    NA  39    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 9    NA  42    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 10   NA  44    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 11   NA  45    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 12   NA  46    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 13   NA  49    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 14   NA  52    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 15   NA  53    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 16   NA  56    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 17   NA  57    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 18   NA  58    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 19   NA  60    EVID              Subject has no obs     ID   NA</span></span>
+<span><span class="co">#&gt; 20   NA  NA     MDV                Column not found column   NA</span></span>
+<span><span class="co">#&gt; 21   NA 180 WEIGHTB        Cov not unique within ID     ID   NA</span></span>
+<span><span class="co">#&gt; 22 1403 171     AMT Non-positive or NA dose amounts    row 1403</span></span>
+<span><span class="co">#&gt; 23 1480 178    EVID                 EVID not in 0:4    row 1480</span></span></code></pre></div>
 <p>Depending on <code>level</code> we can now take a look at single
 rows, data from a subject or fix a column to address these. The fact
 that some subjects are missing observations in this case is not
@@ -774,7 +774,7 @@ automatically recognize if found. The metadata becomes accessible using
 <span><span class="co">#&gt; [1] "DataPrepare.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2024-12-14 17:54:31.385007"</span></span>
+<span><span class="co">#&gt; [1] "2024-12-19 02:40:39.755915"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$writtenTo</span></span>
 <span><span class="co">#&gt; [1] "derived/pkdata.csv derived/pkdata.rds"</span></span>
@@ -792,7 +792,7 @@ file is the filename:</p>
 <span><span class="co">#&gt; [1] "DataPrepare.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2024-12-14 17:54:31 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2024-12-19 02:40:39 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$writtenTo</span></span>
 <span><span class="co">#&gt; [1] "derived/pkdata.csv" "derived/pkdata.rds"</span></span>
@@ -856,7 +856,7 @@ does).</p>
 <span><span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2024-12-14 17:54:31 UTC"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "2024-12-19 02:40:40 UTC"</span></span></code></pre></div>
 <p>The <code>script</code> argument is recognized by
 <code>NMstamp</code>, but you can add anything to this. We want to keep
 descriptive note too. Another often useful piece of information is what
@@ -872,7 +872,7 @@ source data files were read in order to generate the saved data.
 <span><span class="co">#&gt; [1] "vignettes/DataCreate.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2024-12-14 17:54:31 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2024-12-19 02:40:40 UTC"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dataCreate$Description</span></span>
 <span><span class="co">#&gt; [1] "A PK dataset used for examples."</span></span>
