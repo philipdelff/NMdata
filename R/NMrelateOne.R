@@ -7,7 +7,7 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",sections=c("PRED","PK","ERRO
     line2 <- NULL
     line.var <- NULL
     . <- NULL
-    varname <- NULL
+    var.name <- NULL
     var.type <- NULL
     lineno <- NULL
     ETA <- NULL
@@ -50,45 +50,37 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",sections=c("PRED","PK","ERRO
     lines.list <- lines.list[names(lines.list)%in%sections]
     ## lines <- do.call(c,lines.list)
     lines <- unlist(lines.list)
-    
-    ## lines <- rbindlist(lines.list)
-    
-    ## lines <- c(NMreadSection(lines=lines,section="PRED",keep.comments=FALSE),
-    ##            NMreadSection(lines=lines,section="PK",keep.comments=FALSE),
-    ##            NMreadSection(lines=lines,section="ERROR",keep.comments=FALSE)
-    ##            )
-    
-    
+       
     dt.code <- data.table(line.var = lines[grepl(str.regex.find,lines)])
     ## remove spaces
     dt.code[,line2:=gsub(" ","",line.var)]
 
     ## determine found variable type?
     
-    dt.code <- dt.code[,.(varname=unlist(
+    dt.code <- dt.code[,.(var.name=unlist(
                               regmatches(line2,
                                          gregexpr(paste0(str.regex.find,"\\(([0-9]+(,[0-9]+)*)\\)"),line2))
                           )),
                        by=.(line.var,line2)]
-    dt.code[,varname:=sub("^[^[:alnum:]]","",varname)]
-    dt.code[,var.type:=sub(sprintf("(%s).*",str.regex),"\\1",varname)][,lineno:=.I]
+    dt.code[,var.name:=sub("^[^[:alnum:]]","",var.name)]
+    dt.code[,var.type:=sub(sprintf("(%s).*",str.regex),"\\1",var.name)][,lineno:=.I]
 
 
     dt.code[var.type%in%cc(ETA,THETA,ERR,EPS),
-            i:=as.numeric(sub(paste0(".*",var.type,"\\(([1-9][0-9]*)\\)"),"\\1",varname)),
+            i:=as.numeric(sub(paste0(".*",var.type,"\\(([1-9][0-9]*)\\)"),"\\1",var.name)),
             by=lineno]
 
     dt.code[,j:=NA_integer_]
     dt.code[var.type%in%c("ETA","ERR","EPS"),j:=i]
 
     dt.code[var.type=="SIGMA",            
-            i:=as.integer(sub(".*\\(([1-9][0-9]*),([1-9][0-9]*)\\)","\\1",varname))]
+            i:=as.integer(sub(".*\\(([1-9][0-9]*),([1-9][0-9]*)\\)","\\1",var.name))]
     dt.code[var.type=="SIGMA",
-            j:=as.integer(sub(".*\\(([1-9][0-9]*),([1-9][0-9]*)\\)","\\2",varname))]
+            j:=as.integer(sub(".*\\(([1-9][0-9]*),([1-9][0-9]*)\\)","\\2",var.name))]
 
 
 
-    dt.code[,par.name:=varname]
+    dt.code[,par.name:=var.name]
     dt.code[var.type=="ETA",par.name:=sprintf("%s(%s,%s)","OMEGA",i,j)]
     dt.code[var.type%in%cc(EPS,ERR),par.name:=sprintf("%s(%s,%s)","SIGMA",i,j)]
     dt.code[,LHS:=sub("(.*)=.*","\\1",line2)]

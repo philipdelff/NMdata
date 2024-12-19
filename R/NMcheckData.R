@@ -768,16 +768,17 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
         findings <- listEvents(col.dv,"DV not NA or 0 in dosing recs",fun=function(x)is.na(x)|as.numeric(x)==0,events=findings,dat=data[EVID%in%c(1,4)])
     }
 
-
+    
 #### AMT
     ## must be numeric
     findings <- listEvents(col.amt,name="Not numeric",
                            fun=function(x)NMisNumeric(x,na.strings=na.strings,each=TRUE),
-                           events=findings,                           
-                           dat=data) 
+                           events=findings,
+                           ## new.rows.only=F,
+                           dat=data)
     ## positive for EVID 1 and 4
-    findings <- listEvents(col.amt,"Non-positive dose amounts",
-                           fun=function(x)x>0,events=findings,
+    findings <- listEvents(col.amt,"Non-positive or NA dose amounts",
+                           fun=function(x)!is.na(x)&x>0,events=findings,
                            dat=data[EVID%in%c(1,4)])
     ## must be 0 or NA for EVID 0 and 2
     findings <- listEvents(col.amt,"Non-zero dose for obs or sim record",

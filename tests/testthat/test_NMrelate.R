@@ -3,7 +3,6 @@ context("NMrelate")
 
 NMdataConf(reset=TRUE)
 
-### sigma doesn't quite work
 test_that("basic",{
     file.mod <- "testData/nonmem/xgxr032.mod"
     fileRef <- "testReference/NMrelateOne_01.rds"
