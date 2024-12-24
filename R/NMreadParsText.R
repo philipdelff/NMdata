@@ -172,13 +172,6 @@ NMreadParsText <- function(file,lines,format,
     if(is.function(format.omega)) format.omega <- format.omega(lines)
     if(is.function(format.sigma)) format.sigma <- format.sigma(lines)
 
-    cleanSpaces <- function(x,double=TRUE,lead=TRUE,trail=TRUE){
-        if(double) x <- gsub(paste0(" +")," ",x)
-        if(lead) x <- sub(paste0("^ +"),"",x)
-        if(trail) x <- sub(paste0(" +$"),"",x)
-        x
-    }
-
     
     ## function to extact however many format are available in a commented
     ## parameter row
