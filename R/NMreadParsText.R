@@ -19,15 +19,36 @@
 ##'     section. Default is to reuse `fields`.
 ##' @param format.sigma Like `fields`, applied to `$SIGMA`
 ##'     section. Default is to reuse `fields.omega`.
-##' @param use.theta.idx If an index field in comments should be used
-##'     to number thetas. The index field is used to organize
-##'     `$OMEGA`s and `$SIGMA`s because they are matrices but I do not
-##'     see where this is advantageous to do for `$THETA`s. Default
-##'     `use.theta.idx=FALSE` which means `$THETA`s are simply
-##'     counted.
+##' @param unique.matches If TRUE, each line in the control stream is
+##'     assigned to one parameter, at most. This means, if two
+##'     parameters are listed in one line, the comments will only be
+##'     used for one of the parameters, and only that parameter will
+##'     be kept in output. Where this will typically happen is in
+##'     `$OMEGA` and `$SIGMA` sections where off-diagonal may be put
+##'     on the same line as diagonal elements. Since the off-diagonal
+##'     elements are covariances of variables that have already been
+##'     identified by the diagonals, the off-diagonal elements can be
+##'     automatically described. For example, if `OMEGA(1,1)` is
+##'     between-subject variability (BSV) on CL and `OMEGA(2,2) is BSV
+##'     on V, then we know that `OMEGA(2,1)` is covariance of (BSV on)
+##'     CL and V.
 ##' @param spaces.split Is a blank in `fields` to be treated as a
 ##'     field seperator? Default is not to (i.e. neglect spaces in
 ##'     `fields`).
+##' @param use.idx The default method is to automatically identify
+##'     element numbering (`i` for THETAs, `i` and `j` for OMEGAs and
+##'     SIGMAs). The automated method is based on identification of
+##'     `BLOCK()` structures and numbers of initial values. Should
+##'     this fail, or should you want to control this manually, you
+##'     can include a parameter counter in the comments and have
+##'     `NMreadParsText()` use that to assign the
+##'     numbering. `use.idx=FALSE` is default and means all blocks are
+##'     handled automatically, `use.idx=TRUE` assumes you have a
+##'     counter in all sections, and a character vector like
+##'     `use.idx="omega"` can be used to denote which sections use
+##'     such a counter from the control stream. When using a counter
+##'     on OMEGA and SIGMA, off-diagonal elements MUST be denoted by
+##'     `i-j`, like `2-1` for OMEGA(2,1). See `field.idx` too.
 ##' @param field.idx If an index field is manually provided in the
 ##'     control stream comments, define the name of that field in
 ##'     `format` and tell `NMreadParsTab()` to use this idx to
@@ -39,10 +60,17 @@
 ##' @param modelname See ?NMscanData
 ##' @param col.model See ?NMscanData
 ##' @param as.fun See ?NMscanData
+##' @param use.theta.idx If an index field in comments should be used
+##'     to number thetas. The index field is used to organize
+##'     `$OMEGA`s and `$SIGMA`s because they are matrices but I do not
+##'     see where this is advantageous to do for `$THETA`s. Default
+##'     `use.theta.idx=FALSE` which means `$THETA`s are simply
+##'     counted.
 ##' @param fields Deprecated. Use `format`.
 ##' @param fields.omega Deprecated. Use `format.omega`.
 ##' @param fields.sigma Deprecated. Use `format.sigma`.
-##' @return data.frame with parameter names and fields read from comments
+##' @return data.frame with parameter names and fields read from
+##'     comments
 ##' @details Off-diagonal omega and sigma elements will only be
 ##'     correctly treated if their num field specifies say 1-2 to
 ##'     specify it is covariance between 1 and 2.
@@ -109,11 +137,16 @@ NMreadParsText <- function(file,lines,format,
                            fields.sigma=fields.omega
                            ){
 
+    . <- NULL
     idx <- NULL
     par.type <- NULL
     i <- NULL
     j <- NULL
+    linenum <- NULL
     parameter <- NULL
+    text <- NULL
+    text.clean <- NULL
+    type.elem <- NULL
     THETA <- NULL
     theta <- NULL
     OMEGA <- NULL

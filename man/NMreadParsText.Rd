@@ -45,6 +45,20 @@ section. Default is to reuse `fields.omega`.}
 field seperator? Default is not to (i.e. neglect spaces in
 `fields`).}
 
+\item{unique.matches}{If TRUE, each line in the control stream is
+assigned to one parameter, at most. This means, if two
+parameters are listed in one line, the comments will only be
+used for one of the parameters, and only that parameter will
+be kept in output. Where this will typically happen is in
+`$OMEGA` and `$SIGMA` sections where off-diagonal may be put
+on the same line as diagonal elements. Since the off-diagonal
+elements are covariances of variables that have already been
+identified by the diagonals, the off-diagonal elements can be
+automatically described. For example, if `OMEGA(1,1)` is
+between-subject variability (BSV) on CL and `OMEGA(2,2) is BSV
+on V, then we know that `OMEGA(2,1)` is covariance of (BSV on)
+CL and V.}
+
 \item{field.idx}{If an index field is manually provided in the
 control stream comments, define the name of that field in
 `format` and tell `NMreadParsTab()` to use this idx to
@@ -53,6 +67,21 @@ with `field.idx`. The default is to look for a varible called
 `idx`. If the index has values like 1-2 on an OMEGA or SIGMA
 row, the row is interpreted as the covariance between
 OMEGA/SIGMA 1 and 2.}
+
+\item{use.idx}{The default method is to automatically identify
+element numbering (`i` for THETAs, `i` and `j` for OMEGAs and
+SIGMAs). The automated method is based on identification of
+`BLOCK()` structures and numbers of initial values. Should
+this fail, or should you want to control this manually, you
+can include a parameter counter in the comments and have
+`NMreadParsText()` use that to assign the
+numbering. `use.idx=FALSE` is default and means all blocks are
+handled automatically, `use.idx=TRUE` assumes you have a
+counter in all sections, and a character vector like
+`use.idx="omega"` can be used to denote which sections use
+such a counter from the control stream. When using a counter
+on OMEGA and SIGMA, off-diagonal elements MUST be denoted by
+`i-j`, like `2-1` for OMEGA(2,1). See `field.idx` too.}
 
 \item{modelname}{See ?NMscanData}
 
@@ -74,7 +103,8 @@ counted.}
 \item{fields.sigma}{Deprecated. Use `format.sigma`.}
 }
 \value{
-data.frame with parameter names and fields read from comments
+data.frame with parameter names and fields read from
+    comments
 }
 \description{
 When interpreting parameter estimates, it is often needed to

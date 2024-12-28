@@ -100,8 +100,19 @@ classify_matches <- function(matches) {
 }
 
 
+##' @keywords internal
 
 count_ij <- function(res){
+
+    elem <- NULL
+    inblock <- NULL
+    elblock <- NULL
+    does.count <- NULL
+    blocksize <- NULL
+    iblock <- NULL
+    i <- NULL
+    
+    
     elcount <- 1
     icount <- 1
     dt.ij <- NULL
@@ -154,8 +165,24 @@ count_ij <- function(res){
 }
 
 
+##' Identify active elements in a parameter section
 ##' @import stringi
+##' @keywords internal
 processLines <- function(lines,section,debug=FALSE) {
+
+    row.elem <- NULL
+    string <- NULL
+    . <- NULL
+    linenum <- NULL
+    does.count <- NULL
+    type.elem <- NULL
+    elem <- NULL
+    elblock <- NULL
+    blocksize <- NULL
+    value.elem <- NULL
+    lastblockmax <- NULL
+    inblock <- NULL
+    par.type <- NULL
     
     if(missing(section)) section <- NULL
     if(!is.null(section)) {
