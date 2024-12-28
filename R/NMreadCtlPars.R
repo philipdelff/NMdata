@@ -20,28 +20,33 @@ jfun <- function(blocksize,istart=1){
 ## jfun(3,istart=2)
 
 
+
+
 classify_matches <- function(matches) {
     results <- list()
     
     for (match in matches) {
-        if (str_detect(match, "^BLOCK\\(\\d+\\)$")) {
-                                        # Extract the number from BLOCK(N)
-            number <- as.numeric(str_match(match, "BLOCK\\((\\d+)\\)")[1, 2])
+        if (grepl("^BLOCK\\(\\d+\\)$",match)) {
+            ## Extract the number from BLOCK(N)
+            
+            ## number <- as.numeric(str_match(match, "BLOCK\\((\\d+)\\)")[1, 2])
+            number <- as.numeric(stri_match_all_regex(match, "BLOCK\\((\\d+)\\)")[[1]][1, 2])
             results <- append(results, list(list(
                                            string.elem = match,
                                            type.elem = "BLOCK",
                                            value.elem = number
                                        )))
-        } else if (str_detect(match, "^FIX|FIXED$")) {
-                                        # For FIX or FIXED, value is 1
+        } else if (grepl("^FIX|FIXED$",match)) {
+            ## For FIX or FIXED, value is 1
             results <- append(results, list(list(
                                            string.elem = match,
                                            type.elem = "FIX",
                                            value.elem = 1
                                        )))
-        } else if (str_detect(match, "^\\(-?\\d+(\\.\\d+)?,-?\\d+(\\.\\d+)?,-?\\d+(\\.\\d+)?\\)$")) {
-                                        # Split (ll,init,ul)
-            nums <- as.numeric(str_match_all(match, "-?\\d+(\\.\\d+)?")[[1]][, 1])
+        } else if (grepl( "^\\(-?\\d+(\\.\\d+)?,-?\\d+(\\.\\d+)?,-?\\d+(\\.\\d+)?\\)$",match)) {
+            ## Split (ll,init,ul)
+            ## nums <- as.numeric(str_match_all(match, "-?\\d+(\\.\\d+)?")[[1]][, 1])
+            nums <- as.numeric(stri_match_all_regex(match, "-?\\d+(\\.\\d+)?")[[1]][, 1])
             results <- append(results, list(list(
                                            string.elem = match,
                                            type.elem = "ll",
@@ -57,9 +62,10 @@ classify_matches <- function(matches) {
                                            type.elem = "ul",
                                            value.elem = nums[3]
                                        )))
-        } else if (str_detect(match, "^\\(-?\\d+(\\.\\d+)?,-?\\d+(\\.\\d+)?\\)$")) {
+        } else if (grepl( "^\\(-?\\d+(\\.\\d+)?,-?\\d+(\\.\\d+)?\\)$",match)) {
                                         # Split (ll,init)
-            nums <- as.numeric(str_match_all(match, "-?\\d+(\\.\\d+)?")[[1]][, 1])
+            ## nums <- as.numeric(str_match_all(match, "-?\\d+(\\.\\d+)?")[[1]][, 1])
+            nums <- as.numeric(stri_match_all_regex(match, "-?\\d+(\\.\\d+)?")[[1]][, 1])
             results <- append(results, list(list(
                                            string.elem = match,
                                            type.elem = "ll",
@@ -70,15 +76,16 @@ classify_matches <- function(matches) {
                                            type.elem = "init",
                                            value.elem = nums[2]
                                        )))
-        } else if (str_detect(match, "^\\(-?\\d+(\\.\\d+)?\\)$")) {
+        } else if (grepl( "^\\(-?\\d+(\\.\\d+)?\\)$",match)) {
                                         # Extract init
-            nums <- as.numeric(str_match(match, "-?\\d+(\\.\\d+)?")[1, 1])
+            ## nums <- as.numeric(str_match(match, "-?\\d+(\\.\\d+)?")[1, 1])
+            nums <- as.numeric(stri_match_all_regex(match, "-?\\d+(\\.\\d+)?")[[1]][1, 1])
             results <- append(results, list(list(
                                            string.elem = match,
                                            type.elem = "init",
                                            value.elem = nums
                                        )))
-        } else if (str_detect(match, "^-?\\d+(\\.\\d+)?$")) {
+        } else if (grepl( "^-?\\d+(\\.\\d+)?$",match)) {
                                         # Standalone init
             nums <- as.numeric(match)
             results <- append(results, list(list(
@@ -99,22 +106,25 @@ count_ij <- function(res){
     icount <- 1
     dt.ij <- NULL
     while (elcount<=max(res[,elem])){
-        ## browser()        
+        
         this.bsize <- 1
-        if(res[elem==elcount,unique(inblock==TRUE)]){
-            ## browser()
+
+        if(res[elem==elcount,unique(inblock)==TRUE]){
+            
+            
 ### assign i and j to all
             this.elblock <- res[elem==elcount,unique(elblock)]
-            this.bsize <- res[elem==elcount,unique(blocksize)]
+            this.res <- res[ elblock==this.elblock  & does.count==TRUE]
+            this.bsize <- this.res[,unique(blocksize)]
 
             ## res[elblock==this.elblock,i:=ifun(this.bsize,istart=icount)]
             
-            this.dt.ij <- data.table(elem=res[elblock==this.elblock,unique(elem)],
+            this.dt.ij <- data.table(elem=this.res[,unique(elem)],
                                      i=ifun(this.bsize,istart=icount),
                                      j=jfun(this.bsize,istart=icount))
             
             ## res[elblock==this.elblock,j:=jfun(blocksize,istart=icount)]
-            elcount <- elcount+this.dt.ij[,length(unique(elem))]            
+            elcount <- elcount+this.dt.ij[,length(unique(elem))]
 
         } else {
             ## res[elem==elcount,i:=elcount]
@@ -128,7 +138,8 @@ count_ij <- function(res){
 
     }
 
-    res <- mergeCheck(res,dt.ij,by="elem",all.x=TRUE)
+    
+    res <- mergeCheck(res,dt.ij,by="elem",all.x=TRUE,quiet=TRUE)
 
     ## browser()
     if(any(res[,inblock])){
@@ -143,9 +154,22 @@ count_ij <- function(res){
 }
 
 
-processLines <- function(lines,debug=FALSE) {
+##' @import stringi
+processLines <- function(lines,section,debug=FALSE) {
     
-                                        # Comprehensive regex pattern
+    if(missing(section)) section <- NULL
+    if(!is.null(section)) {
+        section <- sub("\\$","",section)
+        section <- cleanSpaces(section)
+        section <- toupper(section)
+
+        if(length(section)>1) stop("Only one section can be handled at a time.")
+        ## We want to keep everything, even empty lines so we can keep track of line numbers
+        lines <- NMreadSection(lines=lines,section=section,keep.empty=TRUE,keep.comments=TRUE)
+    }
+    if(length(lines)==0) return(NULL)
+    
+    ## Comprehensive regex pattern
     pattern <- paste(
         "BLOCK\\(\\d+\\)",                         # BLOCK(N)
         "\\(-?\\d+(\\.\\d+)?,-?\\d+(\\.\\d+)?,-?\\d+(\\.\\d+)?\\)", # (ll,init,ul)
@@ -157,20 +181,22 @@ processLines <- function(lines,debug=FALSE) {
         sep = "|"
     )
     
-                                        # Preprocess to remove comments (everything after ";")
-    lines_cleaned <- str_replace(lines, ";.*", "")
+    ## Preprocess to remove comments (everything after ";")
+    ## lines_cleaned <- str_replace(lines, ";.*", "")
+    lines_cleaned <- gsub( ";.*", "",lines)
     
                                         # Extract matches
-    matches <- str_extract_all(lines_cleaned, pattern)
+    ## matches <- str_extract_all(lines_cleaned, pattern)
+    matches <- stri_extract_all_regex(lines_cleaned, pattern)
     
-                                        # Function to classify matches and insert NA where applicable
+    ## Function to classify matches and insert NA where applicable
 
 
 
     res.list <- lapply(seq_along(matches),function(I){
         match <- matches[[I]]
         if(length(match)==0) return(NULL)
-        data.table(line=I,string=match)
+        data.table(linenum=I,string=match)
     })
     res <- rbindlist(res.list)
 
@@ -180,16 +206,17 @@ processLines <- function(lines,debug=FALSE) {
 
     ## browser()
     
-    res <- res[,classify_matches(string),by=.(line,row.elem)]
+    res <- res[,classify_matches(string),by=.(linenum,row.elem)]
 
-
+################ STOP somethings wrong. What is elem if element does not count? Instead of locf/nocb, I think this should be done by min(elem,na.rm=T),by=elblock.
 
     res[,does.count:=TRUE]
     res[type.elem%in%c("BLOCK","FIX"),does.count:=FALSE]
     res[,elem:=row.elem]
     res[!does.count==TRUE,elem:=NA]
-    res[,elem:=nafill(elem,type="locf")]
     res[,elem:=nafill(elem,type="nocb")]
+    res[,elem:=nafill(elem,type="locf")]
+    
     res[,elem:=.GRP,by=elem]
 
     
@@ -208,6 +235,8 @@ processLines <- function(lines,debug=FALSE) {
     res[inblock==FALSE,blocksize:=1]
 
     res <- count_ij(res)
+    res[,par.type:=section]
+
     res[]
 }
 

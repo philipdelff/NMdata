@@ -11,11 +11,13 @@ NMreadParsText(
   format.omega = format,
   format.sigma = format.omega,
   spaces.split = FALSE,
+  unique.matches = TRUE,
   field.idx = "idx",
-  use.theta.idx = FALSE,
+  use.idx = FALSE,
   modelname,
   col.model,
   as.fun,
+  use.theta.idx,
   fields,
   fields.omega = fields,
   fields.sigma = fields.omega
@@ -52,18 +54,18 @@ with `field.idx`. The default is to look for a varible called
 row, the row is interpreted as the covariance between
 OMEGA/SIGMA 1 and 2.}
 
+\item{modelname}{See ?NMscanData}
+
+\item{col.model}{See ?NMscanData}
+
+\item{as.fun}{See ?NMscanData}
+
 \item{use.theta.idx}{If an index field in comments should be used
 to number thetas. The index field is used to organize
 `$OMEGA`s and `$SIGMA`s because they are matrices but I do not
 see where this is advantageous to do for `$THETA`s. Default
 `use.theta.idx=FALSE` which means `$THETA`s are simply
 counted.}
-
-\item{modelname}{See ?NMscanData}
-
-\item{col.model}{See ?NMscanData}
-
-\item{as.fun}{See ?NMscanData}
 
 \item{fields}{Deprecated. Use `format`.}
 

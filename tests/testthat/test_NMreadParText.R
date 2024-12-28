@@ -164,6 +164,7 @@ $SIGMA 1
 
     expect_equal_to_reference(res,fileRef)
 
+    
     if(F){
         res
         readRDS(fileRef)

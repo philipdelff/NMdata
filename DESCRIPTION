@@ -31,7 +31,8 @@ Suggests:
   tibble,
   covr,
   htmltools,
-  spelling
+  spelling,
+  stringi
 Encoding: UTF-8
 BugReports: https://github.com/nmautoverse/NMdata/issues
 Language: en-US
