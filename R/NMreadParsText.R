@@ -403,6 +403,7 @@ NMreadParsText <- function(file,lines,format,
                         by=c("par.type","linenum"),all.x=TRUE)
     }
     if("OMEGA"%in%auto.idx){
+        
         elems.omega <- processLines(lines,section="OMEGA")
         omegas <- merge(omegas[,setdiff(colnames(omegas),c("i","j")),with=FALSE],
                         elems.omega[type.elem=="init",.(par.type,linenum,i,j)],
@@ -439,11 +440,13 @@ by=c("par.type","linenum"),all.x=TRUE)
         ## pt1 <- pt1[frank(match(pt1$par.type,c("THETA","OMEGA","SIGMA")),i==j,i,j))
         ## pt.idx <- pt1[!par.type%in%auto.idx]
         ## pt.auto
+        
         pt1 <- pt1[order(match(par.type,c("THETA","OMEGA","SIGMA")),i!=j,i,j)]
-        pt1 <- unique(pt1,by=c("par.type","linenum"))
-        pt1 <- pt1[order(match(par.type,c("THETA","OMEGA","SIGMA")),i,j)]
+        pt2 <- unique(pt1,by=c("par.type","linenum"))
+        pt2 <- pt2[order(match(par.type,c("THETA","OMEGA","SIGMA")),i,j)]
         ## setkey(pt1,par.type,i)
         ## unique(pt1)
+        pt1 <- pt2
     }
     ## }
 
