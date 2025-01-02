@@ -212,6 +212,7 @@ count_ij <- function(res){
     
     res <- mergeCheck(res,dt.ij,by="parnum",all.x=TRUE,quiet=TRUE)
 
+    
     ## browser()
     if(any(res[,inblock])){
         res[inblock==TRUE,iblock:=min(i,na.rm=TRUE),by=parblock]
@@ -265,6 +266,14 @@ processLines <- function(lines,section,debug=FALSE) {
     ## Preprocess to remove comments (everything after ";")
     ## lines_cleaned <- str_replace(lines, ";.*", "")
     lines_cleaned <- gsub( ";.*", "",lines)
+
+    ### rewrite (init FIX) as init FIX
+    # Regular expression to match (init FIX) and (init FIXED)
+    lines_cleaned <- gsub(
+        pattern = "\\(\\s*(-?\\d+(\\.\\d+)?(?:[eE][+-]?\\d+)?)\\s+FIX(?:ED)?\\s*\\)",
+        ## Replace with "init FIX"
+        replacement = "\\1 FIX",
+        x=lines_cleaned)
     
                                         # Extract matches
     ## matches <- str_extract_all(lines_cleaned, pattern)
@@ -333,6 +342,7 @@ processLines <- function(lines,section,debug=FALSE) {
     res <- count_ij(res)
     res[,parblock:=NULL]
     res[,par.type:=section]
+    res[par.type=="THETA",j:=NA]
     
     
 
