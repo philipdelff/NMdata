@@ -397,21 +397,21 @@ NMreadParsText <- function(file,lines,format,
     
     if("THETA"%in%auto.idx){
         
-        elems.theta <- processLines(lines,section="THETA")
+        elems.theta <- NMreadCtlPars(lines,section="THETA")
         thetas <- merge(thetas[,setdiff(colnames(thetas),c("i","j")),with=FALSE],
                         elems.theta[type.elem=="init",.(par.type,linenum,i)],
                         by=c("par.type","linenum"),all.x=TRUE)
     }
     if("OMEGA"%in%auto.idx){
         
-        elems.omega <- processLines(lines,section="OMEGA")
+        elems.omega <- NMreadCtlPars(lines,section="OMEGA")
         omegas <- merge(omegas[,setdiff(colnames(omegas),c("i","j")),with=FALSE],
                         elems.omega[type.elem=="init",.(par.type,linenum,i,j)],
                         by=c("par.type","linenum"),all.x=TRUE)
     }
     if("SIGMA"%in%auto.idx){
         
-        elems.sigma <- processLines(lines,section="SIGMA")
+        elems.sigma <- NMreadCtlPars(lines,section="SIGMA")
         sigmas <- merge(sigmas[,setdiff(colnames(sigmas),c("i","j")),with=FALSE],
                         elems.sigma[type.elem=="init",.(par.type,linenum,i,j)],
 by=c("par.type","linenum"),all.x=TRUE)

@@ -10,49 +10,35 @@ triagSize <- function(diagSize){
 }
 triagSize(1:5)
 
-ifun <- function(blocksize,istart=1){
+
+itriag <- function(blocksize,istart=1,diag="lower"){
     rep(1:blocksize,times=1:blocksize)+istart-1
 }
-jfun <- function(blocksize,istart=1){
+jtriag <- function(blocksize,istart=1,diag="lower"){
     unlist(lapply(1:blocksize,function(j) 1:j)) + istart-1
 }
-## ifun(3,istart=2)
-## jfun(3,istart=2)
+## itriag(3,istart=2)
+## jtriag(3,istart=2)
 
 
 
-## Comprehensive regex pattern
-dt.patterns <- data.table(
-    name.pattern=c("block","ll.init.ul","ll.init","(init)","init","fix","same"),
-    pattern=c("BLOCK\\s*(?:\\(\\d+\\))?",  # BLOCK(N)
-              "\\(-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?,-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?,-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\)", # (ll,init,ul)
-              "\\(-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?,-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\)", # (ll,init)
-              "\\(-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\)",  # (init)
-              "\\b-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\b",  # init (standalone number)
-              "\\bFIX(ED)?\\b",  # FIX(ED)
-              "SAME"
-              )
-)
 
-patterns=c("block"="BLOCK\\s*(?:\\s*\\(\\d+\\s*\\))?",  # BLOCK(N)
+patterns <- function(){
+    c("block"="BLOCK\\s*(?:\\s*\\(\\d+\\s*\\))?",  # BLOCK(N)
            "ll.init.ul"="\\(\\s*-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*,\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*,\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*\\)", # (ll,init,ul)
            "ll.init"="\\(\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*,\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*\\)", # (ll,init)
            "(init)"="\\(\\s*-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*\\)",  # (init)
-        ## "init"="\\b-?(?:(\\d+)?\\.?(\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\b",  # init (standalone number)
-           ## "init"="\\b-?(\\d+\\.\\d+|\\d+\\.|\\.\\d+|\\d+|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\b",  # init (standalone number)
-           ## "init"="\\b-?(\\d+\\.\\d+|\\d+\\.|\\.\\d+|\\d+)([eE][+-]?\\d+)?\\b",  # init (standalone number)
-           ## "init"="\\b-?((\\d+\\.\\d+|\\d+\\.|\\.\\d+)([eE][+-]?\\d+)?|\\d+)(?!\\.)",
-           ## "init"="\\b-?((\\d+\\.\\d+|\\d+\\.|\\.\\d+)([eE][+-]?\\d+)?|\\d+)(?!\\.)",
            "init" = "(?<!\\d)-?(\\d+\\.\\d+|\\d+\\.|\\.\\d+|\\d+)([eE][+-]?\\d+)?(?!\\.)",
            "fix"="\\bFIX(ED)?\\b",  # FIX(ED)
            "same"="SAME"
-           )
+      )
+}
 
 use.pattern <- function(name){
-    if(!name %in% names(patterns)){
+    if(!name %in% names(patterns())){
         stop(paste("pattern called", name,"not found"))
     }
-    paste0("^",patterns[[name]],"$")
+    paste0("^",patterns()[[name]],"$")
 }
 
 
@@ -164,14 +150,13 @@ count_ij <- function(res){
 
     elem <- NULL
     inblock <- NULL
-    elblock <- NULL
-    does.count <- NULL
     blocksize <- NULL
     iblock <- NULL
     i <- NULL
-    
-
-    
+    j <- NULL
+    parnum <- NULL
+    parblock <- NULL
+    type.elem <- NULL
     
     parcount <- 1
     icount <- 1
@@ -188,15 +173,10 @@ count_ij <- function(res){
             this.res <- res[ parblock==this.parblock  & type.elem%in%c("init","ll","ul")]
             this.bsize <- this.res[,unique(blocksize)]
 
-            ## res[parblock==this.parblock,i:=ifun(this.bsize,istart=icount)]
-            
             this.dt.ij <- data.table(parnum=parcount+seq(0,triagSize(this.bsize)-1),
-                                     i=ifun(this.bsize,istart=icount),
-                                     j=jfun(this.bsize,istart=icount))
+                                     i=itriag(this.bsize,istart=icount),
+                                     j=jtriag(this.bsize,istart=icount))
             
-            ## res[parblock==this.parblock,j:=jfun(blocksize,istart=icount)]
-            ## parcount <- parcount+triagSize(this.bsize)
-
         } else {
             ## res[parnum==parcount,i:=parcount]
             ## res[parnum==parcount,j:=parcount]
@@ -229,21 +209,24 @@ count_ij <- function(res){
 ##' Identify active elements in a parameter section
 ##' @import stringi
 ##' @keywords internal
-processLines <- function(lines,section,debug=FALSE) {
+NMreadCtlPars <- function(lines,section,debug=FALSE) {
 
-    elemnum <- NULL
-    string <- NULL
     . <- NULL
-    linenum <- NULL
-    does.count <- NULL
-    type.elem <- NULL
-    elem <- NULL
-    elblock <- NULL
     blocksize <- NULL
-    value.elem <- NULL
-    lastblockmax <- NULL
+    does.count <- NULL
+    elblock <- NULL
+    elem <- NULL
+    elemnum <- NULL
     inblock <- NULL
+    j <- NULL
+    lastblockmax <- NULL
+    linenum <- NULL
+    parnum <- NULL
+    parblock <- NULL
     par.type <- NULL
+    string <- NULL
+    type.elem <- NULL
+    value.elem <- NULL
     
     if(missing(section)) section <- NULL
     if(is.null(section)) {
@@ -261,7 +244,7 @@ processLines <- function(lines,section,debug=FALSE) {
     if(length(lines)==0) return(NULL)
 
     
-    pattern <- paste(patterns,collapse="|")
+    pattern <- paste(patterns(),collapse="|")
     
     ## Preprocess to remove comments (everything after ";")
     ## lines_cleaned <- str_replace(lines, ";.*", "")

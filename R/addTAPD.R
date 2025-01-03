@@ -7,8 +7,8 @@
 ##' records. They can be in the format of one row per dose or repeated
 ##' dosing notation using \code{ADDL} and \code{II}.
 ##' @param data The data set to add the variables to.
-##' @param col.time Name of time column (created by
-##'     \code{addTAPD()}). Default it \code{"TIME"}.
+##' @param col.time Name of time column on which calculations of
+##'     relative times will be based. Default it \code{"TIME"}.
 ##' @param col.tpdos Name of the time of previous dose column (created
 ##'     by \code{addTAPD()}). Default is \code{"TPDOS"}. Set to
 ##'     \code{NULL} to not create this column.
