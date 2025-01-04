@@ -207,9 +207,13 @@ count_ij <- function(res){
 
 
 ##' Identify active elements in a parameter section
+##' @param lines A control stream as text lines
+##' @param section The section to read. Typically, "theta", "omega", or "sigma".
+##' @param as.fun See ?NMscanData
 ##' @import stringi
 ##' @keywords internal
-NMreadCtlPars <- function(lines,section,debug=FALSE) {
+##' @export 
+NMreadCtlPars <- function(lines,section,as.fun) {
 
     . <- NULL
     blocksize <- NULL
@@ -233,6 +237,9 @@ NMreadCtlPars <- function(lines,section,debug=FALSE) {
         stop("section must be supplied") 
     }
 
+    if(missing(as.fun)) as.fun <- NULL
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    
     section <- sub("\\$","",section)
     section <- cleanSpaces(section)
     section <- toupper(section)
@@ -330,6 +337,6 @@ NMreadCtlPars <- function(lines,section,debug=FALSE) {
     
 
 
-    res[]
+    as.fun(res)
 }
 

@@ -43,8 +43,8 @@ input.shk
 INTER
 LINK.LNK
 README.html
-inst/examples/nonmem/*.msf
-inst/examples/nonmem/*.xml
+inst/examples/nonmem/.*.msf
+inst/examples/nonmem/.*.xml
 inst/examples/nonmem/xgxr002.*
 inst/examples/nonmem/.*_dir.*
 ;;; used in vignettes/NMscanData.Rmd
