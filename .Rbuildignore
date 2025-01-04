@@ -43,9 +43,10 @@ input.shk
 INTER
 LINK.LNK
 README.html
-inst/examples/nonmem/*.msf
-inst/examples/nonmem/*.xml
+inst/examples/nonmem/.*.msf
+inst/examples/nonmem/.*.xml
 inst/examples/nonmem/xgxr002.*
+inst/examples/nonmem/.*_dir.*
 ;;; used in vignettes/NMscanData.Rmd
 ;; inst/examples/nonmem/xgxr014.*
 tests/testthat/testOutput/simulations/nonmem
@@ -58,5 +59,5 @@ tests/testthat/testData/simulations/xgxr..._subprobs/NMsim_xgxr..._subprobs_dir.
 ;; tests/testthat/testData/nonmem/xgxr021.*
 tests/testthat/testData/simulations/xgxr.*/.*.rds
 tests/testthat/testData/simulations/xgxr.*/.*.csv
-
+tests/testthat/testData/nonmem/.*_dir.*
 .*_input.rds

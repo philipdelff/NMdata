@@ -25,7 +25,8 @@ test_that("muref SAEM",{
 
     fileRef <- "testReference/NMreadParText_02.rds"
     file.mod <- "testData/nonmem/xgxr032.mod"
-
+    
+    
     NMdataConf(reset=T)
     NMdataConf(as.fun="data.table")
     
@@ -34,8 +35,9 @@ test_that("muref SAEM",{
     expect_equal_to_reference(res,fileRef)
     
     if(F){
-        res
-        readRDS(fileRef)
+    NMreadSection(file.mod,section="theta")
+    res
+    readRDS(fileRef)
     }
     
 })
@@ -159,11 +161,14 @@ $SIGMA 1
     lines <- strsplit(text,split="\n")[[1]]
 
     res <- NMreadParsText(lines=lines,format="%init;[%num];%symbol (%unit)",
-                          format.omega="%init            ; %symbol                ; %num ; %type   ; %label ; %unit",field.idx="num")
+                          format.omega="%init            ; %symbol                ; %num ; %type   ; %label ; %unit",field.idx="num"
+                          ## ,use.idx=T
+                          )
 
 
     expect_equal_to_reference(res,fileRef)
 
+    
     if(F){
         res
         readRDS(fileRef)

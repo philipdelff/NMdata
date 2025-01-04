@@ -19,15 +19,36 @@
 ##'     section. Default is to reuse `fields`.
 ##' @param format.sigma Like `fields`, applied to `$SIGMA`
 ##'     section. Default is to reuse `fields.omega`.
-##' @param use.theta.idx If an index field in comments should be used
-##'     to number thetas. The index field is used to organize
-##'     `$OMEGA`s and `$SIGMA`s because they are matrices but I do not
-##'     see where this is advantageous to do for `$THETA`s. Default
-##'     `use.theta.idx=FALSE` which means `$THETA`s are simply
-##'     counted.
+##' @param unique.matches If TRUE, each line in the control stream is
+##'     assigned to one parameter, at most. This means, if two
+##'     parameters are listed in one line, the comments will only be
+##'     used for one of the parameters, and only that parameter will
+##'     be kept in output. Where this will typically happen is in
+##'     `$OMEGA` and `$SIGMA` sections where off-diagonal may be put
+##'     on the same line as diagonal elements. Since the off-diagonal
+##'     elements are covariances of variables that have already been
+##'     identified by the diagonals, the off-diagonal elements can be
+##'     automatically described. For example, if `OMEGA(1,1)` is
+##'     between-subject variability (BSV) on CL and `OMEGA(2,2) is BSV
+##'     on V, then we know that `OMEGA(2,1)` is covariance of (BSV on)
+##'     CL and V.
 ##' @param spaces.split Is a blank in `fields` to be treated as a
 ##'     field seperator? Default is not to (i.e. neglect spaces in
 ##'     `fields`).
+##' @param use.idx The default method is to automatically identify
+##'     element numbering (`i` for THETAs, `i` and `j` for OMEGAs and
+##'     SIGMAs). The automated method is based on identification of
+##'     `BLOCK()` structures and numbers of initial values. Should
+##'     this fail, or should you want to control this manually, you
+##'     can include a parameter counter in the comments and have
+##'     `NMreadParsText()` use that to assign the
+##'     numbering. `use.idx=FALSE` is default and means all blocks are
+##'     handled automatically, `use.idx=TRUE` assumes you have a
+##'     counter in all sections, and a character vector like
+##'     `use.idx="omega"` can be used to denote which sections use
+##'     such a counter from the control stream. When using a counter
+##'     on OMEGA and SIGMA, off-diagonal elements MUST be denoted by
+##'     `i-j`, like `2-1` for OMEGA(2,1). See `field.idx` too.
 ##' @param field.idx If an index field is manually provided in the
 ##'     control stream comments, define the name of that field in
 ##'     `format` and tell `NMreadParsTab()` to use this idx to
@@ -39,10 +60,17 @@
 ##' @param modelname See ?NMscanData
 ##' @param col.model See ?NMscanData
 ##' @param as.fun See ?NMscanData
+##' @param use.theta.idx If an index field in comments should be used
+##'     to number thetas. The index field is used to organize
+##'     `$OMEGA`s and `$SIGMA`s because they are matrices but I do not
+##'     see where this is advantageous to do for `$THETA`s. Default
+##'     `use.theta.idx=FALSE` which means `$THETA`s are simply
+##'     counted.
 ##' @param fields Deprecated. Use `format`.
 ##' @param fields.omega Deprecated. Use `format.omega`.
 ##' @param fields.sigma Deprecated. Use `format.sigma`.
-##' @return data.frame with parameter names and fields read from comments
+##' @return data.frame with parameter names and fields read from
+##'     comments
 ##' @details Off-diagonal omega and sigma elements will only be
 ##'     correctly treated if their num field specifies say 1-2 to
 ##'     specify it is covariance between 1 and 2.
@@ -97,22 +125,34 @@
 NMreadParsText <- function(file,lines,format,
                            format.omega=format,format.sigma=format.omega,
                            spaces.split=FALSE,
+                           unique.matches=TRUE,
                            field.idx="idx",
-                           use.theta.idx=FALSE,
-                           modelname,col.model,as.fun,
-                           fields,fields.omega=fields,
+                           use.idx=FALSE,
+                           modelname,
+                           col.model,
+                           as.fun,
+                           use.theta.idx,
+                           fields,
+                           fields.omega=fields,
                            fields.sigma=fields.omega
                            ){
 
+    . <- NULL
     idx <- NULL
     par.type <- NULL
     i <- NULL
     j <- NULL
+    linenum <- NULL
     parameter <- NULL
+    text <- NULL
+    text.clean <- NULL
+    type.elem <- NULL
     THETA <- NULL
     theta <- NULL
     OMEGA <- NULL
     SIGMA <- NULL
+
+
 
     if(missing(file)) file <- NULL
     if(missing(lines)) lines <- NULL
@@ -138,6 +178,29 @@ NMreadParsText <- function(file,lines,format,
         }
         
     }
+
+    if(! ( is.logical(use.idx) || is.character(use.idx)) ) stop("use.idx must be logical or a character vector containing a subset of c(\"theta\",\"omega\",\"sigma\").")
+    if(is.logical(use.idx)){
+        if(use.idx) {
+            use.idx <- c("theta","omega","sigma")
+        } else {
+            use.idx <- c()
+        }
+    }
+
+    if(missing(use.theta.idx)) use.theta.idx <- NULL
+    if(!is.null(use.theta.idx)) {
+        message("use.theta.idx is deprecated. Use `use.idx` argument instead.")
+        if(!is.logical(use.theta.idx)) stop("use.theta.idx is deprecated. Use `use.idx` argument instead.")
+        if(use.theta.idx) use.idx <- c("theta",use.theta.idx)
+    }
+    use.idx <- unique(toupper(use.idx))
+
+    
+    if(any(!use.idx %in% c("THETA","OMEGA","SIGMA"))){
+        stop("use.idx must be logical or a character vector containing a subset of c(\"theta\",\"omega\",\"sigma\").")
+    }
+    
     
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
@@ -239,32 +302,64 @@ NMreadParsText <- function(file,lines,format,
     get.comments <- function(lines,section,res.fields,use.theta.idx=FALSE){
         
         ## get theta comments
-        lines.thetas <- NMreadSection(lines=lines,section=section,keep.name=FALSE,keep.empty=FALSE,keep.comments=TRUE)
+        lines.thetas <- NMreadSection(lines=lines,section=section,keep.name=TRUE,keep.empty=TRUE,keep.comments=TRUE)
         if(length(lines.thetas)==0) return(NULL)
-        ## Remove empty lines and lines that are comments only. NMreadSection() does not have a way to do this.
-        lines.thetas <- sub(pattern="^ *;.*$",replacement="",x=lines.thetas)
-        ## these will confuse in omega/sigma sections with the current method. For those, numbering has to be done if off-diag elements are defined.
-        lines.thetas <- gsub("BLOCK(.+)","",lines.thetas)
-        lines.thetas <- lines.thetas[!grepl("^ *$",lines.thetas)]
+        
+        dt.lines <- data.table(text=lines.thetas)
+        dt.lines[,linenum:=.I]
+        dt.lines[,text.clean:=text]
+### We want to keep comments - that's what we want to process
+        dt.lines[,text.clean:=sub("^ *;.*","",text.clean)]
+        dt.lines[,text.clean:=sub(paste0("\\$",section),"",text.clean,ignore.case=TRUE)]
+        dt.lines[,text.clean:=gsub("BLOCK(.+)","",text.clean)]
+        dt.lines[,text.clean:=sub("^ *$","",text.clean)]
 
-        thetas.list <- lapply(lines.thetas,fun.get.fields,res.fields)
-        thetas <- rbindlist(thetas.list,fill=TRUE)
-        colnames(thetas) <- res.fields$fields[1:ncol(thetas)]
+        
 
-        thetas[,par.type:=toupper(section)]
+        ### lapply is needed because the data table way fails when results have different numbers of columns
+        ## dt.pars <- dt.lines[text.clean!="",fun.get.fields(text.clean,res.fields),by=linenum]
+        dt.lines.reduced <- dt.lines[text.clean!=""]
+
+        
+        
+        dt.pars <- rbindlist(lapply(1:nrow(dt.lines.reduced),function(Nrow){
+            fun.get.fields(dt.lines.reduced[Nrow,text.clean],res.fields)[,linenum:=dt.lines.reduced[Nrow,linenum]]
+        }),
+            fill=TRUE)
+        colnames(dt.pars) <- c(res.fields$fields[1:(ncol(dt.pars)-1)],"linenum")
+        
+        if(F){
+            ## Remove empty lines and lines that are comments only. NMreadSection() does not have a way to do this.
+            lines.thetas <- sub(pattern="^ *;.*$",replacement="",x=lines.thetas)
+            ## these will confuse in omega/sigma sections with the current method. For those, numbering has to be done if off-diag elements are defined.
+            lines.thetas <- gsub("BLOCK(.+)","",lines.thetas)
+            lines.thetas <- lines.thetas[!grepl("^ *$",lines.thetas)]
+
+            thetas.list <- lapply(lines.thetas,fun.get.fields,res.fields)
+            thetas <- rbindlist(thetas.list,fill=TRUE)
+            colnames(thetas) <- res.fields$fields[1:ncol(thetas)]
+
+        }
+        
+
+
+        dt.pars[,par.type:=toupper(section)]
 
         if(use.theta.idx && field.idx%in%colnames(theta)){
-            thetas[,i:=get(field.idx)]
+            dt.pars[,i:=get(field.idx)]
             rm.idx <<- FALSE
         } else {
-            thetas[,i:=.I]
+            dt.pars[,i:=.I]
         }
+        dt.pars
     }
 
 ### notice, get.omega.comments uses omega as a placeholder for OMEGA or SIGMA
     get.omega.comments <- function(lines,section,format){
         
         res.fields <- splitFields(format,spaces.split=spaces.split)
+        
+
         omegas <- get.comments(lines=lines,section=section,res.fields=res.fields)
         if(is.null(omegas)) return(NULL)
         if(field.idx%in%colnames(omegas)) {
@@ -285,18 +380,78 @@ NMreadParsText <- function(file,lines,format,
 
     
     
-    rm.idx <- TRUE    
+    rm.idx <- TRUE
     thetas <- get.theta.comments(lines=lines,section="THETA",format=format,
                                  use.theta.idx=use.theta.idx)
+    
+    
+#### get.omega.comments must return line numbers
+    ## why is idx there? 
     omegas <- get.omega.comments(lines=lines,section="omega",format=format.omega)
     sigmas <- get.omega.comments(lines=lines,section="sigma",format=format.sigma)
 
+    auto.idx <- setdiff(c("THETA","OMEGA","SIGMA"),use.idx)
+    
+    
+    if(length(sigmas)==0) auto.idx <- setdiff(auto.idx,"SIGMA")
+    
+    if("THETA"%in%auto.idx){
+        
+        elems.theta <- NMreadCtlPars(lines,section="THETA",as.fun="data.table")
+        thetas <- merge(thetas[,setdiff(colnames(thetas),c("i","j")),with=FALSE],
+                        elems.theta[type.elem=="init",.(par.type,linenum,i)],
+                        by=c("par.type","linenum"),all.x=TRUE)
+    }
+    if("OMEGA"%in%auto.idx){
+        
+        elems.omega <- NMreadCtlPars(lines,section="OMEGA",as.fun="data.table")
+        omegas <- merge(omegas[,setdiff(colnames(omegas),c("i","j")),with=FALSE],
+                        elems.omega[type.elem=="init",.(par.type,linenum,i,j)],
+                        by=c("par.type","linenum"),all.x=TRUE)
+    }
+    if("SIGMA"%in%auto.idx){
+        
+        elems.sigma <- NMreadCtlPars(lines,section="SIGMA",as.fun="data.table")
+        sigmas <- merge(sigmas[,setdiff(colnames(sigmas),c("i","j")),with=FALSE],
+                        elems.sigma[type.elem=="init",.(par.type,linenum,i,j)],
+by=c("par.type","linenum"),all.x=TRUE)
+    }
+
+
+    
+    
     ## collect thetas and omegas
     pt1 <- rbind(thetas,omegas,sigmas,fill=T)
-    ## we are aligning with Nonmem's behavior in ext liness. The
+
+######## Isn't this because the user is doing it wrongly?
+    ## we are aligning with Nonmem's behavior in ext lines. The
     ## off-diags are lower triangle. In other words, OMEGA and SIGMA
     ## are specified by column, not by row.
-    pt1[par.type%in%cc(OMEGA,SIGMA),`:=`(i=j,j=i)]
+    ## pt1[par.type%in%cc(OMEGA,SIGMA),`:=`(i=j,j=i)]
+    
+    
+####### TODO: what if multiple elements are on one line? Assign comment to all or to the diagonals only? Maybe an argument to control.
+#### merges ij,j on each line. Risk is that single lines contain multiple elements, and hence are matched by multiple combinations of i,j.
+###        pt1 <- merge(pt1[,setdiff(colnames(pt1),c("i","j")),with=FALSE],elems.all[type.elem=="init"],by=c("par.type","linenum"),all.x=TRUE)
+#### Optional: Prioritizes lines: one i,j per line. order by i=j, then i, then j. Take unique (first occurrance).
+    ## if(length(auto.idx)){
+    if(unique.matches){
+        ## pt1[,rorig:=.I]
+        ## pt1 <- pt1[frank(match(pt1$par.type,c("THETA","OMEGA","SIGMA")),i==j,i,j))
+        ## pt.idx <- pt1[!par.type%in%auto.idx]
+        ## pt.auto
+        
+        pt1 <- pt1[order(match(par.type,c("THETA","OMEGA","SIGMA")),i!=j,i,j)]
+        pt2 <- unique(pt1,by=c("par.type","linenum"))
+        pt2 <- pt2[order(match(par.type,c("THETA","OMEGA","SIGMA")),i,j)]
+        ## setkey(pt1,par.type,i)
+        ## unique(pt1)
+        pt1 <- pt2
+    }
+    ## }
+
+
+    
 
 ### it is inconsistent, but this is how it is reported in NMreadExt
     pt1[par.type%in%cc(THETA),parameter:=sprintf("THETA%d",i)]
@@ -304,13 +459,16 @@ NMreadParsText <- function(file,lines,format,
     
     if(rm.idx) pt1[,(field.idx):=NULL]
 
-    cols.last <- intersect(c("par.type","i","j","col.idx","parameter","model"),colnames(pt1))
-    setcolorder(pt1,c(setdiff(colnames(pt1),cols.last),cols.last))
-    
     if(!is.null(file)){
         this.model <- modelname(file)
         pt1[,(col.model):=this.model]
     }
+
+    if("linenum" %in% colnames(pt1)) pt1[,linenum:=NULL]
+    
+    cols.last <- intersect(c("par.type","i","j","col.idx","parameter",col.model),colnames(pt1))
+    setcolorder(pt1,c(setdiff(colnames(pt1),cols.last),cols.last))
+    
     
     as.fun(pt1)
 }

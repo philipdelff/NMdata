@@ -30,8 +30,8 @@ addTAPD(
 \arguments{
 \item{data}{The data set to add the variables to.}
 
-\item{col.time}{Name of time column (created by
-\code{addTAPD()}). Default it \code{"TIME"}.}
+\item{col.time}{Name of time column on which calculations of
+relative times will be based. Default it \code{"TIME"}.}
 
 \item{col.evid}{The name of the event ID column. This must exist
 in data. Default is EVID.}

@@ -33,8 +33,8 @@ addParType <- function(pars,suffix,add.idx){
     if(add.idx){
         pars[get(col.par.type)=="THETA",i:=as.integer(sub("THETA([0-9]+)","\\1",get(col.parameter)))]
         pars[get(col.par.type)=="OMEGA",i:=as.integer(sub("OMEGA\\(([0-9]+)\\,([0-9]+)\\)","\\1",get(col.parameter)))]
-        pars[get(col.par.type)=="OMEGA",j:=as.integer(sub("OMEGA\\(([0-9]+)\\,([0-9]+)\\)","\\2",get(col.parameter)))]
         pars[get(col.par.type)=="SIGMA",i:=as.integer(sub("SIGMA\\(([0-9]+)\\,([0-9]+)\\)","\\1",get(col.parameter)))]
+        pars[get(col.par.type)=="OMEGA",j:=as.integer(sub("OMEGA\\(([0-9]+)\\,([0-9]+)\\)","\\2",get(col.parameter)))]
         pars[get(col.par.type)=="SIGMA",j:=as.integer(sub("SIGMA\\(([0-9]+)\\,([0-9]+)\\)","\\2",get(col.parameter)))]
         ## cols <- cc(i,j)
         ## pars[,(cols):=lapply(.SD,as.integer),.SDcols=cols]

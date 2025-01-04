@@ -425,6 +425,8 @@ arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
 *** NMisNumeric
 **** DONE NA_character is not recognized as numeric
+*** NMreadCtlPars
+**** classify_matches should maintain character values, not numeric
 *** NMreadExt
 **** DONE Support Laplacian
 Laplacian Conditional Estimation

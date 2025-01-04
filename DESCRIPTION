@@ -1,7 +1,7 @@
 Package: NMdata
 Type: Package
 Title: Preparation, Checking and Post-Processing Data for PK/PD Modeling
-Version: 0.1.8.907
+Version: 0.1.8.922
 Authors@R:
   c(person(given="Philip", family="Delff",
      email = "philip@delff.dk",
@@ -18,7 +18,8 @@ Roxygen: list(roclets=c("collate", "namespace", "rd", "vignette"))
 Depends: R (>= 3.1.0)
 Imports:
   data.table,
-  fst
+  fst,
+  stringi
 Suggests:
   testthat,
   knitr,
